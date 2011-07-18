@@ -1,0 +1,21 @@
+From: QbProg <tholag@gmail.com>
+Date: Sun, 26 Jun 2011 17:20:21 +0200
+Subject: [PATCH 12/82] Increased version number to 0.4.0
+
+---
+ CMakeLists.txt |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Index: oce/CMakeLists.txt
+===================================================================
+--- oce.orig/CMakeLists.txt
++++ oce/CMakeLists.txt
+@@ -20,7 +20,7 @@
+ PROJECT(OCE)
+ 
+ SET(OCE_VERSION_MAJOR 0)
+-SET(OCE_VERSION_MINOR 3)
++SET(OCE_VERSION_MINOR 4)
+ SET(OCE_VERSION_PATCH 0)
+ 
+ SET(OCE_VERSION ${OCE_VERSION_MAJOR}.${OCE_VERSION_MINOR}.${OCE_VERSION_PATCH})

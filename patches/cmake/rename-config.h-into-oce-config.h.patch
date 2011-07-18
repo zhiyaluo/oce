@@ -1,0 +1,1157 @@
+commit e49d00a2843d9376db25458b8fece3401be44cfe
+Author: Denis Barbier <bouzim@gmail.com>
+Date:   Mon Apr 11 22:17:41 2011 +0200
+
+    Move config.h into inc/oce-config.h
+    
+    The handling of config.h in OpenCASCADE causes
+    several problems:
+     * A program which uses OpenCASCADE cannot use its own
+       config.h header file, there is a conflict with
+       OpenCASCADE's one.
+     * config.h defines macros which have been defined when
+       compiling OpenCASCADE, but this file may get outdated
+       when compiling another program.  A better option
+       would be to keep in the installed oce-config.h file
+       only macros which are used by other installed files.
+     * Ideally, installed header files should not rely on
+       config.h header file at all.
+
+Index: oce/inc/OpenGl_FontMgr.hxx
+===================================================================
+--- oce.orig/inc/OpenGl_FontMgr.hxx
++++ oce/inc/OpenGl_FontMgr.hxx
+@@ -8,7 +8,7 @@
+ #endif
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #ifdef HAVE_FTGL_NEWER212
+Index: oce/inc/Standard_Macro.hxx
+===================================================================
+--- oce.orig/inc/Standard_Macro.hxx
++++ oce/inc/Standard_Macro.hxx
+@@ -8,7 +8,7 @@
+ # define _Standard_Macro_HeaderFile
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif /* HAVE_CONFIG_H */
+ 
+ // Standard OCC macros: Handle(), STANDARD_TYPE()
+Index: oce/inc/Standard_values.h
+===================================================================
+--- oce.orig/inc/Standard_values.h
++++ oce/inc/Standard_values.h
+@@ -24,7 +24,7 @@
+ 
+ #ifndef WNT
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #ifdef HAVE_LIMITS
+Index: oce/inc/Xw_Extension.h
+===================================================================
+--- oce.orig/inc/Xw_Extension.h
++++ oce/inc/Xw_Extension.h
+@@ -23,7 +23,7 @@
+ #endif
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #ifdef HAVE_X11_EXTENSIONS_TRANSOLV_H
+Index: oce/src/AIS2D/AIS2D.cxx
+===================================================================
+--- oce.orig/src/AIS2D/AIS2D.cxx
++++ oce/src/AIS2D/AIS2D.cxx
+@@ -38,7 +38,7 @@
+ #include <AIS2D_KindOfPrimitive.hxx>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <Standard_Stream.hxx>
+Index: oce/src/BRepTest/BRepTest_ChamferCommands.cxx
+===================================================================
+--- oce.orig/src/BRepTest/BRepTest_ChamferCommands.cxx
++++ oce/src/BRepTest/BRepTest_ChamferCommands.cxx
+@@ -4,7 +4,7 @@
+ //		<fla@phylox>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <Draw_Interpretor.hxx>
+Index: oce/src/BRepTest/BRepTest_CheckCommands.cxx
+===================================================================
+--- oce.orig/src/BRepTest/BRepTest_CheckCommands.cxx
++++ oce/src/BRepTest/BRepTest_CheckCommands.cxx
+@@ -6,7 +6,7 @@
+ 
+ #include <BRepTest.hxx>
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <BRepAlgo.hxx>
+Index: oce/src/BRepTest/BRepTest_FeatureCommands.cxx
+===================================================================
+--- oce.orig/src/BRepTest/BRepTest_FeatureCommands.cxx
++++ oce/src/BRepTest/BRepTest_FeatureCommands.cxx
+@@ -4,7 +4,7 @@
+ //		<jag@bravox>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <Draw_Interpretor.hxx>
+Index: oce/src/BRepTest/BRepTest_FilletCommands.cxx
+===================================================================
+--- oce.orig/src/BRepTest/BRepTest_FilletCommands.cxx
++++ oce/src/BRepTest/BRepTest_FilletCommands.cxx
+@@ -4,7 +4,7 @@
+ //		<modeling@phylox>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <string.h>
+Index: oce/src/BRepTest/BRepTest_SurfaceCommands.cxx
+===================================================================
+--- oce.orig/src/BRepTest/BRepTest_SurfaceCommands.cxx
++++ oce/src/BRepTest/BRepTest_SurfaceCommands.cxx
+@@ -4,7 +4,7 @@
+ //		<rle@nonox>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ #include <stdio.h>
+ #include <BRepTest.hxx>
+Index: oce/src/BRepTest/BRepTest_TopologyCommands.cxx
+===================================================================
+--- oce.orig/src/BRepTest/BRepTest_TopologyCommands.cxx
++++ oce/src/BRepTest/BRepTest_TopologyCommands.cxx
+@@ -4,7 +4,7 @@
+ //		<rle@nonox>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ #include <BRepTest.hxx>
+ #include <DBRep.hxx>
+Index: oce/src/DBRep/DBRep.cxx
+===================================================================
+--- oce.orig/src/DBRep/DBRep.cxx
++++ oce/src/DBRep/DBRep.cxx
+@@ -4,7 +4,7 @@
+ //		<rle@nonox>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <DBRep.ixx>
+Index: oce/src/Draw/Draw.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw.cxx
++++ oce/src/Draw/Draw.cxx
+@@ -4,7 +4,7 @@
+ //		<dub@phylox>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <Draw.ixx>
+Index: oce/src/Draw/Draw_BasicCommands.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw_BasicCommands.cxx
++++ oce/src/Draw/Draw_BasicCommands.cxx
+@@ -15,7 +15,7 @@
+ #include <Message_Messenger.hxx>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #if defined(HAVE_TIME_H) || defined(WNT)
+Index: oce/src/Draw/Draw_GraphicCommands.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw_GraphicCommands.cxx
++++ oce/src/Draw/Draw_GraphicCommands.cxx
+@@ -7,7 +7,7 @@
+ 
+ // Modif : DFO 05/11/96
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <Draw.ixx>
+Index: oce/src/Draw/Draw_Main.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw_Main.cxx
++++ oce/src/Draw/Draw_Main.cxx
+@@ -62,7 +62,7 @@
+ // *******************************************************************
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #ifdef HAVE_STRINGS_H
+Index: oce/src/Draw/Draw_VariableCommands.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw_VariableCommands.cxx
++++ oce/src/Draw/Draw_VariableCommands.cxx
+@@ -6,7 +6,7 @@
+ 
+ #include <Draw.ixx>
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <Standard_Stream.hxx>
+Index: oce/src/Draw/Draw_Window.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw_Window.cxx
++++ oce/src/Draw/Draw_Window.cxx
+@@ -86,7 +86,7 @@
+ #ifndef WNT
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <OSD_Timer.hxx>
+Index: oce/src/DrawTrSurf/DrawTrSurf.cxx
+===================================================================
+--- oce.orig/src/DrawTrSurf/DrawTrSurf.cxx
++++ oce/src/DrawTrSurf/DrawTrSurf.cxx
+@@ -4,7 +4,7 @@
+ //		<dub@topsn3>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #ifdef HAVE_IOS
+Index: oce/src/DrawTrSurf/DrawTrSurf_Point.cxx
+===================================================================
+--- oce.orig/src/DrawTrSurf/DrawTrSurf_Point.cxx
++++ oce/src/DrawTrSurf/DrawTrSurf_Point.cxx
+@@ -4,7 +4,7 @@
+ //		<rle@zerox>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #ifdef HAVE_IOS
+Index: oce/src/Dynamic/Dynamic.cxx
+===================================================================
+--- oce.orig/src/Dynamic/Dynamic.cxx
++++ oce/src/Dynamic/Dynamic.cxx
+@@ -9,7 +9,7 @@
+ 
+ #include <Dynamic.hxx>
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ #ifdef HAVE_STRINGS_H
+ # include <strings.h>
+Index: oce/src/Dynamic/Dynamic_BooleanParameter.cxx
+===================================================================
+--- oce.orig/src/Dynamic/Dynamic_BooleanParameter.cxx
++++ oce/src/Dynamic/Dynamic_BooleanParameter.cxx
+@@ -8,7 +8,7 @@
+ 
+ #include <Dynamic_BooleanParameter.ixx>
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ #ifdef HAVE_STRINGS_H
+ # include <strings.h>
+Index: oce/src/Dynamic/Dynamic_FuzzyDefinitionsDictionary.cxx
+===================================================================
+--- oce.orig/src/Dynamic/Dynamic_FuzzyDefinitionsDictionary.cxx
++++ oce/src/Dynamic/Dynamic_FuzzyDefinitionsDictionary.cxx
+@@ -18,7 +18,7 @@
+ #include <TCollection_AsciiString.hxx>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <stdio.h>
+Index: oce/src/Dynamic/Dynamic_MethodDefinitionsDictionary.cxx
+===================================================================
+--- oce.orig/src/Dynamic/Dynamic_MethodDefinitionsDictionary.cxx
++++ oce/src/Dynamic/Dynamic_MethodDefinitionsDictionary.cxx
+@@ -20,7 +20,7 @@
+ #include <TCollection_AsciiString.hxx>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <stdio.h>
+Index: oce/src/ExprIntrp/ExprIntrp_yaccintrf.cxx
+===================================================================
+--- oce.orig/src/ExprIntrp/ExprIntrp_yaccintrf.cxx
++++ oce/src/ExprIntrp/ExprIntrp_yaccintrf.cxx
+@@ -1,7 +1,7 @@
+ //static const char* sccsid = "@(#)ExprIntrp_yaccintrf.cxx	3.2 95/01/10"; // Do not delete this line. Used by sccs.
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ #include <ExprIntrp_yaccintrf.hxx>
+ #include <ExprIntrp_yaccanal.hxx>
+Index: oce/src/GeomliteTest/GeomliteTest_SurfaceCommands.cxx
+===================================================================
+--- oce.orig/src/GeomliteTest/GeomliteTest_SurfaceCommands.cxx
++++ oce/src/GeomliteTest/GeomliteTest_SurfaceCommands.cxx
+@@ -4,7 +4,7 @@
+ //		<dub@topsn3>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ #include <GeomliteTest.hxx>
+ #include <DrawTrSurf.hxx>
+Index: oce/src/Graphic3d/Graphic3d_Structure.pxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d_Structure.pxx
++++ oce/src/Graphic3d/Graphic3d_Structure.pxx
+@@ -3,7 +3,7 @@
+ #define STRUCTURE_PXX_INCLUDED
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #ifdef HAVE_LIMITS
+Index: oce/src/Image/Image_PixMap.cxx
+===================================================================
+--- oce.orig/src/Image/Image_PixMap.cxx
++++ oce/src/Image/Image_PixMap.cxx
+@@ -4,7 +4,7 @@
+ // Copyright  OpenCASCADE 2010
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #ifdef HAVE_FREEIMAGE
+Index: oce/src/MFT/MFT_FontManager.cxx
+===================================================================
+--- oce.orig/src/MFT/MFT_FontManager.cxx
++++ oce/src/MFT/MFT_FontManager.cxx
+@@ -94,7 +94,7 @@
+ //
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <MFT_FontManager.ixx>
+Index: oce/src/MMgt/MMgt_StackManager.cxx
+===================================================================
+--- oce.orig/src/MMgt/MMgt_StackManager.cxx
++++ oce/src/MMgt/MMgt_StackManager.cxx
+@@ -1,5 +1,5 @@
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <MMgt_StackManager.ixx>
+Index: oce/src/Materials/Materials_MaterialDefinition.cxx
+===================================================================
+--- oce.orig/src/Materials/Materials_MaterialDefinition.cxx
++++ oce/src/Materials/Materials_MaterialDefinition.cxx
+@@ -11,7 +11,7 @@
+ #include <Materials_Color.hxx>
+ #include <stdlib.h>
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ #ifdef HAVE_STRINGS_H
+ # include <strings.h>
+Index: oce/src/Materials/Materials_MaterialsDictionary.cxx
+===================================================================
+--- oce.orig/src/Materials/Materials_MaterialsDictionary.cxx
++++ oce/src/Materials/Materials_MaterialsDictionary.cxx
+@@ -5,7 +5,7 @@
+ // Historique :
+ // CRD : 03/07/97 : Portage Windows NT.
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <Materials_MaterialsDictionary.ixx>
+Index: oce/src/OSD/OSD_Chronometer.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_Chronometer.cxx
++++ oce/src/OSD/OSD_Chronometer.cxx
+@@ -13,7 +13,7 @@
+ //---------- Systemes autres que WNT : ----------------------------------
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #ifdef HAVE_SYS_TYPES_H
+Index: oce/src/OSD/OSD_Cmailbox.c
+===================================================================
+--- oce.orig/src/OSD/OSD_Cmailbox.c
++++ oce/src/OSD/OSD_Cmailbox.c
+@@ -1,7 +1,7 @@
+ #if !defined( WNT ) && !defined(__hpux)
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <stdio.h>
+Index: oce/src/OSD/OSD_Csemaphore.c
+===================================================================
+--- oce.orig/src/OSD/OSD_Csemaphore.c
++++ oce/src/OSD/OSD_Csemaphore.c
+@@ -1,7 +1,7 @@
+ #ifndef WNT
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <errno.h>
+Index: oce/src/OSD/OSD_Csharedmemory.c
+===================================================================
+--- oce.orig/src/OSD/OSD_Csharedmemory.c
++++ oce/src/OSD/OSD_Csharedmemory.c
+@@ -5,7 +5,7 @@
+ #include <sys/shm.h>
+ 
+ #if defined(HAVE_CONFIG_H)
+-#include "config.h"
++#include <oce-config.h>
+ #endif
+ #if defined(HAVE_STDLIB_H)
+ #include <stdlib.h>
+Index: oce/src/OSD/OSD_Directory.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_Directory.cxx
++++ oce/src/OSD/OSD_Directory.cxx
+@@ -1,6 +1,6 @@
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #ifndef WNT
+Index: oce/src/OSD/OSD_DirectoryIterator.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_DirectoryIterator.cxx
++++ oce/src/OSD/OSD_DirectoryIterator.cxx
+@@ -1,5 +1,5 @@
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #ifndef WNT
+Index: oce/src/OSD/OSD_Disk.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_Disk.cxx
++++ oce/src/OSD/OSD_Disk.cxx
+@@ -1,5 +1,5 @@
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #ifndef WNT
+Index: oce/src/OSD/OSD_File.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_File.cxx
++++ oce/src/OSD/OSD_File.cxx
+@@ -1,5 +1,5 @@
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ //------------------------------------------------------------------------
+Index: oce/src/OSD/OSD_FileIterator.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_FileIterator.cxx
++++ oce/src/OSD/OSD_FileIterator.cxx
+@@ -1,6 +1,6 @@
+  
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #ifndef WNT
+Index: oce/src/OSD/OSD_FileNode.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_FileNode.cxx
++++ oce/src/OSD/OSD_FileNode.cxx
+@@ -1,5 +1,5 @@
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #ifndef WNT
+Index: oce/src/OSD/OSD_Host.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_Host.cxx
++++ oce/src/OSD/OSD_Host.cxx
+@@ -1,5 +1,5 @@
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #ifndef WNT
+Index: oce/src/OSD/OSD_Path.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_Path.cxx
++++ oce/src/OSD/OSD_Path.cxx
+@@ -1,5 +1,5 @@
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #ifndef WNT
+Index: oce/src/OSD/OSD_Process.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_Process.cxx
++++ oce/src/OSD/OSD_Process.cxx
+@@ -1,6 +1,6 @@
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #ifndef WNT
+Index: oce/src/OSD/OSD_Real2String.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_Real2String.cxx
++++ oce/src/OSD/OSD_Real2String.cxx
+@@ -9,7 +9,7 @@
+ // +---------------------------------------------------------------------------+
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <OSD_Real2String.ixx>
+Index: oce/src/OSD/OSD_Semaphore.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_Semaphore.cxx
++++ oce/src/OSD/OSD_Semaphore.cxx
+@@ -1,7 +1,7 @@
+ #ifndef WNT
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <Standard_ProgramError.hxx>
+Index: oce/src/OSD/OSD_SharedLibrary.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_SharedLibrary.cxx
++++ oce/src/OSD/OSD_SharedLibrary.cxx
+@@ -1,6 +1,6 @@
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #ifndef WNT
+Index: oce/src/OSD/OSD_Timer.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_Timer.cxx
++++ oce/src/OSD/OSD_Timer.cxx
+@@ -11,7 +11,7 @@
+ //          
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <OSD_Timer.ixx>
+Index: oce/src/OSD/OSD_signal.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_signal.cxx
++++ oce/src/OSD/OSD_signal.cxx
+@@ -6,7 +6,7 @@
+ //---------- All Systems except Windows NT : ----------------------------------
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ # include <stdio.h>
+Index: oce/src/OpenGl/OpenGl_attri.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_attri.cxx
++++ oce/src/OpenGl/OpenGl_attri.cxx
+@@ -99,7 +99,7 @@
+ */
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ /* OCC22218 NOTE: project dependency on gl2ps is specified by macro */
+Index: oce/src/OpenGl/OpenGl_graduatedtrihedron.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_graduatedtrihedron.cxx
++++ oce/src/OpenGl/OpenGl_graduatedtrihedron.cxx
+@@ -18,7 +18,7 @@
+ #include <OpenGl_TextRender.hxx>
+ 
+ #ifdef HAVE_CONFIG_H
+-#include <config.h>
++#include <oce-config.h>
+ #endif
+ #ifdef HAVE_STRING_H
+ #include <string.h>
+Index: oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
++++ oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
+@@ -20,7 +20,7 @@
+ */
+ 
+ #ifdef HAVE_CONFIG_H
+-#include <config.h>
++#include <oce-config.h>
+ #endif
+ #ifdef HAVE_STDLIB_H
+ #include <stdlib.h>
+Index: oce/src/OpenGl/OpenGl_togl_markercontextgroup.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_togl_markercontextgroup.cxx
++++ oce/src/OpenGl/OpenGl_togl_markercontextgroup.cxx
+@@ -40,7 +40,7 @@
+ #include <GL/glu.h>
+ 
+ #ifdef HAVE_CONFIG_H
+-#include <config.h>
++#include <oce-config.h>
+ #endif
+ #ifdef HAVE_STDLIB_H
+ #include <stdlib.h>
+Index: oce/src/OpenGl/OpenGl_triedron.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_triedron.cxx
++++ oce/src/OpenGl/OpenGl_triedron.cxx
+@@ -63,7 +63,7 @@
+ #endif
+ 
+ #ifdef HAVE_CONFIG_H
+-#include <config.h>
++#include <oce-config.h>
+ #endif
+ #ifdef HAVE_STRING_H
+ #include <string.h>
+Index: oce/src/PCollection/PCollection_HAsciiString.cxx
+===================================================================
+--- oce.orig/src/PCollection/PCollection_HAsciiString.cxx
++++ oce/src/PCollection/PCollection_HAsciiString.cxx
+@@ -7,7 +7,7 @@
+ #include <Standard_OutOfRange.hxx>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ #if defined(HAVE_STRING_H)
+ # include <string.h>
+Index: oce/src/PCollection/PCollection_HExtendedString.cxx
+===================================================================
+--- oce.orig/src/PCollection/PCollection_HExtendedString.cxx
++++ oce/src/PCollection/PCollection_HExtendedString.cxx
+@@ -7,7 +7,7 @@
+ #include <Standard_OutOfRange.hxx>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ #if defined(HAVE_STRING_H)
+ # include <string.h>
+Index: oce/src/STEPConstruct/STEPConstruct_AP203Context.cxx
+===================================================================
+--- oce.orig/src/STEPConstruct/STEPConstruct_AP203Context.cxx
++++ oce/src/STEPConstruct/STEPConstruct_AP203Context.cxx
+@@ -4,7 +4,7 @@
+ //		<abv@doomox.nnov.matra-dtv.fr>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <STEPConstruct_AP203Context.ixx>
+Index: oce/src/Standard/StandardCSFDB.cxx
+===================================================================
+--- oce.orig/src/Standard/StandardCSFDB.cxx
++++ oce/src/Standard/StandardCSFDB.cxx
+@@ -1,5 +1,5 @@
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ #include <Standard_PrimitiveTypes.hxx>
+ #include <Standard_Persistent.hxx>
+Index: oce/src/Standard/Standard_CString.cxx
+===================================================================
+--- oce.orig/src/Standard/Standard_CString.cxx
++++ oce/src/Standard/Standard_CString.cxx
+@@ -9,7 +9,7 @@
+ 
+ #define OptJr 1
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ 
+Index: oce/src/Standard/Standard_ExtString.cxx
+===================================================================
+--- oce.orig/src/Standard/Standard_ExtString.cxx
++++ oce/src/Standard/Standard_ExtString.cxx
+@@ -1,5 +1,5 @@
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #define OptJr 1
+Index: oce/src/Standard/Standard_Geteth.cxx
+===================================================================
+--- oce.orig/src/Standard/Standard_Geteth.cxx
++++ oce/src/Standard/Standard_Geteth.cxx
+@@ -11,7 +11,7 @@
+ 
+ */
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #ifdef HAVE_UNISTD_H
+Index: oce/src/Standard/Standard_MMgrOpt.cxx
+===================================================================
+--- oce.orig/src/Standard/Standard_MMgrOpt.cxx
++++ oce/src/Standard/Standard_MMgrOpt.cxx
+@@ -8,7 +8,7 @@
+ 
+ //
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <stdio.h>
+Index: oce/src/Standard/Standard_Type.cxx
+===================================================================
+--- oce.orig/src/Standard/Standard_Type.cxx
++++ oce/src/Standard/Standard_Type.cxx
+@@ -1,5 +1,5 @@
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <Standard_Type.ixx>
+Index: oce/src/Standard/Standard_osd_ffi.c
+===================================================================
+--- oce.orig/src/Standard/Standard_osd_ffi.c
++++ oce/src/Standard/Standard_osd_ffi.c
+@@ -43,7 +43,7 @@
+ #ifndef WNT
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ /* This hack is required to get HP's c89 to include a definition for DIR */
+Index: oce/src/Storage/Storage_Schema.cxx
+===================================================================
+--- oce.orig/src/Storage/Storage_Schema.cxx
++++ oce/src/Storage/Storage_Schema.cxx
+@@ -24,7 +24,7 @@
+ #include <Standard_ErrorHandler.hxx>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #if defined(HAVE_TIME_H) || defined(WNT)
+Index: oce/src/TCollection/TCollection_BasicMap.cxx
+===================================================================
+--- oce.orig/src/TCollection/TCollection_BasicMap.cxx
++++ oce/src/TCollection/TCollection_BasicMap.cxx
+@@ -5,7 +5,7 @@
+ //		<rle@phylox>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ #include <TCollection_BasicMap.ixx>
+ #include <TCollection.hxx>
+Index: oce/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
+===================================================================
+--- oce.orig/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
++++ oce/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
+@@ -4,7 +4,7 @@
+ //		<jyl@bistrox.paris1.matra-dtv.fr>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ #include <TestTopOpe.ixx>
+ 
+Index: oce/src/TestTopOpe/TestTopOpe_HDSCommands.cxx
+===================================================================
+--- oce.orig/src/TestTopOpe/TestTopOpe_HDSCommands.cxx
++++ oce/src/TestTopOpe/TestTopOpe_HDSCommands.cxx
+@@ -4,7 +4,7 @@
+ //		<jyl@bravox>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ #include <TestTopOpe.hxx>
+ #include <TestTopOpe_HDSDisplayer.hxx>
+Index: oce/src/TestTopOpe/TestTopOpe_OtherCommands.cxx
+===================================================================
+--- oce.orig/src/TestTopOpe/TestTopOpe_OtherCommands.cxx
++++ oce/src/TestTopOpe/TestTopOpe_OtherCommands.cxx
+@@ -4,7 +4,7 @@
+ //		<jyl@bistrox.paris1.matra-dtv.fr>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ #include <TestTopOpe.ixx>
+ 
+Index: oce/src/TestTopOpe/TestTopOpe_VarsTopo.cxx
+===================================================================
+--- oce.orig/src/TestTopOpe/TestTopOpe_VarsTopo.cxx
++++ oce/src/TestTopOpe/TestTopOpe_VarsTopo.cxx
+@@ -4,7 +4,7 @@
+ //		<jyl@meteox>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ #include <TestTopOpe_VarsTopo.hxx>
+ #include <TopOpeBRepTool.hxx>
+Index: oce/src/TestTopOpeDraw/TestTopOpeDraw_OtherCommands.cxx
+===================================================================
+--- oce.orig/src/TestTopOpeDraw/TestTopOpeDraw_OtherCommands.cxx
++++ oce/src/TestTopOpeDraw/TestTopOpeDraw_OtherCommands.cxx
+@@ -4,7 +4,7 @@
+ //		<jyl@meteox>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ #include <TestTopOpeDraw.hxx>
+ #include <TestTopOpeDraw_Displayer.hxx>
+Index: oce/src/TestTopOpeDraw/TestTopOpeDraw_TTOT.cxx
+===================================================================
+--- oce.orig/src/TestTopOpeDraw/TestTopOpeDraw_TTOT.cxx
++++ oce/src/TestTopOpeDraw/TestTopOpeDraw_TTOT.cxx
+@@ -4,7 +4,7 @@
+ //		<jyl@bistrox.paris1.matra-dtv.fr>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ #include <TestTopOpeDraw_TTOT.hxx>
+ #include <GeomAdaptor_Curve.hxx>
+Index: oce/src/TestTopOpeTools/TestTopOpeTools_TraceCommands.cxx
+===================================================================
+--- oce.orig/src/TestTopOpeTools/TestTopOpeTools_TraceCommands.cxx
++++ oce/src/TestTopOpeTools/TestTopOpeTools_TraceCommands.cxx
+@@ -4,7 +4,7 @@
+ //		<jyl@bravox>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ #include <TestTopOpeTools.hxx>
+ #include <TestTopOpeTools_Trace.hxx>
+Index: oce/src/TopOpeBRep/TopOpeBRep_traceALWL.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRep/TopOpeBRep_traceALWL.cxx
++++ oce/src/TopOpeBRep/TopOpeBRep_traceALWL.cxx
+@@ -4,7 +4,7 @@
+ //		<jyl@bistrox.paris1.matra-dtv.fr>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #ifdef HAVE_STRINGS_H
+Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Griddump.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_Griddump.cxx
++++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Griddump.cxx
+@@ -4,7 +4,7 @@
+ //		<jyl@meteox>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ #include <TopOpeBRepBuild_Builder.ixx>
+ #include <TopOpeBRepBuild_define.hxx>
+Index: oce/src/Units/Units_UnitsDictionary.cxx
+===================================================================
+--- oce.orig/src/Units/Units_UnitsDictionary.cxx
++++ oce/src/Units/Units_UnitsDictionary.cxx
+@@ -13,7 +13,7 @@
+ #include <Standard_Stream.hxx>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ #include <stdio.h>
+ #ifdef HAVE_STDLIB_H
+Index: oce/src/Viewer2dTest/Viewer2dTest_ObjectCommands.cxx
+===================================================================
+--- oce.orig/src/Viewer2dTest/Viewer2dTest_ObjectCommands.cxx
++++ oce/src/Viewer2dTest/Viewer2dTest_ObjectCommands.cxx
+@@ -7,7 +7,7 @@
+ //===============================================
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <Viewer2dTest.hxx>
+Index: oce/src/ViewerTest/ViewerTest.cxx
+===================================================================
+--- oce.orig/src/ViewerTest/ViewerTest.cxx
++++ oce/src/ViewerTest/ViewerTest.cxx
+@@ -39,7 +39,7 @@
+ #include <Image_PixMap.hxx>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ #include <stdio.h>
+ #ifdef HAVE_STRINGS_H
+Index: oce/src/ViewerTest/ViewerTest_FilletCommands.cxx
+===================================================================
+--- oce.orig/src/ViewerTest/ViewerTest_FilletCommands.cxx
++++ oce/src/ViewerTest/ViewerTest_FilletCommands.cxx
+@@ -4,7 +4,7 @@
+ //		<rob@robox.paris1.matra-dtv.fr>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <ViewerTest.hxx>
+Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
+===================================================================
+--- oce.orig/src/ViewerTest/ViewerTest_ObjectCommands.cxx
++++ oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
+@@ -11,7 +11,7 @@
+ //===============================================
+ 
+ #ifdef HAVE_CONFIG_H
+-#include <config.h>
++#include <oce-config.h>
+ #endif
+ 
+ #include <ViewerTest.hxx>
+Index: oce/src/ViewerTest/ViewerTest_RelationCommands.cxx
+===================================================================
+--- oce.orig/src/ViewerTest/ViewerTest_RelationCommands.cxx
++++ oce/src/ViewerTest/ViewerTest_RelationCommands.cxx
+@@ -6,7 +6,7 @@
+ 
+ #include <ViewerTest.hxx>
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <AIS_InteractiveContext.hxx>
+Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
+===================================================================
+--- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
++++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
+@@ -6,7 +6,7 @@
+ // Robert Boehne 30 May 2000 : Dec Osf
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #ifdef WNT
+Index: oce/src/Xw/Xw_def_colormap.cxx
+===================================================================
+--- oce.orig/src/Xw/Xw_def_colormap.cxx
++++ oce/src/Xw/Xw_def_colormap.cxx
+@@ -1,5 +1,5 @@
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #define CTS17988	/*GG_240697
+@@ -31,7 +31,7 @@
+ #include <Xw_Extension.h>
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ #if (!defined (CTS17988))  && defined(HAVE_X11_EXTENSIONS_MULTIBUF_H)
+ # include <X11/extensions/multibuf.h>
+Index: oce/src/Xw/Xw_get_image.cxx
+===================================================================
+--- oce.orig/src/Xw/Xw_get_image.cxx
++++ oce/src/Xw/Xw_get_image.cxx
+@@ -9,7 +9,7 @@
+ //		Capture an image from any pixmap.
+ */
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #ifdef HAVE_X11_EXTENSIONS_READDISPLAY_H
+Index: oce/src/Xw/Xw_load_icons.cxx
+===================================================================
+--- oce.orig/src/Xw/Xw_load_icons.cxx
++++ oce/src/Xw/Xw_load_icons.cxx
+@@ -26,7 +26,7 @@
+ */
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <Xw_Extension.h>
+Index: oce/src/Xw/Xw_load_image.cxx
+===================================================================
+--- oce.orig/src/Xw/Xw_load_image.cxx
++++ oce/src/Xw/Xw_load_image.cxx
+@@ -29,7 +29,7 @@
+ 
+ #include <Xw_Extension.h>
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ #include <fcntl.h>
+ #ifdef HAVE_STRINGS_H
+Index: oce/src/Xw/Xw_open_pixmap.cxx
+===================================================================
+--- oce.orig/src/Xw/Xw_open_pixmap.cxx
++++ oce/src/Xw/Xw_open_pixmap.cxx
+@@ -1,5 +1,5 @@
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <Xw_Extension.h>
+Index: oce/src/Xw/Xw_save_image.cxx
+===================================================================
+--- oce.orig/src/Xw/Xw_save_image.cxx
++++ oce/src/Xw/Xw_save_image.cxx
+@@ -14,7 +14,7 @@
+  */
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <Xw_Extension.h>

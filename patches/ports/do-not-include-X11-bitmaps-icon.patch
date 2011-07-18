@@ -1,0 +1,41 @@
+From: Denis Barbier <bouzim@gmail.com>
+Date: Fri, 8 Apr 2011 23:17:00 +0200
+Subject: [PATCH 82/82] Do not include X11/bitmaps/icon
+
+This header file is not always installed, and as it is unused,
+it is better to not include it.
+---
+ inc/InterfaceGraphic_X11.hxx |   20 --------------------
+ 1 files changed, 0 insertions(+), 20 deletions(-)
+
+Index: oce/inc/InterfaceGraphic_X11.hxx
+===================================================================
+--- oce.orig/inc/InterfaceGraphic_X11.hxx
++++ oce/inc/InterfaceGraphic_X11.hxx
+@@ -27,26 +27,6 @@
+ #  include <X11/Xatom.h>
+ #  include <GL/glx.h>
+ 
+-#  if defined (sun) || defined (SUNOS) || defined (__alpha) || defined (DECOSF1) || defined (sgi) || defined (IRIX) || defined (__hpux)|| defined (HPUX) 
+-#   ifndef icon_width
+-#    include <X11/bitmaps/icon>
+-#   endif
+-
+-#  endif /* SUNOS or DECOSF1 or SOLARIS or HPUX or IRIX */
+-
+-#  ifdef ULTRIX
+-
+-#   ifndef icon_width
+-/* le contenu de #include <X11/bitmaps/icon> sur SUN */
+-#define icon_width 16
+-#define icon_height 16
+-static unsigned char icon_bits[] = {
+-  0xff, 0xff, 0xab, 0xaa, 0x55, 0xd5, 0xab, 0xaa, 0x05, 0xd0, 0x0b, 0xa0,
+-    0x05, 0xd0, 0x0b, 0xa0, 0x05, 0xd0, 0x0b, 0xa0, 0x05, 0xd0, 0x0b, 0xa0,
+-    0x55, 0xd5, 0xab, 0xaa, 0x55, 0xd5, 0xff, 0xff};
+-#   endif
+-
+-#  endif /* ULTRIX */
+ #  define WINDOW     Window
+ #  define DISPLAY    Display
+ #  define GLCONTEXT  GLXContext

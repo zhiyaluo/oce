@@ -1,0 +1,1745 @@
+From: tpaviot <tpaviot@gmail.com>
+Date: Mon, 23 May 2011 16:45:02 +0200
+Subject: [PATCH 67/82] [warning-fix][defined-but-not-used]
+
+Removed unused functions raising defined but not used warning
+---
+ src/AIS2D/AIS2D_LocalContext.cxx                   |    5 -
+ src/BRepFeat/BRepFeat_MakeDPrism.cxx               |   59 -----
+ src/BRepFeat/BRepFeat_MakePipe.cxx                 |   61 ------
+ src/BRepFeat/BRepFeat_MakePrism.cxx                |   59 -----
+ src/BRepFeat/BRepFeat_MakeRevol.cxx                |   60 ------
+ src/BRepFill/BRepFill_CompatibleWires.cxx          |   49 -----
+ src/BRepFill/BRepFill_OffsetWire.cxx               |   34 ---
+ src/BRepFill/BRepFill_TrimShellCorner.cxx          |  225 --------------------
+ src/BRepGProp/BRepGProp_Face.cxx                   |  123 -----------
+ src/DDF/DDF_BrowserCommands.cxx                    |  106 ---------
+ src/Extrema/Extrema_GenExtPS.cxx                   |   45 ----
+ src/GeomFill/GeomFill_CorrectedFrenet.cxx          |    3 -
+ src/HLRBRep/HLRBRep_EdgeIList.cxx                  |   20 --
+ src/IntPatch/IntPatch_ImpPrmIntersection.cxx       |   18 --
+ src/MeshTest/MeshTest.cxx                          |   31 ---
+ src/MeshTest/MeshTest_DrawableMesh.cxx             |   26 ---
+ src/OpenGl/OpenGl_LightBox.cxx                     |    1 -
+ src/OpenGl/OpenGl_transform_persistence.cxx        |    7 -
+ src/STEPControl/STEPControl_ActorRead.cxx          |   55 -----
+ src/STEPControl/STEPControl_ActorWrite.cxx         |   55 -----
+ src/ShapeFix/ShapeFix_Face.cxx                     |   20 --
+ src/ShapeFix/ShapeFix_Solid.cxx                    |   23 --
+ src/TNaming/TNaming_Name.cxx                       |   86 --------
+ src/Viewer2dTest/Viewer2dTest_DisplayCommands.cxx  |   36 ---
+ src/Visual3d/Visual3d_ViewMapping.cxx              |    1 -
+ .../XmlLDrivers_DocumentRetrievalDriver.cxx        |    1 -
+ 26 files changed, 0 insertions(+), 1209 deletions(-)
+
+commit 6b973055c800da672a0b59f54d64087cfd6a4407
+
+Index: oce/src/AIS2D/AIS2D_LocalContext.cxx
+===================================================================
+--- oce.orig/src/AIS2D/AIS2D_LocalContext.cxx
++++ oce/src/AIS2D/AIS2D_LocalContext.cxx
+@@ -17,11 +17,6 @@
+ #include <Graphic2d_DisplayList.hxx>
+ #include <AIS2D_HSequenceOfIO.hxx>
+ 
+-static Standard_Integer GetHiMod(const Handle(AIS2D_InteractiveObject)& anIO)
+-{
+-  return anIO->HasHighlightMode() ? anIO->HighlightMode() 
+-                                  : anIO->DefaultHighlightMode();
+-}
+ 
+ 
+ AIS2D_LocalContext::AIS2D_LocalContext()
+Index: oce/src/BRepFeat/BRepFeat_MakeDPrism.cxx
+===================================================================
+--- oce.orig/src/BRepFeat/BRepFeat_MakeDPrism.cxx
++++ oce/src/BRepFeat/BRepFeat_MakeDPrism.cxx
+@@ -78,12 +78,6 @@
+ 		   TopoDS_Shape&); // myLShape
+ 
+ 
+-static void SetGluedFaces(const TopoDS_Face& theSkface,
+-			  const TopoDS_Shape& theSbase,
+-			  const TopoDS_Shape& thePbase,
+-			  const TopTools_DataMapOfShapeListOfShape& theSlmap,
+-                          LocOpe_DPrism&,
+-			  TopTools_DataMapOfShapeShape&);
+ 
+ #ifdef DEB
+ static void VerifGluedFaces(const TopoDS_Face& theSkface,
+@@ -1250,59 +1244,6 @@
+ }
+ 
+ 
+- //=======================================================================
+-//function : SetGluedFaces
+-//purpose  : 
+-//=======================================================================
+-
+-static void SetGluedFaces(const TopoDS_Face& theSkface,
+-			  const TopoDS_Shape& theSbase,
+-			  const TopoDS_Shape& thePbase,
+-			  const TopTools_DataMapOfShapeListOfShape& theSlmap,
+-			  LocOpe_DPrism& theDPrism,
+-			  TopTools_DataMapOfShapeShape& theMap)
+-{
+-  TopExp_Explorer exp;
+-  if (!theSkface.IsNull() && thePbase.ShapeType() == TopAbs_FACE) {
+-    for (exp.Init(theSbase,TopAbs_FACE); exp.More(); exp.Next()) {
+-      if (exp.Current().IsSame(theSkface)) {
+-	theMap.Bind(thePbase,theSkface);
+-	break;
+-      }
+-    }
+-  }
+-  else {
+-    TopExp_Explorer exp2;
+-    for (exp.Init(thePbase,TopAbs_FACE);exp.More();exp.Next()) {
+-      const TopoDS_Face& fac = TopoDS::Face(exp.Current());
+-      for (exp2.Init(theSbase,TopAbs_FACE);exp2.More();exp2.Next()) {
+-	if (exp2.Current().IsSame(fac)) {
+-	  theMap.Bind(fac,fac);
+-	  break;
+-	}
+-      }
+-    }
+-  }
+-
+-  // Glissements
+-  TopTools_DataMapIteratorOfDataMapOfShapeListOfShape itm(theSlmap);
+-  if(!theSlmap.IsEmpty()) {
+-    for (; itm.More(); itm.Next()) {
+-      const TopoDS_Face& fac = TopoDS::Face(itm.Key());
+-      const TopTools_ListOfShape& ledg = itm.Value();
+-      for (TopTools_ListIteratorOfListOfShape it(ledg); it.More(); it.Next()) {
+-	const TopTools_ListOfShape& gfac = theDPrism.Shapes(it.Value());
+-	if (gfac.Extent() != 1) {
+-#ifdef DEB
+-	  Standard_Boolean trc = BRepFeat_GettraceFEAT();
+-	  if (trc) cout << " BRepFeat_MakeDPrism : Pb SetGluedFace" << endl;
+-#endif
+-	}
+-	theMap.Bind(gfac.First(),fac);
+-      }
+-    }
+-  }
+-}
+ 
+ 
+ //=======================================================================
+Index: oce/src/BRepFeat/BRepFeat_MakePipe.cxx
+===================================================================
+--- oce.orig/src/BRepFeat/BRepFeat_MakePipe.cxx
++++ oce/src/BRepFeat/BRepFeat_MakePipe.cxx
+@@ -54,13 +54,6 @@
+ 		   TopoDS_Shape&); // myLShape
+ 
+ 
+-static void SetGluedFaces(const TopoDS_Face& theSkface,
+-			  const TopoDS_Shape& theSbase,
+-			  const TopoDS_Shape& thePbase,
+-			  const TopTools_DataMapOfShapeListOfShape& 
+-			        theSlmap,
+-                          LocOpe_Pipe&,
+-			  TopTools_DataMapOfShapeShape&);
+ 
+ 
+ //=======================================================================
+@@ -369,60 +362,6 @@
+ }
+ 
+ 
+-//=======================================================================
+-//function : SetGluedFaces
+-//purpose  : gestion des faces de collage et glissement 
+-//=======================================================================
+-
+-static void SetGluedFaces(const TopoDS_Face& theSkface,
+-			  const TopoDS_Shape& theSbase,
+-			  const TopoDS_Shape& thePbase,
+-			  const TopTools_DataMapOfShapeListOfShape& theSlmap,
+-			  LocOpe_Pipe& thePipe,
+-			  TopTools_DataMapOfShapeShape& theMap)
+-{
+-  TopExp_Explorer exp;
+-  if (!theSkface.IsNull() && thePbase.ShapeType() == TopAbs_FACE) {
+-    for (exp.Init(theSbase,TopAbs_FACE); exp.More(); exp.Next()) {
+-      if (exp.Current().IsSame(theSkface)) {
+-	theMap.Bind(thePbase,theSkface);
+-	break;
+-      }
+-    }
+-  }
+-  else {
+-    TopExp_Explorer exp2;
+-    for (exp.Init(thePbase,TopAbs_FACE);exp.More();exp.Next()) {
+-      const TopoDS_Face& fac = TopoDS::Face(exp.Current());
+-      for (exp2.Init(theSbase,TopAbs_FACE);exp2.More();exp2.Next()) {
+-	if (exp2.Current().IsSame(fac)) {
+-	  theMap.Bind(fac,fac);
+-	  break;
+-	}
+-      }
+-    }
+-  }
+-
+-  // Glissements
+-  TopTools_DataMapIteratorOfDataMapOfShapeListOfShape itm(theSlmap);
+-  if(!theSlmap.IsEmpty()) {
+-    for (; itm.More(); itm.Next()) {
+-      const TopoDS_Face& fac = TopoDS::Face(itm.Key());
+-      const TopTools_ListOfShape& ledg = itm.Value();
+-      TopTools_ListIteratorOfListOfShape it;
+-      for (it.Initialize(ledg); it.More(); it.Next()) {
+-	const TopTools_ListOfShape& gfac = thePipe.Shapes(it.Value());
+-	if (gfac.Extent() != 1) {
+-#ifdef DEB
+-	  Standard_Boolean trc = BRepFeat_GettraceFEAT();
+-	  if (trc) cout << " BRepFeat_MakeDPipe : Pb SetGluedFace" << endl;
+-#endif
+-	}
+-	theMap.Bind(gfac.First(),fac);
+-      }
+-    }
+-  }
+-}
+ 
+ 
+ //=======================================================================
+Index: oce/src/BRepFeat/BRepFeat_MakePrism.cxx
+===================================================================
+--- oce.orig/src/BRepFeat/BRepFeat_MakePrism.cxx
++++ oce/src/BRepFeat/BRepFeat_MakePrism.cxx
+@@ -79,12 +79,6 @@
+ 			       const TopoDS_Face&);
+ 
+ 
+-static void SetGluedFaces(const TopoDS_Face& theSkface,
+-			  const TopoDS_Shape& theSbase,
+-			  const TopoDS_Shape& thePbase,
+-			  const TopTools_DataMapOfShapeListOfShape& theSlmap,
+-                          LocOpe_Prism&,
+-			  TopTools_DataMapOfShapeShape&);
+ 
+ #ifdef DEB
+ static void VerifGluedFaces(const TopoDS_Face& theSkface,
+@@ -1191,59 +1185,6 @@
+ }
+ 
+ 
+-//=======================================================================
+-//function : SetGluedFaces
+-//purpose  : gestion de faces de collage
+-//=======================================================================
+-
+-static void SetGluedFaces(const TopoDS_Face& theSkface,
+-			  const TopoDS_Shape& theSbase,
+-			  const TopoDS_Shape& thePbase,
+-			  const TopTools_DataMapOfShapeListOfShape& theSlmap,
+-			  LocOpe_Prism& thePrism,
+-			  TopTools_DataMapOfShapeShape& theMap)
+-{
+-  TopExp_Explorer exp;
+-  if (!theSkface.IsNull() && thePbase.ShapeType() == TopAbs_FACE) {
+-    for (exp.Init(theSbase,TopAbs_FACE); exp.More(); exp.Next()) {
+-      if (exp.Current().IsSame(theSkface)) {
+-	theMap.Bind(thePbase,theSkface);
+-	break;
+-      }
+-    }
+-  }
+-  else {
+-    for (exp.Init(theSbase,TopAbs_FACE); exp.More(); exp.Next()) {
+-      if (exp.Current().IsSame(theSkface)) {
+-	TopExp_Explorer exp2;
+-	for (exp2.Init(thePbase,TopAbs_FACE);exp2.More();exp2.Next()) {
+-	  theMap.Bind(exp2.Current(),theSkface);
+-	}
+-	break;
+-      }
+-    }
+-  }
+-
+-  // Glissements
+-  TopTools_DataMapIteratorOfDataMapOfShapeListOfShape itm(theSlmap);
+-  if(!theSlmap.IsEmpty()) {
+-    for (; itm.More(); itm.Next()) {
+-      const TopoDS_Face& fac = TopoDS::Face(itm.Key());
+-      const TopTools_ListOfShape& ledg = itm.Value();
+-      TopTools_ListIteratorOfListOfShape it;
+-      for (it.Initialize(ledg); it.More(); it.Next()) {
+-	const TopTools_ListOfShape& gfac = thePrism.Shapes(it.Value());
+-	if (gfac.Extent() != 1) {
+-#ifdef DEB
+-	  Standard_Boolean trc = BRepFeat_GettraceFEAT();
+-	  if (trc)  cout << " BRepFeat_MakePrism : Pb SetGluedFace" << endl;
+-#endif
+-	}
+-	theMap.Bind(gfac.First(),fac);
+-      }
+-    }
+-  }
+-}
+ 
+ 
+ //=======================================================================
+Index: oce/src/BRepFeat/BRepFeat_MakeRevol.cxx
+===================================================================
+--- oce.orig/src/BRepFeat/BRepFeat_MakeRevol.cxx
++++ oce/src/BRepFeat/BRepFeat_MakeRevol.cxx
+@@ -75,12 +75,6 @@
+ 		   TopoDS_Shape&); // myLShape
+ 
+ 
+-static void SetGluedFaces(const TopoDS_Face& theSkface,
+-			  const TopoDS_Shape& theSbase,
+-			  const TopoDS_Shape& thePbase,
+-			  const TopTools_DataMapOfShapeListOfShape& theSlmap,
+-                          LocOpe_Revol&,
+-			  TopTools_DataMapOfShapeShape&);
+ 
+ 
+ static void VerifGluedFaces(const TopoDS_Face& theSkface,
+@@ -840,60 +834,6 @@
+ }
+ 
+ 
+-//=======================================================================
+-//function : SetGluedFaces
+-//purpose  : gestion des faces de collage
+-//=======================================================================
+-
+-static void SetGluedFaces(const TopoDS_Face& theSkface,
+-			  const TopoDS_Shape& theSbase,
+-			  const TopoDS_Shape& thePbase,
+-			  const TopTools_DataMapOfShapeListOfShape& theSlmap,
+-			  LocOpe_Revol& theRevol,
+-			  TopTools_DataMapOfShapeShape& theMap)
+-{
+-  TopExp_Explorer exp;
+-  if (!theSkface.IsNull() && thePbase.ShapeType() == TopAbs_FACE) {
+-    for (exp.Init(theSbase,TopAbs_FACE); exp.More(); exp.Next()) {
+-      if (exp.Current().IsSame(theSkface)) {
+-	theMap.Bind(thePbase,theSkface);
+-	break;
+-      }
+-    }
+-  }
+-  else {
+-    TopExp_Explorer exp2;
+-    for (exp.Init(thePbase,TopAbs_FACE);exp.More();exp.Next()) {
+-      const TopoDS_Face& fac = TopoDS::Face(exp.Current());
+-      for (exp2.Init(theSbase,TopAbs_FACE);exp2.More();exp2.Next()) {
+-	if (exp2.Current().IsSame(fac)) {
+-	  theMap.Bind(fac,fac);
+-	  break;
+-	}
+-      }
+-    }
+-  }
+-
+-  // Glissements
+-  TopTools_DataMapIteratorOfDataMapOfShapeListOfShape itm(theSlmap);
+-  if(!theSlmap.IsEmpty()) {
+-    for (; itm.More(); itm.Next()) {
+-      const TopoDS_Face& fac = TopoDS::Face(itm.Key());
+-      const TopTools_ListOfShape& ledg = itm.Value();
+-      TopTools_ListIteratorOfListOfShape it;
+-      for (it.Initialize(ledg); it.More(); it.Next()) {
+-	const TopTools_ListOfShape& gfac = theRevol.Shapes(it.Value());
+-	if (gfac.Extent() != 1) {
+-#ifdef DEB
+-	  Standard_Boolean trc = BRepFeat_GettraceFEAT();
+-	  if (trc) cout << " BRepFeat_MakeRevol : Pb SetGluedFace" << endl;
+-#endif
+-	}
+-	theMap.Bind(gfac.First(),fac);
+-      }
+-    }
+-  }
+-}
+ 
+ //=======================================================================
+ //function : VerifGluedFaces
+Index: oce/src/BRepFill/BRepFill_CompatibleWires.cxx
+===================================================================
+--- oce.orig/src/BRepFill/BRepFill_CompatibleWires.cxx
++++ oce/src/BRepFill/BRepFill_CompatibleWires.cxx
+@@ -53,55 +53,6 @@
+ #include <TColStd_SequenceOfReal.hxx>
+ 
+ 
+-static void EdgesFromVertex (const TopoDS_Wire&   W,
+-			     const TopoDS_Vertex& V, 
+-			     TopoDS_Edge& E1, 
+-			     TopoDS_Edge& E2)
+-{
+-  TopTools_IndexedDataMapOfShapeListOfShape Map;
+-  TopExp::MapShapesAndAncestors(W,TopAbs_VERTEX,TopAbs_EDGE,Map);
+-
+-  const TopTools_ListOfShape& List = Map.FindFromKey(V);
+-  TopoDS_Edge          e1   = TopoDS::Edge(List.First());
+-  TopoDS_Edge          e2   = TopoDS::Edge(List. Last());
+-
+-  BRepTools_WireExplorer anExp;
+-  Standard_Integer I1=0, I2=0, NE=0;
+-
+-  for(anExp.Init(W); anExp.More(); anExp.Next()) {
+-    NE++;
+-    const TopoDS_Edge& ECur = anExp.Current();
+-    if (e1.IsSame(ECur)) {
+-      I1 = NE;
+-    }
+-    if (e2.IsSame(ECur)) {
+-      I2 = NE;
+-    }
+-  }
+-
+-  if (Abs(I2-I1)==1) {
+-    // numeros consecutifs
+-    if (I2==I1+1) {
+-      E1 = e1;
+-      E2 = e2;
+-    }
+-    else {
+-      E1 = e2;
+-      E2 = e1;
+-    }
+-  }
+-  else {
+-    // numeros non consecutifs sur un wire ferme
+-    if (I1==1&&I2==NE) {
+-      E1 = e2;
+-      E2 = e1;
+-    }
+-    else {
+-      E1 = e1;
+-      E2 = e2;
+-    }
+-  }
+-}
+ 				      
+ 
+ static void SeqOfVertices (const TopoDS_Wire&   W,
+Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
+===================================================================
+--- oce.orig/src/BRepFill/BRepFill_OffsetWire.cxx
++++ oce/src/BRepFill/BRepFill_OffsetWire.cxx
+@@ -127,13 +127,13 @@
+ 			TColgp_SequenceOfPnt& Points);
+ 
+ static Standard_Boolean PerformCurve (TColStd_SequenceOfReal& Parameters,
+-				      TColgp_SequenceOfPnt&   Points,
+-				      const Adaptor3d_Curve& C, 
+-				      const Standard_Real Deflection,
+-				      const Standard_Real U1,
+-				      const Standard_Real U2,
+-				      const Standard_Real EPSILON,
+-				      const Standard_Integer Nbmin);
++			TColgp_SequenceOfPnt& Points,
++			const Adaptor3d_Curve& C,
++			const Standard_Real Deflection,
++			const Standard_Real U1,
++			const Standard_Real U2,
++			const Standard_Real EPSILON,
++			const Standard_Integer Nbmin);
+ 
+ static void CheckBadEdges(const TopoDS_Face& Spine, const Standard_Real Offset,
+ 			  const BRepMAT2d_BisectingLocus& Locus, 
+@@ -469,6 +469,7 @@
+       BRepTools_Substitution aSubst;
+       TopTools_ListIteratorOfListOfShape it(BadEdges);
+       TopTools_ListOfShape aL;
++	  Standard_Real aDefl = .01 * Abs(Offset);
+       TColStd_SequenceOfReal Parameters;
+       TColgp_SequenceOfPnt Points;
+ 
+@@ -484,7 +485,7 @@
+ 	Handle(Geom_Curve) G3d = BRep_Tool::Curve(TopoDS::Edge(anE),f,l);
+ 	GeomAdaptor_Curve  AC(G3d,f,l);
+ 
+-	Standard_Boolean dummy = PerformCurve(Parameters, Points,
++	PerformCurve(Parameters, Points,
+ 					      AC, aDefl, f, l, Precision::Confusion(),
+ 					      2);
+ 
+@@ -2270,40 +2271,6 @@
+ 
+ 
+ //=======================================================================
+-//function : PerformCurve
+-//purpose  : 
+-//=======================================================================
+-
+-static Standard_Boolean PerformCurve (TColStd_SequenceOfReal& Parameters,
+-				      TColgp_SequenceOfPnt&   Points,
+-				      const Adaptor3d_Curve& C, 
+-				      const Standard_Real Deflection,
+-				      const Standard_Real U1,
+-				      const Standard_Real U2,
+-				      const Standard_Real EPSILON,
+-				      const Standard_Integer Nbmin)
+-{
+-  Standard_Real UU1 = Min(U1, U2);
+-  Standard_Real UU2 = Max(U1, U2);
+-
+-  gp_Pnt Pdeb, Pfin;
+-  gp_Vec Ddeb,Dfin;
+-  C.D1(UU1,Pdeb,Ddeb);
+-  Parameters.Append(UU1);
+-  Points.Append(Pdeb);
+-
+-  C.D1(UU2,Pfin,Dfin);
+-  QuasiFleche(C,Deflection*Deflection,
+-	      UU1,Pdeb,
+-	      Ddeb,
+-	      UU2,Pfin,
+-	      Dfin,
+-	      Nbmin,
+-	      EPSILON*EPSILON,
+-	      Parameters,Points);
+-  return Standard_True;
+-}
+-//=======================================================================
+ //function : QuasiFleche
+ //purpose  : 
+ //=======================================================================
+@@ -2383,3 +2350,37 @@
+   }
+ }
+ 			
++//=======================================================================
++//function : PerformCurve
++//purpose :
++//=======================================================================
++
++static Standard_Boolean PerformCurve (TColStd_SequenceOfReal& Parameters,
++									  TColgp_SequenceOfPnt& Points,
++									  const Adaptor3d_Curve& C,
++									  const Standard_Real Deflection,
++									  const Standard_Real U1,
++									  const Standard_Real U2,
++									  const Standard_Real EPSILON,
++									  const Standard_Integer Nbmin)
++{
++	Standard_Real UU1 = Min(U1, U2);
++	Standard_Real UU2 = Max(U1, U2);
++
++	gp_Pnt Pdeb, Pfin;
++	gp_Vec Ddeb,Dfin;
++	C.D1(UU1,Pdeb,Ddeb);
++	Parameters.Append(UU1);
++	Points.Append(Pdeb);
++
++	C.D1(UU2,Pfin,Dfin);
++	QuasiFleche(C,Deflection*Deflection,
++		UU1,Pdeb,
++		Ddeb,
++		UU2,Pfin,
++		Dfin,
++		Nbmin,
++		EPSILON*EPSILON,
++		Parameters,Points);
++	return Standard_True;
++}
+Index: oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
+===================================================================
+--- oce.orig/src/BRepFill/BRepFill_TrimShellCorner.cxx
++++ oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
+@@ -69,11 +69,6 @@
+ #include <TColgp_SequenceOfPnt.hxx>
+ #include <gce_MakeLin.hxx>
+ 
+-static Standard_Boolean IsFromFirstToSecond(const TopoDS_Edge&   theEdge,
+-					    const Standard_Real  theParameterOnUEdge,
+-					    const TopoDS_Edge&   theUEdge1,
+-					    const TopoDS_Edge&   theUEdge2,
+-					    const TopoDS_Face&   theFace);
+ 
+ static Standard_Boolean FindParameter(const BOPTools_PaveSet&                     thePaveSet,
+ 				      const BooleanOperations_KindOfInterference& theType,
+@@ -208,10 +203,6 @@
+ 				      gp_Pln& resPlane,
+ 				      Standard_Boolean& IsSingular);
+ 
+-static Standard_Boolean ChoosePlane(const TopoDS_Shape& Comp,
+-				    const gp_Ax2& bis,
+-				    gp_Pln& resPlane,
+-				    TopoDS_Compound& NewComp);
+ 
+ 
+ // ===========================================================================================
+@@ -1076,52 +1067,6 @@
+   return bvertexfound;
+ }
+ 
+-// ------------------------------------------------------------------------------------------
+-// static function: IsFromFirstToSecond
+-// purpose:
+-// ------------------------------------------------------------------------------------------
+-Standard_Boolean IsFromFirstToSecond(const TopoDS_Edge&   theEdge,
+-				     const Standard_Real  theParameterOnUEdge,
+-				     const TopoDS_Edge&   theUEdge1,
+-				     const TopoDS_Edge&   theUEdge2,
+-				     const TopoDS_Face&   theFace) {
+-  TopoDS_Face aFace = theFace;
+-  aFace.Orientation(TopAbs_FORWARD);
+-  TopoDS_Edge E1, E2;
+-  TopExp_Explorer anExp(aFace, TopAbs_EDGE);
+-
+-  for(; anExp.More(); anExp.Next()) {
+-    if(E1.IsNull() && theUEdge1.IsSame(anExp.Current())) {
+-      E1 = TopoDS::Edge(anExp.Current());
+-    }
+-    else if(E2.IsNull() && theUEdge2.IsSame(anExp.Current())) {
+-      E2 = TopoDS::Edge(anExp.Current());
+-    }
+-  }
+-
+-  if(E1.IsNull() || E2.IsNull())
+-    return Standard_True;
+-
+-  gp_Pnt2d PU1, PU2, pf, pl;
+-  Standard_Real f, l;
+-  Handle(Geom2d_Curve) C1 = BRep_Tool::CurveOnSurface(E1, aFace, f, l);
+-  Handle(Geom2d_Curve) C2 = BRep_Tool::CurveOnSurface(E2, aFace, f, l);
+-  Handle(Geom2d_Curve) CC = BRep_Tool::CurveOnSurface(theEdge, aFace, f, l);
+-  PU1 = C1->Value(theParameterOnUEdge);
+-  PU2 = C2->Value(theParameterOnUEdge);
+-  BRep_Tool::Range(theEdge, f, l);
+-  pf = CC->Value(f);
+-  pl = CC->Value(l);
+-  Standard_Real aTolerance = Precision::Confusion();
+-
+-  if(pf.Distance(PU1) < aTolerance)
+-    return Standard_True;
+-
+-  if(pl.Distance(PU2) < aTolerance)
+-    return Standard_True;
+-  
+-  return Standard_False;
+-}
+ 
+ // ----------------------------------------------------------------------------------------------------
+ // static function: GetUEdges
+@@ -2300,173 +2245,3 @@
+   //end of simplest case
+ }
+ 
+-//=======================================================================
+-//function : ChoosePlane
+-//purpose  : 
+-//=======================================================================
+-static Standard_Boolean ChoosePlane(const TopoDS_Shape& Comp,
+-				    const gp_Ax2& bis,
+-				    gp_Pln& resPlane,
+-				    TopoDS_Compound& NewComp)
+-{
+-  Standard_Real TolConf = 1.e-4, TolAng = 1.e-5;
+-
+-  Standard_Integer N = 100;
+-  Standard_Integer Eind, ind, i, j;
+-  TopTools_SequenceOfShape Eseq;
+-  TopExp_Explorer Explo( Comp, TopAbs_EDGE );
+-  for (; Explo.More(); Explo.Next())
+-    Eseq.Append( Explo.Current() );
+-
+-  Standard_Integer NumberOfEdges = Eseq.Length();
+-  TColgp_Array2OfPnt Points( 0, NumberOfEdges*2-1, 1, N/4 );
+-
+-  for (Eind = 0; Eind < NumberOfEdges; Eind++)
+-    {
+-      TopoDS_Edge anEdge = TopoDS::Edge( Eseq(Eind+1) );
+-      BRepAdaptor_Curve aCurve(anEdge);
+-      GCPnts_UniformAbscissa Distribution( aCurve, N+1 );
+-      for (i = 1; i <= N/4; i++)
+-	{
+-	  Standard_Real par = Distribution.Parameter(i);
+-	  Points( Eind*2, i ) = aCurve.Value(par);
+-	}
+-      for (i = 3*N/4+2; i <= N+1; i++)
+-	{
+-	  Standard_Real par = Distribution.Parameter(i);
+-	  Points( Eind*2+1, i-3*N/4-1 ) = aCurve.Value(par);
+-	}
+-    }
+-
+-  TColgp_Array1OfPnt Origins( 0, NumberOfEdges*2-1 );
+-  TColgp_Array1OfDir Normals( 0, NumberOfEdges*2-1 );
+-  TColStd_Array1OfBoolean IsSingular( 0, NumberOfEdges*2-1 );
+-  Standard_Real MinAngle = PI/2;
+-  Standard_Integer MinInd;
+-  for (ind = 0; ind < NumberOfEdges*2; ind++)
+-    {
+-      TColgp_Array1OfPnt pnts( 1, N/4 );
+-      for (i = 1; i <= N/4; i++)
+-	pnts(i) = Points( ind, i );
+-      gp_Ax2 Axe;
+-      GeomLib::AxeOfInertia( pnts, Axe, IsSingular(ind) );
+-      if (!IsSingular(ind))
+-	{
+-	  Origins(ind) = Axe.Location();
+-	  Normals(ind) = Axe.Direction();
+-	  Standard_Real Angle = bis.Angle( Axe );
+-	  if (Angle > PI/2)
+-	    Angle = PI - Angle;
+-	  if (Angle < MinAngle)
+-	    {
+-	      MinAngle = Angle;
+-	      MinInd = ind;
+-	    }
+-	}
+-    }
+-
+-  gp_Ax2 TheAxe( Origins(MinInd), Normals(MinInd) );
+-  Standard_Real MaxAngleWithPln = PI/16;
+-  TColStd_SequenceOfInteger iseq;
+-  TColgp_SequenceOfPnt Pseq;
+-  for (ind = 0; ind < NumberOfEdges*2; ind++)
+-    if (!IsSingular(ind))
+-      {
+-	Standard_Real Angle = Normals(ind).Angle( TheAxe.Direction() );
+-	  if (Angle > PI/2)
+-	    Angle = PI - Angle;
+-	if (Angle <= MaxAngleWithPln)
+-	  {
+-	    iseq.Append(ind);
+-	    for (j = 1; j <= N/4; j++)
+-	      Pseq.Append( Points(ind,j) );
+-	  }
+-      }
+-
+-  TColgp_Array1OfPnt Parray( 1, Pseq.Length() );
+-  for (i = 1; i <= Parray.Length(); i++)
+-    Parray(i) = Pseq(i);
+-  Standard_Boolean issing;
+-  GeomLib::AxeOfInertia( Parray, TheAxe, issing );
+-  resPlane = gp_Pln( TheAxe );
+-  
+-  i = 1;
+-  BRep_Builder B;
+-  B.MakeCompound(NewComp);
+-  while (i <= iseq.Length())
+-    {
+-      Standard_Integer ind0 = iseq(i);
+-      if (IsEven(ind0) && i < iseq.Length() && iseq(i+1) == ind0+1) //the whole edge
+-	{
+-	  B.Add( NewComp, Eseq(ind0/2+1) );
+-	  i += 2;
+-	}
+-      else
+-	i++;
+-    }
+-
+-  Standard_Integer slen = Pseq.Length();
+-  for (ind = 0; ind < NumberOfEdges*2; ind += 2)
+-    {
+-      Standard_Integer IndSing = -1, IndNotSing = -1;
+-      gp_Lin aLine;
+-      if (IsSingular(ind) && IsSingular(ind+1))
+-	{
+-	  Standard_Boolean OnPlane0 = Standard_False, OnPlane1 = Standard_False;
+-	  aLine = gce_MakeLin( Points(ind, 1), Points(ind, N/4) );
+-	  if (resPlane.Contains( aLine, TolConf, TolAng ))
+-	    {
+-	      for (j = 1; j <= N/4; j++)
+-		Pseq.Append( Points(ind,j) );
+-	      OnPlane0 = Standard_True;
+-	    }
+-	  aLine = gce_MakeLin( Points(ind+1, 1), Points(ind+1, N/4) );
+-	  if (resPlane.Contains( aLine, TolConf, TolAng ))
+-	    {
+-	      for (j = 1; j <= N/4; j++)
+-		Pseq.Append( Points(ind+1,j) );
+-	      OnPlane1 = Standard_True;
+-	    }
+-	  if (OnPlane0 && OnPlane1)
+-	    B.Add( NewComp, Eseq(ind/2+1) );
+-	}
+-      else if (IsSingular(ind))
+-	{
+-	  IndSing    = ind;
+-	  IndNotSing = ind+1;
+-	}
+-      else if (IsSingular(ind+1))
+-	{
+-	  IndNotSing = ind;
+-	  IndSing    = ind+1;
+-	}
+-      if (IndSing != -1 && IndNotSing != -1)
+-	{
+-	  aLine = gce_MakeLin( Points(IndSing, 1), Points(IndSing, N/4) );
+-	  if (resPlane.Contains( aLine, TolConf, TolAng ))
+-	    {
+-	      for (j = 1; j <= N/4; j++)
+-		Pseq.Append( Points(IndSing,j) );
+-
+-	      for (i = 1; i <= iseq.Length(); i++)
+-		if (iseq(i) == IndNotSing)
+-		  break;
+-	      if (i <= iseq.Length())
+-		B.Add( NewComp, Eseq(ind/2+1) );
+-	    }
+-	}
+-    }
+-
+-  //Recompute the axe of plane
+-  if (Pseq.Length() > slen)
+-    {
+-      TColgp_Array1OfPnt Parray2( 1, Pseq.Length() );
+-      for (i = 1; i <= Parray2.Length(); i++)
+-	Parray2(i) = Pseq(i);
+-      GeomLib::AxeOfInertia( Parray2, TheAxe, issing );
+-      resPlane = gp_Pln( TheAxe );
+-    }
+-
+-  //Temporary
+-  return Standard_True;
+-}
+Index: oce/src/BRepGProp/BRepGProp_Face.cxx
+===================================================================
+--- oce.orig/src/BRepGProp/BRepGProp_Face.cxx
++++ oce/src/BRepGProp/BRepGProp_Face.cxx
+@@ -581,130 +581,7 @@
+   }
+ }
+ 
+-//=======================================================================
+-//function : GetIntervalNbr
+-//purpose  : 
+-//=======================================================================
+-
+-static Standard_Integer GetIntervalNbr
+-                 (const Standard_Real                  theParam,
+-		  const Handle(TColStd_HArray1OfReal) &theSurfKnots,
+-		  const Standard_Integer               theIndStart,
+-		  const Standard_Integer               theIndEnd)
+-{
+-  Standard_Integer i;
+-  Standard_Real    aTol = Precision::Confusion();
+-
+-  for (i = theIndStart + 1; i < theIndEnd; i++) {
+-    if (theSurfKnots->Value(i) > theParam + aTol)
+-      return i - 1;
+-  }
+-
+-  return Min(theIndStart, theIndEnd - 1);
+-}
+-
+-//=======================================================================
+-//function : GetRealCurveKnots
+-//purpose  : 
+-//=======================================================================
+-
+-static void GetRealCurveKnots
+-            (const Handle(TColStd_HArray1OfReal) &theCurveKnots,
+-	     const Handle(TColStd_HArray1OfReal) &theSurfKnots,
+-	     const Geom2dAdaptor_Curve           &theCurve,
+-	           Handle(TColStd_HArray1OfReal) &theTKnots)
+-{
+-  Standard_Integer       i         = theCurveKnots->Lower();
+-  Standard_Integer       iU        = theCurveKnots->Upper();
+-  Standard_Integer       aNbIntPnt = 23;
+-  TColStd_SequenceOfReal aSeqKnot;
+-  Standard_Real          aTol      = Precision::Confusion();
+-  Standard_Real          aTParam;
+-
+-  while (i < iU) {
+-    Standard_Real    aT1   = theCurveKnots->Value(i++);
+-    Standard_Real    aT2   = theCurveKnots->Value(i);
+-    Standard_Real    aStep = (aT2 - aT1)/(aNbIntPnt + 1.);
+-    Standard_Integer j;
+-    gp_Pnt2d         aValue;
+-    gp_Vec2d         aDir;
+-    Standard_Integer aSurfLInd = theSurfKnots->Lower();
+-    Standard_Integer aSurfUInd = theSurfKnots->Upper();
+-    Standard_Integer anIntrvlInd;
+-    Standard_Real    aTParamOld;
+-    Standard_Real    aVParam;
+-    Standard_Real    aVParamOld;
+-    Standard_Real    aDiffOld;
+-    Standard_Real    aDiff;
+-
+-
+-    // Append the first curve knot of each interval in the sequence of knots.
+-    aSeqKnot.Append(aT1);
+ 
+-    aTParamOld = aT1;
+-    theCurve.D0(aTParamOld, aValue);
+-    aVParamOld  = aValue.Y();
+-    anIntrvlInd = GetIntervalNbr(aVParamOld, theSurfKnots,
+-				 aSurfLInd, aSurfUInd);
+-    aDiffOld    = Min(Abs(aVParamOld - theSurfKnots->Value(anIntrvlInd)),
+-		      Abs(aVParamOld - theSurfKnots->Value(anIntrvlInd + 1)));
+-
+-    for (j = 1; j <= aNbIntPnt; j++) {
+-      aTParam = aT1 + j*aStep;
+-      theCurve.D1(aTParam, aValue, aDir);
+-      aVParam = aValue.Y();
+-      aDiff   = Min(Abs(aVParam - theSurfKnots->Value(anIntrvlInd)),
+-		    Abs(aVParam - theSurfKnots->Value(anIntrvlInd + 1)));
+-
+-      // Skip points if the curve goes along V isoline.
+-      if (Abs(aDir.Y()) > aTol) {
+-	Standard_Boolean isLower =
+-	            (aVParam - aTol < theSurfKnots->Value(anIntrvlInd));
+-	Standard_Boolean isUpper =
+-                    (aVParam + aTol > theSurfKnots->Value(anIntrvlInd + 1));
+-
+-	if (isLower || isUpper) {
+-	  if (isLower) {
+-	    aSurfLInd = theSurfKnots->Lower();
+-	    aSurfUInd = anIntrvlInd - 1;
+-	  } else if (isUpper) {
+-	    aSurfLInd = anIntrvlInd + 1;
+-	    aSurfUInd = theSurfKnots->Upper();
+-	  }
+-
+-	  // The V interval is changed. Find new interval.
+-	  anIntrvlInd = GetIntervalNbr(aVParam, theSurfKnots,
+-				       aSurfLInd, aSurfUInd);
+-
+-	  // Add the value that is closer to surface knots.
+-	  // Check if the previous value is already added.
+-	  if (aDiff < aDiffOld)
+-	    aSeqKnot.Append(aTParam);
+-	  else if (Abs(aSeqKnot.Last() - aTParamOld) > aTol)
+-	    aSeqKnot.Append(aTParamOld);
+-	}
+-      }
+-
+-      // Prepare data for the next iteration.
+-      aTParamOld = aTParam;
+-      aVParamOld = aVParam;
+-      aDiffOld   = aDiff;
+-    }
+-  }
+-
+-  // Add the last curve knot to the sequence.
+-  aSeqKnot.Append(theCurveKnots->Value(iU));
+-
+-  // Fill the array of knots.
+-  Standard_Integer aKnotsLen = aSeqKnot.Length();
+-
+-  theTKnots = new TColStd_HArray1OfReal(1, aKnotsLen);
+-
+-  for (i = 1; i <= aKnotsLen; i++) {
+-    aTParam = aSeqKnot.Value(i);
+-    theTKnots->SetValue(i, aTParam);
+-  }
+-}
+ 
+ //=======================================================================
+ //function : GetUKnots
+Index: oce/src/DDF/DDF_BrowserCommands.cxx
+===================================================================
+--- oce.orig/src/DDF/DDF_BrowserCommands.cxx
++++ oce/src/DDF/DDF_BrowserCommands.cxx
+@@ -30,119 +30,13 @@
+ #include <stdio.h>
+ #endif
+ 
+-//=======================================================================
+-//function : DFBrowse
+-//purpose  : 
+-//  arg 1  : DF name
+-// [arg 2] : Browser name
+-//=======================================================================
+-
+-static Standard_Integer DFBrowse (Draw_Interpretor& di, 
+-				  Standard_Integer  n, 
+-				  const char**            a)
+-{
+-  if (n<2) return 1;
+-  
+-  Handle(TDF_Data) DF;
+-  if (!DDF::GetDF (a[1], DF)) return 1;
+-
+-  Handle(DDF_Browser) NewDDFBrowser = new DDF_Browser(DF);
+-  char *name = new char[50];
+-  if (n == 3) sprintf(name,"browser_%s",a[2]);
+-  else        sprintf(name,"browser_%s",a[1]);
+-
+-  Draw::Set (name, NewDDFBrowser);
+-  TCollection_AsciiString inst1("dftree ");
+-  inst1.AssignCat(name);
+-  di.Eval(inst1.ToCString());
+-  return 0;
+-}
+-
+-
+-//=======================================================================
+-//function : DFOpenLabel
+-//purpose  : 
+-//  arg 1  : Browser name
+-// [arg 2] : Label name
+-//=======================================================================
+-
+-static Standard_Integer DFOpenLabel (Draw_Interpretor& di, 
+-				   Standard_Integer  n, 
+-				   const char**            a)
+-{
+-  if (n < 2) return 1;
+-  
+-  Handle(DDF_Browser) browser =
+-    Handle(DDF_Browser)::DownCast (Draw::Get(a[1], Standard_True)); 
+-
+-  TDF_Label lab;
+-  if (n == 3) TDF_Tool::Label(browser->Data(),a[2],lab);
+-
+-  if (lab.IsNull()) {
+-    TCollection_AsciiString list = browser->OpenRoot();
+-    di<<list.ToCString();
+-  }
+-  else {
+-    TCollection_AsciiString list = browser->OpenLabel(lab);
+-    di<<list.ToCString();
+-  }
+-  return 0;
+-}
+-
+-
+-//=======================================================================
+-//function : DFOpenAttributeList
+-//purpose  : 
+-//  arg 1  : Browser name
+-//  arg 2  : Label name
+-//=======================================================================
+-
+-static Standard_Integer DFOpenAttributeList(Draw_Interpretor& di,
+-					    Standard_Integer n,
+-					    const char** a)
+-{
+-  if (n < 3) return 1;
+-  
+-  Handle(DDF_Browser) browser =
+-    Handle(DDF_Browser)::DownCast (Draw::Get(a[1], Standard_True)); 
+-
+-  TDF_Label lab;
+-  TDF_Tool::Label(browser->Data(),a[2],lab);
+-
+-  if (lab.IsNull()) {
+-    return 1;
+-  }
+-
+-  TCollection_AsciiString list = browser->OpenAttributeList(lab);
+-  di << list.ToCString();
+-  return 0;
+-}
+-
+-
+-
+-//=======================================================================
+-//function : DFOpenAttribute
+-//purpose  : 
+-//  arg 1  : Browser name
+-//  arg 2  : Attribute index
+-//=======================================================================
+-
+-static Standard_Integer DFOpenAttribute (Draw_Interpretor& di, 
+-					 Standard_Integer  n, 
+-					 const char**      a)
+-{
+-  if (n < 3) return 1;
+-  
+-  Handle(DDF_Browser) browser =
+-    Handle(DDF_Browser)::DownCast (Draw::Get(a[1], Standard_True)); 
+-
+-  Standard_Integer index = atoi(a[2]);
+-
+-  TCollection_AsciiString list = browser->OpenAttribute(index);
+-
+-  di<<list.ToCString();
+-  return 0;
+-}
++
++
++
++
++
++
++
+ 
+ 
+ // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+Index: oce/src/Extrema/Extrema_GenExtPS.cxx
+===================================================================
+--- oce.orig/src/Extrema/Extrema_GenExtPS.cxx
++++ oce/src/Extrema/Extrema_GenExtPS.cxx
+@@ -67,51 +67,6 @@
+       - mise a jour du tableau TbSel.
+ -----------------------------------------------------------------------------*/
+ 
+-static Standard_Boolean IsoIsDeg  (const Adaptor3d_Surface& S,
+-				   const Standard_Real      Param,
+-				   const GeomAbs_IsoType    IT,
+-				   const Standard_Real      TolMin,
+-				   const Standard_Real      TolMax) 
+-{
+-    Standard_Real U1=0.,U2=0.,V1=0.,V2=0.,T;
+-    Standard_Boolean Along = Standard_True;
+-    U1 = S.FirstUParameter();
+-    U2 = S.LastUParameter();
+-    V1 = S.FirstVParameter();
+-    V2 = S.LastVParameter();
+-    gp_Vec D1U,D1V;
+-    gp_Pnt P;
+-    Standard_Real Step,D1NormMax;
+-    if (IT == GeomAbs_IsoV) 
+-    {
+-      Step = (U2 - U1)/10;
+-      D1NormMax=0.;
+-      for (T=U1;T<=U2;T=T+Step) 
+-      {
+-        S.D1(T,Param,P,D1U,D1V);
+-        D1NormMax=Max(D1NormMax,D1U.Magnitude());
+-      }
+-
+-      if (D1NormMax >TolMax || D1NormMax < TolMin ) 
+-           Along = Standard_False;
+-    }
+-    else 
+-    {
+-      Step = (V2 - V1)/10;
+-      D1NormMax=0.;
+-      for (T=V1;T<=V2;T=T+Step) 
+-      {
+-	S.D1(Param,T,P,D1U,D1V);
+-        D1NormMax=Max(D1NormMax,D1V.Magnitude());
+-      }
+-
+-      if (D1NormMax >TolMax || D1NormMax < TolMin ) 
+-           Along = Standard_False;
+-
+-
+-    }
+-    return Along;
+-}
+ //----------------------------------------------------------
+ Extrema_GenExtPS::Extrema_GenExtPS() 
+ {
+Index: oce/src/GeomFill/GeomFill_CorrectedFrenet.cxx
+===================================================================
+--- oce.orig/src/GeomFill/GeomFill_CorrectedFrenet.cxx
++++ oce/src/GeomFill/GeomFill_CorrectedFrenet.cxx
+@@ -565,9 +565,6 @@
+ // Function : ... (OCC78)
+ // Purpose : This family of functions produce conversion of angle utility
+ //===============================================================
+-static Standard_Real corrPI_2PI(Standard_Real Ang){
+-  return Ang = (Ang >= 0.0? Ang: 2*PI+Ang);
+-};
+ static Standard_Real corr2PI_PI(Standard_Real Ang){
+   return Ang = (Ang < PI? Ang: Ang-2*PI);
+ };
+Index: oce/src/HLRBRep/HLRBRep_EdgeIList.cxx
+===================================================================
+--- oce.orig/src/HLRBRep/HLRBRep_EdgeIList.cxx
++++ oce/src/HLRBRep/HLRBRep_EdgeIList.cxx
+@@ -36,26 +36,6 @@
+ //function : ProcessComplex
+ //purpose  : 
+ //=======================================================================
+-static Standard_Boolean SimilarInterference(const HLRAlgo_Interference& I1,
+-					    const HLRAlgo_Interference& I2)
+-{
+-  Standard_Real p1, p2;
+-  Standard_Real eps = 1.e-7;
+-  TopAbs_Orientation or1, or2;
+-  //Standard_Integer l1, l2; //levels
+-
+-  p1 = I1.Intersection().Parameter();
+-  //l1 = I1.Intersection().Level();
+-  or1 = I1.Transition();
+-
+-  p2 = I2.Intersection().Parameter();
+-  //l2 = I2.Intersection().Level();
+-  or2 = I2.Transition();
+-
+-  Standard_Boolean IsSimilar = Abs(p1-p2) <= eps && or1 == or2;
+-  return IsSimilar;
+-  
+-}
+ void  HLRBRep_EdgeIList::
+ ProcessComplex(HLRAlgo_InterferenceList& IL,
+ 	       const HLRBRep_EdgeInterferenceTool& T)
+Index: oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
+===================================================================
+--- oce.orig/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
++++ oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
+@@ -1381,24 +1381,6 @@
+   return u;
+ }
+ 
+-// adjust U parameters on Quadric
+-static Standard_Real AdjustUNext(Standard_Real Un,Standard_Real Up)
+-{
+-  Standard_Real u = Un;
+-  if( Un < 0. )
+-    while(u < 0.)
+-      u += (2.*PI);
+-  else if( Un > (2.*PI) )
+-    while( u > (2.*PI) )
+-      u -= (2.*PI);
+-  else if(Un == 0. || fabs(Un) <= 1.e-9)
+-    u = (fabs(Up) < fabs(2.*PI-Up)) ? 0. : (2.*PI);
+-  else if(Un == (2.*PI) || fabs(Un-(2.*PI)) <= 1.e-9)
+-    u = (fabs(Up) < fabs(2.*PI-Up)) ? 0. : (2.*PI);
+-  else //( Un > 0. && Un < (2.*PI) )
+-    return u;
+-  return u;
+-}
+ 
+ // collect vertices, reject equals
+ static Handle(IntSurf_LineOn2S) GetVertices(const Handle(IntPatch_WLine)& WLine,
+Index: oce/src/MeshTest/MeshTest.cxx
+===================================================================
+--- oce.orig/src/MeshTest/MeshTest.cxx
++++ oce/src/MeshTest/MeshTest.cxx
+@@ -690,37 +690,6 @@
+ }
+ 
+ 
+-//=======================================================================
+-//function : printdegree
+-//purpose  : 
+-//=======================================================================
+-
+-static void printdegree(MeshDS_DegreeOfFreedom dof, Draw_Interpretor& di)
+-{
+-  switch (dof) {
+-  case MeshDS_InVolume :
+-    di << "InVolume";
+-    break;
+-  case MeshDS_OnSurface :
+-    di << "OnSurface";
+-    break;
+-  case MeshDS_OnCurve :
+-    di << "OnCurve";
+-    break;
+-  case MeshDS_Fixed :
+-    di << "Fixed";
+-    break;
+-  case MeshDS_Frontier :
+-    di << "Frontier";
+-    break;
+-  case MeshDS_Deleted :
+-    di << "Deleted";
+-    break;
+-  case MeshDS_Free :
+-    di << "Free";
+-    break;
+-  }
+-}
+ 
+ //=======================================================================
+ //function : dumpvertex
+Index: oce/src/MeshTest/MeshTest_DrawableMesh.cxx
+===================================================================
+--- oce.orig/src/MeshTest/MeshTest_DrawableMesh.cxx
++++ oce/src/MeshTest/MeshTest_DrawableMesh.cxx
+@@ -171,32 +171,6 @@
+ //purpose  : 
+ //=======================================================================
+ 
+-static void printdegree(MeshDS_DegreeOfFreedom dof)
+-{
+-  switch (dof) {
+-  case MeshDS_InVolume :
+-    cout << "InVolume";
+-    break;
+-  case MeshDS_OnSurface :
+-    cout << "OnSurface";
+-    break;
+-  case MeshDS_OnCurve :
+-    cout << "OnCurve";
+-    break;
+-  case MeshDS_Fixed :
+-    cout << "Fixed";
+-    break;
+-  case MeshDS_Frontier :
+-    cout << "Frontier";
+-    break;
+-  case MeshDS_Deleted :
+-    cout << "Deleted";
+-    break;
+-  case MeshDS_Free :
+-    cout << "Free";
+-    break;
+-  }
+-}
+ 
+ void MeshTest_DrawableMesh::Dump(Standard_OStream& S) const 
+ {
+Index: oce/src/OpenGl/OpenGl_LightBox.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_LightBox.cxx
++++ oce/src/OpenGl/OpenGl_LightBox.cxx
+@@ -104,7 +104,6 @@
+ static GLfloat default_sptexpo   = 0.0;
+ static GLfloat default_sptcutoff = 180.0;
+ 
+-static GLboolean lightOn = GL_FALSE;
+ 
+ /*----------------------------------------------------------------------*/
+ /*
+Index: oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
++++ oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
+@@ -103,7 +103,6 @@
+ 
+ static GLboolean layerOpen      = GL_FALSE;
+ static int       layerPoints    = 0;
+-static Tchar    *layerFont      = NULL;
+ static int       layerFontFlag  = IsModified;
+ static int       layerFontType  = 0;
+ static float     layerRed       = -1.;
+Index: oce/src/OpenGl/OpenGl_transform_persistence.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_transform_persistence.cxx
++++ oce/src/OpenGl/OpenGl_transform_persistence.cxx
+@@ -44,7 +44,6 @@
+ 
+ static  TStatus  TransformPersistenceDisplay( TSM_ELEM_DATA, Tint, cmn_key* );
+ static  TStatus  TransformPersistenceAdd( TSM_ELEM_DATA, Tint, cmn_key* );
+-static  TStatus  TransformPersistenceDelete( TSM_ELEM_DATA, Tint, cmn_key* );
+ static  TStatus  TransformPersistencePrint( TSM_ELEM_DATA, Tint, cmn_key* );
+ 
+ static  TStatus  (*MtdTbl[])( TSM_ELEM_DATA, Tint, cmn_key* ) =
+@@ -92,12 +91,6 @@
+   return TSuccess;
+ }
+ 
+-static  TStatus
+-TransformPersistenceDelete( TSM_ELEM_DATA data, Tint n, cmn_key *k )
+-{
+-  /*    transform_persistence_end();*/
+-  return TSuccess;
+-}
+ 
+ 
+ static  TStatus
+Index: oce/src/STEPControl/STEPControl_ActorRead.cxx
+===================================================================
+--- oce.orig/src/STEPControl/STEPControl_ActorRead.cxx
++++ oce/src/STEPControl/STEPControl_ActorRead.cxx
+@@ -113,61 +113,6 @@
+ 
+ #define TRANSLOG
+ 
+-// ============================================================================
+-// Function: DumpWhatIs   
+-// Purpose: Use it in DEB mode to dump your shapes
+-// ============================================================================
+-
+-static void DumpWhatIs(const TopoDS_Shape& S) {
+-
+-  TopTools_MapOfShape aMapOfShape;
+-  aMapOfShape.Add(S);
+-  TopTools_ListOfShape aListOfShape;
+-  aListOfShape.Append(S);
+-  TopTools_ListIteratorOfListOfShape itL(aListOfShape);
+-  Standard_Integer nbSolids = 0,
+-                   nbShells = 0,
+-                   nbOpenShells = 0,
+-                   nbFaces = 0, 
+-                   nbWires = 0, 
+-                   nbEdges = 0, 
+-                   nbVertexes = 0;
+-
+-  for( ; itL.More(); itL.Next() ) {
+-    TopoDS_Iterator it( itL.Value() );
+-    for ( ; it.More(); it.Next() ) {
+-      TopoDS_Shape aSubShape = it.Value();
+-      if ( !aMapOfShape.Add(aSubShape) )
+-        continue;
+-      aListOfShape.Append(aSubShape);
+-      if (aSubShape.ShapeType() == TopAbs_SOLID)
+-        nbSolids++;
+-      if (aSubShape.ShapeType() == TopAbs_SHELL) {
+-        if ( !aSubShape.Closed() )
+-          nbOpenShells++;
+-        nbShells++;
+-      }
+-      if (aSubShape.ShapeType() == TopAbs_FACE)
+-        nbFaces++;
+-      if (aSubShape.ShapeType() == TopAbs_WIRE)
+-        nbWires++;
+-      if (aSubShape.ShapeType() == TopAbs_EDGE)
+-        nbEdges++;
+-      if (aSubShape.ShapeType() == TopAbs_VERTEX)
+-        nbVertexes++;
+-    }
+-  }
+-  #ifdef DEB
+-  cout << "//What is?// NB SOLIDS: " << nbSolids << endl;
+-  cout << "//What is?// NB SHELLS: " << nbShells << endl;
+-  cout << "//What is?//    OPEN SHELLS: " << nbOpenShells << endl;
+-  cout << "//What is?//    CLOSED SHELLS: " << nbShells - nbOpenShells << endl;
+-  cout << "//What is?// NB FACES: " << nbFaces << endl;
+-  cout << "//What is?// NB WIRES: " << nbWires << endl;
+-  cout << "//What is?// NB EDGES: " << nbEdges << endl;
+-  cout << "//What is?// NB VERTEXES: " << nbVertexes << endl;
+-  #endif
+-}
+ 
+ // ============================================================================
+ // Method  : STEPControl_ActorRead::STEPControl_ActorRead  ()    
+Index: oce/src/STEPControl/STEPControl_ActorWrite.cxx
+===================================================================
+--- oce.orig/src/STEPControl/STEPControl_ActorWrite.cxx
++++ oce/src/STEPControl/STEPControl_ActorWrite.cxx
+@@ -102,61 +102,6 @@
+ #include <TopTools_MapOfShape.hxx>
+ #include <TopTools_ListIteratorOfListOfShape.hxx>
+ 
+-// ============================================================================
+-// Function: DumpWhatIs   
+-// Purpose: Use it in DEB mode to dump your shapes
+-// ============================================================================
+-
+-static void DumpWhatIs(const TopoDS_Shape& S) {
+-
+-  TopTools_MapOfShape aMapOfShape;
+-  aMapOfShape.Add(S);
+-  TopTools_ListOfShape aListOfShape;
+-  aListOfShape.Append(S);
+-  TopTools_ListIteratorOfListOfShape itL(aListOfShape);
+-  Standard_Integer nbSolids = 0,
+-                   nbShells = 0,
+-                   nbOpenShells = 0,
+-                   nbFaces = 0, 
+-                   nbWires = 0, 
+-                   nbEdges = 0, 
+-                   nbVertexes = 0;
+-
+-  for( ; itL.More(); itL.Next() ) {
+-    TopoDS_Iterator it( itL.Value() );
+-    for ( ; it.More(); it.Next() ) {
+-      TopoDS_Shape aSubShape = it.Value();
+-      if ( !aMapOfShape.Add(aSubShape) )
+-        continue;
+-      aListOfShape.Append(aSubShape);
+-      if (aSubShape.ShapeType() == TopAbs_SOLID)
+-        nbSolids++;
+-      if (aSubShape.ShapeType() == TopAbs_SHELL) {
+-        if ( !aSubShape.Closed() )
+-          nbOpenShells++;
+-        nbShells++;
+-      }
+-      if (aSubShape.ShapeType() == TopAbs_FACE)
+-        nbFaces++;
+-      if (aSubShape.ShapeType() == TopAbs_WIRE)
+-        nbWires++;
+-      if (aSubShape.ShapeType() == TopAbs_EDGE)
+-        nbEdges++;
+-      if (aSubShape.ShapeType() == TopAbs_VERTEX)
+-        nbVertexes++;
+-    }
+-  }
+-  #ifdef DEB
+-  cout << "//What is?// NB SOLIDS: " << nbSolids << endl;
+-  cout << "//What is?// NB SHELLS: " << nbShells << endl;
+-  cout << "//What is?//    OPEN SHELLS: " << nbOpenShells << endl;
+-  cout << "//What is?//    CLOSED SHELLS: " << nbShells - nbOpenShells << endl;
+-  cout << "//What is?// NB FACES: " << nbFaces << endl;
+-  cout << "//What is?// NB WIRES: " << nbWires << endl;
+-  cout << "//What is?// NB EDGES: " << nbEdges << endl;
+-  cout << "//What is?// NB VERTEXES: " << nbVertexes << endl;
+-  #endif
+-}
+ 
+ //=======================================================================
+ // Function : IsManifoldShape
+Index: oce/src/ShapeFix/ShapeFix_Face.cxx
+===================================================================
+--- oce.orig/src/ShapeFix/ShapeFix_Face.cxx
++++ oce/src/ShapeFix/ShapeFix_Face.cxx
+@@ -1920,26 +1920,6 @@
+ }
+ 
+ 
+-//=======================================================================
+-//function : GetPointOnEdge
+-//purpose  : auxiliary
+-//:h0 abv 29 May 98: PRO10105 1949: like in BRepCheck, point is to be taken 
+-// from 3d curve (but only if edge is SameParameter)
+-//=======================================================================
+-static gp_Pnt GetPointOnEdge ( const TopoDS_Edge &edge, 
+-			       const Handle(ShapeAnalysis_Surface) &surf,
+-			       const Handle(Geom2d_Curve) &Crv2d, 
+-			       const Standard_Real param )
+-{
+-  if ( BRep_Tool::SameParameter ( edge ) ) {
+-    Standard_Real f,l;
+-    TopLoc_Location L;
+-    const Handle(Geom_Curve) ConS = BRep_Tool::Curve ( edge, L, f, l );
+-    if ( ! ConS.IsNull() )
+-      return ConS->Value ( param ).Transformed ( L.Transformation() );
+-  }
+-  return surf->Value ( Crv2d->Value ( param ) );
+-}
+ 
+ 
+ //=======================================================================
+Index: oce/src/ShapeFix/ShapeFix_Solid.cxx
+===================================================================
+--- oce.orig/src/ShapeFix/ShapeFix_Solid.cxx
++++ oce/src/ShapeFix/ShapeFix_Solid.cxx
+@@ -97,29 +97,6 @@
+ //function : CollectSolids
+ //purpose  : 
+ //=======================================================================
+-static void GetMiddlePoint(const TopoDS_Shape& aShape, gp_Pnt& pmid)
+-{
+-  TopExp_Explorer aExp(aShape,TopAbs_EDGE);
+-  gp_XYZ center(0.0,0.0,0.0);
+-  Standard_Integer numpoints =0;
+-  for( ; aExp.More(); aExp.Next()) {
+-    TopoDS_Edge e1 = TopoDS::Edge(aExp.Current());
+-    Standard_Real f,l;
+-    Handle(Geom_Curve) c3d = BRep_Tool::Curve(e1,f,l);
+-    if(!c3d.IsNull()) {
+-      for(Standard_Integer i =1 ; i <=5; i++) {
+-        Standard_Real param = f+(l-f)/4*(i-1);
+-        gp_Pnt pt;
+-        numpoints++;
+-        c3d->D0(param,pt);
+-        center+=pt.XYZ();
+-      
+-      }
+-    }
+-  }
+-  center /= numpoints;
+-  pmid.SetXYZ(center);
+-}
+ static void CollectSolids(const TopTools_SequenceOfShape& aSeqShells , 
+                           TopTools_DataMapOfShapeListOfShape& aMapShellHoles,
+                           TopTools_DataMapOfShapeInteger& theMapStatus)
+Index: oce/src/TNaming/TNaming_Name.cxx
+===================================================================
+--- oce.orig/src/TNaming/TNaming_Name.cxx
++++ oce/src/TNaming/TNaming_Name.cxx
+@@ -1053,92 +1053,6 @@
+ // function: FindShape
+ //
+ //=======================================================================
+-static TopoDS_Shape FindShape(const TopTools_ListOfShape& theList) 
+-{
+-  Standard_Integer anUp = theList.Extent();
+-  TopoDS_Shape aShape;
+-  if(anUp < 1) return aShape;
+-  if(anUp == 1) return theList.First();
+-  Standard_Integer aLow = 1;
+-  TColStd_Array1OfInteger Ar1(aLow, anUp); 
+-  TopTools_Array1OfShape  Ars(aLow, anUp);
+-  TopTools_ListIteratorOfListOfShape it(theList);
+-  Standard_Integer i=0;
+-  for(i=aLow;it.More();it.Next(), i++) {
+-    Ars.SetValue(i, it.Value());
+-    Ar1.SetValue(i, 0);
+-  }
+-//  for(i = aLow;i<= anUp;i++) {
+-//    const TopoDS_Shape& aS = Ars.Value(i);
+-//    for(Standard_Integer j=i;j<=anUp;j++)
+-//      if(aS.IsSame(Ars.Value(j)))
+-//	Ar1.SetValue(i, Ar1.Value(i)+1);
+-//  }
+-  for(i = aLow;i<= anUp;i++) {
+-    const TopoDS_Shape& aS = Ars.Value(i);
+-    for(Standard_Integer j=i+1;j<=anUp;j++)
+-      if(aS.IsSame(Ars.Value(j)))
+-		return aS;
+-  }
+-//  Standard_Integer aNum = Ar1.Value(1);
+-//  Standard_Integer indx = -1;
+-// for(i = aLow;i<= anUp;i++) {
+-//    if(aNum < Ar1.Value(i)) {
+-//       aNum = Ar1.Value(i);
+-//       indx = i;
+-//       }
+-//  }
+-//  if(indx == -1) return aShape;
+-//  return Ars.Value(indx);
+-  return aShape;
+-}
+-//=======================================================================
+-/*
+-static TopoDS_Shape FindShape(const TopTools_DataMapOfShapeListOfShape& DM) 
+-{
+-  TopoDS_Shape aResult;
+-  Standard_Integer aNum = DM.Extent();
+-  if(aNum < 1) return aResult;  
+-  //  cout <<" DM Keys Nb = " << aNum <<endl;
+-  TopTools_ListOfShape List;
+-  TopTools_DataMapIteratorOfDataMapOfShapeListOfShape it(DM);
+-  for (;it.More();it.Next()) {
+-    const TopoDS_Shape& aKey1 = it.Key();
+-    const TopTools_ListOfShape& aList = it.Value();
+-    TopTools_ListIteratorOfListOfShape itl(aList);
+-    for (;itl.More();itl.Next()) {
+-      const TopoDS_Shape& aS = itl.Value();
+-      TopTools_DataMapIteratorOfDataMapOfShapeListOfShape it2(DM);
+-      for (;it2.More();it2.Next()) {
+-	const TopoDS_Shape& aKey2 = it2.Key();
+-	if(aKey2 == aKey1) continue;
+-	else {
+-	  const TopTools_ListOfShape& aList2 = it2.Value();
+-	  TopTools_ListIteratorOfListOfShape itl2(aList2);
+-	  for(;itl2.More();itl2.Next()) {
+-	    if(aS.IsSame(itl2.Value()))
+-	      List.Append(itl2.Value());
+-	  }
+-	}
+-      }
+-    }
+-    break;
+-  }
+-
+-  if(List.IsEmpty()) return aResult;
+-  if(List.Extent() == 1) return List.First();
+-  TopTools_ListIteratorOfListOfShape itl (List);
+-  TopoDS_Compound Compound;
+-  BRep_Builder B;
+-  B.MakeCompound(Compound);
+-  for (; itl.More(); itl.Next()){ 
+-    B.Add(Compound,itl.Value());
+-  }
+-  return Compound; 
+-}
+-*/
+-
+-//=======================================================================
+ static TopoDS_Shape FindShape(const TNaming_DataMapOfShapeMapOfShape& DM) 
+ {
+   TopoDS_Shape aResult;
+Index: oce/src/Units/Units_UnitsDictionary.cxx
+===================================================================
+--- oce.orig/src/Units/Units_UnitsDictionary.cxx
++++ oce/src/Units/Units_UnitsDictionary.cxx
+@@ -43,10 +43,6 @@
+ #include <Units_Operators.hxx>
+ #include <OSD.hxx>
+ 
+-#ifdef PRO13136		//Temporaire en attendant OSD::CStringToReal()
+-static char DecimalPoint = '\0' ;
+-
+-#endif
+ // Make the RealToCString reciprocal conversion.
+ 
+ //=======================================================================
+Index: oce/src/Viewer2dTest/Viewer2dTest_DisplayCommands.cxx
+===================================================================
+--- oce.orig/src/Viewer2dTest/Viewer2dTest_DisplayCommands.cxx
++++ oce/src/Viewer2dTest/Viewer2dTest_DisplayCommands.cxx
+@@ -288,42 +288,6 @@
+   return ret;
+ }
+ 
+-//==============================================================================
+-//function : Displays,Erase...
+-//purpose  : 
+-//Draw arg : 
+-//==============================================================================
+-static int VwrTst_DispErase2d (const Handle(AIS2D_InteractiveObject)& IO,
+-                               const Standard_Integer Mode,
+-                               const Standard_Integer TypeOfOperation,
+-                               const Standard_Boolean Upd)
+-{
+-  Handle(AIS2D_InteractiveContext) Ctx = Viewer2dTest::GetAIS2DContext();
+-  
+-  switch (TypeOfOperation)
+-  {
+-  case 1:
+-    Ctx->Display(IO,Mode,Upd);
+-    break;
+-  case 2:
+-    Ctx->Erase(IO,Mode,Upd);
+-    break;
+-  case 3:
+-//    if(IO.IsNull())
+-//      Ctx->SetDisplayMode((AIS2D_DisplayMode)Mode,Upd);
+-//    else
+-//      Ctx->SetDisplayMode(IO,Mode,Upd);
+-    break;
+-  case 4:
+-//    if(IO.IsNull())
+-//      Ctx->SetDisplayMode(0,Upd);
+-//    else
+-//      Ctx->UnsetDisplayMode(IO,Upd);
+-    break;
+-  }
+-
+-  return 0;
+-}
+ 
+ #if 0
+ //=======================================================================
+Index: oce/src/Viewer2dTest/Viewer2dTest_ViewerCommands.cxx
+===================================================================
+--- oce.orig/src/Viewer2dTest/Viewer2dTest_ViewerCommands.cxx
++++ oce/src/Viewer2dTest/Viewer2dTest_ViewerCommands.cxx
+@@ -100,11 +100,10 @@
+ #ifdef WNT
+ static LRESULT WINAPI Viewer2dWindowProc (HWND hwnd, UINT uMsg,
+                                           WPARAM wParam, LPARAM lParam);
+-#endif
+ 
+ //==============================================================================
+ //function : WClass
+-//purpose  :
++//purpose :
+ //==============================================================================
+ static Handle(MMgt_TShared)& WClass()
+ {
+@@ -119,6 +118,9 @@
+   return theWClass;
+ }
+ 
++#endif
++
++
+ //==============================================================================
+ //function : ViewerInit
+ //purpose  : Create the window viewer and initialize all the global variable
+@@ -634,6 +636,7 @@
+   EM->MoveTo(X_Motion, Y_Motion, V);
+ }
+ 
++#ifndef WNT
+ //==============================================================================
+ //function : ProcessGridMotion2d
+ //purpose  : pre-hilights grid point near mouse position
+@@ -654,6 +657,7 @@
+     LastIsGridActiveStatus = Standard_False;
+   }
+ }
++#endif
+ 
+ //==============================================================================
+ //function : GetMousePosition
+Index: oce/src/Visual3d/Visual3d_ViewMapping.cxx
+===================================================================
+--- oce.orig/src/Visual3d/Visual3d_ViewMapping.cxx
++++ oce/src/Visual3d/Visual3d_ViewMapping.cxx
+@@ -33,7 +33,6 @@
+ 
+ // Perspective
+ #include <OSD_Environment.hxx>
+-static Standard_Boolean env_init = Standard_False;
+ static OSD_Environment env_walkthrow; 
+ 
+ static Standard_Boolean Visual3dWalkthrow()
+Index: oce/src/XmlLDrivers/XmlLDrivers_DocumentRetrievalDriver.cxx
+===================================================================
+--- oce.orig/src/XmlLDrivers/XmlLDrivers_DocumentRetrievalDriver.cxx
++++ oce/src/XmlLDrivers/XmlLDrivers_DocumentRetrievalDriver.cxx
+@@ -36,7 +36,6 @@
+ #define END_REF           "END_REF"
+ #define REFERENCE_COUNTER "REFERENCE_COUNTER"
+ 
+-static  Standard_Integer myDocumentVersion = 0;
+ 
+ //#define TAKE_TIMES
+ static void take_time (const Standard_Integer, const char *,

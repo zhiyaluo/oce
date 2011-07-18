@@ -1,0 +1,54 @@
+commit 212c425a2721210eabc096d8c0979695cd101dde
+Author: Denis Barbier <bouzim@gmail.com>
+Date:   Sat Mar 19 00:31:01 2011 +0100
+
+    Replace Abs(foo < bar) by Abs(foo) < bar
+    
+    This is legal C++, but certainly not the expected result,
+    (foo < bar) is a boolean which is promoted to an int, and
+    the function Abs(int) is called.
+    
+    These bugs have been reported by Fotios Sioutis on the
+    opencascade forum:
+      http://www.opencascade.org/org/forum/thread_20187/
+    BugID=OCC22324
+
+Index: oce/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
+===================================================================
+--- oce.orig/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
++++ oce/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
+@@ -133,7 +133,7 @@
+   if(Abs(Coord-Arr(i))<Tol)
+     Iloc = i;
+   else
+-    if(Abs(Coord-Arr(i)>Tol)) Standard_NotImplemented::Raise("Adaptor3d_CurveOnSurface:Hunt");
++    if(Abs(Coord-Arr(i))>Tol) Standard_NotImplemented::Raise("Adaptor3d_CurveOnSurface:Hunt");
+ }
+ 
+ //=======================================================================
+Index: oce/src/Aspect/Aspect_RectangularGrid.cxx
+===================================================================
+--- oce.orig/src/Aspect/Aspect_RectangularGrid.cxx
++++ oce/src/Aspect/Aspect_RectangularGrid.cxx
+@@ -163,7 +163,7 @@
+ 
+ Standard_Boolean Aspect_RectangularGrid::CheckAngle(const Standard_Real alpha,
+                                             const Standard_Real beta) const {
+-  return Abs( Sin(alpha)*Cos(beta+Standard_PI/2.) - Cos(alpha)*Sin(beta+Standard_PI/2.) != 0) ;
++  return (Abs( Sin(alpha)*Cos(beta+Standard_PI/2.) - Cos(alpha)*Sin(beta+Standard_PI/2.)) != 0) ;
+ }
+ 
+ 
+Index: oce/src/GeomFill/GeomFill_BoundWithSurf.cxx
+===================================================================
+--- oce.orig/src/GeomFill/GeomFill_BoundWithSurf.cxx
++++ oce/src/GeomFill/GeomFill_BoundWithSurf.cxx
+@@ -121,7 +121,7 @@
+   Standard_Real nsuu = N.Dot(Suu), nsuv = N.Dot(Suv), nsvv = N.Dot(Svv);
+   Standard_Real susu = Su.Dot(Su), susv = Su.Dot(Sv), svsv = Sv.Dot(Sv);
+   Standard_Real deno = (susu*svsv) - (susv*susv);
+-  if(Abs(deno < 1.e-16)){
++  if(Abs(deno) < 1.e-16){
+     // on embraye sur un calcul approche, c est mieux que rien!?!
+     gp_Vec temp = Norm(U + 1.e-12);
+     DN = N.Multiplied(-1.);

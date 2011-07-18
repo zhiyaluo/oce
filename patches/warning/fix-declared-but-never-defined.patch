@@ -1,0 +1,23 @@
+From: tpaviot <tpaviot@gmail.com>
+Date: Mon, 23 May 2011 16:09:32 +0200
+Subject: [PATCH 24/82] [warning-fix][declared-but-never-defined]
+
+Removed PArrayPrint and PArrayInquire declared static
+but never defined in OpenGl_PrimitiveArray.cxx
+---
+ src/OpenGl/OpenGl_PrimitiveArray.cxx |    2 --
+ 1 files changed, 0 insertions(+), 2 deletions(-)
+
+Index: oce/src/OpenGl/OpenGl_PrimitiveArray.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_PrimitiveArray.cxx
++++ oce/src/OpenGl/OpenGl_PrimitiveArray.cxx
+@@ -247,8 +247,6 @@
+ static  TStatus  ParrayDisplay( TSM_ELEM_DATA, Tint, cmn_key* );
+ static  TStatus  ParrayAdd( TSM_ELEM_DATA, Tint, cmn_key* );
+ static  TStatus  ParrayDelete( TSM_ELEM_DATA, Tint, cmn_key* );
+-static  TStatus  ParrayPrint( TSM_ELEM_DATA, Tint, cmn_key* );
+-static  TStatus  ParrayInquire( TSM_ELEM_DATA, Tint, cmn_key* );
+ 
+ /*static  GLboolean       lighting_mode;*/
+ 

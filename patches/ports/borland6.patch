@@ -1,0 +1,24 @@
+From fc18f5ed52741a093b1bc7fd7dc31e1a48a498e6 Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Tue, 22 Mar 2011 07:12:48 +0100
+Subject: [PATCH 6/9] BCC does not support placement delete
+
+---
+ ros/inc/W32_Allocator.hxx |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+Index: oce/inc/W32_Allocator.hxx
+===================================================================
+--- oce.orig/inc/W32_Allocator.hxx
++++ oce/inc/W32_Allocator.hxx
+@@ -100,7 +100,10 @@
+  PW32_Allocator myAllocator;
+ 
+ #ifdef OCC5415
++//somehow the borland compiler does not like this delete operator...
++#ifndef __BORLANDC__
+  void operator delete (void*, W32_Allocator*) {}
++#endif
+ private: // to protect against possible accidental usage
+  void operator delete (void* p) {}
+ #endif

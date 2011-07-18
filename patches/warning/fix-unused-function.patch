@@ -1,0 +1,267 @@
+From: QbProg <tholag@gmail.com>
+Date: Thu, 12 May 2011 20:50:22 +0200
+Subject: [PATCH 64/82] [warning-fix][unused-function]
+
+Fixes warnings like : unused static local function
+---
+ src/Units/Units_UnitsDictionary.cxx |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+From: QbProg <tholag@gmail.com>
+Date: Sat, 11 Jun 2011 20:09:38 +0200
+Subject: [PATCH 65/82] [warning-fix][unused-function]
+
+Removed unused function (WNT)
+---
+ src/Draw/Draw_Main.cxx |    5 -----
+ 1 files changed, 0 insertions(+), 5 deletions(-)
+
+From: tpaviot <tpaviot@gmail.com>
+Date: Tue, 28 Jun 2011 10:27:05 +0200
+Subject: [PATCH 66/82] [warning-fix][unused-function] Fix warnings: *
+ oce/drv/ExprIntrp/lex.ExprIntrp.c:2719:0 'yyunput'
+ defined but not used *
+ oce/drv/StepFile/lex.step.c:1726:0 'yy_flex_realloc'
+ defined but not used *
+ oce/drv/StepFile/lex.step.c:1650:0 'yy_fatal_error'
+ defined but not used
+
+---
+ drv/ExprIntrp/lex.ExprIntrp.c |   47 ------------------------
+ drv/StepFile/lex.step.c       |   79 -----------------------------------------
+ 2 files changed, 0 insertions(+), 126 deletions(-)
+
+Index: oce/src/Units/Units_UnitsDictionary.cxx
+===================================================================
+--- oce.orig/src/Units/Units_UnitsDictionary.cxx
++++ oce/src/Units/Units_UnitsDictionary.cxx
+@@ -46,16 +46,6 @@
+ #ifdef PRO13136		//Temporaire en attendant OSD::CStringToReal()
+ static char DecimalPoint = '\0' ;
+ 
+-static void GetDecimalPoint() {
+-  Standard_Real f = 1.1 ;
+-  char str[5] ;
+-
+-  sprintf(str,"%.1f",f) ;
+-//#ifdef DEB
+-//  printf("Local System is  %s\n",str) ;
+-//#endif
+-  DecimalPoint = str[1] ;
+-}
+ #endif
+ // Make the RealToCString reciprocal conversion.
+ 
+Index: oce/drv/ExprIntrp/lex.ExprIntrp.c
+===================================================================
+--- oce.orig/drv/ExprIntrp/lex.ExprIntrp.c
++++ oce/drv/ExprIntrp/lex.ExprIntrp.c
+@@ -2080,10 +2080,6 @@
+ #endif
+ #endif
+ 
+-#ifndef YY_NO_UNPUT
+-static void yyunput YY_PROTO(( int c, char *buf_ptr ));
+-#endif
+-
+ #ifndef yytext_ptr
+ static void yy_flex_strncpy YY_PROTO(( char *, yyconst char *, int ));
+ #endif
+@@ -2708,49 +2704,6 @@
+ 	}
+ 
+ 
+-#ifndef YY_NO_UNPUT
+-#ifdef YY_USE_PROTOS
+-static void yyunput( int c, register char *yy_bp )
+-#else
+-static void yyunput( c, yy_bp )
+-int c;
+-register char *yy_bp;
+-#endif
+-	{
+-	register char *yy_cp = yy_c_buf_p;
+-
+-	/* undo effects of setting up yytext */
+-	*yy_cp = yy_hold_char;
+-
+-	if ( yy_cp < yy_current_buffer->yy_ch_buf + 2 )
+-		{ /* need to shift things up to make room */
+-		/* +2 for EOB chars. */
+-		register int number_to_move = yy_n_chars + 2;
+-		register char *dest = &yy_current_buffer->yy_ch_buf[
+-					yy_current_buffer->yy_buf_size + 2];
+-		register char *source =
+-				&yy_current_buffer->yy_ch_buf[number_to_move];
+-
+-		while ( source > yy_current_buffer->yy_ch_buf )
+-			*--dest = *--source;
+-
+-		yy_cp += (int) (dest - source);
+-		yy_bp += (int) (dest - source);
+-		yy_n_chars = yy_current_buffer->yy_buf_size;
+-
+-		if ( yy_cp < yy_current_buffer->yy_ch_buf + 2 )
+-			YY_FATAL_ERROR( "flex scanner push-back overflow" );
+-		}
+-
+-	*--yy_cp = (char) c;
+-
+-
+-	yytext_ptr = yy_bp;
+-	yy_hold_char = *yy_cp;
+-	yy_c_buf_p = yy_cp;
+-	}
+-#endif	/* ifndef YY_NO_UNPUT */
+-
+ 
+ #ifdef __cplusplus
+ static int yyinput()
+Index: oce/drv/StepFile/lex.step.c
+===================================================================
+--- oce.orig/drv/StepFile/lex.step.c
++++ oce/drv/StepFile/lex.step.c
+@@ -258,7 +258,6 @@
+ YY_BUFFER_STATE yy_scan_bytes YY_PROTO(( yyconst char *bytes, int len ));
+ 
+ static void *yy_flex_alloc YY_PROTO(( yy_size_t ));
+-static void *yy_flex_realloc YY_PROTO(( void *, yy_size_t ));
+ static void yy_flex_free YY_PROTO(( void * ));
+ 
+ #define yy_new_buffer yy_create_buffer
+@@ -290,7 +289,6 @@
+ static yy_state_type yy_get_previous_state YY_PROTO(( void ));
+ static yy_state_type yy_try_NUL_trans YY_PROTO(( yy_state_type current_state ));
+ static int yy_get_next_buffer YY_PROTO(( void ));
+-static void yy_fatal_error YY_PROTO(( yyconst char msg[] ));
+ 
+ /* Done after the current pattern has been matched and before the
+  * corresponding action - sets up yytext.
+@@ -538,10 +536,6 @@
+ #endif
+ #endif
+ 
+-#ifndef YY_NO_UNPUT
+-static void yyunput YY_PROTO(( int c, char *buf_ptr ));
+-#endif
+-
+ #ifndef yytext_ptr
+ static void yy_flex_strncpy YY_PROTO(( char *, yyconst char *, int ));
+ #endif
+@@ -1258,50 +1252,6 @@
+ 	}
+ 
+ 
+-#ifndef YY_NO_UNPUT
+-#ifdef YY_USE_PROTOS
+-static void yyunput( int c, register char *yy_bp )
+-#else
+-static void yyunput( c, yy_bp )
+-int c;
+-register char *yy_bp;
+-#endif
+-	{
+-	register char *yy_cp = yy_c_buf_p;
+-
+-	/* undo effects of setting up yytext */
+-	*yy_cp = yy_hold_char;
+-
+-	if ( yy_cp < yy_current_buffer->yy_ch_buf + 2 )
+-		{ /* need to shift things up to make room */
+-		/* +2 for EOB chars. */
+-		register int number_to_move = yy_n_chars + 2;
+-		register char *dest = &yy_current_buffer->yy_ch_buf[
+-					yy_current_buffer->yy_buf_size + 2];
+-		register char *source =
+-				&yy_current_buffer->yy_ch_buf[number_to_move];
+-
+-		while ( source > yy_current_buffer->yy_ch_buf )
+-			*--dest = *--source;
+-
+-		yy_cp += (int) (dest - source);
+-		yy_bp += (int) (dest - source);
+-		yy_n_chars = yy_current_buffer->yy_buf_size;
+-
+-		if ( yy_cp < yy_current_buffer->yy_ch_buf + 2 )
+-			YY_FATAL_ERROR( "flex scanner push-back overflow" );
+-		}
+-
+-	*--yy_cp = (char) c;
+-
+-
+-	yytext_ptr = yy_bp;
+-	yy_hold_char = *yy_cp;
+-	yy_c_buf_p = yy_cp;
+-	}
+-#endif	/* ifndef YY_NO_UNPUT */
+-
+-
+ #ifdef __cplusplus
+ static int yyinput()
+ #else
+@@ -1690,17 +1640,6 @@
+ #define YY_EXIT_FAILURE 2
+ #endif
+ 
+-#ifdef YY_USE_PROTOS
+-static void yy_fatal_error( yyconst char msg[] )
+-#else
+-static void yy_fatal_error( msg )
+-char msg[];
+-#endif
+-	{
+-	(void) fprintf( stderr, "%s\n", msg );
+-	exit( YY_EXIT_FAILURE );
+-	}
+-
+ 
+ 
+ /* Redefine yyless() so it works in section 3 code. */
+@@ -1765,24 +1704,6 @@
+ 	}
+ 
+ #ifdef YY_USE_PROTOS
+-static void *yy_flex_realloc( void *ptr, yy_size_t size )
+-#else
+-static void *yy_flex_realloc( ptr, size )
+-void *ptr;
+-yy_size_t size;
+-#endif
+-	{
+-	/* The cast to (char *) in the following accommodates both
+-	 * implementations that use char* generic pointers, and those
+-	 * that use void* generic pointers.  It works with the latter
+-	 * because both ANSI C and C++ allow castless assignment from
+-	 * any pointer type to void*, and deal with argument conversions
+-	 * as though doing an assignment.
+-	 */
+-	return (void *) realloc( (char *) ptr, size );
+-	}
+-
+-#ifdef YY_USE_PROTOS
+ static void yy_flex_free( void *ptr )
+ #else
+ static void yy_flex_free( ptr )
+Index: oce/src/Draw/Draw_Main.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw_Main.cxx
++++ oce/src/Draw/Draw_Main.cxx
+@@ -104,10 +104,6 @@
+ 
+ // necessary for WNT in C21 only
+ static FDraw_InitAppli theDraw_InitAppli; //pointer to the Draw_InitAppli
+-static void Draw_InitAppli(Draw_Interpretor& theCommands)
+-{
+-  theDraw_InitAppli (theCommands);
+-}
+ #endif
+ 
+ #ifdef WNT
+@@ -135,7 +131,6 @@
+   Draw_IsConsoleSubsystem = Standard_True;
+   //return _WinMain_(::GetModuleHandle(NULL), NULL, GetCommandLine(), SW_SHOW, fDraw_InitAppli);
+   theDraw_InitAppli = fDraw_InitAppli;
+-  Standard_Boolean CONSOLE = Standard_True;
+   //ParseCommandLine(GetCommandLine());
+ 
+   // MKV 01.02.05

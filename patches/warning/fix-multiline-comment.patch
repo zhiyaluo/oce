@@ -1,0 +1,23 @@
+From: tpaviot <tpaviot@gmail.com>
+Date: Tue, 28 Jun 2011 11:26:47 +0200
+Subject: [PATCH 39/82] [warning-fix][multiline-comment] Fix warning
+ oce/src/LDOM/LDOM_CharReference.cxx:275:0 Multi-line
+ comment
+
+---
+ src/LDOM/LDOM_CharReference.cxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Index: oce/src/LDOM/LDOM_CharReference.cxx
+===================================================================
+--- oce.orig/src/LDOM/LDOM_CharReference.cxx
++++ oce/src/LDOM/LDOM_CharReference.cxx
+@@ -272,7 +272,7 @@
+   NORMAL_C,     // 059: Y
+   NORMAL_C,     // 05a: Z
+   NORMAL_C,     // 05b: [
+-  NORMAL_C,     // 05c: \ 
++  NORMAL_C,     // 05c: Backslash 
+   NORMAL_C,     // 05d: ]
+   NORMAL_C,     // 05e: ^
+   NORMAL_C,     // 05f: _

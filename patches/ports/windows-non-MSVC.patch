@@ -1,0 +1,2185 @@
+From 6b0b9307ff9e9475b6beca031055728cef022cbd Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Mon, 14 Mar 2011 20:22:42 +0200
+Subject: [PATCH 1/9] Fix build failures with Borland compiler
+
+
+commit 58a332df9d82951b5fcc064b568df5f87404f88e
+Author: Denis Barbier <bouzim@gmail.com>
+Date:   Wed Mar 30 17:22:14 2011 +0200
+
+    Fix a bug introduced in "Fix build failures with Borland compiler"
+    
+    ViewerTest_ViewerCommands.cxx could not be compiled when WNT is not
+    set.  I introduced this bug in 6b0b930 when editing Fotis' changes
+    to make them more generic.
+    
+    This commit must be merged into 6b0b930 before submitting to upstream.
+
+---
+ ros/inc/InterfaceGraphic_telem.hxx                 |    4 +
+ ros/inc/NCollection_CellFilter.hxx                 |    5 +-
+ ros/inc/Standard_CString.hxx                       |    6 +-
+ ros/inc/Standard_Macro.hxx                         |    4 +-
+ ros/inc/Standard_math.hxx                          |    4 +
+ ros/inc/Standard_values.h                          |    2 +-
+ ros/inc/math_DoubleTab.lxx                         |    4 +
+ ros/src/Draw/CommandWindow.cxx                     |    4 +-
+ ros/src/Draw/Draw.cxx                              |    3 +
+ ros/src/Draw/Draw_Interpretor.cxx                  |    2 +
+ ros/src/Image/Image_PixMap.cxx                     |    6 +
+ ros/src/MeshTest/MeshTest_PluginCommands.cxx       |    2 +
+ ros/src/NCollection/NCollection_BaseAllocator.cxx  |    2 +
+ ros/src/NCollection/NCollection_HeapAllocator.cxx  |    2 +
+ ros/src/OSD/OSD.cxx                                |    6 +-
+ ros/src/OSD/OSD_Environment.cxx                    |    2 +
+ ros/src/OSD/OSD_File.cxx                           |   31 ++--
+ ros/src/OSD/OSD_FileNode.cxx                       |   13 +-
+ ros/src/OSD/OSD_SystemFont.cxx                     |    1 +
+ ros/src/OSD/OSD_WNT.cxx                            |   26 ++--
+ ros/src/OSD/OSD_WNT_1.cxx                          |   29 +++-
+ ros/src/OSD/OSD_signal_WNT.cxx                     |  163 +++++++++++++++++---
+ ros/src/OpenGl/OpenGl_TextRender.cxx               |    3 +
+ ros/src/OpenGl/OpenGl_attri.cxx                    |    3 +
+ ros/src/OpenGl/OpenGl_graduatedtrihedron.cxx       |    5 +
+ ros/src/OpenGl/OpenGl_polygon.cxx                  |    2 +-
+ ros/src/OpenGl/OpenGl_togl_print.cxx               |    4 +
+ ros/src/OpenGl/OpenGl_txgl.cxx                     |    7 +
+ ros/src/PlotMgt/PlotMgt.cxx                        |    2 +-
+ ros/src/Poly/Poly_CoherentNode.cxx                 |    2 +
+ .../STEPConstruct/STEPConstruct_AP203Context.cxx   |    4 +
+ ros/src/Standard/Standard_Macro.hxx                |    6 +-
+ ros/src/Standard/Standard_osd_ffi.c                |    2 +-
+ ros/src/TObj/TObj_Model.cxx                        |    2 +
+ .../Viewer2dTest/Viewer2dTest_DisplayCommands.cxx  |    2 +
+ .../Viewer2dTest/Viewer2dTest_ViewerCommands.cxx   |    2 +-
+ ros/src/ViewerTest/ViewerTest_ViewerCommands.cxx   |   11 +-
+ ros/src/Voxel/Voxel_Reader.cxx                     |    2 +
+ ros/src/Voxel/Voxel_Writer.cxx                     |    2 +
+ ros/src/VrmlData/VrmlData_Geometry.cxx             |    2 +
+ ros/src/VrmlData/VrmlData_Group.cxx                |    2 +
+ ros/src/VrmlData/VrmlData_IndexedFaceSet.cxx       |    2 +
+ ros/src/VrmlData/VrmlData_Material.cxx             |    2 +
+ ros/src/VrmlData/VrmlData_Scene.cxx                |   10 +-
+ ros/src/VrmlData/VrmlData_ShapeConvert.cxx         |    8 +-
+ ros/src/VrmlData/VrmlData_WorldInfo.cxx            |    2 +
+ ros/src/WNT/EHDC.cxx                               |    4 +
+ ros/src/WNT/W95_Allocator.cxx                      |    7 +
+ ros/src/WNT/WNT_Allocator.cxx                      |    4 +
+ ros/src/WNT/WNT_IconBox.cxx                        |    7 +-
+ ros/src/WNT/WNT_ImageProcessor.cxx                 |   27 ++++
+ ros/src/WNT/WNT_Window.cxx                         |    8 +-
+ .../XmlMDataStd/XmlMDataStd_NamedDataDriver.cxx    |    2 +
+ ros/src/XmlMXCAFDoc/XmlMXCAFDoc_DimTolDriver.cxx   |    2 +
+ 54 files changed, 383 insertions(+), 88 deletions(-)
+
+From 7d082abed2b6b7b0132c1344b314d67016e53d2c Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Tue, 22 Mar 2011 07:10:10 +0100
+Subject: [PATCH 4/9] Fix LODWORD and HIDWORD macros
+
+Those fixes seem to be generic.
+---
+ ros/inc/OSD_WNT_1.hxx |    9 +++++++--
+ 1 files changed, 7 insertions(+), 2 deletions(-)
+
+From c3eecc2595669dcf0c1cf937f83d31f659b3ae30 Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Tue, 22 Mar 2011 07:11:46 +0100
+Subject: [PATCH 5/9] BCC uses different symbol names
+
+---
+ ros/inc/Standard_Atomic.hxx       |   20 ++++++++++++++------
+ ros/inc/Standard_Macro.hxx        |    6 ++++++
+ ros/inc/Standard_Real.hxx         |    7 ++++++-
+ ros/src/OSD/OSD_SharedLibrary.cxx |   11 ++++++++++-
+ 4 files changed, 36 insertions(+), 8 deletions(-)
+
+commit 82971f23c27b434cc4a7cfe7cbbf23277d5175ff
+Author: Fotis Sioutis <sfotis at gmail dot com>
+Date:   Thu Apr 7 16:01:59 2011 +0300
+
+    ftgl fixes
+    
+    Fixed issues that surfaced when migrated to latest ftgl (2.1.3-rc5)
+    with bcc.Also added gl header inclusion.
+
+commit 06b9baa5793862cc1821307e464603508c5817f5
+Author: Fotis Sioutis <sfotis at gmail dot com>
+Date:   Fri Apr 8 15:05:37 2011 +0300
+
+    ftgl header fixes
+    
+    Remove conditional gl header inclusion and unprotected ftgl
+    header inclusion in main body of code. See :
+    http://groups.google.com/group/oce-dev/browse_thread/thread/50ee4ad3336d59de
+
+commit 97e46b7432274807cef47ad9c27936262a1cfe5c
+Author: Fotis Sioutis <sfotis at gmail dot com>
+Date:   Thu Apr 7 17:08:22 2011 +0300
+
+    Fixed a bcc issue that somehow was not fixed with the bulk fixes at db/ports.
+
+commit 66d637fc8d82a0d6007cb8c93500b4e1d4693943
+Author: Denis Barbier <bouzim@gmail.com>
+Date:   Mon Mar 14 23:25:17 2011 +0100
+
+    Fix build failures with Mingw
+    
+    Patch written by Jérôme Robert, downloaded from
+     https://github.com/jeromerobert/jCAE/blob/master/occjava/occ-mingw-port.patch
+
+From 70808cfb0129b99c37cea82874ac47740913061b Mon Sep 17 00:00:00 2001
+From: Muellni <mmuellen@gmx.de>
+Date: Sun, 22 May 2011 19:27:25 +0200
+Subject: [PATCH 1/8] fix typo in windows.h include
+
+---
+ src/NIS/NIS_View.cxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+From b69b768aafd3b9177b9f996369f1a199ebf26dfe Mon Sep 17 00:00:00 2001
+From: Muellni <mmuellen@gmx.de>
+Date: Sun, 22 May 2011 19:28:24 +0200
+Subject: [PATCH 2/8] fix wrong glu.h includes (which fail on non windows
+ build hosts)
+
+---
+ src/OpenGl/OpenGl_polygon.cxx      |    2 +-
+ src/OpenGl/OpenGl_polygonholes.cxx |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+From 10b2ad66de5f245d9ce734c58bc43183e05dc510 Mon Sep 17 00:00:00 2001
+From: Muellni <mmuellen@gmx.de>
+Date: Sun, 22 May 2011 19:29:18 +0200
+Subject: [PATCH 3/8] this fix should only be applied on msvc
+
+---
+ inc/W32_Allocator.hxx |    4 +++-
+ 1 files changed, 3 insertions(+), 1 deletions(-)
+
+From 2239f32d9267e0dfdd12e63a62eb91afd19be188 Mon Sep 17 00:00:00 2001
+From: Muellni <mmuellen@gmx.de>
+Date: Sun, 22 May 2011 19:30:06 +0200
+Subject: [PATCH 4/8] fixed missing include for some texture format
+
+---
+ src/OpenGl/OpenGl_togl_redraw.cxx |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
+
+From 043e62f6700c8d55d08ab00da54df4f052a46c41 Mon Sep 17 00:00:00 2001
+From: Muellni <mmuellen@gmx.de>
+Date: Sun, 22 May 2011 19:30:57 +0200
+Subject: [PATCH 5/8] ENHMFENUMPROC prototype has been fixed in mingw 3.14
+
+---
+ src/WNT/WNT_DDriver.cxx |   11 +++++++++--
+ 1 files changed, 9 insertions(+), 2 deletions(-)
+
+From b235ac857c94437cb93e1b2b87e66c093e483609 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Mon, 23 May 2011 22:27:56 +0200
+Subject: [PATCH 6/8] Fix __try/__finally on Mingw
+
+Apply the same fix as in 66d637f.
+---
+ src/OpenGl/OpenGl_txgl.cxx |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
+
+From 8a73f5c0b4a8f36a4b7c616dadd6d805ee5c5e52 Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Tue, 24 May 2011 09:55:42 +0200
+Subject: [PATCH 7/8] Made glext.h include specific for mingw
+
+---
+ src/OpenGl/OpenGl_togl_redraw.cxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+From 8b121e123e9a33388749621817ab2a63cd775e68 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Tue, 24 May 2011 23:35:06 +0200
+Subject: [PATCH 8/8] Slightly change again glext.h conditional include
+
+WNT is always defined when compiling with Mingw.
+---
+ src/OpenGl/OpenGl_togl_redraw.cxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+commit d8d5c7b8b3e4943e7879a9ed547b451b3c3e955f
+Author: Denis Barbier <bouzim@gmail.com>
+Date:   Thu Apr 7 09:44:58 2011 +0200
+
+    Fix Tk and X11 dependencies in TKDraw and TKViewerTest
+    
+    Modify src/Draw/Draw_Window.cxx to include tk.h on
+    Windows only if _TK is defined.  All Tk instructions
+    are protected by _TK on Windows, so this change is safe.
+    On Unix machines, tk.h is included unconditionnally.
+    
+    As all other source files compile without Tk on
+    Windows, it is very likely that Tk support on Windows
+    is not well tested, so it does not hurt if it is
+    disabled.  We can easily reenable it later.
+    
+    Modify TKViewerTest in a similar manner, Tk is used
+    only on Unix, and X11 includes and libraries are added
+    since they are used in src/ViewerTest/ViewerTest_ViewerCommands.cxx
+
+Index: oce/inc/Handle_Standard_Transient.hxx
+===================================================================
+--- oce.orig/inc/Handle_Standard_Transient.hxx
++++ oce/inc/Handle_Standard_Transient.hxx
+@@ -13,7 +13,7 @@
+ #include <Standard_Transient_proto.hxx>
+ #endif
+ 
+-#ifdef _WIN32
++#ifdef _MSC_VER
+ // Disable the warning "conversion from 'unsigned int' to Standard_Transient *"
+ #pragma warning (push)
+ #pragma warning (disable:4312)
+@@ -228,7 +228,7 @@
+   Standard_Transient *entity;
+ };
+ 
+-#ifdef _WIN32
++#ifdef _MSC_VER
+ #pragma warning (pop)
+ #endif
+ 
+Index: oce/inc/InterfaceGraphic_telem.hxx
+===================================================================
+--- oce.orig/inc/InterfaceGraphic_telem.hxx
++++ oce/inc/InterfaceGraphic_telem.hxx
+@@ -17,6 +17,10 @@
+ #include <InterfaceGraphic_tgl_all.hxx>
+ #include <stdlib.h>
+ 
++#ifdef __BORLANDC__
++#include <mem.h>
++#endif
++
+ //if SUN compiler
+ #if defined(__SUNPRO_CC) && (__SUNPRO_CC <= 0x530) && ! defined(typename)
+ #define IMPLEMENT_MEMORY_OPERATORS \
+Index: oce/inc/NCollection_CellFilter.hxx
+===================================================================
+--- oce.orig/inc/NCollection_CellFilter.hxx
++++ oce/inc/NCollection_CellFilter.hxx
+@@ -223,8 +223,9 @@
+     iterateInspect (Inspector::Dimension-1, aCell, 
+                     aCellMin, aCellMax, theInspector);
+   }
+-
+-#if defined(__SUNPRO_CC) && (__SUNPRO_CC <= 0x530)
++//Borland needs to have the Cell struct public in order to access it from
++//the global functions HashCode and IsEqual ... See below on the declarations of them
++#if defined(__SUNPRO_CC) && (__SUNPRO_CC <= 0x530) || defined(__BORLANDC__)
+ public: // work-around against obsolete SUN WorkShop 5.3 compiler
+ #else
+ protected:
+Index: oce/inc/OSD_WNT_1.hxx
+===================================================================
+--- oce.orig/inc/OSD_WNT_1.hxx
++++ oce/inc/OSD_WNT_1.hxx
+@@ -51,8 +51,13 @@
+ //#define LODWORD( a ) ( DWORD )(   ( ( DWORDLONG )( a ) ) & 0x00000000FFFFFFFF   )
+ //#define HIDWORD( a ) ( DWORD )(   ( ( DWORDLONG )( a ) ) >> 32                  )
+ 
+-#define LODWORD( a ) ( DWORD )(   ( ( _int64 )( a ) ) & 0x00000000FFFFFFFF   )
+-#define HIDWORD( a ) ( DWORD )(   ( ( _int64 )( a ) ) >> 32                  )
++#ifdef __BORLANDC__
++# define LODWORD( a ) ( DWORD )(   ( ( DWORDLONG )( a ) ) & 0x00000000FFFFFFFF   )
++# define HIDWORD( a ) ( DWORD )(   ( ( DWORDLONG )( a ) ) >> 32                  )
++#else
++# define LODWORD( a ) ( DWORD )(   ( ( _int64 )( a ) ) & 0x00000000FFFFFFFF   )
++# define HIDWORD( a ) ( DWORD )(   ( ( _int64 )( a ) ) >> 32                  )
++#endif
+ 
+ typedef struct _group_sid {
+ 
+Index: oce/inc/Standard_Atomic.hxx
+===================================================================
+--- oce.orig/inc/Standard_Atomic.hxx
++++ oce/inc/Standard_Atomic.hxx
+@@ -24,15 +24,23 @@
+ //===================================================
+ // Windows NT, MSVC++ compiler
+ //===================================================
+-#if defined(WNT)
+ 
++#if defined(_MSC_VER) || defined(__BORLANDC__)
++#ifdef __BORLANDC__
+ extern "C" {
+-long _InterlockedIncrement(long volatile* lpAddend);
+-long _InterlockedDecrement(long volatile* lpAddend);
+-}
+-
+-#pragma intrinsic (_InterlockedIncrement)
+-#pragma intrinsic (_InterlockedDecrement)
++  __declspec(dllimport) long __stdcall InterlockedIncrement ( long volatile *lpAddend);
++  __declspec(dllimport) long __stdcall InterlockedDecrement ( long volatile *lpAddend);
++ }
++ #define _InterlockedIncrement InterlockedIncrement
++ #define _InterlockedDecrement InterlockedDecrement
++#elif defined(_MSC_VER)
++ extern "C" {
++  long _InterlockedIncrement(long volatile* lpAddend);
++  long _InterlockedDecrement(long volatile* lpAddend);
++ }
++# pragma intrinsic (_InterlockedIncrement)
++# pragma intrinsic (_InterlockedDecrement)
++#endif
+ 
+ inline void Standard_Atomic_Increment (int volatile* var)
+ {
+Index: oce/inc/Standard_CString.hxx
+===================================================================
+--- oce.orig/inc/Standard_CString.hxx
++++ oce/inc/Standard_CString.hxx
+@@ -14,7 +14,11 @@
+ # endif
+ 
+ # ifdef WNT
+-#  define strcasecmp _stricmp
++#  ifdef _MSC_VER
++#    define strcasecmp _stricmp
++#  elif defined(__BORLANDC__)
++#    define strcasecmp stricmp
++#  endif
+ # endif
+ 
+ # include <string.h>
+Index: oce/inc/Standard_Macro.hxx
+===================================================================
+--- oce.orig/inc/Standard_Macro.hxx
++++ oce/inc/Standard_Macro.hxx
+@@ -20,7 +20,7 @@
+ //======================================================
+ 
+ // check if WNT macro is not defined but compiler is MSVC
+-#if defined(_MSC_VER) && !defined(WNT)
++#if (defined(_MSC_VER) || defined(__BORLANDC__)) && !defined(WNT)
+ #error "Wrong compiler options has been detected. Add /DWNT option for proper compilation!!!!!"
+ #endif
+ 
+@@ -50,7 +50,7 @@
+ #define WIN32_LEAN_AND_MEAN   /* exclude extra Windows stuff */
+ #endif
+ #ifndef NOMINMAX
+-#define NOMINMAX NOMINMAX     /* avoid #define min() and max() */
++#define NOMINMAX              /* avoid #define min() and max() */
+ #endif
+ #ifndef NOMSG
+ #define NOMSG NOMSG           /* avoid #define SendMessage etc. */
+@@ -120,9 +120,15 @@
+ #   if !defined(WNT) || defined(__Standard_DLL) || defined(__FSD_DLL) || defined(__MMgt_DLL) || defined(__OSD_DLL) || defined(__Plugin_DLL) || defined(__Quantity_DLL) || defined(__Resource_DLL) || defined(__SortTools_DLL) || defined(__StdFail_DLL) || defined(__Storage_DLL) || defined(__TColStd_DLL) || defined(__TCollection_DLL) || defined(__TShort_DLL) || defined(__Units_DLL) || defined(__UnitsAPI_DLL) || defined(__Dico_DLL) || defined(__Message_DLL)
+ #    define __Standard_API Standard_EXPORT
+ #    define __Standard_APIEXTERN Standard_EXPORTEXTERN
++#      ifdef __BORLANDC__
++#      define __Standard_APIEXTERNC Standard_EXPORTEXTERNC
++#      endif
+ #   else
+ #    define __Standard_API Standard_IMPORT
+ #    define __Standard_APIEXTERN Standard_IMPORT
++#      ifdef __BORLANDC__
++#      define __Standard_APIEXTERNC Standard_IMPORTC
++#      endif
+ #   endif  // __Standard_DLL
+ //#  else
+ //#   define __Standard_API
+Index: oce/inc/Standard_Real.hxx
+===================================================================
+--- oce.orig/inc/Standard_Real.hxx
++++ oce/inc/Standard_Real.hxx
+@@ -24,11 +24,16 @@
+ #undef PI
+ #endif 
+ 
+-#if defined(WNT) && !defined(__CYGWIN32__) && !defined(__MINGW32__)
++#if defined(_MSC_VER)
+ extern "C" __Standard_API Standard_Real PI;
+ extern "C" __Standard_API Standard_Real PI180;
+ extern "C" __Standard_API Standard_Real Standard_PI;
+ extern "C" __Standard_API Standard_Real Standard_PI180;
++#elif defined (__BORLANDC__)
++__Standard_APIEXTERNC Standard_Real PI;
++__Standard_APIEXTERNC Standard_Real PI180;
++__Standard_APIEXTERNC Standard_Real Standard_PI;
++__Standard_APIEXTERNC Standard_Real Standard_PI180;
+ #else
+ 
+ extern const Standard_Real PI;
+Index: oce/inc/Standard_math.hxx
+===================================================================
+--- oce.orig/inc/Standard_math.hxx
++++ oce/inc/Standard_math.hxx
+@@ -29,6 +29,10 @@
+ __Standard_API double __cdecl asinh ( double );
+ __Standard_API double __cdecl atanh ( double );
+ 
++#if defined(M_PI_2)
++# undef M_PI_2
++#endif
++
+ # define M_SQRT1_2  7.0710678118654752440E-1
+ # define M_PI_2     1.57079632679489661923
+ 
+Index: oce/inc/Standard_values.h
+===================================================================
+--- oce.orig/inc/Standard_values.h
++++ oce/inc/Standard_values.h
+@@ -18,7 +18,7 @@
+ 
+ */
+ 
+-#if defined(_MSC_VER) && !defined(WNT)
++#if (defined(_MSC_VER) || defined(__BORLANDC__)) && !defined(WNT)
+ #error "Wrong compiler options has been detected. Add /DWNT option for proper compilation!!!!!"
+ #endif
+ 
+@@ -41,6 +41,10 @@
+ # include <limits>
+ #endif
+ 
++#ifdef __MINGW32__
++# include <limits.h>
++#endif
++
+ #if defined (__hpux) || defined (HPUX)
+ # ifdef MAXINT
+ #  undef MAXINT
+Index: oce/inc/W32_Allocator.hxx
+===================================================================
+--- oce.orig/inc/W32_Allocator.hxx
++++ oce/inc/W32_Allocator.hxx
+@@ -45,7 +45,9 @@
+ # define W32F_POUTL 0x20000000
+ # define W32F_DFONT 0x10000000
+ 
+-#define OCC5415 /* avoid warning C4291 in MS VC++ 6.0 */
++# ifndef __MINGW32__
++#  define OCC5415 /* avoid warning C4291 in MS VC++ 6.0 */
++# endif
+ 
+ typedef enum {
+ 
+Index: oce/inc/math_DoubleTab.lxx
+===================================================================
+--- oce.orig/inc/math_DoubleTab.lxx
++++ oce/inc/math_DoubleTab.lxx
+@@ -4,6 +4,10 @@
+ #include <math_Memory.hxx>
+ #include <Standard_OutOfRange.hxx>
+ 
++#ifdef __BORLANDC__
++#include <mem.h>
++#endif
++
+ inline Item& math_DoubleTab::Value (const Standard_Integer RowIndex,
+ 				    const Standard_Integer ColIndex) const
+ {
+Index: oce/src/Draw/CommandWindow.cxx
+===================================================================
+--- oce.orig/src/Draw/CommandWindow.cxx
++++ oce/src/Draw/CommandWindow.cxx
+@@ -16,7 +16,9 @@
+ #include <MainWindow.h>
+ #include <Draw_Appli.hxx>
+ 
+-
++#ifdef __BORLANDC__
++#pragma link "tcl85.lib"
++#endif
+ 
+ /****************************************************\
+ *  CommandWindow.cxx :
+Index: oce/src/Draw/Draw.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw.cxx
++++ oce/src/Draw/Draw.cxx
+@@ -50,6 +50,9 @@
+ #include <Draw_Failure.hxx>
+ #include <TCollection_AsciiString.hxx>
+ #include <Standard_ErrorHandler.hxx>
++
++#include <stdio.h>
++
+ extern Standard_Boolean Draw_ParseFailed;
+ #ifndef WNT
+ extern Standard_Boolean Draw_LowWindows;
+Index: oce/src/Draw/Draw_Interpretor.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw_Interpretor.cxx
++++ oce/src/Draw/Draw_Interpretor.cxx
+@@ -18,6 +18,8 @@
+ 
+ #include <tcl.h>
+ 
++#include <stdio.h>
++
+ #if ((TCL_MAJOR_VERSION > 8) || ((TCL_MAJOR_VERSION == 8) && (TCL_MINOR_VERSION >= 1)))
+ #define TCL_USES_UTF8
+ #endif
+Index: oce/src/Draw/Draw_Window.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw_Window.cxx
++++ oce/src/Draw/Draw_Window.cxx
+@@ -1255,7 +1255,9 @@
+ #include <Draw_Appli.hxx>
+ #include <OSD.hxx>
+ 
+-#include <tk.h>
++#ifdef _TK
++# include <tk.h>
++#endif
+ 
+ #define PENWIDTH 1
+ #define CLIENTWND 0
+Index: oce/src/Image/Image_PixMap.cxx
+===================================================================
+--- oce.orig/src/Image/Image_PixMap.cxx
++++ oce/src/Image/Image_PixMap.cxx
+@@ -12,10 +12,16 @@
+   #include <Image_PixMap.ixx>
+   /* OCC22216 NOTE: linker dependency can be switched off by undefining macro */ 
+   
++  #ifdef __BORLANDC__
++  #pragma link "FreeImage.lib"
++  #pragma link "FreeImagePlus.lib"
++  #endif
+ #else
+   #include <Image_PixMap.ixx>
+   #include <fstream>
+ 
++  #include <stdio.h>
++
+   #if (defined(BYTE_ORDER)   && BYTE_ORDER==BIG_ENDIAN) || \
+       (defined(__BYTE_ORDER) && __BYTE_ORDER==__BIG_ENDIAN) || \
+        defined(__BIG_ENDIAN__)
+Index: oce/src/MFT/MFT_FontManager.cxx
+===================================================================
+--- oce.orig/src/MFT/MFT_FontManager.cxx
++++ oce/src/MFT/MFT_FontManager.cxx
+@@ -148,6 +148,9 @@
+ //        -- Category: Local structures 
+ //        --------------------------------
+ 
++#ifdef __MINGW32__
++	#define DrawTextA DrawText
++#endif
+ 
+ #define MFT_COMMANDBUFFERSIZE 512
+ typedef struct _MFT_CommandBuffer {
+Index: oce/src/MeshTest/MeshTest_PluginCommands.cxx
+===================================================================
+--- oce.orig/src/MeshTest/MeshTest_PluginCommands.cxx
++++ oce/src/MeshTest/MeshTest_PluginCommands.cxx
+@@ -28,6 +28,8 @@
+ #include <Poly_Polygon3D.hxx>
+ #include <Poly_Polygon2D.hxx>
+ 
++#include <stdio.h>
++
+ static Standard_Integer mpnames           (Draw_Interpretor& , Standard_Integer , const char** );
+ static Standard_Integer mpsetdefaultname  (Draw_Interpretor& , Standard_Integer , const char** );
+ static Standard_Integer mpgetdefaultname  (Draw_Interpretor& , Standard_Integer , const char** );
+Index: oce/src/NCollection/NCollection_BaseAllocator.cxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_BaseAllocator.cxx
++++ oce/src/NCollection/NCollection_BaseAllocator.cxx
+@@ -9,6 +9,8 @@
+ #include <NCollection_List.hxx>
+ #include <Standard_Mutex.hxx>
+ 
++#include <stdio.h>
++
+ IMPLEMENT_STANDARD_HANDLE(NCollection_BaseAllocator,MMgt_TShared)
+ IMPLEMENT_STANDARD_RTTIEXT(NCollection_BaseAllocator,MMgt_TShared)
+ 
+Index: oce/src/NCollection/NCollection_HeapAllocator.cxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_HeapAllocator.cxx
++++ oce/src/NCollection/NCollection_HeapAllocator.cxx
+@@ -8,6 +8,8 @@
+ #include <Standard_OutOfMemory.hxx>
+ #include <Standard_Mutex.hxx>
+ 
++#include <stdio.h>
++
+ IMPLEMENT_STANDARD_HANDLE (NCollection_HeapAllocator, NCollection_BaseAllocator)
+ IMPLEMENT_STANDARD_RTTIEXT(NCollection_HeapAllocator, NCollection_BaseAllocator)
+ 
+Index: oce/src/NIS/NIS_View.cxx
+===================================================================
+--- oce.orig/src/NIS/NIS_View.cxx
++++ oce/src/NIS/NIS_View.cxx
+@@ -9,7 +9,7 @@
+ #include <gp_Ax1.hxx>
+ #include <Visual3d_View.hxx>
+ #ifdef WNT
+-#include <Windows.h>
++#include <windows.h>
+ #endif
+ #include <GL/gl.h>
+ 
+Index: oce/src/OSD/OSD.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD.cxx
++++ oce/src/OSD/OSD.cxx
+@@ -95,10 +95,10 @@
+ //=======================================================================
+ 
+ #ifdef WNT
+-# include <Windows.h>
+-#if !defined(__CYGWIN32__) && !defined(__MINGW32__)
+-# include <Mapiwin.h>
+-#endif
++# include <windows.h>
++# ifdef _MSVC_VER
++#  include <Mapiwin.h>
++# endif
+ # define _DEXPLEN	             11
+ # define _IEEE		              1
+ # define DMAXEXP	             ((1 << _DEXPLEN - 1) - 1 + _IEEE)
+Index: oce/src/OSD/OSD_Environment.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_Environment.cxx
++++ oce/src/OSD/OSD_Environment.cxx
+@@ -215,6 +215,8 @@
+ 
+ #include <windows.h>
+ 
++#include <stdio.h>
++
+ #ifdef _MSC_VER
+ #pragma warning( disable : 4700 )
+ #endif
+Index: oce/src/OSD/OSD_File.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_File.cxx
++++ oce/src/OSD/OSD_File.cxx
+@@ -850,6 +850,14 @@
+ #define OPEN_OLD    1
+ #define OPEN_APPEND 2
+ 
++#ifndef _MSC_VER
++# define  __leave goto leave
++#endif
++#if defined(__CYGWIN32__) || defined(__MINGW32__)
++# define  __try
++# define  __finally
++#endif
++
+ void                            _osd_wnt_set_error        ( OSD_Error&, OSD_WhoAmI, ... );
+ PSECURITY_DESCRIPTOR __fastcall _osd_wnt_protection_to_sd ( const OSD_Protection&, BOOL, char* = NULL );
+ BOOL                 __fastcall _osd_wnt_sd_to_protection (
+@@ -1747,11 +1755,6 @@
+ 
+ //-------------------------------------------------finpri???980424
+ 
+-#if defined(__CYGWIN32__) || defined(__MINGW32__)
+-#define __try
+-#define __finally
+-#define __leave return
+-#endif
+ 
+ void OSD_File :: SetLock ( const OSD_LockType Lock ) {
+ 
+@@ -1789,20 +1792,15 @@
+ 
+   ImperativeFlag = Standard_True;
+ 
++#ifndef _MSC_VER
++  leave: ;
++#endif
+  }  // end __try
+ 
+  __finally {}
+ 
+-#ifdef VAC
+-leave: ;         // added for VisualAge
+-#endif
+ }  // end OSD_File :: SetLock
+ 
+-#if defined(__CYGWIN32__) || defined(__MINGW32__)
+-#undef __try
+-#undef __finally
+-#undef __leave
+-#endif
+ 
+ void OSD_File :: UnLock () {
+ 
+@@ -1891,11 +1889,6 @@
+ 
+ }  // end OSD_File :: IsOpen
+ 
+-#if defined(__CYGWIN32__) || defined(__MINGW32__)
+-#define __try
+-#define __finally
+-#define __leave return retVal
+-#endif
+ 
+ PSECURITY_DESCRIPTOR __fastcall _osd_wnt_protection_to_sd (
+                                  const OSD_Protection& prot, BOOL fDir, char* fName
+@@ -2122,6 +2115,9 @@
+ 
+   fOK = TRUE;
+ 
++#ifndef _MSC_VER
++  leave: ;
++#endif
+  }  // end __try
+ 
+  __finally {
+@@ -2148,19 +2144,10 @@
+  
+  }  // end __finally
+ 
+-#ifdef VAC
+-leave: ;     // added for VisualAge
+-#endif
+-
+  return retVal;
+  
+ }  // end _osd_wnt_protection_to_sd */
+ 
+-#if defined(__CYGWIN32__) || defined(__MINGW32__)
+-#undef __try
+-#undef __finally
+-#undef __leave
+-#endif
+ 
+ static void __fastcall _test_raise ( Standard_Integer hFile, Standard_CString str ) {
+ 
+@@ -2708,11 +2695,6 @@
+ 
+ }  // end _get_file_type
+ 
+-#if defined(__CYGWIN32__) || defined(__MINGW32__)
+-#define __try
+-#define __finally
+-#define __leave return retVal
+-#endif
+ 
+ BOOL __fastcall _osd_wnt_sd_to_protection (
+                  PSECURITY_DESCRIPTOR pSD, OSD_Protection& prot, BOOL fDir
+@@ -2788,23 +2770,17 @@
+ 
+   retVal = TRUE;
+   
++#ifndef _MSC_VER
++  leave: ;
++#endif 
+  }  // end __try
+ 
+  __finally {}
+        
+-#ifdef VAC
+-leave: ;      // added for VisualAge
+-#endif
+-
+  return retVal;
+ 
+ }  // end _osd_wnt_sd_to_protection
+ 
+-#if defined(__CYGWIN32__) || defined(__MINGW32__)
+-#undef __try
+-#undef __finally
+-#undef __leave
+-#endif
+ 
+ static OSD_SingleProtection __fastcall _get_protection ( DWORD mask ) {
+ 
+@@ -3022,11 +2998,6 @@
+ 
+ }  // end _get_protection_dir
+ 
+-#if defined(__CYGWIN32__) || defined(__MINGW32__)
+-#define __try
+-#define __finally
+-#define __leave return fOK
+-#endif
+ 
+ BOOL __fastcall _osd_print (const Standard_PCharacter pName, Standard_CString fName ) {
+ 
+@@ -3065,6 +3036,9 @@
+   
+   fOK = TRUE;
+  
++#ifndef _MSC_VER
++  leave: ;
++#endif
+  }  // end __try
+ 
+  __finally {
+@@ -3097,21 +3071,12 @@
+  
+  }  // end __finally
+ 
+-#ifdef VAC
+-leave: ;       // added for VisualAge
+-#endif
+-
+  if ( !fOK ) SetLastError ( dwCode );
+ 
+  return fOK;
+                 
+ }  // end _osd_print
+ 
+-#if defined(__CYGWIN32__) || defined(__MINGW32__)
+-#undef __try
+-#undef __finally
+-#undef __leave
+-#endif
+ 
+ Standard_Boolean OSD_File::IsReadable()
+ {
+Index: oce/src/OSD/OSD_FileNode.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_FileNode.cxx
++++ oce/src/OSD/OSD_FileNode.cxx
+@@ -441,9 +441,19 @@
+ # include <tchar.h>
+ #endif  // _INC_TCHAR
+ 
++#include <stdio.h>
++
+ #define TEST_RAISE( arg ) _test_raise (  fName, ( arg )  )
+ #define RAISE( arg ) Standard_ProgramError :: Raise (  ( arg )  )
+ 
++#ifndef _MSC_VER
++# define  __leave goto leave
++#endif
++#if defined(__CYGWIN32__) || defined(__MINGW32__)
++# define  __try
++# define  __finally
++#endif
++
+ PSECURITY_DESCRIPTOR __fastcall _osd_wnt_protection_to_sd ( const OSD_Protection&, BOOL, char* = NULL );
+ BOOL                 __fastcall _osd_wnt_sd_to_protection (
+                                  PSECURITY_DESCRIPTOR pSD, OSD_Protection& prot, BOOL
+@@ -970,11 +980,6 @@
+ 
+ }  // end _set_error
+ 
+-#if defined(__CYGWIN32__) || defined(__MINGW32__)
+-#define __try
+-#define __finally
+-#define __leave return retVal
+-#endif
+ 
+ static BOOL __fastcall _get_file_time (
+                         Standard_CString fName, LPSYSTEMTIME lpSysTime, BOOL fAccess
+@@ -1002,6 +1007,9 @@
+ 
+   retVal = TRUE;
+ 
++#ifndef _MSC_VER
++   leave: ;
++#endif
+  }  // end __try
+ 
+  __finally {
+@@ -1012,19 +1020,10 @@
+  
+  }  // end __finally
+ 
+-#ifdef VAC
+-leave: ;      // added for VisualAge
+-#endif
+-
+  return retVal;
+ 
+ }  // end _get_file_time
+ 
+-#if defined(__CYGWIN32__) || defined(__MINGW32__)
+-#undef __try
+-#undef __finally
+-#undef __leave
+-#endif
+ 
+ static void __fastcall _test_raise ( TCollection_AsciiString fName, Standard_CString str ) {
+ 
+Index: oce/src/OSD/OSD_Process.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_Process.cxx
++++ oce/src/OSD/OSD_Process.cxx
+@@ -212,7 +212,7 @@
+ #include <Quantity_Date.hxx>
+ 
+ #include <OSD_WNT_1.hxx>
+-#include <LMCONS.H> /// pour UNLEN  ( see MSDN about GetUserName() )
++#include <lmcons.h> /// pour UNLEN  ( see MSDN about GetUserName() )
+ 
+ #ifdef _MSC_VER
+ #pragma warning( disable : 4700 )
+Index: oce/src/OSD/OSD_SharedLibrary.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_SharedLibrary.cxx
++++ oce/src/OSD/OSD_SharedLibrary.cxx
+@@ -303,9 +303,18 @@
+ 
+  OSD_Function func = ( OSD_Function )GetProcAddress (  ( HMODULE )myHandle, Name  );
+ 
++ if ( func == NULL ) {
++#ifdef __BORLANDC__ //borland decorates exported C style routines with '_'
++  Standard_Character* myAlternativeName = new Standard_Character[ strlen ( Name ) + 1 + 1 ];
++  static Standard_Character* myAddition = "_";
++  strcpy(myAlternativeName, myAddition);
++  strcat(myAlternativeName, Name);
++  func = ( OSD_Function )GetProcAddress (  ( HMODULE )myHandle, myAlternativeName  );
++  delete [] myAlternativeName;
+  if ( func == NULL )
+-
++#endif
+   lastDLLError = GetLastError ();
++ }
+ 
+  return func;
+ 
+Index: oce/src/OSD/OSD_SystemFont.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_SystemFont.cxx
++++ oce/src/OSD/OSD_SystemFont.cxx
+@@ -9,6 +9,7 @@
+ #include <OSD_Path.hxx>
+ #include <TCollection_HAsciiString.hxx>
+ 
++#include <stdio.h>
+ 
+ OSD_SystemFont::OSD_SystemFont():
+ MyFontName(),
+Index: oce/src/OSD/OSD_WNT.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_WNT.cxx
++++ oce/src/OSD/OSD_WNT.cxx
+@@ -51,6 +51,11 @@
+ #define SID_ADMIN         6
+ #define SID_WORLD         7
+ #define SID_NULL          8
++
++#ifndef _MSC_VER
++# define  __leave goto leave
++#endif
++
+ /***/
+ /******************************************************************************/
+ /* Function : AllocSD                                                       */
+@@ -147,6 +152,9 @@
+ 
+   fOK = TRUE;
+ 
++#ifndef _MSC_VER
++  leave: ;
++#endif
+  }  /* end __try */
+ 
+  __finally {
+@@ -160,10 +168,6 @@
+  
+  }  /* end __finally */
+ 
+-#ifdef VAC
+-leave: ;     // added for VisualAge
+-#endif
+-
+  return buffer;
+ 
+ }  /* end GetTokenInformationEx */
+@@ -472,6 +476,9 @@
+ 
+   fOK = TRUE;
+ 
++#ifndef _MSC_VER
++  leave: ;
++#endif
+  }  /* end __try */
+ 
+  __finally {
+@@ -485,10 +492,6 @@
+  
+  }  /* end __finally */
+ 
+-#ifdef VAC
+-leave: ;        // added for VisualAge
+-#endif
+-
+  return retVal;
+ 
+ }  /* end GetFileSecurityEx */
+@@ -562,6 +565,9 @@
+ 
+   retVal = TRUE;
+  
++#ifndef _MSC_VER
++  leave: ;
++#endif
+  }  /* end __try */
+ 
+  __finally {
+@@ -575,10 +581,6 @@
+  
+  }  /* end __finally */
+ 
+-#ifdef VAC
+-leave: ;        // added for VisualAge
+-#endif
+-
+  return retVal;
+ 
+ }  /* end LookupAccountSidEx */
+Index: oce/src/OSD/OSD_WNT_1.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_WNT_1.cxx
++++ oce/src/OSD/OSD_WNT_1.cxx
+@@ -3,6 +3,18 @@
+ 
+ #include <windowsx.h>
+ 
++#ifndef _MSC_VER
++# define  __leave goto leave
++#endif
++#if defined(__CYGWIN32__) || defined(__MINGW32__)
++# define  __try
++# define  __finally
++#endif
++
++#ifndef max
++# define max(a, b)  (((a) > (b)) ? (a) : (b)) 
++#endif
++
+ static FILETIME ftKernelTimeStart, ftUserTimeStart, ftElapsedStart;
+ static TCHAR    timeBuffer[ 80 ];
+ 
+@@ -269,18 +281,15 @@
+   return (short)(aY*8) / HIWORD (baseUnits);
+ }
+ 
+-#if defined(__CYGWIN32__) || defined(__MINGW32__)
+-#define __try
+-#define __finally
+-#define __leave return res
+-#endif
+-
+ LONG GetTextParams ( HDC hdc, LPCTSTR lpText ) {
+   LONG res = 0;
+   SIZE size;
+   _TCHAR* dummy = NULL;
+   __try {
+     dummy = _tcsdup (lpText);
++#ifndef _MSC_VER
++    {  // new scope needed to let compiler cross variable initialization
++#endif
+     if ( !dummy ) __leave;
+     short txtW = 0, txtH = 0;
+     _TCHAR* tok = _tcstok ( dummy, TEXT( "\n" ) );
+@@ -292,24 +301,19 @@
+       tok = _tcstok ( NULL, TEXT( "\n" ) );
+     }
+     res = MAKELONG (MapX(txtW), MapY(txtH));
++#ifndef _MSC_VER
++    }
++    leave: ;
++#endif
+   }
+ 
+   __finally {
+     free (dummy);
+   }
+ 
+-#ifdef VAC
+-leave: ;       // added for VisualAge
+-#endif
+-
+   return res;
+ }
+ 
+-#if defined(__CYGWIN32__) || defined(__MINGW32__)
+-#undef __try
+-#undef __finally
+-#undef __leave
+-#endif
+ 
+ /////////////////ON_COMMAND/////////////////////////////////////
+ void MsgBox_OnCommand (HWND hwnd, _TINT id, HWND hCtl, UINT codeNotify) {
+@@ -345,11 +349,6 @@
+ 
+ /////////////////////////////////////////////////////////////////
+ 
+-#if defined(__CYGWIN32__) || defined(__MINGW32__)
+-#define __try
+-#define __finally
+-#define __leave return -1
+-#endif
+ 
+ _TINT MsgBox ( HWND hParent,
+                LPTSTR  lpText,
+@@ -373,6 +372,9 @@
+   __try {
+     /* Get dialog base units & map it to dialog units*/
+     hDisp = CreateDC ( TEXT( "DISPLAY" ), NULL, NULL, NULL );
++#ifndef _MSC_VER
++    {  // new scope needed to let compiler cross variable initialization
++#endif
+     if ( !hDisp ) __leave;
+     scrW = GetDeviceCaps ( hDisp, HORZRES );
+     scrH = GetDeviceCaps ( hDisp, VERTRES );
+@@ -518,6 +520,10 @@
+         *pItemsCount += 1;
+       }
+     } // Childs
++#ifndef _MSC_VER
++    }
++    leave: ;
++#endif
+   }  // __try
+   /*----------------------------------------------------------------------*/
+   __finally {
+@@ -535,16 +541,6 @@
+     return ( res );
+   }
+ 
+-#ifdef VAC
+-leave: ;         // added for VisualAge
+-#endif
+-
+ }
+ 
+-#if defined(__CYGWIN32__) || defined(__MINGW32__)
+-#undef __try
+-#undef __finally
+-#undef __leave
+-#endif
+-
+ #endif
+Index: oce/src/OSD/OSD_signal_WNT.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_signal_WNT.cxx
++++ oce/src/OSD/OSD_signal_WNT.cxx
+@@ -2,7 +2,7 @@
+ #include <OSD.ixx>
+ 
+ static Standard_Boolean fSETranslator =
+-#ifdef _MSC_VER
++#if defined(_MSC_VER) || defined(__BORLANDC__)
+                            Standard_True;
+ #else
+                            Standard_False;
+@@ -44,6 +44,144 @@
+ #include <malloc.h>
+ #endif
+ 
++#ifndef _MSC_VER
++# define  __leave goto leave
++#endif
++#if defined(__CYGWIN32__) || defined(__MINGW32__)
++# define  __try
++# define  __finally
++#endif
++
++#ifdef __BORLANDC__
++# include <malloc.h>
++# define FPE_DENORMAL 0x82
++
++# define _EM_INVALID EM_INVALID
++# define _EM_DENORMAL EM_DENORMAL
++# define _EM_ZERODIVIDE EM_ZERODIVIDE
++# define _EM_OVERFLOW EM_OVERFLOW
++
++# define _FPE_INVALID FPE_INVALID
++# define _FPE_DENORMAL FPE_DENORMAL
++# define _FPE_ZERODIVIDE FPE_ZERODIVIDE
++# define _FPE_OVERFLOW FPE_OVERFLOW
++# define _FPE_UNDERFLOW   FPE_UNDERFLOW
++# define _FPE_INEXACT  FPE_INEXACT
++
++DWORD PlatformId(void)
++{
++  OSVERSIONINFO ovi;
++  ovi.dwOSVersionInfoSize = sizeof(ovi);
++  GetVersionEx(&ovi);
++  return ovi.dwPlatformId;
++}
++
++/* These magic numbers are from the MS header files */
++# define MIN_STACK_WIN9X 17
++# define MIN_STACK_WINNT 2
++
++/*
++ * This function does the same thing as _resetstkoflw(), which is only
++ * available in DevStudio .net and later.
++ * Returns 0 for failure, 1 for success.
++ */
++int _resetstkoflw(void)
++{
++  BYTE  *pStackPtr;
++  BYTE  *pGuardPage;
++  BYTE  *pStackBase;
++  BYTE  *pLowestPossiblePage;
++  MEMORY_BASIC_INFORMATION mbi;
++  SYSTEM_INFO si;
++  DWORD  nPageSize;
++  DWORD  dummy;
++
++  DWORD  g_PlatformId = PlatformId();
++
++  /* This code will not work on win32s. */
++  if (g_PlatformId == VER_PLATFORM_WIN32s)
++    return 0;
++
++  /* We need to know the system page size. */
++  GetSystemInfo(&si);
++  nPageSize = si.dwPageSize;
++
++  /* ...and the current stack pointer */
++  pStackPtr = (BYTE*)_alloca(1);
++
++  /* ...and the base of the stack. */
++  if (VirtualQuery(pStackPtr, &mbi, sizeof mbi) == 0)
++    return 0;
++  pStackBase = (BYTE*)mbi.AllocationBase;
++
++  /* ...and the page thats min_stack_req pages away from stack base; this is
++   * the lowest page we could use. */
++  pLowestPossiblePage = pStackBase + ((g_PlatformId == VER_PLATFORM_WIN32_NT)
++               ? MIN_STACK_WINNT : MIN_STACK_WIN9X) * nPageSize;
++
++  /* On Win95, we want the next page down from the end of the stack. */
++  if (g_PlatformId == VER_PLATFORM_WIN32_WINDOWS) {
++    /* Find the page that's only 1 page down from the page that the stack
++     * ptr is in. */
++    pGuardPage = (BYTE*)((DWORD)nPageSize * (((DWORD)pStackPtr
++                            / (DWORD)nPageSize) - 1));
++    if (pGuardPage < pLowestPossiblePage)
++      return 0;
++
++    /* Apply the noaccess attribute to the page -- there's no guard
++     * attribute in win95-type OSes. */
++    if (!VirtualProtect(pGuardPage, nPageSize, PAGE_NOACCESS, &dummy))
++      return 0;
++  }
++  else {
++    /* On NT, however, we want the first committed page in the stack Start
++     * at the stack base and move forward through memory until we find a
++     * committed block. */
++    BYTE *pBlock = pStackBase;
++
++    for (;;) {
++      if (VirtualQuery(pBlock, &mbi, sizeof mbi) == 0)
++        return 0;
++
++      pBlock += mbi.RegionSize;
++
++      if (mbi.State & MEM_COMMIT)
++        break;
++    }
++
++    /* mbi now describes the first committed block in the stack. */
++    if (mbi.Protect & PAGE_GUARD)
++      return 1;
++
++    /* decide where the guard page should start */
++    if ((mbi.BaseAddress) < pLowestPossiblePage)
++      pGuardPage = pLowestPossiblePage;
++    else
++      pGuardPage = (BYTE*)mbi.BaseAddress;
++
++    /* allocate the guard page */
++    if (!VirtualAlloc(pGuardPage, nPageSize, MEM_COMMIT, PAGE_READWRITE))
++      return 0;
++
++    /* apply the guard attribute to the page */
++    if (!VirtualProtect(pGuardPage, nPageSize, PAGE_READWRITE | PAGE_GUARD,
++                                      &dummy))
++      return 0;
++  }
++
++  return 1;
++}
++
++typedef void (*_se_translator_function)(unsigned int, EXCEPTION_POINTERS*);
++
++_CRTIMP _se_translator_function __cdecl _set_se_translator(_se_translator_function _NewPtFunc)
++{
++  return _NewPtFunc;
++}
++
++#endif
++
++
+ #include <process.h>
+ #include <signal.h>
+ #include <float.h>
+@@ -282,7 +420,7 @@
+ 
+   case EXCEPTION_STACK_OVERFLOW:
+ //      cout << "CallHandler : EXCEPTION_STACK_OVERFLOW:" << endl ;
+-#if defined( _MSC_VER ) && ( _MSC_VER >= 1300 )
++#if (defined( _MSC_VER ) && ( _MSC_VER >= 1300 )) || defined(__BORLANDC__)
+     // try recovering from stack overflow: available in MS VC++ 7.0
+     if (!_resetstkoflw())
+       lstrcpy (  buffer, TEXT( "Unrecoverable STACK OVERFLOW" )  );
+@@ -357,7 +495,7 @@
+ //purpose  : Translate Structural Exceptions into C++ exceptions
+ //=======================================================================
+ 
+-#ifdef _MSC_VER
++#if defined(_MSC_VER) || defined(__BORLANDC__)
+ static void TranslateSE( unsigned int theCode, EXCEPTION_POINTERS* theExcPtr )
+ {
+   ptrdiff_t info1 = 0, info0 = 0;
+@@ -373,7 +511,7 @@
+ //==== SetSignal 
+ //============================================================================
+ 
+-#ifdef _MSC_VER
++#if defined(_MSC_VER) || defined(__BORLANDC__)
+ // MSV 31.08.2005
+ // If we compile this file under MSVC 7.1 with the default options for 
+ // exception handling (/GX or /EHsc) then the following warning is issued:
+@@ -425,7 +563,7 @@
+    SetConsoleCtrlHandler ( &_osd_ctrl_break_handler, TRUE );
+  }
+ 
+-#ifdef _MSC_VER
++#if defined(_MSC_VER) || defined(__BORLANDC__)
+  if (fSETranslator) {
+    // use Structural Exception translator (one per thread)
+    _set_se_translator( TranslateSE );
+@@ -550,8 +688,10 @@
+   case EXCEPTION_FLT_INVALID_OPERATION:
+   case EXCEPTION_FLT_DENORMAL_OPERAND:
+   case EXCEPTION_FLT_INEXACT_RESULT:
++#if defined(_MSC_VER) || defined(__BORLANDC__)
+   case STATUS_FLOAT_MULTIPLE_TRAPS:
+   case STATUS_FLOAT_MULTIPLE_FAULTS:
++#endif
+        Standard_NumericError :: Raise ( msg );
+   default:
+     break;
+@@ -565,12 +705,6 @@
+ //==== _osd_debug 
+ //============================================================================
+ 
+-#if defined(__CYGWIN32__) || defined(__MINGW32__)
+-#define __try
+-#define __finally
+-#define __leave return 0
+-#endif
+-
+ LONG _osd_debug ( void ) {
+ 
+  LONG action ;
+@@ -633,6 +767,9 @@
+ //   cout << "_osd_debug fDbgLoaded  " << endl ;
+    fDbgLoaded = TRUE;
+   
++#ifndef _MSC_VER
++   leave: ;
++#endif
+   }  // end __try
+ 
+   __finally {
+@@ -654,12 +791,6 @@
+ 
+ }  // end _osd_debug
+ 
+-#if defined(__CYGWIN32__) || defined(__MINGW32__)
+-#undef __try
+-#undef __finally
+-#undef __leave
+-#endif
+-
+ //============================================================================
+ //==== _debug_break 
+ //============================================================================
+@@ -710,12 +841,12 @@
+ //=======================================================================
+ 
+ void OSD::UseSETranslator( const Standard_Boolean
+-#ifdef _MSC_VER
++#if defined(_MSC_VER) || defined(__BORLANDC__)
+                           useSE
+ #endif
+                           )
+ {
+-#ifdef _MSC_VER
++#if defined(_MSC_VER) || defined(__BORLANDC__)
+   fSETranslator = useSE;
+ #endif
+ }
+Index: oce/src/OpenGl/OpenGl_FontMgr.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_FontMgr.cxx
++++ oce/src/OpenGl/OpenGl_FontMgr.cxx
+@@ -4,10 +4,17 @@
+ 
+ #include <FTGL/FTGLTextureFont.h>
+ 
++#include <GL/gl.h>
++
+ #undef TRACE
+ 
+ #define DEFAULT_FONT_HEIGHT 16
+ 
++#ifdef __BORLANDC__
++#pragma link "freetype.lib"
++#pragma link "ftgl_dynamic_MTD.lib"
++#endif
++
+ float h_scale = 0;
+ 
+ void dump_texture( int id);
+Index: oce/src/OpenGl/OpenGl_TextRender.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_TextRender.cxx
++++ oce/src/OpenGl/OpenGl_TextRender.cxx
+@@ -23,7 +23,6 @@
+ #include <gl2ps.h>
+ #endif
+ 
+-
+ /*-----------------------------------------------------------------------------*/
+ /*
+ * Prototypes variables statiques
+Index: oce/src/OpenGl/OpenGl_attri.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_attri.cxx
++++ oce/src/OpenGl/OpenGl_attri.cxx
+@@ -108,6 +108,9 @@
+   /* OCC22216 NOTE: linker dependency can be switched off by undefining macro. 
+      Pragma comment for gl2ps.lib is defined only here. */ 
+   
++  #ifdef __BORLANDC__
++  #include <gl2ps.c>
++  #endif
+ #endif
+ 
+ #include <OpenGl_tgl_all.hxx>
+Index: oce/src/OpenGl/OpenGl_graduatedtrihedron.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_graduatedtrihedron.cxx
++++ oce/src/OpenGl/OpenGl_graduatedtrihedron.cxx
+@@ -387,6 +387,11 @@
+ */
+ }
+ 
++#ifdef __BORLANDC__
++# define sqrtf std::sqrtf
++# define fabsf (float)fabs 
++#endif
++
+ static void drawArrow(float x1, float y1, float z1, 
+                       float x2, float y2, float z2,
+                       float xn, float yn, float zn)
+Index: oce/src/OpenGl/OpenGl_polygon.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_polygon.cxx
++++ oce/src/OpenGl/OpenGl_polygon.cxx
+@@ -78,7 +78,7 @@
+ #endif // APIENTRY
+ # define STATIC static
+ #else
+-# include <GL\GLU.H>
++# include <GL/glu.h>
+ #define STATIC
+ typedef double GLUcoord;
+ #endif  /* WNT */
+@@ -857,7 +857,7 @@
+       xyz[0] = ptr->xyz[0];
+       xyz[1] = ptr->xyz[1];
+       xyz[2] = ptr->xyz[2];    
+-#ifndef WNT
++#if !defined (WNT) || defined (__BORLANDC__)
+       gluTessVertex( tripak, xyz,(void * ) i );
+ #else
+       {
+Index: oce/src/OpenGl/OpenGl_polygonholes.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_polygonholes.cxx
++++ oce/src/OpenGl/OpenGl_polygonholes.cxx
+@@ -55,7 +55,7 @@
+ #endif // APIENTRY
+ # define STATIC static
+ #else
+-# include <GL\GLU.H>
++# include <GL/glu.h>
+ # define STATIC
+ typedef double GLUcoord;
+ #endif  /* WNT */
+Index: oce/src/OpenGl/OpenGl_togl_print.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_togl_print.cxx
++++ oce/src/OpenGl/OpenGl_togl_print.cxx
+@@ -36,6 +36,10 @@
+ HGDIOBJ oldObj;
+ #endif
+ 
++#ifdef __BORLANDC__
++# define _stricmp stricmp
++#endif
++
+ GLuint createFont( char* typeFace, int height, int weight, int italic )
+ {
+ #ifdef WNT
+Index: oce/src/OpenGl/OpenGl_togl_redraw.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_togl_redraw.cxx
++++ oce/src/OpenGl/OpenGl_togl_redraw.cxx
+@@ -62,6 +62,10 @@
+ #include <InterfaceGraphic_Graphic3d.hxx>
+ #include <InterfaceGraphic_Visual3d.hxx>
+ 
++#if defined(__MINGW32__)
++# include <GL/glext.h>
++#endif
++
+ void EXPORT
+ call_togl_redraw
+ (
+Index: oce/src/OpenGl/OpenGl_txgl.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_txgl.cxx
++++ oce/src/OpenGl/OpenGl_txgl.cxx
+@@ -105,6 +105,14 @@
+ * Variables statiques
+ */
+ 
++#ifndef _MSC_VER
++# define __leave goto leave
++#endif
++#if defined(__CYGWIN32__) || defined(__MINGW32__)
++# define  __try
++# define  __finally
++#endif
++
+ #ifndef WNT
+ typedef NCollection_DataMap<Tint, GLCONTEXT> GLContextMap;
+ #else
+@@ -705,6 +713,9 @@
+         retVal = TFailure;  
+       } else retVal = TSuccess;
+ 
++#ifndef _MSC_VER
++      leave: ;
++#endif     
+     }  /* end __try */
+ 
+ 
+Index: oce/src/PlotMgt/PlotMgt.cxx
+===================================================================
+--- oce.orig/src/PlotMgt/PlotMgt.cxx
++++ oce/src/PlotMgt/PlotMgt.cxx
+@@ -253,7 +253,7 @@
+   // Letter, Legal, Statement, Executive, Folio, Quarto
+   21.59,  21.59,  13.97,  18.41,  21.59,  21.50,
+   // Envelope, Monarch
+-  11.00,  09.84
++  11.00,   9.84
+ };
+ 
+ static Standard_Real aPaperLengths [] = {
+Index: oce/src/Poly/Poly_CoherentNode.cxx
+===================================================================
+--- oce.orig/src/Poly/Poly_CoherentNode.cxx
++++ oce/src/Poly/Poly_CoherentNode.cxx
+@@ -11,6 +11,8 @@
+ #pragma warning(disable:4291 4996)
+ #endif
+ 
++#include <stdio.h>
++
+ //=======================================================================
+ //function : Clear
+ //purpose  : 
+Index: oce/src/STEPConstruct/STEPConstruct_AP203Context.cxx
+===================================================================
+--- oce.orig/src/STEPConstruct/STEPConstruct_AP203Context.cxx
++++ oce/src/STEPConstruct/STEPConstruct_AP203Context.cxx
+@@ -48,6 +48,10 @@
+ #include <StepAP203_HArray1OfApprovedItem.hxx>
+ #include <StepBasic_ProductCategory.hxx>
+ 
++#ifdef __BORLANDC__
++# define timezone _timezone
++#endif
++
+ //=======================================================================
+ //function : STEPConstruct_AP203Context
+ //purpose  : 
+Index: oce/src/Standard/Standard_MMgrOpt.cxx
+===================================================================
+--- oce.orig/src/Standard/Standard_MMgrOpt.cxx
++++ oce/src/Standard/Standard_MMgrOpt.cxx
+@@ -846,7 +846,11 @@
+     // recover handle to the memory mapping stored just before the block
+     const HANDLE * aMBlock = (const HANDLE *)aBlock;
+     HANDLE hMap = *(--aMBlock);
++#ifndef __MINGW32__
+     UnmapViewOfFile((LPCVOID)aMBlock);
++#else
++    UnmapViewOfFile(const_cast<void*>((LPCVOID)aMBlock));
++#endif
+     CloseHandle (hMap);
+ #endif
+   }
+Index: oce/src/Standard/Standard_osd_ffi.c
+===================================================================
+--- oce.orig/src/Standard/Standard_osd_ffi.c
++++ oce/src/Standard/Standard_osd_ffi.c
+@@ -36,7 +36,7 @@
+ *             apres l'avoir ouvert.
+ *
+ ************************************************************/
+-#if defined(_MSC_VER) && !defined(WNT)
++#if (defined(_MSC_VER) || defined(__BORLANDC__)) && !defined(WNT)
+ #error "Wrong compiler options has been detected. Add /DWNT option for proper compilation!!!!!"
+ #endif
+ 
+Index: oce/src/TObj/TObj_Model.cxx
+===================================================================
+--- oce.orig/src/TObj/TObj_Model.cxx
++++ oce/src/TObj/TObj_Model.cxx
+@@ -37,6 +37,8 @@
+   #include <unistd.h>
+ #endif
+ 
++#include <stdio.h>
++
+ IMPLEMENT_STANDARD_HANDLE(TObj_Model,MMgt_TShared)
+ IMPLEMENT_STANDARD_RTTIEXT(TObj_Model,MMgt_TShared)
+ 
+Index: oce/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
+===================================================================
+--- oce.orig/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
++++ oce/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
+@@ -325,7 +325,11 @@
+   if (!strcmp(a[0],"tchk")) { 
+ #ifdef DEB
+ //    Standard_IMPORT extern Standard_Integer TopOpeBRepTool_BOOOPE_CHECK_DEB;
++#ifdef __BORLANDC__
++    extern Standard_Integer TopOpeBRepTool_BOOOPE_CHECK_DEB;
++#else
+     Standard_IMPORT Standard_Integer TopOpeBRepTool_BOOOPE_CHECK_DEB;
++#endif
+     if ( na >= 2 ) TopOpeBRepTool_BOOOPE_CHECK_DEB = (atoi(a[1])) ? 1 : 0;
+ #endif
+     return 0;
+Index: oce/src/Viewer2dTest/Viewer2dTest_DisplayCommands.cxx
+===================================================================
+--- oce.orig/src/Viewer2dTest/Viewer2dTest_DisplayCommands.cxx
++++ oce/src/Viewer2dTest/Viewer2dTest_DisplayCommands.cxx
+@@ -73,6 +73,8 @@
+ #include <Prs2d_Circularity.hxx>
+ #include <Prs2d_Parallelism.hxx>
+ 
++#include <stdio.h>
++
+ #define OCC190 // jfa 04/03/2002 // for vertices load
+ #define OCC154 // jfa 06/03/2002 // for correct erasing
+ 
+Index: oce/src/Viewer2dTest/Viewer2dTest_ViewerCommands.cxx
+===================================================================
+--- oce.orig/src/Viewer2dTest/Viewer2dTest_ViewerCommands.cxx
++++ oce/src/Viewer2dTest/Viewer2dTest_ViewerCommands.cxx
+@@ -823,7 +823,7 @@
+ //function : ViewerMainLoop2d
+ //purpose  : Get a Event on the view and dispatch it
+ //==============================================================================
+-static int ViewerMainLoop2d (Standard_Integer argc, const char** argv)
++int ViewerMainLoop2d (Standard_Integer argc, const char** argv)
+ {
+   cout << "No yet implemented on WNT" << endl;
+   static Standard_Boolean Ppick = 0;
+Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
+===================================================================
+--- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
++++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
+@@ -47,6 +47,13 @@
+ 
+ #endif
+ 
++#ifndef max
++# define max(a, b)  (((a) > (b)) ? (a) : (b))
++#endif
++#ifndef min
++# define min(a, b)  (((a) < (b)) ? (a) : (b)) 
++#endif
++
+ #define OCC120
+ 
+ //==============================================================================
+@@ -933,9 +940,7 @@
+ //function : ViewerMainLoop
+ //purpose  : Get a Event on the view and dispatch it
+ //==============================================================================
+-
+-
+-static int ViewerMainLoop(Standard_Integer argc, const char** argv)
++int ViewerMainLoop(Standard_Integer argc, const char** argv)
+ {
+ 
+   //cout << "No yet implemented on WNT" << endl;
+@@ -972,22 +977,6 @@
+ 
+ #else
+ 
+-int min( int a, int b )
+-{
+-  if( a<b )
+-    return a;
+-  else
+-    return b;
+-}
+-
+-int max( int a, int b )
+-{
+-  if( a>b )
+-    return a;
+-  else
+-    return b;
+-}
+-
+ int ViewerMainLoop(Standard_Integer argc, const char** argv)
+ 
+ { Standard_Boolean pick = argc > 0;
+Index: oce/src/Voxel/Voxel_Reader.cxx
+===================================================================
+--- oce.orig/src/Voxel/Voxel_Reader.cxx
++++ oce/src/Voxel/Voxel_Reader.cxx
+@@ -12,6 +12,8 @@
+ 
+ #include <TCollection_AsciiString.hxx>
+ 
++#include <stdio.h>
++
+ Voxel_Reader::Voxel_Reader():myBoolVoxels(0),myColorVoxels(0),myFloatVoxels(0)
+ {
+ 
+Index: oce/src/Voxel/Voxel_Writer.cxx
+===================================================================
+--- oce.orig/src/Voxel/Voxel_Writer.cxx
++++ oce/src/Voxel/Voxel_Writer.cxx
+@@ -9,6 +9,8 @@
+ #include <Precision.hxx>
+ #include <TCollection_AsciiString.hxx>
+ 
++#include <stdio.h>
++
+ Voxel_Writer::Voxel_Writer():myFormat(Voxel_VFF_ASCII),myBoolVoxels(0),myColorVoxels(0),myFloatVoxels(0)
+ {
+ 
+Index: oce/src/VrmlData/VrmlData_Geometry.cxx
+===================================================================
+--- oce.orig/src/VrmlData/VrmlData_Geometry.cxx
++++ oce/src/VrmlData/VrmlData_Geometry.cxx
+@@ -28,6 +28,8 @@
+ #pragma warning (disable:4996)
+ #endif
+ 
++#include <stdio.h>
++
+ IMPLEMENT_STANDARD_HANDLE  (VrmlData_Geometry, VrmlData_Node)
+ IMPLEMENT_STANDARD_RTTIEXT (VrmlData_Geometry, VrmlData_Node)
+ IMPLEMENT_STANDARD_HANDLE  (VrmlData_Box, VrmlData_Geometry)
+Index: oce/src/VrmlData/VrmlData_Group.cxx
+===================================================================
+--- oce.orig/src/VrmlData/VrmlData_Group.cxx
++++ oce/src/VrmlData/VrmlData_Group.cxx
+@@ -19,6 +19,8 @@
+ #pragma warning (disable:4996)
+ #endif
+ 
++#include <stdio.h>
++
+ IMPLEMENT_STANDARD_HANDLE  (VrmlData_Group, VrmlData_Node)
+ IMPLEMENT_STANDARD_RTTIEXT (VrmlData_Group, VrmlData_Node)
+ 
+Index: oce/src/VrmlData/VrmlData_IndexedFaceSet.cxx
+===================================================================
+--- oce.orig/src/VrmlData/VrmlData_IndexedFaceSet.cxx
++++ oce/src/VrmlData/VrmlData_IndexedFaceSet.cxx
+@@ -25,6 +25,8 @@
+ #pragma warning (disable:4996)
+ #endif
+ 
++#include <stdio.h>
++
+ IMPLEMENT_STANDARD_HANDLE  (VrmlData_Faceted, VrmlData_Geometry)
+ IMPLEMENT_STANDARD_RTTIEXT (VrmlData_Faceted, VrmlData_Geometry)
+ IMPLEMENT_STANDARD_HANDLE  (VrmlData_IndexedFaceSet, VrmlData_Faceted)
+Index: oce/src/VrmlData/VrmlData_Material.cxx
+===================================================================
+--- oce.orig/src/VrmlData/VrmlData_Material.cxx
++++ oce/src/VrmlData/VrmlData_Material.cxx
+@@ -14,6 +14,8 @@
+ #pragma warning (disable:4996)
+ #endif
+ 
++#include <stdio.h>
++
+ IMPLEMENT_STANDARD_HANDLE  (VrmlData_Material, VrmlData_Node)
+ IMPLEMENT_STANDARD_RTTIEXT (VrmlData_Material, VrmlData_Node)
+ 
+Index: oce/src/VrmlData/VrmlData_Scene.cxx
+===================================================================
+--- oce.orig/src/VrmlData/VrmlData_Scene.cxx
++++ oce/src/VrmlData/VrmlData_Scene.cxx
+@@ -38,6 +38,8 @@
+ #pragma warning (disable:4996)
+ #endif
+ 
++#include <stdio.h>
++
+ static void     dumpNode        (Standard_OStream&              theStream,
+                                  const Handle(VrmlData_Node)&   theNode,
+                                  const TCollection_AsciiString& theIndent);
+@@ -82,8 +84,12 @@
+   if (theN.IsNull() == Standard_False)
+     if (theN->IsKind (STANDARD_TYPE(VrmlData_WorldInfo)) == Standard_False) {
+       myMutex.Lock();
+-      const Handle(VrmlData_Node)& aNode =
+-        myAllNodes.Append ((&theN->Scene()== this) ? theN : theN->Clone (NULL));
++      Handle(VrmlData_Node) theItem;
++      if (&theN->Scene() == this)
++        theItem = theN;
++      else
++        theItem = theN->Clone (NULL);
++      const Handle(VrmlData_Node)& aNode = myAllNodes.Append (theItem);
+       // Name is checked for uniqueness. If not, letter 'D' is appended until
+       // the name proves to be unique.
+       if (aNode->Name()[0] != '\0')
+Index: oce/src/VrmlData/VrmlData_ShapeConvert.cxx
+===================================================================
+--- oce.orig/src/VrmlData/VrmlData_ShapeConvert.cxx
++++ oce/src/VrmlData/VrmlData_ShapeConvert.cxx
+@@ -284,8 +284,12 @@
+         if (aTShapeNode.IsNull() == Standard_False) {
+           const Handle(VrmlData_ShapeNode) aShapeNode =
+             new VrmlData_ShapeNode (myScene, 0L);
+-          aShapeNode->SetAppearance (ShapeType[i] == TopAbs_FACE ?
+-                                     defaultMaterialFace():defaultMaterialEdge());
++          Handle(VrmlData_Appearance) theApp;
++          if (ShapeType[i] == TopAbs_FACE)
++            theApp = defaultMaterialFace();
++          else
++            theApp = defaultMaterialEdge();
++          aShapeNode->SetAppearance (theApp);
+           myScene.AddNode (aShapeNode, Standard_False);
+           aShapeNode->SetGeometry (aTShapeNode);
+           if (aLoc.IsIdentity())
+Index: oce/src/VrmlData/VrmlData_WorldInfo.cxx
+===================================================================
+--- oce.orig/src/VrmlData/VrmlData_WorldInfo.cxx
++++ oce/src/VrmlData/VrmlData_WorldInfo.cxx
+@@ -13,6 +13,8 @@
+ #pragma warning (disable:4996)
+ #endif
+ 
++#include <stdio.h>
++
+ IMPLEMENT_STANDARD_HANDLE  (VrmlData_WorldInfo, VrmlData_Node)
+ IMPLEMENT_STANDARD_RTTIEXT (VrmlData_WorldInfo, VrmlData_Node)
+ 
+Index: oce/src/WNT/EHDC.cxx
+===================================================================
+--- oce.orig/src/WNT/EHDC.cxx
++++ oce/src/WNT/EHDC.cxx
+@@ -9,9 +9,19 @@
+ #include <math.h>
+ #include <limits>
+ 
++#ifdef __MINGW32__
++# include <stdlib.h>
++# include <limits.h>
++# define min(a,b) ((a)<(b)?(a):(b))
++#endif
++
+ #define ROUNDL( d ) ( LONG )(  ( d ) + 0.5  )
+ #define Y( y )      (  mySize.cy - ( y )  )
+ 
++#ifndef min
++# define min(a, b)  (((a) < (b)) ? (a) : (b))
++#endif
++
+ typedef struct _fpoint {
+ 
+                 FLOAT x;
+@@ -33,6 +43,8 @@
+ static void WINAPI _RenderPath ( HDC, LPPOINT, PBYTE, int );
+ static int  WINAPI _TextPath   ( HDC, int, int, void*, LPPOINT, PBYTE, int, PSIZE, BOOL );
+ 
++VOID CALLBACK ___auxDDAF ( int x, int y, LPARAM lpParam );
++ 
+ EHDC :: EHDC ( HDC hdc, PSIZE szClient ) {
+ 
+  _Init ();
+Index: oce/src/WNT/W95_Allocator.cxx
+===================================================================
+--- oce.orig/src/WNT/W95_Allocator.cxx
++++ oce/src/WNT/W95_Allocator.cxx
+@@ -13,9 +13,21 @@
+ #include <math.h>
+ #include <limits>
+ 
++#ifdef __MINGW32__
++# include <stdlib.h>
++# include <limits.h>
++#endif
++
+ #define SGN( x )  (   ( x ) > 0 ? 1 : (  ( x ) < 0 ? -1 : 0 )   )
+ #define ALLOCATOR (   ( PW95_Allocator )myAllocator             )
+ 
++#ifndef min
++# define min(a, b)  (((a) < (b)) ? (a) : (b))
++#endif
++#ifndef max
++# define max(a, b)  (((a) > (b)) ? (a) : (b))
++#endif
++
+ #define MIN4( a, b, c, d ) min(   min(  ( a ), ( b )  ), min(  ( c ), ( d )  )   )
+ #define MAX4( a, b, c, d ) max(   max(                                       \
+                                    (  ( a ) == INT_MAX ? INT_MIN : ( a )  ), \
+Index: oce/src/WNT/WNT_Allocator.cxx
+===================================================================
+--- oce.orig/src/WNT/WNT_Allocator.cxx
++++ oce/src/WNT/WNT_Allocator.cxx
+@@ -15,6 +15,10 @@
+ #include <limits>
+ #include <stdio.h>
+ 
++#ifndef max
++# define max(a, b)  (((a) > (b)) ? (a) : (b))
++#endif
++
+ #define ALLOCATOR ( ( PWNT_Allocator )myAllocator )
+ 
+ static XFORM xfmIdent = { ( FLOAT )0.8660,  ( FLOAT )0.5000,
+Index: oce/src/WNT/WNT_DDriver.cxx
+===================================================================
+--- oce.orig/src/WNT/WNT_DDriver.cxx
++++ oce/src/WNT/WNT_DDriver.cxx
+@@ -50,6 +50,13 @@
+ #include <time.h>
+ #include <stdio.h>
+ 
++#ifdef __MINGW32__
++# include <w32api.h>
++# if (__W32API_MAJOR_VERSION < 3) || (__W32API_MAJOR_VERSION == 3 && __W32API_MINOR_VERSION <= 13)
++#  define MINGW_OLD_ENHMFENUMPROC_PROTOTYPE
++# endif
++#endif
++
+ #pragma comment( lib, "winspool.lib" )
+ #pragma comment( lib, "advapi32.lib" )
+ 
+@@ -102,7 +109,12 @@
+ static int  __fastcall         _dd_dev_size  ( HDC, int );
+ 
+ static int CALLBACK _dd_enum_proc (
+-                     HDC, HANDLETABLE FAR*, CONST ENHMETARECORD FAR*,
++                     HDC, HANDLETABLE FAR*,
++#ifndef MINGW_OLD_ENHMFENUMPROC_PROTOTYPE
++                     CONST ENHMETARECORD FAR*,
++#else
++                     ENHMETARECORD FAR*,
++#endif
+                      int, LPARAM
+                     );
+ 
+@@ -1983,10 +1995,15 @@
+ static int CALLBACK _dd_enum_proc (
+                      HDC                         hDC,
+                      HANDLETABLE FAR*       lpHTable,
++#ifndef MINGW_OLD_ENHMFENUMPROC_PROTOTYPE
+                      CONST ENHMETARECORD FAR* lpEMFR,
++#else
++                     ENHMETARECORD FAR* lpEMFR,
++#endif
+                      int                        nObj,
+                      LPARAM                   lpData
+-                    ) {
++                    ) 
++{
+ 
+  int retVal = 1;
+ 
+Index: oce/src/WNT/WNT_IconBox.cxx
+===================================================================
+--- oce.orig/src/WNT/WNT_IconBox.cxx
++++ oce/src/WNT/WNT_IconBox.cxx
+@@ -30,7 +30,7 @@
+                ) : WNT_Window (
+                     aDevice, aName,
+                     new WNT_WClass (
+-                         "WNT_IconBoxClass", WNT_IconBoxWndProc,
++                         "WNT_IconBoxClass", (void*)WNT_IconBoxWndProc,
+                          CS_HREDRAW | CS_VREDRAW
+                         ),
+                     aStyle | WS_VSCROLL,
+@@ -322,8 +322,11 @@
+ 
+  }  // end for
+ 
+- return ( i > len ) ? Standard_False :
+-                      myImages -> Dim ( i, Width, Height ), Standard_True;
++ if ( i > len ) {
++   return Standard_False;
++ }
++ myImages -> Dim ( i, Width, Height );
++ return Standard_True;
+ 
+ }  // end WNT_IconBox :: IconSize
+ //***//
+Index: oce/src/WNT/WNT_ImageProcessor.cxx
+===================================================================
+--- oce.orig/src/WNT/WNT_ImageProcessor.cxx
++++ oce/src/WNT/WNT_ImageProcessor.cxx
+@@ -49,6 +49,15 @@
+ #endif  /* _DEBUG */
+ #define WINNT35X() (WNT_osVer.dwPlatformId   == VER_PLATFORM_WIN32_NT && \
+                     WNT_osVer.dwMajorVersion == 3 )
++
++#ifndef _MSC_VER
++# define __leave goto leave
++#endif
++#ifdef __MINGW32__
++# define __finally catch(...)
++#endif
++
++
+ //***//
+ typedef struct {
+ 
+@@ -184,6 +193,10 @@
+ 
+    retVal = loadXWD ( gDev );
+ 
++#ifndef _MSC_VER
++  leave: ;
++#endif
++
+  }  // end __try
+ 
+  __finally {
+@@ -244,6 +257,10 @@
+ 
+   retVal = SaveBitmapToFile ( gDev, hBmp, fName, 0, 0, w, h );
+ 
++#ifndef _MSC_VER
++  leave: ;
++#endif
++
+  }  // end __try
+ 
+  __finally {
+@@ -385,6 +402,9 @@
+ 
+     retVal = DumpBitmapToFile (gDev, NULL,
+                                hNewBmp, fName);
++#ifndef _MSC_VER
++    leave: ;
++#endif
+   }  // end __try
+   __finally {
+     if (hNewBmp != NULL && newBmp) DeleteObject (hNewBmp);
+@@ -827,6 +847,10 @@
+ 
+    SelectPalette ( hDC, hOldPal, FALSE );
+ 
++#ifndef _MSC_VER
++  leave: ;
++#endif
++
+  }  // end try
+ 
+  __finally {
+@@ -976,6 +1000,9 @@
+ 
+    SelectPalette ( hDC, hOldPal, FALSE );
+ 
++#ifndef _MSC_VER
++  leave: ;
++#endif
+  }  // end __try
+ 
+  __finally {
+@@ -1251,6 +1278,10 @@
+ 
+    SelectPalette ( hDC, hOldPal, FALSE );
+ 
++#ifndef _MSC_VER
++  leave: ;
++#endif
++
+  }  // end __try
+ 
+  __finally {
+Index: oce/src/WNT/WNT_WClass.cxx
+===================================================================
+--- oce.orig/src/WNT/WNT_WClass.cxx
++++ oce/src/WNT/WNT_WClass.cxx
+@@ -47,7 +47,7 @@
+ 
+   lpszName = new char[ strlen ( aClassName ) + 1 ];
+   strcpy ( (Standard_PCharacter)lpszName, aClassName );
+-  lpfnWndProc = wc.lpfnWndProc;
++  lpfnWndProc = (void*)wc.lpfnWndProc;
+ 
+ }  // end constructor
+ 
+Index: oce/src/WNT/WNT_Window.cxx
+===================================================================
+--- oce.orig/src/WNT/WNT_Window.cxx
++++ oce/src/WNT/WNT_Window.cxx
+@@ -514,10 +514,10 @@
+ 
+  if ( wp.showCmd != SW_SHOWMINIMIZED ) {
+ 
+-  if (  Abs ( wp.rcNormalPosition.left   - aXLeft   ) > 2  ) mask |= 1;
+-  if (  Abs ( wp.rcNormalPosition.right  - aXRight  ) > 2  ) mask |= 2;
+-  if (  Abs ( wp.rcNormalPosition.top    - aYTop    ) > 2  ) mask |= 4;
+-  if (  Abs ( wp.rcNormalPosition.bottom - aYBottom ) > 2  ) mask |= 8;
++  if (  Abs ( (Standard_Integer) wp.rcNormalPosition.left   - aXLeft   ) > 2  ) mask |= 1;
++  if (  Abs ( (Standard_Integer) wp.rcNormalPosition.right  - aXRight  ) > 2  ) mask |= 2;
++  if (  Abs ( (Standard_Integer) wp.rcNormalPosition.top    - aYTop    ) > 2  ) mask |= 4;
++  if (  Abs ( (Standard_Integer) wp.rcNormalPosition.bottom - aYBottom ) > 2  ) mask |= 8;
+ 
+   switch ( mask ) {
+ 
+@@ -1207,7 +1207,7 @@
+ 
+  if ( wProc != &WNT_WndProc ) {
+ 
+-  myWndProc = wProc;
++  myWndProc = (void*)wProc;
+ 
+   SetBackground ( aBackColor );
+ 
+Index: oce/src/XmlMDataStd/XmlMDataStd_NamedDataDriver.cxx
+===================================================================
+--- oce.orig/src/XmlMDataStd/XmlMDataStd_NamedDataDriver.cxx
++++ oce/src/XmlMDataStd/XmlMDataStd_NamedDataDriver.cxx
+@@ -42,6 +42,8 @@
+ IMPLEMENT_DOMSTRING (ExtString, "string")
+ IMPLEMENT_DOMSTRING (Value,     "value")
+ 
++#include <stdio.h>
++
+ #define OCC6010
+ 
+ #ifdef WNT
+Index: oce/src/XmlMXCAFDoc/XmlMXCAFDoc_DimTolDriver.cxx
+===================================================================
+--- oce.orig/src/XmlMXCAFDoc/XmlMXCAFDoc_DimTolDriver.cxx
++++ oce/src/XmlMXCAFDoc/XmlMXCAFDoc_DimTolDriver.cxx
+@@ -9,6 +9,8 @@
+ #include <TCollection_HAsciiString.hxx>
+ #include <TColStd_HArray1OfReal.hxx>
+ 
++#include <stdio.h>
++
+ IMPLEMENT_DOMSTRING (NameIndexString,  "name")
+ IMPLEMENT_DOMSTRING (DescrIndexString, "descr")
+ IMPLEMENT_DOMSTRING (FirstIndexString, "first")

@@ -1,0 +1,23 @@
+commit f7510549b109dcf950406b283956df84f56147fa
+Author: Denis Barbier <bouzim@gmail.com>
+Date:   Wed Apr 6 22:30:55 2011 +0200
+
+    Bug fix: Text doesn't get displayed in 6.5
+    
+    Submitted upstream: http://www.opencascade.org/org/forum/thread_20101/
+    
+    Based on a patch provided on the opencascade forum by Venugopal Gudimetla.
+
+Index: oce/src/OSD/OSD_FontMgr.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_FontMgr.cxx
++++ oce/src/OSD/OSD_FontMgr.cxx
+@@ -236,7 +236,7 @@
+ #ifndef WNT
+   StringList dirs;
+   Handle(TCollection_HAsciiString) str = new TCollection_HAsciiString;
+-  Display * disp = XOpenDisplay("localhost:0.0");
++  Display * disp = XOpenDisplay(NULL);
+ 
+   if ( !disp ) 
+   {

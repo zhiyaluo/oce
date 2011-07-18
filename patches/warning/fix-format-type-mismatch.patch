@@ -1,0 +1,65 @@
+From: tpaviot <tpaviot@gmail.com>
+Date: Tue, 24 May 2011 05:54:24 +0200
+Subject: [PATCH 27/82] [warning-fix][format-type-mismatch]
+
+Fixed format %d expects type int but argument XX is long unsigned int
+---
+ src/NCollection/NCollection_BaseAllocator.cxx |    4 ++--
+ src/NCollection/NCollection_HeapAllocator.cxx |    2 +-
+ src/VrmlData/VrmlData_Scene.cxx               |    4 ++--
+ 3 files changed, 5 insertions(+), 5 deletions(-)
+
+Index: oce/src/NCollection/NCollection_BaseAllocator.cxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_BaseAllocator.cxx
++++ oce/src/NCollection/NCollection_BaseAllocator.cxx
+@@ -122,12 +122,12 @@
+     Standard_Integer nbLeft = aInfo.nbAlloc - aInfo.nbFree;
+     Standard_Size aSizeAlloc = aInfo.nbAlloc * aInfo.roundSize;
+     Standard_Size aSizeLeft = nbLeft * aInfo.roundSize;
+-    printf("%12d %12d %12d %12d %12d\n", aInfo.roundSize,
++    printf("%12lu %12d %12d %12lu %12lu\n", aInfo.roundSize,
+            aInfo.nbAlloc, nbLeft, aSizeAlloc, aSizeLeft);
+     aTotAlloc += aSizeAlloc;
+     aTotLeft += aSizeLeft;
+   }
+-  printf("%12s %12s %12s %12d %12d\n", "Total:", "", "",
++  printf("%12s %12s %12s %12lu %12lu\n", "Total:", "", "",
+          aTotAlloc, aTotLeft);
+   fflush(stdout);
+ }
+Index: oce/src/NCollection/NCollection_HeapAllocator.cxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_HeapAllocator.cxx
++++ oce/src/NCollection/NCollection_HeapAllocator.cxx
+@@ -23,7 +23,7 @@
+   void * pResult = malloc(aRoundSize);
+   if (!pResult) {
+     char buf[128];
+-    sprintf (buf, "Failed to allocate %d bytes in global dynamic heap",theSize);
++    sprintf (buf, "Failed to allocate %lu bytes in global dynamic heap",theSize);
+     Standard_OutOfMemory::Raise(&buf[0]);
+   }
+   return pResult;
+Index: oce/src/VrmlData/VrmlData_Scene.cxx
+===================================================================
+--- oce.orig/src/VrmlData/VrmlData_Scene.cxx
++++ oce/src/VrmlData/VrmlData_Scene.cxx
+@@ -1108,7 +1108,7 @@
+     const Standard_Size nCoord = aNode->Coordinates()->Length();
+     const Standard_Size nPoly  = aNode->Polygons (ppDummy);
+     char buf[64];
+-    sprintf (buf, "IndexedFaceSet (%d vertices, %d polygons)", nCoord, nPoly);
++    sprintf (buf, "IndexedFaceSet (%lu vertices, %lu polygons)", nCoord, nPoly);
+     dumpNodeHeader (theStream, theIndent, buf, theNode->Name());
+   } else if (theNode->IsKind(STANDARD_TYPE(VrmlData_IndexedLineSet))) {
+     const Handle(VrmlData_IndexedLineSet) aNode =
+@@ -1117,7 +1117,7 @@
+     const Standard_Size nCoord = aNode->Coordinates()->Length();
+     const Standard_Size nPoly  = aNode->Polygons (ppDummy);
+     char buf[64];
+-    sprintf (buf, "IndexedLineSet (%d vertices, %d polygons)", nCoord, nPoly);
++    sprintf (buf, "IndexedLineSet (%lu vertices, %lu polygons)", nCoord, nPoly);
+     dumpNodeHeader (theStream, theIndent, buf, theNode->Name());
+   } else if (theNode->IsKind(STANDARD_TYPE(VrmlData_Material))) {
+ //     const Handle(VrmlData_Material) aMaterial = 

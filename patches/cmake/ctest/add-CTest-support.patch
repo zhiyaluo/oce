@@ -1,0 +1,306 @@
+From: tpaviot <tpaviot@gmail.com>
+Date: Tue, 21 Jun 2011 12:56:21 +0200
+Subject: [PATCH 14/82] Added support for CDash/CTest/gtest
+
+---
+ CMakeLists.txt                      |    7 +++++
+ CTestConfig.cmake                   |    7 +++++
+ test/CMakeLists.txt                 |   11 ++++++++
+ test/gp_test/CMakeLists.txt         |    7 +++++
+ test/gp_test/gp_test.cpp            |   30 ++++++++++++++++++++++
+ test/gtest_tutorial/CMakeLists.txt  |    6 ++++
+ test/gtest_tutorial/simple_test.cpp |   47 +++++++++++++++++++++++++++++++++++
+ 7 files changed, 115 insertions(+), 0 deletions(-)
+ create mode 100644 CTestConfig.cmake
+ create mode 100644 test/CMakeLists.txt
+ create mode 100644 test/gp_test/CMakeLists.txt
+ create mode 100644 test/gp_test/gp_test.cpp
+ create mode 100644 test/gtest_tutorial/CMakeLists.txt
+ create mode 100644 test/gtest_tutorial/simple_test.cpp
+
+From: tpaviot <tpaviot@gmail.com>
+Date: Wed, 22 Jun 2011 06:11:02 +0200
+Subject: [PATCH 15/82] GTest changes: * use of GTEST_ADD_TESTS macro to run
+ atomic unittests. Such tests are known to run slower
+ than with ADD_TEST * added BRepPrimAPI tests * added
+ ASSERT_THROW example in BRepPrimAPI test *
+ gtest_tutorial renamed to gtest_sandbox
+
+---
+ test/BRepPrimAPI_test/BRepPrimAPI_test.cpp |   34 +++++++++++++++++++
+ test/BRepPrimAPI_test/CMakeLists.txt       |    8 ++++
+ test/CMakeLists.txt                        |    4 +-
+ test/gp_test/CMakeLists.txt                |    3 +-
+ test/gp_test/gp_test.cpp                   |    6 ++--
+ test/gtest_sandbox/CMakeLists.txt          |    6 +++
+ test/gtest_sandbox/sandbox.cpp             |   49 ++++++++++++++++++++++++++++
+ test/gtest_tutorial/CMakeLists.txt         |    6 ---
+ test/gtest_tutorial/simple_test.cpp        |   47 --------------------------
+ 9 files changed, 104 insertions(+), 59 deletions(-)
+ create mode 100644 test/BRepPrimAPI_test/BRepPrimAPI_test.cpp
+ create mode 100644 test/BRepPrimAPI_test/CMakeLists.txt
+ create mode 100644 test/gtest_sandbox/CMakeLists.txt
+ create mode 100644 test/gtest_sandbox/sandbox.cpp
+ delete mode 100644 test/gtest_tutorial/CMakeLists.txt
+ delete mode 100644 test/gtest_tutorial/simple_test.cpp
+
+From: tpaviot <tpaviot@gmail.com>
+Date: Wed, 22 Jun 2011 06:51:03 +0200
+Subject: [PATCH 16/82] Added an OCE_TESTING option to CMakeLists, marked as
+ advanced
+
+---
+ CMakeLists.txt |   10 +++++++---
+ 1 files changed, 7 insertions(+), 3 deletions(-)
+
+From: tpaviot <tpaviot@gmail.com>
+Date: Wed, 22 Jun 2011 08:20:20 +0200
+Subject: [PATCH 17/82] CTest changes to CMakeLists.txt: * added OCE_TESTING
+ option * added OCE_COVERAGE option * added
+ compilation flags for code coverage * added use of
+ the FIND_PACKAGE(GTest) macro
+
+---
+ CMakeLists.txt      |   33 ++++++++++++++++++++++-----------
+ test/CMakeLists.txt |    7 -------
+ 2 files changed, 22 insertions(+), 18 deletions(-)
+
+From: tpaviot <tpaviot@gmail.com>
+Date: Thu, 23 Jun 2011 14:08:05 +0200
+Subject: [PATCH 18/82] Build static lib in case of code coverage test (much
+ better report sent to CDash)
+
+---
+ CMakeLists.txt |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+Index: oce/CMakeLists.txt
+===================================================================
+--- oce.orig/CMakeLists.txt
++++ oce/CMakeLists.txt
+@@ -86,6 +86,11 @@
+ OPTION_WITH_DEFAULT( ${PROJECT_NAME}_WITH_FREEIMAGE "Build with FreeImage" OFF )
+ OPTION_WITH_DEFAULT( ${PROJECT_NAME}_EXTRA_WARNINGS "Enable Maximum Warnings Level" OFF )
+ MARK_AS_ADVANCED(${PROJECT_NAME}_EXTRA_WARNINGS)
++OPTION_WITH_DEFAULT( ${PROJECT_NAME}_TESTING "Enable unittesting framework" OFF )
++MARK_AS_ADVANCED(${PROJECT_NAME}_TESTING)
++OPTION_WITH_DEFAULT( ${PROJECT_NAME}_COVERAGE "Build with coverage testing" OFF )
++MARK_AS_ADVANCED(${PROJECT_NAME}_COVERAGE)
++
+ 
+ IF( NOT DEFINED ${PROJECT_NAME}_MULTITHREAD_LIBRARY)
+ 	SET( ${PROJECT_NAME}_MULTITHREAD_LIBRARY "NONE" CACHE STRING "(values are: NONE TBB OPENMP)" )
+@@ -789,6 +794,25 @@
+ INSTALL(EXPORT ${PROJECT_NAME}-libraries DESTINATION ${${PROJECT_NAME}_INSTALL_CMAKE_DATA_DIR} COMPONENT Development)
+ ENDIF(NOT (WIN32 AND (CMAKE_CONFIGURATION_TYPES OR NMAKE)))
+ 
++###############
++# UnitTesting #
++###############
++IF(${PROJECT_NAME}_TESTING)
++    SET( ${PROJECT_NAME}_EXTRA_WARNINGS ON CACHE BOOL "Extra warnings required by testing framework" FORCE)
++    INCLUDE(CTest)
++    ENABLE_TESTING()
++    SUBDIRS(test)	
++ENDIF(${PROJECT_NAME}_TESTING)
++IF(${PROJECT_NAME}_COVERAGE)
++    SET(${PROJECT_NAME}_TESTING ON CACHE BOOL "Testing enabled by coverage option" FORCE)
++    # build static libs, better coverage report
++    SET( ${PROJECT_NAME}_BUILD_SHARED_LIB OFF CACHE BOOL "Build static libs" FORCE )
++    SET(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -fprofile-arcs -ftest-coverage" CACHE STRING "Extra compile flags required by code coverage" FORCE)
++    SET(CMAKE_C_FLAGS_DEBUG "-O0 -g -fprofile-arcs -ftest-coverage" CACHE STRING "Extra compile flags required by code coverage" FORCE)
++    SET(CMAKE_MODULE_LINKER_FLAGS_DEBUG "-fprofile-arcs -ftest-coverage" CACHE STRING "Extra linker flags required by code coverage" FORCE)
++    SET(${PROJECT_NAME}_BUILD_TYPE "Debug" CACHE STRING "Build type required by testing framework" FORCE)
++ENDIF(${PROJECT_NAME}_COVERAGE)
++
+ ###############################################################################
+ # OCE Packaging                                                               #
+ # $make package                                                               #
+Index: oce/CTestConfig.cmake
+===================================================================
+--- /dev/null
++++ oce/CTestConfig.cmake
+@@ -0,0 +1,7 @@
++SET(CTEST_PROJECT_NAME "OCE")
++SET(CTEST_NIGHTLY_START_TIME "00:00:00 EST")
++
++SET(CTEST_DROP_METHOD "http")
++SET(CTEST_DROP_SITE "my.cdash.org")
++SET(CTEST_DROP_LOCATION "/submit.php?project=OCE")
++SET(CTEST_DROP_SITE_CDASH TRUE)
+Index: oce/test/CMakeLists.txt
+===================================================================
+--- /dev/null
++++ oce/test/CMakeLists.txt
+@@ -0,0 +1,4 @@
++SET(GTEST_ROOT /usr/local/lib)
++FIND_PACKAGE(GTest)
++
++SUBDIRS(gtest_sandbox gp_test BRepPrimAPI_test)
+Index: oce/test/gp_test/CMakeLists.txt
+===================================================================
+--- /dev/null
++++ oce/test/gp_test/CMakeLists.txt
+@@ -0,0 +1,8 @@
++FILE(GLOB TEST_SOURCES *.cpp)
++SET(SOURCE_FILES ${TEST_SOURCES})
++
++ADD_EXECUTABLE(gp_test ${SOURCE_FILES})
++TARGET_LINK_LIBRARIES(gp_test TKG2d)
++TARGET_LINK_LIBRARIES(gp_test gcov ${GTEST_LIBRARY} ${GTEST_MAIN_LIBRARY})
++
++GTEST_ADD_TESTS(gp_test "" ${SOURCE_FILES})
+Index: oce/test/gp_test/gp_test.cpp
+===================================================================
+--- /dev/null
++++ oce/test/gp_test/gp_test.cpp
+@@ -0,0 +1,30 @@
++#include <gp_Pnt.hxx>
++#include <gtest/gtest.h>
++
++TEST(gpTestSuite, testgp_PntConstruct)
++{
++    gp_Pnt P;
++    ASSERT_EQ(0.0,P.X());
++    ASSERT_EQ(0.0,P.Y());
++    ASSERT_EQ(0.0,P.Z());
++}
++
++TEST(gpTestSuite, testgp_PntDistance)
++{
++    gp_Pnt P1(0.,0.,0.);
++    gp_Pnt P2(0.,3.,4.);
++    float D = P1.Distance(P2);
++    ASSERT_EQ(5.,D);
++}
++
++TEST(gpTestSuite, testBuildThousandsPoints)
++{
++    for (int i=1;i<10000;i++) {
++        gp_Pnt(1,2,3);
++    }
++}
++
++int main(int argc, char **argv){
++  testing::InitGoogleTest(&argc, argv);
++  return RUN_ALL_TESTS();
++}
+Index: oce/test/BRepPrimAPI_test/BRepPrimAPI_test.cpp
+===================================================================
+--- /dev/null
++++ oce/test/BRepPrimAPI_test/BRepPrimAPI_test.cpp
+@@ -0,0 +1,34 @@
++#include <BRepPrimAPI_MakeBox.hxx>
++#include <gtest/gtest.h>
++
++TEST(BRepPrimAPITestSuite, testCreateBox)
++{
++    // create a box, mixing integers and floats
++    BRepPrimAPI_MakeBox my_box(10,20.5,30.);
++    my_box.Build();
++    ASSERT_TRUE(my_box.IsDone());
++}
++
++TEST(BRepPrimAPITestSuite, testCreateFlatBox)
++{
++    // one of the length is equal to 0.
++    // OCE must raise Standard_DomainError
++    ASSERT_THROW(BRepPrimAPI_MakeBox my_box(0,30.,30),Standard_DomainError);
++    ASSERT_THROW(BRepPrimAPI_MakeBox my_box(30.,0.,30),Standard_DomainError);
++    ASSERT_THROW(BRepPrimAPI_MakeBox my_box(30.,30.,0.),Standard_DomainError);
++}
++
++TEST(BRepPrimAPITestSuite, testCreateSmallestBox)
++{
++    // all the lengths are equal to Precision::Confusion()
++    // should not raise any exception
++    Standard_Real smallest_length = Precision::Confusion() + 1e-14;
++    BRepPrimAPI_MakeBox my_box(smallest_length,smallest_length,smallest_length);
++    my_box.Build();
++    ASSERT_TRUE(my_box.IsDone());
++}
++
++int main(int argc, char **argv){
++  testing::InitGoogleTest(&argc, argv);
++  return RUN_ALL_TESTS();
++}
+Index: oce/test/BRepPrimAPI_test/CMakeLists.txt
+===================================================================
+--- /dev/null
++++ oce/test/BRepPrimAPI_test/CMakeLists.txt
+@@ -0,0 +1,8 @@
++FILE(GLOB TEST_SOURCES *.cpp)
++SET(SOURCE_FILES ${TEST_SOURCES})
++
++ADD_EXECUTABLE(BRepPrimAPI_test ${SOURCE_FILES})
++TARGET_LINK_LIBRARIES(BRepPrimAPI_test TKPrim)
++TARGET_LINK_LIBRARIES(BRepPrimAPI_test gcov ${GTEST_LIBRARY} ${GTEST_MAIN_LIBRARY})
++
++GTEST_ADD_TESTS(BRepPrimAPI_test "" ${SOURCE_FILES})
+\ No newline at end of file
+Index: oce/test/gtest_sandbox/CMakeLists.txt
+===================================================================
+--- /dev/null
++++ oce/test/gtest_sandbox/CMakeLists.txt
+@@ -0,0 +1,6 @@
++FILE(GLOB TEST_SOURCES *.cpp)
++SET(SOURCE_FILES ${TEST_SOURCES})
++
++ADD_EXECUTABLE(sandbox ${SOURCE_FILES})
++TARGET_LINK_LIBRARIES(sandbox gcov ${GTEST_LIBRARY} ${GTEST_MAIN_LIBRARY})
++ADD_TEST(gtest_sandbox  sandbox)
+\ No newline at end of file
+Index: oce/test/gtest_sandbox/sandbox.cpp
+===================================================================
+--- /dev/null
++++ oce/test/gtest_sandbox/sandbox.cpp
+@@ -0,0 +1,49 @@
++#include <gtest/gtest.h>
++
++/*
++Modify this file to test gtest features, assertions etc.
++
++This example demonstrates how to use gtest to conduct C++ unittesting
++with CTest/CMake.
++A TestSuite is by definition composed of several testCases.
++Declare a first test:
++  - TestSuite is CamelCase
++  - testCase1 is camelCase
++  
++In the following, ASSERT_* is stronger than EXPECT_*
++*/
++
++TEST(TestSuite, testNullPointer)
++{
++    int *i=NULL;
++    ASSERT_EQ(NULL,i);
++}
++
++TEST(TestSuite, testFloatEq)
++{
++    ASSERT_EQ(1.0, 1.0);
++}
++
++TEST(TestSuite, testFloatNeq)
++{
++    EXPECT_NE(.5, 1.);
++}
++
++TEST(TestSuite, testBoolean)
++{
++    bool b = true;
++    EXPECT_TRUE(b);
++}
++
++TEST(TestSuite, testIntegerLighter)
++{
++    int a=1,b=2;
++    EXPECT_LT(a,b);
++}
++
++// Run all the tests that were declared with TEST()
++int main(int argc, char **argv){
++  testing::InitGoogleTest(&argc, argv);
++  return RUN_ALL_TESTS();
++}
++

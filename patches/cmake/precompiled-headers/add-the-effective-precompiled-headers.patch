@@ -1,0 +1,1699 @@
+From: QbProg <tholag@gmail.com>
+Date: Sun, 26 Jun 2011 15:03:40 +0200
+Subject: [PATCH 10/82] Added the effective Precompiled headers
+
+---
+ adm/cmake/FWOSPlugin/Precompiled.cpp    |    1 +
+ adm/cmake/FWOSPlugin/Precompiled.h      |    3 ++
+ adm/cmake/PTKernel/Precompiled.cpp      |    1 +
+ adm/cmake/PTKernel/Precompiled.h        |    4 +++
+ adm/cmake/TKAdvTools/Precompiled.cpp    |    1 +
+ adm/cmake/TKAdvTools/Precompiled.h      |    4 +++
+ adm/cmake/TKBO/Precompiled.cpp          |    1 +
+ adm/cmake/TKBO/Precompiled.h            |   12 ++++++++
+ adm/cmake/TKBRep/Precompiled.cpp        |    1 +
+ adm/cmake/TKBRep/Precompiled.h          |   30 ++++++++++++++++++++
+ adm/cmake/TKBin/Precompiled.cpp         |    1 +
+ adm/cmake/TKBin/Precompiled.h           |   13 +++++++++
+ adm/cmake/TKBinL/Precompiled.cpp        |    1 +
+ adm/cmake/TKBinL/Precompiled.h          |   10 +++++++
+ adm/cmake/TKBinTObj/Precompiled.cpp     |    1 +
+ adm/cmake/TKBinTObj/Precompiled.h       |   11 +++++++
+ adm/cmake/TKBinXCAF/Precompiled.cpp     |    1 +
+ adm/cmake/TKBinXCAF/Precompiled.h       |   10 +++++++
+ adm/cmake/TKBool/Precompiled.cpp        |    1 +
+ adm/cmake/TKBool/Precompiled.h          |   21 ++++++++++++++
+ adm/cmake/TKCAF/Precompiled.cpp         |    1 +
+ adm/cmake/TKCAF/Precompiled.h           |   10 +++++++
+ adm/cmake/TKCDF/Precompiled.cpp         |    1 +
+ adm/cmake/TKCDF/Precompiled.h           |    8 +++++
+ adm/cmake/TKDCAF/Precompiled.cpp        |    1 +
+ adm/cmake/TKDCAF/Precompiled.h          |    6 ++++
+ adm/cmake/TKDraw/Precompiled.cpp        |    1 +
+ adm/cmake/TKDraw/Precompiled.h          |    1 +
+ adm/cmake/TKFeat/Precompiled.cpp        |    1 +
+ adm/cmake/TKFeat/Precompiled.h          |   11 +++++++
+ adm/cmake/TKFillet/Precompiled.cpp      |    1 +
+ adm/cmake/TKFillet/Precompiled.h        |   17 +++++++++++
+ adm/cmake/TKG2d/Precompiled.cpp         |    1 +
+ adm/cmake/TKG2d/Precompiled.h           |    7 +++++
+ adm/cmake/TKG3d/Precompiled.cpp         |    1 +
+ adm/cmake/TKG3d/Precompiled.h           |   17 +++++++++++
+ adm/cmake/TKGeomAlgo/Precompiled.cpp    |    1 +
+ adm/cmake/TKGeomAlgo/Precompiled.h      |   26 ++++++++++++++++++
+ adm/cmake/TKGeomBase/Precompiled.cpp    |    1 +
+ adm/cmake/TKGeomBase/Precompiled.h      |   13 +++++++++
+ adm/cmake/TKHLR/Precompiled.cpp         |    1 +
+ adm/cmake/TKHLR/Precompiled.h           |   12 ++++++++
+ adm/cmake/TKIGES/Precompiled.cpp        |    1 +
+ adm/cmake/TKIGES/Precompiled.h          |    2 +
+ adm/cmake/TKLCAF/Precompiled.cpp        |    1 +
+ adm/cmake/TKLCAF/Precompiled.h          |    9 ++++++
+ adm/cmake/TKMath/Precompiled.cpp        |    1 +
+ adm/cmake/TKMath/Precompiled.h          |   16 +++++++++++
+ adm/cmake/TKMesh/Precompiled.cpp        |    1 +
+ adm/cmake/TKMesh/Precompiled.h          |    5 +++
+ adm/cmake/TKMeshVS/Precompiled.cpp      |    1 +
+ adm/cmake/TKMeshVS/Precompiled.h        |   10 +++++++
+ adm/cmake/TKNIS/Precompiled.cpp         |    1 +
+ adm/cmake/TKNIS/Precompiled.h           |    5 +++
+ adm/cmake/TKOffset/Precompiled.cpp      |    1 +
+ adm/cmake/TKOffset/Precompiled.h        |   19 +++++++++++++
+ adm/cmake/TKOpenGl/Precompiled.cpp      |    1 +
+ adm/cmake/TKOpenGl/Precompiled.h        |    5 +++
+ adm/cmake/TKPCAF/Precompiled.cpp        |    1 +
+ adm/cmake/TKPCAF/Precompiled.h          |   13 +++++++++
+ adm/cmake/TKPLCAF/Precompiled.cpp       |    1 +
+ adm/cmake/TKPLCAF/Precompiled.h         |    6 ++++
+ adm/cmake/TKPShape/Precompiled.cpp      |    1 +
+ adm/cmake/TKPShape/Precompiled.h        |    6 ++++
+ adm/cmake/TKPrim/Precompiled.cpp        |    1 +
+ adm/cmake/TKPrim/Precompiled.h          |    8 +++++
+ adm/cmake/TKSTEP/Precompiled.cpp        |    1 +
+ adm/cmake/TKSTEP/Precompiled.h          |    2 +
+ adm/cmake/TKSTEP209/Precompiled.cpp     |    1 +
+ adm/cmake/TKSTEP209/Precompiled.h       |    2 +
+ adm/cmake/TKSTEPAttr/Precompiled.cpp    |    1 +
+ adm/cmake/TKSTEPAttr/Precompiled.h      |    2 +
+ adm/cmake/TKSTEPBase/Precompiled.cpp    |    1 +
+ adm/cmake/TKSTEPBase/Precompiled.h      |    2 +
+ adm/cmake/TKSTL/Precompiled.cpp         |    1 +
+ adm/cmake/TKSTL/Precompiled.h           |    3 ++
+ adm/cmake/TKService/Precompiled.cpp     |    1 +
+ adm/cmake/TKService/Precompiled.h       |   14 +++++++++
+ adm/cmake/TKShHealing/Precompiled.cpp   |    1 +
+ adm/cmake/TKShHealing/Precompiled.h     |   24 ++++++++++++++++
+ adm/cmake/TKShapeSchema/Precompiled.cpp |    1 +
+ adm/cmake/TKShapeSchema/Precompiled.h   |    6 ++++
+ adm/cmake/TKStdLSchema/Precompiled.cpp  |    1 +
+ adm/cmake/TKStdLSchema/Precompiled.h    |    7 +++++
+ adm/cmake/TKStdSchema/Precompiled.cpp   |    1 +
+ adm/cmake/TKStdSchema/Precompiled.h     |    8 +++++
+ adm/cmake/TKTObj/Precompiled.cpp        |    1 +
+ adm/cmake/TKTObj/Precompiled.h          |    5 +++
+ adm/cmake/TKTObjDRAW/Precompiled.cpp    |    1 +
+ adm/cmake/TKTObjDRAW/Precompiled.h      |    6 ++++
+ adm/cmake/TKTopAlgo/Precompiled.cpp     |    1 +
+ adm/cmake/TKTopAlgo/Precompiled.h       |   45 +++++++++++++++++++++++++++++++
+ adm/cmake/TKTopTest/Precompiled.cpp     |    1 +
+ adm/cmake/TKTopTest/Precompiled.h       |    6 ++++
+ adm/cmake/TKV2d/Precompiled.cpp         |    1 +
+ adm/cmake/TKV2d/Precompiled.h           |    9 ++++++
+ adm/cmake/TKV3d/Precompiled.cpp         |    1 +
+ adm/cmake/TKV3d/Precompiled.h           |   14 +++++++++
+ adm/cmake/TKVRML/Precompiled.cpp        |    1 +
+ adm/cmake/TKVRML/Precompiled.h          |    8 +++++
+ adm/cmake/TKViewerTest/Precompiled.cpp  |    1 +
+ adm/cmake/TKViewerTest/Precompiled.h    |    6 ++++
+ adm/cmake/TKVoxel/Precompiled.cpp       |    1 +
+ adm/cmake/TKVoxel/Precompiled.h         |    4 +++
+ adm/cmake/TKXCAF/Precompiled.cpp        |    1 +
+ adm/cmake/TKXCAF/Precompiled.h          |    9 ++++++
+ adm/cmake/TKXCAFSchema/Precompiled.cpp  |    1 +
+ adm/cmake/TKXCAFSchema/Precompiled.h    |   11 +++++++
+ adm/cmake/TKXDEDRAW/Precompiled.cpp     |    1 +
+ adm/cmake/TKXDEDRAW/Precompiled.h       |    6 ++++
+ adm/cmake/TKXDEIGES/Precompiled.cpp     |    1 +
+ adm/cmake/TKXDEIGES/Precompiled.h       |   11 +++++++
+ adm/cmake/TKXDESTEP/Precompiled.cpp     |    1 +
+ adm/cmake/TKXDESTEP/Precompiled.h       |   11 +++++++
+ adm/cmake/TKXMesh/Precompiled.cpp       |    1 +
+ adm/cmake/TKXMesh/Precompiled.h         |    2 +
+ adm/cmake/TKXSBase/Precompiled.cpp      |    1 +
+ adm/cmake/TKXSBase/Precompiled.h        |    3 ++
+ adm/cmake/TKXSDRAW/Precompiled.cpp      |    1 +
+ adm/cmake/TKXSDRAW/Precompiled.h        |    6 ++++
+ adm/cmake/TKXml/Precompiled.cpp         |    1 +
+ adm/cmake/TKXml/Precompiled.h           |    8 +++++
+ adm/cmake/TKXmlL/Precompiled.cpp        |    1 +
+ adm/cmake/TKXmlL/Precompiled.h          |    4 +++
+ adm/cmake/TKXmlTObj/Precompiled.cpp     |    1 +
+ adm/cmake/TKXmlTObj/Precompiled.h       |    5 +++
+ adm/cmake/TKXmlXCAF/Precompiled.cpp     |    1 +
+ adm/cmake/TKXmlXCAF/Precompiled.h       |   11 +++++++
+ adm/cmake/TKernel/Precompiled.cpp       |    1 +
+ adm/cmake/TKernel/Precompiled.h         |   24 ++++++++++++++++
+ 130 files changed, 699 insertions(+), 0 deletions(-)
+ create mode 100644 adm/cmake/FWOSPlugin/Precompiled.cpp
+ create mode 100644 adm/cmake/FWOSPlugin/Precompiled.h
+ create mode 100644 adm/cmake/PTKernel/Precompiled.cpp
+ create mode 100644 adm/cmake/PTKernel/Precompiled.h
+ create mode 100644 adm/cmake/TKAdvTools/Precompiled.cpp
+ create mode 100644 adm/cmake/TKAdvTools/Precompiled.h
+ create mode 100644 adm/cmake/TKBO/Precompiled.cpp
+ create mode 100644 adm/cmake/TKBO/Precompiled.h
+ create mode 100644 adm/cmake/TKBRep/Precompiled.cpp
+ create mode 100644 adm/cmake/TKBRep/Precompiled.h
+ create mode 100644 adm/cmake/TKBin/Precompiled.cpp
+ create mode 100644 adm/cmake/TKBin/Precompiled.h
+ create mode 100644 adm/cmake/TKBinL/Precompiled.cpp
+ create mode 100644 adm/cmake/TKBinL/Precompiled.h
+ create mode 100644 adm/cmake/TKBinTObj/Precompiled.cpp
+ create mode 100644 adm/cmake/TKBinTObj/Precompiled.h
+ create mode 100644 adm/cmake/TKBinXCAF/Precompiled.cpp
+ create mode 100644 adm/cmake/TKBinXCAF/Precompiled.h
+ create mode 100644 adm/cmake/TKBool/Precompiled.cpp
+ create mode 100644 adm/cmake/TKBool/Precompiled.h
+ create mode 100644 adm/cmake/TKCAF/Precompiled.cpp
+ create mode 100644 adm/cmake/TKCAF/Precompiled.h
+ create mode 100644 adm/cmake/TKCDF/Precompiled.cpp
+ create mode 100644 adm/cmake/TKCDF/Precompiled.h
+ create mode 100644 adm/cmake/TKDCAF/Precompiled.cpp
+ create mode 100644 adm/cmake/TKDCAF/Precompiled.h
+ create mode 100644 adm/cmake/TKDraw/Precompiled.cpp
+ create mode 100644 adm/cmake/TKDraw/Precompiled.h
+ create mode 100644 adm/cmake/TKFeat/Precompiled.cpp
+ create mode 100644 adm/cmake/TKFeat/Precompiled.h
+ create mode 100644 adm/cmake/TKFillet/Precompiled.cpp
+ create mode 100644 adm/cmake/TKFillet/Precompiled.h
+ create mode 100644 adm/cmake/TKG2d/Precompiled.cpp
+ create mode 100644 adm/cmake/TKG2d/Precompiled.h
+ create mode 100644 adm/cmake/TKG3d/Precompiled.cpp
+ create mode 100644 adm/cmake/TKG3d/Precompiled.h
+ create mode 100644 adm/cmake/TKGeomAlgo/Precompiled.cpp
+ create mode 100644 adm/cmake/TKGeomAlgo/Precompiled.h
+ create mode 100644 adm/cmake/TKGeomBase/Precompiled.cpp
+ create mode 100644 adm/cmake/TKGeomBase/Precompiled.h
+ create mode 100644 adm/cmake/TKHLR/Precompiled.cpp
+ create mode 100644 adm/cmake/TKHLR/Precompiled.h
+ create mode 100644 adm/cmake/TKIGES/Precompiled.cpp
+ create mode 100644 adm/cmake/TKIGES/Precompiled.h
+ create mode 100644 adm/cmake/TKLCAF/Precompiled.cpp
+ create mode 100644 adm/cmake/TKLCAF/Precompiled.h
+ create mode 100644 adm/cmake/TKMath/Precompiled.cpp
+ create mode 100644 adm/cmake/TKMath/Precompiled.h
+ create mode 100644 adm/cmake/TKMesh/Precompiled.cpp
+ create mode 100644 adm/cmake/TKMesh/Precompiled.h
+ create mode 100644 adm/cmake/TKMeshVS/Precompiled.cpp
+ create mode 100644 adm/cmake/TKMeshVS/Precompiled.h
+ create mode 100644 adm/cmake/TKNIS/Precompiled.cpp
+ create mode 100644 adm/cmake/TKNIS/Precompiled.h
+ create mode 100644 adm/cmake/TKOffset/Precompiled.cpp
+ create mode 100644 adm/cmake/TKOffset/Precompiled.h
+ create mode 100644 adm/cmake/TKOpenGl/Precompiled.cpp
+ create mode 100644 adm/cmake/TKOpenGl/Precompiled.h
+ create mode 100644 adm/cmake/TKPCAF/Precompiled.cpp
+ create mode 100644 adm/cmake/TKPCAF/Precompiled.h
+ create mode 100644 adm/cmake/TKPLCAF/Precompiled.cpp
+ create mode 100644 adm/cmake/TKPLCAF/Precompiled.h
+ create mode 100644 adm/cmake/TKPShape/Precompiled.cpp
+ create mode 100644 adm/cmake/TKPShape/Precompiled.h
+ create mode 100644 adm/cmake/TKPrim/Precompiled.cpp
+ create mode 100644 adm/cmake/TKPrim/Precompiled.h
+ create mode 100644 adm/cmake/TKSTEP/Precompiled.cpp
+ create mode 100644 adm/cmake/TKSTEP/Precompiled.h
+ create mode 100644 adm/cmake/TKSTEP209/Precompiled.cpp
+ create mode 100644 adm/cmake/TKSTEP209/Precompiled.h
+ create mode 100644 adm/cmake/TKSTEPAttr/Precompiled.cpp
+ create mode 100644 adm/cmake/TKSTEPAttr/Precompiled.h
+ create mode 100644 adm/cmake/TKSTEPBase/Precompiled.cpp
+ create mode 100644 adm/cmake/TKSTEPBase/Precompiled.h
+ create mode 100644 adm/cmake/TKSTL/Precompiled.cpp
+ create mode 100644 adm/cmake/TKSTL/Precompiled.h
+ create mode 100644 adm/cmake/TKService/Precompiled.cpp
+ create mode 100644 adm/cmake/TKService/Precompiled.h
+ create mode 100644 adm/cmake/TKShHealing/Precompiled.cpp
+ create mode 100644 adm/cmake/TKShHealing/Precompiled.h
+ create mode 100644 adm/cmake/TKShapeSchema/Precompiled.cpp
+ create mode 100644 adm/cmake/TKShapeSchema/Precompiled.h
+ create mode 100644 adm/cmake/TKStdLSchema/Precompiled.cpp
+ create mode 100644 adm/cmake/TKStdLSchema/Precompiled.h
+ create mode 100644 adm/cmake/TKStdSchema/Precompiled.cpp
+ create mode 100644 adm/cmake/TKStdSchema/Precompiled.h
+ create mode 100644 adm/cmake/TKTObj/Precompiled.cpp
+ create mode 100644 adm/cmake/TKTObj/Precompiled.h
+ create mode 100644 adm/cmake/TKTObjDRAW/Precompiled.cpp
+ create mode 100644 adm/cmake/TKTObjDRAW/Precompiled.h
+ create mode 100644 adm/cmake/TKTopAlgo/Precompiled.cpp
+ create mode 100644 adm/cmake/TKTopAlgo/Precompiled.h
+ create mode 100644 adm/cmake/TKTopTest/Precompiled.cpp
+ create mode 100644 adm/cmake/TKTopTest/Precompiled.h
+ create mode 100644 adm/cmake/TKV2d/Precompiled.cpp
+ create mode 100644 adm/cmake/TKV2d/Precompiled.h
+ create mode 100644 adm/cmake/TKV3d/Precompiled.cpp
+ create mode 100644 adm/cmake/TKV3d/Precompiled.h
+ create mode 100644 adm/cmake/TKVRML/Precompiled.cpp
+ create mode 100644 adm/cmake/TKVRML/Precompiled.h
+ create mode 100644 adm/cmake/TKViewerTest/Precompiled.cpp
+ create mode 100644 adm/cmake/TKViewerTest/Precompiled.h
+ create mode 100644 adm/cmake/TKVoxel/Precompiled.cpp
+ create mode 100644 adm/cmake/TKVoxel/Precompiled.h
+ create mode 100644 adm/cmake/TKXCAF/Precompiled.cpp
+ create mode 100644 adm/cmake/TKXCAF/Precompiled.h
+ create mode 100644 adm/cmake/TKXCAFSchema/Precompiled.cpp
+ create mode 100644 adm/cmake/TKXCAFSchema/Precompiled.h
+ create mode 100644 adm/cmake/TKXDEDRAW/Precompiled.cpp
+ create mode 100644 adm/cmake/TKXDEDRAW/Precompiled.h
+ create mode 100644 adm/cmake/TKXDEIGES/Precompiled.cpp
+ create mode 100644 adm/cmake/TKXDEIGES/Precompiled.h
+ create mode 100644 adm/cmake/TKXDESTEP/Precompiled.cpp
+ create mode 100644 adm/cmake/TKXDESTEP/Precompiled.h
+ create mode 100644 adm/cmake/TKXMesh/Precompiled.cpp
+ create mode 100644 adm/cmake/TKXMesh/Precompiled.h
+ create mode 100644 adm/cmake/TKXSBase/Precompiled.cpp
+ create mode 100644 adm/cmake/TKXSBase/Precompiled.h
+ create mode 100644 adm/cmake/TKXSDRAW/Precompiled.cpp
+ create mode 100644 adm/cmake/TKXSDRAW/Precompiled.h
+ create mode 100644 adm/cmake/TKXml/Precompiled.cpp
+ create mode 100644 adm/cmake/TKXml/Precompiled.h
+ create mode 100644 adm/cmake/TKXmlL/Precompiled.cpp
+ create mode 100644 adm/cmake/TKXmlL/Precompiled.h
+ create mode 100644 adm/cmake/TKXmlTObj/Precompiled.cpp
+ create mode 100644 adm/cmake/TKXmlTObj/Precompiled.h
+ create mode 100644 adm/cmake/TKXmlXCAF/Precompiled.cpp
+ create mode 100644 adm/cmake/TKXmlXCAF/Precompiled.h
+ create mode 100644 adm/cmake/TKernel/Precompiled.cpp
+ create mode 100644 adm/cmake/TKernel/Precompiled.h
+
+From: QbProg <tholag@gmail.com>
+Date: Sun, 26 Jun 2011 17:22:23 +0200
+Subject: [PATCH 13/82] Removed useless code from TKernel/Precompiled.h
+
+---
+ adm/cmake/TKernel/Precompiled.h |   17 -----------------
+ 1 files changed, 0 insertions(+), 17 deletions(-)
+
+Index: oce/adm/cmake/FWOSPlugin/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/FWOSPlugin/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/FWOSPlugin/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/FWOSPlugin/Precompiled.h
+@@ -0,0 +1,3 @@
++#pragma once
++#include "../TKernel/Precompiled.h"
++#include "../TKMath/Precompiled.h"
+Index: oce/adm/cmake/PTKernel/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/PTKernel/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/PTKernel/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/PTKernel/Precompiled.h
+@@ -0,0 +1,4 @@
++#pragma once
++
++#include "../TKernel/Precompiled.h"
++
+Index: oce/adm/cmake/TKAdvTools/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKAdvTools/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKAdvTools/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKAdvTools/Precompiled.h
+@@ -0,0 +1,4 @@
++#pragma once
++
++#include "Dynamic.hxx"
++#include "../TKMath/Precompiled.h"
+Index: oce/adm/cmake/TKBO/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKBO/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKBO/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKBO/Precompiled.h
+@@ -0,0 +1,12 @@
++#pragma once
++
++#include "../TKTopAlgo/Precompiled.h"
++
++#include "BooleanOperations_Explorer.hxx"
++#include "BOPTools_Tools.hxx"
++#include "IntTools_Tools.hxx"
++#include "BRepAlgoAPI_BooleanOperation.hxx"
++#include "BRepAlgoAPI_Common.hxx"
++#include "BRepAlgoAPI_Cut.hxx"
++#include "BRepAlgoAPI_Fuse.hxx"
++#include "BRepAlgoAPI_Section.hxx"
+\ No newline at end of file
+Index: oce/adm/cmake/TKBRep/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKBRep/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKBRep/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKBRep/Precompiled.h
+@@ -0,0 +1,30 @@
++#pragma once
++#include "../TKernel/Precompiled.h"
++#include "../TKMath/Precompiled.h"
++#include "../TKG2d/Precompiled.h"
++#include "../TKG3d/Precompiled.h"
++#include "TopoDS.hxx"
++#include "BRepTools.hxx"
++#include "BRep_Builder.hxx"
++#include "BRep_Polygon3d.hxx"
++#include "BRep_Curve3d.hxx"
++#include "BRep_GCurve.hxx"
++#include "BRep_Tool.hxx"
++#include "TopoDS_Face.hxx"
++#include "BRepAdaptor_Curve.hxx"
++#include "BRepAdaptor_Curve2d.hxx"
++#include "BRepAdaptor_Surface.hxx"
++#include "BRepTools_ReShape.hxx"
++#include "BRepTools_ShapeSet.hxx"
++#include "TopExp.hxx"
++#include "TopExp_Explorer.hxx"
++
++#include "TopoDS_Face.hxx"
++#include "TopoDS_Edge.hxx"
++#include "TopoDS_Wire.hxx"
++#include "TopoDS_Shell.hxx"
++#include "TopoDS_Solid.hxx"
++#include "TopoDS_Compound.hxx"
++#include "TopoDS_CompSolid.hxx"
++#include "TopoDS_Vertex.hxx"
++#include "TopTools.hxx"
+\ No newline at end of file
+Index: oce/adm/cmake/TKBin/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKBin/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKBin/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKBin/Precompiled.h
+@@ -0,0 +1,13 @@
++#pragma once
++#include "../TKService/Precompiled.h"
++#include "../TKV2d/Precompiled.h"
++#include "../TKV3d/Precompiled.h"
++#include "../TKHLR/Precompiled.h"
++#include "../TKCAF/Precompiled.h"
++#include "../TKCDF/Precompiled.h"
++#include "../TKMesh/Precompiled.h"
++
++#include "BinDrivers.hxx"
++#include "BinMDataXtd.hxx"
++#include "BinMNaming.hxx"
++#include "BinTools.hxx"
+Index: oce/adm/cmake/TKBinL/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKBinL/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKBinL/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKBinL/Precompiled.h
+@@ -0,0 +1,10 @@
++#pragma once
++#include "../TKernel/Precompiled.h"
++#include "../TKLCAF/Precompiled.h"
++#include "../TKCDF/Precompiled.h"
++
++#include "BinLDrivers.hxx"
++#include "BinMDataStd.hxx"
++#include "BinMDF.hxx"
++#include "BinMDocStd.hxx"
++#include "BinMFunction.hxx"
+\ No newline at end of file
+Index: oce/adm/cmake/TKBinTObj/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKBinTObj/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKBinTObj/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKBinTObj/Precompiled.h
+@@ -0,0 +1,11 @@
++#pragma once
++#ifndef __AppBlend_DLL
++#define __AppBlend_DLL Standard_EXPORT
++#endif
++
++#include "../TKernel/Precompiled.h"
++#include "../TKMath/Precompiled.h"
++#include "../TKLCAF/Precompiled.h"
++#include "../TKBinL/Precompiled.h"
++#include "../TKCDF/Precompiled.h"
++#include "../TKTObj/Precompiled.h"
+Index: oce/adm/cmake/TKBinXCAF/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKBinXCAF/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKBinXCAF/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKBinXCAF/Precompiled.h
+@@ -0,0 +1,10 @@
++#pragma once
++#ifndef __AppBlend_DLL
++#define __AppBlend_DLL Standard_EXPORT
++#endif
++
++#include "../TKernel/Precompiled.h"
++#include "../TKMath/Precompiled.h"
++#include "../TKGeomBase/Precompiled.h"
++#include "../TKG2d/Precompiled.h"
++#include "../TKG3d/Precompiled.h"
+Index: oce/adm/cmake/TKBool/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKBool/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKBool/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKBool/Precompiled.h
+@@ -0,0 +1,21 @@
++#pragma once
++
++#include "../TKTopAlgo/Precompiled.h"
++#include "../TKBO/Precompiled.h"
++#include "../TKPrim/Precompiled.h"
++#include "../TKShHealing/Precompiled.h"
++
++#include "BRepAlgo_Tool.hxx"
++#include "BRepAlgo_Fuse.hxx"
++#include "BRepAlgo_Cut.hxx"
++#include "BRepAlgo_Common.hxx"
++#include "BRepAlgo_TopOpe.hxx"
++#include "BRepAlgo_Loop.hxx"
++#include "BRepFill_Filling.hxx"
++#include "BRepFill_Generator.hxx"
++#include "BRepFill_Draft.hxx"
++#include "TopOpeBrep.hxx"
++#include "TopOpeBRepBuild_Builder.hxx"
++#include "TopOpeBRepDS.hxx"
++#include "TopOpeBRepTool.hxx"
++#include "TopOpeBRepTool_2d.hxx"
+Index: oce/adm/cmake/TKCAF/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKCAF/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKCAF/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKCAF/Precompiled.h
+@@ -0,0 +1,10 @@
++#pragma once
++#include "../TKService/Precompiled.h"
++#include "../TKV2d/Precompiled.h"
++#include "../TKV3d/Precompiled.h"
++#include "../TKHLR/Precompiled.h"
++
++#include "TDataXtd.hxx"
++#include "TNaming.hxx"
++#include "TNaming_Builder.hxx"
++#include "TPrsStd_Driver.hxx"
+\ No newline at end of file
+Index: oce/adm/cmake/TKCDF/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKCDF/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKCDF/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKCDF/Precompiled.h
+@@ -0,0 +1,8 @@
++#pragma once
++#include "../TKernel/Precompiled.h"
++
++#include "CDF.hxx"
++#include "CDM_Application.hxx"
++#include "LDOM_Document.hxx"
++#include "LDOM_BasicNode.hxx"
++#include "PCDM.hxx"
+Index: oce/adm/cmake/TKDCAF/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKDCAF/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKDCAF/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKDCAF/Precompiled.h
+@@ -0,0 +1,6 @@
++#pragma once
++#include "../TKernel/Precompiled.h"
++#include "../TKMath/Precompiled.h"
++#include "../TKGeomBase/Precompiled.h"
++#include "../TKG2d/Precompiled.h"
++#include "../TKG3d/Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKDraw/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKDraw/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKDraw/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKDraw/Precompiled.h
+@@ -0,0 +1 @@
++#pragma once
+Index: oce/adm/cmake/TKFeat/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKFeat/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKFeat/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKFeat/Precompiled.h
+@@ -0,0 +1,11 @@
++#pragma once
++
++#include "../TKTopAlgo/Precompiled.h"
++#include "../TKBO/Precompiled.h"
++#include "../TKPrim/Precompiled.h"
++#include "../TKShHealing/Precompiled.h"
++
++#include "BRepFeat.hxx"
++#include "BRepFeat_Builder.hxx"
++#include "LocOpe.hxx"
++#include "LocOpe_Builder.hxx"
+\ No newline at end of file
+Index: oce/adm/cmake/TKFillet/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKFillet/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKFillet/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKFillet/Precompiled.h
+@@ -0,0 +1,17 @@
++#pragma once
++
++#include "../TKTopAlgo/Precompiled.h"
++#include "../TKPrim/Precompiled.h"
++#include "../TKShHealing/Precompiled.h"
++
++#include "Blend_Function.hxx"
++#include "BlendFunc.hxx"
++#include "BRepBlend_AppFunc.hxx"
++#include "BRepFilletAPI_LocalOperation.hxx"
++#include "BRepFilletAPI_MakeChamfer.hxx"
++#include "BRepFilletAPI_MakeFillet.hxx"
++#include "BRepFilletAPI_MakeFillet2d.hxx"
++#include "ChFi2d.hxx"
++#include "ChFi3d.hxx"
++#include "ChFi3d_Builder.hxx"
++
+Index: oce/adm/cmake/TKG2d/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKG2d/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKG2d/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKG2d/Precompiled.h
+@@ -0,0 +1,7 @@
++#pragma once
++#include "../TKernel/Precompiled.h"
++#include "../TKMath/Precompiled.h"
++#include "Geom2d_Geometry.hxx"
++#include "Geom2d_Curve.hxx"
++#include "Adaptor2d_Curve2d.hxx"
++#include "Adaptor2d_HCurve2d.hxx"
+Index: oce/adm/cmake/TKG3d/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKG3d/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKG3d/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKG3d/Precompiled.h
+@@ -0,0 +1,17 @@
++#pragma once
++#include "../TKernel/Precompiled.h"
++#include "../TKMath/Precompiled.h"
++#include "Geom_Geometry.hxx"
++#include "gp_Ax2.hxx"
++#include "gp_Ax1.hxx"
++#include "gp.hxx"
++#include "gp_Lin.hxx"
++#include "Geom_Curve.hxx"
++#include "Geom_Surface.hxx"
++#include "Geom_Conic.hxx"
++#include "ELcLib.hxx"
++#include "GeomLProp.hxx"
++#include "Adaptor3d_Curve.hxx"
++#include "Adaptor3d_Surface.hxx"
++#include "Adaptor3d_HSurface.hxx"
++#include "Adaptor3d_HSurface.hxx"
+\ No newline at end of file
+Index: oce/adm/cmake/TKGeomAlgo/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKGeomAlgo/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKGeomAlgo/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKGeomAlgo/Precompiled.h
+@@ -0,0 +1,26 @@
++#pragma once
++
++#include "../TKernel/Precompiled.h"
++#include "../TKMath/Precompiled.h"
++#include "../TKGeomBase/Precompiled.h"
++#include "../TKG2d/Precompiled.h"
++#include "../TKG3d/Precompiled.h"
++#include "../TKBrep/Precompiled.h"
++#include "../TKGeomAlgo/Precompiled.h"
++
++#include "Geom2dGcc.hxx"
++#include "Geom2dHatch_Hatcher.hxx"
++#include "GccEnt.hxx"
++#include "GeomAPI.hxx"
++#include "GeomAPI_IntCS.hxx"
++#include "GeomAPI_IntSS.hxx"
++#include "GeomFill.hxx"
++#include "GeomInt_IntSS.hxx"
++#include "GeomPlate_Surface.hxx"
++#include "Hatch_Hatcher.hxx"
++#include "Intf.hxx"
++#include "IntSurf.hxx"
++#include "Law.hxx"
++#include "LocalAnalysis.hxx"
++#include "NLPlate_NLPlate.hxx"
++#include "Plate_Plate.hxx"
+Index: oce/adm/cmake/TKGeomBase/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKGeomBase/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKGeomBase/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKGeomBase/Precompiled.h
+@@ -0,0 +1,13 @@
++#pragma once
++#include "../TKernel/Precompiled.h"
++#include "../TKMath/Precompiled.h"
++#include "../TKG2d/Precompiled.h"
++#include "../TKG3d/Precompiled.h"
++#include "ProjLib.hxx"
++#include "GeomLib.hxx"
++#include "GeomProjLib.hxx"
++#include "BndLib.hxx"
++#include "gce_Root.hxx"
++#include "GeomConvert.hxx"
++#include "Geom2dConvert.hxx"
++#include "GeomTools.hxx"
+Index: oce/adm/cmake/TKHLR/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKHLR/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKHLR/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKHLR/Precompiled.h
+@@ -0,0 +1,12 @@
++#pragma once
++
++#include "../TKTopAlgo/Precompiled.h"
++
++#include "HLRAlgo.hxx"
++#include "HLRAlgo_PolyAlgo.hxx"
++#include "HLRBrep.hxx"
++#undef TRACE
++#include "HLRBrep_Algo.hxx"
++#include "HLRBrep_Intersector.hxx"
++#include "HLRBrep_Surface.hxx"
++#include "HLRBrep_SurfaceTool.hxx"
+\ No newline at end of file
+Index: oce/adm/cmake/TKIGES/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKIGES/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKIGES/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKIGES/Precompiled.h
+@@ -0,0 +1,2 @@
++#pragma once
++#include "../TKXSBase/Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKLCAF/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKLCAF/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKLCAF/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKLCAF/Precompiled.h
+@@ -0,0 +1,9 @@
++#pragma once
++
++#include "../TKernel/Precompiled.h"
++#include "../TKCDF/Precompiled.h"
++
++#include "TDF.hxx"
++#include "TDataStd.hxx"
++#include "TDocStd.hxx"
++#include "TFunction_Driver.hxx"
+Index: oce/adm/cmake/TKMath/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKMath/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKMath/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKMath/Precompiled.h
+@@ -0,0 +1,16 @@
++#pragma once
++
++#include "math.hxx"
++#include "math_Matrix.hxx"
++#include "gp.hxx"
++#include "gp_Pnt.hxx"
++#include "gp_XYZ.hxx"
++#include "gp_Mat.hxx"
++#include "Precision.hxx"
++#include "../TKernel/Precompiled.h"
++#include "Standard_Type.hxx"
++#include "Standard_TypeDef.hxx"
++#include "StdFail_NotDone.hxx"
++#include "Standard_DimensionError.hxx"
++#include "MMgt_TShared.hxx"
++#include "Standard_Transient.hxx"
+\ No newline at end of file
+Index: oce/adm/cmake/TKMesh/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKMesh/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKMesh/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKMesh/Precompiled.h
+@@ -0,0 +1,5 @@
++#pragma once
++
++#include "../TKTopAlgo/Precompiled.h"
++
++#include "BRepMesh.hxx"
+\ No newline at end of file
+Index: oce/adm/cmake/TKMeshVS/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKMeshVS/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKMeshVS/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKMeshVS/Precompiled.h
+@@ -0,0 +1,10 @@
++#pragma once
++#ifndef __AppBlend_DLL
++#define __AppBlend_DLL Standard_EXPORT
++#endif
++
++#include "../TKernel/Precompiled.h"
++#include "../TKMath/Precompiled.h"
++#include "../TKGeomBase/Precompiled.h"
++#include "../TKG2d/Precompiled.h"
++#include "../TKG3d/Precompiled.h"
+Index: oce/adm/cmake/TKNIS/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKNIS/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKNIS/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKNIS/Precompiled.h
+@@ -0,0 +1,5 @@
++#pragma once
++#include "../TKService/Precompiled.h"
++#include "../TKV2d/Precompiled.h"
++#include "../TKV3d/Precompiled.h"
++#include "../TKHLR/Precompiled.h"
+Index: oce/adm/cmake/TKOffset/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKOffset/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKOffset/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKOffset/Precompiled.h
+@@ -0,0 +1,19 @@
++#pragma once
++
++#include "../TKTopAlgo/Precompiled.h"
++#include "../TKBO/Precompiled.h"
++#include "../TKFillet/Precompiled.h"
++#include "../TKPrim/Precompiled.h"
++#include "../TKShHealing/Precompiled.h"
++
++#include "BRepOffset.hxx"
++#include "BRepOffset_Tool.hxx"
++#include "BRepOffsetAPI_MakeOffset.hxx"
++#include "BRepOffsetAPI_MakeFilling.hxx"
++#include "BRepOffsetAPI_MakePipe.hxx"
++#include "BRepOffsetAPI_MakeDraft.hxx"
++
++#include "BRepOffset_Analyse.hxx"
++#include "BRepOffset_Inter2d.hxx"
++#include "BRepOffset_Inter3d.hxx"
++#include "Draft.hxx"
+Index: oce/adm/cmake/TKOpenGl/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKOpenGl/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKOpenGl/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKOpenGl/Precompiled.h
+@@ -0,0 +1,5 @@
++#pragma once
++#include "../TKService/Precompiled.h"
++#include "../TKV2d/Precompiled.h"
++#include "../TKV3d/Precompiled.h"
++#include "../TKHLR/Precompiled.h"
+Index: oce/adm/cmake/TKPCAF/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKPCAF/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKPCAF/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKPCAF/Precompiled.h
+@@ -0,0 +1,13 @@
++#pragma once
++
++#include "../TKService/Precompiled.h"
++#include "../TKG2d/Precompiled.h"
++#include "../TKG3d/Precompiled.h"
++#include "../TKV2d/Precompiled.h"
++#include "../TKV3d/Precompiled.h"
++#include "../TKHLR/Precompiled.h"
++#include "../TKCAF/Precompiled.h"
++#include "../TKCDF/Precompiled.h"
++#include "../TKMesh/Precompiled.h"
++#include "../TKLCAF/Precompiled.h"
++#include "../TKCDF/Precompiled.h"
+Index: oce/adm/cmake/TKPLCAF/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKPLCAF/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKPLCAF/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKPLCAF/Precompiled.h
+@@ -0,0 +1,6 @@
++#pragma once
++#include "../TKernel/Precompiled.h"
++#include "../TKLCAF/Precompiled.h"
++#include "../TKCDF/Precompiled.h"
++#include "../PTKernel/Precompiled.h"
++
+Index: oce/adm/cmake/TKPShape/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKPShape/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKPShape/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKPShape/Precompiled.h
+@@ -0,0 +1,6 @@
++#pragma once
++
++#include "../TKG2d/Precompiled.h"
++#include "../TKG3d/Precompiled.h"
++#include "../TKBrep/Precompiled.h"
++#include "../PTKernel/Precompiled.h"
+Index: oce/adm/cmake/TKPrim/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKPrim/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKPrim/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKPrim/Precompiled.h
+@@ -0,0 +1,8 @@
++#pragma once
++
++#include "../TKTopAlgo/Precompiled.h"
++#include "BRepPrim_Builder.hxx"
++#include "BRepPrimAPI_MakeBox.hxx"
++#include "BRepPrimAPI_MakeCylinder.hxx"
++#include "BRepSweep_Builder.hxx"
++#include "BRepSweep_Tool.hxx"
+\ No newline at end of file
+Index: oce/adm/cmake/TKSTEP/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKSTEP/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKSTEP/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKSTEP/Precompiled.h
+@@ -0,0 +1,2 @@
++#pragma once
++#include "../TKXSBase/Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKSTEP209/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKSTEP209/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKSTEP209/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKSTEP209/Precompiled.h
+@@ -0,0 +1,2 @@
++#pragma once
++#include "../TKXSBase/Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKSTEPAttr/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKSTEPAttr/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKSTEPAttr/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKSTEPAttr/Precompiled.h
+@@ -0,0 +1,2 @@
++#pragma once
++#include "../TKXSBase/Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKSTEPBase/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKSTEPBase/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKSTEPBase/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKSTEPBase/Precompiled.h
+@@ -0,0 +1,2 @@
++#pragma once
++#include "../TKXSBase/Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKSTL/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKSTL/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKSTL/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKSTL/Precompiled.h
+@@ -0,0 +1,3 @@
++#pragma once
++#include "../TKTopAlgo/Precompiled.h"
++#include "../TKMesh/Precompiled.h"
+Index: oce/adm/cmake/TKService/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKService/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKService/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKService/Precompiled.h
+@@ -0,0 +1,14 @@
++#pragma once
++
++#include "../TKernel/Precompiled.h"
++#include "../TKMath/Precompiled.h"
++
++#include "Standard.hxx"
++#include "Aspect.hxx"
++#include "Aspect_Handle.hxx"
++#include "Image.hxx"
++#include "MFT.hxx"
++#include "PlotMgt.hxx"
++#include "SelectBasics.hxx"
++#include "Viewer_View.hxx"
++#include "Viewer_Viewer.hxx"
+Index: oce/adm/cmake/TKShHealing/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKShHealing/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKShHealing/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKShHealing/Precompiled.h
+@@ -0,0 +1,24 @@
++#pragma once
++#include "../TKTopAlgo/Precompiled.h"
++
++#include "ShapeAlgo.hxx"
++#include "ShapeAnalysis.hxx"
++#include "ShapeAnalysis_Geom.hxx"
++#include "ShapeAnalysis_Shell.hxx"
++#include "ShapeAnalysis_Surface.hxx"
++#include "ShapeAnalysis_Wire.hxx"
++#include "ShapeAnalysis_Curve.hxx"
++#include "ShapeBuild.hxx"
++#include "ShapeConstruct.hxx"
++#include "ShapeCustom.hxx"
++#include "ShapeExtend.hxx"
++#include "ShapeFix.hxx"
++#include "ShapeFix_Edge.hxx"
++#include "ShapeFix_Wire.hxx"
++#include "ShapeFix_Root.hxx"
++#include "ShapeFix_Shell.hxx"
++#include "ShapeFix_Solid.hxx"
++#include "ShapeFix_Face.hxx"
++#include "ShapeProcess.hxx"
++#include "ShapeUpgrade.hxx"
++#include "ShapeUpgrade_Tool.hxx"
+\ No newline at end of file
+Index: oce/adm/cmake/TKShapeSchema/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKShapeSchema/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKShapeSchema/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKShapeSchema/Precompiled.h
+@@ -0,0 +1,6 @@
++#pragma once
++
++#include "../TKG2d/Precompiled.h"
++#include "../TKG3d/Precompiled.h"
++#include "../TKBRep/Precompiled.h"
++
+Index: oce/adm/cmake/TKStdLSchema/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKStdLSchema/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKStdLSchema/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKStdLSchema/Precompiled.h
+@@ -0,0 +1,7 @@
++#pragma once
++#include "../TKG2d/Precompiled.h"
++#include "../TKG3d/Precompiled.h"
++#include "../TKBRep/Precompiled.h"
++
++#include "../PTKernel/Precompiled.h"
++#include "../TKCDF/Precompiled.h"
+Index: oce/adm/cmake/TKStdSchema/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKStdSchema/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKStdSchema/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKStdSchema/Precompiled.h
+@@ -0,0 +1,8 @@
++#pragma once
++#include "../TKService/Precompiled.h"
++#include "../TKV2d/Precompiled.h"
++#include "../TKV3d/Precompiled.h"
++#include "../TKHLR/Precompiled.h"
++#include "../TKCAF/Precompiled.h"
++#include "../TKCDF/Precompiled.h"
++#include "../TKMesh/Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKTObj/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKTObj/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKTObj/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKTObj/Precompiled.h
+@@ -0,0 +1,5 @@
++#pragma once
++
++#include "../TKernel/Precompiled.h"
++#include "../TKLCAF/Precompiled.h"
++#include "../TKCDF/Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKTObjDRAW/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKTObjDRAW/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKTObjDRAW/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKTObjDRAW/Precompiled.h
+@@ -0,0 +1,6 @@
++#pragma once
++#include "../TKernel/Precompiled.h"
++#include "../TKMath/Precompiled.h"
++#include "../TKGeomBase/Precompiled.h"
++#include "../TKG2d/Precompiled.h"
++#include "../TKG3d/Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKTopAlgo/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKTopAlgo/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKTopAlgo/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKTopAlgo/Precompiled.h
+@@ -0,0 +1,45 @@
++#pragma once
++
++#include "../TKernel/Precompiled.h"
++#include "../TKMath/Precompiled.h"
++#include "../TKGeomBase/Precompiled.h"
++#include "../TKG2d/Precompiled.h"
++#include "../TKG3d/Precompiled.h"
++#include "../TKGeomAlgo/Precompiled.h"
++
++#include "Bisector.hxx"
++#include "Bisector_Curve.hxx"
++#include "Geom2d_TrimmedCurve.hxx"
++#include "gp.hxx"
++#include "gp_Pnt2d.hxx"
++#include "gp_Vec2d.hxx"
++#include "gp_Pnt.hxx"
++#include "gp_Vec.hxx"
++
++#include "BRepApprox_Approx.hxx"
++#include "AppParCurves_Constraint.hxx"
++#include "GeomAbs_SurfaceType.hxx"
++#include "IntSurf_Quadric.hxx"
++#include "gp_Trsf.hxx"
++#include "BRepLib.hxx"
++#include "BRepBndLib.hxx"
++#include "BRepBuilderAPI.hxx"
++#include "BRepCheck.hxx"
++#include "BRepClass_FaceClassifier.hxx"
++#include "BRepClass_FaceExplorer.hxx"
++#include "BRepClass_Intersector.hxx"
++#include "BRepClass3d_SolidClassifier.hxx"
++#include "BRepClass3d_SolidExplorer.hxx"
++#include "BRepExtrema_ExtCC.hxx"
++#include "BRepExtrema_ExtCF.hxx"
++#include "BRepExtrema_ExtFF.hxx"
++#include "BRepExtrema_ExtPC.hxx"
++#include "BRepExtrema_ExtPF.hxx"
++#include "BRepGProp.hxx"
++#include "BRepMAT2d_Explorer.hxx"
++#include "BRepTopAdaptor_Tool.hxx"
++#include "MAT_Graph.hxx"
++#include "MAT_Edge.hxx"
++#include "MAT_Zone.hxx"
++#include "MAT2d_Tool2d.hxx"
++
+Index: oce/adm/cmake/TKTopTest/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKTopTest/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKTopTest/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKTopTest/Precompiled.h
+@@ -0,0 +1,6 @@
++#pragma once
++#include "../TKernel/Precompiled.h"
++#include "../TKMath/Precompiled.h"
++#include "../TKGeomBase/Precompiled.h"
++#include "../TKG2d/Precompiled.h"
++#include "../TKG3d/Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKV2d/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKV2d/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKV2d/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKV2d/Precompiled.h
+@@ -0,0 +1,9 @@
++#pragma once
++
++#include "../TKService/Precompiled.h"
++#include "../TKTopAlgo/Precompiled.h"
++#include "../TKHLR/Precompiled.h"
++
++#include "AIS2D.hxx"
++#include "Graphic2d_View.hxx"
++#include "V2d.hxx"
+Index: oce/adm/cmake/TKV3d/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKV3d/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKV3d/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKV3d/Precompiled.h
+@@ -0,0 +1,14 @@
++#pragma once
++
++#include "../TKService/Precompiled.h"
++#include "../TKTopAlgo/Precompiled.h"
++#include "../TKHLR/Precompiled.h"
++
++#include "AIS.hxx"
++#include "Graphic2d_View.hxx"
++#include "V3D.hxx"
++#include "DsgPrs.hxx"
++#include "PrsMgr_Prs.hxx"
++#include "Prs3d.hxx"
++#include "Visual3d_View.hxx"
++#include "Visual3d_Layer.hxx"
+\ No newline at end of file
+Index: oce/adm/cmake/TKVRML/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKVRML/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKVRML/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKVRML/Precompiled.h
+@@ -0,0 +1,8 @@
++#pragma once
++#include "../TKTopAlgo/Precompiled.h"
++#include "../TKMesh/Precompiled.h"
++#include "../TKService/Precompiled.h"
++
++#include "Vrml.hxx"
++#include "VrmlAPI.hxx"
++#include "VrmlData_Node.hxx"
+\ No newline at end of file
+Index: oce/adm/cmake/TKViewerTest/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKViewerTest/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKViewerTest/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKViewerTest/Precompiled.h
+@@ -0,0 +1,6 @@
++#pragma once
++#include "../TKernel/Precompiled.h"
++#include "../TKMath/Precompiled.h"
++#include "../TKGeomBase/Precompiled.h"
++#include "../TKG2d/Precompiled.h"
++#include "../TKG3d/Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKVoxel/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKVoxel/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKVoxel/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKVoxel/Precompiled.h
+@@ -0,0 +1,4 @@
++#pragma once
++#include "../TKService/Precompiled.h"
++#include "../TKV2d/Precompiled.h"
++#include "../TKV3d/Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKXCAF/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKXCAF/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKXCAF/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKXCAF/Precompiled.h
+@@ -0,0 +1,9 @@
++#pragma once
++#include "../TKernel/Precompiled.h"
++#include "../TKMath/Precompiled.h"
++#include "../TKGeomBase/Precompiled.h"
++#include "../TKG2d/Precompiled.h"
++#include "../TKG3d/Precompiled.h"
++#include "../TKTopAlgo/Precompiled.h"
++#include "../TKLCAF/Precompiled.h"
++#include "../TKCDF/Precompiled.h"
+Index: oce/adm/cmake/TKXCAFSchema/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKXCAFSchema/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKXCAFSchema/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKXCAFSchema/Precompiled.h
+@@ -0,0 +1,11 @@
++#pragma once
++#include "../TKernel/Precompiled.h"
++#include "../TKMath/Precompiled.h"
++#include "../TKGeomBase/Precompiled.h"
++#include "../TKG2d/Precompiled.h"
++#include "../TKG3d/Precompiled.h"
++#include "../TKTopAlgo/Precompiled.h"
++#include "../TKLCAF/Precompiled.h"
++#include "../TKCDF/Precompiled.h"
++#include "../TKShapeSchema/Precompiled.h"
++#include "../TKService/Precompiled.h"
+Index: oce/adm/cmake/TKXDEDRAW/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKXDEDRAW/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKXDEDRAW/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKXDEDRAW/Precompiled.h
+@@ -0,0 +1,6 @@
++#pragma once
++#include "../TKernel/Precompiled.h"
++#include "../TKMath/Precompiled.h"
++#include "../TKGeomBase/Precompiled.h"
++#include "../TKG2d/Precompiled.h"
++#include "../TKG3d/Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKXDEIGES/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKXDEIGES/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKXDEIGES/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKXDEIGES/Precompiled.h
+@@ -0,0 +1,11 @@
++#pragma once
++#include "../TKernel/Precompiled.h"
++#include "../TKMath/Precompiled.h"
++#include "../TKGeomBase/Precompiled.h"
++#include "../TKG2d/Precompiled.h"
++#include "../TKG3d/Precompiled.h"
++#include "../TKTopAlgo/Precompiled.h"
++#include "../TKLCAF/Precompiled.h"
++#include "../TKCDF/Precompiled.h"
++#include "../TKShapeSchema/Precompiled.h"
++#include "../TKService/Precompiled.h"
+Index: oce/adm/cmake/TKXDESTEP/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKXDESTEP/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKXDESTEP/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKXDESTEP/Precompiled.h
+@@ -0,0 +1,11 @@
++#pragma once
++#include "../TKernel/Precompiled.h"
++#include "../TKMath/Precompiled.h"
++#include "../TKGeomBase/Precompiled.h"
++#include "../TKG2d/Precompiled.h"
++#include "../TKG3d/Precompiled.h"
++#include "../TKTopAlgo/Precompiled.h"
++#include "../TKLCAF/Precompiled.h"
++#include "../TKCDF/Precompiled.h"
++#include "../TKShapeSchema/Precompiled.h"
++#include "../TKService/Precompiled.h"
+Index: oce/adm/cmake/TKXMesh/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKXMesh/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKXMesh/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKXMesh/Precompiled.h
+@@ -0,0 +1,2 @@
++#pragma once
++#include "../TKMesh/Precompiled.h"
+Index: oce/adm/cmake/TKXSBase/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKXSBase/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKXSBase/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKXSBase/Precompiled.h
+@@ -0,0 +1,3 @@
++#pragma once
++
++#include "../TKShHealing/Precompiled.h"
+Index: oce/adm/cmake/TKXSDRAW/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKXSDRAW/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKXSDRAW/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKXSDRAW/Precompiled.h
+@@ -0,0 +1,6 @@
++#pragma once
++#include "../TKernel/Precompiled.h"
++#include "../TKMath/Precompiled.h"
++#include "../TKGeomBase/Precompiled.h"
++#include "../TKG2d/Precompiled.h"
++#include "../TKG3d/Precompiled.h"
+Index: oce/adm/cmake/TKXml/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKXml/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKXml/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKXml/Precompiled.h
+@@ -0,0 +1,8 @@
++#pragma once
++#include "../TKTopAlgo/Precompiled.h"
++#include "../TKXmlL/Precompiled.h"
++#include "../TKCDF/Precompiled.h"
++#include "../TKMesh/Precompiled.h"
++#include "../TKService/Precompiled.h"
++#include "../TKHLR/Precompiled.h"
++#include "../TKCAF/Precompiled.h"
+Index: oce/adm/cmake/TKXmlL/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKXmlL/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKXmlL/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKXmlL/Precompiled.h
+@@ -0,0 +1,4 @@
++#pragma once
++#include "../TKCDF/Precompiled.h"
++#include "../TKLCAF/Precompiled.h"
++#include "../TKernel/Precompiled.h"
+Index: oce/adm/cmake/TKXmlTObj/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKXmlTObj/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKXmlTObj/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKXmlTObj/Precompiled.h
+@@ -0,0 +1,5 @@
++#pragma once
++#include "../TKCDF/Precompiled.h"
++#include "../TKLCAF/Precompiled.h"
++#include "../TKernel/Precompiled.h"
++#include "../TKTObj/Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKXmlXCAF/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKXmlXCAF/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKXmlXCAF/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKXmlXCAF/Precompiled.h
+@@ -0,0 +1,11 @@
++#pragma once
++#include "../TKernel/Precompiled.h"
++#include "../TKMath/Precompiled.h"
++#include "../TKGeomBase/Precompiled.h"
++#include "../TKG2d/Precompiled.h"
++#include "../TKG3d/Precompiled.h"
++#include "../TKTopAlgo/Precompiled.h"
++#include "../TKLCAF/Precompiled.h"
++#include "../TKCDF/Precompiled.h"
++#include "../TKShapeSchema/Precompiled.h"
++#include "../TKService/Precompiled.h"
+Index: oce/adm/cmake/TKernel/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKernel/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKernel/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKernel/Precompiled.h
+@@ -0,0 +1,7 @@
++#pragma once
++
++#include <string>
++#include <iostream>
++#include <math.h>
++#include "Standard.hxx"
++#include "Standard_PrimitiveTypes.hxx"

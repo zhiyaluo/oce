@@ -1,0 +1,93 @@
+commit 6795f0fd525e33751b7cae77ff18532616dbb89c
+Author: QbProg <tholag@gmail.com>
+Date:   Sun Jun 19 18:20:09 2011 +0200
+
+    Marked @todos related to some of the MSVC warnings
+
+diff --git a/src/DDF/DDF_IOStream.cxx b/src/DDF/DDF_IOStream.cxx
+index 1632612..7406109 100644
+--- a/src/DDF/DDF_IOStream.cxx
++++ b/src/DDF/DDF_IOStream.cxx
+@@ -296,6 +296,13 @@ void DDF_IOStream::ReadString(TCollection_AsciiString& buffer)
+ 
+   IsEnd = Standard_False;
+ 
++  /* @todo c is used before initialized. Anyway I didn't modify the code because
++   I don't know if ReadString should include \n in the output.
++   If so : Swap buffer += c with the next line
++   If not: rewrite the loop 
++   I don't understand anyway the semantics of this function.
++   QbProg
++  */
+   while (!IsEnd && !DDF_IOStream::IsEnd()) {
+     buffer += c;
+     myIStream->get(c);
+@@ -321,7 +328,14 @@ void DDF_IOStream::ReadWord(TCollection_AsciiString& buffer)
+   }
+ 
+   IsEnd = Standard_False;
+-
++  
++  /* @todo c is used before initialized. Anyway I didn't modify the code because
++   I don't know if ReadWord should include \n in the output.
++   If so : Swap buffer += c with the next line
++   If not: rewrite the loop 
++   I don't understand anyway the semantics of this function.
++   QbProg
++  */
+   while (!IsEnd && !DDF_IOStream::IsEnd()) {
+     buffer += c;
+     myIStream->get(c);
+diff --git a/src/IFSelect/IFSelect_WorkSession.cxx b/src/IFSelect/IFSelect_WorkSession.cxx
+index c0a7d21..57e225b 100644
+--- a/src/IFSelect/IFSelect_WorkSession.cxx
++++ b/src/IFSelect/IFSelect_WorkSession.cxx
+@@ -2814,7 +2814,7 @@ void IFSelect_WorkSession::QueryCheckList (const Interface_CheckIterator& chl)
+ {
+   if (!IsLoaded()) return;
+   Standard_Integer i,nb = themodel->NbEntities();
+-  thecheckana = TCollection_AsciiString (' ',nb+1);
++  thecheckana = TCollection_AsciiString (' ',nb+1); // @todo Probably the constructor here has to be called with inversed parameters (nb+1,' ')
+   for (chl.Start(); chl.More(); chl.Next()) {
+     Standard_Integer num = chl.Number();
+     const Handle(Interface_Check) ach = chl.Value();
+diff --git a/inc/Prs2d_Dimension.hxx b/inc/Prs2d_Dimension.hxx
+index 4e2bb89..1be0c74 100644
+--- a/inc/Prs2d_Dimension.hxx
++++ b/inc/Prs2d_Dimension.hxx
+@@ -122,7 +122,8 @@ public:
+         Standard_Boolean ArrowIsReversed() const;
+   //! Return true if symbol is drawn, false - in otherwise <br>
+         Standard_Boolean IsDrawSymbol() const;
+-  //! Return ASCII code of the symbol <br>
++  //! Return ASCII code of the symbol <br> 
++  // @todo Should really be Standard_Character
+         Standard_Integer SymbolCode() const;
+   
+   Standard_EXPORT    const Handle_TColgp_HArray1OfPnt2d ArrayOfFirstArrowPnt() const;
+diff --git a/src/Aspect/Aspect.cxx b/src/Aspect/Aspect.cxx
+index 8fd0b4d..1ba54a6 100644
+--- a/src/Aspect/Aspect.cxx
++++ b/src/Aspect/Aspect.cxx
+@@ -100,7 +100,7 @@ Standard_PCharacter pstring;
+          estring.SetValue(i,c);
+       } else if( (c > Standard_ExtCharacter(0x0020)) && 
+ 			(c <= Standard_ExtCharacter(0x007F)) ) {
+-	c += Standard_ExtCharacter(0xFEE0);
++	c += Standard_ExtCharacter(0xFEE0); // @todo Possible bug here : cast truncates constant value 
+ 	estring.SetValue(i,c);
+       }
+     }
+diff --git a/src/Visual3d/Visual3d_ViewManager.cxx b/src/Visual3d/Visual3d_ViewManager.cxx
+index 891f0b2..7ecd9ec 100644
+--- a/src/Visual3d/Visual3d_ViewManager.cxx
++++ b/src/Visual3d/Visual3d_ViewManager.cxx
+@@ -988,7 +988,7 @@ Visual3d_PickDescriptor Visual3d_ViewManager::Pick (const Visual3d_ContextPick&
+ // On active le reperage que si les donnees sont correctes
+ Standard_Boolean DoPick = Standard_False;
+ 
+-CALL_DEF_PICK apick;
++CALL_DEF_PICK apick; //@todo CALL_DEF_PICK should have constructor
+ Standard_Integer Width, Height;
+ 
+ 	// Parcours de la liste des vues pour rechercher

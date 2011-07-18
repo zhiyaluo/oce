@@ -1,0 +1,199 @@
+From: QbProg <tholag@gmail.com>
+Date: Thu, 12 May 2011 20:32:51 +0200
+Subject: [PATCH 41/82] [warning-fix][signed-unsigned-mismatch]
+
+Fixes warning like 'expression' : signed/unsigned mismatch
+---
+ .../TColStd_MapIteratorOfPackedMapOfInteger.cxx    |    6 +++---
+ src/TColStd/TColStd_PackedMapOfInteger.cxx         |   10 +++++-----
+ 2 files changed, 8 insertions(+), 8 deletions(-)
+
+From: QbProg <tholag@gmail.com>
+Date: Sat, 11 Jun 2011 14:48:54 +0200
+Subject: [PATCH 42/82] [warning-fix][signed-unsigned-mismatch]
+
+Fixed comparison between signed and unsigned int warnings
+
+(QbProg: changed some modifications to be done in 0.5)
+---
+ src/BinMNaming/BinMNaming_NamingDriver.cxx |    6 +++---
+ src/Image/Image_PixMap.cxx                 |    4 ++--
+ src/OpenGl/OpenGl_TextRender.cxx           |    2 +-
+ src/OpenGl/OpenGl_TextureBox.cxx           |    6 ++++--
+ src/Visual3d/Visual3d_View.cxx             |    4 ++--
+ 5 files changed, 12 insertions(+), 10 deletions(-)
+
+From: QbProg <tholag@gmail.com>
+Date: Sun, 19 Jun 2011 18:21:11 +0200
+Subject: [PATCH 43/82] [warning-fix][signed-unsigned-mismatch] Fixes warning
+ like 'expression' : signed/unsigned mismatch
+
+---
+ src/OpenGl/OpenGl_togl_markercontextgroup.cxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Index: oce/src/TColStd/TColStd_MapIteratorOfPackedMapOfInteger.cxx
+===================================================================
+--- oce.orig/src/TColStd/TColStd_MapIteratorOfPackedMapOfInteger.cxx
++++ oce/src/TColStd/TColStd_MapIteratorOfPackedMapOfInteger.cxx
+@@ -20,7 +20,7 @@
+ TColStd_MapIteratorOfPackedMapOfInteger::TColStd_MapIteratorOfPackedMapOfInteger
+                                      (const TColStd_PackedMapOfInteger& theMap)
+   : TCollection_BasicMapIterator (theMap),
+-    myIntMask                    (~0)
++    myIntMask                    (~0u)
+ {
+   if (myNode) {
+     const TColStd_intMapNode * aNode =
+@@ -39,7 +39,7 @@
+                                      (const TColStd_PackedMapOfInteger& theMap)
+ {
+   TCollection_BasicMapIterator::Initialize (theMap);
+-  myIntMask = ~0;
++  myIntMask = ~0u;
+   if (myNode) {
+     const TColStd_intMapNode * aNode =
+       reinterpret_cast <const TColStd_intMapNode *>(myNode);
+@@ -55,7 +55,7 @@
+ void TColStd_MapIteratorOfPackedMapOfInteger::Reset ()
+ {
+   TCollection_BasicMapIterator::Reset();
+-  myIntMask = ~0;
++  myIntMask = ~0u;
+   if (myNode) {
+     const TColStd_intMapNode * aNode =
+       reinterpret_cast <const TColStd_intMapNode *>(myNode);
+Index: oce/src/TColStd/TColStd_PackedMapOfInteger.cxx
+===================================================================
+--- oce.orig/src/TColStd/TColStd_PackedMapOfInteger.cxx
++++ oce/src/TColStd/TColStd_PackedMapOfInteger.cxx
+@@ -178,9 +178,9 @@
+   unsigned int val = theNode->myData & theMask;
+   int nZeros (0);
+   if (val == 0)
+-    theMask = ~0;   // void, nothing to do
++    theMask = ~0u;   // void, nothing to do
+   else{
+-    unsigned int aMask = ~0;
++    unsigned int aMask = ~0u;
+     if ((val & 0x0000ffff) == 0) {
+       aMask = 0xffff0000;
+       nZeros = 16;
+@@ -222,9 +222,9 @@
+   unsigned int val = theNode->myData & theMask;
+   int nZeros (0);
+   if (val == 0)
+-    theMask = ~0;   // void, nothing to do
++    theMask = ~0u;   // void, nothing to do
+   else {
+-    unsigned int aMask = ~0;
++    unsigned int aMask = ~0u;
+     if ((val & 0xffff0000) == 0) {
+       aMask = 0x0000ffff;
+       nZeros = 16;
+@@ -632,7 +632,7 @@
+         while (p1) {
+           if (p1->IsEqual(aKeyInt)) {
+             const size_t anOldPop = p1->NbValues();
+-            Standard_Integer newData = p1->Data() | p2->Data();
++            unsigned int newData = p1->Data() | p2->Data();
+             if ( newData != p1->Data() ) {
+               p1->ChangeData() = newData;
+               aNewExtent = aNewExtent - anOldPop +
+Index: oce/src/BinMNaming/BinMNaming_NamingDriver.cxx
+===================================================================
+--- oce.orig/src/BinMNaming/BinMNaming_NamingDriver.cxx
++++ oce/src/BinMNaming/BinMNaming_NamingDriver.cxx
+@@ -166,7 +166,7 @@
+           Standard_Integer i;
+           // read array
+           for(i=1; i<=aNbArgs;i++) {
+-            if(!aNewF && i > OBSOLETE_NUM) break;//interrupt reading as old format can have only 4 items
++            if(!aNewF && i > (int)OBSOLETE_NUM) break;//interrupt reading as old format can have only 4 items
+             ok = theSource >> anIndx;
+             if (!ok)
+               break;
+@@ -181,8 +181,8 @@
+             }
+           }
+           //patch to release the rest of items	
+-          if(!aNewF && aNbArgs < OBSOLETE_NUM) {    
+-            for(i = aNbArgs+1;i <= OBSOLETE_NUM;i++)
++          if(!aNewF && aNbArgs < (int)OBSOLETE_NUM) {    
++            for(i = aNbArgs+1;i <= (int)OBSOLETE_NUM;i++)
+               theSource >> anIndx;
+           }
+         }
+Index: oce/src/Image/Image_PixMap.cxx
+===================================================================
+--- oce.orig/src/Image/Image_PixMap.cxx
++++ oce/src/Image/Image_PixMap.cxx
+@@ -401,8 +401,8 @@
+                                          const Standard_Integer theY) const
+ {
+   Standard_Integer aScanlineId = myImage->getHeight() - theY - 1;
+-  if (theX < 0 || theX >= (unsigned int)myImage->getWidth() ||
+-      theY < 0 || theY >= (unsigned int)myImage->getHeight())
++  if (theX < 0 || theX >= myImage->getWidth() ||
++      theY < 0 || theY >= myImage->getHeight())
+   {
+     return Quantity_Color (0.0, 0.0, 0.0, Quantity_TOC_RGB);
+   }
+Index: oce/src/OpenGl/OpenGl_TextRender.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_TextRender.cxx
++++ oce/src/OpenGl/OpenGl_TextRender.cxx
+@@ -180,7 +180,7 @@
+ 
+ /*----------------------------------------------------------------------*/
+ OpenGl_TextRender::FontMapNode OpenGl_TextRender::searchFontInMap( Handle(TCollection_HAsciiString)& fontName ) {
+-  for ( int i = 0; i < NUM_FONT_ENTRIES; ++i )
++  for ( int i = 0; i < (int)NUM_FONT_ENTRIES; ++i )
+   {
+     TCollection_AsciiString compare_String(fontMap[i].enumName) ;
+     if(compare_String.IsEqual( fontName->ToCString() ))
+Index: oce/src/OpenGl/OpenGl_TextureBox.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_TextureBox.cxx
++++ oce/src/OpenGl/OpenGl_TextureBox.cxx
+@@ -518,11 +518,12 @@
+   if (textab[ID].use_bind_texture[Context])
+   {
+     /* OCC11904 - make sure that the correct texture is bound before drawing */
++	// @todo Check here if it is correct : compare .status with the wrong ENUM type (the value matches)
+     GLenum aParamName = textab[ID].status == TEXDATA_1D ? 
+ GL_TEXTURE_BINDING_1D : GL_TEXTURE_BINDING_2D;
+     GLint aCurrTex = -1;
+     glGetIntegerv( aParamName, &aCurrTex );
+-    if ( textab[ID].number[Context] != aCurrTex )
++    if ( (int)textab[ID].number[Context] != aCurrTex )
+     {
+ #ifdef PRINT
+       printf("MyBindTextureEXT::bind texture\n");
+@@ -535,11 +536,12 @@
+ #endif /* GL_EXT_texture_object */
+   {
+     /* OCC11904 - make sure that the correct texture is bound before drawing */
++	// @todo Check here if it is correct : compare .status with the wrong ENUM type (the value matches)
+     GLenum aParamName = textab[ID].status == TEXDATA_1D ? 
+ GL_TEXTURE_BINDING_1D : GL_TEXTURE_BINDING_2D;
+     GLint aCurrTex = -1;
+     glGetIntegerv( aParamName, &aCurrTex );
+-    if ( textab[ID].number[Context] != aCurrTex )
++    if ( (int)textab[ID].number[Context] != aCurrTex )
+     {
+ #ifdef PRINT
+       printf("MyBindTextureEXT::chargement sans bind de la texture\n");
+Index: oce/src/OpenGl/OpenGl_togl_markercontextgroup.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_togl_markercontextgroup.cxx
++++ oce/src/OpenGl/OpenGl_togl_markercontextgroup.cxx
+@@ -116,7 +116,7 @@
+     if( UDMS_Marker.IdList[i] == theId )
+       return UDMS_Marker.DisplayIdList[i];
+   }
+-  return -1;
++  return GLuint(-1);
+ }
+ 
+ /*--------------------------------generate USERDEFINED marker---------end--------*/

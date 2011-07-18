@@ -1,0 +1,324 @@
+From: tpaviot <tpaviot@gmail.com>
+Date: Tue, 28 Jun 2011 12:47:12 +0200
+Subject: [PATCH 36/82] [warning-fix][initialization-order]
+
+Fi warnings like "var1 will initialized after var2 in ..."
+---
+ inc/IntPatch_Point.lxx                     |   19 ++++++++++++++-----
+ inc/ShapeAnalysis_BoxBndTree.hxx           |    4 ++--
+ inc/TopClass_Classifier2d.gxx              |    4 ++--
+ src/Adaptor3d/Adaptor3d_TopolTool.cxx      |    2 +-
+ src/Aspect/Aspect_ColorScale.cxx           |   14 +++++++-------
+ src/Aspect/Aspect_Window.cxx               |    5 +++--
+ src/BinTools/BinTools_ShapeSet.cxx         |    2 +-
+ src/BlendFunc/BlendFunc_CSCircular.cxx     |    2 +-
+ src/IntSurf/IntSurf_Quadric.cxx            |    4 ++--
+ src/OSD/OSD_SystemFont.cxx                 |    6 +++---
+ src/Prs2d/Prs2d_Dimension.cxx              |    4 ++--
+ src/V3d/V3d_View.cxx                       |    8 ++++----
+ src/ViewerTest/ViewerTest_EventManager.cxx |    4 ++--
+ src/Voxel/Voxel_FastConverter.cxx          |   12 ++++++------
+ 14 files changed, 50 insertions(+), 40 deletions(-)
+
+Index: oce/inc/IntPatch_Point.lxx
+===================================================================
+--- oce.orig/inc/IntPatch_Point.lxx
++++ oce/inc/IntPatch_Point.lxx
+@@ -5,11 +5,20 @@
+ 
+ 
+ inline IntPatch_Point::IntPatch_Point ()
+- : para(0.0), tol(0.0), tgt(Standard_False), mult(Standard_False),
+-   onS1(Standard_False), vtxonS1(Standard_False), prm1(0.0),
+-   onS2(Standard_False), vtxonS2(Standard_False), prm2(0.0),
+-   vS1(NULL), vS2(NULL),
+-   arcS1(NULL), arcS2(NULL)
++ : para(0.0),
++   tol(0.0),
++   tgt(Standard_False),
++   mult(Standard_False),
++   onS1(Standard_False),
++   vtxonS1(Standard_False),
++   vS1(NULL),
++   arcS1(NULL),
++   prm1(0.0),
++   onS2(Standard_False),
++   vtxonS2(Standard_False),
++   vS2(NULL),
++   arcS2(NULL),
++   prm2(0.0)
+ {
+ }
+ 
+Index: oce/inc/ShapeAnalysis_BoxBndTree.hxx
+===================================================================
+--- oce.orig/inc/ShapeAnalysis_BoxBndTree.hxx
++++ oce/inc/ShapeAnalysis_BoxBndTree.hxx
+@@ -26,8 +26,8 @@
+   ShapeAnalysis_BoxBndTreeSelector
+     (Handle (TopTools_HArray1OfShape) theSeq,
+      Standard_Boolean theShared)
+-    :  mySeq(theSeq), myShared(theShared), myNb(0), myTol(1e-7), myMin3d(1e-7),
+-      myStatus(ShapeExtend::EncodeStatus (ShapeExtend_OK)){}
++    :  mySeq(theSeq), myShared(theShared), myStatus(ShapeExtend::EncodeStatus (ShapeExtend_OK)),
++	   myNb(0), myTol(1e-7), myMin3d(1e-7){}
+   
+   void DefineBoxes (const Bnd_Box& theFBox, const Bnd_Box& theLBox)
+     { myFBox = theFBox;
+Index: oce/inc/TopClass_Classifier2d.gxx
+===================================================================
+--- oce.orig/inc/TopClass_Classifier2d.gxx
++++ oce/inc/TopClass_Classifier2d.gxx
+@@ -23,8 +23,8 @@
+ TopClass_Classifier2d::TopClass_Classifier2d() :
+        myIsSet(Standard_False),
+        myFirstCompare(Standard_True),
+-       myIsHeadOrEnd(Standard_False), // skv OCC12627
+-       myState(TopAbs_UNKNOWN)        // skv OCC12627
++	   myState(TopAbs_UNKNOWN),        // skv OCC12627
++	   myIsHeadOrEnd(Standard_False) // skv OCC12627
+ 
+ {
+ }
+Index: oce/src/Adaptor3d/Adaptor3d_TopolTool.cxx
+===================================================================
+--- oce.orig/src/Adaptor3d/Adaptor3d_TopolTool.cxx
++++ oce/src/Adaptor3d/Adaptor3d_TopolTool.cxx
+@@ -38,7 +38,7 @@
+ }
+ 
+ 
+-Adaptor3d_TopolTool::Adaptor3d_TopolTool () : nbRestr(0),idRestr(0),myNbSamplesU(-1)
++Adaptor3d_TopolTool::Adaptor3d_TopolTool () : myNbSamplesU(-1),nbRestr(0),idRestr(0)
+                                               
+ {
+ }
+Index: oce/src/Aspect/Aspect_ColorScale.cxx
+===================================================================
+--- oce.orig/src/Aspect/Aspect_ColorScale.cxx
++++ oce/src/Aspect/Aspect_ColorScale.cxx
+@@ -23,19 +23,19 @@
+ : MMgt_TShared(),
+ myMin( 0.0 ),
+ myMax( 1.0 ),
+-myXPos( 0 ),
+-myYPos( 0 ),
+-myWidth( 0.2 ),
+-myHeight( 1 ),
+ myTitle( "" ),
+-myInterval( 10 ),
+ myFormat( "%.4g" ),
+-myAtBorder( Standard_True ),
+-myReversed( Standard_False ),
++myInterval( 10 ),
+ myColorType( Aspect_TOCSD_AUTO ),
+ myLabelType( Aspect_TOCSD_AUTO ),
++myAtBorder( Standard_True ),
++myReversed( Standard_False ),
+ myLabelPos( Aspect_TOCSP_RIGHT ),
+ myTitlePos( Aspect_TOCSP_CENTER ),
++myXPos( 0 ),
++myYPos( 0 ),
++myWidth( 0.2 ),
++myHeight( 1 ),
+ myTextHeight(20)
+ {
+ }
+Index: oce/src/Aspect/Aspect_Window.cxx
+===================================================================
+--- oce.orig/src/Aspect/Aspect_Window.cxx
++++ oce/src/Aspect/Aspect_Window.cxx
+@@ -34,9 +34,10 @@
+ : MyGraphicDevice(aGraphicDevice),
+   MyBackground(),
+   MyBackgroundImage(),
+-  MyGradientBackground(),
+   MyBackgroundFillMethod(Aspect_FM_NONE),
+-  MyHBackground(0)
++  MyHBackground(0),
++  MyGradientBackground()
++  
+ {
+ }
+ 
+Index: oce/src/BinTools/BinTools_ShapeSet.cxx
+===================================================================
+--- oce.orig/src/BinTools/BinTools_ShapeSet.cxx
++++ oce/src/BinTools/BinTools_ShapeSet.cxx
+@@ -60,7 +60,7 @@
+ //=======================================================================
+ 
+ BinTools_ShapeSet::BinTools_ShapeSet(const Standard_Boolean isWithTriangles)
+-     :myWithTriangles(isWithTriangles), myFormatNb(3)
++     :myFormatNb(3),myWithTriangles(isWithTriangles)
+ {}
+ 
+ //=======================================================================
+Index: oce/src/BlendFunc/BlendFunc_CSCircular.cxx
+===================================================================
+--- oce.orig/src/BlendFunc/BlendFunc_CSCircular.cxx
++++ oce/src/BlendFunc/BlendFunc_CSCircular.cxx
+@@ -30,7 +30,7 @@
+                                            const Handle(Adaptor3d_HCurve)& C,
+                                            const Handle(Adaptor3d_HCurve)& CGuide,
+                                            const Handle(Law_Function)& L) :
+-       surf(S),curv(C),guide(CGuide),istangent(Standard_True),law(L),
++       surf(S),curv(C),guide(CGuide),law(L),istangent(Standard_True),
+        //prmc, dprmc, istangent, ray, choix, normtg,
+        maxang(RealFirst()),minang(RealLast()),mySShape(BlendFunc_Rational)
+        //myTConv
+Index: oce/src/IntSurf/IntSurf_Quadric.cxx
+===================================================================
+--- oce.orig/src/IntSurf/IntSurf_Quadric.cxx
++++ oce/src/IntSurf/IntSurf_Quadric.cxx
+@@ -8,8 +8,8 @@
+ 
+ 
+ // ============================================================
+-IntSurf_Quadric::IntSurf_Quadric ():typ(GeomAbs_OtherSurface),
+-   prm1(0.), prm2(0.), prm3(0.), prm4(0.)
++IntSurf_Quadric::IntSurf_Quadric ():
++   prm1(0.), prm2(0.), prm3(0.), prm4(0.),typ(GeomAbs_OtherSurface)
+ {}
+ // ============================================================
+ IntSurf_Quadric::IntSurf_Quadric (const gp_Pln& P):
+Index: oce/src/OSD/OSD_SystemFont.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_SystemFont.cxx
++++ oce/src/OSD/OSD_SystemFont.cxx
+@@ -23,8 +23,8 @@
+                                 const Handle(TCollection_HAsciiString)& FilePath ):
+ MyFontName(FontName),
+ MyFontAspect(FontAspect),
+-MyFilePath(FilePath),
+ MyFaceSize(-1),
++MyFilePath(FilePath),
+ MyVerification(Standard_True)
+ {
+ 
+@@ -32,8 +32,8 @@
+ 
+ OSD_SystemFont::OSD_SystemFont( const Handle(TCollection_HAsciiString)& XLFD,
+                                 const Handle(TCollection_HAsciiString)& FilePath) :
+-MyFilePath(FilePath),
+-MyFontAspect(OSD_FA_Undefined)
++MyFontAspect(OSD_FA_Undefined),
++MyFilePath(FilePath)
+ {
+   MyVerification = Standard_True;
+   if ( XLFD.IsNull() )
+Index: oce/src/Prs2d/Prs2d_Dimension.cxx
+===================================================================
+--- oce.orig/src/Prs2d/Prs2d_Dimension.cxx
++++ oce/src/Prs2d/Prs2d_Dimension.cxx
+@@ -11,13 +11,13 @@
+    :  Graphic2d_Line( aGO ),
+       myText( aText ),
+       myTextScale( aTxtScale ),
+-      myTextFont( 0 ),
+       myTextPosH( 0 ),
+       myTextPosV( 0 ),
+       myTextAngle( 0 ), 
+       myAbsX( 0 ),
+       myAbsY( 0 ),
+-      myAbsAngle( 0 ), 
++      myAbsAngle( 0 ),
++      myTextFont( 0 ),
+       mySymbFont( 0 ),
+       myXVert1( 1, 3 ),
+       myYVert1( 1, 3 ),
+Index: oce/src/V3d/V3d_View.cxx
+===================================================================
+--- oce.orig/src/V3d/V3d_View.cxx
++++ oce/src/V3d/V3d_View.cxx
+@@ -277,6 +277,7 @@
+ 
+ V3d_View::V3d_View(const Handle(V3d_Viewer)& VM, const V3d_TypeOfView Type ) :
+ MyType ( Type ),
++MyProjModel(V3d_TPM_SCREEN),
+ MyViewer(VM.operator->()),
+ MyActiveLights(),
+ MyActivePlanes(),
+@@ -284,8 +285,7 @@
+ myActiveLightsIterator(),
+ myActivePlanesIterator(),
+ SwitchSetFront(Standard_False),
+-MyTrsf (1, 4, 1, 4),                                    // S3892
+-MyProjModel(V3d_TPM_SCREEN)
++MyTrsf (1, 4, 1, 4)                                    // S3892
+ #if defined(TRACE_POINTS)
+ ,MyGridEchoStructure (new Graphic3d_Structure (VM->Viewer ())),  // S3892
+ MyGridEchoGroup (new Graphic3d_Group (MyGridEchoStructure))            // S3892
+@@ -397,6 +397,7 @@
+ 
+ V3d_View::V3d_View(const Handle(V3d_Viewer)& VM,const Handle(V3d_View)& V, const V3d_TypeOfView Type ) :
+ MyType ( Type ),
++MyProjModel(V3d_TPM_SCREEN),
+ MyViewer(VM.operator->()),
+ MyActiveLights(),
+ MyActivePlanes(),
+@@ -404,8 +405,7 @@
+ myActiveLightsIterator(),
+ myActivePlanesIterator(),
+ SwitchSetFront(Standard_False),
+-MyTrsf (1, 4, 1, 4),                                    // S3892
+-MyProjModel(V3d_TPM_SCREEN)
++MyTrsf (1, 4, 1, 4)                                    // S3892
+ #if defined(TRACE_POINTS)
+ ,MyGridEchoStructure (new Graphic3d_Structure (VM->Viewer ())),  // S3892
+ MyGridEchoGroup (new Graphic3d_Group (MyGridEchoStructure))      // S3892
+Index: oce/src/ViewerTest/ViewerTest_EventManager.cxx
+===================================================================
+--- oce.orig/src/ViewerTest/ViewerTest_EventManager.cxx
++++ oce/src/ViewerTest/ViewerTest_EventManager.cxx
+@@ -16,8 +16,8 @@
+ ViewerTest_EventManager::ViewerTest_EventManager
+         (const Handle(V3d_View)& aView,
+          const Handle(AIS_InteractiveContext)& Ctx)
+-  : myView (aView),
+-    myCtx  (Ctx),
++  : myCtx  (Ctx),
++    myView (aView),
+     myX    (-1),
+     myY    (-1)
+ {}
+Index: oce/src/Voxel/Voxel_FastConverter.cxx
+===================================================================
+--- oce.orig/src/Voxel/Voxel_FastConverter.cxx
++++ oce/src/Voxel/Voxel_FastConverter.cxx
+@@ -32,9 +32,9 @@
+ 					 const Standard_Integer nbz,
+ 					 const Standard_Integer nbthreads)
+ :myShape(shape),myVoxels(&voxels),
+- myDeflection(deflection),
++ myDeflection(deflection),myIsBool(2),
+  myNbX(nbx),myNbY(nby),myNbZ(nbz),
+- myNbThreads(nbthreads),myIsBool(2),
++ myNbThreads(nbthreads),
+  myNbTriangles(0)
+ {
+   Init();
+@@ -48,9 +48,9 @@
+ 					 const Standard_Integer nbz,
+ 					 const Standard_Integer nbthreads)
+ :myShape(shape),myVoxels(&voxels),
+- myDeflection(deflection),
++ myDeflection(deflection),myIsBool(1),
+  myNbX(nbx),myNbY(nby),myNbZ(nbz),
+- myNbThreads(nbthreads),myIsBool(1),
++ myNbThreads(nbthreads),
+  myNbTriangles(0)
+ {
+   Init();
+@@ -64,9 +64,9 @@
+ 					 const Standard_Integer nbz,
+ 					 const Standard_Integer nbthreads)
+ :myShape(shape),myVoxels(&voxels),
+- myDeflection(deflection),
++myDeflection(deflection),myIsBool(0),
+  myNbX(nbx),myNbY(nby),myNbZ(nbz),
+- myNbThreads(nbthreads),myIsBool(0),
++ myNbThreads(nbthreads),
+  myNbTriangles(0)
+ {
+   Init();

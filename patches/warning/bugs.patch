@@ -1,0 +1,110 @@
+commit 68e8f9ae59af05c395706a7dbb2451f0b3f4b4fc
+Author: QbProg <tholag@gmail.com>
+Date:   Sat Jun 11 20:07:46 2011 +0200
+
+    Fixed or marked some bugs thanks to warning messages.
+    This includes a buffer overflow in Interface_MSG
+
+diff --git a/src/Interface/Interface_MSG.cxx b/src/Interface/Interface_MSG.cxx
+index bd8653b..7e6c14d 100644
+--- a/src/Interface/Interface_MSG.cxx
++++ b/src/Interface/Interface_MSG.cxx
+@@ -42,7 +42,7 @@ Interface_MSG::Interface_MSG
+ {
+   char mess[300];
+   sprintf (mess, Interface_MSG::Translated(thekey), i1);
+-  theval = new char (strlen (mess)+1 );
++  theval = new char [strlen (mess)+1 ];
+   strcpy (theval,mess);
+ }
+ 
+@@ -53,7 +53,7 @@ Interface_MSG::Interface_MSG
+ {
+   char mess[300];
+   sprintf (mess, Interface_MSG::Translated(thekey), i1,i2);
+-  theval = new char (strlen (mess)+1 );
++  theval = new char [strlen (mess)+1 ];
+   strcpy (theval,mess);
+ }
+ 
+@@ -65,7 +65,7 @@ Interface_MSG::Interface_MSG
+   char mess[300];
+   sprintf (mess, Interface_MSG::Translated(thekey),
+ 	   (intervals < 0 ? r1 : Interface_MSG::Intervalled(r1,intervals)) );
+-  theval = new char (strlen (mess)+1 );
++  theval = new char [strlen (mess)+1 ];
+   strcpy (theval,mess);
+ }
+ 
+@@ -76,7 +76,7 @@ Interface_MSG::Interface_MSG
+ {
+   char mess[300];
+   sprintf (mess, Interface_MSG::Translated(thekey), str);
+-  theval = new char (strlen (mess)+1 );
++  theval = new char [strlen (mess)+1];
+   strcpy (theval,mess);
+ }
+ 
+@@ -88,7 +88,7 @@ Interface_MSG::Interface_MSG
+ {
+   char mess[300];
+   sprintf (mess, Interface_MSG::Translated(thekey), val, str);
+-  theval = new char (strlen (mess)+1 );
++  theval = new char [strlen (mess)+1 ];
+   strcpy (theval,mess);
+ }
+ 
+diff --git a/src/TestTopOpeDraw/TestTopOpeDraw_OtherCommands.cxx b/src/TestTopOpeDraw/TestTopOpeDraw_OtherCommands.cxx
+index 8c29deb..b93244c 100644
+--- a/src/TestTopOpeDraw/TestTopOpeDraw_OtherCommands.cxx
++++ b/src/TestTopOpeDraw/TestTopOpeDraw_OtherCommands.cxx
+@@ -98,21 +98,21 @@ Standard_EXPORT void OthersCommands_flags(Standard_Integer& na,const char** a,Te
+ 	}
+ 	else if(a[iloc][j] == 'c') {
+ 	  col=Standard_True;
+-	  if(a[iloc+1] == "blanc") Color = Draw_blanc;
+-	  else if (a[iloc+1] == "rouge")   Color = Draw_rouge;
+-	  else if (a[iloc+1] == "vert")    Color = Draw_vert;
+-	  else if (a[iloc+1] == "bleu")    Color = Draw_bleu;
+-	  else if (a[iloc+1] == "cyan")    Color = Draw_cyan;
+-	  else if (a[iloc+1] == "or")      Color = Draw_or;
+-	  else if (a[iloc+1] == "magenta") Color = Draw_magenta;
+-	  else if (a[iloc+1] == "marron")  Color = Draw_marron;
+-	  else if (a[iloc+1] == "orange")  Color = Draw_orange;
+-	  else if (a[iloc+1] == "rose")    Color = Draw_rose;
+-	  else if (a[iloc+1] == "saumon")  Color = Draw_saumon;
+-	  else if (a[iloc+1] == "violet")  Color = Draw_violet;
+-	  else if (a[iloc+1] == "jaune")   Color = Draw_jaune;
+-	  else if (a[iloc+1] == "kaki")    Color = Draw_kaki;
+-	  else if (a[iloc+1] == "corail")  Color = Draw_corail;
++	  if(strncmp(a[iloc+1],"blanc",5) == 0) Color = Draw_blanc;
++	  else if (strncmp(a[iloc+1],"rouge",5) == 0)   Color = Draw_rouge;
++	  else if (strncmp(a[iloc+1],"vert",4) == 0)    Color = Draw_vert;
++	  else if (strncmp(a[iloc+1],"bleu",4) == 0)    Color = Draw_bleu;
++	  else if (strncmp(a[iloc+1],"cyan",4) == 0)    Color = Draw_cyan;
++	  else if (strncmp(a[iloc+1],"or",2) == 0)      Color = Draw_or;
++	  else if (strncmp(a[iloc+1],"magenta",7) == 0) Color = Draw_magenta;
++	  else if (strncmp(a[iloc+1],"marron",6) == 0)  Color = Draw_marron;
++	  else if (strncmp(a[iloc+1],"orange",6) == 0)  Color = Draw_orange;
++	  else if (strncmp(a[iloc+1],"rose",4) == 0)    Color = Draw_rose;
++	  else if (strncmp(a[iloc+1],"saumon",6) == 0)  Color = Draw_saumon;
++	  else if (strncmp(a[iloc+1],"violet",6) == 0)  Color = Draw_violet;
++	  else if (strncmp(a[iloc+1],"jaune",5) == 0)   Color = Draw_jaune;
++	  else if (strncmp(a[iloc+1],"kaki",4) == 0)    Color = Draw_kaki;
++	  else if (strncmp(a[iloc+1],"corail",6) == 0)  Color = Draw_corail;
+ 	  decal++;dloc++;
+ 	}
+       }
+diff --git a/src/ViewerTest/ViewerTest.cxx b/src/ViewerTest/ViewerTest.cxx
+index 60a4127..85ca2a2 100644
+--- a/src/ViewerTest/ViewerTest.cxx
++++ b/src/ViewerTest/ViewerTest.cxx
+@@ -2071,7 +2071,7 @@ static int VPerf(Draw_Interpretor& di, Standard_Integer , const char** argv) {
+ // Function : VAnimation
+ //==================================================================================
+ static int VAnimation (Draw_Interpretor& di, Standard_Integer argc, const char** argv) {
+-  if (argc =! 5) {
++  if (argc != 5) {
+     di<<"Use: "<<argv[0]<<" CrankArmFile CylinderHeadFile PropellerFile EngineBlockFile"<<"\n";
+     return 1;
+   }

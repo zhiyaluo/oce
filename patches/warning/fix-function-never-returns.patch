@@ -1,0 +1,30 @@
+From: QbProg <tholag@gmail.com>
+Date: Sun, 19 Jun 2011 18:19:15 +0200
+Subject: [PATCH 28/82] [warning-fix][function-never-returns] Fixes warnings
+ like 'function doesn't return a value' in one or more
+ code-paths
+
+---
+ src/OpenGl/OpenGl_GraphicDriver_713.cxx |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+Index: oce/src/OpenGl/OpenGl_GraphicDriver_713.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_GraphicDriver_713.cxx
++++ oce/src/OpenGl/OpenGl_GraphicDriver_713.cxx
+@@ -39,6 +39,7 @@
+   if ( call_togl_isdepthtest( &MyCView ) )
+     return Standard_True;
+ #endif
++  return Standard_True;
+ }
+ 
+ void OpenGl_GraphicDriver::ReadDepths( const Graphic3d_CView& view,
+@@ -68,6 +69,7 @@
+   if ( call_togl_isgllight( &MyCView ) )
+     return Standard_True;
+ #endif
++    return Standard_True;
+ }
+ 
+ void OpenGl_GraphicDriver :: PrimitiveArray( const Graphic3d_CGroup& ACGroup,

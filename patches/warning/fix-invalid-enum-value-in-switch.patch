@@ -1,0 +1,23 @@
+From: QbProg <tholag@gmail.com>
+Date: Sun, 19 Jun 2011 18:23:20 +0200
+Subject: [PATCH 37/82] [warning-fix][invalid-enum-value-in-switch] Fixes
+ warnings where an invalid value is used in a switch
+ of an enum value
+
+---
+ src/TObj/TObj_Application.cxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Index: oce/src/TObj/TObj_Application.cxx
+===================================================================
+--- oce.orig/src/TObj/TObj_Application.cxx
++++ oce/src/TObj/TObj_Application.cxx
+@@ -126,7 +126,7 @@
+   myIsError = aStatus != CDF_RS_OK;
+   if (myIsError)
+   {
+-    switch (aStatus)
++    switch ((int)aStatus)
+     {
+     case CDF_RS_UnknownDocument:
+       ErrorMessage (Message_Msg("TObj_Appl_RUnknownDocument") << aPath);

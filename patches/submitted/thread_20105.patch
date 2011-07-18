@@ -1,0 +1,73 @@
+commit 0e86d0653971936215a5c6eb129647bdfbde8a46
+Author: Denis Barbier <bouzim@gmail.com>
+Date:   Sun Apr 24 10:13:26 2011 +0200
+
+    Add OpenMP support
+    
+    Classes BRepMesh_FastDiscret and BRepMesh_IncrementalMesh
+    have been modified in OpenCASCADE 6.5.0 to allow parallel
+    meshing on faces if compiled with TBB support.
+    
+    This patch does the same for OpenMP, which means that users
+    can choose between TBB and OpenMP to enable parallel meshing.
+    
+    Submitted upstream: http://www.opencascade.org/org/forum/thread_20105/
+
+Index: oce/src/BRepMesh/BRepMesh_FastDiscret.cxx
+===================================================================
+--- oce.orig/src/BRepMesh/BRepMesh_FastDiscret.cxx
++++ oce/src/BRepMesh/BRepMesh_FastDiscret.cxx
+@@ -182,13 +182,20 @@
+   }
+   
+   // mesh faces in parallel threads using TBB
+-#ifdef HAVE_TBB
+   if (Standard::IsReentrant())
++  {
++#ifdef HAVE_TBB
+     tbb::parallel_for_each (aFaces.begin(), aFaces.end(), *this);
+-  else
++#else
++    int i, n = aFaces.size();
++#pragma omp parallel for private(i)
++    for (i = 0; i < n; ++i)
++      Process (aFaces[i]);
+ #endif
+-  for (std::vector<TopoDS_Face>::iterator it(aFaces.begin()); it != aFaces.end(); it++)
+-    Process (*it);
++  }
++  else
++    for (std::vector<TopoDS_Face>::iterator it(aFaces.begin()); it != aFaces.end(); it++)
++      Process (*it);
+ }
+ 
+ 
+Index: oce/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
+===================================================================
+--- oce.orig/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
++++ oce/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
+@@ -212,13 +212,20 @@
+   }
+ 
+   // mesh faces in parallel threads using TBB
+-#ifdef HAVE_TBB
+   if (Standard::IsReentrant())
++  {
++#ifdef HAVE_TBB
+     tbb::parallel_for_each (aFaces.begin(), aFaces.end(), *myMesh.operator->());
+-  else
++#else
++    int i, n = aFaces.size();
++#pragma omp parallel for private(i)
++    for (i = 0; i < n; ++i)
++      myMesh->Process (aFaces[i]);
+ #endif
+-  for (std::vector<TopoDS_Face>::iterator it(aFaces.begin()); it != aFaces.end(); it++)
+-    myMesh->Process (*it);
++  }
++  else
++    for (std::vector<TopoDS_Face>::iterator it(aFaces.begin()); it != aFaces.end(); it++)
++      myMesh->Process (*it);
+ 
+   // maillage des edges non contenues dans les faces :
+   Standard_Real f, l, defedge;

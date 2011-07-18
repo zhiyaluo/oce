@@ -1,0 +1,51 @@
+commit 8d457c31149d890f22fccff3fd13e771e462e71f
+Author: Denis Barbier <bouzim@gmail.com>
+Date:   Mon Apr 4 22:09:50 2011 +0200
+
+    Fix build failure with tcl 8.6
+    
+    With this patch, opencascade still builds with tcl 8.5. It should
+    also be fine with any older tcl 8.x version.
+    
+    Submitted upstream: http://www.opencascade.org/org/forum/thread_20125/
+
+Index: oce/src/Draw/Draw_Window.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw_Window.cxx
++++ oce/src/Draw/Draw_Window.cxx
+@@ -70,7 +70,7 @@
+       errChannel = Tcl_GetStdChannel(TCL_STDERR);
+       if (code != TCL_OK) {
+         if (errChannel) {
+-          Tcl_Write(errChannel, Interp->result, -1);
++          Tcl_Write(errChannel, Tcl_GetStringResult(Interp), -1);
+           Tcl_Write(errChannel, "\n", 1);
+         }
+         Tcl_AddErrorInfo(Interp,
+@@ -1044,7 +1044,7 @@
+   mainWindow =
+   Tk_MainWindow(interp) ;
+   if (mainWindow == NULL) {
+-    fprintf(stderr, "%s\n", interp->result);
++    fprintf(stderr, "%s\n", Tcl_GetStringResult(interp));
+     exit(1);
+   }
+   Tk_Name(mainWindow) =
+@@ -2065,7 +2065,7 @@
+     OCC_CATCH_SIGNALS
+     Standard_Integer res = Tk_Init(interp) ;
+     if (res != TCL_OK)
+-      cout << "tkLoop: error in Tk initialization. Tcl reported: " << interp->result << endl;
++      cout << "tkLoop: error in Tk initialization. Tcl reported: " << Tcl_GetStringResult(interp) << endl;
+ 
+   } catch  (Standard_Failure) {
+     cout <<"tkLoop: exception in TK_Init "<<endl;
+@@ -2075,7 +2075,7 @@
+   mainWindow =
+     Tk_MainWindow(interp) ;
+   if (mainWindow == NULL) {
+-        fprintf(stderr, "%s\n", interp->result);
++        fprintf(stderr, "%s\n", Tcl_GetStringResult(interp));
+         cout << "tkLoop: Tk_MainWindow() returned NULL. Exiting..." << endl;
+         Tcl_Exit(0);
+    }

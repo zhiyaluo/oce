@@ -1,0 +1,27 @@
+commit 116714387c847f8ab17aa571e08b6daa595aa33d
+Author: Denis Barbier <bouzim@gmail.com>
+Date:   Sat May 28 22:50:22 2011 +0200
+
+    Delete inc/TopOpeBRep_tools.hxx
+    
+    This file is unused, and it can not be used since it
+    includes TopOpeBRepDS_tools.hxx which does not exist.
+    
+    This commit fixes issue #5
+
+Index: oce/inc/TopOpeBRep_tools.hxx
+===================================================================
+--- oce.orig/inc/TopOpeBRep_tools.hxx
++++ /dev/null
+@@ -1,11 +0,0 @@
+-// File:	TopOpeBRep_tools.hxx
+-// Created:	Fri Nov 28 15:24:39 1997
+-// Author:	Jean Yves LEBEY
+-//		<jyl@bistrox.paris1.matra-dtv.fr>
+-
+-
+-#ifndef _TopOpeBRep_tools_HeaderFile
+-#define _TopOpeBRep_tools_HeaderFile
+-
+-#include <TopOpeBRepDS_tools.hxx>
+-#endif

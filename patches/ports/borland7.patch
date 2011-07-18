@@ -1,0 +1,33 @@
+From 072d977cd154eea913e76662b44b268d4dc6fb6a Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Tue, 22 Mar 2011 07:13:56 +0100
+Subject: [PATCH 7/9] Disambiguate gp_Pnt constructor when copying a
+ Select3D_Pnt instance
+
+BCC reports an error
+  [C++ Error] Select3D_SensitiveSegment.cpp(207): E2015 Ambiguity between
+              'gp_Pnt::gp_Pnt(const gp_Pnt &)' and 'gp_Pnt::gp_Pnt(const gp_XYZ &)'
+because Select3D_Pnt has both gp_Pnt and gp_XYZ operators, and gp_Pnt takes both as
+constructor arguments.
+---
+ ros/src/Select3D/Select3D_SensitiveSegment.cxx |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+Index: oce/src/Select3D/Select3D_SensitiveSegment.cxx
+===================================================================
+--- oce.orig/src/Select3D/Select3D_SensitiveSegment.cxx
++++ oce/src/Select3D/Select3D_SensitiveSegment.cxx
+@@ -204,8 +204,13 @@
+ 
+ Standard_Real Select3D_SensitiveSegment::ComputeDepth(const gp_Lin& EyeLine) const
+ {
++#ifdef __BORLANDC__
++  gp_Pnt aP0 = mystart.operator gp_Pnt();
++  gp_Pnt aP1 = myend.operator gp_Pnt();
++#else
+   gp_Pnt aP0 = mystart;
+   gp_Pnt aP1 = myend;
++#endif
+ 
+   // if segment is degenerated (zero length), just use depth of the end
+   gp_XYZ aV = aP1.XYZ() - aP0.XYZ();

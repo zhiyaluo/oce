@@ -1,0 +1,231 @@
+commit 3859df6bc2d947d017175ac755c9e9a00cc1b3b2
+Author: Denis Barbier <bouzim@gmail.com>
+Date:   Thu Apr 21 21:40:42 2011 +0200
+
+    Get rid of all environment variables
+    
+    If environment variables are not set, provide default values
+    which are set according to installation paths.
+    
+    This works only for CMake-based builds.
+
+Index: oce/src/Aspect/Aspect_Driver.cxx
+===================================================================
+--- oce.orig/src/Aspect/Aspect_Driver.cxx
++++ oce/src/Aspect/Aspect_Driver.cxx
+@@ -35,6 +35,11 @@
+   fontdir =  getenv("CSF_MDTVFontDirectory" );
+   if ( !fontdir) {
+     casroot  = getenv("CASROOT");
++#ifdef OCE_INSTALL_DATA_DIR
++    if ( !casroot ) {
++      casroot = OCE_INSTALL_DATA_DIR;
++    }
++#endif
+     if ( casroot ) {
+       TCollection_AsciiString CasRootString (casroot);
+       CasRootString += "/src/FontMFT" ; 
+Index: oce/src/DPrsStd/DPrsStd.cxx
+===================================================================
+--- oce.orig/src/DPrsStd/DPrsStd.cxx
++++ oce/src/DPrsStd/DPrsStd.cxx
+@@ -60,6 +60,11 @@
+   Standard_Boolean hasPlugin = Standard_False; 
+   TCollection_AsciiString PluginName ;
+   if ( !plugin ) { 
++#ifdef OCE_INSTALL_DATA_DIR
++    if ( !casroot ) {
++      casroot = OCE_INSTALL_DATA_DIR;
++    }
++#endif
+     if ( casroot ) {
+       PluginName = TCollection_AsciiString (casroot);
+       PluginName+="/src/StdResource" ;
+Index: oce/src/Draw/Draw.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw.cxx
++++ oce/src/Draw/Draw.cxx
+@@ -272,6 +272,8 @@
+     {
+ #ifdef WNT
+ 	  ReadInitFile("ddefault");
++#elif defined(OCE_INSTALL_DATA_DIR)
++	  ReadInitFile(OCE_INSTALL_DATA_DIR "/src/DrawResources/DrawDefault");
+ #else
+ 	  cout << " the CASROOT variable is mandatory to Run OpenCascade "<< endl;
+ 	  cout << "No default file" << endl;
+Index: oce/src/Draw/Draw_PloadCommands.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw_PloadCommands.cxx
++++ oce/src/Draw/Draw_PloadCommands.cxx
+@@ -54,6 +54,11 @@
+     // now try by CASROOT
+     aPluginDir = getenv("CASROOT");
+ 
++#ifdef OCE_INSTALL_DATA_DIR
++    if ( aPluginDir.IsEmpty() ) {
++      aPluginDir = OCE_INSTALL_DATA_DIR;
++    }
++#endif
+     if ( !aPluginDir.IsEmpty() ) {
+       aPluginDir +="/src/DrawResources" ;
+       aToSetCSFVariable = Standard_True; //CSF variable to be set later
+Index: oce/src/Graphic3d/Graphic3d_GraphicDevice.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d_GraphicDevice.cxx
++++ oce/src/Graphic3d/Graphic3d_GraphicDevice.cxx
+@@ -223,9 +223,13 @@
+     glshr = (char *) malloc (buffString.Length() + 1);
+     memcpy(glshr, buffString.ToCString(), buffString.Length() + 1);
+   } else {
++#ifdef OCE_DEFAULT_CSF_GraphicShr
++    glshr = OCE_DEFAULT_CSF_GraphicShr;
++#else
+     aShr = NULL;
+     printf("You have not defined CSF_GraphicShr or CASROOT, aborting...");
+     return Standard_False;
++#endif
+   }
+  
+  aShr = glshr;
+Index: oce/src/Graphic3d/Graphic3d_Texture1D.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d_Texture1D.cxx
++++ oce/src/Graphic3d/Graphic3d_Texture1D.cxx
+@@ -32,6 +32,11 @@
+     Standard_Boolean HasDefinition = Standard_False ;
+     if ( !envir ) { 
+       casroot  = getenv("CASROOT");
++#ifdef OCE_INSTALL_DATA_DIR
++      if ( !casroot ) {
++	casroot  = OCE_INSTALL_DATA_DIR;
++      }
++#endif
+       if ( casroot ) {
+ 	VarName = TCollection_AsciiString  (casroot);
+ 	VarName += "/src/Textures" ;
+Index: oce/src/Graphic3d/Graphic3d_Texture2D.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d_Texture2D.cxx
++++ oce/src/Graphic3d/Graphic3d_Texture2D.cxx
+@@ -28,6 +28,11 @@
+     Standard_Boolean HasDefinition = Standard_False ;
+     if ( !envir ) { 
+       casroot  = getenv("CASROOT");
++#ifdef OCE_INSTALL_DATA_DIR
++      if ( !casroot ) {
++	casroot  = OCE_INSTALL_DATA_DIR;
++      }
++#endif
+       if ( casroot ) {
+ 	VarName = TCollection_AsciiString  (casroot);
+ 	VarName += "/src/Textures" ;
+Index: oce/src/Graphic3d/Graphic3d_TextureEnv.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d_TextureEnv.cxx
++++ oce/src/Graphic3d/Graphic3d_TextureEnv.cxx
+@@ -29,6 +29,11 @@
+     Standard_Boolean HasDefinition = Standard_False ;
+     if ( !envir ) { 
+       casroot  = getenv("CASROOT");
++#ifdef OCE_INSTALL_DATA_DIR
++      if ( !casroot ) {
++	casroot  = OCE_INSTALL_DATA_DIR;
++      }
++#endif
+       if ( casroot ) {
+ 	VarName = TCollection_AsciiString  (casroot);
+ 	VarName += "/src/Textures" ;
+Index: oce/src/Resource/Resource_Manager.cxx
+===================================================================
+--- oce.orig/src/Resource/Resource_Manager.cxx
++++ oce/src/Resource/Resource_Manager.cxx
+@@ -57,6 +57,8 @@
+   Debug = (getenv("ResourceDebug") != NULL) ;
+ 
+   TCollection_AsciiString EnvVar, CSF_ = "CSF_" ;
++  TCollection_AsciiString DefaultVar;
++  TCollection_AsciiString Name = aName ;
+   TCollection_AsciiString Directory ;
+   Standard_CString dir ;
+ 
+@@ -69,9 +71,19 @@
+     Load(Directory,myName,myRefMap);
+   }
+   else
++  {
++#ifdef OCE_INSTALL_DATA_DIR
++    if ( Name.IsEqual("STEP") || Name.IsEqual("IGES"))
++      DefaultVar = OCE_INSTALL_DATA_DIR "/src/XSTEPResource";
++    else
++      DefaultVar = OCE_INSTALL_DATA_DIR "/src/StdResource";
++    Load(DefaultVar,myName,myRefMap);
++#else
+     if (myVerbose)
+       cout << "Resource Manager Warning: Environment variable \"" << EnvVar
+ 	   << "\" not set." << endl;
++#endif
++  }
+ 
+   EnvVar = CSF_ + aName + "UserDefaults" ;
+   if ((dir = getenv (EnvVar.ToCString())) != NULL) {
+Index: oce/src/UnitsAPI/UnitsAPI.cxx
+===================================================================
+--- oce.orig/src/UnitsAPI/UnitsAPI.cxx
++++ oce/src/UnitsAPI/UnitsAPI.cxx
+@@ -35,6 +35,11 @@
+     else {
+       OSD_Environment CasRootEnv("CASROOT");
+       TCollection_AsciiString CasRootString(CasRootEnv.Value());
++#ifdef OCE_INSTALL_DATA_DIR
++      if (CasRootString.Length() == 0 )  {
++        CasRootString = OCE_INSTALL_DATA_DIR;
++      }
++#endif
+       if (CasRootString.Length() > 0 )  {
+ 	CasRootString += "/src/UnitsAPI/Lexi_Expr.dat" ;
+ 	Units::LexiconFile(CasRootString.ToCString());
+@@ -49,6 +54,11 @@
+     else {
+       OSD_Environment CasRootEnv("CASROOT");
+       TCollection_AsciiString CasRootString(CasRootEnv.Value());
++#ifdef OCE_INSTALL_DATA_DIR
++      if (CasRootString.Length() == 0 )  {
++        CasRootString = OCE_INSTALL_DATA_DIR;
++      }
++#endif
+       if (CasRootString.Length() > 0 ) {
+ 	CasRootString += "/src/UnitsAPI/Units.dat";
+ 	Units::UnitsFile(CasRootString.ToCString());
+Index: oce/src/ViewerTest/ViewerTest.cxx
+===================================================================
+--- oce.orig/src/ViewerTest/ViewerTest.cxx
++++ oce/src/ViewerTest/ViewerTest.cxx
+@@ -1601,6 +1601,11 @@
+     Standard_Boolean HasDefinition = Standard_False ;
+     if ( !envir ) {
+       casroot  = getenv("CASROOT");
++#ifdef OCE_INSTALL_DATA_DIR
++      if ( !casroot )  {
++        casroot = OCE_INSTALL_DATA_DIR;
++      }
++#endif
+       if ( casroot ) {
+ 	VarName = TCollection_AsciiString  (casroot);
+ 	VarName += "/src/Textures" ;
+Index: oce/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
+===================================================================
+--- oce.orig/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
++++ oce/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
+@@ -181,6 +181,11 @@
+   if (aResourceDir.IsEmpty()) {
+     // now try by CASROOT
+     aResourceDir = getenv (aCSFVariable[1]);
++#ifdef OCE_INSTALL_DATA_DIR
++    if (aResourceDir.IsEmpty()) {
++      aResourceDir = OCE_INSTALL_DATA_DIR;
++    }
++#endif
+     if ( !aResourceDir.IsEmpty() ) {
+       aResourceDir += "/src/XmlOcafResource" ;
+       aToSetCSFVariable = Standard_True; //CSF variable to be set later

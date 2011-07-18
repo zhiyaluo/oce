@@ -1,0 +1,221 @@
+From: Denis Barbier <bouzim@gmail.com>
+Date: Fri, 8 Apr 2011 23:02:06 +0200
+Subject: [PATCH 81/82] Rename ED variables into EData
+
+The Hurd defines ED as a macro in errno.h.
+---
+ inc/HLRBRep_Data.hxx                         |   16 ++++++++--------
+ inc/HLRBRep_Data.lxx                         |    4 ++--
+ src/HLRBRep/HLRBRep_Data.cdl                 |   16 ++++++++--------
+ src/HLRBRep/HLRBRep_Data.cxx                 |   22 +++++++++++-----------
+ src/HLRBRep/HLRBRep_EdgeInterferenceTool.cxx |    4 ++--
+ 5 files changed, 31 insertions(+), 31 deletions(-)
+
+Index: oce/inc/HLRBRep_Data.hxx
+===================================================================
+--- oce.orig/inc/HLRBRep_Data.hxx
++++ oce/inc/HLRBRep_Data.hxx
+@@ -172,22 +172,22 @@
+ //!          between the current edge and the current face at the <br>
+ //!          <p1> and <p2> parameters. <br>
+   Standard_EXPORT     void EdgeState(const Standard_Real p1,const Standard_Real p2,TopAbs_State& stbef,TopAbs_State& staf) ;
+-  //! Returns the  true if the  Edge <ED> belongs to the <br>
++  //! Returns the  true if the  Edge <EData> belongs to the <br>
+ //!          Hiding Face. <br>
+-        Standard_Boolean EdgeOfTheHidingFace(const Standard_Integer E,const HLRBRep_EdgeData& ED) const;
++        Standard_Boolean EdgeOfTheHidingFace(const Standard_Integer E,const HLRBRep_EdgeData& EData) const;
+   //! Returns the number of  levels of hiding face above <br>
+-//!          the   first  point  of   the    edge <ED>.     The <br>
++//!          the   first  point  of   the    edge <EData>.     The <br>
+ //!          InterferenceList is  given to  compute far away of <br>
+ //!          the Interferences and then come back. <br>
+-  Standard_EXPORT     Standard_Integer HidingStartLevel(const Standard_Integer E,const HLRBRep_EdgeData& ED,const HLRAlgo_InterferenceList& IL) ;
+-  //! Returns   the  state   of  the   Edge  <ED>  after <br>
++  Standard_EXPORT     Standard_Integer HidingStartLevel(const Standard_Integer E,const HLRBRep_EdgeData& EData,const HLRAlgo_InterferenceList& IL) ;
++  //! Returns   the  state   of  the   Edge  <EData>  after <br>
+ //!          classification. <br>
+-  Standard_EXPORT     TopAbs_State Compare(const Standard_Integer E,const HLRBRep_EdgeData& ED) ;
++  Standard_EXPORT     TopAbs_State Compare(const Standard_Integer E,const HLRBRep_EdgeData& EData) ;
+   //! Simple classification of part of edge  [p1,  p2] <br>
+ //!  returns  OUT  if  at  least  1 of  Nbp  points  of  edge  is  out <br>
+ //!  othewise  returns  IN <br>
+ //!  It  is  used  to  check  "suspision"  hided  part  of  edge. <br>
+-  Standard_EXPORT     TopAbs_State SimplClassify(const Standard_Integer E,const HLRBRep_EdgeData& ED,const Standard_Integer Nbp,const Standard_Real p1,const Standard_Real p2) ;
++  Standard_EXPORT     TopAbs_State SimplClassify(const Standard_Integer E,const HLRBRep_EdgeData& EData,const Standard_Integer Nbp,const Standard_Real p1,const Standard_Real p2) ;
+   
+   Standard_EXPORT     void Destroy() ;
+ ~HLRBRep_Data()
+@@ -214,7 +214,7 @@
+ //!          not Double and not IsoLine. <br>
+   Standard_EXPORT     void OrientOthEdge(const Standard_Integer I,HLRBRep_FaceData& FD) ;
+   //! Classification of an edge. <br>
+-  Standard_EXPORT     TopAbs_State Classify(const Standard_Integer E,const HLRBRep_EdgeData& ED,const Standard_Boolean LevelFlag,Standard_Integer& Level,const Standard_Real param) ;
++  Standard_EXPORT     TopAbs_State Classify(const Standard_Integer E,const HLRBRep_EdgeData& EData,const Standard_Boolean LevelFlag,Standard_Integer& Level,const Standard_Real param) ;
+   //! Returns  True  if the  intersection is  rejected. <br>
+   Standard_EXPORT     Standard_Boolean RejectedPoint(const IntRes2d_IntersectionPoint& PInter,const TopAbs_Orientation BoundOri,const Standard_Integer NumSeg) ;
+   //! returns True  if there is a common  vertex between <br>
+Index: oce/inc/HLRBRep_Data.lxx
+===================================================================
+--- oce.orig/inc/HLRBRep_Data.lxx
++++ oce/inc/HLRBRep_Data.lxx
+@@ -122,6 +122,6 @@
+ 
+ inline Standard_Boolean 
+ HLRBRep_Data::EdgeOfTheHidingFace (const Standard_Integer E,
+-				   const HLRBRep_EdgeData& ED) const
+-{ return ED.HideCount() == myHideCount-1; }
++				   const HLRBRep_EdgeData& EData) const
++{ return EData.HideCount() == myHideCount-1; }
+ 
+Index: oce/src/HLRBRep/HLRBRep_Data.cdl
+===================================================================
+--- oce.orig/src/HLRBRep/HLRBRep_Data.cdl
++++ oce/src/HLRBRep/HLRBRep_Data.cdl
+@@ -215,32 +215,32 @@
+     is static;
+     
+     EdgeOfTheHidingFace(me; E  : Integer  from Standard;
+-                            ED : EdgeData from HLRBRep)
++                            EData : EdgeData from HLRBRep)
+     returns Boolean from Standard
+-	---Purpose: Returns the  true if the  Edge <ED> belongs to the
++	---Purpose: Returns the  true if the  Edge <EData> belongs to the
+ 	--          Hiding Face.
+  	---C++: inline
+    is static;
+ 
+     HidingStartLevel(me : mutable; E  : Integer          from Standard;
+-                                   ED : EdgeData         from HLRBRep;
++                                   EData : EdgeData         from HLRBRep;
+                                    IL : InterferenceList from HLRAlgo)
+     returns Integer from Standard
+ 	---Purpose: Returns the number of  levels of hiding face above
+-	--          the   first  point  of   the    edge <ED>.     The
++	--          the   first  point  of   the    edge <EData>.     The
+ 	--          InterferenceList is  given to  compute far away of
+ 	--          the Interferences and then come back.
+     is static;
+ 
+     Compare(me : mutable; E  : Integer  from Standard;
+-                          ED : EdgeData from HLRBRep)
++                          EData : EdgeData from HLRBRep)
+     returns State from TopAbs
+-	---Purpose: Returns   the  state   of  the   Edge  <ED>  after
++	---Purpose: Returns   the  state   of  the   Edge  <EData>  after
+ 	--          classification.
+     is static;
+ 
+     SimplClassify(me : mutable; E         :     Integer  from Standard;
+-                            	ED        :     EdgeData from HLRBRep;
++                            	EData     :     EdgeData from HLRBRep;
+                             	Nbp       :     Integer  from Standard;
+                             	p1,  p2   :     Real     from Standard)
+     returns State from TopAbs; 
+@@ -266,7 +266,7 @@
+     is static private;
+ 
+     Classify(me : mutable; E         :     Integer  from Standard;
+-                           ED        :     EdgeData from HLRBRep;
++                           EData     :     EdgeData from HLRBRep;
+                            LevelFlag :     Boolean  from Standard;
+                            Level     : out Integer  from Standard;
+                            param     :     Real     from Standard)
+Index: oce/src/HLRBRep/HLRBRep_Data.cxx
+===================================================================
+--- oce.orig/src/HLRBRep/HLRBRep_Data.cxx
++++ oce/src/HLRBRep/HLRBRep_Data.cxx
+@@ -1544,12 +1544,12 @@
+ 
+ Standard_Integer 
+ HLRBRep_Data::HidingStartLevel (const Standard_Integer E,
+-				const HLRBRep_EdgeData& ED,
++				const HLRBRep_EdgeData& EData,
+ 				const HLRAlgo_InterferenceList& IL)
+ {
+   Standard_Boolean Loop;
+   HLRAlgo_ListIteratorOfInterferenceList It;
+-  const HLRBRep_Curve& EC = ED.Geometry();
++  const HLRBRep_Curve& EC = EData.Geometry();
+   Standard_Real sta = EC.Parameter3d(EC.FirstParameter());
+   Standard_Real end = EC.Parameter3d(EC.LastParameter());
+   Standard_Real tolpar = (end - sta) * 0.01;
+@@ -1578,7 +1578,7 @@
+ #ifdef DEB
+   TopAbs_State st = 
+ #endif
+-    Classify(E,ED,Standard_True,level,param);
++    Classify(E,EData,Standard_True,level,param);
+   Loop = Standard_True;
+   It.Initialize(IL);
+ 
+@@ -1619,11 +1619,11 @@
+ //=======================================================================
+ 
+ TopAbs_State HLRBRep_Data::Compare (const Standard_Integer E,
+-				    const HLRBRep_EdgeData& ED)
++				    const HLRBRep_EdgeData& EData)
+ {
+   Standard_Integer level;
+   Standard_Real parbid = 0;
+-  return Classify(E,ED,Standard_False,level,parbid);
++  return Classify(E,EData,Standard_False,level,parbid);
+ }
+ 
+ //=======================================================================
+@@ -1832,7 +1832,7 @@
+ 
+ TopAbs_State 
+ HLRBRep_Data::Classify (const Standard_Integer E,
+-			const HLRBRep_EdgeData& ED,
++			const HLRBRep_EdgeData& EData,
+ 			const Standard_Boolean LevelFlag,
+ 			Standard_Integer& Level,
+ 			const Standard_Real param)
+@@ -1845,9 +1845,9 @@
+   Level = 0;
+   TopAbs_State state = TopAbs_OUT;
+ //  Standard_Boolean rej = Standard_False;
+-  const HLRBRep_Curve& EC = ED.Geometry();
++  const HLRBRep_Curve& EC = EData.Geometry();
+   Standard_Real sta,xsta,ysta,zsta,end,xend,yend,zend;
+-  Standard_Real tol = (Standard_Real)(ED.Tolerance());
++  Standard_Real tol = (Standard_Real)(EData.Tolerance());
+   
+   if (LevelFlag) {
+     sta = param;
+@@ -2134,7 +2134,7 @@
+ //=======================================================================
+ 
+ TopAbs_State HLRBRep_Data::SimplClassify (const Standard_Integer E,
+-					  const HLRBRep_EdgeData& ED,
++					  const HLRBRep_EdgeData& EData,
+ 					  const Standard_Integer Nbp,
+ 					  const Standard_Real p1,
+ 					  const Standard_Real p2)
+@@ -2146,9 +2146,9 @@
+   Standard_Integer i;
+   TopAbs_State state = TopAbs_IN;
+ //  Standard_Boolean rej = Standard_False;
+-  const HLRBRep_Curve& EC = ED.Geometry();
++  const HLRBRep_Curve& EC = EData.Geometry();
+   Standard_Real sta,xsta,ysta,zsta, dp;
+-  Standard_Real tol = (Standard_Real)(ED.Tolerance());
++  Standard_Real tol = (Standard_Real)(EData.Tolerance());
+ 
+   dp = (p2 - p1)/(Nbp+1);
+ 
+Index: oce/src/HLRBRep/HLRBRep_EdgeInterferenceTool.cxx
+===================================================================
+--- oce.orig/src/HLRBRep/HLRBRep_EdgeInterferenceTool.cxx
++++ oce/src/HLRBRep/HLRBRep_EdgeInterferenceTool.cxx
+@@ -26,8 +26,8 @@
+ {
+   Standard_Real p1,p2;
+   Standard_ShortReal t1,t2;
+-  HLRBRep_Array1OfEData& ED = myDS->EDataArray();
+-  HLRBRep_EdgeData& ed = ED(myDS->Edge());
++  HLRBRep_Array1OfEData& EData = myDS->EDataArray();
++  HLRBRep_EdgeData& ed = EData(myDS->Edge());
+   ed.Status().Bounds(p1,t1,p2,t2);
+   inter[0].Parameter(p1);
+   inter[0].Tolerance(t1);

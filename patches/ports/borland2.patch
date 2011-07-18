@@ -1,0 +1,93 @@
+From c1d5d0cfc3edbc8a2772fd81938db2951de43bec Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Tue, 22 Mar 2011 06:59:13 +0100
+Subject: [PATCH 2/9] Templates related fixes needed by BCC
+
+* BCC does not seem to support templates friends
+* When a template is instantiated then any reference
+  of this template within the template body must be
+  followed by its specialization with bcc, otherwise
+  there are errors similar to:
+    [C++ Error] NCollection_CellFilter.hxx(319):
+    E2404 Dependent type qualifier 'MeshAlgo_CellFilter'
+    has no member type named 'Cell'
+---
+ ros/inc/MeshAlgo_CellFilter.hxx        |    8 ++++++++
+ ros/inc/NCollection_CellFilter.hxx     |   10 ++++++++++
+ ros/inc/NCollection_IndexedDataMap.hxx |    4 ++++
+ ros/inc/NCollection_IndexedMap.hxx     |    4 ++++
+ 4 files changed, 26 insertions(+), 0 deletions(-)
+
+Index: oce/inc/MeshAlgo_CellFilter.hxx
+===================================================================
+--- oce.orig/inc/MeshAlgo_CellFilter.hxx
++++ oce/inc/MeshAlgo_CellFilter.hxx
+@@ -10,3 +10,11 @@
+ #include <MeshAlgo_CircleInspector.hxx>
+   
+ typedef NCollection_CellFilter<MeshAlgo_CircleInspector> MeshAlgo_CellFilter;
++
++#ifdef __BORLANDC__
++  // definition of global functions is needed for map
++  Standard_Integer HashCode (const NCollection_CellFilter<MeshAlgo_CircleInspector>::Cell &aCell, const Standard_Integer theUpper)
++  { return aCell.HashCode(theUpper); }
++  Standard_Boolean IsEqual (const NCollection_CellFilter<MeshAlgo_CircleInspector>::Cell &aCell1, const NCollection_CellFilter<MeshAlgo_CircleInspector>::Cell &aCell2)
++  { return aCell1.IsEqual(aCell2); }
++#endif
+Index: oce/inc/NCollection_CellFilter.hxx
+===================================================================
+--- oce.orig/inc/NCollection_CellFilter.hxx
++++ oce/inc/NCollection_CellFilter.hxx
+@@ -314,10 +314,20 @@
+   };
+ 
+   // definition of global functions is needed for map
++#ifdef __BORLANDC__
++  //It seems that Borland compiler does not support template friends ...
++  //If one wants to use the below global functions must instantiate them outside the
++  //class body.See MeshAlgo_CellFilter.hxx file
++  template <class CellContainer>
++  friend Standard_Integer HashCode (const CellContainer::Cell &aCell, const Standard_Integer theUpper);
++  template <class CellContainer>
++  friend Standard_Boolean IsEqual (const CellContainer::Cell &aCell1, const CellContainer::Cell &aCell2);
++#else
+   friend Standard_Integer HashCode (const Cell &aCell, const Standard_Integer theUpper)
+   { return aCell.HashCode(theUpper); }
+   friend Standard_Boolean IsEqual (const Cell &aCell1, const Cell &aCell2)
+   { return aCell1.IsEqual(aCell2); }
++#endif
+ 
+ protected:
+ 
+Index: oce/inc/NCollection_IndexedDataMap.hxx
+===================================================================
+--- oce.orig/inc/NCollection_IndexedDataMap.hxx
++++ oce/inc/NCollection_IndexedDataMap.hxx
+@@ -94,7 +94,11 @@
+       myIndex(0) {}
+     //! Constructor
+     Iterator (const NCollection_IndexedDataMap& theMap) :
++#ifdef __BORLANDC__
++      myMap((NCollection_IndexedDataMap <TheKeyType, TheItemType> *) &theMap),
++#else
+       myMap((NCollection_IndexedDataMap *) &theMap),
++#endif
+       myIndex(1) {}
+     //! Query if the end of collection is reached by iterator
+     virtual Standard_Boolean More(void) const
+Index: oce/inc/NCollection_IndexedMap.hxx
+===================================================================
+--- oce.orig/inc/NCollection_IndexedMap.hxx
++++ oce/inc/NCollection_IndexedMap.hxx
+@@ -86,7 +86,11 @@
+       myIndex(0) {}
+     //! Constructor
+     Iterator (const NCollection_IndexedMap& theMap) :
++#ifdef __BORLANDC__
++      myMap((NCollection_IndexedMap <TheKeyType> *) &theMap),
++#else
+       myMap((NCollection_IndexedMap *) &theMap),
++#endif
+       myIndex(1) {}
+     //! Query if the end of collection is reached by iterator
+     virtual Standard_Boolean More(void) const

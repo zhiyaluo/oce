@@ -1,0 +1,2167 @@
+From: QbProg <tholag@gmail.com>
+Date: Thu, 12 May 2011 20:58:37 +0200
+Subject: [PATCH 68/82] [warning-fix][unused-local-var]
+
+Fixes warnings like : unused local variable 'name' or  'name' initialized but never used
+---
+ inc/math_DoubleTab.gxx                     |    4 ++--
+ src/OSD/OSD_signal_WNT.cxx                 |    2 +-
+ src/math/math_BrentMinimum.cxx             |    2 +-
+ src/math/math_KronrodSingleIntegration.cxx |    6 +++---
+ 4 files changed, 7 insertions(+), 7 deletions(-)
+
+From: tpaviot <tpaviot@gmail.com>
+Date: Fri, 20 May 2011 08:45:50 +0200
+Subject: [PATCH 69/82] [warning-fix][unused-local-var]
+
+Removed unused-local-var identified with XCode/gcc 4.2.1
+Removed lines do not contain method calls (or call methods
+which are known to have no side effect, like Abs), these
+changes should thus be safe.
+
+Fixes deal with all Toolkits as well as DRAW.
+---
+ drv/ShapeSchema/ShapeSchema_PCDM_Document.cxx      |    4 +---
+ .../ShapeSchema_PGeom2d_BoundedCurve.cxx           |    4 +---
+ drv/ShapeSchema/ShapeSchema_PGeom2d_Curve.cxx      |    2 --
+ drv/ShapeSchema/ShapeSchema_PGeom2d_Geometry.cxx   |    4 +---
+ drv/ShapeSchema/ShapeSchema_PGeom2d_Point.cxx      |    4 +---
+ drv/ShapeSchema/ShapeSchema_PGeom_BoundedCurve.cxx |    2 --
+ .../ShapeSchema_PGeom_BoundedSurface.cxx           |    4 +---
+ drv/ShapeSchema/ShapeSchema_PGeom_Curve.cxx        |    4 +---
+ drv/ShapeSchema/ShapeSchema_PGeom_Geometry.cxx     |    4 +---
+ drv/ShapeSchema/ShapeSchema_PGeom_Point.cxx        |    4 +---
+ drv/ShapeSchema/ShapeSchema_PGeom_Surface.cxx      |    4 +---
+ drv/ShapeSchema/ShapeSchema_PMMgt_PManaged.cxx     |    4 +---
+ .../ShapeSchema_Standard_Persistent.cxx            |    4 +---
+ drv/StdLSchema/StdLSchema_PCDM_Document.cxx        |    4 +---
+ drv/StdLSchema/StdLSchema_PDF_Attribute.cxx        |    4 +---
+ drv/StdLSchema/StdLSchema_PDataStd_Directory.cxx   |    4 +---
+ drv/StdLSchema/StdLSchema_PDataStd_NoteBook.cxx    |    4 +---
+ drv/StdLSchema/StdLSchema_PDataStd_Tick.cxx        |    4 +---
+ drv/StdLSchema/StdLSchema_Standard_Persistent.cxx  |    4 +---
+ drv/StdSchema/StdSchema_PDF_Attribute.cxx          |    2 --
+ drv/StdSchema/StdSchema_PDataXtd_Axis.cxx          |    4 +---
+ drv/StdSchema/StdSchema_PDataXtd_Placement.cxx     |    4 +---
+ drv/StdSchema/StdSchema_PDataXtd_Plane.cxx         |    4 +---
+ drv/StdSchema/StdSchema_PDataXtd_Point.cxx         |    4 +---
+ drv/StdSchema/StdSchema_PDataXtd_Shape.cxx         |    4 +---
+ drv/StdSchema/StdSchema_Standard_Persistent.cxx    |    4 +---
+ drv/XCAFSchema/XCAFSchema_PDF_Attribute.cxx        |    4 +---
+ drv/XCAFSchema/XCAFSchema_PMMgt_PManaged.cxx       |    4 +---
+ drv/XCAFSchema/XCAFSchema_PXCAFDoc_ColorTool.cxx   |    2 --
+ drv/XCAFSchema/XCAFSchema_PXCAFDoc_DimTolTool.cxx  |    4 +---
+ .../XCAFSchema_PXCAFDoc_DocumentTool.cxx           |    4 +---
+ drv/XCAFSchema/XCAFSchema_PXCAFDoc_LayerTool.cxx   |    4 +---
+ .../XCAFSchema_PXCAFDoc_MaterialTool.cxx           |    2 --
+ drv/XCAFSchema/XCAFSchema_PXCAFDoc_ShapeTool.cxx   |    4 +---
+ drv/XCAFSchema/XCAFSchema_Standard_Persistent.cxx  |    2 --
+ inc/IntCurveSurface_Polygon.gxx                    |    1 -
+ inc/IntStart_SearchOnBoundaries_1.gxx              |    1 -
+ inc/IntWalk_IWalking_2.gxx                         |    1 -
+ inc/IntWalk_PWalking_1.gxx                         |    1 -
+ inc/Intf_InterferencePolygonPolyhedron.gxx         |    1 -
+ src/BOPTools/BOPTools_Tools3D.cxx                  |    4 ++--
+ src/BRepExtrema/BRepExtrema_DistanceSS.cxx         |    2 --
+ src/BRepFill/BRepFill_OffsetWire.cxx               |    1 -
+ src/BRepFill/BRepFill_PipeShell.cxx                |    1 -
+ src/BRepMesh/BRepMesh_FastDiscretFace.cxx          |    6 ------
+ src/BRepOffset/BRepOffset_Inter2d.cxx              |    2 --
+ src/BRepTools/BRepTools_Quilt.cxx                  |    2 --
+ src/BRepTopAdaptor/BRepTopAdaptor_FClass2d.cxx     |    2 +-
+ .../BinMDataStd_ExtStringArrayDriver.cxx           |    1 -
+ .../BinMDataStd_ExtStringListDriver.cxx            |    1 -
+ src/DNaming/DNaming_ModelingCommands.cxx           |    3 ---
+ src/DNaming/DNaming_ToolsCommands.cxx              |    1 -
+ src/HLRTopoBRep/HLRTopoBRep_OutLiner.cxx           |    3 +--
+ src/IntPatch/IntPatch_ImpPrmIntersection.cxx       |    2 +-
+ .../IntPatch_PrmPrmIntersection_T3Bits.cxx         |    1 -
+ src/MeshVS/MeshVS_TextPrsBuilder.cxx               |    1 -
+ src/OpenGl/OpenGl_initelem.cxx                     |    2 +-
+ src/OpenGl/OpenGl_lightstate.cxx                   |    1 -
+ src/OpenGl/OpenGl_togl_begin_layer_mode.cxx        |    6 ------
+ src/OpenGl/OpenGl_togl_markercontextgroup.cxx      |    2 +-
+ src/OpenGl/OpenGl_txgl.cxx                         |    3 +--
+ src/Select3D/Select3D_SensitiveTriangle.cxx        |    1 -
+ src/SelectBasics/SelectBasics_BasicTool.cxx        |    1 -
+ src/ShapeAnalysis/ShapeAnalysis.cxx                |    2 +-
+ src/ShapeBuild/ShapeBuild_ReShape.cxx              |    2 +-
+ .../ShapeUpgrade_RemoveInternalWires.cxx           |    1 -
+ src/Viewer2dTest/Viewer2dTest_DisplayCommands.cxx  |    9 ---------
+ src/ViewerTest/ViewerTest.cxx                      |    3 ---
+ src/Visual3d/Visual3d_ViewManager.cxx              |    1 -
+ src/Voxel/Voxel_FastConverter.cxx                  |    2 +-
+ src/VrmlData/VrmlData_Scene.cxx                    |    3 +--
+ src/XDEDRAW/XDEDRAW_Props.cxx                      |    1 -
+ src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx                |    1 -
+ src/XmlMDataStd/XmlMDataStd_BooleanArrayDriver.cxx |    2 +-
+ src/XmlMDataStd/XmlMDataStd_NamedDataDriver.cxx    |    2 +-
+ src/XmlMFunction/XmlMFunction_ScopeDriver.cxx      |    1 -
+ 76 files changed, 43 insertions(+), 169 deletions(-)
+
+From: QbProg <tholag@gmail.com>
+Date: Sat, 11 Jun 2011 14:32:57 +0200
+Subject: [PATCH 70/82] [warning-fix][unused-local-var]
+
+Removed unused-local-var identified with XCode/gcc 4.2.1.
+Lines removed call methods which may have side effects, so this
+commit must be double-checked.
+
+Fixes deal with all Toolkits as well as DRAW.
+
+(QbProg : included only commits without side effects )
+---
+ inc/Extrema_GenExtCC.gxx                           |    2 --
+ inc/GProp_TFunction.gxx                            |    2 --
+ inc/Intf_InterferencePolygonPolyhedron.gxx         |    3 +--
+ inc/Prs3d_Datum.gxx                                |    1 -
+ inc/Prs3d_WFRestrictedFace.gxx                     |    1 -
+ src/BOPTools/BOPTools_PaveFiller_2.cxx             |    1 -
+ src/BOPTools/BOPTools_Tools3D.cxx                  |    2 --
+ src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx       |    1 -
+ src/BRepCheck/BRepCheck_Wire.cxx                   |    1 -
+ src/BRepExtrema/BRepExtrema_DistanceSS.cxx         |    1 -
+ src/BRepMesh/BRepMesh_FastDiscret.cxx              |    1 -
+ src/BRepMesh/BRepMesh_FastDiscretFace.cxx          |    1 -
+ src/BRepOffset/BRepOffset_Inter2d.cxx              |    2 --
+ src/BlendFunc/BlendFunc_RuledInv.cxx               |    1 -
+ src/BndLib/BndLib_AddSurface.cxx                   |    2 --
+ src/DNaming/DNaming_BooleanOperationDriver.cxx     |    1 -
+ src/DNaming/DNaming_ModelingCommands.cxx           |    2 --
+ src/IntPolyh/IntPolyh_Intersection.cxx             |    2 --
+ src/IntPolyh/IntPolyh_MaillageAffinage_1.cxx       |    8 --------
+ src/OpenGl/OpenGl_FontMgr.cxx                      |    1 -
+ src/OpenGl/OpenGl_togl_begin_layer_mode.cxx        |    1 -
+ src/OpenGl/OpenGl_ws.cxx                           |    1 -
+ .../RWHeaderSection_ReadWriteModule.cxx            |    2 +-
+ src/Select3D/Select3D_SensitiveTriangulation.cxx   |    1 -
+ src/TFunction/TFunction_Iterator.cxx               |    1 -
+ src/TNaming/TNaming_Naming.cxx                     |    1 -
+ src/V3d/V3d_View.cxx                               |    1 -
+ .../XmlLDrivers_DocumentRetrievalDriver.cxx        |    2 --
+ 28 files changed, 2 insertions(+), 44 deletions(-)
+
+From: QbProg <tholag@gmail.com>
+Date: Sat, 11 Jun 2011 20:01:16 +0200
+Subject: [PATCH 71/82] [warning-fix][unused-local-var]
+
+Unused local var
+---
+ src/Draw/Draw_Window.cxx                     |    1 -
+ src/ViewerTest/ViewerTest_ViewerCommands.cxx |    2 +-
+ 2 files changed, 1 insertions(+), 2 deletions(-)
+
+From: QbProg <tholag@gmail.com>
+Date: Fri, 17 Jun 2011 21:14:14 +0200
+Subject: [PATCH 72/82] [warning-fix][unused-local-var]
+
+in this case a static function was called through an useless local var
+---
+ src/Extrema/Extrema_ExtCS.cxx |    3 +--
+ 1 files changed, 1 insertions(+), 2 deletions(-)
+
+From: QbProg <tholag@gmail.com>
+Date: Sun, 19 Jun 2011 18:16:25 +0200
+Subject: [PATCH 73/82] [warning-fix][unused-local-var] Fixes warnings like :
+ unused local variable 'name' or 'name' initialized
+ but never used
+
+---
+ src/BRepGProp/BRepGProp_Face.cxx         |    3 +--
+ src/HLRTopoBRep/HLRTopoBRep_OutLiner.cxx |    2 +-
+ src/OpenGl/OpenGl_TextRender.cxx         |    3 ++-
+ src/OpenGl/OpenGl_togl_begin.cxx         |    2 +-
+ src/OpenGl/OpenGl_togl_print.cxx         |    2 --
+ src/WNT/WNT_Allocator.cxx                |    2 --
+ src/WNT/WNT_FontMapEntry.cxx             |    1 -
+ src/WNT/WNT_WDriver.cxx                  |    3 +--
+ 8 files changed, 6 insertions(+), 12 deletions(-)
+
+From: tpaviot <tpaviot@gmail.com>
+Date: Tue, 28 Jun 2011 10:45:39 +0200
+Subject: [PATCH 74/82] [warning-fix][unused-local-var] Fix warnings: *
+ oce/src/IntTools/IntTools_EdgeFace.cxx:860:0 Unused
+ variable 'dt' *
+ oce/src/IntTools/IntTools_EdgeFace.cxx:860:0 Unused
+ variable 'df2'
+
+---
+ src/IntTools/IntTools_EdgeFace.cxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Index: oce/inc/math_DoubleTab.gxx
+===================================================================
+--- oce.orig/inc/math_DoubleTab.gxx
++++ oce/inc/math_DoubleTab.gxx
+@@ -89,9 +89,6 @@
+ 
+ void math_DoubleTab::Free()
+ {
+-  Standard_Integer RowNumber = UppR - LowR + 1;
+-  Standard_Integer ColNumber = UppC - LowC + 1;
+-
+   // free the data
+   if(isAllocated) {
+     Standard_Address it = (Standard_Address)&Value(LowR,LowC);
+Index: oce/src/OSD/OSD_signal_WNT.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_signal_WNT.cxx
++++ oce/src/OSD/OSD_signal_WNT.cxx
+@@ -428,7 +428,7 @@
+ #ifdef _MSC_VER
+  if (fSETranslator) {
+    // use Structural Exception translator (one per thread)
+-   _se_translator_function pOldSeFunc = _set_se_translator( TranslateSE );
++   _set_se_translator( TranslateSE );
+  }
+ #endif
+ 
+Index: oce/src/math/math_BrentMinimum.cxx
+===================================================================
+--- oce.orig/src/math/math_BrentMinimum.cxx
++++ oce/src/math/math_BrentMinimum.cxx
+@@ -131,10 +131,6 @@
+ //    Standard_Boolean math_BrentMinimum::IsSolutionReached(math_Function& F) {
+     Standard_Boolean math_BrentMinimum::IsSolutionReached(math_Function& ) {
+ 
+-       Standard_Real xm = 0.5 * (a + b);
+-       // modified by NIZHNY-MKK  Mon Oct  3 17:45:57 2005.BEGIN
+-//        Standard_Real tol = XTol * fabs(x) + EPSZ;
+-//        return fabs(x - xm) <= 2.0 * tol - 0.5 * (b - a);
+        Standard_Real TwoTol = 2.0 *(XTol * fabs(x) + EPSZ);
+        return ((x <= (TwoTol + a)) && (x >= (b - TwoTol)));
+        // modified by NIZHNY-MKK  Mon Oct  3 17:46:00 2005.END
+Index: oce/src/math/math_KronrodSingleIntegration.cxx
+===================================================================
+--- oce.orig/src/math/math_KronrodSingleIntegration.cxx
++++ oce/src/math/math_KronrodSingleIntegration.cxx
+@@ -74,7 +74,6 @@
+ 			       const Standard_Real     theUpper,
+ 			       const Standard_Integer  theNbPnts)
+ {
+-  const Standard_Real aMinVol = Epsilon(1.);
+   const Standard_Real aPtol = 1.e-9;
+   myNbIterReached = 0;
+ 
+@@ -110,8 +109,6 @@
+ 
+   if(!myIsDone) return;
+ 
+-  Standard_Real anAbsVal = Abs(myValue);
+-
+   myAbsolutError = myErrorReached;
+ 
+   //if (anAbsVal > aMinVol)
+@@ -267,7 +264,6 @@
+ 
+   Standard_Boolean IsDone;
+   
+-  Standard_Integer aNGauss = theGaussP.Length();
+   Standard_Integer aNKronrod = theKronrodP.Length();
+ 
+   Standard_Real    aGaussVal;
+Index: oce/drv/ShapeSchema/ShapeSchema_PCDM_Document.cxx
+===================================================================
+--- oce.orig/drv/ShapeSchema/ShapeSchema_PCDM_Document.cxx
++++ oce/drv/ShapeSchema/ShapeSchema_PCDM_Document.cxx
+@@ -38,7 +38,6 @@
+ void ShapeSchema_PCDM_Document::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PCDM_Document) &pp = (Handle(PCDM_Document)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -56,8 +55,7 @@
+ void ShapeSchema_PCDM_Document::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PCDM_Document) &pp = (Handle(PCDM_Document)&)p;
+-
++  
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/ShapeSchema/ShapeSchema_PGeom2d_BoundedCurve.cxx
+===================================================================
+--- oce.orig/drv/ShapeSchema/ShapeSchema_PGeom2d_BoundedCurve.cxx
++++ oce/drv/ShapeSchema/ShapeSchema_PGeom2d_BoundedCurve.cxx
+@@ -38,7 +38,6 @@
+ void ShapeSchema_PGeom2d_BoundedCurve::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PGeom2d_BoundedCurve) &pp = (Handle(PGeom2d_BoundedCurve)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -56,8 +55,7 @@
+ void ShapeSchema_PGeom2d_BoundedCurve::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PGeom2d_BoundedCurve) &pp = (Handle(PGeom2d_BoundedCurve)&)p;
+-
++ 
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/ShapeSchema/ShapeSchema_PGeom2d_Curve.cxx
+===================================================================
+--- oce.orig/drv/ShapeSchema/ShapeSchema_PGeom2d_Curve.cxx
++++ oce/drv/ShapeSchema/ShapeSchema_PGeom2d_Curve.cxx
+@@ -38,7 +38,6 @@
+ void ShapeSchema_PGeom2d_Curve::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PGeom2d_Curve) &pp = (Handle(PGeom2d_Curve)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -56,7 +55,6 @@
+ void ShapeSchema_PGeom2d_Curve::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PGeom2d_Curve) &pp = (Handle(PGeom2d_Curve)&)p;
+ 
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+Index: oce/drv/ShapeSchema/ShapeSchema_PGeom2d_Geometry.cxx
+===================================================================
+--- oce.orig/drv/ShapeSchema/ShapeSchema_PGeom2d_Geometry.cxx
++++ oce/drv/ShapeSchema/ShapeSchema_PGeom2d_Geometry.cxx
+@@ -38,7 +38,6 @@
+ void ShapeSchema_PGeom2d_Geometry::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PGeom2d_Geometry) &pp = (Handle(PGeom2d_Geometry)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -56,8 +55,7 @@
+ void ShapeSchema_PGeom2d_Geometry::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PGeom2d_Geometry) &pp = (Handle(PGeom2d_Geometry)&)p;
+-
++   
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/ShapeSchema/ShapeSchema_PGeom2d_Point.cxx
+===================================================================
+--- oce.orig/drv/ShapeSchema/ShapeSchema_PGeom2d_Point.cxx
++++ oce/drv/ShapeSchema/ShapeSchema_PGeom2d_Point.cxx
+@@ -38,7 +38,6 @@
+ void ShapeSchema_PGeom2d_Point::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PGeom2d_Point) &pp = (Handle(PGeom2d_Point)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -56,8 +55,7 @@
+ void ShapeSchema_PGeom2d_Point::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PGeom2d_Point) &pp = (Handle(PGeom2d_Point)&)p;
+-
++  
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/ShapeSchema/ShapeSchema_PGeom_BoundedCurve.cxx
+===================================================================
+--- oce.orig/drv/ShapeSchema/ShapeSchema_PGeom_BoundedCurve.cxx
++++ oce/drv/ShapeSchema/ShapeSchema_PGeom_BoundedCurve.cxx
+@@ -38,7 +38,6 @@
+ void ShapeSchema_PGeom_BoundedCurve::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PGeom_BoundedCurve) &pp = (Handle(PGeom_BoundedCurve)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -56,7 +55,6 @@
+ void ShapeSchema_PGeom_BoundedCurve::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PGeom_BoundedCurve) &pp = (Handle(PGeom_BoundedCurve)&)p;
+ 
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+Index: oce/drv/ShapeSchema/ShapeSchema_PGeom_BoundedSurface.cxx
+===================================================================
+--- oce.orig/drv/ShapeSchema/ShapeSchema_PGeom_BoundedSurface.cxx
++++ oce/drv/ShapeSchema/ShapeSchema_PGeom_BoundedSurface.cxx
+@@ -38,7 +38,6 @@
+ void ShapeSchema_PGeom_BoundedSurface::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PGeom_BoundedSurface) &pp = (Handle(PGeom_BoundedSurface)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -56,8 +55,7 @@
+ void ShapeSchema_PGeom_BoundedSurface::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PGeom_BoundedSurface) &pp = (Handle(PGeom_BoundedSurface)&)p;
+-
++  
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/ShapeSchema/ShapeSchema_PGeom_Curve.cxx
+===================================================================
+--- oce.orig/drv/ShapeSchema/ShapeSchema_PGeom_Curve.cxx
++++ oce/drv/ShapeSchema/ShapeSchema_PGeom_Curve.cxx
+@@ -38,7 +38,6 @@
+ void ShapeSchema_PGeom_Curve::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PGeom_Curve) &pp = (Handle(PGeom_Curve)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -56,8 +55,7 @@
+ void ShapeSchema_PGeom_Curve::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PGeom_Curve) &pp = (Handle(PGeom_Curve)&)p;
+-
++ 
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/ShapeSchema/ShapeSchema_PGeom_Geometry.cxx
+===================================================================
+--- oce.orig/drv/ShapeSchema/ShapeSchema_PGeom_Geometry.cxx
++++ oce/drv/ShapeSchema/ShapeSchema_PGeom_Geometry.cxx
+@@ -38,7 +38,6 @@
+ void ShapeSchema_PGeom_Geometry::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PGeom_Geometry) &pp = (Handle(PGeom_Geometry)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -56,8 +55,7 @@
+ void ShapeSchema_PGeom_Geometry::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PGeom_Geometry) &pp = (Handle(PGeom_Geometry)&)p;
+-
++ 
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/ShapeSchema/ShapeSchema_PGeom_Point.cxx
+===================================================================
+--- oce.orig/drv/ShapeSchema/ShapeSchema_PGeom_Point.cxx
++++ oce/drv/ShapeSchema/ShapeSchema_PGeom_Point.cxx
+@@ -38,7 +38,6 @@
+ void ShapeSchema_PGeom_Point::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PGeom_Point) &pp = (Handle(PGeom_Point)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -56,8 +55,7 @@
+ void ShapeSchema_PGeom_Point::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PGeom_Point) &pp = (Handle(PGeom_Point)&)p;
+-
++  
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/ShapeSchema/ShapeSchema_PGeom_Surface.cxx
+===================================================================
+--- oce.orig/drv/ShapeSchema/ShapeSchema_PGeom_Surface.cxx
++++ oce/drv/ShapeSchema/ShapeSchema_PGeom_Surface.cxx
+@@ -38,7 +38,6 @@
+ void ShapeSchema_PGeom_Surface::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PGeom_Surface) &pp = (Handle(PGeom_Surface)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -56,8 +55,7 @@
+ void ShapeSchema_PGeom_Surface::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PGeom_Surface) &pp = (Handle(PGeom_Surface)&)p;
+-
++  
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/ShapeSchema/ShapeSchema_PMMgt_PManaged.cxx
+===================================================================
+--- oce.orig/drv/ShapeSchema/ShapeSchema_PMMgt_PManaged.cxx
++++ oce/drv/ShapeSchema/ShapeSchema_PMMgt_PManaged.cxx
+@@ -38,7 +38,6 @@
+ void ShapeSchema_PMMgt_PManaged::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PMMgt_PManaged) &pp = (Handle(PMMgt_PManaged)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -56,8 +55,7 @@
+ void ShapeSchema_PMMgt_PManaged::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PMMgt_PManaged) &pp = (Handle(PMMgt_PManaged)&)p;
+-
++ 
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/ShapeSchema/ShapeSchema_Standard_Persistent.cxx
+===================================================================
+--- oce.orig/drv/ShapeSchema/ShapeSchema_Standard_Persistent.cxx
++++ oce/drv/ShapeSchema/ShapeSchema_Standard_Persistent.cxx
+@@ -38,7 +38,6 @@
+ void ShapeSchema_Standard_Persistent::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(Standard_Persistent) &pp = (Handle(Standard_Persistent)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -56,8 +55,7 @@
+ void ShapeSchema_Standard_Persistent::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(Standard_Persistent) &pp = (Handle(Standard_Persistent)&)p;
+-
++  
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/StdLSchema/StdLSchema_PCDM_Document.cxx
+===================================================================
+--- oce.orig/drv/StdLSchema/StdLSchema_PCDM_Document.cxx
++++ oce/drv/StdLSchema/StdLSchema_PCDM_Document.cxx
+@@ -38,7 +38,6 @@
+ void StdLSchema_PCDM_Document::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PCDM_Document) &pp = (Handle(PCDM_Document)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -56,8 +55,7 @@
+ void StdLSchema_PCDM_Document::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PCDM_Document) &pp = (Handle(PCDM_Document)&)p;
+-
++  
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/StdLSchema/StdLSchema_PDF_Attribute.cxx
+===================================================================
+--- oce.orig/drv/StdLSchema/StdLSchema_PDF_Attribute.cxx
++++ oce/drv/StdLSchema/StdLSchema_PDF_Attribute.cxx
+@@ -38,7 +38,6 @@
+ void StdLSchema_PDF_Attribute::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PDF_Attribute) &pp = (Handle(PDF_Attribute)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -56,8 +55,7 @@
+ void StdLSchema_PDF_Attribute::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PDF_Attribute) &pp = (Handle(PDF_Attribute)&)p;
+-
++  
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/StdLSchema/StdLSchema_PDataStd_Directory.cxx
+===================================================================
+--- oce.orig/drv/StdLSchema/StdLSchema_PDataStd_Directory.cxx
++++ oce/drv/StdLSchema/StdLSchema_PDataStd_Directory.cxx
+@@ -37,7 +37,6 @@
+ void StdLSchema_PDataStd_Directory::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PDataStd_Directory) &pp = (Handle(PDataStd_Directory)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -55,8 +54,7 @@
+ void StdLSchema_PDataStd_Directory::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PDataStd_Directory) &pp = (Handle(PDataStd_Directory)&)p;
+-
++ 
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/StdLSchema/StdLSchema_PDataStd_NoteBook.cxx
+===================================================================
+--- oce.orig/drv/StdLSchema/StdLSchema_PDataStd_NoteBook.cxx
++++ oce/drv/StdLSchema/StdLSchema_PDataStd_NoteBook.cxx
+@@ -37,7 +37,6 @@
+ void StdLSchema_PDataStd_NoteBook::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PDataStd_NoteBook) &pp = (Handle(PDataStd_NoteBook)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -55,8 +54,7 @@
+ void StdLSchema_PDataStd_NoteBook::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PDataStd_NoteBook) &pp = (Handle(PDataStd_NoteBook)&)p;
+-
++ 
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/StdLSchema/StdLSchema_PDataStd_Tick.cxx
+===================================================================
+--- oce.orig/drv/StdLSchema/StdLSchema_PDataStd_Tick.cxx
++++ oce/drv/StdLSchema/StdLSchema_PDataStd_Tick.cxx
+@@ -37,7 +37,6 @@
+ void StdLSchema_PDataStd_Tick::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PDataStd_Tick) &pp = (Handle(PDataStd_Tick)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -55,8 +54,7 @@
+ void StdLSchema_PDataStd_Tick::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PDataStd_Tick) &pp = (Handle(PDataStd_Tick)&)p;
+-
++ 
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/StdLSchema/StdLSchema_Standard_Persistent.cxx
+===================================================================
+--- oce.orig/drv/StdLSchema/StdLSchema_Standard_Persistent.cxx
++++ oce/drv/StdLSchema/StdLSchema_Standard_Persistent.cxx
+@@ -38,7 +38,6 @@
+ void StdLSchema_Standard_Persistent::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(Standard_Persistent) &pp = (Handle(Standard_Persistent)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -56,8 +55,7 @@
+ void StdLSchema_Standard_Persistent::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(Standard_Persistent) &pp = (Handle(Standard_Persistent)&)p;
+-
++ 
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/StdSchema/StdSchema_PDF_Attribute.cxx
+===================================================================
+--- oce.orig/drv/StdSchema/StdSchema_PDF_Attribute.cxx
++++ oce/drv/StdSchema/StdSchema_PDF_Attribute.cxx
+@@ -38,7 +38,6 @@
+ void StdSchema_PDF_Attribute::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PDF_Attribute) &pp = (Handle(PDF_Attribute)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -56,7 +55,6 @@
+ void StdSchema_PDF_Attribute::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PDF_Attribute) &pp = (Handle(PDF_Attribute)&)p;
+ 
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+Index: oce/drv/StdSchema/StdSchema_PDataXtd_Axis.cxx
+===================================================================
+--- oce.orig/drv/StdSchema/StdSchema_PDataXtd_Axis.cxx
++++ oce/drv/StdSchema/StdSchema_PDataXtd_Axis.cxx
+@@ -37,7 +37,6 @@
+ void StdSchema_PDataXtd_Axis::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PDataXtd_Axis) &pp = (Handle(PDataXtd_Axis)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -55,8 +54,7 @@
+ void StdSchema_PDataXtd_Axis::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PDataXtd_Axis) &pp = (Handle(PDataXtd_Axis)&)p;
+-
++ 
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/StdSchema/StdSchema_PDataXtd_Placement.cxx
+===================================================================
+--- oce.orig/drv/StdSchema/StdSchema_PDataXtd_Placement.cxx
++++ oce/drv/StdSchema/StdSchema_PDataXtd_Placement.cxx
+@@ -37,7 +37,6 @@
+ void StdSchema_PDataXtd_Placement::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PDataXtd_Placement) &pp = (Handle(PDataXtd_Placement)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -55,8 +54,7 @@
+ void StdSchema_PDataXtd_Placement::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PDataXtd_Placement) &pp = (Handle(PDataXtd_Placement)&)p;
+-
++  
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/StdSchema/StdSchema_PDataXtd_Plane.cxx
+===================================================================
+--- oce.orig/drv/StdSchema/StdSchema_PDataXtd_Plane.cxx
++++ oce/drv/StdSchema/StdSchema_PDataXtd_Plane.cxx
+@@ -37,7 +37,6 @@
+ void StdSchema_PDataXtd_Plane::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PDataXtd_Plane) &pp = (Handle(PDataXtd_Plane)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -55,8 +54,7 @@
+ void StdSchema_PDataXtd_Plane::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PDataXtd_Plane) &pp = (Handle(PDataXtd_Plane)&)p;
+-
++  
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/StdSchema/StdSchema_PDataXtd_Point.cxx
+===================================================================
+--- oce.orig/drv/StdSchema/StdSchema_PDataXtd_Point.cxx
++++ oce/drv/StdSchema/StdSchema_PDataXtd_Point.cxx
+@@ -37,7 +37,6 @@
+ void StdSchema_PDataXtd_Point::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PDataXtd_Point) &pp = (Handle(PDataXtd_Point)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -55,8 +54,7 @@
+ void StdSchema_PDataXtd_Point::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PDataXtd_Point) &pp = (Handle(PDataXtd_Point)&)p;
+-
++ 
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/StdSchema/StdSchema_PDataXtd_Shape.cxx
+===================================================================
+--- oce.orig/drv/StdSchema/StdSchema_PDataXtd_Shape.cxx
++++ oce/drv/StdSchema/StdSchema_PDataXtd_Shape.cxx
+@@ -37,7 +37,6 @@
+ void StdSchema_PDataXtd_Shape::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PDataXtd_Shape) &pp = (Handle(PDataXtd_Shape)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -55,8 +54,7 @@
+ void StdSchema_PDataXtd_Shape::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PDataXtd_Shape) &pp = (Handle(PDataXtd_Shape)&)p;
+-
++ 
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/StdSchema/StdSchema_Standard_Persistent.cxx
+===================================================================
+--- oce.orig/drv/StdSchema/StdSchema_Standard_Persistent.cxx
++++ oce/drv/StdSchema/StdSchema_Standard_Persistent.cxx
+@@ -38,7 +38,6 @@
+ void StdSchema_Standard_Persistent::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(Standard_Persistent) &pp = (Handle(Standard_Persistent)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -56,8 +55,7 @@
+ void StdSchema_Standard_Persistent::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(Standard_Persistent) &pp = (Handle(Standard_Persistent)&)p;
+-
++ 
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/XCAFSchema/XCAFSchema_PDF_Attribute.cxx
+===================================================================
+--- oce.orig/drv/XCAFSchema/XCAFSchema_PDF_Attribute.cxx
++++ oce/drv/XCAFSchema/XCAFSchema_PDF_Attribute.cxx
+@@ -38,7 +38,6 @@
+ void XCAFSchema_PDF_Attribute::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PDF_Attribute) &pp = (Handle(PDF_Attribute)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -56,8 +55,7 @@
+ void XCAFSchema_PDF_Attribute::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PDF_Attribute) &pp = (Handle(PDF_Attribute)&)p;
+-
++ 
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/XCAFSchema/XCAFSchema_PMMgt_PManaged.cxx
+===================================================================
+--- oce.orig/drv/XCAFSchema/XCAFSchema_PMMgt_PManaged.cxx
++++ oce/drv/XCAFSchema/XCAFSchema_PMMgt_PManaged.cxx
+@@ -38,7 +38,6 @@
+ void XCAFSchema_PMMgt_PManaged::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PMMgt_PManaged) &pp = (Handle(PMMgt_PManaged)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -56,8 +55,7 @@
+ void XCAFSchema_PMMgt_PManaged::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PMMgt_PManaged) &pp = (Handle(PMMgt_PManaged)&)p;
+-
++ 
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/XCAFSchema/XCAFSchema_PXCAFDoc_ColorTool.cxx
+===================================================================
+--- oce.orig/drv/XCAFSchema/XCAFSchema_PXCAFDoc_ColorTool.cxx
++++ oce/drv/XCAFSchema/XCAFSchema_PXCAFDoc_ColorTool.cxx
+@@ -37,7 +37,6 @@
+ void XCAFSchema_PXCAFDoc_ColorTool::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PXCAFDoc_ColorTool) &pp = (Handle(PXCAFDoc_ColorTool)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -55,7 +54,6 @@
+ void XCAFSchema_PXCAFDoc_ColorTool::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PXCAFDoc_ColorTool) &pp = (Handle(PXCAFDoc_ColorTool)&)p;
+ 
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+Index: oce/drv/XCAFSchema/XCAFSchema_PXCAFDoc_DimTolTool.cxx
+===================================================================
+--- oce.orig/drv/XCAFSchema/XCAFSchema_PXCAFDoc_DimTolTool.cxx
++++ oce/drv/XCAFSchema/XCAFSchema_PXCAFDoc_DimTolTool.cxx
+@@ -37,7 +37,6 @@
+ void XCAFSchema_PXCAFDoc_DimTolTool::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PXCAFDoc_DimTolTool) &pp = (Handle(PXCAFDoc_DimTolTool)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -55,8 +54,7 @@
+ void XCAFSchema_PXCAFDoc_DimTolTool::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PXCAFDoc_DimTolTool) &pp = (Handle(PXCAFDoc_DimTolTool)&)p;
+-
++  
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/XCAFSchema/XCAFSchema_PXCAFDoc_DocumentTool.cxx
+===================================================================
+--- oce.orig/drv/XCAFSchema/XCAFSchema_PXCAFDoc_DocumentTool.cxx
++++ oce/drv/XCAFSchema/XCAFSchema_PXCAFDoc_DocumentTool.cxx
+@@ -37,7 +37,6 @@
+ void XCAFSchema_PXCAFDoc_DocumentTool::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PXCAFDoc_DocumentTool) &pp = (Handle(PXCAFDoc_DocumentTool)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -55,8 +54,7 @@
+ void XCAFSchema_PXCAFDoc_DocumentTool::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PXCAFDoc_DocumentTool) &pp = (Handle(PXCAFDoc_DocumentTool)&)p;
+-
++ 
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/XCAFSchema/XCAFSchema_PXCAFDoc_LayerTool.cxx
+===================================================================
+--- oce.orig/drv/XCAFSchema/XCAFSchema_PXCAFDoc_LayerTool.cxx
++++ oce/drv/XCAFSchema/XCAFSchema_PXCAFDoc_LayerTool.cxx
+@@ -37,7 +37,6 @@
+ void XCAFSchema_PXCAFDoc_LayerTool::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PXCAFDoc_LayerTool) &pp = (Handle(PXCAFDoc_LayerTool)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -55,8 +54,7 @@
+ void XCAFSchema_PXCAFDoc_LayerTool::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PXCAFDoc_LayerTool) &pp = (Handle(PXCAFDoc_LayerTool)&)p;
+-
++ 
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/XCAFSchema/XCAFSchema_PXCAFDoc_MaterialTool.cxx
+===================================================================
+--- oce.orig/drv/XCAFSchema/XCAFSchema_PXCAFDoc_MaterialTool.cxx
++++ oce/drv/XCAFSchema/XCAFSchema_PXCAFDoc_MaterialTool.cxx
+@@ -37,7 +37,6 @@
+ void XCAFSchema_PXCAFDoc_MaterialTool::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PXCAFDoc_MaterialTool) &pp = (Handle(PXCAFDoc_MaterialTool)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -55,7 +54,6 @@
+ void XCAFSchema_PXCAFDoc_MaterialTool::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PXCAFDoc_MaterialTool) &pp = (Handle(PXCAFDoc_MaterialTool)&)p;
+ 
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+Index: oce/drv/XCAFSchema/XCAFSchema_PXCAFDoc_ShapeTool.cxx
+===================================================================
+--- oce.orig/drv/XCAFSchema/XCAFSchema_PXCAFDoc_ShapeTool.cxx
++++ oce/drv/XCAFSchema/XCAFSchema_PXCAFDoc_ShapeTool.cxx
+@@ -37,7 +37,6 @@
+ void XCAFSchema_PXCAFDoc_ShapeTool::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PXCAFDoc_ShapeTool) &pp = (Handle(PXCAFDoc_ShapeTool)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -55,8 +54,7 @@
+ void XCAFSchema_PXCAFDoc_ShapeTool::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(PXCAFDoc_ShapeTool) &pp = (Handle(PXCAFDoc_ShapeTool)&)p;
+-
++ 
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+ 
+Index: oce/drv/XCAFSchema/XCAFSchema_Standard_Persistent.cxx
+===================================================================
+--- oce.orig/drv/XCAFSchema/XCAFSchema_Standard_Persistent.cxx
++++ oce/drv/XCAFSchema/XCAFSchema_Standard_Persistent.cxx
+@@ -38,7 +38,6 @@
+ void XCAFSchema_Standard_Persistent::SWrite(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(Standard_Persistent) &pp = (Handle(Standard_Persistent)&)p;
+     theSchema->WritePersistentObjectHeader(p,f);
+     
+     f.BeginWritePersistentObjectData();
+@@ -56,7 +55,6 @@
+ void XCAFSchema_Standard_Persistent::SRead(const Handle(Standard_Persistent)& p, Storage_BaseDriver& f, const Handle(Storage_Schema)& theSchema)
+ { 
+   if (!p.IsNull()) {
+-    Handle(Standard_Persistent) &pp = (Handle(Standard_Persistent)&)p;
+ 
+     theSchema->ReadPersistentObjectHeader(f);
+     f.BeginReadPersistentObjectData();
+Index: oce/inc/Extrema_GenExtCC.gxx
+===================================================================
+--- oce.orig/inc/Extrema_GenExtCC.gxx
++++ oce/inc/Extrema_GenExtCC.gxx
+@@ -140,8 +140,6 @@
+   U0 = aCache1->TrimFirstParameter() + (U0/2.);
+   V0 = aCache2->TrimFirstParameter() + (V0/2.);
+ 
+-  const Curve1& aCurve1 = *((Curve1*)(myF.CurvePtr (1)));
+-  const Curve2& aCurve2 = *((Curve1*)(myF.CurvePtr (2)));
+   const Handle(ArrayOfPnt)& aPntArray1 = aCache1->Points();
+   const Handle(ArrayOfPnt)& aPntArray2 = aCache2->Points();
+   Standard_Integer NoU, NoV;
+Index: oce/inc/GProp_TFunction.gxx
+===================================================================
+--- oce.orig/inc/GProp_TFunction.gxx
++++ oce/inc/GProp_TFunction.gxx
+@@ -75,8 +75,6 @@
+   // Compute the integral from myUMin to aUMax of myUFunction.
+   Standard_Integer i;
+   Standard_Real    aCoeff        = aV2d.Y();
+-  Standard_Integer aNbUIntervals = anUKnots->Length() - 1;
+-  //Standard_Real    aTol          = myTolerance/aNbUIntervals;
+   Standard_Real    aTol          = myTolerance;
+ 
+   //aTol /= myNbPntOuter;
+Index: oce/inc/IntCurveSurface_Polygon.gxx
+===================================================================
+--- oce.orig/inc/IntCurveSurface_Polygon.gxx
++++ oce/inc/IntCurveSurface_Polygon.gxx
+@@ -126,7 +126,6 @@
+ 
+   //ddout << "IntCurveSurface_Polygon::Init" << endl;
+   Standard_Real u=Binf; 
+-  Standard_Real u1=Bsup;
+   Standard_Integer i=1, i0 = Upars.Lower()-1;
+   gp_Pnt P;
+ 
+Index: oce/inc/IntStart_SearchOnBoundaries_1.gxx
+===================================================================
+--- oce.orig/inc/IntStart_SearchOnBoundaries_1.gxx
++++ oce/inc/IntStart_SearchOnBoundaries_1.gxx
+@@ -304,7 +304,6 @@
+ 	      //Standard_Integer aNbNodes = 23;
+ 	      Standard_Real    aDelta   = (parap1 - para)/(aNbNodes + 1.);
+ 	      Standard_Integer ii;
+-	      Standard_Real    aMinPar  = Pdeb - 1.;
+ 	      Standard_Real    aCurPar;
+ 	      Standard_Real    aCurVal;
+ 
+Index: oce/inc/IntWalk_IWalking_2.gxx
+===================================================================
+--- oce.orig/inc/IntWalk_IWalking_2.gxx
++++ oce/inc/IntWalk_IWalking_2.gxx
+@@ -222,7 +222,6 @@
+       //IFV for OCC20285
+ 
+ 
+-      Standard_Real tolustolv=tolu/tolv;
+  
+       if ((Abs(Du) < tolu2 && Abs(Dv) < tolv2) ||
+ 	  (Abs(Dup) < tolu2 && Abs(Dvp) < tolv2)) { 
+Index: oce/inc/IntWalk_PWalking_1.gxx
+===================================================================
+--- oce.orig/inc/IntWalk_PWalking_1.gxx
++++ oce/inc/IntWalk_PWalking_1.gxx
+@@ -400,7 +400,6 @@
+ 			       const Standard_Real v2max)
+ {
+   //xf
+-  Standard_Integer iCnt=0;
+   Standard_Integer i, NbPasOKConseq;
+   Standard_Real UFirst1, VFirst1, ULast1, VLast1, UFirst2, VFirst2, ULast2, VLast2;
+   Standard_Real pasMaxSV[4], aTmp;
+Index: oce/inc/Intf_InterferencePolygonPolyhedron.gxx
+===================================================================
+--- oce.orig/inc/Intf_InterferencePolygonPolyhedron.gxx
++++ oce/inc/Intf_InterferencePolygonPolyhedron.gxx
+@@ -584,8 +584,7 @@
+     while (clt.More()) {
+       indTri=clt.Value();
+       //  Modified by MKK - Thu Oct  25 12:40:11 2007 Begin
+-      Standard_Integer prevSize = mySPoins.Length();
+-
++ 
+       Standard_Integer pTri[3];
+       ToolPolyh::Triangle(thePolyh, indTri, pTri[0], pTri[1], pTri[2]);
+       gp_XYZ triNor;                                   // Vecteur normal.
+@@ -1103,7 +1102,6 @@
+   Standard_Integer pTri[3];
+   ToolPolyh::Triangle(thePolyh, TTri, pTri[0], pTri[1], pTri[2]);
+   gp_XYZ triNor = TriNormal;                                   // Vecteur normal.
+-  Standard_Real triDp = TriDp;                             // Distance polaire.
+ 
+ 
+ //   Standard_Real dBegTri=(triNor*BegO.XYZ())-triDp; // Distance <BegO> plan
+Index: oce/inc/Prs3d_Datum.gxx
+===================================================================
+--- oce.orig/inc/Prs3d_Datum.gxx
++++ oce/inc/Prs3d_Datum.gxx
+@@ -52,7 +52,6 @@
+ 
+ #ifdef IMP120100
+   Quantity_Length arrowAngle = aDrawer->ArrowAspect()->Angle();
+-  Quantity_Length textHeight = aDrawer->TextAspect()->Height();
+ #endif
+ 
+   if (DA->DrawFirstAndSecondAxis()) {
+Index: oce/inc/Prs3d_WFRestrictedFace.gxx
+===================================================================
+--- oce.orig/inc/Prs3d_WFRestrictedFace.gxx
++++ oce/inc/Prs3d_WFRestrictedFace.gxx
+@@ -40,7 +40,6 @@
+    Prs3d_NListOfSequenceOfPnt&         Curves)
+ {
+   Standard_Boolean isPA = Graphic3d_ArrayOfPrimitives::IsEnable();
+-  Standard_Real aLimit = aDrawer->MaximalParameterValue();
+   Standard_Integer nbPoints = aDrawer->Discretisation();
+ 
+ #ifdef DEBUG
+Index: oce/src/BOPTools/BOPTools_PaveFiller_2.cxx
+===================================================================
+--- oce.orig/src/BOPTools/BOPTools_PaveFiller_2.cxx
++++ oce/src/BOPTools/BOPTools_PaveFiller_2.cxx
+@@ -252,7 +252,6 @@
+   BOPTools_ListIteratorOfListOfCommonBlock anItCB(aLCB);
+   for (; anItCB.More(); anItCB.Next()) {
+     BOPTools_CommonBlock& aCB=anItCB.Value();
+-    BOPTools_PaveBlock& aPB1=aCB.PaveBlock1(nE1);
+     BOPTools_PaveBlock& aPB2=aCB.PaveBlock2(nE1);
+     nE=aPB2.OriginalEdge();
+     if (nE==nE2) {
+Index: oce/src/BOPTools/BOPTools_Tools3D.cxx
+===================================================================
+--- oce.orig/src/BOPTools/BOPTools_Tools3D.cxx
++++ oce/src/BOPTools/BOPTools_Tools3D.cxx
+@@ -1117,7 +1117,6 @@
+       TopExp_Explorer anExp;
+       Standard_Integer nbW = 0;
+       for(anExp.Init(aF, TopAbs_WIRE); anExp.More(); anExp.Next()) {
+-	const TopoDS_Wire& aW = TopoDS::Wire(anExp.Current());
+ 	nbW++;
+       }
+       if( nbW == 1 ) {
+@@ -1129,7 +1128,6 @@
+ 	for( iKey = 1; iKey <= nbKeys; iKey++ ) {
+ 	  const TopoDS_Vertex& iV = TopoDS::Vertex(mapVE.FindKey(iKey));
+ 	  if( iV.IsNull() ) continue;
+-	  Standard_Real TolV = BRep_Tool::Tolerance(iV);
+ 	  const TopTools_ListOfShape& iLE = mapVE.FindFromIndex(iKey);
+ 	  Standard_Integer nbE = iLE.Extent();
+ 	  if( nbE != 2 ) {
+@@ -1251,7 +1249,7 @@
+ 
+ 
+   const TopoDS_Face& aF1 = BS1.Face();
+-  Standard_Real maxTolE1 = 1.e-7, maxTolV1 = 1.e-7;
++  Standard_Real maxTolE1 = 1.e-7;
+   Standard_Integer nbE1 = 0, nbOnE1 = 0;
+   for(anExpE.Init(aF1, TopAbs_EDGE); anExpE.More(); anExpE.Next()) {
+     const TopoDS_Edge& aE = TopoDS::Edge(anExpE.Current());
+@@ -1307,7 +1305,7 @@
+     return Standard_False;
+ 
+   const TopoDS_Face& aF2 = BS1.Face();
+-  Standard_Real maxTolE2 = 1.e-7, maxTolV2 = 1.e-7;
++  Standard_Real maxTolE2 = 1.e-7;
+   Standard_Integer nbE2 = 0, nbOnE2 = 0;
+   for(anExpE.Init(aF2, TopAbs_EDGE); anExpE.More(); anExpE.Next()) {
+     const TopoDS_Edge& aE = TopoDS::Edge(anExpE.Current());
+Index: oce/src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx
+===================================================================
+--- oce.orig/src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx
++++ oce/src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx
+@@ -1420,7 +1420,6 @@
+         Standard_Boolean isInserted = Standard_False;
+         Standard_Integer j, ori = (arrForward(i)? 1 : 0);
+         for (j = 1; (j <= seqCandidates.Length()) && !isInserted; j++) {
+-          Standard_Integer aInd = seqCandidates.Value(j);//debug
+           Standard_Real aDelta = arrDistance(i) - arrDistance(seqCandidates.Value(j));
+           //if (arrDistance(i) <= arrDistance(seqCandidates.Value(j))) {
+           if( aDelta < Precision::Confusion()) {
+Index: oce/src/BRepCheck/BRepCheck_Wire.cxx
+===================================================================
+--- oce.orig/src/BRepCheck/BRepCheck_Wire.cxx
++++ oce/src/BRepCheck/BRepCheck_Wire.cxx
+@@ -887,7 +887,6 @@
+     //
+     if(Inter.IsDone()) { 
+       Standard_Integer nbp = Inter.NbPoints();
+-      Standard_Integer nbs = Inter.NbSegments();
+       //
+       for(Standard_Integer p=1;p<=nbp;p++) {
+ 	const IntRes2d_IntersectionPoint& IP=Inter.Point(p);
+Index: oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
+===================================================================
+--- oce.orig/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
++++ oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
+@@ -1146,7 +1146,6 @@
+ 	      }
+ 	    BRepExtrema_SeqOfSolution seqSol1;
+ 	    BRepExtrema_SeqOfSolution seqSol2;
+-	    Standard_Boolean bIsMini = Standard_False;
+ 	    if (SeqSolution1.Length() > 0 && SeqSolution2.Length() > 0)
+ 	      MIN_SOLUTION(SeqSolution1, SeqSolution2, myDstRef, myEps, seqSol1, seqSol2);
+ 	    
+@@ -1167,7 +1166,6 @@
+ 				      const Standard_Real DstRef)
+ 
+ {
+-  const Standard_Real epsP=Precision::PConfusion();
+   SeqSolShape1.Clear();
+   SeqSolShape2.Clear();
+   myModif=Standard_False;
+@@ -1383,7 +1381,6 @@
+ 	   }
+ 	 BRepExtrema_SeqOfSolution seqSol1;
+ 	 BRepExtrema_SeqOfSolution seqSol2;
+-	 Standard_Boolean bIsMini = Standard_False;
+ 	 if (SeqSolution1.Length() > 0 && SeqSolution2.Length() > 0)
+ 	   MIN_SOLUTION(SeqSolution1, SeqSolution2, myDstRef, myEps, seqSol1, seqSol2);
+ 	 
+Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
+===================================================================
+--- oce.orig/src/BRepFill/BRepFill_OffsetWire.cxx
++++ oce/src/BRepFill/BRepFill_OffsetWire.cxx
+@@ -469,7 +469,6 @@
+       BRepTools_Substitution aSubst;
+       TopTools_ListIteratorOfListOfShape it(BadEdges);
+       TopTools_ListOfShape aL;
+-      Standard_Real aDefl = .01 * Abs(Offset);
+       TColStd_SequenceOfReal Parameters;
+       TColgp_SequenceOfPnt Points;
+ 
+Index: oce/src/BRepFill/BRepFill_PipeShell.cxx
+===================================================================
+--- oce.orig/src/BRepFill/BRepFill_PipeShell.cxx
++++ oce/src/BRepFill/BRepFill_PipeShell.cxx
+@@ -1037,7 +1037,6 @@
+   }
+ 
+   for(j = myLocation->NbLaw(); j >= 1; j--) {
+-    Standard_Boolean ismodified = Standard_False;
+     TopTools_ListOfShape aListOfFace;
+ 
+     if(bPrevModified) {
+Index: oce/src/BRepGProp/BRepGProp_Face.cxx
+===================================================================
+--- oce.orig/src/BRepGProp/BRepGProp_Face.cxx
++++ oce/src/BRepGProp/BRepGProp_Face.cxx
+@@ -365,8 +365,7 @@
+ Standard_Integer BRepGProp_Face::LIntOrder(const Standard_Real Eps) const
+ {
+   Bnd_Box2d aBox;
+-  BndLib_Add2dCurve aB;
+-  aB.Add(myCurve, 1.e-7, aBox);
++  BndLib_Add2dCurve::Add(myCurve, 1.e-7, aBox);
+   Standard_Real aXmin, aXmax, aYmin, aYmax;
+   aBox.Get(aXmin, aYmin, aXmax, aYmax);
+   Standard_Real aVmin = mySurface.FirstVParameter();
+Index: oce/src/BRepMesh/BRepMesh_FastDiscret.cxx
+===================================================================
+--- oce.orig/src/BRepMesh/BRepMesh_FastDiscret.cxx
++++ oce/src/BRepMesh/BRepMesh_FastDiscret.cxx
+@@ -250,7 +250,6 @@
+ 
+   gp_Pnt2d uvFirst, uvLast;
+ 
+-  TopAbs_Orientation orFace = face.Orientation();
+   Handle(Poly_Triangulation) T;
+   TopLoc_Location loc;
+ 
+Index: oce/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
+===================================================================
+--- oce.orig/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
++++ oce/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
+@@ -144,7 +144,6 @@
+     TColStd_SequenceOfReal aFSeq, aLSeq;
+     TColGeom2d_SequenceOfCurve aCSeq;
+     TopTools_SequenceOfShape aShSeq;
+-    Standard_Real defedge = 0;
+ 
+     TopoDS_Iterator exW(face);
+     for (; exW.More(); exW.Next()) {
+@@ -1264,7 +1263,6 @@
+   //IMPORTANT: Constants used in calculations
+   const Standard_Real MinimalArea2d = 1.e-9;
+   const Standard_Real MinimalSqLength3d = 1.e-12;
+-  const Standard_Real aDef2 = defface*defface;
+ 
+   // Define the number of iterations
+   Standard_Integer myNbIterations = 11;
+@@ -1286,9 +1284,6 @@
+   gp_Pnt pDef;
+   Standard_Real dv = 0, defl = 0, maxdef = -1;
+   Standard_Integer pass = 1, nf = 0, nl = 0;
+-  Standard_Integer v1, v2, v3, e1, e2, e3;
+-  Standard_Boolean o1, o2, o3;
+-  Standard_Boolean m1, m2, m3;
+   BRepMesh_Vertex InsVertex;
+   Standard_Boolean caninsert;
+ 
+@@ -1594,7 +1589,6 @@
+           Standard_Integer aSt[4];
+           aSt[0] = GeomLib::NormEstim(BSpl, gp_Pnt2d(mi2d), Precision::Confusion(), midDir);
+           Standard_Integer i = 0;
+-          gp_Dir dir[3] = {gp_Dir(0,0,1), gp_Dir(0,0,1), gp_Dir(0,0,1)};
+           Standard_Real anAngle[3];
+           for(; i < 3; i++)
+           {
+@@ -1686,7 +1680,6 @@
+       
+       const BRepMesh_Edge& ve1=structure->GetLink(e1);
+       const BRepMesh_Edge& ve2=structure->GetLink(e2);
+-      const BRepMesh_Edge& ve3=structure->GetLink(e3);
+       
+       if (o1) {
+ 	      v1=ve1.FirstNode();
+Index: oce/src/BRepOffset/BRepOffset_Inter2d.cxx
+===================================================================
+--- oce.orig/src/BRepOffset/BRepOffset_Inter2d.cxx
++++ oce/src/BRepOffset/BRepOffset_Inter2d.cxx
+@@ -279,7 +279,6 @@
+     return;
+ 
+   Standard_Real f[3],l[3];
+-  Standard_Real MilTol2 = 1000*Tol*Tol;
+   Standard_Real TolDub = 1.e-7;  // Faire un calcul plus malin !!! NYI
+   Standard_Integer i;
+ 
+@@ -550,7 +549,6 @@
+     return;
+ 
+   Standard_Real f[3],l[3];
+-  Standard_Real MilTol2 = 1000*Tol*Tol;
+   Standard_Real TolDub = 1.e-7;  // Faire un calcul plus malin !!! NYI
+   Standard_Integer i;
+ 
+@@ -1112,8 +1110,6 @@
+       MinLoc = E.Location() * MinLoc;
+       if (!C3d.IsNull())
+ 	{
+-	  Standard_Real FirstPar = C3d->FirstParameter();
+-	  Standard_Real LastPar  = C3d->LastParameter();
+ 	  if (MinPC->IsClosed())
+ 	    {
+ 	      f = FirstParOnPC;
+Index: oce/src/BRepTools/BRepTools_Quilt.cxx
+===================================================================
+--- oce.orig/src/BRepTools/BRepTools_Quilt.cxx
++++ oce/src/BRepTools/BRepTools_Quilt.cxx
+@@ -444,8 +444,6 @@
+               TopoDS_Shape arefShape = SH.Oriented(TopAbs_FORWARD) ;
+ 	      B.Add  ( arefShape ,Fo.Oriented(NewO));
+ 	    }
+-            Standard_Integer kk =1;
+-            Standard_Integer p =0;
+ 	    // Rebind the free edges of the old shell to the new shell
+             //gka BUG 6491
+             TopExp_Explorer aexp(SH,TopAbs_EDGE);
+Index: oce/src/BRepTopAdaptor/BRepTopAdaptor_FClass2d.cxx
+===================================================================
+--- oce.orig/src/BRepTopAdaptor/BRepTopAdaptor_FClass2d.cxx
++++ oce/src/BRepTopAdaptor/BRepTopAdaptor_FClass2d.cxx
+@@ -269,7 +269,7 @@
+ 	{
+ 	  //Standard_Real anglep=0,anglem=0;
+ 	  TColgp_Array1OfPnt2d PClass(1,nbpnts);
+-	  Standard_Real angle = 0.0, square = 0.0;
++	  Standard_Real square = 0.0;
+ 
+ 	  //-------------------------------------------------------------------
+ 	  //-- ** Le mode de calcul a ete un peu change 
+Index: oce/src/BinMDataStd/BinMDataStd_ExtStringArrayDriver.cxx
+===================================================================
+--- oce.orig/src/BinMDataStd/BinMDataStd_ExtStringArrayDriver.cxx
++++ oce/src/BinMDataStd/BinMDataStd_ExtStringArrayDriver.cxx
+@@ -95,7 +95,6 @@
+   const TColStd_Array1OfExtendedString& aSourceArray = anAtt->Array()->Array1();
+   const Standard_Integer aFirstInd = aSourceArray.Lower();
+   const Standard_Integer aLastInd  = aSourceArray.Upper();
+-  const Standard_Integer aLength   = aLastInd - aFirstInd + 1;
+   theTarget << aFirstInd << aLastInd;
+   for (Standard_Integer i = aFirstInd; i <= aLastInd; i ++)
+     theTarget << anAtt->Value( i );
+Index: oce/src/BinMDataStd/BinMDataStd_ExtStringListDriver.cxx
+===================================================================
+--- oce.orig/src/BinMDataStd/BinMDataStd_ExtStringListDriver.cxx
++++ oce/src/BinMDataStd/BinMDataStd_ExtStringListDriver.cxx
+@@ -68,7 +68,6 @@
+   Handle(TDataStd_ExtStringList) anAtt = Handle(TDataStd_ExtStringList)::DownCast(theSource);
+   const Standard_Integer aFirstInd = 1;
+   const Standard_Integer aLastInd  = anAtt->Extent();
+-  const Standard_Integer aLength   = aLastInd - aFirstInd + 1;
+   theTarget << aFirstInd << aLastInd;
+   TDataStd_ListIteratorOfListOfExtendedString itr(anAtt->List());
+   for (; itr.More(); itr.Next())
+Index: oce/src/BlendFunc/BlendFunc_RuledInv.cxx
+===================================================================
+--- oce.orig/src/BlendFunc/BlendFunc_RuledInv.cxx
++++ oce/src/BlendFunc/BlendFunc_RuledInv.cxx
+@@ -152,7 +152,6 @@
+ 
+   const Standard_Real normtgcur = d1cur.Magnitude();
+   const gp_Vec nplan = d1cur.Normalized();
+-  const Standard_Real theD = -(nplan.XYZ().Dot(ptcur.XYZ()));
+ 
+   gp_Vec dnplan;
+   dnplan.SetLinearForm(-nplan.Dot(d2cur),nplan,d2cur);
+Index: oce/src/BndLib/BndLib_AddSurface.cxx
+===================================================================
+--- oce.orig/src/BndLib/BndLib_AddSurface.cxx
++++ oce/src/BndLib/BndLib_AddSurface.cxx
+@@ -137,8 +137,6 @@
+ {
+   // Get 3 coordinate axes of the plane.
+   const gp_Dir        &aNorm        = aPlane.Axis().Direction();
+-  const gp_Dir        &aXDir        = aPlane.XAxis().Direction();
+-  const gp_Dir        &aYDir        = aPlane.YAxis().Direction();
+   const Standard_Real  anAngularTol = RealEpsilon();
+ 
+   // Get location of the plane as its barycenter
+Index: oce/src/DNaming/DNaming_BooleanOperationDriver.cxx
+===================================================================
+--- oce.orig/src/DNaming/DNaming_BooleanOperationDriver.cxx
++++ oce/src/DNaming/DNaming_BooleanOperationDriver.cxx
+@@ -336,7 +336,6 @@
+     if(!aCheck.IsValid(theMkOpe.Shape())) 
+       aResIsValid = FixSameParameter(theMkOpe.Shape(), aCheck);
+     if (aResIsValid) {
+-      const TDF_Label& aResultLabel = RESPOSITION(theFunction);
+       if(theFunction->GetDriverGUID() == FUSE_GUID) {
+ 	LoadNamingDS(RESPOSITION(theFunction), theMkOpe);
+       }
+Index: oce/src/DNaming/DNaming_ModelingCommands.cxx
+===================================================================
+--- oce.orig/src/DNaming/DNaming_ModelingCommands.cxx
++++ oce/src/DNaming/DNaming_ModelingCommands.cxx
+@@ -976,7 +976,6 @@
+ 
+   TDF_Reference::Set(anObject->Label(), aFun->Label().FindChild(FUNCTION_RESULT_LABEL)); //result is here 
+ 
+-  Standard_Integer aSurfaceType = 0;
+ 
+   Standard_Real aRadius = atof(theArg[3]);
+   DNaming::GetReal(aFun,FILLET_RADIUS)->Set(aRadius);  
+@@ -1643,7 +1642,6 @@
+ 	TDF_Label aResultLabel =  aFun->Label().FindChild(FUNCTION_RESULT_LABEL, Standard_True); 
+ 	TDF_Reference::Set(Obj->Label(), aResultLabel ); //result of the object
+ 	aResultLabel.ForgetAllAttributes(Standard_True);
+-	Standard_Boolean aKeepOrientation(Standard_False);
+ 	Handle(TNaming_NamedShape) aNS = DNaming::GetObjectValue( ContextObj);	
+ 	try{
+ 	  const TopoDS_Shape& aContext = aNS->Get();
+@@ -1702,7 +1700,6 @@
+ 	TDF_Reference::Set(Obj->Label(), aResultLabel ); //result of the object
+ 	aResultLabel.ForgetAllAttributes(Standard_True);
+ 
+-	Standard_Boolean aKeepOrientation(Standard_False);
+ 	Handle(TNaming_NamedShape) aNS = DNaming::GetObjectValue( ContextObj);	
+ 	try{
+ 	  const TopoDS_Shape& aContext = aNS->Get();
+@@ -1866,7 +1863,6 @@
+ 
+     if(!aNS.IsNull() && !aNS->IsEmpty()) {
+       const TopoDS_Shape&  aRootShape = aNS->Get();
+-      TopAbs_ShapeEnum aType = aRootShape.ShapeType();
+       //TopTools_MapOfOrientedShape aMap0;
+       //MapOfOrientedShapes(aRootShape, aMap0);
+       TopTools_ListOfShape aList, aFailedList;
+@@ -2005,7 +2001,6 @@
+ 
+     if(!aNS.IsNull() && !aNS->IsEmpty()) {
+       const TopoDS_Shape&  aRootShape = aNS->Get();
+-      TopAbs_ShapeEnum aType = aRootShape.ShapeType();
+       TopTools_MapOfOrientedShape aMap0;
+       MapOfOrientedShapes(aRootShape, aMap0);
+       TopTools_ListOfShape aList, aFailedList;
+Index: oce/src/DNaming/DNaming_ToolsCommands.cxx
+===================================================================
+--- oce.orig/src/DNaming/DNaming_ToolsCommands.cxx
++++ oce/src/DNaming/DNaming_ToolsCommands.cxx
+@@ -142,7 +142,6 @@
+   if (done) return;
+   done = Standard_True;
+   const char* g = "Naming data commands " ;
+-  const char* g2 = "Naming modeling commands" ;
+ 
+   theCommands.Add ("CopyShape", 
+                    "CopyShape (Shape1 [Shape2] ...)",
+Index: oce/src/Draw/Draw_Window.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw_Window.cxx
++++ oce/src/Draw/Draw_Window.cxx
+@@ -1680,7 +1680,6 @@
+   HDC hDC = GetDC(win);
+   HDC aWorkDC = myUseBuffer ? GetMemDC(hDC) : hDC;
+ 
+-  int debug = GetROP2(aWorkDC);
+   SaveDC(aWorkDC);
+   SelectObject(aWorkDC,GetStockObject(BLACK_PEN));
+   Rectangle(aWorkDC, 0, 0, WidthWin(), HeightWin());
+Index: oce/src/Extrema/Extrema_ExtCS.cxx
+===================================================================
+--- oce.orig/src/Extrema/Extrema_ExtCS.cxx
++++ oce/src/Extrema/Extrema_ExtCS.cxx
+@@ -130,8 +130,7 @@
+ 	  if(Precision::IsInfinite(Abs(cfirst)) || Precision::IsInfinite(Abs(clast))) {
+ 
+ 	    Bnd_Box aSurfBox;
+-	    BndLib_AddSurface anAddSurf;
+-	    anAddSurf.Add(*myS, ufirst, ulast, vfirst, vlast, Precision::Confusion(), aSurfBox);
++	    BndLib_AddSurface::Add(*myS, ufirst, ulast, vfirst, vlast, Precision::Confusion(), aSurfBox);
+ 	    Standard_Real xmin, ymin, zmin, xmax, ymax, zmax;
+ 	    aSurfBox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
+ 	    Standard_Real tmin = Precision::Infinite(), tmax = -tmin;
+Index: oce/src/HLRTopoBRep/HLRTopoBRep_OutLiner.cxx
+===================================================================
+--- oce.orig/src/HLRTopoBRep/HLRTopoBRep_OutLiner.cxx
++++ oce/src/HLRTopoBRep/HLRTopoBRep_OutLiner.cxx
+@@ -91,8 +91,7 @@
+ {
+   BRep_Builder B;
+   TopExp_Explorer exE, exW;
+-  Standard_Boolean splitted = Standard_False;
+-
++ 
+   TopTools_IndexedDataMapOfShapeListOfShape aVEMap;
+   TopExp::MapShapesAndAncestors(F, TopAbs_VERTEX, TopAbs_EDGE, aVEMap);
+ 
+@@ -138,7 +137,7 @@
+   //}
+   
+ 
+-  TopTools_ListOfShape& IntL = myDS.AddIntL(F);
++  myDS.AddIntL(F);
+   TopTools_ListOfShape& OutL = myDS.AddOutL(F);
+ 
+   if (myDS.FaceHasIntL(F)) { // get the InternalOutLines on face F
+Index: oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
+===================================================================
+--- oce.orig/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
++++ oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
+@@ -2337,7 +2337,7 @@
+   Standard_Real BSEAM = 1.5*PI; // delta U crossing seam
+   Standard_Real BAPEX = PI/16.;  // delta U crossing apex
+   
+-  Standard_Integer i = 0, k = 0;
++  Standard_Integer k = 0;
+   Standard_Real U1 = 0., U2 = 0., V1 = 0., V2 = 0., AnU1 = 0., AnV1 = 0., DU1 = 0., DV1 = 0.;
+   Standard_Integer Findex = 1, Lindex = NbPnts, Bindex = 0;
+ 
+Index: oce/src/IntPatch/IntPatch_PrmPrmIntersection_T3Bits.cxx
+===================================================================
+--- oce.orig/src/IntPatch/IntPatch_PrmPrmIntersection_T3Bits.cxx
++++ oce/src/IntPatch/IntPatch_PrmPrmIntersection_T3Bits.cxx
+@@ -28,7 +28,6 @@
+                                                          Standard_Integer& indice)
+ {
+   int k=indice>>5;
+-  Standard_Integer r=0;
+   while(k<Isize)
+   {
+     Standard_Integer r=((Standard_Integer *) p)[k] & ((Standard_Integer *) Oth.p)[k];
+Index: oce/src/IntPolyh/IntPolyh_Intersection.cxx
+===================================================================
+--- oce.orig/src/IntPolyh/IntPolyh_Intersection.cxx
++++ oce/src/IntPolyh/IntPolyh_Intersection.cxx
+@@ -70,8 +70,6 @@
+   Standard_Integer nbCouplesStd = 0;
+   Standard_Integer nbCouplesAdv = 0;
+   
+-  GeomAbs_SurfaceType ST1 = mySurf1->GetType();
+-  GeomAbs_SurfaceType ST2 = mySurf2->GetType();
+ 
+ //   if(ST1 == GeomAbs_Torus || ST2 == GeomAbs_Torus)
+ //     startFromAdvanced = Standard_True;
+Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage_1.cxx
+===================================================================
+--- oce.orig/src/IntPolyh/IntPolyh_MaillageAffinage_1.cxx
++++ oce/src/IntPolyh/IntPolyh_MaillageAffinage_1.cxx
+@@ -82,10 +82,6 @@
+ 
+   //cout << "Nb : " << NbSamplesU << " " << NbSamplesV << endl;
+ 
+-  Standard_Real u0 = Upars(1);
+-  Standard_Real v0 = Vpars(1);
+-  Standard_Real u1 = Upars(NbSamplesU);
+-  Standard_Real v1 = Vpars(NbSamplesV);
+   IntCurveSurface_ThePolyhedronOfHInter polyhedron(MaSurface, Upars, Vpars);
+   Tol=polyhedron.DeflectionOverEstimation();
+ 
+@@ -135,10 +131,6 @@
+   //cout << "FillArrayOfPnt 2" << endl;
+   //cout << "??????????????" << endl;
+   Standard_Real resol = gp::Resolution();
+-  Standard_Real u0 = Upars(1);
+-  Standard_Real v0 = Vpars(1);
+-  Standard_Real u1 = Upars(NbSamplesU);
+-  Standard_Real v1 = Vpars(NbSamplesV);
+   IntCurveSurface_ThePolyhedronOfHInter polyhedron(MaSurface, Upars, Vpars);
+   Tol=polyhedron.DeflectionOverEstimation();
+ 
+Index: oce/src/IntTools/IntTools_EdgeFace.cxx
+===================================================================
+--- oce.orig/src/IntTools/IntTools_EdgeFace.cxx
++++ oce/src/IntTools/IntTools_EdgeFace.cxx
+@@ -857,7 +857,7 @@
+   Standard_Integer IntTools_EdgeFace::MakeType(IntTools_CommonPrt&  aCommonPrt)
+ {
+   Standard_Real  af1, al1;
+-  Standard_Real dt, df1, df2, tm;
++  Standard_Real df1, tm;
+   Standard_Boolean bAllNullFlag;
+   //
+   bAllNullFlag=aCommonPrt.AllNullFlag();
+Index: oce/src/MeshVS/MeshVS_TextPrsBuilder.cxx
+===================================================================
+--- oce.orig/src/MeshVS/MeshVS_TextPrsBuilder.cxx
++++ oce/src/MeshVS/MeshVS_TextPrsBuilder.cxx
+@@ -162,7 +162,6 @@
+   Aspect_TypeOfDisplayText ADisplayType     = Aspect_TODT_NORMAL;
+   TCollection_AsciiString  AFontString;
+   Standard_Integer         ADispInt;
+-  Standard_Boolean         ATexFont;
+   // Bold font is used by default for better text readability
+   OSD_FontAspect           AFontAspectType  = OSD_FA_Bold;
+   Standard_Integer         AAspect; 
+Index: oce/src/OpenGl/OpenGl_FontMgr.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_FontMgr.cxx
++++ oce/src/OpenGl/OpenGl_FontMgr.cxx
+@@ -375,7 +375,6 @@
+     return 0.f;
+ 
+   OGLFont_Cache cache = _FontCache.Find( id );
+-  GLenum err = glGetError();
+ 
+   Standard_ShortReal w = cache.Font->Advance( str );
+ 
+Index: oce/src/OpenGl/OpenGl_TextRender.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_TextRender.cxx
++++ oce/src/OpenGl/OpenGl_TextRender.cxx
+@@ -304,7 +304,8 @@
+   char *fontName = new char[strlen((char*)keyfontName.data.pdata) + 1];
+   strcpy(fontName,(char*)keyfontName.data.pdata);
+ 
+-  OpenGl_TextRender* textRender = OpenGl_TextRender::instance(); 
++  OpenGl_TextRender::instance(); 
++
+   int vh = 2 ;
+   int vv = 2 ;
+ 
+Index: oce/src/OpenGl/OpenGl_initelem.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_initelem.cxx
++++ oce/src/OpenGl/OpenGl_initelem.cxx
+@@ -2161,7 +2161,7 @@
+ 
+   for( i = 0; i < TEL_NO_OF_SIZES*TEL_NB_OF_MARKERS; i++ )
+   {           
+-    GLsizei w, h, size, j;
++    GLsizei w, h;
+ 
+     k1 = i / TEL_NO_OF_SIZES;
+     k2 = i % TEL_NO_OF_SIZES;
+Index: oce/src/OpenGl/OpenGl_lightstate.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_lightstate.cxx
++++ oce/src/OpenGl/OpenGl_lightstate.cxx
+@@ -90,7 +90,6 @@
+ static  TStatus
+ LightSrcStateDisplay( TSM_ELEM_DATA data, Tint n, cmn_key *k )
+ {
+-  tel_tint_data d = (tel_tint_data)data.pdata;
+ 
+ #ifdef TRACE_LIGHT
+   printf("OpenGl_lightstate::LightSrcStateDisplay:UpdateLight(%d)\n", TglActiveWs);
+Index: oce/src/OpenGl/OpenGl_togl_begin.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_togl_begin.cxx
++++ oce/src/OpenGl/OpenGl_togl_begin.cxx
+@@ -114,12 +114,12 @@
+  void *pdisplay
+  )
+ {
+-  char *pvalue = NULL;
+   int status;
+ 
+   status = call_tox_set_display (pdisplay);
+   if( status ) {
+ #ifndef WNT
++	 char *pvalue = NULL;
+     if ((pvalue = getenv ("CSF_GraphicSync")) != NULL)
+       XSynchronize (call_thedisplay, 1);
+     InitExtensionGLX(call_thedisplay);
+Index: oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
++++ oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
+@@ -398,7 +398,6 @@
+   
+   //abd
+   glEnable(GL_TEXTURE_2D);
+-  GLboolean stat = glIsEnabled( GL_TEXTURE_2D );
+ 
+   glNewList (ptrLayer->listIndex, GL_COMPILE);
+   layerOpen = GL_TRUE;
+@@ -604,9 +603,6 @@
+                   float height )
+ {
+   call_def_ptrLayer ptrLayer;
+-#ifndef WNT
+-  Tint dispWidth, dispHeight;
+-#endif
+   GLdouble objx1, objy1, objz1;
+ 
+   ptrLayer = (call_def_ptrLayer) ACLayer.ptrLayer;
+@@ -890,9 +886,6 @@
+  )
+ {
+   call_def_ptrLayer ptrLayer;
+-#ifndef WNT
+-  Tint dispWidth, dispHeight;
+-#endif
+ 
+ 
+   ptrLayer = (call_def_ptrLayer) ACLayer.ptrLayer;
+Index: oce/src/OpenGl/OpenGl_togl_markercontextgroup.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_togl_markercontextgroup.cxx
++++ oce/src/OpenGl/OpenGl_togl_markercontextgroup.cxx
+@@ -62,7 +62,7 @@
+ {
+   int i = 0;
+   int anIndex = -1;
+-  GLint w, h, size, k, l;
++  GLint w, h;
+ 
+   for( ; i < UDMS_Marker.Quantity; i++ )
+   {
+Index: oce/src/OpenGl/OpenGl_togl_print.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_togl_print.cxx
++++ oce/src/OpenGl/OpenGl_togl_print.cxx
+@@ -112,8 +112,6 @@
+   CMN_KEY_DATA data;
+   Tint swap = 1; /* swap buffers ? yes */
+ 
+-
+-  BOOL bRet = FALSE;
+   HDC hPrnDC;
+   DOCINFO   di;
+ 
+Index: oce/src/OpenGl/OpenGl_txgl.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_txgl.cxx
++++ oce/src/OpenGl/OpenGl_txgl.cxx
+@@ -758,8 +758,7 @@
+ #ifndef WNT
+ 
+     GLXContext ctx;
+-    Tint dummy;
+-
++ 
+     if ( !_Txgl_Map.IsBound(win) )
+       return;
+     ctx = _Txgl_Map.ChangeFind(win);
+Index: oce/src/OpenGl/OpenGl_ws.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_ws.cxx
++++ oce/src/OpenGl/OpenGl_ws.cxx
+@@ -152,7 +152,6 @@
+     return TFailure;
+ 
+   if ( !ws_map.IsBound( wsid ) ) {
+-    ws_rec rec = new WS_REC();
+     ws_map.Bind( wsid, new WS_REC() );
+   }
+   ws_rec wsr = ws_map.ChangeFind( wsid );
+Index: oce/src/RWHeaderSection/RWHeaderSection_ReadWriteModule.cxx
+===================================================================
+--- oce.orig/src/RWHeaderSection/RWHeaderSection_ReadWriteModule.cxx
++++ oce/src/RWHeaderSection/RWHeaderSection_ReadWriteModule.cxx
+@@ -50,8 +50,8 @@
+ 	(const TColStd_SequenceOfAsciiString& types) const
+ {
+ 
+-  Standard_Integer NbComp = types.Length();
+ #ifdef DEB
++  Standard_Integer NbComp = types.Length();
+   if (NbComp < 2) {
+     cout << "Plex Instance illegal " << endl;
+   }
+Index: oce/src/Select3D/Select3D_SensitiveTriangle.cxx
+===================================================================
+--- oce.orig/src/Select3D/Select3D_SensitiveTriangle.cxx
++++ oce/src/Select3D/Select3D_SensitiveTriangle.cxx
+@@ -198,7 +198,6 @@
+   gp_XY V02(p2);V02-=p0;
+   gp_XY V12(p2);V12-=p1;
+ 
+-  Standard_Real TolTol = aTol*aTol;
+ 
+   // regardons les cas particuliers...
+   //si l'un des vecteurs est quasi nul (2 points sont confondus), 
+Index: oce/src/Select3D/Select3D_SensitiveTriangulation.cxx
+===================================================================
+--- oce.orig/src/Select3D/Select3D_SensitiveTriangulation.cxx
++++ oce/src/Select3D/Select3D_SensitiveTriangulation.cxx
+@@ -636,7 +636,6 @@
+   if(myDetectedTr==-1) 
+     return Standard_False; // non implemente actuellement...
+   const Poly_Array1OfTriangle& triangles = myTriangul->Triangles();
+-  const TColgp_Array1OfPnt& Nodes = myTriangul->Nodes();  
+   Standard_Integer n1,n2,n3;
+   triangles( myDetectedTr ).Get(n1,n2,n3);
+ 
+Index: oce/src/SelectBasics/SelectBasics_BasicTool.cxx
+===================================================================
+--- oce.orig/src/SelectBasics/SelectBasics_BasicTool.cxx
++++ oce/src/SelectBasics/SelectBasics_BasicTool.cxx
+@@ -57,7 +57,6 @@
+ 						      const Standard_Real aTol,
+ 						      Standard_Real& DMin)
+ {
+-  Standard_Boolean Found= Standard_False;
+   const Standard_Real SqTol = aTol * aTol;	
+   gp_Vec2d AB, AC, BC; 
+   const gp_Pnt2d apoint(X,Y);
+Index: oce/src/ShapeAnalysis/ShapeAnalysis.cxx
+===================================================================
+--- oce.orig/src/ShapeAnalysis/ShapeAnalysis.cxx
++++ oce/src/ShapeAnalysis/ShapeAnalysis.cxx
+@@ -172,7 +172,7 @@
+                                          //const Handle(ShapeExtend_WireData)& sewd)
+                                         
+ {
+-  Standard_Integer i =1, nbc = 0;
++  Standard_Integer nbc = 0;
+   gp_Pnt fuv,luv, uv0;
+   //Standard_Real totcross=0;
+   gp_XYZ aTotal(0.,0.,0.);
+Index: oce/src/ShapeBuild/ShapeBuild_ReShape.cxx
+===================================================================
+--- oce.orig/src/ShapeBuild/ShapeBuild_ReShape.cxx
++++ oce/src/ShapeBuild/ShapeBuild_ReShape.cxx
+@@ -63,7 +63,7 @@
+     return res;
+   }
+ 
+-  TopAbs_ShapeEnum st = shape.ShapeType(), subt;
++  TopAbs_ShapeEnum st = shape.ShapeType();
+   if ( st >= until ) return newsh;    // critere d arret
+   if(st == TopAbs_VERTEX || st == TopAbs_SHAPE)
+     return shape;
+Index: oce/src/ShapeUpgrade/ShapeUpgrade_RemoveInternalWires.cxx
+===================================================================
+--- oce.orig/src/ShapeUpgrade/ShapeUpgrade_RemoveInternalWires.cxx
++++ oce/src/ShapeUpgrade/ShapeUpgrade_RemoveInternalWires.cxx
+@@ -229,7 +229,6 @@
+         if(!myRemoveEdges.IsBound(aE) ) {
+           const TopTools_ListOfShape& aLface3 = myEdgeFaces.FindFromKey(aE);
+           TopTools_ListIteratorOfListOfShape aliter3(aLface3);
+-          Standard_Boolean isRemoved = Standard_True;
+           for( ; aliter3.More();aliter3.Next()) {
+             TopoDS_Shape aF2 = Context()->Apply(aliter3.Value());
+             if(aF2.IsNull())
+Index: oce/src/TFunction/TFunction_Iterator.cxx
+===================================================================
+--- oce.orig/src/TFunction/TFunction_Iterator.cxx
++++ oce/src/TFunction/TFunction_Iterator.cxx
+@@ -174,7 +174,6 @@
+     TFunction_IFunction iFunction(L);
+ 
+     Handle(TFunction_GraphNode) graphNode = iFunction.GetGraphNode();
+-    const TColStd_MapOfInteger& prev      = graphNode->GetPrevious();
+     const TColStd_MapOfInteger& next      = graphNode->GetNext();
+     TFunction_ExecutionStatus   status    = graphNode->GetStatus();
+ 
+Index: oce/src/TNaming/TNaming_Naming.cxx
+===================================================================
+--- oce.orig/src/TNaming/TNaming_Naming.cxx
++++ oce/src/TNaming/TNaming_Naming.cxx
+@@ -632,7 +632,6 @@
+     isCommon = Standard_True; // statement: this shape (itm.Key()) is common (to be checked below)
+     TNaming_DataMapIteratorOfDataMapOfShapeMapOfShape itdm(aDMM);
+     for (;itdm.More();itdm.Next()) {
+-      const TopoDS_Shape& aKey1 = itdm.Key();
+       const TNaming_MapOfShape& aMap = itdm.Value();
+       if(!aMap.Contains(itm.Key())) {
+ 	isCommon = Standard_False;
+Index: oce/src/V3d/V3d_View.cxx
+===================================================================
+--- oce.orig/src/V3d/V3d_View.cxx
++++ oce/src/V3d/V3d_View.cxx
+@@ -1619,7 +1619,6 @@
+ 
+   Standard_Real Front = MyViewContext.ZClippingFrontPlane() ;
+   Standard_Real Back  = MyViewContext.ZClippingBackPlane() ;
+-  Standard_Real focale= Focale();
+ 
+   MyViewMapping.SetFrontPlaneDistance(Zmax) ;
+   MyViewMapping.SetBackPlaneDistance(-Zmax) ;
+Index: oce/src/Viewer2dTest/Viewer2dTest_DisplayCommands.cxx
+===================================================================
+--- oce.orig/src/Viewer2dTest/Viewer2dTest_DisplayCommands.cxx
++++ oce/src/Viewer2dTest/Viewer2dTest_DisplayCommands.cxx
+@@ -2122,8 +2122,6 @@
+   
+   Standard_Real x1 = 24, y1 = 24;
+   Standard_Integer numberOfColumn = 1, numberOfRows = 1;
+-  Quantity_PlaneAngle anAngle = 0.0;
+-  Quantity_Factor     aScale = 1.0;
+    
+   if( argc >= 3 )
+     x1 = atof( argv[2] );
+@@ -2297,11 +2295,6 @@
+   
+   double text_scale = 15;
+   double length = 0; 
+-  int distance_type = 0; 
+-  double arrow_angle = 24;
+-  double arrow_length = 24;
+-  int arrow_type = 2;
+-  int arrow_side = 3;
+   
+   double distance = FirstPt.Distance(LastPt);
+   
+@@ -2400,7 +2393,6 @@
+   gp_Pnt2d anAp2(240, 240);
+   gp_Circ2d aCirc(gp_Ax2d(anAp2,gp_Dir2d(0,1)),100.);
+   
+-  Quantity_Length aRadius = 100;
+   TCollection_ExtendedString aText("Rad = 10%");
+   
+   Handle(Prs2d_Radius) theRadius;			
+@@ -2434,7 +2426,6 @@
+   gp_Pnt2d anAp2(240, 240);
+   gp_Circ2d aCirc(gp_Ax2d(anAp2,gp_Dir2d(0,1)),100.);
+   
+-  Quantity_Length aRadius = 100;
+   TCollection_ExtendedString aText("Rad = 10%");
+   
+   Handle(AIS2D_InteractiveObject) aIO = new AIS2D_InteractiveObject();
+Index: oce/src/ViewerTest/ViewerTest.cxx
+===================================================================
+--- oce.orig/src/ViewerTest/ViewerTest.cxx
++++ oce/src/ViewerTest/ViewerTest.cxx
+@@ -3186,7 +3186,6 @@
+   }
+ 
+   Standard_Boolean IsBound = GetMapOfAIS().IsBound2(shapeName);
+-  Standard_Boolean IsDatum = Standard_False;
+   Handle(Standard_Transient) anObj;
+   if ( IsBound ) {
+     anObj = GetMapOfAIS().Find2(shapeName);
+@@ -3243,7 +3242,6 @@
+   /////////////////////
+   TopoDS_Shape aShape =  DBRep::Get(a[1]);
+   aContext2D->EraseAll(Standard_True);
+-  Standard_Integer aPolyAlgo = 0;
+   Standard_Boolean IsPoly = Standard_False;
+   gp_Ax2 anAx2 = gp::XOY();
+ 
+@@ -3303,7 +3301,6 @@
+   /////////////////////
+   TopoDS_Shape aShape =  DBRep::Get(a[1]);
+   aContext2D->EraseAll(Standard_True);
+-  Standard_Integer aPolyAlgo = 0;
+   Standard_Boolean IsPoly = Standard_True;
+   gp_Ax2 anAx2 = gp::XOY();
+ 
+Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
+===================================================================
+--- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
++++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
+@@ -724,7 +724,7 @@
+       if( !DragFirst )
+       {
+         HDC hdc = GetDC( hwnd );
+-        HGDIOBJ anObj = SelectObject( hdc, GetStockObject( WHITE_PEN ) );
++        SelectObject( hdc, GetStockObject( WHITE_PEN ) );
+         SelectObject( hdc, GetStockObject( HOLLOW_BRUSH ) );
+         SetROP2( hdc, R2_NOT );
+         Rectangle( hdc, xx1, yy1, xx2, yy2 );
+Index: oce/src/Visual3d/Visual3d_ViewManager.cxx
+===================================================================
+--- oce.orig/src/Visual3d/Visual3d_ViewManager.cxx
++++ oce/src/Visual3d/Visual3d_ViewManager.cxx
+@@ -192,7 +192,6 @@
+ #endif
+   Standard_Integer ViewId = theView->Identification ();
+ 
+-  Standard_Integer indexD = 0;
+ 
+ // Meme si physiquement la structure ne peut pas
+ // etre affichee (pb de type de visualisation)
+Index: oce/src/Voxel/Voxel_FastConverter.cxx
+===================================================================
+--- oce.orig/src/Voxel/Voxel_FastConverter.cxx
++++ oce/src/Voxel/Voxel_FastConverter.cxx
+@@ -166,7 +166,7 @@
+ 
+   // Convert
+   TopLoc_Location L;
+-  Standard_Integer iprogress = 0, prev_progress = 0;
++  Standard_Integer iprogress = 0;
+   Standard_Integer n1, n2, n3;
+   Standard_Integer ixmin, iymin, izmin, ixmax, iymax, izmax;
+   Standard_Real xmin, ymin, zmin, xmax, ymax, zmax;
+Index: oce/src/VrmlData/VrmlData_Scene.cxx
+===================================================================
+--- oce.orig/src/VrmlData/VrmlData_Scene.cxx
++++ oce/src/VrmlData/VrmlData_Scene.cxx
+@@ -433,8 +433,7 @@
+   VrmlData_ErrorStatus    aStatus;
+   Handle(VrmlData_Node)   aNode;
+   TCollection_AsciiString aName;
+-  Standard_Boolean        isReused (Standard_False);
+-
++ 
+   // Read the DEF token to assign the node name
+   if (VrmlData_Node::OK(aStatus, ReadLine(theBuffer)))
+     if (VRMLDATA_LCOMPARE(theBuffer.LinePtr, "DEF")) {
+Index: oce/src/WNT/WNT_Allocator.cxx
+===================================================================
+--- oce.orig/src/WNT/WNT_Allocator.cxx
++++ oce/src/WNT/WNT_Allocator.cxx
+@@ -594,7 +594,6 @@
+ void WNT_ArcNote :: Play ( BOOL fDummy )
+ {
+   Xform ();
+-  HDC hdc = ALLOCATOR -> myHDC;
+   SetArcDirection ( ALLOCATOR -> myHDC, myDirect );
+   Arc ( ALLOCATOR -> myHDC, myTX - myTXr, myTY - myTYr,
+                             myTX + myTXr, myTY + myTYr,
+@@ -941,7 +940,6 @@
+ 
+ void WNT_TextNote :: Xform ( void )
+ {
+-  HDC hdc = ALLOCATOR -> myHDC;
+   WNT_PointNote :: Xform ();
+   RMatrix.eDx  =  float ( myTX ); 
+   RMatrix.eDy  =  float ( myTY );
+Index: oce/src/WNT/WNT_FontMapEntry.cxx
+===================================================================
+--- oce.orig/src/WNT/WNT_FontMapEntry.cxx
++++ oce/src/WNT/WNT_FontMapEntry.cxx
+@@ -14,7 +14,6 @@
+ {
+   int   i;
+   char* p;
+-  BOOL  fUseDefault = FALSE;
+ 
+   char* fName = new char[ strlen ( aFontName ) + 1 ];
+ 
+Index: oce/src/WNT/WNT_WDriver.cxx
+===================================================================
+--- oce.orig/src/WNT/WNT_WDriver.cxx
++++ oce/src/WNT/WNT_WDriver.cxx
+@@ -1266,8 +1266,7 @@
+                                 ) {
+ 
+  PW32_Allocator        aNew     = NULL;
+- Aspect_TypeOfDrawMode DrawMode = Aspect_TODM_REPLACE;
+-
++ 
+  MyDrawMode = aDrawMode;
+  aNew       = _FindAllocator ( myAllocators, aRetainBuffer );
+ 
+Index: oce/src/XDEDRAW/XDEDRAW_Props.cxx
+===================================================================
+--- oce.orig/src/XDEDRAW/XDEDRAW_Props.cxx
++++ oce/src/XDEDRAW/XDEDRAW_Props.cxx
+@@ -781,7 +781,6 @@
+       TColStd_Array1OfReal anArrMass(1,comp.Length());
+       anArrMass.Init(0.0);
+       Standard_Real aTotalMass =0.0;
+-      Standard_Boolean isFind = Standard_True;
+       Standard_Integer k=1;
+       for ( ; k <= comp.Length(); k++ ) {
+         TDF_Label lab = comp(k);
+Index: oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
+===================================================================
+--- oce.orig/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
++++ oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
+@@ -194,7 +194,6 @@
+     di << "use: storevrml shape file defl type_of_conversion (0, 1, 2)"    << "\n";
+   }
+   else {
+-    TopAbs_ShapeEnum Types[3] = {TopAbs_FACE, TopAbs_WIRE, TopAbs_EDGE};
+     TopoDS_Shape shape = DBRep::Get(argv[1]);
+     Standard_Real defl = atof(argv[3]);
+     Standard_Integer type = 1;
+Index: oce/src/XmlLDrivers/XmlLDrivers_DocumentRetrievalDriver.cxx
+===================================================================
+--- oce.orig/src/XmlLDrivers/XmlLDrivers_DocumentRetrievalDriver.cxx
++++ oce/src/XmlLDrivers/XmlLDrivers_DocumentRetrievalDriver.cxx
+@@ -251,8 +251,6 @@
+ 	    try {
+ 	      OCC_CATCH_SIGNALS
+ 	      TCollection_AsciiString anInf(anInfo,'?');
+-	      Standard_Integer aRefCounter = anInf.Token(" ",2).IntegerValue();
+-	      //theNewDocument->SetReferenceCounter(aRefCounter);
+ 	    }
+ 	    catch (Standard_Failure) { 
+ 	      //	  cout << "warning: could not read the reference counter in " << aFileName << endl;
+Index: oce/src/XmlMDataStd/XmlMDataStd_BooleanArrayDriver.cxx
+===================================================================
+--- oce.orig/src/XmlMDataStd/XmlMDataStd_BooleanArrayDriver.cxx
++++ oce/src/XmlMDataStd/XmlMDataStd_BooleanArrayDriver.cxx
+@@ -39,7 +39,7 @@
+ 						       const Handle(TDF_Attribute)& theTarget,
+ 						       XmlObjMgt_RRelocationTable&  ) const
+ {
+-  Standard_Integer aFirstInd, aLastInd, aValue, ind;
++  Standard_Integer aFirstInd, aLastInd, aValue;
+   const XmlObjMgt_Element& anElement = theSource;
+ 
+   // Read the FirstIndex; if the attribute is absent initialize to 1
+Index: oce/src/XmlMDataStd/XmlMDataStd_NamedDataDriver.cxx
+===================================================================
+--- oce.orig/src/XmlMDataStd/XmlMDataStd_NamedDataDriver.cxx
++++ oce/src/XmlMDataStd/XmlMDataStd_NamedDataDriver.cxx
+@@ -125,7 +125,7 @@
+ 						      const Handle(TDF_Attribute)& theTarget,
+ 						      XmlObjMgt_RRelocationTable&  ) const
+ {
+-  Standard_Integer aFirstInd, aLastInd, aValue, ind;
++  Standard_Integer aFirstInd, aLastInd, ind;
+   const XmlObjMgt_Element& anElement = theSource;
+ 
+   //DataMapOfStringInteger: Read the FirstIndex; if the attribute is absent initialize to 1
+Index: oce/src/XmlMFunction/XmlMFunction_ScopeDriver.cxx
+===================================================================
+--- oce.orig/src/XmlMFunction/XmlMFunction_ScopeDriver.cxx
++++ oce/src/XmlMFunction/XmlMFunction_ScopeDriver.cxx
+@@ -136,7 +136,6 @@
+   LDOM_Node aCurNode = anElement.getFirstChild()/*.getNextSibling().getNextSibling()*/;
+   LDOM_Element* aCurElement = (LDOM_Element*)&aCurNode;
+   XmlObjMgt_DOMString aValueStr;
+-  Standard_Integer i = aFirstInd;
+   while (*aCurElement != anElement.getLastChild())
+   {
+     aValueStr = XmlObjMgt::GetStringValue( *aCurElement );

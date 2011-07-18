@@ -1,0 +1,236 @@
+From: Denis Barbier <bouzim@gmail.com>
+Date: Sun, 13 Mar 2011 09:56:30 +0100
+Subject: [PATCH 76/82] Change PPC variable to ppc to avoid conflict with PPC
+ macro on PowerPC
+
+See http://www.opencascade.org/org/forum/thread_20051/
+---
+ inc/Plate_LinearScalarConstraint.hxx       |    6 +++---
+ inc/Plate_LinearXYZConstraint.hxx          |    6 +++---
+ src/BRepFill/BRepFill_Evolved.cxx          |    4 ++--
+ src/BRepLib/BRepLib_FindSurface.cxx        |    4 ++--
+ src/Bisector/Bisector_BisecPC.cxx          |   20 ++++++++++----------
+ src/Plate/Plate_LinearScalarConstraint.cxx |   16 ++++++++--------
+ src/Plate/Plate_LinearXYZConstraint.cxx    |   16 ++++++++--------
+ 7 files changed, 36 insertions(+), 36 deletions(-)
+
+Index: oce/inc/Plate_LinearScalarConstraint.hxx
+===================================================================
+--- oce.orig/inc/Plate_LinearScalarConstraint.hxx
++++ oce/inc/Plate_LinearScalarConstraint.hxx
+@@ -57,9 +57,9 @@
+   
+   Standard_EXPORT   Plate_LinearScalarConstraint(const Plate_PinpointConstraint& PPC1,const gp_XYZ& coeff);
+   
+-  Standard_EXPORT   Plate_LinearScalarConstraint(const Plate_Array1OfPinpointConstraint& PPC,const TColgp_Array1OfXYZ& coeff);
++  Standard_EXPORT   Plate_LinearScalarConstraint(const Plate_Array1OfPinpointConstraint& ppc,const TColgp_Array1OfXYZ& coeff);
+   
+-  Standard_EXPORT   Plate_LinearScalarConstraint(const Plate_Array1OfPinpointConstraint& PPC,const TColgp_Array2OfXYZ& coeff);
++  Standard_EXPORT   Plate_LinearScalarConstraint(const Plate_Array1OfPinpointConstraint& ppc,const TColgp_Array2OfXYZ& coeff);
+   
+   Standard_EXPORT   Plate_LinearScalarConstraint(const Standard_Integer ColLen,const Standard_Integer RowLen);
+   
+@@ -68,7 +68,7 @@
+        const TColgp_Array2OfXYZ& Coeff() const;
+   //!  Sets   the PinPointConstraint of   index Index to <br>
+ //!          Value raise if Index is greater than the length of <br>
+-//!          PPC or the Row length of coeff or lower  than 1 <br>
++//!          ppc or the Row length of coeff or lower  than 1 <br>
+   Standard_EXPORT     void SetPPC(const Standard_Integer Index,const Plate_PinpointConstraint& Value) ;
+   //!  Sets the coeff  of index (Row,Col)  to Value <br>
+ //!           raise if  Row (respectively Col)  is greater than the <br>
+Index: oce/inc/Plate_LinearXYZConstraint.hxx
+===================================================================
+--- oce.orig/inc/Plate_LinearXYZConstraint.hxx
++++ oce/inc/Plate_LinearXYZConstraint.hxx
+@@ -57,9 +57,9 @@
+   
+   Standard_EXPORT   Plate_LinearXYZConstraint();
+   
+-  Standard_EXPORT   Plate_LinearXYZConstraint(const Plate_Array1OfPinpointConstraint& PPC,const TColStd_Array1OfReal& coeff);
++  Standard_EXPORT   Plate_LinearXYZConstraint(const Plate_Array1OfPinpointConstraint& ppc,const TColStd_Array1OfReal& coeff);
+   
+-  Standard_EXPORT   Plate_LinearXYZConstraint(const Plate_Array1OfPinpointConstraint& PPC,const TColStd_Array2OfReal& coeff);
++  Standard_EXPORT   Plate_LinearXYZConstraint(const Plate_Array1OfPinpointConstraint& ppc,const TColStd_Array2OfReal& coeff);
+   
+   Standard_EXPORT   Plate_LinearXYZConstraint(const Standard_Integer ColLen,const Standard_Integer RowLen);
+   
+@@ -68,7 +68,7 @@
+        const TColStd_Array2OfReal& Coeff() const;
+   //!  Sets   the PinPointConstraint of   index Index to <br>
+ //!          Value raise if Index is greater than the length of <br>
+-//!          PPC or the Row length of coeff or lower  than 1 <br>
++//!          ppc or the Row length of coeff or lower  than 1 <br>
+   Standard_EXPORT     void SetPPC(const Standard_Integer Index,const Plate_PinpointConstraint& Value) ;
+   //!  Sets the coeff  of index (Row,Col)  to Value <br>
+ //!           raise if  Row (respectively Col)  is greater than the <br>
+Index: oce/src/BRepFill/BRepFill_Evolved.cxx
+===================================================================
+--- oce.orig/src/BRepFill/BRepFill_Evolved.cxx
++++ oce/src/BRepFill/BRepFill_Evolved.cxx
+@@ -2107,8 +2107,8 @@
+ 	    gp_Pnt PC;
+ 	    gp_Vec VC;
+ 	    C.D1(u,PC,VC);
+-	    gp_Vec PPC(P,PC);
+-	    gp_Vec Prod = PPC.Crossed(VC);
++	    gp_Vec ppc(P,PC);
++	    gp_Vec Prod = ppc.Crossed(VC);
+ 	    if (IsOut) {
+ 	      ToReverse = Prod.Z() < 0.;
+ 	    }
+Index: oce/src/BRepLib/BRepLib_FindSurface.cxx
+===================================================================
+--- oce.orig/src/BRepLib/BRepLib_FindSurface.cxx
++++ oce/src/BRepLib/BRepLib_FindSurface.cxx
+@@ -100,7 +100,7 @@
+ 
+   TopoDS_Edge E = TopoDS::Edge(ex.Current());
+   Standard_Real f,l,ff,ll;
+-  Handle(Geom2d_Curve) PC,PPC;
++  Handle(Geom2d_Curve) PC,ppc;
+   Handle(Geom_Surface) SS;
+   TopLoc_Location L;
+   Standard_Integer i = 0,j;
+@@ -119,7 +119,7 @@
+ 	while (Standard_True) {
+ 	  j++;
+ 	  BRep_Tool::CurveOnSurface(TopoDS::Edge(ex.Current()),
+-				    PPC,SS,L,ff,ll,j);
++				    ppc,SS,L,ff,ll,j);
+ 	  if (SS.IsNull()) {
+ 	    break;
+ 	  }
+Index: oce/src/Bisector/Bisector_BisecPC.cxx
+===================================================================
+--- oce.orig/src/Bisector/Bisector_BisecPC.cxx
++++ oce/src/Bisector/Bisector_BisecPC.cxx
+@@ -374,11 +374,11 @@
+   case 2 :  {curve->D3(UOnCurve,PC,Tu,Tuu,T3u);break;}
+   }
+   
+-  gp_Vec2d PPC(PC.X() - point.X(), PC.Y() - point.Y());
++  gp_Vec2d ppc(PC.X() - point.X(), PC.Y() - point.Y());
+   gp_Vec2d Nor( - Tu.Y(), Tu.X());
+   
+-  Standard_Real SquarePPC = PPC.SquareMagnitude();
+-  Standard_Real NorPPC    = Nor.Dot(PPC);
++  Standard_Real SquarePPC = ppc.SquareMagnitude();
++  Standard_Real NorPPC    = Nor.Dot(ppc);
+   Standard_Real A1;
+ 
+   if (Abs(NorPPC) > gp::Resolution() && (NorPPC*sign) < 0.) {
+@@ -390,8 +390,8 @@
+   if (N == 0) return;                                 // Fin Calcul Point;
+ 
+   gp_Vec2d      Nu ( - Tuu.Y() , Tuu.X());            // derivee de la normale en U.
+-  Standard_Real NuPPC     = Nu .Dot(PPC);
+-  Standard_Real TuPPC     = Tu .Dot(PPC);
++  Standard_Real NuPPC     = Nu .Dot(ppc);
++  Standard_Real TuPPC     = Tu .Dot(ppc);
+   Standard_Real NorPPCE2  = NorPPC*NorPPC;
+   Standard_Real A2        = TuPPC/NorPPC - 0.5*NuPPC*SquarePPC/NorPPCE2;
+ 
+@@ -403,8 +403,8 @@
+   gp_Vec2d Nuu ( - T3u.Y() , T3u.X());
+   
+   Standard_Real NorPPCE4 = NorPPCE2*NorPPCE2;
+-  Standard_Real NuuPPC   = Nuu.Dot(PPC);
+-  Standard_Real TuuPPC   = Tuu.Dot(PPC);
++  Standard_Real NuuPPC   = Nuu.Dot(ppc);
++  Standard_Real TuuPPC   = Tuu.Dot(ppc);
+   
+   Standard_Real A21 = TuuPPC/NorPPC - TuPPC*NuPPC/NorPPCE2;
+   Standard_Real A22 = (0.5*NuuPPC*SquarePPC + NuPPC*TuPPC)/NorPPCE2 - 
+@@ -458,12 +458,12 @@
+   Standard_Real UOnCurve = LinkBisCurve(U);
+   
+   curve->D1(UOnCurve,PC,Tan);
+-  gp_Vec2d PPC(PC.X() - point.X(), PC.Y() - point.Y());
++  gp_Vec2d ppc(PC.X() - point.X(), PC.Y() - point.Y());
+   gp_Vec2d Nor( - Tan.Y(), Tan.X());
+ 
+   Standard_Real NorNor       = Nor.SquareMagnitude();
+-  Standard_Real SquareMagPPC = PPC.SquareMagnitude();
+-  Standard_Real Prosca       = Nor.Dot(PPC);
++  Standard_Real SquareMagPPC = ppc.SquareMagnitude();
++  Standard_Real Prosca       = Nor.Dot(ppc);
+   
+   if (point.IsEqual(PC,Precision::Confusion())) {
+     if (isConvex) { return 0.;}
+Index: oce/src/Plate/Plate_LinearScalarConstraint.cxx
+===================================================================
+--- oce.orig/src/Plate/Plate_LinearScalarConstraint.cxx
++++ oce/src/Plate/Plate_LinearScalarConstraint.cxx
+@@ -21,26 +21,26 @@
+   myCoef->ChangeValue(1,1) = coeff;
+ }
+ 
+-Plate_LinearScalarConstraint::Plate_LinearScalarConstraint(const Plate_Array1OfPinpointConstraint& PPC,const TColgp_Array1OfXYZ& coeff)
++Plate_LinearScalarConstraint::Plate_LinearScalarConstraint(const Plate_Array1OfPinpointConstraint& ppc,const TColgp_Array1OfXYZ& coeff)
+ {
+-  if(coeff.Length()!= PPC.Length()) Standard_DimensionMismatch::Raise();
+-  myPPC = new Plate_HArray1OfPinpointConstraint(1,PPC.Length());
++  if(coeff.Length()!= ppc.Length()) Standard_DimensionMismatch::Raise();
++  myPPC = new Plate_HArray1OfPinpointConstraint(1,ppc.Length());
+   myCoef = new TColgp_HArray2OfXYZ(1,1,1,coeff.Length());
+ 
+-  myPPC->ChangeArray1() = PPC;
++  myPPC->ChangeArray1() = ppc;
+   for(Standard_Integer i = 1; i<= coeff.Length(); i++) {
+     myCoef->ChangeValue(1,i) = coeff(i+coeff.Lower()-1);
+   }
+ }
+ 
+ Plate_LinearScalarConstraint::Plate_LinearScalarConstraint
+-   (const Plate_Array1OfPinpointConstraint& PPC,const TColgp_Array2OfXYZ& coeff)
++   (const Plate_Array1OfPinpointConstraint& ppc,const TColgp_Array2OfXYZ& coeff)
+ {
+-  if(coeff.RowLength()!= PPC.Length()) Standard_DimensionMismatch::Raise();
+-  myPPC = new Plate_HArray1OfPinpointConstraint(1,PPC.Length());
++  if(coeff.RowLength()!= ppc.Length()) Standard_DimensionMismatch::Raise();
++  myPPC = new Plate_HArray1OfPinpointConstraint(1,ppc.Length());
+   myCoef = new TColgp_HArray2OfXYZ(1,coeff.ColLength(),1,coeff.RowLength());
+   
+-  myPPC->ChangeArray1() = PPC;
++  myPPC->ChangeArray1() = ppc;
+   myCoef->ChangeArray2() = coeff;
+ }
+ 
+Index: oce/src/Plate/Plate_LinearXYZConstraint.cxx
+===================================================================
+--- oce.orig/src/Plate/Plate_LinearXYZConstraint.cxx
++++ oce/src/Plate/Plate_LinearXYZConstraint.cxx
+@@ -9,24 +9,24 @@
+ 
+ Plate_LinearXYZConstraint::Plate_LinearXYZConstraint() {}
+ 
+-Plate_LinearXYZConstraint::Plate_LinearXYZConstraint(const Plate_Array1OfPinpointConstraint& PPC,const TColStd_Array1OfReal& coeff)
++Plate_LinearXYZConstraint::Plate_LinearXYZConstraint(const Plate_Array1OfPinpointConstraint& ppc,const TColStd_Array1OfReal& coeff)
+ {
+-  if(coeff.Length()!= PPC.Length()) Standard_DimensionMismatch::Raise();
+-  myPPC = new Plate_HArray1OfPinpointConstraint(1,PPC.Length());
++  if(coeff.Length()!= ppc.Length()) Standard_DimensionMismatch::Raise();
++  myPPC = new Plate_HArray1OfPinpointConstraint(1,ppc.Length());
+   myCoef = new TColStd_HArray2OfReal(1,1,1,coeff.Length());
+   
+-  myPPC->ChangeArray1() = PPC;
++  myPPC->ChangeArray1() = ppc;
+   for(Standard_Integer i = 1; i<= coeff.Length(); i++)
+     myCoef->ChangeValue(1,i) = coeff(i+coeff.Lower()-1);
+ }
+ 
+-Plate_LinearXYZConstraint::Plate_LinearXYZConstraint(const Plate_Array1OfPinpointConstraint& PPC,const TColStd_Array2OfReal& coeff)
++Plate_LinearXYZConstraint::Plate_LinearXYZConstraint(const Plate_Array1OfPinpointConstraint& ppc,const TColStd_Array2OfReal& coeff)
+ {
+-  if(coeff.RowLength()!= PPC.Length()) Standard_DimensionMismatch::Raise();
+-  myPPC = new Plate_HArray1OfPinpointConstraint(1,PPC.Length());
++  if(coeff.RowLength()!= ppc.Length()) Standard_DimensionMismatch::Raise();
++  myPPC = new Plate_HArray1OfPinpointConstraint(1,ppc.Length());
+   myCoef = new TColStd_HArray2OfReal(1,coeff.ColLength(),1,coeff.RowLength());
+   
+-  myPPC->ChangeArray1() = PPC;
++  myPPC->ChangeArray1() = ppc;
+   myCoef->ChangeArray2() = coeff;
+ }
+ 

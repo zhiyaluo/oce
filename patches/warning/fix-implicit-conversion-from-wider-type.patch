@@ -1,0 +1,1894 @@
+From: QbProg <tholag@gmail.com>
+Date: Thu, 12 May 2011 20:25:00 +0200
+Subject: [PATCH 29/82] [warning-fix][implicit-conversion-from-wider-type]
+
+Fixes warnings like 'conversion' conversion from 'type1' to 'type2', possible loss of data
+---
+ src/OSD/OSD_SystemFont.cxx                  |    2 +-
+ src/Resource/Resource_ConvertUnicode.c      |    8 ++++----
+ src/TCollection/TCollection_AsciiString.cxx |   12 ++++++------
+ 3 files changed, 11 insertions(+), 11 deletions(-)
+
+From: QbProg <tholag@gmail.com>
+Date: Thu, 12 May 2011 21:06:00 +0200
+Subject: [PATCH 30/82] [warning-fix][implicit-conversion-from-wider-type]
+
+DecimalPoint should really be a char type instead of Integer. Changing the var instead of fixing cast warnings.
+---
+ src/OSD/OSD.cxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+From: QbProg <tholag@gmail.com>
+Date: Thu, 12 May 2011 21:08:22 +0200
+Subject: [PATCH 31/82] [warning-fix][implicit-conversion-from-wider-type]
+
+Clamped dialog size instead of direct casting which could result in loss of data (i.e. wrong dialog size).
+---
+ src/OSD/OSD_WNT_1.cxx |    8 ++++----
+ 1 files changed, 4 insertions(+), 4 deletions(-)
+
+From: QbProg <tholag@gmail.com>
+Date: Sat, 11 Jun 2011 19:55:09 +0200
+Subject: [PATCH 32/82] [warning-fix][implicit-conversion-from-wider-type]
+
+Fixed various cast warnings
+---
+ inc/Graphic3d_ArrayOfPrimitives.lxx            |    6 +++---
+ src/DDataStd/DDataStd_BasicCommands.cxx        |   14 +++++++-------
+ src/Draw/CommandWindow.cxx                     |   18 +++++++++---------
+ src/Draw/Draw_Window.cxx                       |    8 ++++----
+ src/Draw/MainWindow.cxx                        |    2 +-
+ src/DrawTrSurf/DrawTrSurf.cxx                  |    8 ++++----
+ src/DrawTrSurf/DrawTrSurf_Point.cxx            |    2 +-
+ src/Interface/Interface_InterfaceModel.cxx     |    2 +-
+ src/ViewerTest/ViewerTest_ViewerCommands.cxx   |    2 +-
+ src/VrmlData/VrmlData_ShapeConvert.cxx         |    8 ++++----
+ src/XmlMXCAFDoc/XmlMXCAFDoc_MaterialDriver.cxx |    2 +-
+ 11 files changed, 36 insertions(+), 36 deletions(-)
+
+From: QbProg <tholag@gmail.com>
+Date: Sun, 12 Jun 2011 12:10:41 +0200
+Subject: [PATCH 33/82] [warning-fix][implicit-conversion-from-wider-type]
+
+Small one for now. In target-0.5 the function should return char instead of Standard_Integer
+---
+ src/IntPatch/IntPatch_PrmPrmIntersection.cxx |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+From: QbProg <tholag@gmail.com>
+Date: Fri, 17 Jun 2011 21:12:56 +0200
+Subject: [PATCH 34/82] [warning-fix][implicit-conversion-from-wider-type]
+
+Adjusted int to std::streamsize
+---
+ src/GeomTools/GeomTools_Curve2dSet.cxx |    2 +-
+ src/GeomTools/GeomTools_CurveSet.cxx   |    2 +-
+ src/GeomTools/GeomTools_SurfaceSet.cxx |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+commit db59c6227a08156f38e5c1dd06a4869635d5d3f6
+Author: QbProg <tholag@gmail.com>
+Date:   Wed Jun 22 19:44:40 2011 +0200
+
+    Changed the order of a previous modification, now it is more readable and more compatible with borland compilers.
+
+From: QbProg <tholag@gmail.com>
+Date: Sun, 19 Jun 2011 18:12:05 +0200
+Subject: [PATCH 35/82] [warning-fix][implicit-conversion-from-wider-type]
+ Fixes warnings like 'conversion' conversion from
+ 'type1' to 'type2', possible loss of data
+
+---
+ src/AlienImage/AlienImage_BMPAlienData.cxx         |    8 ++++----
+ src/AlienImage/AlienImage_GIFAlienData.cxx         |    2 +-
+ src/AlienImage/AlienImage_GIFLZWDict.cxx           |   18 +++++++++---------
+ src/AlienImage/AlienImage_SGIRGBAlienData.cxx      |   18 +++++++++---------
+ src/AlienImage/AlienImage_SunRFAlienData.cxx       |    2 +-
+ .../BinLDrivers_DocumentRetrievalDriver.cxx        |    2 +-
+ src/BinMNaming/BinMNaming_NamedShapeDriver.cxx     |    2 +-
+ src/BinTools/BinTools_LocationSet.cxx              |    2 +-
+ src/BinTools/BinTools_ShapeSet.cxx                 |    2 +-
+ src/CGM/CGM_Driver.cxx                             |    4 ++--
+ src/CGM/cgmobin.c                                  |   10 +++++-----
+ src/CGM/cgmotext.c                                 |    2 +-
+ src/Graphic3d/Graphic3d_Group_8.cxx                |   12 ++++++------
+ src/Graphic3d/Graphic3d_Structure.cxx              |   18 +++++++++---------
+ src/LDOM/LDOM_OSStream.cxx                         |    1 +
+ src/LDOM/LDOM_XmlReader.cxx                        |    4 ++--
+ src/NIS/NIS_Surface.cxx                            |    2 +-
+ src/OpenGl/OpenGl_AVIWriter.cxx                    |    2 +-
+ src/OpenGl/OpenGl_GraphicDriver_7.cxx              |   16 ++++++++--------
+ src/OpenGl/OpenGl_TextRender.cxx                   |    8 ++++----
+ src/OpenGl/OpenGl_attri.cxx                        |    4 ++--
+ src/OpenGl/OpenGl_funcs.cxx                        |    2 +-
+ src/OpenGl/OpenGl_togl_begin_layer_mode.cxx        |   10 +++++-----
+ src/OpenGl/OpenGl_togl_print.cxx                   |    2 +-
+ src/OpenGl/OpenGl_txgl.cxx                         |    4 ++--
+ src/OpenGl/OpenGl_view.cxx                         |   12 ++++++------
+ src/Prs2d/Prs2d_Angle.cxx                          |    2 +-
+ src/Prs2d/Prs2d_Diameter.cxx                       |   20 ++++++++++----------
+ src/Prs2d/Prs2d_Length.cxx                         |    4 ++--
+ src/Prs2d/Prs2d_Radius.cxx                         |    4 ++--
+ src/Prs2d/Prs2d_Repere.cxx                         |    4 ++--
+ src/PrsMgr/PrsMgr_PresentableObject.cxx            |    6 +++---
+ src/Select3D/Select3D_SensitiveGroup.cxx           |    4 ++--
+ src/ShapeProcess/ShapeProcess_Context.cxx          |    2 +-
+ src/StdPrs/StdPrs_ToolShadedShape.cxx              |   12 ++++++------
+ src/TopTools/TopTools_LocationSet.cxx              |    2 +-
+ src/TopTools/TopTools_ShapeSet.cxx                 |    2 +-
+ src/V2d/V2d_CircularGraphicGrid.cxx                |    2 +-
+ src/V2d/V2d_RectangularGraphicGrid.cxx             |    6 +++---
+ src/Visual3d/Visual3d_Layer.cxx                    |    2 +-
+ src/Visual3d/Visual3d_View.cxx                     |   12 ++++++------
+ src/Voxel/Voxel_BooleanOperation.cxx               |    2 +-
+ src/Voxel/Voxel_Reader.cxx                         |   10 +++++-----
+ src/WNT/WNT_FontMapEntry.cxx                       |    6 +++---
+ src/WNT/WNT_ImageProcessor.cxx                     |    4 ++--
+ src/WNT/WNT_PixMap.cxx                             |    6 +++---
+ 46 files changed, 141 insertions(+), 140 deletions(-)
+
+From: QbProg <tholag@gmail.com>
+Date: Thu, 12 May 2011 21:06:00 +0200
+Subject: [PATCH 30/82] [warning-fix][implicit-conversion-from-wider-type]
+
+DecimalPoint should really be a char type instead of Integer. Changing the var instead of fixing cast warnings.
+---
+ src/OSD/OSD.cxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+From: QbProg <tholag@gmail.com>
+Date: Thu, 12 May 2011 21:08:22 +0200
+Subject: [PATCH 31/82] [warning-fix][implicit-conversion-from-wider-type]
+
+Clamped dialog size instead of direct casting which could result in loss of data (i.e. wrong dialog size).
+---
+ src/OSD/OSD_WNT_1.cxx |    8 ++++----
+ 1 files changed, 4 insertions(+), 4 deletions(-)
+
+From: QbProg <tholag@gmail.com>
+Date: Sat, 11 Jun 2011 19:55:09 +0200
+Subject: [PATCH 32/82] [warning-fix][implicit-conversion-from-wider-type]
+
+Fixed various cast warnings
+---
+ inc/Graphic3d_ArrayOfPrimitives.lxx            |    6 +++---
+ src/DDataStd/DDataStd_BasicCommands.cxx        |   14 +++++++-------
+ src/Draw/CommandWindow.cxx                     |   18 +++++++++---------
+ src/Draw/Draw_Window.cxx                       |    8 ++++----
+ src/Draw/MainWindow.cxx                        |    2 +-
+ src/DrawTrSurf/DrawTrSurf.cxx                  |    8 ++++----
+ src/DrawTrSurf/DrawTrSurf_Point.cxx            |    2 +-
+ src/Interface/Interface_InterfaceModel.cxx     |    2 +-
+ src/ViewerTest/ViewerTest_ViewerCommands.cxx   |    2 +-
+ src/VrmlData/VrmlData_ShapeConvert.cxx         |    8 ++++----
+ src/XmlMXCAFDoc/XmlMXCAFDoc_MaterialDriver.cxx |    2 +-
+ 11 files changed, 36 insertions(+), 36 deletions(-)
+
+From: QbProg <tholag@gmail.com>
+Date: Sun, 12 Jun 2011 12:10:41 +0200
+Subject: [PATCH 33/82] [warning-fix][implicit-conversion-from-wider-type]
+
+Small one for now. In target-0.5 the function should return char instead of Standard_Integer
+---
+ src/IntPatch/IntPatch_PrmPrmIntersection.cxx |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+From: QbProg <tholag@gmail.com>
+Date: Fri, 17 Jun 2011 21:12:56 +0200
+Subject: [PATCH 34/82] [warning-fix][implicit-conversion-from-wider-type]
+
+Adjusted int to std::streamsize
+---
+ src/GeomTools/GeomTools_Curve2dSet.cxx |    2 +-
+ src/GeomTools/GeomTools_CurveSet.cxx   |    2 +-
+ src/GeomTools/GeomTools_SurfaceSet.cxx |    2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+commit db59c6227a08156f38e5c1dd06a4869635d5d3f6
+Author: QbProg <tholag@gmail.com>
+Date:   Wed Jun 22 19:44:40 2011 +0200
+
+    Changed the order of a previous modification, now it is more readable and more compatible with borland compilers.
+
+From: QbProg <tholag@gmail.com>
+Date: Sun, 19 Jun 2011 18:12:05 +0200
+Subject: [PATCH 35/82] [warning-fix][implicit-conversion-from-wider-type]
+ Fixes warnings like 'conversion' conversion from
+ 'type1' to 'type2', possible loss of data
+
+---
+ src/AlienImage/AlienImage_BMPAlienData.cxx         |    8 ++++----
+ src/AlienImage/AlienImage_GIFAlienData.cxx         |    2 +-
+ src/AlienImage/AlienImage_GIFLZWDict.cxx           |   18 +++++++++---------
+ src/AlienImage/AlienImage_SGIRGBAlienData.cxx      |   18 +++++++++---------
+ src/AlienImage/AlienImage_SunRFAlienData.cxx       |    2 +-
+ .../BinLDrivers_DocumentRetrievalDriver.cxx        |    2 +-
+ src/BinMNaming/BinMNaming_NamedShapeDriver.cxx     |    2 +-
+ src/BinTools/BinTools_LocationSet.cxx              |    2 +-
+ src/BinTools/BinTools_ShapeSet.cxx                 |    2 +-
+ src/CGM/CGM_Driver.cxx                             |    4 ++--
+ src/CGM/cgmobin.c                                  |   10 +++++-----
+ src/CGM/cgmotext.c                                 |    2 +-
+ src/Graphic3d/Graphic3d_Group_8.cxx                |   12 ++++++------
+ src/Graphic3d/Graphic3d_Structure.cxx              |   18 +++++++++---------
+ src/LDOM/LDOM_OSStream.cxx                         |    1 +
+ src/LDOM/LDOM_XmlReader.cxx                        |    4 ++--
+ src/NIS/NIS_Surface.cxx                            |    2 +-
+ src/OpenGl/OpenGl_AVIWriter.cxx                    |    2 +-
+ src/OpenGl/OpenGl_GraphicDriver_7.cxx              |   16 ++++++++--------
+ src/OpenGl/OpenGl_TextRender.cxx                   |    8 ++++----
+ src/OpenGl/OpenGl_attri.cxx                        |    4 ++--
+ src/OpenGl/OpenGl_funcs.cxx                        |    2 +-
+ src/OpenGl/OpenGl_togl_begin_layer_mode.cxx        |   10 +++++-----
+ src/OpenGl/OpenGl_togl_print.cxx                   |    2 +-
+ src/OpenGl/OpenGl_txgl.cxx                         |    4 ++--
+ src/OpenGl/OpenGl_view.cxx                         |   12 ++++++------
+ src/Prs2d/Prs2d_Angle.cxx                          |    2 +-
+ src/Prs2d/Prs2d_Diameter.cxx                       |   20 ++++++++++----------
+ src/Prs2d/Prs2d_Length.cxx                         |    4 ++--
+ src/Prs2d/Prs2d_Radius.cxx                         |    4 ++--
+ src/Prs2d/Prs2d_Repere.cxx                         |    4 ++--
+ src/PrsMgr/PrsMgr_PresentableObject.cxx            |    6 +++---
+ src/Select3D/Select3D_SensitiveGroup.cxx           |    4 ++--
+ src/ShapeProcess/ShapeProcess_Context.cxx          |    2 +-
+ src/StdPrs/StdPrs_ToolShadedShape.cxx              |   12 ++++++------
+ src/TopTools/TopTools_LocationSet.cxx              |    2 +-
+ src/TopTools/TopTools_ShapeSet.cxx                 |    2 +-
+ src/V2d/V2d_CircularGraphicGrid.cxx                |    2 +-
+ src/V2d/V2d_RectangularGraphicGrid.cxx             |    6 +++---
+ src/Visual3d/Visual3d_Layer.cxx                    |    2 +-
+ src/Visual3d/Visual3d_View.cxx                     |   12 ++++++------
+ src/Voxel/Voxel_BooleanOperation.cxx               |    2 +-
+ src/Voxel/Voxel_Reader.cxx                         |   10 +++++-----
+ src/WNT/WNT_FontMapEntry.cxx                       |    6 +++---
+ src/WNT/WNT_ImageProcessor.cxx                     |    4 ++--
+ src/WNT/WNT_PixMap.cxx                             |    6 +++---
+ 46 files changed, 141 insertions(+), 140 deletions(-)
+
+Index: oce/src/OSD/OSD_SystemFont.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_SystemFont.cxx
++++ oce/src/OSD/OSD_SystemFont.cxx
+@@ -56,7 +56,7 @@
+       MyFaceSize = -1;
+     else
+       //TODO catch exeption
+-      MyFaceSize =  str.Token( "-", 7 ).RealValue();
++      MyFaceSize = Standard_Integer (str.Token( "-", 7 ).RealValue());
+ 
+     //detect aspect
+     if ( str.Token("-", 3).IsEqual( "bold" ) )
+Index: oce/src/Resource/Resource_ConvertUnicode.c
+===================================================================
+--- oce.orig/src/Resource/Resource_ConvertUnicode.c
++++ oce/src/Resource/Resource_ConvertUnicode.c
+@@ -118,7 +118,7 @@
+     return ;
+   }
+ 
+-  sjis = ((*ph) << 8) | (*pl) ;
++  sjis = (char16)(((*ph) << 8) | (*pl)) ;
+   uni  = sjisuni [sjis] ;
+   *ph = uni >> 8 ;
+   *pl = uni & 0xFF ;
+@@ -137,7 +137,7 @@
+   if ( *ph == 0 && *pl == 0 )
+     return ;
+ 
+-  uni  = ((*ph) << 8) | (*pl) ;
++  uni  = (char16)(((*ph) << 8) | (*pl)) ;
+   sjis = unisjis [uni] ;
+   *ph = sjis >> 8 ;
+   *pl = sjis & 0xFF ;
+@@ -192,7 +192,7 @@
+   *ph  = (*ph) & 0x7f ;
+   *pl  = (*pl) & 0x7f ;
+ 
+-  gb   = ((*ph) << 8) | (*pl) ;
++  gb   = (char16)(((*ph) << 8) | (*pl)) ;
+   uni  = gbuni [gb] ;
+   *ph  = uni >> 8 ;
+   *pl  = uni & 0xFF ;
+@@ -211,7 +211,7 @@
+   if ( *ph == 0 && *pl == 0 )
+     return ;
+ 
+-  uni  = ((*ph) << 8) | (*pl) ;
++  uni  = (char16)(((*ph) << 8) | (*pl)) ;
+   gb   = unigb [uni] ;
+   if (gb != 0) {
+     *ph  = ( gb >> 8   ) | 0x80 ;
+Index: oce/src/TCollection/TCollection_AsciiString.cxx
+===================================================================
+--- oce.orig/src/TCollection/TCollection_AsciiString.cxx
++++ oce/src/TCollection/TCollection_AsciiString.cxx
+@@ -409,8 +409,8 @@
+ void TCollection_AsciiString::Capitalize()
+ {
+   for (int i=0; i < mylength; i++) {
+-    if  ( i==0 ) mystring[i] = toupper(mystring[i]);
+-    else         mystring[i] = tolower(mystring[i]);    
++    if  ( i==0 ) mystring[i] = (Standard_Character) toupper(mystring[i]);
++    else         mystring[i] = (Standard_Character) tolower(mystring[i]);    
+   }
+ }
+ 
+@@ -442,7 +442,7 @@
+       if (mystring[i] == aChar) mystring[i] = NewChar;
+   }
+   else{
+-    Standard_Character anUpperChar = toupper(aChar);
++    Standard_Character anUpperChar = (Standard_Character) toupper(aChar);
+     for (int i=0; i < mylength; i++)
+       if (toupper(mystring[i]) == anUpperChar) mystring[i] = NewChar;
+   }
+@@ -1127,7 +1127,7 @@
+ void TCollection_AsciiString::LowerCase()
+ {
+   for (int i=0; i < mylength; i++)
+-    mystring[i] = tolower(mystring[i]);
++    mystring[i] = (Standard_Character) tolower(mystring[i]);
+ }
+ 
+ //------------------------------------------------------------------------
+@@ -1229,7 +1229,7 @@
+       if (mystring[i] != what) mystring[c++] = mystring[i];
+   }
+   else {
+-    Standard_Character upperwhat = toupper(what);
++    Standard_Character upperwhat = (Standard_Character) toupper(what);
+     for (int i=0; i < mylength; i++) { 
+       if (toupper(mystring[i]) != upperwhat) mystring[c++] = mystring[i];
+     }
+@@ -1822,7 +1822,7 @@
+ void TCollection_AsciiString::UpperCase()
+ {
+   for (int i=0; i < mylength; i++)
+-    mystring[i] = toupper(mystring[i]);
++    mystring[i] = (Standard_Character) toupper(mystring[i]);
+ }
+ 
+ //------------------------------------------------------------------------
+Index: oce/inc/Graphic3d_ArrayOfPrimitives.lxx
+===================================================================
+--- oce.orig/inc/Graphic3d_ArrayOfPrimitives.lxx
++++ oce/inc/Graphic3d_ArrayOfPrimitives.lxx
+@@ -82,9 +82,9 @@
+   }
+ 
+   if( myPrimitiveArray->vcolours ) {
+-    unsigned char red   = (unsigned int)(R * 255.);
+-    unsigned char green = (unsigned int)(G * 255.);
+-    unsigned char blue  = (unsigned int)(B * 255.);
++    unsigned char red   = (unsigned char)(unsigned int)(R * 255.);
++    unsigned char green = (unsigned char)(unsigned int)(G * 255.);
++    unsigned char blue  = (unsigned char)(unsigned int)(B * 255.);
+     unsigned char alpha = 0;
+     Standard_Integer outColor ;
+     outColor = red;
+Index: oce/src/AlienImage/AlienImage_BMPAlienData.cxx
+===================================================================
+--- oce.orig/src/AlienImage/AlienImage_BMPAlienData.cxx
++++ oce/src/AlienImage/AlienImage_BMPAlienData.cxx
+@@ -532,7 +532,7 @@
+     for (y = 0; y < myHeight; y++) {
+       for (x = 0; x < myWidth; x++) {
+         iPixel = anImage -> Pixel (LowX + x, LowY + y);
+-        index = aColorMap -> FindEntry (iPixel.Value ()).Index ();
++        index = (BYTE)aColorMap -> FindEntry (iPixel.Value ()).Index ();
+         BPIXEL[y*myWidth + x] = index;
+       }
+     }
+@@ -562,9 +562,9 @@
+       for (x = 0; x < myWidth; x++) {
+         color = anImage -> PixelColor (LowX + x, LowY + y);
+         color.Values (r, g, b, Quantity_TOC_RGB);
+-        rgbColor.rgbRed      = (int)(r*255.);
+-        rgbColor.rgbGreen    = (int)(g*255.);
+-        rgbColor.rgbBlue     = (int)(b*255.);
++        rgbColor.rgbRed      = (BYTE)(int)(r*255.);
++        rgbColor.rgbGreen    = (BYTE)(int)(g*255.);
++        rgbColor.rgbBlue     = (BYTE)(int)(b*255.);
+         rgbColor.rgbReserved = 0;
+         DWPIXEL[y*myWidth + x] = _TestSwapDWORD (*pdwPixel);
+       }
+Index: oce/src/AlienImage/AlienImage_GIFAlienData.cxx
+===================================================================
+--- oce.orig/src/AlienImage/AlienImage_GIFAlienData.cxx
++++ oce/src/AlienImage/AlienImage_GIFAlienData.cxx
+@@ -531,7 +531,7 @@
+     // Build colors from colormap
+     for (i = 1; i <= aColorMap -> Size (); i++) {
+       entry = aColorMap -> Entry (i);
+-      ei = entry.Index ();
++      ei = (BYTE)entry.Index ();
+       color = entry.Color ();
+       color.Values (r, g, b, Quantity_TOC_RGB);
+       RED  [ei] = (BYTE)(r*255.);
+Index: oce/src/AlienImage/AlienImage_GIFLZWDict.cxx
+===================================================================
+--- oce.orig/src/AlienImage/AlienImage_GIFLZWDict.cxx
++++ oce/src/AlienImage/AlienImage_GIFLZWDict.cxx
+@@ -56,7 +56,7 @@
+ 
+   _init_dict ();
+ 
+-  byte = startBits;
++  byte = (BYTE) startBits;
+ 
+   file.Write (&byte, sizeof(byte));
+   if (file.Failed ())
+@@ -79,7 +79,7 @@
+     else {
+       dict[ i ].code = nextCode++;
+       dict[ i ].prnt = strCode;
+-      dict[ i ].byte = chr;
++      dict[ i ].byte = (BYTE) chr;
+ 
+       if (!_put_bits (OutBuff, (ULONG) strCode, codeBits, file))
+         goto _ExitError;
+@@ -161,7 +161,7 @@
+     mask <<= 1;
+ 
+     if ((mask & 0xFF) == 0) {
+-      OutBuff[ putIdx++ ] = rack;
++      OutBuff[ putIdx++ ] = (BYTE) rack;
+       ++OutBuff[ 0 ];
+       
+       if (putIdx == BUFF_SIZE) {
+@@ -188,7 +188,7 @@
+   BYTE  byte;
+   
+   if ( mask != 0x01 ) {
+-    OutBuff[ putIdx++ ] = rack;
++    OutBuff[ putIdx++ ] = (BYTE) rack;
+     ++OutBuff[ 0 ];
+   }
+     
+@@ -474,7 +474,7 @@
+       
+    }  // end if
+ 
+-   *picptr++ = index;
++   *picptr++ = (BYTE)  index;
+    ++col;
+    ++pP;
+   
+@@ -582,13 +582,13 @@
+    pixel p;
+    int   rl, gl, bl;
+ 
+-   PPM_ASSIGN( p, maxr - minr, 0, 0 );      
++   PPM_ASSIGN(p, (BYTE)(maxr - minr), 0, 0 );      
+    rl = PPM_LUMIN( p );
+ 
+-   PPM_ASSIGN( p, 0, maxg - ming, 0 );
++   PPM_ASSIGN( p, 0, (BYTE)(maxg - ming), 0 );
+    gl = PPM_LUMIN( p );
+ 
+-   PPM_ASSIGN( p, 0, 0, maxb - minb );
++   PPM_ASSIGN( p, 0, 0, (BYTE)(maxb - minb) );
+    bl = PPM_LUMIN( p );
+ 
+    if ( rl >= gl && rl >= bl )
+@@ -907,7 +907,7 @@
+     
+    }  // end while
+ 
+-   *pix++ = mid;
++   *pix++ = (BYTE)mid;
+ 
+   }  // end for ( j . . . )
+ 
+Index: oce/src/AlienImage/AlienImage_SGIRGBAlienData.cxx
+===================================================================
+--- oce.orig/src/AlienImage/AlienImage_SGIRGBAlienData.cxx
++++ oce/src/AlienImage/AlienImage_SGIRGBAlienData.cxx
+@@ -300,14 +300,14 @@
+ 	int calsize	= sizeof( AlienImage_SGIRGBFileHeader ) ;
+ 	if (mode=='w') { //------------------WRITE------------------
+ 		image->imagic = IMAGIC;
+-		image->type = type;
+-		image->xsize = xsize;
++		image->type = (unsigned short)type;
++		image->xsize = (unsigned short)xsize;
+ 		image->ysize = 1;
+ 		image->zsize = 1;
+ 		if (dim>1)
+-		    image->ysize = ysize;
++		    image->ysize = (unsigned short)ysize;
+ 		if (dim>2)
+-		    image->zsize = zsize;
++		    image->zsize = (unsigned short)zsize;
+ 		if(image->zsize == 1) {
+ 		    image->dim = 2;
+ 		    if(image->ysize == 1)
+@@ -475,8 +475,8 @@
+ 	return EOF;
+     }
+     image->x = 0;
+-    image->y = y;
+-    image->z = z;
++    image->y = (unsigned short)y;
++    image->z = (unsigned short)z;
+     if(ISVERBATIM(image->type)) {
+ 	switch(image->dim) {
+ 	    case 1:
+@@ -878,7 +878,7 @@
+     register short i;
+     register unsigned char *cptr;
+     register unsigned short *sptr;
+-    register short cnt; 
++    register int cnt; 
+ 
+     if( !(image->flags & (_IORW|_IOREAD)) )
+ 	return -1;
+@@ -1270,8 +1270,8 @@
+   Standard_Integer LowX = anImage->LowerX() ;
+   Standard_Integer LowY = anImage->LowerY() ;
+ 
+-  myHeader.xsize = anImage->Width();
+-  myHeader.ysize = anImage->Height();
++  myHeader.xsize = (unsigned short)anImage->Width();
++  myHeader.ysize = (unsigned short)anImage->Height();
+   myHeader.zsize = 3;
+ 
+   /* allocate buffers for image data */
+Index: oce/src/AlienImage/AlienImage_SunRFAlienData.cxx
+===================================================================
+--- oce.orig/src/AlienImage/AlienImage_SunRFAlienData.cxx
++++ oce/src/AlienImage/AlienImage_SunRFAlienData.cxx
+@@ -500,7 +500,7 @@
+ 		}
+ 
+ 		b = RUN_FLAG ; file.Write( ( Standard_Address ) &b, 1 ) ;
+-		b = n-1 ;      file.Write( ( Standard_Address ) &b, 1 ) ;
++		b = Standard_Byte(n-1) ;      file.Write( ( Standard_Address ) &b, 1 ) ;
+ 		b = scanln[n1];file.Write( ( Standard_Address ) &b, 1 ) ;
+ 
+ 	}
+Index: oce/src/BinLDrivers/BinLDrivers_DocumentRetrievalDriver.cxx
+===================================================================
+--- oce.orig/src/BinLDrivers/BinLDrivers_DocumentRetrievalDriver.cxx
++++ oce/src/BinLDrivers/BinLDrivers_DocumentRetrievalDriver.cxx
+@@ -195,7 +195,7 @@
+   mySections.Clear();
+   myPAtt.Init();
+   Handle(TDF_Data) aData = new TDF_Data();
+-  Standard_Integer aDocumentPos = -1;
++  std::streamoff aDocumentPos = -1;
+ 
+   // 2b. Read the TOC of Sections
+   if (aFileVer >= 3) {
+Index: oce/src/BinMNaming/BinMNaming_NamedShapeDriver.cxx
+===================================================================
+--- oce.orig/src/BinMNaming/BinMNaming_NamedShapeDriver.cxx
++++ oce/src/BinMNaming/BinMNaming_NamedShapeDriver.cxx
+@@ -283,7 +283,7 @@
+ {
+   // check section title string; note that some versions of OCCT (up to 6.3.1) 
+   // might avoid writing shape section if it is empty
+-  Standard_Size aPos = theIS.tellg();
++	std::streamsize aPos = theIS.tellg();
+   TCollection_AsciiString aSectionTitle;
+   theIS >> aSectionTitle;
+   if(aSectionTitle.Length() > 0 && aSectionTitle == SHAPESET) {
+Index: oce/src/BinTools/BinTools_LocationSet.cxx
+===================================================================
+--- oce.orig/src/BinTools/BinTools_LocationSet.cxx
++++ oce/src/BinTools/BinTools_LocationSet.cxx
+@@ -223,7 +223,7 @@
+     OCC_CATCH_SIGNALS
+     for (i = 1; i <= nbLoc; i++) { 
+       
+-      const Standard_Byte aTypLoc = IS.get();
++      const Standard_Byte aTypLoc = (Standard_Byte) IS.get();
+       if (aTypLoc == 1) {
+ 	IS >> T;
+ 	L = T;
+Index: oce/src/BinTools/BinTools_ShapeSet.cxx
+===================================================================
+--- oce.orig/src/BinTools/BinTools_ShapeSet.cxx
++++ oce/src/BinTools/BinTools_ShapeSet.cxx
+@@ -790,7 +790,7 @@
+ 	    if (val > 0 && val <= 3) 
+ 	      BinTools::GetReal(IS, p1); 
+ 	  } else {
+-	    Standard_Integer aPos = IS.tellg();
++	    std::streamoff aPos = IS.tellg();
+ 	    BinTools::GetReal(IS, p1); 	    
+ 	    val = (Standard_Integer)IS.get();//case {0|1|2|3}
+ #ifdef MDTV_DEB
+Index: oce/src/CGM/CGM_Driver.cxx
+===================================================================
+--- oce.orig/src/CGM/CGM_Driver.cxx
++++ oce/src/CGM/CGM_Driver.cxx
+@@ -427,12 +427,12 @@
+ {
+   // Set the edge visibility to the corresponding value
+   if (myEdgeVisibility != (DrawEdge ? ON : OFF)) {
+-    curatt.edge_vis = myEdgeVisibility = (DrawEdge ? ON : OFF);
++    myEdgeVisibility = curatt.edge_vis = (DrawEdge ? ON : OFF);
+     WriteData (EDGEVIS, ptablong, ptabreal, ptabchar);
+   }
+   // Set the interior style to fill by solid
+   if (myInteriorStyle != (TileIndex < 0 ? EMPTY : SOLID)) {
+-    curatt.int_style = myInteriorStyle = (TileIndex < 0 ? EMPTY : SOLID);
++    myInteriorStyle = curatt.int_style = (TileIndex < 0 ? EMPTY : SOLID);
+     WriteData (INTSTYLE, ptablong, ptabreal, ptabchar);
+   }
+   // Set the fill color for drawing
+Index: oce/src/CGM/cgmobin.c
+===================================================================
+--- oce.orig/src/CGM/cgmobin.c
++++ oce/src/CGM/cgmobin.c
+@@ -235,8 +235,8 @@
+ 
+ /*  Calculate length of packed list in bytes per row */
+ 
+-                  packed += ( (cur.color_mode == DIRECT ? 3*nx : nx)
+-                               * lprec + 7 )>>3;
++                  packed += (unsigned short)(( (cur.color_mode == DIRECT ? 3*nx : nx)
++                               * lprec + 7 )>>3);
+ 
+ /*  Calculate length of run length in bits */
+ 
+@@ -271,7 +271,7 @@
+                   }
+ 
+ /*  Convert runlength to bytes */
+-                  run += (k + 7) >>3;
++                  run += (unsigned short)((k + 7) >>3);
+                }
+ 
+                if ( first )
+@@ -1116,7 +1116,7 @@
+                for ( j=0; j < num; j++ )
+                {
+                   type = *pt++; value = (*pt++) + 1;
+-                  if ( type < ASFS ) asflag[type] = value;
++                  if ( type < ASFS ) asflag[type] = (Logical)value;
+                   else
+                   {
+                      switch ( type )
+@@ -1136,7 +1136,7 @@
+                         default:      /* ignore  */
+                            k = 1; l = 0; break;
+                      }
+-                     for ( n = k; n < l; n++ ) asflag[n] = value;
++                     for ( n = k; n < l; n++ ) asflag[n] = (Logical)value;
+                   }
+                }
+                for ( j=0; j < ASFS; j++)
+Index: oce/src/CGM/cgmotext.c
+===================================================================
+--- oce.orig/src/CGM/cgmotext.c
++++ oce/src/CGM/cgmotext.c
+@@ -1103,7 +1103,7 @@
+       strcpy(c, cgmelement[index].string);
+ 
+       if ( ! upcase )
+-         for ( i = 0; i < (int)strlen(c); i++) c[i] = tolower( c[i] );
++         for ( i = 0; i < (int)strlen(c); i++) c[i] = (char)tolower( c[i] );
+ 
+       TEXTOUT "%s", c );
+       return;
+Index: oce/src/DDataStd/DDataStd_BasicCommands.cxx
+===================================================================
+--- oce.orig/src/DDataStd/DDataStd_BasicCommands.cxx
++++ oce/src/DDataStd/DDataStd_BasicCommands.cxx
+@@ -1107,12 +1107,12 @@
+       cout << "Error: problem with the file stream, rdstate = " <<anOS.rdstate() <<endl;
+ #endif
+     }
+-    char prefix[4] = {0xEF,0xBB,0xBF, 0x00};
+-    anOS.write( (char*)&prefix[0], 3); 
++    unsigned char prefix[4] = {0xEF,0xBB,0xBF, 0x00};
++    anOS.write( reinterpret_cast<const char*>(&prefix[0]), 3); 
+     Standard_Integer  n = aES.LengthOfCString();
+     Standard_PCharacter aCstr = (Standard_PCharacter) Standard::Allocate(ROUNDMEM(n+1));
+     n = aES.ToUTF8CString(aCstr);
+-    anOS.write( (char*)&aCstr[0], n); 
++    anOS.write( reinterpret_cast<const char*>(&aCstr[0]), n); 
+     anOS.close();
+     return 0;
+   }
+@@ -1145,7 +1145,7 @@
+ 	cout << "Bad value = " << ival<< endl;
+ 	return 1;
+       }
+-      A->SetValue(i,  (unsigned)ival); 
++      A->SetValue(i,  (Standard_Byte)(unsigned)ival); 
+       j++;
+     }
+     return 0; 
+@@ -1217,7 +1217,7 @@
+       }
+     Standard_Integer low = A->Lower(), up = A->Upper();
+     if(low <= indx && indx <= up)
+-      A->SetValue(indx, (unsigned)ival);
++      A->SetValue(indx, (Standard_Byte)(unsigned)ival);
+     else {
+       Handle(TColStd_HArray1OfByte) Arr = A->InternalArray();
+       Handle(TColStd_HArray1OfByte) arr;
+@@ -1229,7 +1229,7 @@
+ 	  arr->SetValue(i, Arr->Value(i));
+ 	for(i=Arr->Upper()+1; i<= up; i++) {
+ 	  if(i == up)
+-	    arr->SetValue(i, (unsigned)ival);
++	    arr->SetValue(i, (Standard_Byte)(unsigned)ival);
+ 	  else
+ 	    arr->SetValue(i, 0);
+ 	}
+@@ -1238,7 +1238,7 @@
+ 	arr = new TColStd_HArray1OfByte(low, up);
+ 	for(i=low; i< up; i++)
+ 	  arr->SetValue(i, Arr->Value(i));
+-	arr->SetValue(up, (unsigned)ival);
++	arr->SetValue(up, (Standard_Byte)(unsigned)ival);
+       }
+       A->ChangeArray(arr);
+     }
+Index: oce/src/Draw/CommandWindow.cxx
+===================================================================
+--- oce.orig/src/Draw/CommandWindow.cxx
++++ oce/src/Draw/CommandWindow.cxx
+@@ -91,7 +91,7 @@
+     			hWndEdit = (HWND)GetWindowLong(hWnd, CLIENTWND);          
+     			MoveWindow(hWndEdit, 0, 0, LOWORD(lParam), HIWORD(lParam), TRUE);
+             // Place le curseur a la fin du buffer
+-          index =  SendMessage(hWnd, WM_GETTEXTLENGTH, 0l, 0l);
++          index = (int) SendMessage(hWnd, WM_GETTEXTLENGTH, 0l, 0l);
+           SendMessage(hWnd, EM_SETSEL, index, index); 
+     			break;
+ 
+@@ -101,7 +101,7 @@
+           break;
+ 
+     default :
+-					return(DefWindowProc(hWnd, wMsg, wParam, lParam));
++					return LONG(DefWindowProc(hWnd, wMsg, wParam, lParam));
+   }
+   return(0l);
+ }
+@@ -162,7 +162,7 @@
+   int again = 1;
+   char temp[COMMANDSIZE]="";
+ 
+-  int nbLine = SendMessage(hWnd, EM_GETLINECOUNT, 0l, 0l);
++  int nbLine = (int)SendMessage(hWnd, EM_GETLINECOUNT, 0l, 0l);
+   
+   int nbChar = 0;
+   buffer[0]='\0';
+@@ -173,7 +173,7 @@
+       WORD* nbMaxChar = (WORD*)temp;
+       *nbMaxChar = COMMANDSIZE-1;
+       
+-      int nbCharRead = SendMessage(hWnd, EM_GETLINE, nbLine-1, (LPARAM)temp);
++      int nbCharRead = (int)SendMessage(hWnd, EM_GETLINE, nbLine-1, (LPARAM)temp);
+       nbChar += nbCharRead ;
+       int cmp = strncmp(temp, PROMPT, 10);
+       temp[nbCharRead]='\0';
+@@ -224,16 +224,16 @@
+ 									strcpy(console_command, buffer+strlen(PROMPT));
+ 									console_semaphore = HAS_CONSOLE_COMMAND;
+ 									  // Purge du buffer
+-                  nbline = SendMessage(hWnd, EM_GETLINECOUNT, 0l, 0l);
++                  nbline = (int)SendMessage(hWnd, EM_GETLINECOUNT, 0l, 0l);
+ 									if(nbline > 200)
+ 									{
+                       nbline = 0;
+ 											GetCommand(hWnd, buffer);
+-                      index = SendMessage(hWnd, EM_LINEINDEX, 100, 0);
++                      index = (int)SendMessage(hWnd, EM_LINEINDEX, 100, 0);
+ 											SendMessage(hWnd, EM_SETSEL, 0, index);			
+ 											SendMessage(hWnd, WM_CUT, 0, 0);
+                         // Place le curseur en fin de text
+-                      index =  SendMessage(hWnd, WM_GETTEXTLENGTH, 0l, 0l);
++                      index =  (int)SendMessage(hWnd, WM_GETTEXTLENGTH, 0l, 0l);
+                       SendMessage(hWnd, EM_SETSEL, index, index);                      
+ 									}
+     				      return(0l);
+@@ -242,7 +242,7 @@
+                   if (IsAlphanumeric((Standard_Character)LOWORD(wParam)))
+                   {
+                       // Place le curseur en fin de texte avant affichage
+-                    index =  SendMessage(hWnd, WM_GETTEXTLENGTH, 0l, 0l);
++                    index =  (int)SendMessage(hWnd, WM_GETTEXTLENGTH, 0l, 0l);
+                     SendMessage(hWnd, EM_SETSEL, index, index);
+                     CallWindowProc(OldEditProc, hWnd, wMsg, wParam, lParam);                    
+                     return 0l;
+@@ -254,7 +254,7 @@
+     if (console_semaphore != WAIT_CONSOLE_COMMAND) 
+       return 0l;									
+   }
+-  return CallWindowProc(OldEditProc, hWnd, wMsg, wParam, lParam);
++  return (LONG)CallWindowProc(OldEditProc, hWnd, wMsg, wParam, lParam);
+ }
+ #endif
+ 
+Index: oce/src/Draw/Draw_Window.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw_Window.cxx
++++ oce/src/Draw/Draw_Window.cxx
+@@ -1330,9 +1330,9 @@
+   if (!localObjet)
+     {
+       if (Draw_IsConsoleSubsystem)
+-        return (DefWindowProc(hWnd, wMsg, wParam, lParam));
++        return LONG(DefWindowProc(hWnd, wMsg, wParam, lParam));
+       else
+-        return(DefMDIChildProc(hWnd, wMsg, wParam, lParam));
++        return LONG(DefMDIChildProc(hWnd, wMsg, wParam, lParam));
+     }
+ 
+   PAINTSTRUCT ps;
+@@ -1360,9 +1360,9 @@
+ 
+   default:
+     if (Draw_IsConsoleSubsystem)
+-      return (DefWindowProc(hWnd, wMsg, wParam, lParam));
++      return LONG(DefWindowProc(hWnd, wMsg, wParam, lParam));
+     else
+-      return(DefMDIChildProc(hWnd, wMsg, wParam, lParam));
++      return LONG(DefMDIChildProc(hWnd, wMsg, wParam, lParam));
+   }
+   return (0l);
+ }
+Index: oce/src/Draw/MainWindow.cxx
+===================================================================
+--- oce.orig/src/Draw/MainWindow.cxx
++++ oce/src/Draw/MainWindow.cxx
+@@ -51,7 +51,7 @@
+ 
+     default :
+       hWndClient = (HWND)GetWindowLong(hWndFrame, CLIENTWND);
+-      return(DefFrameProc(hWndFrame, hWndClient, wMsg, wParam, lParam));
++      return LONG(DefFrameProc(hWndFrame, hWndClient, wMsg, wParam, lParam));
+   }
+   return(0l);
+ }
+Index: oce/src/DrawTrSurf/DrawTrSurf.cxx
+===================================================================
+--- oce.orig/src/DrawTrSurf/DrawTrSurf.cxx
++++ oce/src/DrawTrSurf/DrawTrSurf.cxx
+@@ -1531,7 +1531,7 @@
+   OS.precision(15);
+ #else
+   long form = OS.setf(ios::scientific);
+-  int  prec = OS.precision(15);
++  std::streamsize prec = OS.precision(15);
+ #endif
+   gp_Pnt P = N->Point();
+   if (N->Is3D()) {
+@@ -1593,7 +1593,7 @@
+   OS.precision(15);
+ #else
+   long form = OS.setf(ios::scientific);
+-  int  prec = OS.precision(15);
++  std::streamsize prec = OS.precision(15);
+ #endif
+   Poly::Write(T->Triangulation(),OS);
+ #if defined(HAVE_IOS) && !defined(__sgi) && !defined(IRIX)
+@@ -1634,7 +1634,7 @@
+   OS.precision(15);
+ #else
+   long form = OS.setf(ios::scientific);
+-  int  prec = OS.precision(15);
++  std::streamsize prec = OS.precision(15);
+ #endif
+   Poly::Write(T->Polygon3D(),OS);
+ #if defined(HAVE_IOS) && !defined(__sgi) && !defined(IRIX)
+@@ -1674,7 +1674,7 @@
+   OS.precision(15);
+ #else
+   long form = OS.setf(ios::scientific);
+-  int  prec = OS.precision(15);
++  std::streamsize prec = OS.precision(15);
+ #endif
+   Poly::Write(T->Polygon2D(),OS);
+ #if defined(HAVE_IOS) && !defined(__sgi) && !defined(IRIX)
+Index: oce/src/DrawTrSurf/DrawTrSurf_Point.cxx
+===================================================================
+--- oce.orig/src/DrawTrSurf/DrawTrSurf_Point.cxx
++++ oce/src/DrawTrSurf/DrawTrSurf_Point.cxx
+@@ -181,7 +181,7 @@
+   S.precision(15);
+ #else
+   long form = S.setf(ios::scientific);
+-  int  prec = S.precision(15);
++  std::streamsize prec = S.precision(15);
+ #endif
+   if (is3D)
+     S << "Point : " << myPoint.X() << ", " << myPoint.Y() << ", " << myPoint.Z() <<endl;
+Index: oce/src/GeomTools/GeomTools_Curve2dSet.cxx
+===================================================================
+--- oce.orig/src/GeomTools/GeomTools_Curve2dSet.cxx
++++ oce/src/GeomTools/GeomTools_Curve2dSet.cxx
+@@ -486,7 +486,7 @@
+ 
+ void  GeomTools_Curve2dSet::Write(Standard_OStream& OS)const 
+ {
+-  int  prec = OS.precision(17);
++  std::streamsize  prec = OS.precision(17);
+ 
+   Standard_Integer i, nbsurf = myMap.Extent();
+   OS << "Curve2ds "<< nbsurf << "\n";
+Index: oce/src/GeomTools/GeomTools_CurveSet.cxx
+===================================================================
+--- oce.orig/src/GeomTools/GeomTools_CurveSet.cxx
++++ oce/src/GeomTools/GeomTools_CurveSet.cxx
+@@ -503,7 +503,7 @@
+ 
+ void  GeomTools_CurveSet::Write(Standard_OStream& OS)const 
+ {
+-  int  prec = OS.precision(17);
++  std::streamsize  prec = OS.precision(17);
+ 
+   Standard_Integer i, nbcurve = myMap.Extent();
+   OS << "Curves "<< nbcurve << "\n";
+Index: oce/src/GeomTools/GeomTools_SurfaceSet.cxx
+===================================================================
+--- oce.orig/src/GeomTools/GeomTools_SurfaceSet.cxx
++++ oce/src/GeomTools/GeomTools_SurfaceSet.cxx
+@@ -623,7 +623,7 @@
+ 
+ void  GeomTools_SurfaceSet::Write(Standard_OStream& OS)const 
+ {
+-  int  prec = OS.precision(17);
++  std::streamsize  prec = OS.precision(17);
+ 
+   Standard_Integer i, nbsurf = myMap.Extent();
+   OS << "Surfaces "<< nbsurf << "\n";
+Index: oce/src/Graphic3d/Graphic3d_Group_8.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d_Group_8.cxx
++++ oce/src/Graphic3d/Graphic3d_Group_8.cxx
+@@ -264,8 +264,8 @@
+   Standard_Real    aPolyFactor, aPolyUnits;
+   CTX->PolygonOffsets(aPolyMode, aPolyFactor, aPolyUnits);
+   MyCGroup.ContextFillArea.PolygonOffsetMode   = aPolyMode;
+-  MyCGroup.ContextFillArea.PolygonOffsetFactor = aPolyFactor;
+-  MyCGroup.ContextFillArea.PolygonOffsetUnits  = aPolyUnits;
++  MyCGroup.ContextFillArea.PolygonOffsetFactor = (float)aPolyFactor;
++  MyCGroup.ContextFillArea.PolygonOffsetUnits  = (float)aPolyUnits;
+   // OCC4895 SAN 22/03/04 High-level interface for controlling polygon offsets 
+ 
+   int noinsert = 1;
+@@ -345,7 +345,7 @@
+   MyCGroup.ContextText.ColorSubTitle.g    = float (Gs);
+   MyCGroup.ContextText.ColorSubTitle.b    = float (Bs);
+   MyCGroup.ContextText.TextZoomable   = ATextZoomable;   
+-  MyCGroup.ContextText.TextAngle    = ATextAngle;   
++  MyCGroup.ContextText.TextAngle    = (float)ATextAngle;   
+   MyCGroup.ContextText.TextFontAspect   = (int)ATextFontAspect;
+ 
+   MyCGroup.ContextText.IsDef      = 1;
+@@ -584,8 +584,8 @@
+   Standard_Real    aPolyFactor, aPolyUnits;
+   CTX->PolygonOffsets(aPolyMode, aPolyFactor, aPolyUnits);
+   MyCGroup.ContextFillArea.PolygonOffsetMode   = aPolyMode;
+-  MyCGroup.ContextFillArea.PolygonOffsetFactor = aPolyFactor;
+-  MyCGroup.ContextFillArea.PolygonOffsetUnits  = aPolyUnits;
++  MyCGroup.ContextFillArea.PolygonOffsetFactor = (float)aPolyFactor;
++  MyCGroup.ContextFillArea.PolygonOffsetUnits  = (float)aPolyUnits;
+   // OCC4895 SAN 22/03/04 High-level interface for controlling polygon offsets
+ 
+   int noinsert    = 0;
+@@ -665,7 +665,7 @@
+   MyCGroup.ContextText.ColorSubTitle.g    = float (Gs);
+   MyCGroup.ContextText.ColorSubTitle.b    = float (Bs);
+   MyCGroup.ContextText.TextZoomable   = ATextZoomable;  
+-  MyCGroup.ContextText.TextAngle    = ATextAngle;   
++  MyCGroup.ContextText.TextAngle    = (float)ATextAngle;   
+   MyCGroup.ContextText.TextFontAspect   = (int)ATextFontAspect;   
+   MyCGroup.ContextText.IsDef              = 1;
+ 
+Index: oce/src/Graphic3d/Graphic3d_Structure.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d_Structure.cxx
++++ oce/src/Graphic3d/Graphic3d_Structure.cxx
+@@ -1251,8 +1251,8 @@
+   Standard_Real    aPolyFactor, aPolyUnits;
+   CTX->PolygonOffsets(aPolyMode, aPolyFactor, aPolyUnits);
+   MyCStructure.ContextFillArea.PolygonOffsetMode   = aPolyMode;
+-  MyCStructure.ContextFillArea.PolygonOffsetFactor = aPolyFactor;
+-  MyCStructure.ContextFillArea.PolygonOffsetUnits  = aPolyUnits;
++  MyCStructure.ContextFillArea.PolygonOffsetFactor = (float)aPolyFactor;
++  MyCStructure.ContextFillArea.PolygonOffsetUnits  = (float)aPolyUnits;
+   // OCC4895 SAN 22/03/04 High-level interface for controlling polygon offsets 
+ 
+   MyGraphicDriver->ContextStructure (MyCStructure);
+@@ -1305,7 +1305,7 @@
+   MyCStructure.ContextText.ColorSubTitle.g  = float (Gs);
+   MyCStructure.ContextText.ColorSubTitle.b  = float (Bs);
+   MyCStructure.ContextText.TextZoomable     = ATextZoomable;    
+-  MyCStructure.ContextText.TextAngle        = ATextAngle;   
++  MyCStructure.ContextText.TextAngle        = (float)ATextAngle;   
+   MyCStructure.ContextText.TextFontAspect   = (int)ATextFontAspect;   
+ 
+   MyCStructure.ContextText.IsDef          = 1;
+@@ -1772,9 +1772,9 @@
+   if (IsDeleted ()) return; 
+ 
+   MyCStructure.TransformPersistence.Flag = AFlag;
+-  MyCStructure.TransformPersistence.Point.x = APoint.X();
+-  MyCStructure.TransformPersistence.Point.y = APoint.Y();
+-  MyCStructure.TransformPersistence.Point.z = APoint.Z();
++  MyCStructure.TransformPersistence.Point.x = (float)APoint.X();
++  MyCStructure.TransformPersistence.Point.y = (float)APoint.Y();
++  MyCStructure.TransformPersistence.Point.z = (float)APoint.Z();
+   //MyStructureManager->Update ();
+   //Update();
+   MyGraphicDriver->ContextStructure( MyCStructure );
+@@ -2181,7 +2181,7 @@
+   MyCStructure.ContextText.ColorSubTitle.g  = float (Gs);
+   MyCStructure.ContextText.ColorSubTitle.b  = float (Bs);
+   MyCStructure.ContextText.TextZoomable     = ATextZoomable;
+-  MyCStructure.ContextText.TextAngle        = ATextAngle;
++  MyCStructure.ContextText.TextAngle        = (float)ATextAngle;
+   MyCStructure.ContextText.TextFontAspect   = (int)ATextFontAspect; 
+ 
+ 
+@@ -2366,8 +2366,8 @@
+   Standard_Real    aPolyFactor, aPolyUnits;
+   CTXF->PolygonOffsets(aPolyMode, aPolyFactor, aPolyUnits);
+   MyCStructure.ContextFillArea.PolygonOffsetMode   = aPolyMode;
+-  MyCStructure.ContextFillArea.PolygonOffsetFactor = aPolyFactor;
+-  MyCStructure.ContextFillArea.PolygonOffsetUnits  = aPolyUnits;
++  MyCStructure.ContextFillArea.PolygonOffsetFactor = (float)aPolyFactor;
++  MyCStructure.ContextFillArea.PolygonOffsetUnits  = (float)aPolyUnits;
+   // OCC4895 SAN 22/03/04 High-level interface for controlling polygon offsets 
+ }
+ 
+Index: oce/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
+===================================================================
+--- oce.orig/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
++++ oce/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
+@@ -1494,7 +1494,7 @@
+     for(j=0;j<SV1;j++) { 
+       IP1[i][j]=-1;
+       const gp_Pnt& P=P1[i][j];
+-      P1DS2[i][j] = CodeReject(x20,y20,z20,x21,y21,z21,P.X(),P.Y(),P.Z());
++      P1DS2[i][j] = (char) CodeReject(x20,y20,z20,x21,y21,z21,P.X(),P.Y(),P.Z());
+       int ix = (int)((P.X()-x0  + dx2 )/dx);
+       if(DansGrille(ix)) { 
+ 	int iy = (int)((P.Y()-y0 + dy2)/dy);
+@@ -1512,7 +1512,7 @@
+     for(j=0;j<SV2;j++) { 
+       IP2[i][j]=-1;
+       const gp_Pnt& P=P2[i][j];
+-      P2DS1[i][j] = CodeReject(x10,y10,z10,x11,y11,z11,P.X(),P.Y(),P.Z());
++      P2DS1[i][j] = (char) CodeReject(x10,y10,z10,x11,y11,z11,P.X(),P.Y(),P.Z());
+       int ix = (int)((P.X()-x0 + dx2)/dx);
+       if(DansGrille(ix)) { 
+ 	int iy = (int)((P.Y()-y0 + dy2)/dy);
+Index: oce/src/Interface/Interface_InterfaceModel.cxx
+===================================================================
+--- oce.orig/src/Interface/Interface_InterfaceModel.cxx
++++ oce/src/Interface/Interface_InterfaceModel.cxx
+@@ -776,7 +776,7 @@
+       c->SetValue(i,thecategory->Value(i));
+     thecategory = c;
+   }
+-  Standard_Character cval = (val + 32);
++  Standard_Character cval = Standard_Character(val + 32);
+   thecategory->SetValue(num,cval);
+   return Standard_True;
+ }
+Index: oce/src/LDOM/LDOM_OSStream.cxx
+===================================================================
+--- oce.orig/src/LDOM/LDOM_OSStream.cxx
++++ oce/src/LDOM/LDOM_OSStream.cxx
+@@ -90,6 +90,7 @@
+ //=======================================================================
+ int LDOM_SBuffer::overflow(int c)
+ {
++  // @todo This buffer should not be "int"
+   char cc = c;
+   return xsputn(&cc,1);
+ }
+Index: oce/src/LDOM/LDOM_XmlReader.cxx
+===================================================================
+--- oce.orig/src/LDOM/LDOM_XmlReader.cxx
++++ oce/src/LDOM/LDOM_XmlReader.cxx
+@@ -123,7 +123,7 @@
+ 
+       // Read the full buffer and reset start and end buffer pointers
+         myPtr    = &myBuffer[0];
+-        Standard_Integer aNBytes;
++        std::streamsize aNBytes;
+         if (myFileDes != FILE_NONVALUE)
+           aNBytes = read (myFileDes, &myBuffer[aBytesRest],
+                           XML_BUFFER_SIZE - aBytesRest);
+@@ -515,7 +515,7 @@
+                                 const char  *& aNameEnd)
+ {
+   Standard_Boolean aResult;
+-  int aCh = aString[0];
++  Standard_Character aCh = aString[0];
+   if (IsAlphabetic(aCh) || aCh == '_' || aCh == ':') {
+     const char * aPtr = &aString[1];
+     while (aPtr < aStringEnd) {
+Index: oce/src/NIS/NIS_Surface.cxx
+===================================================================
+--- oce.orig/src/NIS/NIS_Surface.cxx
++++ oce/src/NIS/NIS_Surface.cxx
+@@ -299,7 +299,7 @@
+ {
+   Handle(NIS_SurfaceDrawer) aDrawer = defaultDrawer();
+   aDrawer->Assign (GetDrawer());
+-  aDrawer->myPolygonOffset = theValue;
++  aDrawer->myPolygonOffset = (Standard_ShortReal)theValue;
+   SetDrawer (aDrawer);
+ }
+ 
+Index: oce/src/OSD/OSD.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD.cxx
++++ oce/src/OSD/OSD.cxx
+@@ -10,7 +10,7 @@
+ # define finite isfinite
+ #endif
+ 
+-static Standard_Integer DecimalPoint = 0 ;
++static char DecimalPoint = 0 ;
+ 
+ static void GetDecimalPoint() {
+   float F1 = (float ) 1.1 ;
+Index: oce/src/OSD/OSD_WNT_1.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_WNT_1.cxx
++++ oce/src/OSD/OSD_WNT_1.cxx
+@@ -489,14 +489,14 @@
+     // Update width & height of a dialog
+     _TINT nW = (butSpace+3+butMaxWidth)*butCount;
+     if ( nW > *pWidth ) {
+-      *pWidth   = nW;
++      *pWidth   = WORD(min(65535,nW)); // Clamp the size
+     } else {
+       butOffset = (*pWidth - butCount*(butMaxWidth+butSpace) - butSpace) / 2;
+     }
+     *pHeight = *pHeight + butMaxHeight + 4;
+     // Update position of a dialog
+-    *pX = ( scrW - (*pWidth) ) / 2;
+-    *pY = ( scrH - (*pHeight) ) / 2;
++    *pX = WORD(( scrW - (*pWidth) ) / 2);
++    *pY = WORD(( scrH - (*pHeight) ) / 2);
+ 
+     // Childs  ============================================================ //
+     short butNum = 0;
+@@ -508,7 +508,7 @@
+               lStyle,
+               8 + butOffset + butNum*(butMaxWidth+butSpace),
+               *pHeight - butMaxHeight - 4,
+-              butMaxWidth, butMaxHeight, lpChildren[i].itemId, 0x0080
++              butMaxWidth, butMaxHeight, WORD(lpChildren[i].itemId), 0x0080
+             );
+         nchar = CopyAnsiToWideChar (p, (LPTSTR)lpChildren[i].buttonLabel);
+         p += nchar;
+Index: oce/src/OpenGl/OpenGl_AVIWriter.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_AVIWriter.cxx
++++ oce/src/OpenGl/OpenGl_AVIWriter.cxx
+@@ -240,7 +240,7 @@
+   bmpInfo.bmiHeader.biWidth             = nFrameWidth;
+   bmpInfo.bmiHeader.biHeight            = nFrameHeight;
+   bmpInfo.bmiHeader.biCompression       = BI_RGB;
+-  bmpInfo.bmiHeader.biBitCount          = nBitsPerPixel;
++  bmpInfo.bmiHeader.biBitCount          = (WORD)nBitsPerPixel;
+   bmpInfo.bmiHeader.biSize              = sizeof(BITMAPINFOHEADER);
+   bmpInfo.bmiHeader.biSizeImage         = (bmpInfo.bmiHeader.biWidth *
+                                            bmpInfo.bmiHeader.biHeight*
+Index: oce/src/OpenGl/OpenGl_GraphicDriver_7.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_GraphicDriver_7.cxx
++++ oce/src/OpenGl/OpenGl_GraphicDriver_7.cxx
+@@ -90,13 +90,13 @@
+   AColor1.Values( R1, G1, B1, Quantity_TOC_RGB );
+   AColor2.Values( R2, G2, B2, Quantity_TOC_RGB );
+   TEL_COLOUR tcolor1, tcolor2;
+-  tcolor1.rgb[0] = R1;
+-  tcolor1.rgb[1] = G1;
+-  tcolor1.rgb[2] = B1;
++  tcolor1.rgb[0] = (float)R1;
++  tcolor1.rgb[1] = (float)G1;
++  tcolor1.rgb[2] = (float)B1;
+   tcolor1.rgb[3] = 0;
+-  tcolor2.rgb[0] = R2;
+-  tcolor2.rgb[1] = G2;
+-  tcolor2.rgb[2] = B2;
++  tcolor2.rgb[0] = (float)R2;
++  tcolor2.rgb[1] = (float)G2;
++  tcolor2.rgb[2] = (float)B2;
+   tcolor2.rgb[3] = 0;
+ 
+   call_togl_gradient_background (MyCView.WsId, AType, &tcolor1, &tcolor2);
+@@ -227,8 +227,8 @@
+ 
+   if ( ACView.DefBitmap.bitmap ) {
+     Result = call_togl_adopt_to_rect( ACView.ViewId,
+-      ACView.DefWindow.dx,
+-      ACView.DefWindow.dy );
++      (int)ACView.DefWindow.dx,
++      (int)ACView.DefWindow.dy );
+     if (MyTraceLevel) {
+       PrintIResult ("call_togl_adopt_to_rect", Result);
+     }
+Index: oce/src/OpenGl/OpenGl_TextRender.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_TextRender.cxx
++++ oce/src/OpenGl/OpenGl_TextRender.cxx
+@@ -290,7 +290,7 @@
+   CMN_KEY keyAngle;
+   keyAngle.id = TelTextAngle;//This flag responding about Angle text
+   TsmGetAttri( 1, &keyAngle );
+-  angle = keyAngle.data.ldata;
++  angle = (Tfloat)keyAngle.data.ldata;
+ 
+   Tint zoom = 0;
+   CMN_KEY keyZoom;
+@@ -391,14 +391,14 @@
+     }
+     else
+     {
+-      export_h = h;
++      export_h = (float)h;
+     }
+   }
+   glGetIntegerv(GL_RENDER_MODE, &renderMode);
+   if ( renderMode == GL_FEEDBACK ) 
+   {
+ #ifdef HAVE_GL2PS
+-    export_h = (GLdouble)fnt->FaceSize() / export_h;
++    export_h = float((GLdouble)fnt->FaceSize() / export_h);
+     int aligment = alignmentforgl2ps( vh, vv );
+     glPopMatrix();
+     ExportText( str, fontName, export_h, angle, aligment, x, y, z, is2d!=0 );
+@@ -477,7 +477,7 @@
+   
+   glBitmap( 1, 1, 0, 0, 0, 0, &zero );
+ 
+-  gl2psTextOpt( str, ps_font, height, alignment, angle);
++  gl2psTextOpt( str, ps_font, (GLshort)height, alignment, angle);
+ 
+ #endif
+ 
+Index: oce/src/OpenGl/OpenGl_attri.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_attri.cxx
++++ oce/src/OpenGl/OpenGl_attri.cxx
+@@ -982,7 +982,7 @@
+       attri_tail->TextZoomable = k[i]->data.ldata;  
+       break;
+     case TelTextAngle:
+-      attri_tail->TextAngle = k[i]->data.ldata;
++      attri_tail->TextAngle = (Tfloat)k[i]->data.ldata;
+       break;  
+     case TelTextFontAspect:
+       attri_tail->TextFontAspect = OSD_FontAspect(k[i]->data.ldata);
+@@ -1271,7 +1271,7 @@
+       k[i]->data.ldata = attri_tail->TextZoomable;
+       break;
+     case TelTextAngle:
+-      k[i]->data.ldata = attri_tail->TextAngle;
++      k[i]->data.ldata = (Tint) attri_tail->TextAngle;
+       break;   
+     case TelTextFontAspect:
+       k[i]->data.ldata = attri_tail->TextFontAspect;
+Index: oce/src/OpenGl/OpenGl_funcs.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_funcs.cxx
++++ oce/src/OpenGl/OpenGl_funcs.cxx
+@@ -470,7 +470,7 @@
+ {
+   CMN_KEY  key;
+ 
+-  key.data.ldata = angl;
++  key.data.ldata = (Tint)angl;
+   TsmAddToStructure( TelTextAngle, 1, &key );
+   return;
+ }
+Index: oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
++++ oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
+@@ -621,7 +621,7 @@
+ 
+   FTGLLayerFontCurrent = textRender->FindFont( FTGLLayerFontName,
+                                                FTGLLayerFontAspect,
+-                                               FTGLLayerFontHeight,
++                                               (Tfloat)FTGLLayerFontHeight,
+                                                FTGLLayerFontXScale,
+                                                FTGLLayerFontYScale );
+ 
+@@ -902,9 +902,9 @@
+ 
+   if ( FTGLLayerFontHeight != height || layerFontFlag == IsModified || FTGLLayerFontCurrent == 0 ) {
+     layerFontFlag = IsNotModified;
+-    FTGLLayerFontHeight = height;  
++    FTGLLayerFontHeight = (Tint)height;  
+     OpenGl_TextRender*  textRender =  OpenGl_TextRender::instance();
+-    FTGLLayerFontCurrent = textRender -> FindFont(FTGLLayerFontName, FTGLLayerFontAspect, FTGLLayerFontHeight);
++    FTGLLayerFontCurrent = textRender -> FindFont(FTGLLayerFontName, FTGLLayerFontAspect, (Tfloat)FTGLLayerFontHeight);
+     textRender -> StringSize(s, &FTGLLayerFontWidth, &FTGLLayerFontAscent, &FTGLLayerFontDescent);
+   }
+ 
+@@ -1050,7 +1050,7 @@
+     FTGLLayerFontAspect = OSD_FA_Regular;
+ 
+     OpenGl_TextRender*  textRender =  OpenGl_TextRender::instance();
+-    FTGLLayerFontCurrent = textRender -> FindFont(FTGLLayerFontName, FTGLLayerFontAspect, FTGLLayerFontHeight);
++    FTGLLayerFontCurrent = textRender -> FindFont(FTGLLayerFontName, FTGLLayerFontAspect, (Tfloat)FTGLLayerFontHeight);
+ 
+     layerFontType = type;
+     layerFontRed = r;
+@@ -1095,7 +1095,7 @@
+     layerFontFlag = IsModified;
+     FTGLLayerFontXScale = FTGLLayerFontYScale = 1.f;
+     OpenGl_TextRender*  textRender =  OpenGl_TextRender::instance();
+-    FTGLLayerFontCurrent = textRender -> FindFont(FTGLLayerFontName, FTGLLayerFontAspect, FTGLLayerFontHeight);
++    FTGLLayerFontCurrent = textRender -> FindFont(FTGLLayerFontName, FTGLLayerFontAspect, (Tfloat)FTGLLayerFontHeight);
+    
+     layerFontRed = r;
+     layerFontGreen = g;
+Index: oce/src/OpenGl/OpenGl_togl_print.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_togl_print.cxx
++++ oce/src/OpenGl/OpenGl_togl_print.cxx
+@@ -278,7 +278,7 @@
+     }
+     wglMakeCurrent(hDC,hGLRC);
+ #else
+-    pfd.cColorBits = GetDeviceCaps(hMemDC, BITSPIXEL);
++    pfd.cColorBits = (BYTE)GetDeviceCaps(hMemDC, BITSPIXEL);
+     nIndex = ChoosePixelFormat(hMemDC, &pfd);
+     if (nIndex == 0)
+     {
+Index: oce/src/OpenGl/OpenGl_txgl.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_txgl.cxx
++++ oce/src/OpenGl/OpenGl_txgl.cxx
+@@ -1008,11 +1008,11 @@
+ 
+     for (i = 0; i < sizeof(dBits) / sizeof(int); i++) {
+ 
+-      pfd0.cDepthBits = dBits[i];
++      pfd0.cDepthBits = (BYTE)dBits[i];
+       iGood = 0;
+       for (j = 0; j < sizeof(cBits) / sizeof(int); j++) {
+ 
+-        pfd0.cColorBits = cBits[j];
++        pfd0.cColorBits = (BYTE)cBits[j];
+         iPixelFormat = ChoosePixelFormat ( hte -> hDC, &pfd0 );
+ 
+         if (iPixelFormat) {
+Index: oce/src/OpenGl/OpenGl_view.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_view.cxx
++++ oce/src/OpenGl/OpenGl_view.cxx
+@@ -1302,18 +1302,18 @@
+       case 3:
+        corner2 = gradient->color2.rgb;
+        corner4 = gradient->color1.rgb;        
+-       dcorner1 [0] = dcorner2[0] = (corner2[0] + corner4[0]) / 2.0;
+-       dcorner1 [1] = dcorner2[1] = (corner2[1] + corner4[1]) / 2.0;
+-       dcorner1 [2] = dcorner2[2] = (corner2[2] + corner4[2]) / 2.0;   
++       dcorner1 [0] = dcorner2[0] = (corner2[0] + corner4[0]) / 2.0f;
++       dcorner1 [1] = dcorner2[1] = (corner2[1] + corner4[1]) / 2.0f;
++       dcorner1 [2] = dcorner2[2] = (corner2[2] + corner4[2]) / 2.0f;   
+        corner1 = dcorner1;
+        corner3 = dcorner2;  
+        break;
+       case 4:  
+        corner1 = gradient->color2.rgb;  
+        corner3 = gradient->color1.rgb;       
+-       dcorner1 [0] = dcorner2[0] = (corner1[0] + corner3[0]) / 2.0;
+-       dcorner1 [1] = dcorner2[1] = (corner1[1] + corner3[1]) / 2.0;
+-       dcorner1 [2] = dcorner2[2] = (corner1[2] + corner3[2]) / 2.0;   
++       dcorner1 [0] = dcorner2[0] = (corner1[0] + corner3[0]) / 2.0f;
++       dcorner1 [1] = dcorner2[1] = (corner1[1] + corner3[1]) / 2.0f;
++       dcorner1 [2] = dcorner2[2] = (corner1[2] + corner3[2]) / 2.0f;   
+        corner2 = dcorner1;
+        corner4 = dcorner2;  
+        break;
+Index: oce/src/Prs2d/Prs2d_Angle.cxx
+===================================================================
+--- oce.orig/src/Prs2d/Prs2d_Angle.cxx
++++ oce/src/Prs2d/Prs2d_Angle.cxx
+@@ -322,7 +322,7 @@
+       aDrawer->SetTextAttrib( myColorIndex, mySymbFont, 0, Standard_ShortReal(myTextScale*aDrawer->Scale()), 
+                               Standard_ShortReal(myTextScale*aDrawer->Scale()), Standard_False );
+ //      TCollection_ExtendedString txtSymb( char( SymbolCode() ) );
+-      Standard_Character code = SymbolCode();
++      Standard_Character code = (Standard_Character) SymbolCode();
+       TCollection_ExtendedString txtSymb( code );
+       Standard_ShortReal dx=0.,dy=0.;
+       aDrawer->MapTextFromTo( txtSymb, ts1, ts2, txtAngle, dx, dy, Aspect_TOT_SOLID );
+Index: oce/src/Prs2d/Prs2d_Diameter.cxx
+===================================================================
+--- oce.orig/src/Prs2d/Prs2d_Diameter.cxx
++++ oce/src/Prs2d/Prs2d_Diameter.cxx
+@@ -79,9 +79,9 @@
+    myAppX2 = Standard_ShortReal(X1);
+    myAppY2 = Standard_ShortReal(Y1);
+    if (myX1>=myX2) 
+-     myAppX2=myAppX2+(theDist+theRad)/APPENDIXLEN;
++     myAppX2=Standard_ShortReal(myAppX2+(theDist+theRad)/APPENDIXLEN);
+    else 
+-     myAppX2=myAppX2-(theDist+theRad)/APPENDIXLEN;
++     myAppX2=Standard_ShortReal(myAppX2-(theDist+theRad)/APPENDIXLEN);
+    
+    if ( myAppX2 < myMinX ) myMinX = myAppX2;
+    if ( myAppY2 < myMinY ) myMinY = myAppY2;
+@@ -106,14 +106,14 @@
+    Standard_Integer theTxtNum=aText.Length();
+    Standard_Real theTxtLen=theTxtNum*myTextScale;
+      
+-   theTxtX1 = myAbsX;
+-   theTxtY1 = myAbsY;
+-   theTxtX2 = theTxtX1+theTxtLen*cos(myAbsAngle);
+-   theTxtY2 = theTxtY1+theTxtLen*sin(myAbsAngle);
+-   theTxtX3 = theTxtX1-myTextScale*sin(myAbsAngle);
+-   theTxtY3 = theTxtY1+myTextScale*cos(myAbsAngle);
+-   theTxtX4 = theTxtX3+theTxtLen*cos(myAbsAngle);
+-   theTxtY4 = theTxtY3+theTxtLen*sin(myAbsAngle);
++   theTxtX1 = Standard_ShortReal(myAbsX);
++   theTxtY1 = Standard_ShortReal(myAbsY);
++   theTxtX2 = Standard_ShortReal(theTxtX1+theTxtLen*cos(myAbsAngle));
++   theTxtY2 = Standard_ShortReal(theTxtY1+theTxtLen*sin(myAbsAngle));
++   theTxtX3 = Standard_ShortReal(theTxtX1-myTextScale*sin(myAbsAngle));
++   theTxtY3 = Standard_ShortReal(theTxtY1+myTextScale*cos(myAbsAngle));
++   theTxtX4 = Standard_ShortReal(theTxtX3+theTxtLen*cos(myAbsAngle));
++   theTxtY4 = Standard_ShortReal(theTxtY3+theTxtLen*sin(myAbsAngle));
+    
+    if (theTxtX1 < myMinX) myMinX = theTxtX1;
+    if (theTxtY1 < myMinY) myMinY = theTxtY1;
+Index: oce/src/Prs2d/Prs2d_Length.cxx
+===================================================================
+--- oce.orig/src/Prs2d/Prs2d_Length.cxx
++++ oce/src/Prs2d/Prs2d_Length.cxx
+@@ -166,7 +166,7 @@
+                               Standard_ShortReal(myTextScale*aDrawer->Scale()), 
+                               Standard_ShortReal(myTextScale*aDrawer->Scale()), 
+                               Standard_False );
+-      Standard_Character code = SymbolCode();
++      Standard_Character code = (Standard_Character)SymbolCode();
+       TCollection_ExtendedString txtSymb( code );
+       pntText.Coord( theSmbX, theSmbY );
+       Standard_ShortReal ws, hs;
+@@ -326,7 +326,7 @@
+ 
+     if ( myIsSymbol ) 
+     {
+-      Standard_Character code = SymbolCode();
++      Standard_Character code = (Standard_Character)SymbolCode();
+       TCollection_ExtendedString txtSymb( code );
+       aDrawer->MapTextFromTo( txtSymb, ts1, ts2,Standard_ShortReal(theTxtAngle), 
+                               0., 0., Aspect_TOT_SOLID );
+Index: oce/src/Prs2d/Prs2d_Radius.cxx
+===================================================================
+--- oce.orig/src/Prs2d/Prs2d_Radius.cxx
++++ oce/src/Prs2d/Prs2d_Radius.cxx
+@@ -180,7 +180,7 @@
+       aDrawer->SetTextAttrib( myColorIndex, mySymbFont, 0, Standard_ShortReal(myTextScale*aDrawer->Scale()), 
+                               Standard_ShortReal(myTextScale*aDrawer->Scale()), Standard_False );
+ //      TCollection_ExtendedString txtSymb( char( SymbolCode() ) );
+-      Standard_Character code = SymbolCode();
++      Standard_Character code = (Standard_Character) SymbolCode();
+       TCollection_ExtendedString txtSymb( code );
+       pntText.Coord( theSmbX, theSmbY );
+       Standard_ShortReal ws=0., hs=0.;
+@@ -269,7 +269,7 @@
+    
+     if ( myIsSymbol ) {
+ //      TCollection_ExtendedString txtSymb( char( SymbolCode() ) );
+-      Standard_Character code = SymbolCode();
++      Standard_Character code = (Standard_Character) SymbolCode();
+       TCollection_ExtendedString txtSymb( code );
+       Standard_ShortReal dx=0.,dy=0.;
+       aDrawer->MapTextFromTo( txtSymb, ts1, ts2, Standard_ShortReal(theTxtAngle), dx, dy, Aspect_TOT_SOLID );
+Index: oce/src/Prs2d/Prs2d_Repere.cxx
+===================================================================
+--- oce.orig/src/Prs2d/Prs2d_Repere.cxx
++++ oce/src/Prs2d/Prs2d_Repere.cxx
+@@ -123,7 +123,7 @@
+       aDrawer->SetTextAttrib( myColorIndex, mySymbFont, 0, Standard_ShortReal(myTextScale*aDrawer->Scale()), 
+                               Standard_ShortReal(myTextScale*aDrawer->Scale()), Standard_False );
+ //      TCollection_ExtendedString txtSymb( char( SymbolCode() ) );
+-      Standard_Character code = SymbolCode();
++      Standard_Character code = (Standard_Character) SymbolCode();
+       TCollection_ExtendedString txtSymb( code );
+       Standard_ShortReal ws=0., hs=0.;
+       aDrawer->GetTextSize( txtSymb, ws, hs );
+@@ -179,7 +179,7 @@
+     
+     if ( myIsSymbol ) {
+ //      TCollection_ExtendedString txtSymb( char( SymbolCode() ) );
+-      Standard_Character code = SymbolCode();
++      Standard_Character code = (Standard_Character) SymbolCode();
+       TCollection_ExtendedString txtSymb( code );
+       Standard_ShortReal angle=0.,dx=0.,dy=0.;
+       aDrawer->MapTextFromTo( txtSymb, ts1, ts2, angle, dx, dy, Aspect_TOT_SOLID);
+Index: oce/src/PrsMgr/PrsMgr_PresentableObject.cxx
+===================================================================
+--- oce.orig/src/PrsMgr/PrsMgr_PresentableObject.cxx
++++ oce/src/PrsMgr/PrsMgr_PresentableObject.cxx
+@@ -290,9 +290,9 @@
+ 							 const gp_Pnt& ThePoint )
+ {
+   myTransformPersistence.Flag = TheFlag;
+-  myTransformPersistence.Point.x = ThePoint.X();
+-  myTransformPersistence.Point.y = ThePoint.Y();
+-  myTransformPersistence.Point.z = ThePoint.Z();
++  myTransformPersistence.Point.x = (float)ThePoint.X();
++  myTransformPersistence.Point.y = (float)ThePoint.Y();
++  myTransformPersistence.Point.z = (float)ThePoint.Z();
+ 
+   Handle(Graphic3d_Structure) aStruct;
+   for( Standard_Integer i = 1, n = myPresentations.Length(); i <= n; i++ ) 
+Index: oce/src/Select3D/Select3D_SensitiveGroup.cxx
+===================================================================
+--- oce.orig/src/Select3D/Select3D_SensitiveGroup.cxx
++++ oce/src/Select3D/Select3D_SensitiveGroup.cxx
+@@ -177,11 +177,11 @@
+ 						  Standard_Real& DMin) 
+ {
+   myLastRank = 0;
+-  myLastTol = aTol;
++  myLastTol = (Standard_ShortReal)aTol;
+   for(Select3D_ListIteratorOfListOfSensitive It(myList);It.More();It.Next()){
+     myLastRank++;
+     if(It.Value()->Matches(X,Y,aTol,DMin)){
+-      myX = X;myY = Y;myLastTol = aTol;
++      myX = (Standard_ShortReal)X; myY = (Standard_ShortReal)Y; myLastTol = (Standard_ShortReal)aTol;
+       SetLastDepth( Precision::Infinite() );
+       
+       Select3D_SensitiveEntity::Matches(X,Y,aTol,DMin);
+Index: oce/src/ShapeProcess/ShapeProcess_Context.cxx
+===================================================================
+--- oce.orig/src/ShapeProcess/ShapeProcess_Context.cxx
++++ oce/src/ShapeProcess/ShapeProcess_Context.cxx
+@@ -62,7 +62,7 @@
+   // Optimisation of loading resource file: file is load only once
+   // and reloaded only if file date has changed
+   static Handle(Resource_Manager) sRC;
+-  static long mtime;
++  static time_t mtime;
+   static TCollection_AsciiString name;
+   if ( ! sRC.IsNull() && ! name.IsEqual ( file ) ) sRC.Nullify();
+   if ( ! sRC.IsNull() ) {
+Index: oce/src/StdPrs/StdPrs_ToolShadedShape.cxx
+===================================================================
+--- oce.orig/src/StdPrs/StdPrs_ToolShadedShape.cxx
++++ oce/src/StdPrs/StdPrs_ToolShadedShape.cxx
+@@ -121,9 +121,9 @@
+       }
+ 
+       Standard_Integer j = (i - UVNodes.Lower()) * 3;
+-      Normals->SetValue(j + 1, Nor(i).X());
+-      Normals->SetValue(j + 2, Nor(i).Y());
+-      Normals->SetValue(j + 3, Nor(i).Z());
++      Normals->SetValue(j + 1, Standard_ShortReal(Nor(i).X()));
++      Normals->SetValue(j + 2, Standard_ShortReal(Nor(i).Y()));
++      Normals->SetValue(j + 3, Standard_ShortReal(Nor(i).Z()));
+ 
+       if (aFace.Orientation() == TopAbs_REVERSED) (Nor(i)).Reverse();
+ 
+@@ -163,9 +163,9 @@
+       Nor(i) = gp_Dir(eqPlan);
+ 
+       Standard_Integer j = (i - Nodes.Lower()) * 3;
+-      Normals->SetValue(j + 1, Nor(i).X());
+-      Normals->SetValue(j + 2, Nor(i).Y());
+-      Normals->SetValue(j + 3, Nor(i).Z());
++      Normals->SetValue(j + 1, Standard_ShortReal(Nor(i).X()));
++      Normals->SetValue(j + 2, Standard_ShortReal(Nor(i).Y()));
++      Normals->SetValue(j + 3, Standard_ShortReal(Nor(i).Z()));
+ 
+       if (aFace.Orientation() == TopAbs_REVERSED) (Nor(i)).Reverse();
+ 
+Index: oce/src/TopTools/TopTools_LocationSet.cxx
+===================================================================
+--- oce.orig/src/TopTools/TopTools_LocationSet.cxx
++++ oce/src/TopTools/TopTools_LocationSet.cxx
+@@ -162,7 +162,7 @@
+ void  TopTools_LocationSet::Write(Standard_OStream& OS) const 
+ {
+   
+-  int  prec = OS.precision(15);
++  std::streamsize  prec = OS.precision(15);
+ 
+   Standard_Integer i, nbLoc = myMap.Extent();
+   OS << "Locations " << nbLoc << "\n";
+Index: oce/src/TopTools/TopTools_ShapeSet.cxx
+===================================================================
+--- oce.orig/src/TopTools/TopTools_ShapeSet.cxx
++++ oce/src/TopTools/TopTools_ShapeSet.cxx
+@@ -444,7 +444,7 @@
+   // on positionne LC_NUMERIC a "C" (point decimal)
+   setlocale(LC_NUMERIC, "C") ;
+ 
+-  int  prec = OS.precision(15);
++  std::streamsize  prec = OS.precision(15);
+ 
+   // write the copyright
+   if (myFormatNb == 2)
+Index: oce/src/V2d/V2d_CircularGraphicGrid.cxx
+===================================================================
+--- oce.orig/src/V2d/V2d_CircularGraphicGrid.cxx
++++ oce/src/V2d/V2d_CircularGraphicGrid.cxx
+@@ -143,7 +143,7 @@
+ 
+ #ifdef OCC192
+     Standard_ShortReal x_alpha, y_alpha;
+-    Standard_ShortReal cos_alpha = Cos(angle), sin_alpha = Sin(angle);
++    Standard_ShortReal cos_alpha = (Standard_ShortReal) Cos(angle), sin_alpha = (Standard_ShortReal) Sin(angle);
+ #endif
+     if(DrawPoints) {
+ #ifdef OCC192
+Index: oce/src/V2d/V2d_RectangularGraphicGrid.cxx
+===================================================================
+--- oce.orig/src/V2d/V2d_RectangularGraphicGrid.cxx
++++ oce/src/V2d/V2d_RectangularGraphicGrid.cxx
+@@ -50,9 +50,9 @@
+ #ifdef OCC194
+   if (Abs(a1) > 0.0)
+   {
+-    Standard_ShortReal alpha = a1 - ((Standard_Integer)(a1/1.57))*1.57;
+-    alpha = alpha - 1.57/2.0;
+-    Coef = Abs(Coef * 1.41 * Cos(alpha));
++    Standard_ShortReal alpha = Standard_ShortReal( a1 - ((Standard_Integer)(a1/1.57))*1.57 );
++    alpha = Standard_ShortReal ( alpha - 1.57/2.0 ); // @todo These numbers should really be PI / 2 and PI / 4
++    Coef = (Standard_ShortReal) Abs(Coef * 1.41 * Cos(alpha));
+   }
+ #endif
+ 
+Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
+===================================================================
+--- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
++++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
+@@ -1647,7 +1647,7 @@
+   {
+     aCS->SetPosition( X , Y );
+     aCS->SetHeight( 0.95) ;
+-    aCS->SetTextHeight( textHeight );
++    aCS->SetTextHeight( (Standard_Integer) textHeight );
+     aCS->SetRange( minRange , maxRange );
+     aCS->SetNumberOfIntervals( numIntervals );
+     aCS->SetLabelPosition( position );
+Index: oce/src/Visual3d/Visual3d_Layer.cxx
+===================================================================
+--- oce.orig/src/Visual3d/Visual3d_Layer.cxx
++++ oce/src/Visual3d/Visual3d_Layer.cxx
+@@ -307,7 +307,7 @@
+     Visual3d_LayerDefinitionError::Raise
+     ("One primitive is already open !");
+ 
+-  MyGraphicDriver->TextSize (AText, AHeight, aWidth, anAscent, aDescent);
++  MyGraphicDriver->TextSize (AText, (Standard_ShortReal)AHeight, aWidth, anAscent, aDescent);
+   AWidth = aWidth;
+   AnAscent = anAscent;
+   ADescent = aDescent;
+Index: oce/src/Visual3d/Visual3d_View.cxx
+===================================================================
+--- oce.orig/src/Visual3d/Visual3d_View.cxx
++++ oce/src/Visual3d/Visual3d_View.cxx
+@@ -360,7 +360,7 @@
+           MyCView.Orientation.IsCustomMatrix = 1;
+           for ( i = 0; i < 4; i++)
+             for ( j = 0; j < 4; j++)
+-              MyCView.Orientation.ModelViewMatrix[i][j] = MyViewOrientation.MyModelViewMatrix->Value(i,j);
++              MyCView.Orientation.ModelViewMatrix[i][j] = (float) MyViewOrientation.MyModelViewMatrix->Value(i,j);
+         }
+         else {
+           MyCView.Orientation.IsCustomMatrix = 0;
+@@ -396,7 +396,7 @@
+           MyCView.Mapping.IsCustomMatrix = 1;
+           for ( i = 0; i < 4; i++)
+             for ( j = 0; j < 4; j++)
+-              MyCView.Mapping.ProjectionMatrix[i][j] = MyViewMapping.MyProjectionMatrix->Value(i,j);
++              MyCView.Mapping.ProjectionMatrix[i][j] = (float) MyViewMapping.MyProjectionMatrix->Value(i,j);
+         }
+         else {
+           MyCView.Mapping.IsCustomMatrix = 0;
+@@ -1173,7 +1173,7 @@
+             for (j = 0; j < 4; j++) {
+               if (!CustomIsModified) CustomIsModified =
+                 MyCView.Orientation.ModelViewMatrix[i][j] != MyViewOrientation.MyModelViewMatrix->Value(i,j);
+-              MyCView.Orientation.ModelViewMatrix[i][j] = MyViewOrientation.MyModelViewMatrix->Value(i,j);
++              MyCView.Orientation.ModelViewMatrix[i][j] = (float) MyViewOrientation.MyModelViewMatrix->Value(i,j);
+             }
+         }
+ 
+@@ -1288,7 +1288,7 @@
+             for (j = 0; j < 4; j++) {
+               if (!CustomIsModified) CustomIsModified =
+                 MyCView.Orientation.ModelViewMatrix[i][j] != MyViewOrientation.MyModelViewMatrix->Value(i,j);
+-              MyCView.Orientation.ModelViewMatrix[i][j] = MyViewOrientation.MyModelViewMatrix->Value(i,j);
++              MyCView.Orientation.ModelViewMatrix[i][j] = (float)MyViewOrientation.MyModelViewMatrix->Value(i,j);
+             }
+         }
+ 
+@@ -1357,7 +1357,7 @@
+           Standard_Integer i, j;
+           for (i = 0; i < 4; i++)
+             for (j = 0; j < 4; j++)
+-              MyCView.Mapping.ProjectionMatrix[i][j] =
++              MyCView.Mapping.ProjectionMatrix[i][j] = (float)
+                 MyViewMapping.MyProjectionMatrix->Value(i,j);
+         }
+ 
+@@ -1426,7 +1426,7 @@
+           Standard_Integer i, j;
+           for (i = 0; i < 4; i++)
+             for (j = 0; j < 4; j++)
+-              MyCView.Mapping.ProjectionMatrix[i][j] =
++              MyCView.Mapping.ProjectionMatrix[i][j] = (float)
+                 MyViewMapping.MyProjectionMatrix->Value(i,j);
+         }
+ 
+Index: oce/src/Voxel/Voxel_BooleanOperation.cxx
+===================================================================
+--- oce.orig/src/Voxel/Voxel_BooleanOperation.cxx
++++ oce/src/Voxel/Voxel_BooleanOperation.cxx
+@@ -148,7 +148,7 @@
+ 	    Standard_Integer value = value1 - value2;
+ 	    if (value < 0)
+ 	      value = 0;
+-	    theVoxels1.Set(ix, iy, iz, value);
++	    theVoxels1.Set(ix, iy, iz, (Standard_Byte)value);
+ 	  }
+ 	}
+       }
+Index: oce/src/Voxel/Voxel_Reader.cxx
+===================================================================
+--- oce.orig/src/Voxel/Voxel_Reader.cxx
++++ oce/src/Voxel/Voxel_Reader.cxx
+@@ -196,7 +196,7 @@
+ 	((Standard_Byte**)((Voxel_DS*)myBoolVoxels)->myData)[i1] = 
+ 	  (Standard_Byte*) calloc(8/*number of bytes in slice*/, sizeof(Standard_Byte));
+       }
+-      (((Standard_Byte**)((Voxel_DS*)myBoolVoxels)->myData)[i1])[i2] = value;
++      (((Standard_Byte**)((Voxel_DS*)myBoolVoxels)->myData)[i1])[i2] = (Standard_Byte)value;
+     }
+   }
+ 
+@@ -273,7 +273,7 @@
+ 	((Standard_Byte**)((Voxel_DS*)myColorVoxels)->myData)[i1] = 
+ 	  (Standard_Byte*) calloc(32/*number of bytes in slice*/, sizeof(Standard_Byte));
+       }
+-      (((Standard_Byte**)((Voxel_DS*)myColorVoxels)->myData)[i1])[i2] = value;
++      (((Standard_Byte**)((Voxel_DS*)myColorVoxels)->myData)[i1])[i2] = (Standard_Byte)value;
+     }
+   }
+ 
+@@ -344,7 +344,7 @@
+ 	  return Standard_False;
+ 	}
+       }
+-      value = atof(line);
++      value = (Standard_ShortReal)atof(line);
+ 
+       // Set value
+       if (!((Standard_ShortReal**)((Voxel_DS*)myFloatVoxels)->myData)[i1])
+@@ -407,7 +407,7 @@
+ 	((Standard_Byte**)((Voxel_DS*)myBoolVoxels)->myData)[i1] = 
+ 	  (Standard_Byte*) calloc(8/*number of bytes in slice*/, sizeof(Standard_Byte));
+       }
+-      (((Standard_Byte**)((Voxel_DS*)myBoolVoxels)->myData)[i1])[i2] = value;
++      (((Standard_Byte**)((Voxel_DS*)myBoolVoxels)->myData)[i1])[i2] = (Standard_Byte)value;
+     }
+   }
+ 
+@@ -462,7 +462,7 @@
+ 	((Standard_Byte**)((Voxel_DS*)myColorVoxels)->myData)[i1] = 
+ 	  (Standard_Byte*) calloc(32/*number of bytes in slice*/, sizeof(Standard_Byte));
+       }
+-      (((Standard_Byte**)((Voxel_DS*)myColorVoxels)->myData)[i1])[i2] = value;
++      (((Standard_Byte**)((Voxel_DS*)myColorVoxels)->myData)[i1])[i2] = (Standard_Byte)value;
+     }
+   }
+ 
+Index: oce/src/VrmlData/VrmlData_ShapeConvert.cxx
+===================================================================
+--- oce.orig/src/VrmlData/VrmlData_ShapeConvert.cxx
++++ oce/src/VrmlData/VrmlData_ShapeConvert.cxx
+@@ -67,7 +67,7 @@
+     char buf[2048], * optr = &buf[0];
+     char * eptr = &buf[sizeof(buf)-1];
+     for (const char * ptr = theName;; ptr++) {
+-      int sym = *ptr;
++      char sym = *ptr;
+       if (sym == '\0' || sym == '\n' || sym == '\r') {
+         * optr = '\0';
+         break;
+@@ -452,9 +452,9 @@
+         arrVec[i] = aNormal.XYZ();
+ 
+         Standard_Integer j = i * 3;
+-        Normals->SetValue(j + 1, aNormal.X());
+-        Normals->SetValue(j + 2, aNormal.Y());
+-        Normals->SetValue(j + 3, aNormal.Z());
++        Normals->SetValue(j + 1, Standard_ShortReal(aNormal.X()));
++        Normals->SetValue(j + 2, Standard_ShortReal(aNormal.Y()));
++        Normals->SetValue(j + 3, Standard_ShortReal(aNormal.Z()));
+ 
+       }
+ 
+Index: oce/src/WNT/WNT_FontMapEntry.cxx
+===================================================================
+--- oce.orig/src/WNT/WNT_FontMapEntry.cxx
++++ oce/src/WNT/WNT_FontMapEntry.cxx
+@@ -116,15 +116,15 @@
+ 
+  if ( aFlags & faUnderlined )
+ 
+-  lf.lfUnderline = fd -> fdUnderlined;
++  lf.lfUnderline = BYTE(fd -> fdUnderlined);
+ 
+  if ( aFlags & faItalic )
+ 
+-  lf.lfItalic = fd -> fdItalic;
++  lf.lfItalic = BYTE(fd -> fdItalic);
+ 
+  if ( aFlags & faStrikeOut )
+ 
+-  lf.lfStrikeOut = fd -> fdStrikeOut;
++  lf.lfStrikeOut = BYTE(fd -> fdStrikeOut);
+ 
+  if ( aFlags & faBold )
+ 
+Index: oce/src/WNT/WNT_ImageProcessor.cxx
+===================================================================
+--- oce.orig/src/WNT/WNT_ImageProcessor.cxx
++++ oce/src/WNT/WNT_ImageProcessor.cxx
+@@ -580,9 +580,9 @@
+ 
+ 	   if ( ptrDIB[ k ] == xColor[ j ].pixel )
+ 
+-	    pbInit[ k ] = j;
++	    pbInit[ k ] = (BYTE)j;
+ 
+-	  colors[  ptrDIB[ i ]  ] = j;
++	  colors[  ptrDIB[ i ]  ] = (WORD)j;
+ 
+ 	 }  // end for
+ 
+Index: oce/src/WNT/WNT_PixMap.cxx
+===================================================================
+--- oce.orig/src/WNT/WNT_PixMap.cxx
++++ oce/src/WNT/WNT_PixMap.cxx
+@@ -67,7 +67,7 @@
+   pBmi->bmiHeader.biWidth         = aWidth;
+   pBmi->bmiHeader.biHeight        = anHeight;
+   pBmi->bmiHeader.biPlanes        = 1;
+-  pBmi->bmiHeader.biBitCount      = myDepth; //WIL001: was 24
++  pBmi->bmiHeader.biBitCount      = (WORD)myDepth; //WIL001: was 24
+   pBmi->bmiHeader.biCompression   = BI_RGB;
+ 
+   LPVOID ppvBits;
+@@ -86,8 +86,8 @@
+     pfd.nSize           =  sizeof (PIXELFORMATDESCRIPTOR);
+     pfd.nVersion        =  1;
+     pfd.dwFlags         =  PFD_SUPPORT_OPENGL | PFD_DRAW_TO_BITMAP;
+-    pfd.iPixelType      =  theFormat; //WIL001: was PFD_TYPE_RGBA
+-    pfd.cColorBits      =  myDepth; //WIL001: was 24
++    pfd.iPixelType      =  (BYTE)theFormat; //WIL001: was PFD_TYPE_RGBA
++    pfd.cColorBits      =  (BYTE)myDepth; //WIL001: was 24
+     pfd.cDepthBits      =  24;//
+     pfd.iLayerType      =  PFD_MAIN_PLANE;
+ 
+Index: oce/src/XmlMXCAFDoc/XmlMXCAFDoc_MaterialDriver.cxx
+===================================================================
+--- oce.orig/src/XmlMXCAFDoc/XmlMXCAFDoc_MaterialDriver.cxx
++++ oce/src/XmlMXCAFDoc/XmlMXCAFDoc_MaterialDriver.cxx
+@@ -99,7 +99,7 @@
+   if ( !anAtt->GetDensValType().IsNull() )
+     aDensTypeStr = anAtt->GetDensValType()->String().ToCString();
+ 
+-  XmlObjMgt::SetStringValue (theTarget, anAtt->GetDensity());
++  XmlObjMgt::SetStringValue (theTarget,Standard_Integer(anAtt->GetDensity()));
+   theTarget.Element().setAttribute(::NameIndexString(), aNameString);
+   theTarget.Element().setAttribute(::DescrIndexString(),aDescrString);
+   theTarget.Element().setAttribute(::DensNameIndexString(),aDensNameStr);

@@ -1,0 +1,25 @@
+commit db60b9e08096817f56480b85cf965a521ca65da8
+Author: Denis Barbier <bouzim@gmail.com>
+Date:   Wed Mar 30 19:20:25 2011 +0200
+
+    Run autoupdate
+    
+    Update AC_INIT arguments.
+    Remove AC_TYPE_SIGNAL and replace RETSIGTYPE by void in
+    src/OSD/OSD_Csemaphore.c.
+    Replace AM_PROG_LIBTOOL by LT_INIT.
+    Replace AC_TRY_COMPILE by AC_COMPILE_IFELSE.
+
+Index: oce/src/OSD/OSD_Csemaphore.c
+===================================================================
+--- oce.orig/src/OSD/OSD_Csemaphore.c
++++ oce/src/OSD/OSD_Csemaphore.c
+@@ -281,7 +281,7 @@
+ }
+ 
+ int
+-osd_alarm_(int sec,RETSIGTYPE (*_alarm)())
++osd_alarm_(int sec, void (*_alarm)())
+ /*====================================================
+ 
+ 	ARM the SIGNAL event (Must be 1 or 2 )

@@ -1,0 +1,92 @@
+From: QbProg <tholag@gmail.com>
+Date: Sat, 11 Jun 2011 15:08:13 +0200
+Subject: [PATCH 25/82] [warning-fix][deprecated-conversion-from-string]
+
+Fixed warning: deprecated conversion from string constant to 'char*'
+---
+ src/Aspect/Aspect_Driver.cxx           |    2 +-
+ src/DPrsStd/DPrsStd.cxx                |    2 +-
+ src/Graphic3d/Graphic3d_Texture1D.cxx  |    2 +-
+ src/Graphic3d/Graphic3d_Texture2D.cxx  |    2 +-
+ src/Graphic3d/Graphic3d_TextureEnv.cxx |    2 +-
+ src/OpenGl/OpenGl_degmodel.cxx         |    2 +-
+ 6 files changed, 6 insertions(+), 6 deletions(-)
+
+Index: oce/src/Aspect/Aspect_Driver.cxx
+===================================================================
+--- oce.orig/src/Aspect/Aspect_Driver.cxx
++++ oce/src/Aspect/Aspect_Driver.cxx
+@@ -31,7 +31,7 @@
+ 
+   OSD_Environment CSF_MDTVFontDirectory ;
+ 
+-  char *fontdir , *casroot ;
++  const char *fontdir , *casroot ;
+   fontdir =  getenv("CSF_MDTVFontDirectory" );
+   if ( !fontdir) {
+     casroot  = getenv("CASROOT");
+Index: oce/src/DPrsStd/DPrsStd.cxx
+===================================================================
+--- oce.orig/src/DPrsStd/DPrsStd.cxx
++++ oce/src/DPrsStd/DPrsStd.cxx
+@@ -53,7 +53,7 @@
+ 
+  // Define Environment Variable 
+ 
+-  char *plugin, *casroot, *standard;
++  const char *plugin, *casroot, *standard;
+   plugin   = getenv("CSF_PluginDefaults");
+   standard = getenv("CSF_StandardDefaults");
+   casroot  = getenv("CASROOT");
+Index: oce/src/Graphic3d/Graphic3d_Texture1D.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d_Texture1D.cxx
++++ oce/src/Graphic3d/Graphic3d_Texture1D.cxx
+@@ -26,7 +26,7 @@
+   static Standard_Boolean IsDefined=Standard_False ;
+   static TCollection_AsciiString VarName;
+   if ( !IsDefined ) {
+-    char *envir, *casroot ;
++    const char *envir, *casroot ;
+     envir = getenv("CSF_MDTVTexturesDirectory") ;
+     
+     Standard_Boolean HasDefinition = Standard_False ;
+Index: oce/src/Graphic3d/Graphic3d_Texture2D.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d_Texture2D.cxx
++++ oce/src/Graphic3d/Graphic3d_Texture2D.cxx
+@@ -22,7 +22,7 @@
+   static Standard_Boolean IsDefined=Standard_False ;
+   static TCollection_AsciiString VarName;
+   if ( !IsDefined ) {
+-    char *envir, *casroot ;
++    char const*envir, *casroot ;
+     envir = getenv("CSF_MDTVTexturesDirectory") ;
+     
+     Standard_Boolean HasDefinition = Standard_False ;
+Index: oce/src/Graphic3d/Graphic3d_TextureEnv.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d_TextureEnv.cxx
++++ oce/src/Graphic3d/Graphic3d_TextureEnv.cxx
+@@ -23,7 +23,7 @@
+   static Standard_Boolean IsDefined=Standard_False ;
+   static TCollection_AsciiString VarName;
+   if ( !IsDefined ) {
+-    char *envir, *casroot ;
++    char const *envir, *casroot ;
+     envir = getenv("CSF_MDTVTexturesDirectory") ;
+     
+     Standard_Boolean HasDefinition = Standard_False ;
+Index: oce/src/OpenGl/OpenGl_degmodel.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_degmodel.cxx
++++ oce/src/OpenGl/OpenGl_degmodel.cxx
+@@ -57,7 +57,7 @@
+ 
+ static TStatus DegenerateModelPrint ( TSM_ELEM_DATA data, Tint n, cmn_key* k ) {
+ 
+-  char* ptr;
++  const char* ptr;
+ 
+   switch ( data.ldata ) {
+ 

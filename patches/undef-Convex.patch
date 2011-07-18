@@ -1,0 +1,110 @@
+commit b5a9a6a99ef8f2322db2dc0b605bdd162113d63b
+Author: tpaviot <tpaviot@gmail.com>
+Date:   Sun May 1 07:23:58 2011 +0200
+
+    Undef Convex before it is defined/used by OCE as a method or function
+
+Index: oce/inc/PTopoDS_TShape.hxx
+===================================================================
+--- oce.orig/inc/PTopoDS_TShape.hxx
++++ oce/inc/PTopoDS_TShape.hxx
+@@ -37,6 +37,13 @@
+ #ifndef _Standard_Persistent_HeaderFile
+ #include <Standard_Persistent.hxx>
+ #endif
++
++// The Convex method can conflict with Convex defined as an integer
++// in X.h
++#ifdef Convex
++#undef Convex
++#endif
++
+ class PTopoDS_HArray1OfHShape;
+ class PTopoDS_HShape;
+ 
+Index: oce/inc/PTopoDS_TShape1.hxx
+===================================================================
+--- oce.orig/inc/PTopoDS_TShape1.hxx
++++ oce/inc/PTopoDS_TShape1.hxx
+@@ -37,6 +37,13 @@
+ #ifndef _Standard_Persistent_HeaderFile
+ #include <Standard_Persistent.hxx>
+ #endif
++
++// The Convex method can conflict with Convex defined as an integer
++// in X.h
++#ifdef Convex
++#undef Convex
++#endif
++
+ class PTopoDS_HArray1OfShape1;
+ class PTopoDS_Shape1;
+ 
+Index: oce/inc/TopoDS_Shape.hxx
+===================================================================
+--- oce.orig/inc/TopoDS_Shape.hxx
++++ oce/inc/TopoDS_Shape.hxx
+@@ -31,6 +31,13 @@
+ #ifndef _Standard_Integer_HeaderFile
+ #include <Standard_Integer.hxx>
+ #endif
++
++// The Convex method can conflict with Convex defined as an integer
++// in X.h
++#ifdef Convex
++#undef Convex
++#endif
++
+ class TopoDS_TShape;
+ class Standard_NullObject;
+ class Standard_DomainError;
+Index: oce/inc/TopoDS_Shape.lxx
+===================================================================
+--- oce.orig/inc/TopoDS_Shape.lxx
++++ oce/inc/TopoDS_Shape.lxx
+@@ -5,6 +5,11 @@
+ #include <TopoDS_TShape.hxx>
+ #include <TopAbs.hxx>
+ 
++// The Convex method can conflict with Convex defined as an integer
++// in X.h
++#ifdef Convex
++#undef Convex
++#endif
+ 
+ //=======================================================================
+ //function : TopoDS_Shape
+Index: oce/inc/TopoDS_TShape.lxx
+===================================================================
+--- oce.orig/inc/TopoDS_TShape.lxx
++++ oce/inc/TopoDS_TShape.lxx
+@@ -6,6 +6,12 @@
+ #include <TopoDS_Shape.hxx>
+ #include <TopoDS_ListIteratorOfListOfShape.hxx>
+ 
++// The Convex method can conflict with Convex defined as an integer
++// in X.h
++#ifdef Convex
++#undef Convex
++#endif
++
+ // Defined mask values
+ #define TopoDS_TShape_Flags_Free       (1<<0)
+ #define TopoDS_TShape_Flags_Modified   (1<<1)
+Index: oce/inc/TopoDS_TVertex.lxx
+===================================================================
+--- oce.orig/inc/TopoDS_TVertex.lxx
++++ oce/inc/TopoDS_TVertex.lxx
+@@ -2,6 +2,12 @@
+ // Created:	Wed Apr 10 09:42:42 1991
+ // Author:	Remi LEQUETTE
+ 
++// The Convex function can conflict with Convex defined as an integer
++// in X.h
++#ifdef Convex
++#undef Convex
++#endif
++
+ //=======================================================================
+ //function : TopoDS_TVertex
+ //purpose  : 

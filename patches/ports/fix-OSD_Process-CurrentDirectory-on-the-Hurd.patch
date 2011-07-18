@@ -1,0 +1,44 @@
+From: Denis Barbier <bouzim@gmail.com>
+Date: Fri, 8 Apr 2011 22:55:17 +0200
+Subject: [PATCH 80/82] Fix OSD_Process::CurrentDirectory() on the Hurd,
+ MAXPATHLEN is not defined
+
+---
+ src/OSD/OSD_Process.cxx |   14 ++++++++++++--
+ 1 files changed, 12 insertions(+), 2 deletions(-)
+
+Index: oce/src/OSD/OSD_Process.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_Process.cxx
++++ oce/src/OSD/OSD_Process.cxx
+@@ -113,11 +113,18 @@
+ 
+ 
+ OSD_Path OSD_Process::CurrentDirectory(){
+-char cwd[MAXPATHLEN+1] ;
+ OSD_Path result;
+ TCollection_AsciiString Name;
++char *ret;
++#if !defined(MAXPATHLEN) && defined(__GLIBC__)
++ char *cwd = getcwd(NULL,0);
++ ret = cwd;
++#else
++char cwd[MAXPATHLEN+1] ;
++ ret = getcwd(cwd,MAXPATHLEN+1);
++#endif
+ 
+- if (!getcwd(cwd,MAXPATHLEN+1))
++ if (!ret)
+    myError.SetValue (errno, Iam, "Where");
+  else {
+    Name = cwd;
+@@ -147,6 +154,9 @@
+    //      result.SetValues("","","","",Name,"","");
+ #endif
+ 
++#if !defined(MAXPATHLEN) && defined(__GLIBC__)
++   free(cwd);
++#endif
+  }
+ return (result);
+ }

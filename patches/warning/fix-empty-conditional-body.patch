@@ -1,0 +1,25 @@
+From: QbProg <tholag@gmail.com>
+Date: Thu, 12 May 2011 21:01:43 +0200
+Subject: [PATCH 26/82] [warning-fix][empty-conditional-body]
+
+Fixes warning like : found ';' after conditional instruction. Is what you want?
+
+Cases like
+if (a);
+---
+ src/TCollection/TCollection_ExtendedString.cxx |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+Index: oce/src/TCollection/TCollection_ExtendedString.cxx
+===================================================================
+--- oce.orig/src/TCollection/TCollection_ExtendedString.cxx
++++ oce/src/TCollection/TCollection_ExtendedString.cxx
+@@ -153,6 +153,8 @@
+       if(!ConvertToUnicode (astring))
+ #ifdef DEB
+ 	cout <<"UTF8 decoding failure..." <<endl;
++#else
++	  {}
+ #endif
+       ;
+     }

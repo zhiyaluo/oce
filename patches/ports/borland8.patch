@@ -1,0 +1,47 @@
+From d1210dbb39e725f82f298a0f3442bcc61b63f09f Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Tue, 22 Mar 2011 07:18:25 +0100
+Subject: [PATCH 8/9] Move code to work around a BCC bug
+
+For an unknown reason, BCC reports this error:
+  [C++ Error] Standard_ErrorHandler.cpp(48): E2092 Storage class 'static' is not allowed here
+which disappears when GetThreadID() is defined before static members.
+---
+ ros/src/Standard/Standard_ErrorHandler.cxx |   17 +++++++++--------
+ 1 files changed, 9 insertions(+), 8 deletions(-)
+
+Index: oce/src/Standard/Standard_ErrorHandler.cxx
+===================================================================
+--- oce.orig/src/Standard/Standard_ErrorHandler.cxx
++++ oce/src/Standard/Standard_ErrorHandler.cxx
+@@ -23,14 +23,7 @@
+ // request will be ignored. If the abort request do a raise during a setjmp
+ // or a longjmp, there will be a "terminating SEGV" impossible to handle.
+ 
+-//==== The top of the Errors Stack ===========================================
+-static Standard_ErrorHandler* Top = 0;
+-
+-// A mutex to protect from concurrent access to Top
+-// Note that we should NOT use Sentry while in this class, as Sentry
+-// would register mutex as callback in the current exception handler
+-static Standard_Mutex theMutex; 
+-
++//Somehow borland needs this inline global function to be declared first ... ??
+ static inline Standard_ThreadId GetThreadID()
+ {
+ #ifndef WNT
+@@ -40,6 +33,14 @@
+ #endif
+ }
+ 
++//==== The top of the Errors Stack ===========================================
++static Standard_ErrorHandler* Top = 0;
++
++// A mutex to protect from concurrent access to Top
++// Note that we should NOT use Sentry while in this class, as Sentry
++// would register mutex as callback in the current exception handler
++static Standard_Mutex theMutex; 
++
+ //============================================================================
+ //====  Constructor : Create a ErrorHandler structure. And add it at the 
+ //====                'Top' of "ErrorHandler's stack".

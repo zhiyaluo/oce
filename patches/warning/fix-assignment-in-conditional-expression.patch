@@ -1,0 +1,661 @@
+From: QbProg <tholag@gmail.com>
+Date: Thu, 12 May 2011 20:48:09 +0200
+Subject: [PATCH 19/82] [warning-fix][assignment-in-conditional-expression]
+
+Fixes warnings like : assignment in conditional expression
+---
+ src/OSD/OSD.cxx                   |    6 +++---
+ src/OSD/OSD_Real2String.cxx       |    4 ++--
+ src/OSD/OSD_WNT.cxx               |    8 ++++----
+ src/Resource/Resource_Manager.cxx |    2 +-
+ src/Standard/Standard_MMgrOpt.cxx |    2 +-
+ 5 files changed, 11 insertions(+), 11 deletions(-)
+
+From: QbProg <tholag@gmail.com>
+Date: Sat, 11 Jun 2011 20:00:09 +0200
+Subject: [PATCH 20/82] [warning-fix][assignment-in-conditional-expression]
+
+Fixed some assignments in conditional expressions
+---
+ src/BRepTest/BRepTest_CheckCommands.cxx |    2 +-
+ src/Draw/Draw_Window.cxx                |    2 +-
+ src/Draw/MainWindow.cxx                 |   10 +++++-----
+ src/TestTopOpe/TestTopOpe_BOOP.cxx      |   10 +++++-----
+ 4 files changed, 12 insertions(+), 12 deletions(-)
+
+From: QbProg <tholag@gmail.com>
+Date: Sun, 12 Jun 2011 12:11:41 +0200
+Subject: [PATCH 21/82] [warning-fix][assignment-in-conditional-expression]
+
+Also fixed a bug in TrimShellCorner due to a missing ==
+---
+ src/BRepFill/BRepFill_TrimShellCorner.cxx     |    4 ++--
+ src/Geom2dGcc/Geom2dGcc_Lin2dTanObl.cxx       |    6 +++---
+ src/GeomPlate/GeomPlate_BuildPlateSurface.cxx |    2 +-
+ 3 files changed, 6 insertions(+), 6 deletions(-)
+
+From: QbProg <tholag@gmail.com>
+Date: Fri, 17 Jun 2011 21:10:55 +0200
+Subject: [PATCH 22/82] [warning-fix][assignment-in-conditional-expression]
+
+---
+ inc/Extrema_GExtCC.gxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+From: QbProg <tholag@gmail.com>
+Date: Sun, 19 Jun 2011 18:14:47 +0200
+Subject: [PATCH 23/82] [warning-fix][assignment-in-conditional-expression]
+ Fixes warnings like : assignment in conditional
+ expression
+
+---
+ src/BRepClass3d/BRepClass3d_Intersector3d.cxx  |    4 ++--
+ src/BRepTopAdaptor/BRepTopAdaptor_FClass2d.cxx |    8 ++++----
+ src/CGM/Gestfic.cxx                            |    4 ++--
+ src/Graphic2d/Graphic2d_Drawer.cxx             |    2 +-
+ src/Graphic2d/Graphic2d_FramedText.cxx         |    6 +++---
+ src/Graphic2d/Graphic2d_HidingText.cxx         |    6 +++---
+ src/Graphic2d/Graphic2d_Paragraph.cxx          |    2 +-
+ src/Graphic2d/Graphic2d_Text.cxx               |    6 +++---
+ src/IntTools/IntTools_FClass2d.cxx             |    4 ++--
+ src/OpenGl/OpenGl_togl_begin_animation.cxx     |    2 +-
+ src/OpenGl/OpenGl_txgl.cxx                     |    4 ----
+ src/PlotMgt/PlotMgt_Plotter.cxx                |    2 +-
+ src/Standard/Standard.cxx                      |   14 +++++++-------
+ src/TDataXtd/TDataXtd_Constraint.cxx           |    2 +-
+ src/Visual3d/Visual3d_View.cxx                 |    2 +-
+ 15 files changed, 32 insertions(+), 36 deletions(-)
+
+Index: oce/src/OSD/OSD.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD.cxx
++++ oce/src/OSD/OSD.cxx
+@@ -41,12 +41,12 @@
+   if (sprintf(aString,"%.17e",aReal)  <= 0) //BUC60808
+     return Standard_False ;
+ 
+-  if ((p = strchr(aString,DecimalPoint)))
++  if ((p = strchr(aString,DecimalPoint)) != 0)
+     *p = '.' ;
+ 
+   // Suppress "e+00" and unsignificant 0's 
+ 
+-  if ((p = strchr(aString,'e'))) {
++  if ((p = strchr(aString,'e')) != 0) {
+     if (!strcmp(p,"e+00"))
+       *p = 0 ;
+     for (q = p-1 ; *q == '0' ; q--) ;
+@@ -77,7 +77,7 @@
+   const char *str = aString;
+   char buff[1024];  
+   //if((p = strchr(aString,'.')))
+-  if(DecimalPoint != '.' && (p = strchr(aString,'.'))&& ((p-aString) < 1000) )
++  if(DecimalPoint != '.' && ((p = strchr(aString,'.')) != NULL) && ((p-aString) < 1000) )
+   {
+     strncpy(buff, aString, 1000);
+     buff[p-aString] = DecimalPoint ;
+Index: oce/src/OSD/OSD_Real2String.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_Real2String.cxx
++++ oce/src/OSD/OSD_Real2String.cxx
+@@ -49,7 +49,7 @@
+ 
+   // Suppress "e+00" and unsignificant 0's 
+ 
+-  if ((p = strchr(theString,'e'))) {
++  if ((p = strchr(theString,'e')) != NULL) {
+     if (!strcmp(p,"e+00"))
+       *p = 0 ;
+     for (q = p-1 ; *q == '0' ; q--) ;
+@@ -91,7 +91,7 @@
+           char buff[1024]; 
+ 	  // replace the decimal point by the local one
+           if(myReadDecimalPoint != myLocalDecimalPoint && 
+-             (p = strchr(theString,myReadDecimalPoint))&& ((p-theString) < 1000) )
++             ((p = strchr(theString,myReadDecimalPoint)) != NULL) && ((p-theString) < 1000) )
+           {
+             strncpy(buff, theString, 1000);
+             buff[p-theString] = myLocalDecimalPoint;
+Index: oce/src/OSD/OSD_WNT.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_WNT.cxx
++++ oce/src/OSD/OSD_WNT.cxx
+@@ -1176,11 +1176,11 @@
+ 
+      if ( pFD -> dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ) {
+ 
+-      if (   !(  retVal = MoveDirectory ( pFullNameSrc, pFullNameDst )  )   ) break;
++      if (   FALSE == (  retVal = MoveDirectory ( pFullNameSrc, pFullNameDst )  )   ) break;
+    
+      } else {
+ retry_1:   
+-      if (   !(  retVal = MoveFileEx (
++      if (   FALSE == (  retVal = MoveFileEx (
+                            pFullNameSrc, pFullNameDst,
+                            MOVEFILE_REPLACE_EXISTING | MOVEFILE_COPY_ALLOWED
+                           )
+@@ -1336,11 +1336,11 @@
+ 
+      if ( pFD -> dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ) {
+ 
+-      if (   !(  retVal = CopyDirectory ( pFullNameSrc, pFullNameDst )  )   ) break;
++      if (   FALSE == (  retVal = CopyDirectory ( pFullNameSrc, pFullNameDst )  )   ) break;
+    
+      } else {
+ retry:   
+-      if (   !(  retVal = CopyFile ( pFullNameSrc, pFullNameDst, FALSE )  )   ) {
++      if (   FALSE == (  retVal = CopyFile ( pFullNameSrc, pFullNameDst, FALSE )  )   ) {
+       
+        if ( _response_dir_proc != NULL ) {
+       
+Index: oce/src/Resource/Resource_Manager.cxx
+===================================================================
+--- oce.orig/src/Resource/Resource_Manager.cxx
++++ oce/src/Resource/Resource_Manager.cxx
+@@ -171,7 +171,7 @@
+   if (Debug)
+     cout << "Key = '" << aToken1 << flush ;
+ 
+-  if ((Pos = Line.FirstLocationNotInSet(WhiteSpace, Pos2+1, Line.Length()))) {
++  if ((Pos = Line.FirstLocationNotInSet(WhiteSpace, Pos2+1, Line.Length())) != 0) {
+     if (Line.Value(Pos) == '\\')
+       switch(Line.Value(Pos+1)) {
+       case '\\' :
+Index: oce/src/Standard/Standard_MMgrOpt.cxx
+===================================================================
+--- oce.orig/src/Standard/Standard_MMgrOpt.cxx
++++ oce/src/Standard/Standard_MMgrOpt.cxx
+@@ -778,7 +778,7 @@
+     HANDLE * aMBlock = NULL;
+     // check for error and try allocating address space
+     if ( ! hMap || GetLastError() == ERROR_ALREADY_EXISTS ||
+-         ! (aMBlock = (HANDLE*)MapViewOfFile(hMap,FILE_MAP_WRITE,0,0,0)) ) 
++         (NULL == (aMBlock = (HANDLE*)MapViewOfFile(hMap,FILE_MAP_WRITE,0,0,0))) ) 
+     {
+       // close handle if allocated
+       if ( hMap ) 
+Index: oce/inc/Extrema_GExtCC.gxx
+===================================================================
+--- oce.orig/inc/Extrema_GExtCC.gxx
++++ oce/inc/Extrema_GExtCC.gxx
+@@ -190,7 +190,7 @@
+     //analytical case - one curve is always a line
+     Standard_Integer anInd1 = 0, anInd2 = 1;
+     GeomAbs_CurveType aType2 = type2;
+-    if (inverse = (type1 > type2)) {
++    if ((inverse = (type1 > type2)) == Standard_True ) {
+       //algorithm uses inverse order of arguments
+       anInd1 = 1;
+       anInd2 = 0;
+Index: oce/src/BRepClass3d/BRepClass3d_Intersector3d.cxx
+===================================================================
+--- oce.orig/src/BRepClass3d/BRepClass3d_Intersector3d.cxx
++++ oce/src/BRepClass3d/BRepClass3d_Intersector3d.cxx
+@@ -48,9 +48,9 @@
+ 
+   Standard_Boolean IsUPer, IsVPer;
+   Standard_Real uperiod=0, vperiod=0;
+-  if ((IsUPer = surface.IsUPeriodic()))
++  if ((IsUPer = surface.IsUPeriodic()) == Standard_True)
+     uperiod = surface.UPeriod();
+-  if ((IsVPer = surface.IsVPeriodic()))
++  if ((IsVPer = surface.IsVPeriodic()) == Standard_True)
+     vperiod = surface.VPeriod();
+ 
+   Standard_Real U1, U2, V1, V2;
+Index: oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
+===================================================================
+--- oce.orig/src/BRepFill/BRepFill_TrimShellCorner.cxx
++++ oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
+@@ -916,8 +916,8 @@
+       for(vvit = 1; !bvertexfound && (vvit <= aVVs.Extent()); vvit++) {
+ 	const BOPTools_VVInterference& aVV = aVVs(vvit);
+ 
+-	if(((vindex1 == aVV.Index1()) && (vindex2 = aVV.Index2())) ||
+-	   ((vindex1 == aVV.Index2()) && (vindex2 = aVV.Index1()))) {
++	if(((vindex1 == aVV.Index1()) && (vindex2 == aVV.Index2())) ||
++	   ((vindex1 == aVV.Index2()) && (vindex2 == aVV.Index1()))) {
+ 
+ 	  if(aVV.NewShape() == 0) {
+ 	    continue;
+Index: oce/src/BRepTest/BRepTest_CheckCommands.cxx
+===================================================================
+--- oce.orig/src/BRepTest/BRepTest_CheckCommands.cxx
++++ oce/src/BRepTest/BRepTest_CheckCommands.cxx
+@@ -1430,7 +1430,7 @@
+   TopOpeBRepTool_PurgeInternalEdges mypurgealgo(S);
+   Standard_Integer nbedges;
+ 
+-  if ((nbedges = mypurgealgo.NbEdges())) {
++  if ((nbedges = mypurgealgo.NbEdges()) != 0) {
+ 
+     //cout<<nbedges<<" internal (or external) edges to be removed"<<endl;
+     di<<nbedges<<" internal (or external) edges to be removed"<<"\n";
+Index: oce/src/BRepTopAdaptor/BRepTopAdaptor_FClass2d.cxx
+===================================================================
+--- oce.orig/src/BRepTopAdaptor/BRepTopAdaptor_FClass2d.cxx
++++ oce/src/BRepTopAdaptor/BRepTopAdaptor_FClass2d.cxx
+@@ -411,9 +411,9 @@
+   surf->ChangeSurface().Initialize( Face, Standard_False );
+   Standard_Boolean IsUPer, IsVPer;
+   Standard_Real uperiod=0, vperiod=0;
+-  if ((IsUPer = surf->IsUPeriodic()))
++  if ((IsUPer = surf->IsUPeriodic()) == Standard_True)
+     uperiod = surf->UPeriod();
+-  if ((IsVPer = surf->IsVPeriodic()))
++  if ((IsVPer = surf->IsVPeriodic()) == Standard_True)
+     vperiod = surf->VPeriod();
+   TopAbs_State Status = TopAbs_UNKNOWN;
+   Standard_Boolean urecadre = Standard_False, vrecadre = Standard_False;
+@@ -547,9 +547,9 @@
+   surf->ChangeSurface().Initialize( Face, Standard_False );
+   Standard_Boolean IsUPer, IsVPer;
+   Standard_Real uperiod=0, vperiod=0;
+-  if ((IsUPer = surf->IsUPeriodic()))
++  if ((IsUPer = surf->IsUPeriodic()) == Standard_True)
+     uperiod = surf->UPeriod();
+-  if ((IsVPer = surf->IsVPeriodic()))
++  if ((IsVPer = surf->IsVPeriodic())== Standard_True) 
+     vperiod = surf->VPeriod();
+   TopAbs_State Status = TopAbs_UNKNOWN;
+   Standard_Boolean urecadre = Standard_False, vrecadre = Standard_False;
+Index: oce/src/CGM/Gestfic.cxx
+===================================================================
+--- oce.orig/src/CGM/Gestfic.cxx
++++ oce/src/CGM/Gestfic.cxx
+@@ -12,7 +12,7 @@
+   switch (TypeCgm){
+     case 1:
+     case 2:
+-      if ((filed = fopen(f_name,"wb" ))) {
++      if ((filed = fopen(f_name,"wb" )) != NULL) {
+ #ifdef WNT
+         chmod (f_name, S_IREAD | S_IWRITE);
+ #else
+@@ -22,7 +22,7 @@
+       }
+       break;
+     case 3:
+-      if ((filed = fopen(f_name,"w" ))) {
++      if ((filed = fopen(f_name,"w" )) != NULL) {
+ #ifdef WNT
+         chmod (f_name, S_IREAD | S_IWRITE);
+ #else
+Index: oce/src/Draw/Draw_Window.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw_Window.cxx
++++ oce/src/Draw/Draw_Window.cxx
+@@ -2007,7 +2007,7 @@
+ 
+     hWndFrame = NULL;
+ 
+-  else if (hWndFrame = CreateAppWindow(hInst))
++  else if ((hWndFrame = CreateAppWindow(hInst)) != NULL)
+   {
+     ShowWindow(hWndFrame,nShow);
+     UpdateWindow(hWndFrame);
+Index: oce/src/Draw/MainWindow.cxx
+===================================================================
+--- oce.orig/src/Draw/MainWindow.cxx
++++ oce/src/Draw/MainWindow.cxx
+@@ -67,7 +67,7 @@
+   HWND hWnd;
+ 
+   // Enregistre le hWnd dans la fenetre principale dans extra memory en 0
+-  if (hWnd = CreateMDIClientWindow(hWndFrame))
++  if ((hWnd = CreateMDIClientWindow(hWndFrame)) != NULL)
+     SetWindowLong(hWndFrame, CLIENTWND, (LONG)hWnd);
+   return(TRUE);
+ }
+@@ -87,23 +87,23 @@
+   switch (LOWORD(wParam))
+ 	{
+ 	  case IDM_WINDOW_NEXT :
+-					if(hWndClient = (HWND)GetWindowLong(hWndFrame, CLIENTWND))
++					if((hWndClient = (HWND)GetWindowLong(hWndFrame, CLIENTWND)) != NULL)
+ 					  hWndActive = (HWND)SendMessage(hWndClient, WM_MDIGETACTIVE, 0, 0l);
+ 						SendMessage(hWndClient, WM_MDINEXT, (WPARAM)hWndActive, 0l);  
+ 					break;
+ 
+ 		case IDM_WINDOW_CASCADE :
+-					if(hWndClient = (HWND)GetWindowLong(hWndFrame, CLIENTWND))
++					if((hWndClient = (HWND)GetWindowLong(hWndFrame, CLIENTWND)) != NULL)
+ 						SendMessage(hWndClient, WM_MDICASCADE, 0, 0l);
+ 					break;
+ 					 
+ 		case IDM_WINDOW_TILEHOR :
+-					if(hWndClient = (HWND)GetWindowLong(hWndFrame, CLIENTWND))
++					if((hWndClient = (HWND)GetWindowLong(hWndFrame, CLIENTWND)) != NULL)
+ 						SendMessage(hWndClient, WM_MDITILE, MDITILE_HORIZONTAL, 0l);
+ 					break;
+ 
+ 		case IDM_WINDOW_TILEVERT :
+-					if(hWndClient = (HWND)GetWindowLong(hWndFrame, CLIENTWND))
++					if((hWndClient = (HWND)GetWindowLong(hWndFrame, CLIENTWND)) != NULL)
+ 						SendMessage(hWndClient, WM_MDITILE, MDITILE_VERTICAL, 0l);
+ 					break;
+ 		
+Index: oce/src/Geom2dGcc/Geom2dGcc_Lin2dTanObl.cxx
+===================================================================
+--- oce.orig/src/Geom2dGcc/Geom2dGcc_Lin2dTanObl.cxx
++++ oce/src/Geom2dGcc/Geom2dGcc_Lin2dTanObl.cxx
+@@ -43,7 +43,7 @@
+     gp_Circ2d c1(CCC1->Circ2d());
+     GccEnt_QualifiedCirc Qc1=GccEnt_QualifiedCirc(c1,Qualified1.Qualifier());
+     GccAna_Lin2dTanObl Lin(Qc1,TheLine,Angle);
+-    if((WellDone = Lin.IsDone())) { 
++    if((WellDone = Lin.IsDone()) == Standard_True) { 
+       NbrSol = Lin.NbSolutions();
+       for (Standard_Integer i = 1 ; i <= NbrSol ; i++) {
+ 	linsol(i)    = Lin.ThisSolution(i);
+@@ -107,7 +107,7 @@
+     gp_Circ2d c1(CCC1->Circ2d());
+     GccEnt_QualifiedCirc Qc1=GccEnt_QualifiedCirc(c1,Qualified1.Qualifier());
+     GccAna_Lin2dTanObl Lin(Qc1,TheLine,Angle);
+-    if((WellDone = Lin.IsDone())) { 
++    if((WellDone = Lin.IsDone()) == Standard_True) { 
+       NbrSol = Lin.NbSolutions();
+       for (Standard_Integer i = 1 ; i <= NbrSol ; i++) {
+ 	linsol(i)    = Lin.ThisSolution(i);
+@@ -120,7 +120,7 @@
+   else {
+     Geom2dGcc_MyQCurve Qc1(C1,Qualified1.Qualifier());
+     Geom2dGcc_MyL2dTanObl Lin(Qc1,TheLine,TolAng,Param1,Angle);
+-    if((WellDone = Lin.IsDone())) { 
++    if((WellDone = Lin.IsDone()) == Standard_True) { 
+       linsol(1)    = Lin.ThisSolution();
+       Lin.Tangency1(par1sol(1),pararg1(1),pnttg1sol(1));
+       Lin.Intersection2(par2sol(1),pararg2(1),pntint2sol(1));
+Index: oce/src/GeomPlate/GeomPlate_BuildPlateSurface.cxx
+===================================================================
+--- oce.orig/src/GeomPlate/GeomPlate_BuildPlateSurface.cxx
++++ oce/src/GeomPlate/GeomPlate_BuildPlateSurface.cxx
+@@ -1333,7 +1333,7 @@
+ 
+   Standard_Boolean CourbeJoint=Standard_False;
+   
+-  if (NTLinCont != 0 && (CourbeJoint = CourbeJointive( myTol3d )) && IsOrderG1())
++  if (NTLinCont != 0 && ((CourbeJoint = CourbeJointive( myTol3d )) != 0) && IsOrderG1())
+     {
+       nopt = 3;
+       // Tableau contenant le nuage de point pour le calcul du plan
+Index: oce/src/Graphic2d/Graphic2d_Drawer.cxx
+===================================================================
+--- oce.orig/src/Graphic2d/Graphic2d_Drawer.cxx
++++ oce/src/Graphic2d/Graphic2d_Drawer.cxx
+@@ -334,7 +334,7 @@
+     Standard_Integer width,height;
+ 
+         if( myDriverIsDefined ) {
+-          if(( theStatus = myDriver->SizeOfImageFile(aFileName,width,height))){
++          if(( theStatus = myDriver->SizeOfImageFile(aFileName,width,height)) == Standard_True ){
+             aWidth = Standard_ShortReal(myDriver->Convert(width)/Scale());
+             aHeight = Standard_ShortReal(myDriver->Convert(height)/Scale());
+           }
+Index: oce/src/Graphic2d/Graphic2d_FramedText.cxx
+===================================================================
+--- oce.orig/src/Graphic2d/Graphic2d_FramedText.cxx
++++ oce/src/Graphic2d/Graphic2d_FramedText.cxx
+@@ -239,7 +239,7 @@
+ Standard_Boolean status;
+ 
+     myAdjustFlag = Adjust;
+-    if(( status = TextSize(twidth,theight,xoffset,yoffset) )) {
++    if(( status = TextSize(twidth,theight,xoffset,yoffset) ) == Standard_True ) {
+       wscale = Standard_ShortReal( aWidth/twidth );
+       if( wscale > 0. ) {
+         if( Expand || (twidth > aWidth) ) myWScale *= wscale;
+@@ -263,7 +263,7 @@
+ //Standard_ShortReal wscale,hscale;
+ Standard_Boolean status;
+ 
+-    if(( status = TextSize(twidth,theight,txoffset,tyoffset) )) {
++    if(( status = TextSize(twidth,theight,txoffset,tyoffset) ) == Standard_True ) {
+       Standard_Integer l = myText.Length();
+       while( (l > 1) && (twidth > aWidth) ) {
+         --l;
+@@ -298,7 +298,7 @@
+       Standard_ShortReal width,height,xoffset,yoffset;
+           aDrawer->SetTextAttrib(myColorIndex,myFontIndex,
+ 					mySlant,hscale,wscale,myIsUnderlined);
+-          if(( status = aDrawer->GetTextSize(myText,width,height,xoffset,yoffset) )) {
++          if(( status = aDrawer->GetTextSize(myText,width,height,xoffset,yoffset) ) == Standard_True ) {
+             Standard_ShortReal dxm,dym;
+ #ifndef PERF
+ 	    myResetFlag = Standard_False; 
+Index: oce/src/Graphic2d/Graphic2d_HidingText.cxx
+===================================================================
+--- oce.orig/src/Graphic2d/Graphic2d_HidingText.cxx
++++ oce/src/Graphic2d/Graphic2d_HidingText.cxx
+@@ -255,7 +255,7 @@
+ Standard_Boolean status;
+ 
+     myAdjustFlag = Adjust;
+-    if(( status = TextSize(twidth,theight,xoffset,yoffset) )) {
++    if(( status = TextSize(twidth,theight,xoffset,yoffset) ) == Standard_True ) {
+       wscale = Standard_ShortReal( aWidth/twidth );
+       if( wscale > 0. ) {
+         if( Expand || (twidth > aWidth) ) myWScale *= wscale;
+@@ -279,7 +279,7 @@
+ //Standard_ShortReal wscale,hscale;
+ Standard_Boolean status;
+ 
+-    if(( status = TextSize(twidth,theight,txoffset,tyoffset) )) {
++    if(( status = TextSize(twidth,theight,txoffset,tyoffset) ) == Standard_True )  {
+       Standard_Integer l = myText.Length();
+       while( (l > 1) && (twidth > aWidth) ) {
+         --l;
+@@ -314,7 +314,7 @@
+           Standard_ShortReal width,height,xoffset,yoffset;
+           aDrawer->SetTextAttrib(myColorIndex,myFontIndex,
+                                         mySlant,hscale,wscale,myIsUnderlined);
+-          if(( status = aDrawer->GetTextSize(myText,width,height,xoffset,yoffset) )) {
++          if(( status = aDrawer->GetTextSize(myText,width,height,xoffset,yoffset) ) == Standard_True ) {
+             Standard_ShortReal dxm,dym;
+ #ifndef PERF
+             myResetFlag = Standard_False;
+Index: oce/src/Graphic2d/Graphic2d_Paragraph.cxx
+===================================================================
+--- oce.orig/src/Graphic2d/Graphic2d_Paragraph.cxx
++++ oce/src/Graphic2d/Graphic2d_Paragraph.cxx
+@@ -752,7 +752,7 @@
+               static TCollection_ExtendedString hletter("Hp");
+               Standard_ShortReal hwidth,hheight,hxoffset,hyoffset;
+               if(( status = aDrawer->GetTextSize(hletter,hwidth,hheight,
+-                                                        hxoffset,hyoffset) )) {
++                                                        hxoffset,hyoffset) ) == Standard_True ) {
+                 theight = Max(hheight-hyoffset,theight-tyoffset);
+                 tyoffset = Max(hyoffset,tyoffset);
+               }
+Index: oce/src/Graphic2d/Graphic2d_Text.cxx
+===================================================================
+--- oce.orig/src/Graphic2d/Graphic2d_Text.cxx
++++ oce/src/Graphic2d/Graphic2d_Text.cxx
+@@ -371,7 +371,7 @@
+ Standard_Boolean status;
+ 
+     myAdjustFlag = Adjust;
+-    if(( status = TextSize(twidth,theight,txoffset,tyoffset) )) {
++    if(( status = TextSize(twidth,theight,txoffset,tyoffset) ) == Standard_True ) {
+       wscale = Standard_ShortReal(aWidth/twidth);
+       if( wscale > 0. ) {
+ 	if( Expand || (twidth > aWidth) ) myWScale *= wscale;
+@@ -395,7 +395,7 @@
+ //Standard_ShortReal wscale,hscale;
+ Standard_Boolean status;
+ 
+-    if(( status = TextSize(twidth,theight,txoffset,tyoffset) )) {
++    if(( status = TextSize(twidth,theight,txoffset,tyoffset) ) == Standard_True ) {
+       Standard_Integer l = myText.Length();
+       while( (l > 1) && (twidth > aWidth) ) {
+         --l;
+@@ -427,7 +427,7 @@
+           aDrawer->SetTextAttrib(myColorIndex,myFontIndex,
+ 					mySlant,hscale,wscale,myIsUnderlined);
+           if(( status = 
+-		aDrawer->GetTextSize(myText,width,height,xoffset,yoffset) )) {
++		aDrawer->GetTextSize(myText,width,height,xoffset,yoffset) ) == Standard_True ) {
+ #ifndef PERF
+ 	    myResetFlag = Standard_False;
+ #endif
+Index: oce/src/IntTools/IntTools_FClass2d.cxx
+===================================================================
+--- oce.orig/src/IntTools/IntTools_FClass2d.cxx
++++ oce/src/IntTools/IntTools_FClass2d.cxx
+@@ -686,9 +686,9 @@
+   surf->ChangeSurface().Initialize( Face, Standard_False );
+   Standard_Boolean IsUPer, IsVPer;
+   Standard_Real uperiod=0, vperiod=0;
+-  if ((IsUPer = surf->IsUPeriodic()))
++  if ((IsUPer = surf->IsUPeriodic()) == Standard_True)
+     uperiod = surf->UPeriod();
+-  if ((IsVPer = surf->IsVPeriodic()))
++  if ((IsVPer = surf->IsVPeriodic()) == Standard_True)
+     vperiod = surf->VPeriod();
+   TopAbs_State Status = TopAbs_UNKNOWN;
+   Standard_Boolean urecadre = Standard_False, vrecadre = Standard_False;
+Index: oce/src/OpenGl/OpenGl_togl_begin_animation.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_togl_begin_animation.cxx
++++ oce/src/OpenGl/OpenGl_togl_begin_animation.cxx
+@@ -103,7 +103,7 @@
+ #ifdef G003
+   g_fAnimation               = GL_TRUE;
+   g_fList                    = GL_FALSE;
+-  g_fDegeneration            = aview -> IsDegenerates;
++  g_fDegeneration            = aview->IsDegenerates != 0;
+   g_fUpdateAM                = ( aview -> IsDegenerates ==
+     aview -> IsDegeneratesPrev
+     ) ? GL_FALSE : GL_TRUE;
+Index: oce/src/OpenGl/OpenGl_txgl.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_txgl.cxx
++++ oce/src/OpenGl/OpenGl_txgl.cxx
+@@ -377,7 +377,6 @@
+ 
+     HTBL_ENTRY*           hte;
+     PIXELFORMATDESCRIPTOR pfd;
+-    BOOL                  DBuffer = TRUE;
+     int                   iPixelFormat;
+     char                  string[ CALL_DEF_STRING_LENGTH ];
+ 
+@@ -556,7 +555,6 @@
+     cmn_htbl_elem         rec;*/
+     HTBL_ENTRY*           hte;
+     PIXELFORMATDESCRIPTOR pfd;
+-    BOOL                  DBuffer = TRUE;
+     int                   iPixelFormat;
+     char                  string[ CALL_DEF_STRING_LENGTH ];
+ 
+@@ -676,8 +674,6 @@
+ #else /* WNT */
+ 
+     HTBL_ENTRY*   hte;
+-    HDC    hdc    = NULL;
+-    HGLRC  hglrc  = NULL;
+     TStatus       retVal = TFailure;
+ 
+     __try {
+Index: oce/src/PlotMgt/PlotMgt_Plotter.cxx
+===================================================================
+--- oce.orig/src/PlotMgt/PlotMgt_Plotter.cxx
++++ oce/src/PlotMgt/PlotMgt_Plotter.cxx
+@@ -416,7 +416,7 @@
+       STRING_TRIM(aParamDef);
+       aParamDef.Prepend (TCollection_AsciiString ("."));
+     }
+-    if ((idx = FindParameter(aParamName))) {
++    if ((idx = FindParameter(aParamName)) != 0) {
+       aParameter = myParameters -> Value (idx);
+     } else {
+       aParameter = new PlotMgt_PlotterParameter (aParamName);
+Index: oce/src/Standard/Standard.cxx
+===================================================================
+--- oce.orig/src/Standard/Standard.cxx
++++ oce/src/Standard/Standard.cxx
+@@ -41,13 +41,13 @@
+   Standard_Boolean bClear, bMMap, bReentrant;
+   Standard_Integer aCellSize, aNbPages, aThreshold, bOptAlloc;
+   //
+-  bOptAlloc   = atoi((var = getenv("MMGT_OPT"      )) ? var : "1"    ); 
+-  bClear      = atoi((var = getenv("MMGT_CLEAR"    )) ? var : "1"    );
+-  bMMap       = atoi((var = getenv("MMGT_MMAP"     )) ? var : "1"    ); 
+-  aCellSize   = atoi((var = getenv("MMGT_CELLSIZE" )) ? var : "200"  ); 
+-  aNbPages    = atoi((var = getenv("MMGT_NBPAGES"  )) ? var : "1000" );
+-  aThreshold  = atoi((var = getenv("MMGT_THRESHOLD")) ? var : "40000");
+-  bReentrant  = atoi((var = getenv("MMGT_REENTRANT")) ? var : "0"    );
++  bOptAlloc   = atoi(((var = getenv("MMGT_OPT"      )) != NULL) ? var : "1"    ); 
++  bClear      = atoi(((var = getenv("MMGT_CLEAR"    )) != NULL) ? var : "1"    );
++  bMMap       = atoi(((var = getenv("MMGT_MMAP"     )) != NULL) ? var : "1"    ); 
++  aCellSize   = atoi(((var = getenv("MMGT_CELLSIZE" )) != NULL) ? var : "200"  ); 
++  aNbPages    = atoi(((var = getenv("MMGT_NBPAGES"  )) != NULL) ? var : "1000" );
++  aThreshold  = atoi(((var = getenv("MMGT_THRESHOLD")) != NULL) ? var : "40000");
++  bReentrant  = atoi(((var = getenv("MMGT_REENTRANT")) != NULL) ? var : "0"    );
+   
+   if ( bOptAlloc == 1 ) { 
+     myFMMgr = new Standard_MMgrOpt(bClear, bMMap, aCellSize, aNbPages,
+Index: oce/src/TDataXtd/TDataXtd_Constraint.cxx
+===================================================================
+--- oce.orig/src/TDataXtd/TDataXtd_Constraint.cxx
++++ oce/src/TDataXtd/TDataXtd_Constraint.cxx
+@@ -216,7 +216,7 @@
+ void TDataXtd_Constraint::SetType (const TDataXtd_ConstraintEnum CTR) 
+ {  
+   // OCC2932 correction
+-  if(myType = CTR) return;
++  if((myType = CTR) != 0) return;
+ 
+   Backup();
+   myType = CTR;
+Index: oce/src/TestTopOpe/TestTopOpe_BOOP.cxx
+===================================================================
+--- oce.orig/src/TestTopOpe/TestTopOpe_BOOP.cxx
++++ oce/src/TestTopOpe/TestTopOpe_BOOP.cxx
+@@ -48,11 +48,11 @@
+ Standard_Integer TestTopOpe_BOOP::Prepare(const char* ns1,const char* ns2)
+ {
+   Standard_Integer err = 0;
+-  if ((err = LoadShapes(ns1,ns2))) return err; // 0
+-  if ((err = LoadnewDS())) return err; // 100
+-  if ((err = DSF_Insert())) return err; // 100<,<200
+-  if ((err = LoadnewHB())) return err; // 200
+-  if ((err = Builder_Perform())) return err; // 200<,<300
++  if ((err = LoadShapes(ns1,ns2)) != 0) return err; // 0
++  if ((err = LoadnewDS()) != 0) return err; // 100
++  if ((err = DSF_Insert()) != 0) return err; // 100<,<200
++  if ((err = LoadnewHB()) != 0) return err; // 200
++  if ((err = Builder_Perform()) != 0) return err; // 200<,<300
+   return 0;
+ }
+ 
+Index: oce/src/Visual3d/Visual3d_View.cxx
+===================================================================
+--- oce.orig/src/Visual3d/Visual3d_View.cxx
++++ oce/src/Visual3d/Visual3d_View.cxx
+@@ -1165,7 +1165,7 @@
+         MyCView.Orientation.ViewScaleZ                  = float (Sz);
+ 
+         CustomIsModified =
+-          MyCView.Orientation.IsCustomMatrix != MyViewOrientation.IsCustomMatrix();
++          Standard_Boolean(MyCView.Orientation.IsCustomMatrix != 0) != MyViewOrientation.IsCustomMatrix();  // note: warning should be removed by changing .IsCustomMatrix type
+         MyCView.Orientation.IsCustomMatrix = MyViewOrientation.IsCustomMatrix();
+         if ( MyViewOrientation.IsCustomMatrix() ) {
+           Standard_Integer i, j;
+@@ -1280,7 +1280,7 @@
+         MyCView.Orientation.ViewScaleZ                  = float (Sz);
+ 
+         CustomIsModified =
+-          MyCView.Orientation.IsCustomMatrix != MyViewOrientation.IsCustomMatrix();
++          Standard_Boolean(MyCView.Orientation.IsCustomMatrix != 0) != MyViewOrientation.IsCustomMatrix(); // note: warning should be removed by changing .IsCustomMatrix type
+         MyCView.Orientation.IsCustomMatrix = MyViewOrientation.IsCustomMatrix();
+         if ( MyViewOrientation.IsCustomMatrix() ) {
+           Standard_Integer i, j;
+@@ -4002,7 +4002,7 @@
+  Standard_Integer                      StructId;
+  Standard_Integer                      i = MyDisplayedStructure.Extent ();
+ 
+- if (  !( ComputedModeIsActive = aMode )  ) {
++ if (  !( (ComputedModeIsActive = aMode) != 0 )   ) {
+ 
+   while (  S1Iterator.More ()  ) {
+ 

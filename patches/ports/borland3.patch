@@ -1,0 +1,36 @@
+From f8031083c60bf4dfcb6a28005bc053b15f87bd26 Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Tue, 22 Mar 2011 07:06:26 +0100
+Subject: [PATCH 3/9] BCC needs different headers to instantiate
+ NCollection_Vector
+
+Original code generates these errors when instantiating
+NCollection_Vector<Handle_NIS_InteractiveObject>:
+  [C++ Error] NCollection_Vector.hxx(146): E2451 Undefined symbol 'TheItemType'
+  [C++ Error] NCollection_Vector.hxx(146): E2299 Cannot generate template
+              specialization from 'NCollection_BaseCollection<TheItemType>'
+These errors are fixed when including non-Handle_ headers.
+---
+ ros/inc/NIS_InteractiveContext.hxx |    9 +++++++--
+ 1 files changed, 7 insertions(+), 2 deletions(-)
+
+Index: oce/inc/NIS_InteractiveContext.hxx
+===================================================================
+--- oce.orig/inc/NIS_InteractiveContext.hxx
++++ oce/inc/NIS_InteractiveContext.hxx
+@@ -7,8 +7,13 @@
+ #ifndef NIS_InteractiveContext_HeaderFile
+ #define NIS_InteractiveContext_HeaderFile
+ 
+-#include <Handle_NIS_InteractiveObject.hxx>
+-#include <Handle_NIS_View.hxx>
++#ifdef __BORLANDC__
++# include <NIS_InteractiveObject.hxx>
++# include <NIS_View.hxx>
++#else
++# include <Handle_NIS_InteractiveObject.hxx>
++# include <Handle_NIS_View.hxx>
++#endif
+ #include <NCollection_IncAllocator.hxx>
+ #include <NCollection_Map.hxx>
+ #include <NCollection_Vector.hxx>

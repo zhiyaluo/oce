@@ -1,0 +1,46 @@
+commit 917532574e82292233a38bd30aa1a52f2e9ff6e9
+Author: QbProg <tholag@gmail.com>
+Date:   Sun May 15 15:01:00 2011 +0200
+
+    Removed some #pragma comment("lib",...)
+    In MSVC and Cmake these should come from the Cmake configuration, and not be fixed anymore
+
+commit d654d21db3f5d3fd5c06270359caa4f77b52ea92
+Author: QbProg <tholag@gmail.com>
+Date:   Tue May 17 00:47:05 2011 +0200
+
+    Cleaned up previous commits:
+    - removed pragmas
+    - removed NOP cmake instructions
+
+Index: oce/src/Image/Image_PixMap.cxx
+===================================================================
+--- oce.orig/src/Image/Image_PixMap.cxx	2011-07-17 11:08:27.314695853 +0200
++++ oce/src/Image/Image_PixMap.cxx	2011-07-17 11:08:59.502855466 +0200
+@@ -11,10 +11,7 @@
+   #include <FreeImagePlus.h>
+   #include <Image_PixMap.ixx>
+   /* OCC22216 NOTE: linker dependency can be switched off by undefining macro */ 
+-  #ifdef _MSC_VER
+-  #pragma comment( lib, "FreeImage.lib" )
+-  #pragma comment( lib, "FreeImagePlus.lib" )
+-  #endif
++  
+ #else
+   #include <Image_PixMap.ixx>
+   #include <fstream>
+Index: oce/src/OpenGl/OpenGl_attri.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_attri.cxx	2011-07-17 11:08:27.318695868 +0200
++++ oce/src/OpenGl/OpenGl_attri.cxx	2011-07-17 11:09:34.523029283 +0200
+@@ -107,9 +107,7 @@
+   #include <gl2ps.h>
+   /* OCC22216 NOTE: linker dependency can be switched off by undefining macro. 
+      Pragma comment for gl2ps.lib is defined only here. */ 
+-  #ifdef _MSC_VER 
+-  #pragma comment( lib, "gl2ps.lib" )
+-  #endif
++  
+ #endif
+ 
+ #include <OpenGl_tgl_all.hxx>

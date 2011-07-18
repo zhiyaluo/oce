@@ -1,0 +1,1120 @@
+From: QbProg <tholag@gmail.com>
+Date: Thu, 12 May 2011 21:03:41 +0200
+Subject: [PATCH 59/82] [warning-fix][unreachable-code]
+
+Fixes unreachable code warnings
+---
+ src/FSD/FSD_CmpFile.cxx |    2 +-
+ src/FSD/FSD_File.cxx    |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+From: QbProg <tholag@gmail.com>
+Date: Sat, 11 Jun 2011 20:04:54 +0200
+Subject: [PATCH 60/82] [warning-fix][unreachable-code]
+
+Fixed some unreachable code warnings
+---
+ .../APIHeaderSection_EditHeader.cxx                |    2 +-
+ src/DDataStd/DDataStd_DrawDriver.cxx               |   10 ----------
+ src/DPrsStd/DPrsStd_AISPresentationCommands.cxx    |    2 --
+ src/Draw/Draw_Window.cxx                           |    2 ++
+ .../GeometryTest_ConstraintCommands.cxx            |    2 ++
+ src/XSControl/XSControl_Functions.cxx              |    3 +++
+ 6 files changed, 8 insertions(+), 13 deletions(-)
+
+From: QbProg <tholag@gmail.com>
+Date: Sun, 12 Jun 2011 12:09:03 +0200
+Subject: [PATCH 61/82] [warning-fix][unreachable-code]
+
+Removed unreachable code warnings, and marked with @todo when in doubt
+---
+ src/BRepFill/BRepFill_OffsetWire.cxx               |    4 +++-
+ src/BRepFill/BRepFill_Pipe.cxx                     |    2 +-
+ src/ChFi2d/ChFi2d_Builder_0.cxx                    |    2 +-
+ src/ChFi3d/ChFi3d_Builder_0.cxx                    |    2 +-
+ src/ChFi3d/ChFi3d_Builder_CnCrn.cxx                |    2 +-
+ src/ChFi3d/ChFi3d_Builder_SpKP.cxx                 |    4 ++--
+ src/Geom2dGcc/Geom2dGcc_Circ2d2TanOn.cxx           |    4 ++++
+ src/Geom2dGcc/Geom2dGcc_Circ2d2TanRad.cxx          |    4 ++++
+ src/GeomFill/GeomFill.cxx                          |    5 +++++
+ src/GeomFill/GeomFill_LocationGuide.cxx            |    4 +++-
+ src/IntPatch/IntPatch_LineConstructor.cxx          |    4 ++++
+ src/IntPatch/IntPatch_Polyhedron.cxx               |    5 ++++-
+ src/IntSurf/IntSurf_Quadric.cxx                    |    8 ++++++++
+ src/TopOpeBRep/TopOpeBRep_ShapeIntersector2d.cxx   |    2 +-
+ src/TopOpeBRep/TopOpeBRep_sort.cxx                 |    2 +-
+ src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx   |    3 +++
+ src/TopOpeBRepBuild/TopOpeBRepBuild_GTopo.cxx      |    6 ++++--
+ src/TopOpeBRepBuild/TopOpeBRepBuild_Tools_1.cxx    |    5 +----
+ src/TopOpeBRepDS/TopOpeBRepDS.cxx                  |    2 +-
+ src/TopOpeBRepDS/TopOpeBRepDS_PointIterator.cxx    |    6 ++++++
+ .../TopOpeBRepTool_makeTransition.cxx              |    3 ++-
+ src/TopOpeBRepTool/TopOpeBRepTool_mkTondgE.cxx     |    5 ++++-
+ 22 files changed, 64 insertions(+), 20 deletions(-)
+
+From: QbProg <tholag@gmail.com>
+Date: Fri, 17 Jun 2011 21:08:22 +0200
+Subject: [PATCH 62/82] [warning-fix][unreachable-code]
+
+Fixed unreachable code warnings
+---
+ inc/GCPnts_UniformDeflection.gxx                   |    2 ++
+ .../ProjLib_ComputeApproxOnPolarSurface.cxx        |    2 ++
+ 2 files changed, 4 insertions(+), 0 deletions(-)
+
+From: QbProg <tholag@gmail.com>
+Date: Sun, 19 Jun 2011 18:01:54 +0200
+Subject: [PATCH 63/82] [warning-fix][unreachable-code] Fixes unreachable code
+ warnings
+
+---
+ inc/GCPnts_QuasiUniformDeflection.gxx              |    3 +++
+ src/AIS/AIS_Selection.cxx                          |    6 ++++--
+ src/Adaptor3d/Adaptor3d_IsoCurve.cxx               |    2 +-
+ .../Adaptor3d_SurfaceOfLinearExtrusion.cxx         |    2 +-
+ src/Adaptor3d/Adaptor3d_SurfaceOfRevolution.cxx    |    2 +-
+ src/BOP/BOP_CorrectTolerances.cxx                  |    3 ---
+ src/BOPTools/BOPTools_PaveFiller_1.cxx             |    5 ++++-
+ src/BRepGProp/BRepGProp_EdgeTool.cxx               |    2 +-
+ .../BRepTools_NurbsConvertModification.cxx         |    2 ++
+ src/Graphic2d/Graphic2d_GraphicObject.cxx          |    3 ++-
+ src/Graphic2d/Graphic2d_SetOfMarkers.cxx           |    3 ++-
+ src/IntTools/IntTools_EdgeFace.cxx                 |    2 ++
+ src/MAT2d/MAT2d_Circuit.cxx                        |    2 ++
+ src/MNaming/MNaming_NamingRetrievalDriver.cxx      |    2 +-
+ src/MNaming/MNaming_NamingRetrievalDriver_1.cxx    |    2 +-
+ src/OpenGl/OpenGl_GraphicDriver_9.cxx              |   16 +++++++++-------
+ src/OpenGl/OpenGl_togl_print.cxx                   |    3 ++-
+ src/ShapeAnalysis/ShapeAnalysis.cxx                |    2 ++
+ src/ShapeBuild/ShapeBuild_Edge.cxx                 |    2 ++
+ .../ShapeConstruct_ProjectCurveOnSurface.cxx       |    2 ++
+ src/ShapeCustom/ShapeCustom_BSplineRestriction.cxx |    2 ++
+ src/ShapeFix/ShapeFix_EdgeProjAux.cxx              |    2 ++
+ src/ShapeFix/ShapeFix_Wireframe.cxx                |    2 --
+ src/StdPrs/StdPrs_Curve.cxx                        |    6 +++++-
+ src/StdPrs/StdPrs_DeflectionCurve.cxx              |    2 ++
+ src/StdSelect/StdSelect_BRepSelectionTool.cxx      |    5 +++--
+ 26 files changed, 58 insertions(+), 27 deletions(-)
+
+Index: oce/src/FSD/FSD_CmpFile.cxx
+===================================================================
+--- oce.orig/src/FSD/FSD_CmpFile.cxx
++++ oce/src/FSD/FSD_CmpFile.cxx
+@@ -1415,7 +1415,7 @@
+     else
+       return aPosR;
+   }
+-  default: return -1;
++  default: break;
+   }
+   return -1;
+ }
+Index: oce/src/FSD/FSD_File.cxx
+===================================================================
+--- oce.orig/src/FSD/FSD_File.cxx
++++ oce/src/FSD/FSD_File.cxx
+@@ -1379,7 +1379,7 @@
+     else
+       return aPosR;
+   }
+-  default: return -1;
++  default: break;
+   }
+   return -1;
+ }
+Index: oce/inc/GCPnts_UniformDeflection.gxx
+===================================================================
+--- oce.orig/inc/GCPnts_UniformDeflection.gxx
++++ oce/inc/GCPnts_UniformDeflection.gxx
+@@ -176,7 +176,9 @@
+ 
+     Ua = Ub;
+   }
++  #ifndef _MSC_VER
+   return Standard_True;
++  #endif
+ }
+ 
+ 
+Index: oce/src/APIHeaderSection/APIHeaderSection_EditHeader.cxx
+===================================================================
+--- oce.orig/src/APIHeaderSection/APIHeaderSection_EditHeader.cxx
++++ oce/src/APIHeaderSection/APIHeaderSection_EditHeader.cxx
+@@ -21,7 +21,7 @@
+     case  4 : if (uncar < '0' || uncar > '9') return Standard_False; break;
+     case  5 : if (uncar != '-') return Standard_False;
+     case  6 : if (uncar != '0' && uncar != '1') return Standard_False;  break;
+-    case  7 : if (uncar < '0' || uncar > '9') return Standard_False; break;
++    case  7 : if (uncar < '0' || uncar > '9') return Standard_False; 
+       if (dizmois == '1' && (uncar < '0' || uncar > '2')) return Standard_False;
+       break;
+     case  8 : if (uncar != '-') return Standard_False;
+Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
+===================================================================
+--- oce.orig/src/BRepFill/BRepFill_OffsetWire.cxx
++++ oce/src/BRepFill/BRepFill_OffsetWire.cxx
+@@ -1578,10 +1578,11 @@
+ 
+   if (CT2d->BasisCurve()->IsKind(STANDARD_TYPE(Geom2d_Circle)) &&
+       ( Abs(f-l) >= PI) ) {
+-    return 0;
++    return 0; // @todo check here possible bug or really workaround?
+     //---------------------------
+     // Decoupe cercle ferme.
+     //---------------------------
++#if 0 // Eventually re-enable here 
+     Standard_Real m = (f + l)*0.5;
+ //  Modified by Sergey KHROMOV - Wed Mar  6 17:37:28 2002 Begin
+     gp_Pnt        P = aC->Value(m);
+@@ -1608,6 +1609,7 @@
+     // Retour.
+     //--------
+     return 2;
++#endif
+   }
+ 
+   //-------------------------
+Index: oce/src/BRepFill/BRepFill_Pipe.cxx
+===================================================================
+--- oce.orig/src/BRepFill/BRepFill_Pipe.cxx
++++ oce/src/BRepFill/BRepFill_Pipe.cxx
+@@ -577,7 +577,7 @@
+     return solid;
+   }
+   else {
+-    return result;
++    
+   }
+   return result;
+ }
+Index: oce/src/ChFi2d/ChFi2d_Builder_0.cxx
+===================================================================
+--- oce.orig/src/ChFi2d/ChFi2d_Builder_0.cxx
++++ oce/src/ChFi2d/ChFi2d_Builder_0.cxx
+@@ -691,7 +691,7 @@
+       Param = computePoint.Parameter();
+     }
+     thePoint = cc.Value(Param);
+-    return thePoint;
++    
+   } // else ...
+   return thePoint;
+ } // ComputePoint
+Index: oce/src/ChFi3d/ChFi3d_Builder_0.cxx
+===================================================================
+--- oce.orig/src/ChFi3d/ChFi3d_Builder_0.cxx
++++ oce/src/ChFi3d/ChFi3d_Builder_0.cxx
+@@ -601,7 +601,7 @@
+        */
+     return Standard_False;
+   default:
+-    return Standard_False;
++    break;
+   }
+   return Standard_False;
+ }
+Index: oce/src/ChFi3d/ChFi3d_Builder_CnCrn.cxx
+===================================================================
+--- oce.orig/src/ChFi3d/ChFi3d_Builder_CnCrn.cxx
++++ oce/src/ChFi3d/ChFi3d_Builder_CnCrn.cxx
+@@ -912,7 +912,7 @@
+   case ChFiSURFACE: return aSurfData->Surf();
+   case FACE1:       return aSurfData->IndexOfS1();
+   case FACE2:       return aSurfData->IndexOfS2();
+-  default:          return -1;
++  default:          break;
+   }
+   return -1;
+ }
+Index: oce/src/ChFi3d/ChFi3d_Builder_SpKP.cxx
+===================================================================
+--- oce.orig/src/ChFi3d/ChFi3d_Builder_SpKP.cxx
++++ oce/src/ChFi3d/ChFi3d_Builder_SpKP.cxx
+@@ -183,7 +183,7 @@
+   case GeomAbs_Circle:
+     return C.Circle().Radius()*U;
+   default:
+-    return 0;
++    break;
+   }    
+   Standard_NotImplemented::Raise("calcul abscisse non traite ");
+   return 0.;
+@@ -436,7 +436,7 @@
+   const Handle(Geom_Surface)& surf = DStr.Surface(CD->Surf()).Surface();
+   Standard_Real par = 0., x, y;
+   if(!isfirst) par = edglen;
+-  Standard_Real sppar;
++  Standard_Real sppar = 0.0;
+   for (Standard_Integer i = 1; i <= 2; i++) { 
+     CD->ChangeInterference(i).SetParameter(par,isfirst);
+     Handle(Geom2d_Curve) pc = CD->Interference(i).PCurveOnSurf();
+Index: oce/src/DDataStd/DDataStd_DrawDriver.cxx
+===================================================================
+--- oce.orig/src/DDataStd/DDataStd_DrawDriver.cxx
++++ oce/src/DDataStd/DDataStd_DrawDriver.cxx
+@@ -243,16 +243,6 @@
+       }
+       else {
+ 	break;
+-	TopoDS_Shape aLocalShape = (Geometry (A, 1, TopAbs_FACE));
+-	TopoDS_Face F1 = TopoDS::Face (aLocalShape);
+-//	TopoDS_Face F1 = TopoDS::Face (Geometry (A, 1, TopAbs_FACE));
+-	if (A->NbGeometries() == 1) D = new DrawDim_Distance (F1);
+-	else {
+-	  TopoDS_Shape aLocalShape = Geometry(A,2,TopAbs_FACE);
+-	  TopoDS_Face F2 = TopoDS::Face(aLocalShape);
+-//	  TopoDS_Face F2 = TopoDS::Face(Geometry(A,2,TopAbs_FACE));
+-	  D = new DrawDim_Distance(F1,F2);
+-	}
+       }
+     }
+     break;
+Index: oce/src/DPrsStd/DPrsStd_AISPresentationCommands.cxx
+===================================================================
+--- oce.orig/src/DPrsStd/DPrsStd_AISPresentationCommands.cxx
++++ oce/src/DPrsStd/DPrsStd_AISPresentationCommands.cxx
+@@ -73,8 +73,6 @@
+     TPrsStd_AISViewer::Update(L);
+     return 0;
+   }
+-  di << "DPrsStd_AISDisplay : Error" << "\n";
+-  return 1;
+ }
+ 
+ //=======================================================================
+Index: oce/src/Draw/Draw_Window.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw_Window.cxx
++++ oce/src/Draw/Draw_Window.cxx
+@@ -1364,7 +1364,9 @@
+     else
+       return LONG(DefMDIChildProc(hWnd, wMsg, wParam, lParam));
+   }
++#ifndef _MSC_VER // unreachable code in MSVC
+   return (0l);
++#endif
+ }
+ 
+ 
+Index: oce/src/Geom2dGcc/Geom2dGcc_Circ2d2TanOn.cxx
+===================================================================
+--- oce.orig/src/Geom2dGcc/Geom2dGcc_Circ2d2TanOn.cxx
++++ oce/src/Geom2dGcc/Geom2dGcc_Circ2d2TanOn.cxx
+@@ -699,7 +699,9 @@
+     if (TheSame1(Index) == 0) { return Standard_False; }
+     else { return Standard_True; }
+   }
++#ifndef _MSC_VER
+   return Standard_False;
++#endif 
+ }
+ 
+ Standard_Boolean Geom2dGcc_Circ2d2TanOn::
+@@ -715,5 +717,7 @@
+     if (TheSame1(Index) == 0) { return Standard_False; }
+     else { return Standard_True; }
+   }
++#ifndef _MSC_VER
+   return Standard_True;
++#endif 
+ }
+Index: oce/src/Geom2dGcc/Geom2dGcc_Circ2d2TanRad.cxx
+===================================================================
+--- oce.orig/src/Geom2dGcc/Geom2dGcc_Circ2d2TanRad.cxx
++++ oce/src/Geom2dGcc/Geom2dGcc_Circ2d2TanRad.cxx
+@@ -480,7 +480,9 @@
+     if (TheSame1(Index) == 0) { return Standard_False; }
+     else { return Standard_True; }
+   }
++#ifndef _MSC_VER
+   return Standard_True;
++#endif 
+ }
+ 
+ Standard_Boolean Geom2dGcc_Circ2d2TanRad::
+@@ -496,5 +498,7 @@
+     if (TheSame1(Index) == 0) { return Standard_False; }
+     else { return Standard_True; }
+   }
++#ifndef _MSC_VER
+   return Standard_True;
++#endif 
+ }
+Index: oce/src/GeomFill/GeomFill.cxx
+===================================================================
+--- oce.orig/src/GeomFill/GeomFill.cxx
++++ oce/src/GeomFill/GeomFill.cxx
+@@ -564,7 +564,9 @@
+     }
+     return Standard_True;
+   }
++#ifndef _MSC_VER
+   return Standard_False;
++#endif
+ }
+ 
+ Standard_Boolean GeomFill::GetCircle(const Convert_ParameterisationType  TConv, 
+@@ -746,5 +748,8 @@
+     }
+     return Standard_True;
+   }
++
++#ifndef _MSC_VER
+   return Standard_False;
++#endif
+ }
+Index: oce/src/GeomFill/GeomFill_LocationGuide.cxx
+===================================================================
+--- oce.orig/src/GeomFill/GeomFill_LocationGuide.cxx
++++ oce/src/GeomFill/GeomFill_LocationGuide.cxx
+@@ -742,9 +742,10 @@
+ #ifdef DEB
+     Standard_Real U = myFirstS + ratio*(Param-myCurve->FirstParameter());
+ #else
+-    myCurve->FirstParameter() ;
++    
+ #endif
+       
++#if 0 // @todo Should be really dead code?
+     // initialisation du germe 
+     InitX(Param);      
+     
+@@ -858,6 +859,7 @@
+ 	return Standard_False;
+       }
+ 
++#endif // Dead code?
+     }//if_rotation
+   
+ 
+Index: oce/src/GeometryTest/GeometryTest_ConstraintCommands.cxx
+===================================================================
+--- oce.orig/src/GeometryTest/GeometryTest_ConstraintCommands.cxx
++++ oce/src/GeometryTest/GeometryTest_ConstraintCommands.cxx
+@@ -366,7 +366,9 @@
+       return 1;
+     }
+   }
++#ifndef _MSC_VER // MSVC unreachable warning
+   return 0;
++#endif
+ }
+ 
+ 
+Index: oce/src/IntPatch/IntPatch_LineConstructor.cxx
+===================================================================
+--- oce.orig/src/IntPatch/IntPatch_LineConstructor.cxx
++++ oce/src/IntPatch/IntPatch_LineConstructor.cxx
+@@ -246,7 +246,9 @@
+       return firstp;
+     }
+   }
++#ifndef _MSC_VER
+   return firstp;
++#endif
+ }
+ 
+ //=======================================================================
+@@ -328,7 +330,9 @@
+       return lastp;
+     }
+   }
++#ifndef _MSC_VER
+   return lastp;
++#endif
+ }
+ 
+ 
+Index: oce/src/IntPatch/IntPatch_Polyhedron.cxx
+===================================================================
+--- oce.orig/src/IntPatch/IntPatch_Polyhedron.cxx
++++ oce/src/IntPatch/IntPatch_Polyhedron.cxx
+@@ -519,7 +519,10 @@
+ 
+     return(0); //-- BUG NON CORRIGE ( a revoir le role de nbdeltaU et nbdeltaV)
+ 
+-    return(TriConnex(TempTri,Pivot,TempOtherP,TriCon,OtherP));
++	// @todo what does mean the above line ? should this really removed?
++#if 0 // added by warning-fix
++	return(TriConnex(TempTri,Pivot,TempOtherP,TriCon,OtherP));
++#endif
+   }
+   return TriCon;
+ }
+Index: oce/src/IntSurf/IntSurf_Quadric.cxx
+===================================================================
+--- oce.orig/src/IntSurf/IntSurf_Quadric.cxx
++++ oce/src/IntSurf/IntSurf_Quadric.cxx
+@@ -247,7 +247,9 @@
+     break;
+   }
+ // pop : pour NT
++#ifndef _MSC_VER
+   return gp_Pnt(0,0,0);
++#endif
+ }
+ // ============================================================
+ void IntSurf_Quadric::D1(const Standard_Real U,
+@@ -298,7 +300,9 @@
+     break;
+   }
+ // pop : pour NT
++#ifndef _MSC_VER
+   return gp_Vec(0,0,0);
++#endif
+ }
+ // ============================================================
+ gp_Vec IntSurf_Quadric::Normale(const Standard_Real U,
+@@ -333,7 +337,9 @@
+     break;
+   }
+ // pop : pour NT
++#ifndef _MSC_VER
+   return gp_Vec(0,0,0);
++#endif
+ }
+ // ============================================================
+ gp_Vec IntSurf_Quadric::Normale (const gp_Pnt& P) const
+@@ -379,7 +385,9 @@
+     }     break;
+   }
+ // pop : pour NT
++#ifndef _MSC_VER
+   return gp_Vec(0,0,0);
++#endif
+ }
+ // ============================================================
+ void IntSurf_Quadric::Parameters (const gp_Pnt& P,
+Index: oce/src/ProjLib/ProjLib_ComputeApproxOnPolarSurface.cxx
+===================================================================
+--- oce.orig/src/ProjLib/ProjLib_ComputeApproxOnPolarSurface.cxx
++++ oce/src/ProjLib/ProjLib_ComputeApproxOnPolarSurface.cxx
+@@ -1170,11 +1170,13 @@
+ //  Modified by Sergey KHROMOV - Thu Apr 18 10:57:51 2002 End
+     return Handle(Adaptor2d_HCurve2d)();
+   }
++#ifndef _MSC_VER
+   myProjIsDone = Standard_False;
+ //  Modified by Sergey KHROMOV - Thu Apr 18 10:58:01 2002 Begin
+ //   Standard_NoSuchObject_Raise_if(1,"ProjLib_ComputeOnPS: build echec");
+ //  Modified by Sergey KHROMOV - Thu Apr 18 10:58:02 2002 End
+   return Handle(Adaptor2d_HCurve2d)();
++#endif
+ }
+ 
+ 
+Index: oce/src/TopOpeBRep/TopOpeBRep_ShapeIntersector2d.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRep/TopOpeBRep_ShapeIntersector2d.cxx
++++ oce/src/TopOpeBRep/TopOpeBRep_ShapeIntersector2d.cxx
+@@ -272,7 +272,7 @@
+                         BS.Box(GS2);
+     myFFDone = Standard_True;
+     break;
+-    NextFFCouple();
++    NextFFCouple();  // @todo Should be really after the break?
+   }
+   
+   SetIntersectionDone();
+Index: oce/src/TopOpeBRep/TopOpeBRep_sort.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRep/TopOpeBRep_sort.cxx
++++ oce/src/TopOpeBRep/TopOpeBRep_sort.cxx
+@@ -22,7 +22,7 @@
+   Standard_Real p2 = i2->Parameter();
+   if      (p1 < p2) return (-1);
+   else if (p1 > p2) return (1);
+-  else return (0);
++  
+   return (0);
+ }
+      
+Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
++++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
+@@ -1768,7 +1768,10 @@
+     // Unknowm case for existing adjacents
+     return 0;
+   }
++ 
++#ifndef _MSC_VER
+   return -1;
++#endif
+ }
+ 
+ //=======================================================================
+Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_GTopo.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_GTopo.cxx
++++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_GTopo.cxx
+@@ -351,8 +351,9 @@
+     else IsToRev = (s1 == TopAbs_IN);
+     return IsToRev;
+   }
+-  Standard_ProgramError::Raise("GTopo::IsToReverse1");
++#ifndef _MSC_VER
+   return Standard_False; // dummy
++#endif
+ }
+ 
+ 
+@@ -374,8 +375,9 @@
+     else IsToRev = (s2 == TopAbs_IN);
+     return IsToRev;
+   }
+-  Standard_ProgramError::Raise("GTopo::IsToReverse2");
++#ifndef _MSC_VER
+   return Standard_False; // dummy
++#endif
+ }
+ 
+ //=======================================================================
+Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Tools_1.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_Tools_1.cxx
++++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Tools_1.cxx
+@@ -242,10 +242,7 @@
+ 	GC->Range(f,l);
+ 	if (SameRange && (f != First || l != Last)) {
+ 	  return ;//BRepCheck_InvalidSameRangeFlag);
+-	  if (SameParameter) {
+-	    return; //BRepCheck_InvalidSameParameterFlag);
+-	  }
+-        }
++       }
+ 	
+ 	Handle(Geom_Surface) Sb = cr->Surface();
+ 	Sb = Handle(Geom_Surface)::DownCast (Su->Transformed(L.Transformation()));
+Index: oce/src/TopOpeBRepDS/TopOpeBRepDS.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS.cxx
++++ oce/src/TopOpeBRepDS/TopOpeBRepDS.cxx
+@@ -119,7 +119,7 @@
+   case TopOpeBRepDS_WIRE    : return Standard_True; break;
+   case TopOpeBRepDS_EDGE    : return Standard_True; break;
+   case TopOpeBRepDS_VERTEX  : return Standard_True; break;
+-  default : return Standard_False;
++  default : break;
+   }
+   return Standard_False;
+ }
+Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_PointIterator.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS_PointIterator.cxx
++++ oce/src/TopOpeBRepDS/TopOpeBRepDS_PointIterator.cxx
+@@ -84,7 +84,9 @@
+     Standard_ProgramError::Raise("TopOpeBRepDS_PointIterator::Parameter()");
+     return 0.;  // windowsNT
+   }
++#ifndef _MSC_VER
+   return 0.;  // windowsNT
++#endif
+ }
+ 
+ //=======================================================================
+@@ -123,7 +125,9 @@
+     Standard_ProgramError::Raise("TopOpeBRepDS_PointIterator::DiffOriented()");
+     return Standard_False; // windowsNT
+   }
++#ifndef _MSC_VER
+   return Standard_False; // windowsNT
++#endif
+ }
+ 
+ //=======================================================================
+@@ -142,7 +146,9 @@
+     Standard_ProgramError::Raise("TopOpeBRepDS_PointIterator::SameOriented()");
+     return Standard_False; // windowsNT
+   }
++#ifndef _MSC_VER
+   return Standard_False; // windowsNT
++#endif
+ }
+ 
+ //=======================================================================
+Index: oce/src/TopOpeBRepTool/TopOpeBRepTool_makeTransition.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRepTool/TopOpeBRepTool_makeTransition.cxx
++++ oce/src/TopOpeBRepTool/TopOpeBRepTool_makeTransition.cxx
+@@ -166,7 +166,6 @@
+   if (samec)           return isON2ifss;//is ON if curves are on same side/tg line
+   if (curvC1 > curvC2) return isIN2ifss;//is IN if curves are on same side/tg line
+   else                 return isOU2ifss;//is OU if curves are on same side/tg line
+-  return 0;
+ }
+ 
+ static Standard_Boolean FUN_getnearpar(const TopoDS_Edge& e,const Standard_Real par,const Standard_Real f,const Standard_Real l,
+@@ -239,7 +238,9 @@
+     sta = TopAbs_ON; 
+     return Standard_True;
+   } 
++#ifndef _MSC_VER
+   return Standard_False;
++#endif
+ } 
+ static Standard_Boolean FUN_mkT2dquad(const TopoDS_Edge& e1,const Standard_Real par1,const Standard_Real f1,const Standard_Real l1,
+ 			 const TopoDS_Edge& e2,const Standard_Real par2,
+Index: oce/src/TopOpeBRepTool/TopOpeBRepTool_mkTondgE.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRepTool/TopOpeBRepTool_mkTondgE.cxx
++++ oce/src/TopOpeBRepTool/TopOpeBRepTool_mkTondgE.cxx
+@@ -353,7 +353,9 @@
+     else         mkT = outin ? MKI2 : MKI1;
+     return Standard_True;
+     ////////////////////////////////////////////////
+-
++	
++	// @todo Must this be really dead code? (warning-fix removal)
++#if 0
+     // xxri : 
+     Standard_Real ddot = tgin1di.Dot(faxis);
+     Standard_Boolean tgaxis = Abs(1-(Abs(ddot))) < FUN_tola(); //=true : edge is tangent to sphere's axis
+@@ -366,6 +368,7 @@
+       if (closedi)            {mkT = MKI12; return Standard_True;}// onfi || onli @190499
+       xxri = tgin1di;
+     }
++#endif
+   }//!isT2d
+ 
+   mkT = MKI12;  // without restrictions.
+Index: oce/src/XSControl/XSControl_Functions.cxx
+===================================================================
+--- oce.orig/src/XSControl/XSControl_Functions.cxx
++++ oce/src/XSControl/XSControl_Functions.cxx
+@@ -123,7 +123,10 @@
+     IFSelect_Activator::SetCurrentAlias (WS->SelectedNorm(Standard_True));
+     return IFSelect_RetDone;
+   }
++
++#ifndef _MSC_VER // Unreachable code warning in MSVC
+   return IFSelect_RetVoid;
++#endif
+ }
+ 
+ 
+Index: oce/inc/GCPnts_QuasiUniformDeflection.gxx
+===================================================================
+--- oce.orig/inc/GCPnts_QuasiUniformDeflection.gxx
++++ oce/inc/GCPnts_QuasiUniformDeflection.gxx
+@@ -211,7 +211,10 @@
+ 
+     Ua = Ub;
+   }
++ 
++#ifndef _MSC_VER
+   return Standard_True;
++#endif
+ }
+ 
+ 
+Index: oce/src/AIS/AIS_Selection.cxx
+===================================================================
+--- oce.orig/src/AIS/AIS_Selection.cxx
++++ oce/src/AIS/AIS_Selection.cxx
+@@ -269,8 +269,10 @@
+   S->myResultMap.Bind( anObject, aListIter );
+   return AIS_SS_Added;
+ #endif //USE_MAP
+-  return AIS_SS_Removed;
+-  
++
++#ifndef _MSC_VER
++  return AIS_SS_Removed;  
++#endif
+ }
+ 
+ //=======================================================================
+Index: oce/src/Adaptor3d/Adaptor3d_IsoCurve.cxx
+===================================================================
+--- oce.orig/src/Adaptor3d/Adaptor3d_IsoCurve.cxx
++++ oce/src/Adaptor3d/Adaptor3d_IsoCurve.cxx
+@@ -788,7 +788,7 @@
+   default:  
+     {
+       Standard_NoSuchObject::Raise("Adaptor3d_IsoCurve:Ellipse");
+-      return gp_Elips();
++      break;
+     }
+     
+   }
+Index: oce/src/Adaptor3d/Adaptor3d_SurfaceOfLinearExtrusion.cxx
+===================================================================
+--- oce.orig/src/Adaptor3d/Adaptor3d_SurfaceOfLinearExtrusion.cxx
++++ oce/src/Adaptor3d/Adaptor3d_SurfaceOfLinearExtrusion.cxx
+@@ -473,7 +473,7 @@
+     }
+ 
+   default:
+-    return GeomAbs_SurfaceOfExtrusion;
++     break;
+ 
+   }
+   
+Index: oce/src/Adaptor3d/Adaptor3d_SurfaceOfRevolution.cxx
+===================================================================
+--- oce.orig/src/Adaptor3d/Adaptor3d_SurfaceOfRevolution.cxx
++++ oce/src/Adaptor3d/Adaptor3d_SurfaceOfRevolution.cxx
+@@ -597,7 +597,7 @@
+     }
+     
+   default:
+-    return GeomAbs_SurfaceOfRevolution;
++     break;
+   }
+   
+   // portage WNT
+Index: oce/src/BOP/BOP_CorrectTolerances.cxx
+===================================================================
+--- oce.orig/src/BOP/BOP_CorrectTolerances.cxx
++++ oce/src/BOP/BOP_CorrectTolerances.cxx
+@@ -252,9 +252,6 @@
+ 	GC->Range(f,l);
+ 	if (SameRange && (f != First || l != Last)) {
+ 	  return ;//BRepCheck_InvalidSameRangeFlag);
+-	  if (SameParameter) {
+-	    return; //BRepCheck_InvalidSameParameterFlag);
+-	  }
+         }
+ 	
+ 	Handle(Geom_Surface) Sb = cr->Surface();
+Index: oce/src/BOPTools/BOPTools_PaveFiller_1.cxx
+===================================================================
+--- oce.orig/src/BOPTools/BOPTools_PaveFiller_1.cxx
++++ oce/src/BOPTools/BOPTools_PaveFiller_1.cxx
+@@ -481,9 +481,10 @@
+ 	      //error: can not find SplitIndex
+ 	      throw 
+ 		BOPTColStd_Failure(" BOPTools_PaveFiller::DoSDEdges()=> can not find SplitIndex");
+-	      
++#ifndef _MSC_VER
+ 	      myIsDone=Standard_False;
+ 	      return;
++#endif
+ 	    }
+ 	    
+ 	  } // if (aPBTool1.IsEqual(aPBObj2) && aPBTool2.IsEqual(aPBObj1)) 
+@@ -520,8 +521,10 @@
+ 	    //error: can not find SplitIndex
+ 	    throw 
+ 		BOPTColStd_Failure(" BOPTools_PaveFiller::DoSDEdges()=> can not find SplitIndex");
++#ifndef _MSC_VER
+ 	    myIsDone=Standard_False;
+ 	    return;
++#endif
+ 	  }
+ 	}
+       }
+Index: oce/src/BRepGProp/BRepGProp_EdgeTool.cxx
+===================================================================
+--- oce.orig/src/BRepGProp/BRepGProp_EdgeTool.cxx
++++ oce/src/BRepGProp/BRepGProp_EdgeTool.cxx
+@@ -45,7 +45,7 @@
+     break;
+     
+     default :
+-      return 10;
++      break;
+   }
+   //POP WE should return something : -> Default
+   return 10;
+Index: oce/src/BRepTools/BRepTools_NurbsConvertModification.cxx
+===================================================================
+--- oce.orig/src/BRepTools/BRepTools_NurbsConvertModification.cxx
++++ oce/src/BRepTools/BRepTools_NurbsConvertModification.cxx
+@@ -551,8 +551,10 @@
+       return Standard_True;
+     }
+   }
++#ifndef _MSC_VER
+   Curve2d = C2d;
+   return Standard_True;
++#endif
+ }
+ 
+ //=======================================================================
+Index: oce/src/Graphic2d/Graphic2d_GraphicObject.cxx
+===================================================================
+--- oce.orig/src/Graphic2d/Graphic2d_GraphicObject.cxx
++++ oce/src/Graphic2d/Graphic2d_GraphicObject.cxx
+@@ -652,8 +652,9 @@
+   }
+   else
+     return Standard_False;
+-#endif
++#else
+   return Standard_False;
++#endif
+ }
+ 
+ Standard_Boolean Graphic2d_GraphicObject::Pick( const Standard_Real Xmin,
+Index: oce/src/Graphic2d/Graphic2d_SetOfMarkers.cxx
+===================================================================
+--- oce.orig/src/Graphic2d/Graphic2d_SetOfMarkers.cxx
++++ oce/src/Graphic2d/Graphic2d_SetOfMarkers.cxx
+@@ -430,8 +430,9 @@
+ {
+ #ifdef OCC402
+   return (myMapOfSelected.Extent() > 0);
+-#endif
++#else
+   return Standard_False;
++#endif
+ }
+ 
+ //SAV
+Index: oce/src/IntTools/IntTools_EdgeFace.cxx
+===================================================================
+--- oce.orig/src/IntTools/IntTools_EdgeFace.cxx
++++ oce/src/IntTools/IntTools_EdgeFace.cxx
+@@ -903,6 +903,7 @@
+     return 0;
+   }
+ 
++#if 0 // @todo Should this code really be removed? (a test will be appropriate)
+   //
+   dt=al1-af1;
+   if (dt<1.e-5) {
+@@ -943,6 +944,7 @@
+     }
+   }
+   return 0;
++#endif
+ }
+ 
+ 
+Index: oce/src/MAT2d/MAT2d_Circuit.cxx
+===================================================================
+--- oce.orig/src/MAT2d/MAT2d_Circuit.cxx
++++ oce/src/MAT2d/MAT2d_Circuit.cxx
+@@ -812,7 +812,9 @@
+   else {
+     return Standard_True;
+   }
++#ifndef _MSC_VER
+   return Standard_False;
++#endif
+ }
+ 
+ 
+Index: oce/src/MNaming/MNaming_NamingRetrievalDriver.cxx
+===================================================================
+--- oce.orig/src/MNaming/MNaming_NamingRetrievalDriver.cxx
++++ oce/src/MNaming/MNaming_NamingRetrievalDriver.cxx
+@@ -34,7 +34,7 @@
+     case  6 : return TopAbs_EDGE;
+     case  7 : return TopAbs_VERTEX;
+       default :
+-	return TopAbs_SHAPE;
++	    break;
+     }
+   return TopAbs_SHAPE;
+ }
+Index: oce/src/MNaming/MNaming_NamingRetrievalDriver_1.cxx
+===================================================================
+--- oce.orig/src/MNaming/MNaming_NamingRetrievalDriver_1.cxx
++++ oce/src/MNaming/MNaming_NamingRetrievalDriver_1.cxx
+@@ -37,7 +37,7 @@
+     case  6 : return TopAbs_EDGE;
+     case  7 : return TopAbs_VERTEX;
+       default :
+-	return TopAbs_SHAPE;
++	    break;
+     }
+   return TopAbs_SHAPE;
+ }
+Index: oce/src/OpenGl/OpenGl_GraphicDriver_9.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_GraphicDriver_9.cxx
++++ oce/src/OpenGl/OpenGl_GraphicDriver_9.cxx
+@@ -96,9 +96,9 @@
+       for (i = 0; i < aGlWidth; i++){
+         if (i < MyPic->Width()){
+           MyColor = MyPic->PixelColor(i, j);
+-          *MyData++ = (int)(255 * MyColor.Red());
+-          *MyData++ = (int)(255 * MyColor.Green());
+-          *MyData++ = (int)(255 * MyColor.Blue());
++          *MyData++ = (unsigned char)(int)(255 * MyColor.Red());
++          *MyData++ = (unsigned char)(int)(255 * MyColor.Green());
++          *MyData++ = (unsigned char)(int)(255 * MyColor.Blue());
+         }
+         else {
+           *MyData++ = (int)(0);
+@@ -243,9 +243,9 @@
+       for ( j = height - 1; j >= 0; j-- )
+         for ( i = 0; i < width; i++ ) {
+           color = image->PixelColor( i, j );
+-          *pdata++ = (int)( 255 * color.Red() );
+-          *pdata++ = (int)( 255 * color.Green() );
+-          *pdata++ = (int)( 255 * color.Blue() );
++          *pdata++ = (unsigned char)(int)( 255 * color.Red() );
++          *pdata++ = (unsigned char)(int)( 255 * color.Green() );
++          *pdata++ = (unsigned char)(int)( 255 * color.Blue() );
+         }
+         call_togl_create_bg_texture( (CALL_DEF_VIEW*)&MyCView, width, height, data, (int)FillStyle );
+         // delete data here
+@@ -481,7 +481,9 @@
+     cubic.xname = (char*) xname;
+     cubic.yname = (char*) yname; 
+     cubic.zname = (char*) zname;
+-    /* Draw names */
++    
++	/* @todo fields in cubic should be booleans intead of chars? */
++	/* Draw names */
+     cubic.xdrawname = xdrawname; 
+     cubic.ydrawname = ydrawname; 
+     cubic.zdrawname = zdrawname;
+Index: oce/src/OpenGl/OpenGl_togl_print.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_togl_print.cxx
++++ oce/src/OpenGl/OpenGl_togl_print.cxx
+@@ -57,8 +57,9 @@
+   oldObj = SelectObject( printer, font );
+   wglUseFontBitmaps( printer, 32, 96, base );
+   return base;
+-#endif
++#else
+   return 0;
++#endif
+ }
+ 
+ void deleteFont( GLuint base )
+Index: oce/src/ShapeAnalysis/ShapeAnalysis.cxx
+===================================================================
+--- oce.orig/src/ShapeAnalysis/ShapeAnalysis.cxx
++++ oce/src/ShapeAnalysis/ShapeAnalysis.cxx
+@@ -234,7 +234,9 @@
+     Standard_Boolean rescl = (fcl.PerformInfinitePoint () == TopAbs_OUT);
+     return rescl;
+   }
++#ifndef _MSC_VER
+   return Standard_True;
++#endif
+ }
+ 
+ //=======================================================================
+Index: oce/src/ShapeBuild/ShapeBuild_Edge.cxx
+===================================================================
+--- oce.orig/src/ShapeBuild/ShapeBuild_Edge.cxx
++++ oce/src/ShapeBuild/ShapeBuild_Edge.cxx
+@@ -549,7 +549,9 @@
+     }
+     return aBSpline2d;
+   }
++#ifndef _MSC_VER
+   return result;
++#endif
+ }
+ 
+ //=======================================================================
+Index: oce/src/ShapeConstruct/ShapeConstruct_ProjectCurveOnSurface.cxx
+===================================================================
+--- oce.orig/src/ShapeConstruct/ShapeConstruct_ProjectCurveOnSurface.cxx
++++ oce/src/ShapeConstruct/ShapeConstruct_ProjectCurveOnSurface.cxx
+@@ -1547,7 +1547,9 @@
+ #endif
+     return Standard_False;
+   }
++#ifndef _MSC_VER
+   return Standard_False;  // ramasse-miette
++#endif
+ }
+ 
+ /* S4135 : BestExtremum is commented after IsAnIsoparametric works with Precision::Confusion()
+Index: oce/src/ShapeCustom/ShapeCustom_BSplineRestriction.cxx
+===================================================================
+--- oce.orig/src/ShapeCustom/ShapeCustom_BSplineRestriction.cxx
++++ oce/src/ShapeCustom/ShapeCustom_BSplineRestriction.cxx
+@@ -744,7 +744,9 @@
+   //else 
+   //Surface is not BSpline or Bezier
+   //  return Standard_False;
++#ifndef _MSC_VER
+   return Standard_True;
++#endif
+ }
+ 
+ //=======================================================================
+Index: oce/src/ShapeFix/ShapeFix_EdgeProjAux.cxx
+===================================================================
+--- oce.orig/src/ShapeFix/ShapeFix_EdgeProjAux.cxx
++++ oce/src/ShapeFix/ShapeFix_EdgeProjAux.cxx
+@@ -200,7 +200,9 @@
+ #endif
+     return Standard_False;
+   }
++#ifndef _MSC_VER
+   return Standard_False;  // normalement, on n y passe jamais
++#endif
+ }
+ 
+ //=======================================================================
+Index: oce/src/ShapeFix/ShapeFix_Wireframe.cxx
+===================================================================
+--- oce.orig/src/ShapeFix/ShapeFix_Wireframe.cxx
++++ oce/src/ShapeFix/ShapeFix_Wireframe.cxx
+@@ -371,7 +371,6 @@
+     B.SameRange(newedge,Standard_False);
+     
+     E3 = newedge;
+-    return ReplaceFirst;
+   }
+   catch ( Standard_Failure ) 
+   {
+@@ -379,7 +378,6 @@
+     cout<<"Error: ShapeFix_Wireframe::FixSmallEdges: JoinEdges: Exception in GeomConvert_CompCurveToBSplineCurve: ";
+     Standard_Failure::Caught()->Print(cout); cout<<endl;
+ #endif
+-    return ReplaceFirst;
+   }
+   return ReplaceFirst;
+ }
+Index: oce/src/StdPrs/StdPrs_Curve.cxx
+===================================================================
+--- oce.orig/src/StdPrs/StdPrs_Curve.cxx
++++ oce/src/StdPrs/StdPrs_Curve.cxx
+@@ -239,9 +239,13 @@
+       }
+       return Standard_False;
+     }
++#ifndef _MSC_VER
+     return Standard_False;
++#endif
+   }
+-  return Standard_False;
++#ifndef _MSC_VER
++    return Standard_False;
++#endif
+ }
+ 
+ 
+Index: oce/src/StdPrs/StdPrs_DeflectionCurve.cxx
+===================================================================
+--- oce.orig/src/StdPrs/StdPrs_DeflectionCurve.cxx
++++ oce/src/StdPrs/StdPrs_DeflectionCurve.cxx
+@@ -280,7 +280,9 @@
+       return Standard_False;
+     }
+   }
++#ifndef _MSC_VER
+   return Standard_False;
++#endif
+ }
+ 
+ 
+Index: oce/src/StdSelect/StdSelect_BRepSelectionTool.cxx
+===================================================================
+--- oce.orig/src/StdSelect/StdSelect_BRepSelectionTool.cxx
++++ oce/src/StdSelect/StdSelect_BRepSelectionTool.cxx
+@@ -655,8 +655,9 @@
+       return 4;
+     }
+   }
+-  
+-  return 0;
++#ifndef _MSC_VER 
++   return 0;
++#endif
+ }
+ 
+ //=======================================================================

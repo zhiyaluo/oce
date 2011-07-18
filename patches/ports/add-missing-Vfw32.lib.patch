@@ -1,0 +1,23 @@
+commit 25474e30191d55fc649bb5c34f637b7e551e652c
+Author: QbProg <tholag@gmail.com>
+Date:   Sun May 15 15:01:50 2011 +0200
+
+    Added a missing library import for the "Video For Windows" functions.
+
+diff --git a/src/OpenGl/OpenGl_AVIWriter.cxx b/src/OpenGl/OpenGl_AVIWriter.cxx
+index e73a6a1..32bbb07 100644
+--- a/src/OpenGl/OpenGl_AVIWriter.cxx
++++ b/src/OpenGl/OpenGl_AVIWriter.cxx
+@@ -6,6 +6,12 @@
+ #include <OpenGl_AVIWriter.hxx>
+ 
+ #ifdef WNT
++
++#ifdef _MSC_VER
++// The AVI writer requires Video For Windows library 
++#pragma comment(lib,"Vfw32.lib")
++#endif
++
+ OpenGl_AVIWriter* OpenGl_AVIWriter::MyAVIWriterInstance = 0L;
+ 
+ OpenGl_AVIWriter * OpenGl_AVIWriter::GetInstance()
