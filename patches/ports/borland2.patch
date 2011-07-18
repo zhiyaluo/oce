@@ -18,22 +18,6 @@ Subject: [PATCH 2/9] Templates related fixes needed by BCC
  ros/inc/NCollection_IndexedMap.hxx     |    4 ++++
  4 files changed, 26 insertions(+), 0 deletions(-)
 
-Index: oce/inc/MeshAlgo_CellFilter.hxx
-===================================================================
---- oce.orig/inc/MeshAlgo_CellFilter.hxx
-+++ oce/inc/MeshAlgo_CellFilter.hxx
-@@ -10,3 +10,11 @@
- #include <MeshAlgo_CircleInspector.hxx>
-   
- typedef NCollection_CellFilter<MeshAlgo_CircleInspector> MeshAlgo_CellFilter;
-+
-+#ifdef __BORLANDC__
-+  // definition of global functions is needed for map
-+  Standard_Integer HashCode (const NCollection_CellFilter<MeshAlgo_CircleInspector>::Cell &aCell, const Standard_Integer theUpper)
-+  { return aCell.HashCode(theUpper); }
-+  Standard_Boolean IsEqual (const NCollection_CellFilter<MeshAlgo_CircleInspector>::Cell &aCell1, const NCollection_CellFilter<MeshAlgo_CircleInspector>::Cell &aCell2)
-+  { return aCell1.IsEqual(aCell2); }
-+#endif
 Index: oce/inc/NCollection_CellFilter.hxx
 ===================================================================
 --- oce.orig/inc/NCollection_CellFilter.hxx

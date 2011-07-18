@@ -1263,23 +1263,23 @@ Index: oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
 --- oce.orig/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
 +++ oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
 @@ -110,7 +110,7 @@
-   Handle(Geom_Curve) pCurv1 = BRep_Tool::Curve(S1, aFirst1, aLast1);
-   Handle(Geom_Curve) pCurv2 = BRep_Tool::Curve(S2, aFirst2, aLast2);
- 
+       Precision::IsInfinite(aLast2))
+     return;
+   
 -  Standard_Real Umin, Umax;
 +  Standard_Real Umin = 0, Umax = 0;
    Standard_Boolean bUmin, bUmax;
    bUmin = bUmax = Standard_False;
  
 @@ -270,7 +270,7 @@
-       bIsInfinit = Standard_False;
-       return;
-     }  
+   const Standard_Boolean bRestrict = BRep_Tool::NaturalRestriction(aF);
+ 
+   Standard_Real U1, V1, U2, V2;
 -  Standard_Real Umin, Umax, Vmin, Vmax;
 +  Standard_Real Umin = 0, Umax = 0, Vmin = 0, Vmax = 0;
- 
+   Standard_Boolean bUmin, bUmax, bVmin, bVmax;
+   bUmin = bUmax = bVmin = bVmax = Standard_False;
    Standard_Boolean bIsTrim = Standard_False;
-   
 Index: oce/src/BRepFeat/BRepFeat_Form.cxx
 ===================================================================
 --- oce.orig/src/BRepFeat/BRepFeat_Form.cxx
@@ -1543,15 +1543,14 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_0.cxx
    Standard_Real tolr1,tolr2;
    tolr1 = tolr2 = tolreached = tol3d;
    if((S1->GetType() == GeomAbs_Cylinder && S2->GetType() == GeomAbs_Plane)||
-@@ -4151,7 +4151,7 @@
-   Standard_Boolean periodic = Spine->IsPeriodic();
-   Standard_Real nwf = WF, nwl = WL,period;
-   Standard_Integer nbed = Spine->NbEdges();
--  Standard_Real pared,tolpared;
-+  Standard_Real pared = 0.0,tolpared = 0.0;
-   Handle(Geom_BSplineCurve) BSpline;
-   Handle(Geom_BezierCurve) Bezier;
-   
+@@ -4151,6 +4151,7 @@
+   Wreffin = WL;
+   nwf = WF;
+   nwl = WL;
++  pared = 0.0;
+   nbed = Spine->NbEdges();
+   periodic = Spine->IsPeriodic();
+   if(periodic) {
 Index: oce/src/ChFi3d/ChFi3d_Builder_2.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder_2.cxx

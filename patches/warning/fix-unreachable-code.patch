@@ -200,19 +200,6 @@ Index: oce/src/ChFi2d/ChFi2d_Builder_0.cxx
    } // else ...
    return thePoint;
  } // ComputePoint
-Index: oce/src/ChFi3d/ChFi3d_Builder_0.cxx
-===================================================================
---- oce.orig/src/ChFi3d/ChFi3d_Builder_0.cxx
-+++ oce/src/ChFi3d/ChFi3d_Builder_0.cxx
-@@ -601,7 +601,7 @@
-        */
-     return Standard_False;
-   default:
--    return Standard_False;
-+    break;
-   }
-   return Standard_False;
- }
 Index: oce/src/ChFi3d/ChFi3d_Builder_CnCrn.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder_CnCrn.cxx
@@ -1102,19 +1089,3 @@ Index: oce/src/StdPrs/StdPrs_DeflectionCurve.cxx
  }
  
  
-Index: oce/src/StdSelect/StdSelect_BRepSelectionTool.cxx
-===================================================================
---- oce.orig/src/StdSelect/StdSelect_BRepSelectionTool.cxx
-+++ oce/src/StdSelect/StdSelect_BRepSelectionTool.cxx
-@@ -655,8 +655,9 @@
-       return 4;
-     }
-   }
--  
--  return 0;
-+#ifndef _MSC_VER 
-+   return 0;
-+#endif
- }
- 
- //=======================================================================

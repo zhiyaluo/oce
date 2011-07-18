@@ -31,6 +31,6 @@ Index: oce/inc/NIS_InteractiveContext.hxx
 +# include <Handle_NIS_InteractiveObject.hxx>
 +# include <Handle_NIS_View.hxx>
 +#endif
- #include <NCollection_IncAllocator.hxx>
  #include <NCollection_Map.hxx>
  #include <NCollection_Vector.hxx>
+ #include <NIS_Allocator.hxx>

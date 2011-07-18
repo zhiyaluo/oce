@@ -996,20 +996,20 @@ Index: oce/src/Graphic3d/Graphic3d_Structure.cxx
 -  MyCStructure.ContextFillArea.PolygonOffsetUnits  = aPolyUnits;
 +  MyCStructure.ContextFillArea.PolygonOffsetFactor = (float)aPolyFactor;
 +  MyCStructure.ContextFillArea.PolygonOffsetUnits  = (float)aPolyUnits;
-   // OCC4895 SAN 22/03/04 High-level interface for controlling polygon offsets 
+   // OCC4895 SAN 22/03/04 High-level interface for controlling polygon offsets
  
    MyGraphicDriver->ContextStructure (MyCStructure);
 @@ -1305,7 +1305,7 @@
    MyCStructure.ContextText.ColorSubTitle.g  = float (Gs);
    MyCStructure.ContextText.ColorSubTitle.b  = float (Bs);
-   MyCStructure.ContextText.TextZoomable     = ATextZoomable;    
--  MyCStructure.ContextText.TextAngle        = ATextAngle;   
-+  MyCStructure.ContextText.TextAngle        = (float)ATextAngle;   
-   MyCStructure.ContextText.TextFontAspect   = (int)ATextFontAspect;   
+   MyCStructure.ContextText.TextZoomable     = ATextZoomable;
+-  MyCStructure.ContextText.TextAngle        = ATextAngle;
++  MyCStructure.ContextText.TextAngle        = (float)ATextAngle;
+   MyCStructure.ContextText.TextFontAspect   = (int)ATextFontAspect;
  
    MyCStructure.ContextText.IsDef          = 1;
 @@ -1772,9 +1772,9 @@
-   if (IsDeleted ()) return; 
+   if (IsDeleted ()) return;
  
    MyCStructure.TransformPersistence.Flag = AFlag;
 -  MyCStructure.TransformPersistence.Point.x = APoint.X();
@@ -1027,7 +1027,7 @@ Index: oce/src/Graphic3d/Graphic3d_Structure.cxx
    MyCStructure.ContextText.TextZoomable     = ATextZoomable;
 -  MyCStructure.ContextText.TextAngle        = ATextAngle;
 +  MyCStructure.ContextText.TextAngle        = (float)ATextAngle;
-   MyCStructure.ContextText.TextFontAspect   = (int)ATextFontAspect; 
+   MyCStructure.ContextText.TextFontAspect   = (int)ATextFontAspect;
  
  
 @@ -2366,8 +2366,8 @@
@@ -1038,7 +1038,7 @@ Index: oce/src/Graphic3d/Graphic3d_Structure.cxx
 -  MyCStructure.ContextFillArea.PolygonOffsetUnits  = aPolyUnits;
 +  MyCStructure.ContextFillArea.PolygonOffsetFactor = (float)aPolyFactor;
 +  MyCStructure.ContextFillArea.PolygonOffsetUnits  = (float)aPolyUnits;
-   // OCC4895 SAN 22/03/04 High-level interface for controlling polygon offsets 
+   // OCC4895 SAN 22/03/04 High-level interface for controlling polygon offsets
  }
  
 Index: oce/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
@@ -1110,19 +1110,6 @@ Index: oce/src/LDOM/LDOM_XmlReader.cxx
    if (IsAlphabetic(aCh) || aCh == '_' || aCh == ':') {
      const char * aPtr = &aString[1];
      while (aPtr < aStringEnd) {
-Index: oce/src/NIS/NIS_Surface.cxx
-===================================================================
---- oce.orig/src/NIS/NIS_Surface.cxx
-+++ oce/src/NIS/NIS_Surface.cxx
-@@ -299,7 +299,7 @@
- {
-   Handle(NIS_SurfaceDrawer) aDrawer = defaultDrawer();
-   aDrawer->Assign (GetDrawer());
--  aDrawer->myPolygonOffset = theValue;
-+  aDrawer->myPolygonOffset = (Standard_ShortReal)theValue;
-   SetDrawer (aDrawer);
- }
- 
 Index: oce/src/OSD/OSD.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD.cxx
@@ -1228,7 +1215,7 @@ Index: oce/src/OpenGl/OpenGl_TextRender.cxx
  
    Tint zoom = 0;
    CMN_KEY keyZoom;
-@@ -391,14 +391,14 @@
+@@ -391,7 +391,7 @@
      }
      else
      {
@@ -1237,9 +1224,10 @@ Index: oce/src/OpenGl/OpenGl_TextRender.cxx
      }
    }
    glGetIntegerv(GL_RENDER_MODE, &renderMode);
-   if ( renderMode == GL_FEEDBACK ) 
-   {
- #ifdef HAVE_GL2PS
+@@ -400,7 +400,7 @@
+     char *fontName = new char[strlen((char*)keyfontName.data.pdata) + 1];
+     strcpy(fontName,(char*)keyfontName.data.pdata);
+ 
 -    export_h = (GLdouble)fnt->FaceSize() / export_h;
 +    export_h = float((GLdouble)fnt->FaceSize() / export_h);
      int aligment = alignmentforgl2ps( vh, vv );
@@ -1531,7 +1519,7 @@ Index: oce/src/Select3D/Select3D_SensitiveGroup.cxx
 ===================================================================
 --- oce.orig/src/Select3D/Select3D_SensitiveGroup.cxx
 +++ oce/src/Select3D/Select3D_SensitiveGroup.cxx
-@@ -177,11 +177,11 @@
+@@ -177,12 +177,12 @@
  						  Standard_Real& DMin) 
  {
    myLastRank = 0;
@@ -1539,12 +1527,13 @@ Index: oce/src/Select3D/Select3D_SensitiveGroup.cxx
 +  myLastTol = (Standard_ShortReal)aTol;
    for(Select3D_ListIteratorOfListOfSensitive It(myList);It.More();It.Next()){
      myLastRank++;
-     if(It.Value()->Matches(X,Y,aTol,DMin)){
--      myX = X;myY = Y;myLastTol = aTol;
+     if (It.Value()->Matches (X, Y, aTol, DMin))
+     {
+-      myX = X; myY = Y; myLastTol = aTol;
 +      myX = (Standard_ShortReal)X; myY = (Standard_ShortReal)Y; myLastTol = (Standard_ShortReal)aTol;
-       SetLastDepth( Precision::Infinite() );
-       
-       Select3D_SensitiveEntity::Matches(X,Y,aTol,DMin);
+       // compute and validate the depth (will call ::ComputeDepth())
+       return Select3D_SensitiveEntity::Matches (X, Y, aTol, DMin);
+     }
 Index: oce/src/ShapeProcess/ShapeProcess_Context.cxx
 ===================================================================
 --- oce.orig/src/ShapeProcess/ShapeProcess_Context.cxx

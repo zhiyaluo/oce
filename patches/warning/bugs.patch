@@ -95,16 +95,3 @@ index 8c29deb..b93244c 100644
  	  decal++;dloc++;
  	}
        }
-diff --git a/src/ViewerTest/ViewerTest.cxx b/src/ViewerTest/ViewerTest.cxx
-index 60a4127..85ca2a2 100644
---- a/src/ViewerTest/ViewerTest.cxx
-+++ b/src/ViewerTest/ViewerTest.cxx
-@@ -2071,7 +2071,7 @@ static int VPerf(Draw_Interpretor& di, Standard_Integer , const char** argv) {
- // Function : VAnimation
- //==================================================================================
- static int VAnimation (Draw_Interpretor& di, Standard_Integer argc, const char** argv) {
--  if (argc =! 5) {
-+  if (argc != 5) {
-     di<<"Use: "<<argv[0]<<" CrankArmFile CylinderHeadFile PropellerFile EngineBlockFile"<<"\n";
-     return 1;
-   }

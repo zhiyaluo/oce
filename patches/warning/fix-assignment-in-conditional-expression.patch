@@ -594,19 +594,6 @@ Index: oce/src/Standard/Standard.cxx
    
    if ( bOptAlloc == 1 ) { 
      myFMMgr = new Standard_MMgrOpt(bClear, bMMap, aCellSize, aNbPages,
-Index: oce/src/TDataXtd/TDataXtd_Constraint.cxx
-===================================================================
---- oce.orig/src/TDataXtd/TDataXtd_Constraint.cxx
-+++ oce/src/TDataXtd/TDataXtd_Constraint.cxx
-@@ -216,7 +216,7 @@
- void TDataXtd_Constraint::SetType (const TDataXtd_ConstraintEnum CTR) 
- {  
-   // OCC2932 correction
--  if(myType = CTR) return;
-+  if((myType = CTR) != 0) return;
- 
-   Backup();
-   myType = CTR;
 Index: oce/src/TestTopOpe/TestTopOpe_BOOP.cxx
 ===================================================================
 --- oce.orig/src/TestTopOpe/TestTopOpe_BOOP.cxx

@@ -31,21 +31,21 @@ Index: oce/src/Draw/Draw_Window.cxx
      exit(1);
    }
    Tk_Name(mainWindow) =
-@@ -2065,7 +2065,7 @@
-     OCC_CATCH_SIGNALS
-     Standard_Integer res = Tk_Init(interp) ;
-     if (res != TCL_OK)
--      cout << "tkLoop: error in Tk initialization. Tcl reported: " << interp->result << endl;
-+      cout << "tkLoop: error in Tk initialization. Tcl reported: " << Tcl_GetStringResult(interp) << endl;
- 
-   } catch  (Standard_Failure) {
-     cout <<"tkLoop: exception in TK_Init "<<endl;
-@@ -2075,7 +2075,7 @@
-   mainWindow =
-     Tk_MainWindow(interp) ;
-   if (mainWindow == NULL) {
--        fprintf(stderr, "%s\n", interp->result);
-+        fprintf(stderr, "%s\n", Tcl_GetStringResult(interp));
-         cout << "tkLoop: Tk_MainWindow() returned NULL. Exiting..." << endl;
-         Tcl_Exit(0);
-    }
+@@ -2067,7 +2067,7 @@
+       Standard_Integer res = Tk_Init (interp);
+       if (res != TCL_OK)
+       {
+-        cout << "tkLoop: error in Tk initialization. Tcl reported: " << interp->result << endl;
++        cout << "tkLoop: error in Tk initialization. Tcl reported: " << Tcl_GetStringResult(interp) << endl;
+       }
+     }
+     catch (Standard_Failure)
+@@ -2078,7 +2078,7 @@
+     mainWindow = Tk_MainWindow (interp);
+     if (mainWindow == NULL)
+     {
+-      fprintf (stderr, "%s\n", interp->result);
++      fprintf (stderr, "%s\n", Tcl_GetStringResult(interp));
+       cout << "tkLoop: Tk_MainWindow() returned NULL. Exiting...\n";
+       Tcl_Exit (0);
+     }

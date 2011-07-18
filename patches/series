@@ -1,6 +1,5 @@
 remove-duplicate-headers.patch
 
-submitted/OCC22324.patch
 submitted/OCC22327.patch
 submitted/OCC22332.patch
 
@@ -32,7 +31,6 @@ cmake/remove-RETSIGTYPE-in-Csemaphore.c.patch
 
 warning/add-todos.patch
 warning/bugs.patch
-warning/bugs2.patch
 
 warning/fix-assignment-in-conditional-expression.patch
 warning/fix-declared-but-never-defined.patch

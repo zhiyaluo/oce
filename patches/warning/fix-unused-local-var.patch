@@ -1217,29 +1217,21 @@ Index: oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
 --- oce.orig/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
 +++ oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
 @@ -1146,7 +1146,6 @@
- 	      }
- 	    BRepExtrema_SeqOfSolution seqSol1;
- 	    BRepExtrema_SeqOfSolution seqSol2;
--	    Standard_Boolean bIsMini = Standard_False;
- 	    if (SeqSolution1.Length() > 0 && SeqSolution2.Length() > 0)
- 	      MIN_SOLUTION(SeqSolution1, SeqSolution2, myDstRef, myEps, seqSol1, seqSol2);
- 	    
-@@ -1167,7 +1166,6 @@
- 				      const Standard_Real DstRef)
  
- {
--  const Standard_Real epsP=Precision::PConfusion();
-   SeqSolShape1.Clear();
-   SeqSolShape2.Clear();
-   myModif=Standard_False;
+       BRepExtrema_SeqOfSolution seqSol1;
+       BRepExtrema_SeqOfSolution seqSol2;
+-      Standard_Boolean bIsMini = Standard_False;
+       if (SeqSolution1.Length() > 0 && SeqSolution2.Length() > 0)
+         MIN_SOLUTION(SeqSolution1, SeqSolution2, myDstRef, myEps, seqSol1, seqSol2);
+ 	    
 @@ -1383,7 +1381,6 @@
- 	   }
- 	 BRepExtrema_SeqOfSolution seqSol1;
- 	 BRepExtrema_SeqOfSolution seqSol2;
--	 Standard_Boolean bIsMini = Standard_False;
- 	 if (SeqSolution1.Length() > 0 && SeqSolution2.Length() > 0)
- 	   MIN_SOLUTION(SeqSolution1, SeqSolution2, myDstRef, myEps, seqSol1, seqSol2);
- 	 
+ 
+       BRepExtrema_SeqOfSolution seqSol1;
+       BRepExtrema_SeqOfSolution seqSol2;
+-      Standard_Boolean bIsMini = Standard_False;
+       if (SeqSolution1.Length() > 0 && SeqSolution2.Length() > 0)
+         MIN_SOLUTION(SeqSolution1, SeqSolution2, myDstRef, myEps, seqSol1, seqSol2);
+ 	    
 Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_OffsetWire.cxx
@@ -1294,45 +1286,19 @@ Index: oce/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
 ===================================================================
 --- oce.orig/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
 +++ oce/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
-@@ -144,7 +144,6 @@
-     TColStd_SequenceOfReal aFSeq, aLSeq;
-     TColGeom2d_SequenceOfCurve aCSeq;
-     TopTools_SequenceOfShape aShSeq;
--    Standard_Real defedge = 0;
- 
-     TopoDS_Iterator exW(face);
-     for (; exW.More(); exW.Next()) {
 @@ -1264,7 +1263,6 @@
    //IMPORTANT: Constants used in calculations
    const Standard_Real MinimalArea2d = 1.e-9;
    const Standard_Real MinimalSqLength3d = 1.e-12;
--  const Standard_Real aDef2 = defface*defface;
+-  const Standard_Real aDef2 = theDefFace*theDefFace;
  
    // Define the number of iterations
    Standard_Integer myNbIterations = 11;
-@@ -1286,9 +1284,6 @@
-   gp_Pnt pDef;
-   Standard_Real dv = 0, defl = 0, maxdef = -1;
-   Standard_Integer pass = 1, nf = 0, nl = 0;
--  Standard_Integer v1, v2, v3, e1, e2, e3;
--  Standard_Boolean o1, o2, o3;
--  Standard_Boolean m1, m2, m3;
-   BRepMesh_Vertex InsVertex;
-   Standard_Boolean caninsert;
- 
-@@ -1594,7 +1589,6 @@
-           Standard_Integer aSt[4];
-           aSt[0] = GeomLib::NormEstim(BSpl, gp_Pnt2d(mi2d), Precision::Confusion(), midDir);
-           Standard_Integer i = 0;
--          gp_Dir dir[3] = {gp_Dir(0,0,1), gp_Dir(0,0,1), gp_Dir(0,0,1)};
-           Standard_Real anAngle[3];
-           for(; i < 3; i++)
-           {
 @@ -1686,7 +1680,6 @@
        
-       const BRepMesh_Edge& ve1=structure->GetLink(e1);
-       const BRepMesh_Edge& ve2=structure->GetLink(e2);
--      const BRepMesh_Edge& ve3=structure->GetLink(e3);
+       const BRepMesh_Edge& ve1=myStructure->GetLink(e1);
+       const BRepMesh_Edge& ve2=myStructure->GetLink(e2);
+-      const BRepMesh_Edge& ve3=myStructure->GetLink(e3);
        
        if (o1) {
  	      v1=ve1.FirstNode();
@@ -1646,18 +1612,6 @@ Index: oce/src/MeshVS/MeshVS_TextPrsBuilder.cxx
    // Bold font is used by default for better text readability
    OSD_FontAspect           AFontAspectType  = OSD_FA_Bold;
    Standard_Integer         AAspect; 
-Index: oce/src/OpenGl/OpenGl_FontMgr.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_FontMgr.cxx
-+++ oce/src/OpenGl/OpenGl_FontMgr.cxx
-@@ -375,7 +375,6 @@
-     return 0.f;
- 
-   OGLFont_Cache cache = _FontCache.Find( id );
--  GLenum err = glGetError();
- 
-   Standard_ShortReal w = cache.Font->Advance( str );
- 
 Index: oce/src/OpenGl/OpenGl_TextRender.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_TextRender.cxx
@@ -1831,9 +1785,9 @@ Index: oce/src/Select3D/Select3D_SensitiveTriangulation.cxx
 +++ oce/src/Select3D/Select3D_SensitiveTriangulation.cxx
 @@ -636,7 +636,6 @@
    if(myDetectedTr==-1) 
-     return Standard_False; // non implemente actuellement...
+     return Standard_False; //  currently not implemented...
    const Poly_Array1OfTriangle& triangles = myTriangul->Triangles();
--  const TColgp_Array1OfPnt& Nodes = myTriangul->Nodes();  
+-  const TColgp_Array1OfPnt& Nodes = myTriangul->Nodes();
    Standard_Integer n1,n2,n3;
    triangles( myDetectedTr ).Get(n1,n2,n3);
  
@@ -2119,14 +2073,14 @@ Index: oce/src/XmlLDrivers/XmlLDrivers_DocumentRetrievalDriver.cxx
 --- oce.orig/src/XmlLDrivers/XmlLDrivers_DocumentRetrievalDriver.cxx
 +++ oce/src/XmlLDrivers/XmlLDrivers_DocumentRetrievalDriver.cxx
 @@ -251,8 +251,6 @@
- 	    try {
- 	      OCC_CATCH_SIGNALS
- 	      TCollection_AsciiString anInf(anInfo,'?');
--	      Standard_Integer aRefCounter = anInf.Token(" ",2).IntegerValue();
--	      //theNewDocument->SetReferenceCounter(aRefCounter);
- 	    }
- 	    catch (Standard_Failure) { 
- 	      //	  cout << "warning: could not read the reference counter in " << aFileName << endl;
+       try {
+         OCC_CATCH_SIGNALS
+         TCollection_AsciiString anInf(anInfo,'?');
+-        Standard_Integer aRefCounter = anInf.Token(" ",2).IntegerValue();
+-        //theNewDocument->SetReferenceCounter(aRefCounter);
+       }
+       catch (Standard_Failure) { 
+         //    cout << "warning: could not read the reference counter in " << aFileName << endl;
 Index: oce/src/XmlMDataStd/XmlMDataStd_BooleanArrayDriver.cxx
 ===================================================================
 --- oce.orig/src/XmlMDataStd/XmlMDataStd_BooleanArrayDriver.cxx
