@@ -13,7 +13,7 @@ Index: oce/src/NCollection/NCollection_BaseAllocator.cxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_BaseAllocator.cxx
 +++ oce/src/NCollection/NCollection_BaseAllocator.cxx
-@@ -122,12 +122,12 @@
+@@ -257,12 +257,12 @@
      Standard_Integer nbLeft = aInfo.nbAlloc - aInfo.nbFree;
      Standard_Size aSizeAlloc = aInfo.nbAlloc * aInfo.roundSize;
      Standard_Size aSizeLeft = nbLeft * aInfo.roundSize;

@@ -31,27 +31,6 @@ Subject: [PATCH 66/82] [warning-fix][unused-function] Fix warnings: *
  drv/StepFile/lex.step.c       |   79 -----------------------------------------
  2 files changed, 0 insertions(+), 126 deletions(-)
 
-Index: oce/src/Units/Units_UnitsDictionary.cxx
-===================================================================
---- oce.orig/src/Units/Units_UnitsDictionary.cxx
-+++ oce/src/Units/Units_UnitsDictionary.cxx
-@@ -46,16 +46,6 @@
- #ifdef PRO13136		//Temporaire en attendant OSD::CStringToReal()
- static char DecimalPoint = '\0' ;
- 
--static void GetDecimalPoint() {
--  Standard_Real f = 1.1 ;
--  char str[5] ;
--
--  sprintf(str,"%.1f",f) ;
--//#ifdef DEB
--//  printf("Local System is  %s\n",str) ;
--//#endif
--  DecimalPoint = str[1] ;
--}
- #endif
- // Make the RealToCString reciprocal conversion.
- 
 Index: oce/drv/ExprIntrp/lex.ExprIntrp.c
 ===================================================================
 --- oce.orig/drv/ExprIntrp/lex.ExprIntrp.c
@@ -265,3 +244,24 @@ Index: oce/src/Draw/Draw_Main.cxx
    //ParseCommandLine(GetCommandLine());
  
    // MKV 01.02.05
+Index: oce/src/Units/Units_UnitsDictionary.cxx
+===================================================================
+--- oce.orig/src/Units/Units_UnitsDictionary.cxx
++++ oce/src/Units/Units_UnitsDictionary.cxx
+@@ -46,16 +46,6 @@
+ #ifdef PRO13136		//Temporaire en attendant OSD::CStringToReal()
+ static char DecimalPoint = '\0' ;
+ 
+-static void GetDecimalPoint() {
+-  Standard_Real f = 1.1 ;
+-  char str[5] ;
+-
+-  sprintf(str,"%.1f",f) ;
+-//#ifdef DEB
+-//  printf("Local System is  %s\n",str) ;
+-//#endif
+-  DecimalPoint = str[1] ;
+-}
+ #endif
+ // Make the RealToCString reciprocal conversion.
+ 

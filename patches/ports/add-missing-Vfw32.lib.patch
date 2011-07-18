@@ -4,10 +4,10 @@ Date:   Sun May 15 15:01:50 2011 +0200
 
     Added a missing library import for the "Video For Windows" functions.
 
-diff --git a/src/OpenGl/OpenGl_AVIWriter.cxx b/src/OpenGl/OpenGl_AVIWriter.cxx
-index e73a6a1..32bbb07 100644
---- a/src/OpenGl/OpenGl_AVIWriter.cxx
-+++ b/src/OpenGl/OpenGl_AVIWriter.cxx
+Index: oce/src/OpenGl/OpenGl_AVIWriter.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_AVIWriter.cxx
++++ oce/src/OpenGl/OpenGl_AVIWriter.cxx
 @@ -6,6 +6,12 @@
  #include <OpenGl_AVIWriter.hxx>
  

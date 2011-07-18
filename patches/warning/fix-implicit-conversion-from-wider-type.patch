@@ -245,110 +245,6 @@ Subject: [PATCH 35/82] [warning-fix][implicit-conversion-from-wider-type]
  src/WNT/WNT_PixMap.cxx                             |    6 +++---
  46 files changed, 141 insertions(+), 140 deletions(-)
 
-Index: oce/src/OSD/OSD_SystemFont.cxx
-===================================================================
---- oce.orig/src/OSD/OSD_SystemFont.cxx
-+++ oce/src/OSD/OSD_SystemFont.cxx
-@@ -56,7 +56,7 @@
-       MyFaceSize = -1;
-     else
-       //TODO catch exeption
--      MyFaceSize =  str.Token( "-", 7 ).RealValue();
-+      MyFaceSize = Standard_Integer (str.Token( "-", 7 ).RealValue());
- 
-     //detect aspect
-     if ( str.Token("-", 3).IsEqual( "bold" ) )
-Index: oce/src/Resource/Resource_ConvertUnicode.c
-===================================================================
---- oce.orig/src/Resource/Resource_ConvertUnicode.c
-+++ oce/src/Resource/Resource_ConvertUnicode.c
-@@ -118,7 +118,7 @@
-     return ;
-   }
- 
--  sjis = ((*ph) << 8) | (*pl) ;
-+  sjis = (char16)(((*ph) << 8) | (*pl)) ;
-   uni  = sjisuni [sjis] ;
-   *ph = uni >> 8 ;
-   *pl = uni & 0xFF ;
-@@ -137,7 +137,7 @@
-   if ( *ph == 0 && *pl == 0 )
-     return ;
- 
--  uni  = ((*ph) << 8) | (*pl) ;
-+  uni  = (char16)(((*ph) << 8) | (*pl)) ;
-   sjis = unisjis [uni] ;
-   *ph = sjis >> 8 ;
-   *pl = sjis & 0xFF ;
-@@ -192,7 +192,7 @@
-   *ph  = (*ph) & 0x7f ;
-   *pl  = (*pl) & 0x7f ;
- 
--  gb   = ((*ph) << 8) | (*pl) ;
-+  gb   = (char16)(((*ph) << 8) | (*pl)) ;
-   uni  = gbuni [gb] ;
-   *ph  = uni >> 8 ;
-   *pl  = uni & 0xFF ;
-@@ -211,7 +211,7 @@
-   if ( *ph == 0 && *pl == 0 )
-     return ;
- 
--  uni  = ((*ph) << 8) | (*pl) ;
-+  uni  = (char16)(((*ph) << 8) | (*pl)) ;
-   gb   = unigb [uni] ;
-   if (gb != 0) {
-     *ph  = ( gb >> 8   ) | 0x80 ;
-Index: oce/src/TCollection/TCollection_AsciiString.cxx
-===================================================================
---- oce.orig/src/TCollection/TCollection_AsciiString.cxx
-+++ oce/src/TCollection/TCollection_AsciiString.cxx
-@@ -409,8 +409,8 @@
- void TCollection_AsciiString::Capitalize()
- {
-   for (int i=0; i < mylength; i++) {
--    if  ( i==0 ) mystring[i] = toupper(mystring[i]);
--    else         mystring[i] = tolower(mystring[i]);    
-+    if  ( i==0 ) mystring[i] = (Standard_Character) toupper(mystring[i]);
-+    else         mystring[i] = (Standard_Character) tolower(mystring[i]);    
-   }
- }
- 
-@@ -442,7 +442,7 @@
-       if (mystring[i] == aChar) mystring[i] = NewChar;
-   }
-   else{
--    Standard_Character anUpperChar = toupper(aChar);
-+    Standard_Character anUpperChar = (Standard_Character) toupper(aChar);
-     for (int i=0; i < mylength; i++)
-       if (toupper(mystring[i]) == anUpperChar) mystring[i] = NewChar;
-   }
-@@ -1127,7 +1127,7 @@
- void TCollection_AsciiString::LowerCase()
- {
-   for (int i=0; i < mylength; i++)
--    mystring[i] = tolower(mystring[i]);
-+    mystring[i] = (Standard_Character) tolower(mystring[i]);
- }
- 
- //------------------------------------------------------------------------
-@@ -1229,7 +1229,7 @@
-       if (mystring[i] != what) mystring[c++] = mystring[i];
-   }
-   else {
--    Standard_Character upperwhat = toupper(what);
-+    Standard_Character upperwhat = (Standard_Character) toupper(what);
-     for (int i=0; i < mylength; i++) { 
-       if (toupper(mystring[i]) != upperwhat) mystring[c++] = mystring[i];
-     }
-@@ -1822,7 +1822,7 @@
- void TCollection_AsciiString::UpperCase()
- {
-   for (int i=0; i < mylength; i++)
--    mystring[i] = toupper(mystring[i]);
-+    mystring[i] = (Standard_Character) toupper(mystring[i]);
- }
- 
- //------------------------------------------------------------------------
 Index: oce/inc/Graphic3d_ArrayOfPrimitives.lxx
 ===================================================================
 --- oce.orig/inc/Graphic3d_ArrayOfPrimitives.lxx
@@ -811,7 +707,7 @@ Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx
 +++ oce/src/Draw/Draw_Window.cxx
-@@ -1330,9 +1330,9 @@
+@@ -1333,9 +1333,9 @@
    if (!localObjet)
      {
        if (Draw_IsConsoleSubsystem)
@@ -823,7 +719,7 @@ Index: oce/src/Draw/Draw_Window.cxx
      }
  
    PAINTSTRUCT ps;
-@@ -1360,9 +1360,9 @@
+@@ -1363,9 +1363,9 @@
  
    default:
      if (Draw_IsConsoleSubsystem)
@@ -988,7 +884,7 @@ Index: oce/src/Graphic3d/Graphic3d_Structure.cxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_Structure.cxx
 +++ oce/src/Graphic3d/Graphic3d_Structure.cxx
-@@ -1251,8 +1251,8 @@
+@@ -1236,8 +1236,8 @@
    Standard_Real    aPolyFactor, aPolyUnits;
    CTX->PolygonOffsets(aPolyMode, aPolyFactor, aPolyUnits);
    MyCStructure.ContextFillArea.PolygonOffsetMode   = aPolyMode;
@@ -999,7 +895,7 @@ Index: oce/src/Graphic3d/Graphic3d_Structure.cxx
    // OCC4895 SAN 22/03/04 High-level interface for controlling polygon offsets
  
    MyGraphicDriver->ContextStructure (MyCStructure);
-@@ -1305,7 +1305,7 @@
+@@ -1290,7 +1290,7 @@
    MyCStructure.ContextText.ColorSubTitle.g  = float (Gs);
    MyCStructure.ContextText.ColorSubTitle.b  = float (Bs);
    MyCStructure.ContextText.TextZoomable     = ATextZoomable;
@@ -1008,7 +904,7 @@ Index: oce/src/Graphic3d/Graphic3d_Structure.cxx
    MyCStructure.ContextText.TextFontAspect   = (int)ATextFontAspect;
  
    MyCStructure.ContextText.IsDef          = 1;
-@@ -1772,9 +1772,9 @@
+@@ -1754,9 +1754,9 @@
    if (IsDeleted ()) return;
  
    MyCStructure.TransformPersistence.Flag = AFlag;
@@ -1021,7 +917,7 @@ Index: oce/src/Graphic3d/Graphic3d_Structure.cxx
    //MyStructureManager->Update ();
    //Update();
    MyGraphicDriver->ContextStructure( MyCStructure );
-@@ -2181,7 +2181,7 @@
+@@ -2161,7 +2161,7 @@
    MyCStructure.ContextText.ColorSubTitle.g  = float (Gs);
    MyCStructure.ContextText.ColorSubTitle.b  = float (Bs);
    MyCStructure.ContextText.TextZoomable     = ATextZoomable;
@@ -1030,7 +926,7 @@ Index: oce/src/Graphic3d/Graphic3d_Structure.cxx
    MyCStructure.ContextText.TextFontAspect   = (int)ATextFontAspect;
  
  
-@@ -2366,8 +2366,8 @@
+@@ -2346,8 +2346,8 @@
    Standard_Real    aPolyFactor, aPolyUnits;
    CTXF->PolygonOffsets(aPolyMode, aPolyFactor, aPolyUnits);
    MyCStructure.ContextFillArea.PolygonOffsetMode   = aPolyMode;
@@ -1123,6 +1019,19 @@ Index: oce/src/OSD/OSD.cxx
  
  static void GetDecimalPoint() {
    float F1 = (float ) 1.1 ;
+Index: oce/src/OSD/OSD_SystemFont.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_SystemFont.cxx
++++ oce/src/OSD/OSD_SystemFont.cxx
+@@ -56,7 +56,7 @@
+       MyFaceSize = -1;
+     else
+       //TODO catch exeption
+-      MyFaceSize =  str.Token( "-", 7 ).RealValue();
++      MyFaceSize = Standard_Integer (str.Token( "-", 7 ).RealValue());
+ 
+     //detect aspect
+     if ( str.Token("-", 3).IsEqual( "bold" ) )
 Index: oce/src/OSD/OSD_WNT_1.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_WNT_1.cxx
@@ -1206,7 +1115,7 @@ Index: oce/src/OpenGl/OpenGl_TextRender.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_TextRender.cxx
 +++ oce/src/OpenGl/OpenGl_TextRender.cxx
-@@ -290,7 +290,7 @@
+@@ -292,7 +292,7 @@
    CMN_KEY keyAngle;
    keyAngle.id = TelTextAngle;//This flag responding about Angle text
    TsmGetAttri( 1, &keyAngle );
@@ -1215,7 +1124,7 @@ Index: oce/src/OpenGl/OpenGl_TextRender.cxx
  
    Tint zoom = 0;
    CMN_KEY keyZoom;
-@@ -391,7 +391,7 @@
+@@ -389,7 +389,7 @@
      }
      else
      {
@@ -1224,7 +1133,7 @@ Index: oce/src/OpenGl/OpenGl_TextRender.cxx
      }
    }
    glGetIntegerv(GL_RENDER_MODE, &renderMode);
-@@ -400,7 +400,7 @@
+@@ -402,7 +402,7 @@
      char *fontName = new char[strlen((char*)keyfontName.data.pdata) + 1];
      strcpy(fontName,(char*)keyfontName.data.pdata);
  
@@ -1233,7 +1142,7 @@ Index: oce/src/OpenGl/OpenGl_TextRender.cxx
      int aligment = alignmentforgl2ps( vh, vv );
      glPopMatrix();
      ExportText( str, fontName, export_h, angle, aligment, x, y, z, is2d!=0 );
-@@ -477,7 +477,7 @@
+@@ -482,7 +482,7 @@
    
    glBitmap( 1, 1, 0, 0, 0, 0, &zero );
  
@@ -1337,7 +1246,7 @@ Index: oce/src/OpenGl/OpenGl_txgl.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_txgl.cxx
 +++ oce/src/OpenGl/OpenGl_txgl.cxx
-@@ -1008,11 +1008,11 @@
+@@ -1028,11 +1028,11 @@
  
      for (i = 0; i < sizeof(dBits) / sizeof(int); i++) {
  
@@ -1355,7 +1264,7 @@ Index: oce/src/OpenGl/OpenGl_view.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_view.cxx
 +++ oce/src/OpenGl/OpenGl_view.cxx
-@@ -1302,18 +1302,18 @@
+@@ -1362,18 +1362,18 @@
        case 3:
         corner2 = gradient->color2.rgb;
         corner4 = gradient->color1.rgb;        
@@ -1515,6 +1424,46 @@ Index: oce/src/PrsMgr/PrsMgr_PresentableObject.cxx
  
    Handle(Graphic3d_Structure) aStruct;
    for( Standard_Integer i = 1, n = myPresentations.Length(); i <= n; i++ ) 
+Index: oce/src/Resource/Resource_ConvertUnicode.c
+===================================================================
+--- oce.orig/src/Resource/Resource_ConvertUnicode.c
++++ oce/src/Resource/Resource_ConvertUnicode.c
+@@ -118,7 +118,7 @@
+     return ;
+   }
+ 
+-  sjis = ((*ph) << 8) | (*pl) ;
++  sjis = (char16)(((*ph) << 8) | (*pl)) ;
+   uni  = sjisuni [sjis] ;
+   *ph = uni >> 8 ;
+   *pl = uni & 0xFF ;
+@@ -137,7 +137,7 @@
+   if ( *ph == 0 && *pl == 0 )
+     return ;
+ 
+-  uni  = ((*ph) << 8) | (*pl) ;
++  uni  = (char16)(((*ph) << 8) | (*pl)) ;
+   sjis = unisjis [uni] ;
+   *ph = sjis >> 8 ;
+   *pl = sjis & 0xFF ;
+@@ -192,7 +192,7 @@
+   *ph  = (*ph) & 0x7f ;
+   *pl  = (*pl) & 0x7f ;
+ 
+-  gb   = ((*ph) << 8) | (*pl) ;
++  gb   = (char16)(((*ph) << 8) | (*pl)) ;
+   uni  = gbuni [gb] ;
+   *ph  = uni >> 8 ;
+   *pl  = uni & 0xFF ;
+@@ -211,7 +211,7 @@
+   if ( *ph == 0 && *pl == 0 )
+     return ;
+ 
+-  uni  = ((*ph) << 8) | (*pl) ;
++  uni  = (char16)(((*ph) << 8) | (*pl)) ;
+   gb   = unigb [uni] ;
+   if (gb != 0) {
+     *ph  = ( gb >> 8   ) | 0x80 ;
 Index: oce/src/Select3D/Select3D_SensitiveGroup.cxx
 ===================================================================
 --- oce.orig/src/Select3D/Select3D_SensitiveGroup.cxx
@@ -1577,6 +1526,57 @@ Index: oce/src/StdPrs/StdPrs_ToolShadedShape.cxx
  
        if (aFace.Orientation() == TopAbs_REVERSED) (Nor(i)).Reverse();
  
+Index: oce/src/TCollection/TCollection_AsciiString.cxx
+===================================================================
+--- oce.orig/src/TCollection/TCollection_AsciiString.cxx
++++ oce/src/TCollection/TCollection_AsciiString.cxx
+@@ -409,8 +409,8 @@
+ void TCollection_AsciiString::Capitalize()
+ {
+   for (int i=0; i < mylength; i++) {
+-    if  ( i==0 ) mystring[i] = toupper(mystring[i]);
+-    else         mystring[i] = tolower(mystring[i]);    
++    if  ( i==0 ) mystring[i] = (Standard_Character) toupper(mystring[i]);
++    else         mystring[i] = (Standard_Character) tolower(mystring[i]);    
+   }
+ }
+ 
+@@ -442,7 +442,7 @@
+       if (mystring[i] == aChar) mystring[i] = NewChar;
+   }
+   else{
+-    Standard_Character anUpperChar = toupper(aChar);
++    Standard_Character anUpperChar = (Standard_Character) toupper(aChar);
+     for (int i=0; i < mylength; i++)
+       if (toupper(mystring[i]) == anUpperChar) mystring[i] = NewChar;
+   }
+@@ -1127,7 +1127,7 @@
+ void TCollection_AsciiString::LowerCase()
+ {
+   for (int i=0; i < mylength; i++)
+-    mystring[i] = tolower(mystring[i]);
++    mystring[i] = (Standard_Character) tolower(mystring[i]);
+ }
+ 
+ //------------------------------------------------------------------------
+@@ -1229,7 +1229,7 @@
+       if (mystring[i] != what) mystring[c++] = mystring[i];
+   }
+   else {
+-    Standard_Character upperwhat = toupper(what);
++    Standard_Character upperwhat = (Standard_Character) toupper(what);
+     for (int i=0; i < mylength; i++) { 
+       if (toupper(mystring[i]) != upperwhat) mystring[c++] = mystring[i];
+     }
+@@ -1822,7 +1822,7 @@
+ void TCollection_AsciiString::UpperCase()
+ {
+   for (int i=0; i < mylength; i++)
+-    mystring[i] = toupper(mystring[i]);
++    mystring[i] = (Standard_Character) toupper(mystring[i]);
+ }
+ 
+ //------------------------------------------------------------------------
 Index: oce/src/TopTools/TopTools_LocationSet.cxx
 ===================================================================
 --- oce.orig/src/TopTools/TopTools_LocationSet.cxx
@@ -1681,7 +1681,7 @@ Index: oce/src/Visual3d/Visual3d_View.cxx
          }
          else {
            MyCView.Mapping.IsCustomMatrix = 0;
-@@ -1173,7 +1173,7 @@
+@@ -1167,7 +1167,7 @@
              for (j = 0; j < 4; j++) {
                if (!CustomIsModified) CustomIsModified =
                  MyCView.Orientation.ModelViewMatrix[i][j] != MyViewOrientation.MyModelViewMatrix->Value(i,j);
@@ -1690,7 +1690,7 @@ Index: oce/src/Visual3d/Visual3d_View.cxx
              }
          }
  
-@@ -1288,7 +1288,7 @@
+@@ -1282,7 +1282,7 @@
              for (j = 0; j < 4; j++) {
                if (!CustomIsModified) CustomIsModified =
                  MyCView.Orientation.ModelViewMatrix[i][j] != MyViewOrientation.MyModelViewMatrix->Value(i,j);
@@ -1699,7 +1699,7 @@ Index: oce/src/Visual3d/Visual3d_View.cxx
              }
          }
  
-@@ -1357,7 +1357,7 @@
+@@ -1351,7 +1351,7 @@
            Standard_Integer i, j;
            for (i = 0; i < 4; i++)
              for (j = 0; j < 4; j++)
@@ -1708,7 +1708,7 @@ Index: oce/src/Visual3d/Visual3d_View.cxx
                  MyViewMapping.MyProjectionMatrix->Value(i,j);
          }
  
-@@ -1426,7 +1426,7 @@
+@@ -1420,7 +1420,7 @@
            Standard_Integer i, j;
            for (i = 0; i < 4; i++)
              for (j = 0; j < 4; j++)

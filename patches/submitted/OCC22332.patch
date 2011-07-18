@@ -9,11 +9,11 @@ Date:   Fri Apr 8 11:30:14 2011 +0300
     This patch has been accepted by occ (bugID = OCC22332). See :
     http://www.opencascade.org/org/forum/thread_20209
 
-diff --git a/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx b/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
-index 2ddd2ed..f989abe 100644
---- a/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
-+++ b/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
-@@ -102,11 +102,8 @@ extern PFNGLBLENDEQUATIONEXTPROC glBlendEquationOp;
+Index: oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
++++ oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
+@@ -102,11 +102,8 @@
  static CALL_DEF_LAYER ACLayer;
  
  static GLboolean layerOpen      = GL_FALSE;
@@ -25,7 +25,7 @@ index 2ddd2ed..f989abe 100644
  static int       layerFontFlag  = IsModified;
  static int       layerFontType  = 0;
  static float     layerRed       = -1.;
-@@ -395,6 +392,10 @@ call_togl_begin_layer2d
+@@ -395,6 +392,10 @@
    printf ("call_togl_begin_layer2d %d\n", ptrLayer->listIndex);
  #endif
  
@@ -36,7 +36,7 @@ index 2ddd2ed..f989abe 100644
    //abd
    glEnable(GL_TEXTURE_2D);
    GLboolean stat = glIsEnabled( GL_TEXTURE_2D );
-@@ -421,8 +422,12 @@ call_togl_end_layer2d
+@@ -421,8 +422,12 @@
    /*
    * On ferme la display-list associee au layer.
    */
@@ -50,7 +50,7 @@ index 2ddd2ed..f989abe 100644
    layerOpen = GL_FALSE;
  
    ACLayer.ptrLayer = NULL;
-@@ -992,22 +997,29 @@ call_togl_set_line_attributes
+@@ -992,22 +997,29 @@
    printf ("call_togl_set_line_attributes %d\n", ptrLayer->listIndex);
    printf ("\ttype, width %d %f\n", type, width);
  #endif

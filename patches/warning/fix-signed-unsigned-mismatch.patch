@@ -32,6 +32,103 @@ Subject: [PATCH 43/82] [warning-fix][signed-unsigned-mismatch] Fixes warning
  src/OpenGl/OpenGl_togl_markercontextgroup.cxx |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
+Index: oce/src/BinMNaming/BinMNaming_NamingDriver.cxx
+===================================================================
+--- oce.orig/src/BinMNaming/BinMNaming_NamingDriver.cxx
++++ oce/src/BinMNaming/BinMNaming_NamingDriver.cxx
+@@ -166,7 +166,7 @@
+           Standard_Integer i;
+           // read array
+           for(i=1; i<=aNbArgs;i++) {
+-            if(!aNewF && i > OBSOLETE_NUM) break;//interrupt reading as old format can have only 4 items
++            if(!aNewF && i > (int)OBSOLETE_NUM) break;//interrupt reading as old format can have only 4 items
+             ok = theSource >> anIndx;
+             if (!ok)
+               break;
+@@ -181,8 +181,8 @@
+             }
+           }
+           //patch to release the rest of items	
+-          if(!aNewF && aNbArgs < OBSOLETE_NUM) {    
+-            for(i = aNbArgs+1;i <= OBSOLETE_NUM;i++)
++          if(!aNewF && aNbArgs < (int)OBSOLETE_NUM) {    
++            for(i = aNbArgs+1;i <= (int)OBSOLETE_NUM;i++)
+               theSource >> anIndx;
+           }
+         }
+Index: oce/src/Image/Image_PixMap.cxx
+===================================================================
+--- oce.orig/src/Image/Image_PixMap.cxx
++++ oce/src/Image/Image_PixMap.cxx
+@@ -401,8 +401,8 @@
+                                          const Standard_Integer theY) const
+ {
+   Standard_Integer aScanlineId = myImage->getHeight() - theY - 1;
+-  if (theX < 0 || theX >= (unsigned int)myImage->getWidth() ||
+-      theY < 0 || theY >= (unsigned int)myImage->getHeight())
++  if (theX < 0 || theX >= myImage->getWidth() ||
++      theY < 0 || theY >= myImage->getHeight())
+   {
+     return Quantity_Color (0.0, 0.0, 0.0, Quantity_TOC_RGB);
+   }
+Index: oce/src/OpenGl/OpenGl_TextRender.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_TextRender.cxx
++++ oce/src/OpenGl/OpenGl_TextRender.cxx
+@@ -180,7 +180,7 @@
+ 
+ /*----------------------------------------------------------------------*/
+ OpenGl_TextRender::FontMapNode OpenGl_TextRender::searchFontInMap( Handle(TCollection_HAsciiString)& fontName ) {
+-  for ( int i = 0; i < NUM_FONT_ENTRIES; ++i )
++  for ( int i = 0; i < (int)NUM_FONT_ENTRIES; ++i )
+   {
+     TCollection_AsciiString compare_String(fontMap[i].enumName) ;
+     if(compare_String.IsEqual( fontName->ToCString() ))
+Index: oce/src/OpenGl/OpenGl_TextureBox.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_TextureBox.cxx
++++ oce/src/OpenGl/OpenGl_TextureBox.cxx
+@@ -519,11 +519,12 @@
+   if (textab[ID].use_bind_texture[Context])
+   {
+     /* OCC11904 - make sure that the correct texture is bound before drawing */
++	// @todo Check here if it is correct : compare .status with the wrong ENUM type (the value matches)
+     GLenum aParamName = textab[ID].status == TEXDATA_1D ? 
+ GL_TEXTURE_BINDING_1D : GL_TEXTURE_BINDING_2D;
+     GLint aCurrTex = -1;
+     glGetIntegerv( aParamName, &aCurrTex );
+-    if ( textab[ID].number[Context] != aCurrTex )
++    if ( (int)textab[ID].number[Context] != aCurrTex )
+     {
+ #ifdef PRINT
+       printf("MyBindTextureEXT::bind texture\n");
+@@ -536,11 +537,12 @@
+ #endif /* GL_EXT_texture_object */
+   {
+     /* OCC11904 - make sure that the correct texture is bound before drawing */
++	// @todo Check here if it is correct : compare .status with the wrong ENUM type (the value matches)
+     GLenum aParamName = textab[ID].status == TEXDATA_1D ? 
+ GL_TEXTURE_BINDING_1D : GL_TEXTURE_BINDING_2D;
+     GLint aCurrTex = -1;
+     glGetIntegerv( aParamName, &aCurrTex );
+-    if ( textab[ID].number[Context] != aCurrTex )
++    if ( (int)textab[ID].number[Context] != aCurrTex )
+     {
+ #ifdef PRINT
+       printf("MyBindTextureEXT::chargement sans bind de la texture\n");
+Index: oce/src/OpenGl/OpenGl_togl_markercontextgroup.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_togl_markercontextgroup.cxx
++++ oce/src/OpenGl/OpenGl_togl_markercontextgroup.cxx
+@@ -116,7 +116,7 @@
+     if( UDMS_Marker.IdList[i] == theId )
+       return UDMS_Marker.DisplayIdList[i];
+   }
+-  return -1;
++  return GLuint(-1);
+ }
+ 
+ /*--------------------------------generate USERDEFINED marker---------end--------*/
 Index: oce/src/TColStd/TColStd_MapIteratorOfPackedMapOfInteger.cxx
 ===================================================================
 --- oce.orig/src/TColStd/TColStd_MapIteratorOfPackedMapOfInteger.cxx
@@ -100,100 +197,3 @@ Index: oce/src/TColStd/TColStd_PackedMapOfInteger.cxx
              if ( newData != p1->Data() ) {
                p1->ChangeData() = newData;
                aNewExtent = aNewExtent - anOldPop +
-Index: oce/src/BinMNaming/BinMNaming_NamingDriver.cxx
-===================================================================
---- oce.orig/src/BinMNaming/BinMNaming_NamingDriver.cxx
-+++ oce/src/BinMNaming/BinMNaming_NamingDriver.cxx
-@@ -166,7 +166,7 @@
-           Standard_Integer i;
-           // read array
-           for(i=1; i<=aNbArgs;i++) {
--            if(!aNewF && i > OBSOLETE_NUM) break;//interrupt reading as old format can have only 4 items
-+            if(!aNewF && i > (int)OBSOLETE_NUM) break;//interrupt reading as old format can have only 4 items
-             ok = theSource >> anIndx;
-             if (!ok)
-               break;
-@@ -181,8 +181,8 @@
-             }
-           }
-           //patch to release the rest of items	
--          if(!aNewF && aNbArgs < OBSOLETE_NUM) {    
--            for(i = aNbArgs+1;i <= OBSOLETE_NUM;i++)
-+          if(!aNewF && aNbArgs < (int)OBSOLETE_NUM) {    
-+            for(i = aNbArgs+1;i <= (int)OBSOLETE_NUM;i++)
-               theSource >> anIndx;
-           }
-         }
-Index: oce/src/Image/Image_PixMap.cxx
-===================================================================
---- oce.orig/src/Image/Image_PixMap.cxx
-+++ oce/src/Image/Image_PixMap.cxx
-@@ -401,8 +401,8 @@
-                                          const Standard_Integer theY) const
- {
-   Standard_Integer aScanlineId = myImage->getHeight() - theY - 1;
--  if (theX < 0 || theX >= (unsigned int)myImage->getWidth() ||
--      theY < 0 || theY >= (unsigned int)myImage->getHeight())
-+  if (theX < 0 || theX >= myImage->getWidth() ||
-+      theY < 0 || theY >= myImage->getHeight())
-   {
-     return Quantity_Color (0.0, 0.0, 0.0, Quantity_TOC_RGB);
-   }
-Index: oce/src/OpenGl/OpenGl_TextRender.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_TextRender.cxx
-+++ oce/src/OpenGl/OpenGl_TextRender.cxx
-@@ -180,7 +180,7 @@
- 
- /*----------------------------------------------------------------------*/
- OpenGl_TextRender::FontMapNode OpenGl_TextRender::searchFontInMap( Handle(TCollection_HAsciiString)& fontName ) {
--  for ( int i = 0; i < NUM_FONT_ENTRIES; ++i )
-+  for ( int i = 0; i < (int)NUM_FONT_ENTRIES; ++i )
-   {
-     TCollection_AsciiString compare_String(fontMap[i].enumName) ;
-     if(compare_String.IsEqual( fontName->ToCString() ))
-Index: oce/src/OpenGl/OpenGl_TextureBox.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_TextureBox.cxx
-+++ oce/src/OpenGl/OpenGl_TextureBox.cxx
-@@ -518,11 +518,12 @@
-   if (textab[ID].use_bind_texture[Context])
-   {
-     /* OCC11904 - make sure that the correct texture is bound before drawing */
-+	// @todo Check here if it is correct : compare .status with the wrong ENUM type (the value matches)
-     GLenum aParamName = textab[ID].status == TEXDATA_1D ? 
- GL_TEXTURE_BINDING_1D : GL_TEXTURE_BINDING_2D;
-     GLint aCurrTex = -1;
-     glGetIntegerv( aParamName, &aCurrTex );
--    if ( textab[ID].number[Context] != aCurrTex )
-+    if ( (int)textab[ID].number[Context] != aCurrTex )
-     {
- #ifdef PRINT
-       printf("MyBindTextureEXT::bind texture\n");
-@@ -535,11 +536,12 @@
- #endif /* GL_EXT_texture_object */
-   {
-     /* OCC11904 - make sure that the correct texture is bound before drawing */
-+	// @todo Check here if it is correct : compare .status with the wrong ENUM type (the value matches)
-     GLenum aParamName = textab[ID].status == TEXDATA_1D ? 
- GL_TEXTURE_BINDING_1D : GL_TEXTURE_BINDING_2D;
-     GLint aCurrTex = -1;
-     glGetIntegerv( aParamName, &aCurrTex );
--    if ( textab[ID].number[Context] != aCurrTex )
-+    if ( (int)textab[ID].number[Context] != aCurrTex )
-     {
- #ifdef PRINT
-       printf("MyBindTextureEXT::chargement sans bind de la texture\n");
-Index: oce/src/OpenGl/OpenGl_togl_markercontextgroup.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_togl_markercontextgroup.cxx
-+++ oce/src/OpenGl/OpenGl_togl_markercontextgroup.cxx
-@@ -116,7 +116,7 @@
-     if( UDMS_Marker.IdList[i] == theId )
-       return UDMS_Marker.DisplayIdList[i];
-   }
--  return -1;
-+  return GLuint(-1);
- }
- 
- /*--------------------------------generate USERDEFINED marker---------end--------*/

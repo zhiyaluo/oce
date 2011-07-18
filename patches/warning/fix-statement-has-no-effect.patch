@@ -16,19 +16,6 @@ Subject: [PATCH 45/82] [warning-fix][statement-has-no-effect] Added missing
  src/BinMDataStd/BinMDataStd_NamedDataDriver.cxx |    3 ++-
  1 files changed, 2 insertions(+), 1 deletions(-)
 
-Index: oce/src/DNaming/DNaming_RevolutionDriver.cxx
-===================================================================
---- oce.orig/src/DNaming/DNaming_RevolutionDriver.cxx
-+++ oce/src/DNaming/DNaming_RevolutionDriver.cxx
-@@ -315,7 +315,7 @@
-     if(aCheck->Closed() == BRepCheck_NoError)
-       return Standard_False;
-     else
--      Standard_True;
-+      return Standard_True;
-   } else if (ShapeIn.ShapeType() == TopAbs_FACE ||
-              ShapeIn.ShapeType() == TopAbs_WIRE ||
-              ShapeIn.ShapeType() == TopAbs_EDGE ||
 Index: oce/src/BinMDataStd/BinMDataStd_NamedDataDriver.cxx
 ===================================================================
 --- oce.orig/src/BinMDataStd/BinMDataStd_NamedDataDriver.cxx
@@ -43,3 +30,16 @@ Index: oce/src/BinMDataStd/BinMDataStd_NamedDataDriver.cxx
        if(low | up) {
          Handle(TColStd_HArray1OfReal) aTargetArray =
            new TColStd_HArray1OfReal(low, up);
+Index: oce/src/DNaming/DNaming_RevolutionDriver.cxx
+===================================================================
+--- oce.orig/src/DNaming/DNaming_RevolutionDriver.cxx
++++ oce/src/DNaming/DNaming_RevolutionDriver.cxx
+@@ -315,7 +315,7 @@
+     if(aCheck->Closed() == BRepCheck_NoError)
+       return Standard_False;
+     else
+-      Standard_True;
++      return Standard_True;
+   } else if (ShapeIn.ShapeType() == TopAbs_FACE ||
+              ShapeIn.ShapeType() == TopAbs_WIRE ||
+              ShapeIn.ShapeType() == TopAbs_EDGE ||

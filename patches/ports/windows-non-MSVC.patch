@@ -588,7 +588,7 @@ Index: oce/src/NCollection/NCollection_BaseAllocator.cxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_BaseAllocator.cxx
 +++ oce/src/NCollection/NCollection_BaseAllocator.cxx
-@@ -9,6 +9,8 @@
+@@ -10,6 +10,8 @@
  #include <NCollection_List.hxx>
  #include <Standard_Mutex.hxx>
  
@@ -614,9 +614,9 @@ Index: oce/src/NIS/NIS_View.cxx
 ===================================================================
 --- oce.orig/src/NIS/NIS_View.cxx
 +++ oce/src/NIS/NIS_View.cxx
-@@ -9,7 +9,7 @@
- #include <gp_Ax1.hxx>
- #include <Visual3d_View.hxx>
+@@ -11,7 +11,7 @@
+ #include <Bnd_B2f.hxx>
+ #include <TColStd_MapIteratorOfPackedMapOfInteger.hxx>
  #ifdef WNT
 -#include <Windows.h>
 +#include <windows.h>
@@ -1527,7 +1527,7 @@ Index: oce/src/OpenGl/OpenGl_togl_redraw.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_togl_redraw.cxx
 +++ oce/src/OpenGl/OpenGl_togl_redraw.cxx
-@@ -62,6 +62,10 @@
+@@ -63,6 +63,10 @@
  #include <InterfaceGraphic_Graphic3d.hxx>
  #include <InterfaceGraphic_Visual3d.hxx>
  
@@ -1542,7 +1542,7 @@ Index: oce/src/OpenGl/OpenGl_txgl.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_txgl.cxx
 +++ oce/src/OpenGl/OpenGl_txgl.cxx
-@@ -105,6 +105,14 @@
+@@ -106,6 +106,14 @@
  * Variables statiques
  */
  
@@ -1557,7 +1557,7 @@ Index: oce/src/OpenGl/OpenGl_txgl.cxx
  #ifndef WNT
  typedef NCollection_DataMap<Tint, GLCONTEXT> GLContextMap;
  #else
-@@ -705,6 +713,9 @@
+@@ -723,6 +731,9 @@
          retVal = TFailure;  
        } else retVal = TSuccess;
  

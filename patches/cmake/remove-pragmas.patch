@@ -15,8 +15,8 @@ Date:   Tue May 17 00:47:05 2011 +0200
 
 Index: oce/src/Image/Image_PixMap.cxx
 ===================================================================
---- oce.orig/src/Image/Image_PixMap.cxx	2011-07-17 11:08:27.314695853 +0200
-+++ oce/src/Image/Image_PixMap.cxx	2011-07-17 11:08:59.502855466 +0200
+--- oce.orig/src/Image/Image_PixMap.cxx
++++ oce/src/Image/Image_PixMap.cxx
 @@ -11,10 +11,7 @@
    #include <FreeImagePlus.h>
    #include <Image_PixMap.ixx>
@@ -31,8 +31,8 @@ Index: oce/src/Image/Image_PixMap.cxx
    #include <fstream>
 Index: oce/src/OpenGl/OpenGl_attri.cxx
 ===================================================================
---- oce.orig/src/OpenGl/OpenGl_attri.cxx	2011-07-17 11:08:27.318695868 +0200
-+++ oce/src/OpenGl/OpenGl_attri.cxx	2011-07-17 11:09:34.523029283 +0200
+--- oce.orig/src/OpenGl/OpenGl_attri.cxx
++++ oce/src/OpenGl/OpenGl_attri.cxx
 @@ -107,9 +107,7 @@
    #include <gl2ps.h>
    /* OCC22216 NOTE: linker dependency can be switched off by undefining macro. 

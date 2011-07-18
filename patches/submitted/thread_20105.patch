@@ -46,7 +46,7 @@ Index: oce/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
 ===================================================================
 --- oce.orig/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
 +++ oce/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
-@@ -212,13 +212,20 @@
+@@ -219,13 +219,20 @@
    }
  
    // mesh faces in parallel threads using TBB

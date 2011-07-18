@@ -12,7 +12,7 @@ Index: oce/src/OpenGl/OpenGl_PrimitiveArray.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_PrimitiveArray.cxx
 +++ oce/src/OpenGl/OpenGl_PrimitiveArray.cxx
-@@ -247,8 +247,6 @@
+@@ -253,8 +253,6 @@
  static  TStatus  ParrayDisplay( TSM_ELEM_DATA, Tint, cmn_key* );
  static  TStatus  ParrayAdd( TSM_ELEM_DATA, Tint, cmn_key* );
  static  TStatus  ParrayDelete( TSM_ELEM_DATA, Tint, cmn_key* );

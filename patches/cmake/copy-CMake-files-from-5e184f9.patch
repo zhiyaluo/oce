@@ -4357,6 +4357,21 @@ Index: oce/oce_install_config.h.cmake
 +#cmakedefine OCE_HAVE_LIMITS 1
 +#cmakedefine OCE_HAVE_CLIMITS 1
 +#cmakedefine OCE_HAVE_LIMITS_H 1
+Index: oce/src/OSD/OSD_Chronometer.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_Chronometer.cxx
++++ oce/src/OSD/OSD_Chronometer.cxx
+@@ -54,6 +54,10 @@
+ # include <limits.h>
+ #endif
+ 
++#if defined(__APPLE__) && defined(__MACH__)
++#include "gettime_osx.h"
++#endif
++
+ //=======================================================================
+ //function : GetProcessCPU
+ //purpose  : 
 Index: oce/src/OSD/gettime_osx.h
 ===================================================================
 --- /dev/null
@@ -4505,18 +4520,3 @@ Index: oce/src/OSD/gettime_osx.h
 +#endif // _GETTIME_H
 +	
 +}
-Index: oce/src/OSD/OSD_Chronometer.cxx
-===================================================================
---- oce.orig/src/OSD/OSD_Chronometer.cxx
-+++ oce/src/OSD/OSD_Chronometer.cxx
-@@ -54,6 +54,10 @@
- # include <limits.h>
- #endif
- 
-+#if defined(__APPLE__) && defined(__MACH__)
-+#include "gettime_osx.h"
-+#endif
-+
- //=======================================================================
- //function : GetProcessCPU
- //purpose  : 

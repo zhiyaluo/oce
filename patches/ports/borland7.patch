@@ -17,7 +17,7 @@ Index: oce/src/Select3D/Select3D_SensitiveSegment.cxx
 ===================================================================
 --- oce.orig/src/Select3D/Select3D_SensitiveSegment.cxx
 +++ oce/src/Select3D/Select3D_SensitiveSegment.cxx
-@@ -204,8 +204,13 @@
+@@ -203,8 +203,13 @@
  
  Standard_Real Select3D_SensitiveSegment::ComputeDepth(const gp_Lin& EyeLine) const
  {

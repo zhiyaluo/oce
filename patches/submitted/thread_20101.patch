@@ -19,5 +19,5 @@ Index: oce/src/OSD/OSD_FontMgr.cxx
 -  Display * disp = XOpenDisplay("localhost:0.0");
 +  Display * disp = XOpenDisplay(NULL);
  
-   if ( !disp ) 
+   if (!disp) 
    {

@@ -323,255 +323,6 @@ in this function
  src/Storage/Storage_Schema.cxx |    7 ++++++-
  1 files changed, 6 insertions(+), 1 deletions(-)
 
-Index: oce/src/CSLib/CSLib.cxx
-===================================================================
---- oce.orig/src/CSLib/CSLib.cxx
-+++ oce/src/CSLib/CSLib.cxx
-@@ -276,7 +276,7 @@
- 	    sup=Standard_PI;
- 	 }
- 	 Standard_Boolean CS=0;
--	 Standard_Real Vprec=0,Vsuiv;
-+	 Standard_Real Vprec=0,Vsuiv = 0;
- 	 //Creation du polynome
- 	 CSLib_NormalPolyDef  Poly(Order,Ratio);
- 	 //Recherche des zeros de SAPS
-Index: oce/src/Convert/Convert_ConicToBSplineCurve.cxx
-===================================================================
---- oce.orig/src/Convert/Convert_ConicToBSplineCurve.cxx
-+++ oce/src/Convert/Convert_ConicToBSplineCurve.cxx
-@@ -327,7 +327,7 @@
-   q_param,
-   param ;
- 
--  Standard_Integer num_poles,
-+  Standard_Integer num_poles = 0,
-   ii,
-   jj,
-   num_knots=0,
-@@ -337,7 +337,7 @@
-   temp_degree=0,
-   tgt_theta_flag,
-   num_temp_poles,
--  order ;
-+  order = 0;
- 
-   Convert_CosAndSinEvalFunction *EvaluatorPtr=NULL ;
- 
-Index: oce/src/OSD/OSD_File.cxx
-===================================================================
---- oce.orig/src/OSD/OSD_File.cxx
-+++ oce/src/OSD/OSD_File.cxx
-@@ -1498,7 +1498,7 @@
-                   const Standard_Integer Offset, const OSD_FromWhere Whence
-                  ) {
- 
-- DWORD dwMoveMethod;
-+ DWORD dwMoveMethod = 0;
- 
-  TEST_RAISE(  TEXT( "Seek" )  );
- 
-@@ -1922,7 +1922,7 @@
-  PTOKEN_OWNER         pTkOwner        = NULL;
-  PTOKEN_GROUPS        pTkGroups       = NULL;
-  PTOKEN_PRIMARY_GROUP pTkPrimaryGroup = NULL;
-- PSECURITY_DESCRIPTOR retVal;
-+ PSECURITY_DESCRIPTOR retVal = NULL;
-  PSECURITY_DESCRIPTOR pfSD = NULL;
-  BOOL                 fDummy;
-  PFILE_ACE            pFileACE;
-@@ -2370,7 +2370,7 @@
- 
- static DWORD __fastcall _get_access_mask ( OSD_SingleProtection prt ) {
- 
-- DWORD retVal;
-+ DWORD retVal = 0;
- 
-  switch ( prt ) {
-  
-@@ -2482,7 +2482,7 @@
- 
- static DWORD __fastcall _get_dir_access_mask ( OSD_SingleProtection prt ) {
- 
-- DWORD retVal;
-+ DWORD retVal = 0;
- 
-  switch ( prt ) {
-  
-@@ -2599,7 +2599,7 @@
-                          ) {
- 
-  HANDLE retVal = INVALID_HANDLE_VALUE;
-- DWORD  dwDesiredAccess;
-+ DWORD  dwDesiredAccess = 0;
-  DWORD  dwCreationDistribution;
- 
-  switch ( oMode ) {
-@@ -2662,7 +2662,7 @@
-                              Standard_CString fName, Standard_Integer fileHandle
-                             ) {
- 
-- Standard_Integer retVal;
-+ Standard_Integer retVal = 0;
-  DWORD            dwType;
-  int              fileType;
- 
-@@ -3031,9 +3031,9 @@
- BOOL __fastcall _osd_print (const Standard_PCharacter pName, Standard_CString fName ) {
- 
-  BOOL   fOK, fJob;                
-- HANDLE hPrinter;
-+ HANDLE hPrinter = NULL;
-  BYTE   jobInfo[ MAX_PATH + sizeof ( DWORD ) ];
-- DWORD  dwNeeded, dwCode;
-+ DWORD  dwNeeded, dwCode = 0;
- 
-  fOK = fJob = FALSE;
- 
-Index: oce/src/OSD/OSD_FileNode.cxx
-===================================================================
---- oce.orig/src/OSD/OSD_FileNode.cxx
-+++ oce/src/OSD/OSD_FileNode.cxx
-@@ -833,7 +833,7 @@
- Standard_Integer OSD_FileNode::UserId () {
- 
-  PSID                    pSIDowner = NULL;
-- PSID                    retVal;
-+ PSID                    retVal = NULL;
-  BOOL                    fDefaulted;
-  TCollection_AsciiString fName;
-  PSECURITY_DESCRIPTOR    pSD;
-@@ -984,7 +984,7 @@
-  FILETIME   ftCreationTime;
-  FILETIME   ftLastWriteTime;
-  LPFILETIME lpftPtr;
-- HANDLE     hFile;
-+ HANDLE     hFile = INVALID_HANDLE_VALUE;
- 
-  __try {
- 
-Index: oce/src/OSD/OSD_Process.cxx
-===================================================================
---- oce.orig/src/OSD/OSD_Process.cxx
-+++ oce/src/OSD/OSD_Process.cxx
-@@ -322,7 +322,7 @@
-  Standard_Boolean retVal = FALSE;
-  PSID             pSIDadmin;
-  HANDLE           hProcessToken = INVALID_HANDLE_VALUE;
-- PTOKEN_GROUPS    pTKgroups;
-+ PTOKEN_GROUPS    pTKgroups = NULL;
- 
-  if (  !OpenProcessToken (
-          GetCurrentProcess (),
-Index: oce/src/OSD/OSD_WNT.cxx
-===================================================================
---- oce.orig/src/OSD/OSD_WNT.cxx
-+++ oce/src/OSD/OSD_WNT.cxx
-@@ -1044,7 +1044,7 @@
-  LPTSTR              pathSrc,  pathDst;
-  HANDLE              hFindFile;
-  BOOL                fFind;
-- BOOL                retVal;
-+ BOOL                retVal = FALSE;
-  DIR_RESPONSE        response;
-  DWORD               level;
- 
-@@ -1275,7 +1275,7 @@
- /***/
- BOOL CopyDirectory ( LPCTSTR dirSrc, LPCTSTR dirDst ) {
- 
-- PWIN32_FIND_DATA    pFD;
-+ PWIN32_FIND_DATA    pFD = NULL;
-  LPTSTR              pName = NULL;
-  LPTSTR              pFullNameSrc = NULL;
-  LPTSTR              pFullNameDst = NULL;
-Index: oce/src/OSD/OSD_WNT_1.cxx
-===================================================================
---- oce.orig/src/OSD/OSD_WNT_1.cxx
-+++ oce/src/OSD/OSD_WNT_1.cxx
-@@ -18,9 +18,9 @@
-  PWIN32_FIND_DATA pFD;
-  LPTSTR           pName = NULL;
-  LPTSTR           pFullName = NULL;
-- LPTSTR           pTmp;
-+ LPTSTR           pTmp = NULL;
-  HANDLE           hFindFile = INVALID_HANDLE_VALUE;
-- BOOL             fFind;
-+ BOOL             fFind = FALSE;
-  BOOL             retVal = TRUE;
-  HANDLE           hHeap = GetProcessHeap ();
- 
-@@ -278,7 +278,7 @@
- LONG GetTextParams ( HDC hdc, LPCTSTR lpText ) {
-   LONG res = 0;
-   SIZE size;
--  _TCHAR* dummy;
-+  _TCHAR* dummy = NULL;
-   __try {
-     dummy = _tcsdup (lpText);
-     if ( !dummy ) __leave;
-Index: oce/src/OSD/OSD_signal_WNT.cxx
-===================================================================
---- oce.orig/src/OSD/OSD_signal_WNT.cxx
-+++ oce/src/OSD/OSD_signal_WNT.cxx
-@@ -577,7 +577,7 @@
- 
-  if ( !fDbgLoaded ) {
-  
--  HKEY                hKey;
-+  HKEY                hKey = NULL;
-   HANDLE              hEvent = INVALID_HANDLE_VALUE;
-   DWORD               dwKeyType;
-   DWORD               dwValueLen;
-@@ -638,7 +638,7 @@
-   __finally {
-   
- //   cout << "_osd_debug -> CloseHandle(hKey) " << endl ;
--   if ( hKey   != INVALID_HANDLE_VALUE ) CloseHandle ( hKey   );
-+   if ( hKey   != NULL ) CloseHandle ( hKey   );
- //   cout << "_osd_debug -> CloseHandle(hEvent) " << endl ;
-    if ( hEvent != INVALID_HANDLE_VALUE ) CloseHandle ( hEvent );
- //   cout << "_osd_debug end __finally " << endl ;
-Index: oce/src/Storage/Storage_Schema.cxx
-===================================================================
---- oce.orig/src/Storage/Storage_Schema.cxx
-+++ oce/src/Storage/Storage_Schema.cxx
-@@ -209,7 +209,12 @@
-     myCurrentIndex       = 0;
-     myMoreObject         = Standard_True;
-   }
--  else myMoreObject         = Standard_False;
-+  else {
-+    myBucket             = NULL;
-+    myCurrentBucket      = 0;
-+    myBucketNumber       = 0;
-+    myMoreObject         = Standard_False;
-+  }
- }
- 
- //=======================================================================
-@@ -572,7 +577,7 @@
-     }
- 
-     if (result) {
--      Standard_Integer otype,oref;
-+      Standard_Integer otype,oref = 0;
- 
-       errorCode = f.BeginReadRefSection();
- 
-Index: oce/src/math/math_DirectPolynomialRoots.cxx
-===================================================================
---- oce.orig/src/math/math_DirectPolynomialRoots.cxx
-+++ oce/src/math/math_DirectPolynomialRoots.cxx
-@@ -52,6 +52,8 @@
-         Standard_Real Sol = IniSol;
-         Standard_Real IniVal = Value(N, Poly, IniSol);
-         Standard_Integer Index;
-+	// set a possible initial value to avoid compiler complaining
-+	Val = IniVal;
- 
- //      cout << "Improve\n";
-         for(Index = 1; Index < 10; Index++) {
 Index: oce/inc/AppParCurves_ResolConstraint.gxx
 ===================================================================
 --- oce.orig/inc/AppParCurves_ResolConstraint.gxx
@@ -950,7 +701,7 @@ Index: oce/src/AIS/AIS_Shape.cxx
 ===================================================================
 --- oce.orig/src/AIS/AIS_Shape.cxx
 +++ oce/src/AIS/AIS_Shape.cxx
-@@ -259,8 +259,8 @@
+@@ -253,8 +253,8 @@
      {
        Standard_Real prevangle ;
        Standard_Real newangle  ; 
@@ -961,9 +712,9 @@ Index: oce/src/AIS/AIS_Shape.cxx
        
        
        if (OwnDeviationAngle(newangle,prevangle) ||
-@@ -381,7 +381,7 @@
+@@ -375,7 +375,7 @@
  
- // coefficients pour le calcul
+ // coefficients for calculation
  
 -  Standard_Real prevangle, newangle ,prevcoeff,newcoeff ; 
 +  Standard_Real prevangle, newangle ,prevcoeff = 0,newcoeff = 0; 
@@ -1040,7 +791,7 @@ Index: oce/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
 ===================================================================
 --- oce.orig/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
 +++ oce/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
-@@ -180,7 +180,7 @@
+@@ -181,7 +181,7 @@
  		       Standard_Boolean& DerNull)
  
  {
@@ -1049,7 +800,7 @@ Index: oce/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
    Standard_Real Tol=Precision::PConfusion()/10;
    Hunt(Arr,Coord,N);
    DerNull=Standard_False;
-@@ -219,7 +219,7 @@
+@@ -220,7 +220,7 @@
  			 const Handle(Geom_BSplineCurve)& BSplC,
  			 gp_Pnt2d& LeftBot, gp_Pnt2d& RightTop)
  {
@@ -1058,7 +809,7 @@ Index: oce/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
    Standard_Real Tol = Precision::PConfusion()/10;
    Standard_Integer i = 1, Bnd1, Bnd2;
    Standard_Boolean DIsNull= Standard_False; 
-@@ -324,7 +324,7 @@
+@@ -325,7 +325,7 @@
    Standard_Real Comp1=0,DComp1=0; 
    Standard_Real Tol = Precision::PConfusion()/10;
    Standard_Integer i=1, Up=0, Up1, Up2, Down=0, Down1, Down2, Bnd1, Bnd2;
@@ -1067,7 +818,7 @@ Index: oce/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
  
    DIsNull= Standard_False; 
  
-@@ -501,9 +501,9 @@
+@@ -502,9 +502,9 @@
  			 const TColStd_Array1OfReal& Arr,
  			 gp_Pnt2d& LeftBot, gp_Pnt2d& RightTop)
  {
@@ -1262,7 +1013,7 @@ Index: oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
 ===================================================================
 --- oce.orig/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
 +++ oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
-@@ -110,7 +110,7 @@
+@@ -104,7 +104,7 @@
        Precision::IsInfinite(aLast2))
      return;
    
@@ -1271,7 +1022,7 @@ Index: oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
    Standard_Boolean bUmin, bUmax;
    bUmin = bUmax = Standard_False;
  
-@@ -270,7 +270,7 @@
+@@ -243,7 +243,7 @@
    const Standard_Boolean bRestrict = BRep_Tool::NaturalRestriction(aF);
  
    Standard_Real U1, V1, U2, V2;
@@ -1299,7 +1050,7 @@ Index: oce/src/BRepFill/BRepFill_CompatibleWires.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_CompatibleWires.cxx
 +++ oce/src/BRepFill/BRepFill_CompatibleWires.cxx
-@@ -1433,8 +1433,8 @@
+@@ -1436,8 +1436,8 @@
  	}
        
        Standard_Real MinSumDist = Precision::Infinite();
@@ -1375,7 +1126,7 @@ Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_OffsetWire.cxx
 +++ oce/src/BRepFill/BRepFill_OffsetWire.cxx
-@@ -1334,8 +1334,8 @@
+@@ -1365,8 +1365,8 @@
        Pf = BRep_Tool::Pnt(Vf);
        Pl = BRep_Tool::Pnt(Vl);
        Standard_Real DistF = RealLast(), DistL = RealLast();
@@ -1443,7 +1194,7 @@ Index: oce/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
 ===================================================================
 --- oce.orig/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
 +++ oce/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
-@@ -304,7 +304,7 @@
+@@ -311,7 +311,7 @@
    Handle(Poly_Triangulation) T, TNull;
    Handle(Poly_PolygonOnTriangulation) Poly, NullPoly;
    Standard_Boolean found = Standard_False;
@@ -1521,11 +1272,24 @@ Index: oce/src/CGM/cgmochar.c
     static Logical first = TRUE;
     static Long normal_list, bit_stream, run_length, run_bits, colbytes;
     Posint red, green, blue, lastred, lastgreen, lastblue;
+Index: oce/src/CSLib/CSLib.cxx
+===================================================================
+--- oce.orig/src/CSLib/CSLib.cxx
++++ oce/src/CSLib/CSLib.cxx
+@@ -276,7 +276,7 @@
+ 	    sup=Standard_PI;
+ 	 }
+ 	 Standard_Boolean CS=0;
+-	 Standard_Real Vprec=0,Vsuiv;
++	 Standard_Real Vprec=0,Vsuiv = 0;
+ 	 //Creation du polynome
+ 	 CSLib_NormalPolyDef  Poly(Order,Ratio);
+ 	 //Recherche des zeros de SAPS
 Index: oce/src/ChFi3d/ChFi3d_Builder_0.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder_0.cxx
 +++ oce/src/ChFi3d/ChFi3d_Builder_0.cxx
-@@ -2271,7 +2271,7 @@
+@@ -2106,7 +2106,7 @@
    Standard_Integer Iarc1 = 0,Iarc2 = 0;
    TopAbs_Orientation trafil1 = TopAbs_FORWARD, trafil2 = TopAbs_FORWARD;
    Standard_Integer IcFil1,IcFil2,Isurf,Ishape1,Ishape2;
@@ -1534,8 +1298,8 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_0.cxx
    TopAbs_Orientation ET1;
    Handle(TopOpeBRepDS_CurvePointInterference) Interfp1,Interfp2;
    Handle(TopOpeBRepDS_SurfaceCurveInterference) Interfc1,Interfc2;
-@@ -3280,7 +3280,7 @@
-   //le sens de la corde deb/fin.
+@@ -3036,7 +3036,7 @@
+   //in the direction of the start/end line.
    gp_Vec Vint, Vref(pdeb,pfin);
    gp_Pnt Pbid;
 -  Standard_Real Udeb,Ufin;
@@ -1543,7 +1307,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_0.cxx
    Standard_Real tolr1,tolr2;
    tolr1 = tolr2 = tolreached = tol3d;
    if((S1->GetType() == GeomAbs_Cylinder && S2->GetType() == GeomAbs_Plane)||
-@@ -4151,6 +4151,7 @@
+@@ -3895,6 +3895,7 @@
    Wreffin = WL;
    nwf = WF;
    nwl = WL;
@@ -1555,7 +1319,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_2.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder_2.cxx
 +++ oce/src/ChFi3d/ChFi3d_Builder_2.cxx
-@@ -1905,7 +1905,7 @@
+@@ -1896,7 +1896,7 @@
    Standard_Boolean RecP1 = 0, RecS1 = 0, RecRst1 = 0, obstacleon1 = 0;
    Standard_Boolean RecP2 = 0, RecS2 = 0, RecRst2 = 0, obstacleon2 = 0;
    gp_Pnt2d pp1,pp2,pp3,pp4;
@@ -1577,7 +1341,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_6.cxx
    if(!PC1.IsNull()){
      Handle(GeomAdaptor_HCurve) hcS1 = new GeomAdaptor_HCurve(Crv3d1);
      c2dtrim = new Geom2d_TrimmedCurve(PC1,UFirst,ULast);
-@@ -2085,7 +2085,7 @@
+@@ -2079,7 +2079,7 @@
    
    Standard_Real MS = MaxStep;
    Standard_Real TolGuide=tolguide, TolEsp = tolesp;
@@ -1590,7 +1354,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_C1.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder_C1.cxx
 +++ oce/src/ChFi3d/ChFi3d_Builder_C1.cxx
-@@ -794,7 +794,7 @@
+@@ -790,7 +790,7 @@
  
    TopoDS_Edge edgecouture;
    Standard_Boolean couture,intcouture=Standard_False;;
@@ -1599,7 +1363,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_C1.cxx
  #ifndef DEB
    Standard_Real  par1 =0.,par2 =0.;
    Standard_Integer indpt = 0,Icurv1 = 0,Icurv2 = 0;
-@@ -3789,7 +3789,7 @@
+@@ -3779,7 +3779,7 @@
    TopoDS_Edge Arcpiv,Arcprol,Arcspine,Arcprolbis;
    if(isfirst) Arcspine = spine->Edges(1);
    else Arcspine = spine->Edges(spine->NbEdges());
@@ -1608,7 +1372,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_C1.cxx
  #ifndef DEB
    TopAbs_Orientation OArcprolv = TopAbs_FORWARD, OArcprolop = TopAbs_FORWARD;
  #else
-@@ -3988,7 +3988,7 @@
+@@ -3975,7 +3975,7 @@
  
    TopoDS_Edge edgecouture;
    Standard_Boolean couture,intcouture=Standard_False;;
@@ -1617,8 +1381,8 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_C1.cxx
  #ifndef DEB
    Standard_Real par1 = 0.,par2 = 0.;
    Standard_Integer indpt =0,Icurv1 =0,Icurv2 =0;
-@@ -4217,7 +4217,7 @@
-     // Tout d abord on coupe les ponts avec l arete de la spine.
+@@ -4204,7 +4204,7 @@
+     // Above all the points cut the points with the edge of the spine.
      Standard_Integer IArcspine = DStr.AddShape(Arcspine);
      Standard_Integer IVtx = DStr.AddShape(Vtx);
 -    TopAbs_Orientation OVtx2;
@@ -1630,7 +1394,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_C2.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder_C2.cxx
 +++ oce/src/ChFi3d/ChFi3d_Builder_C2.cxx
-@@ -313,7 +313,7 @@
+@@ -311,7 +311,7 @@
        Reduce(UIntPC1,UIntPC2,HS1,HS2);
      }
      
@@ -1670,7 +1434,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_CnCrn.cxx
    Handle (TopOpeBRepDS_CurvePointInterference) Interfp1, Interfp2;
    Handle (TopOpeBRepDS_SurfaceCurveInterference) Interfc;
    Handle(Geom_Curve) Curv3d;
-@@ -1454,10 +1454,10 @@
+@@ -1450,10 +1450,10 @@
        oksea.SetValue(ic, Standard_False);
      }
      else {
@@ -1685,7 +1449,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_CnCrn.cxx
        Handle(ChFiDS_Stripe) strip;
        Standard_Real angedg;
        Standard_Integer iface;
-@@ -1831,7 +1831,7 @@
+@@ -1826,7 +1826,7 @@
  #else
    Standard_Integer nbface;
  #endif
@@ -1710,7 +1474,7 @@ Index: oce/src/ChFi3d/ChFi3d_FilBuilder_C2.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_FilBuilder_C2.cxx
 +++ oce/src/ChFi3d/ChFi3d_FilBuilder_C2.cxx
-@@ -474,7 +474,7 @@
+@@ -470,7 +470,7 @@
  	TopAbs_Orientation oriSFF1 = st1->Orientation(IFaArc1);
  	bid = 1;
  	bid = ChFi3d::NextSide(ori,OFF1,oriS,oriSFF1,bid);
@@ -1741,6 +1505,28 @@ Index: oce/src/ChFiDS/ChFiDS_FilSpine.cxx
    Standard_Integer i;
    for (i = 1; i < parandrad.Length(); i++)
      {
+Index: oce/src/Convert/Convert_ConicToBSplineCurve.cxx
+===================================================================
+--- oce.orig/src/Convert/Convert_ConicToBSplineCurve.cxx
++++ oce/src/Convert/Convert_ConicToBSplineCurve.cxx
+@@ -327,7 +327,7 @@
+   q_param,
+   param ;
+ 
+-  Standard_Integer num_poles,
++  Standard_Integer num_poles = 0,
+   ii,
+   jj,
+   num_knots=0,
+@@ -337,7 +337,7 @@
+   temp_degree=0,
+   tgt_theta_flag,
+   num_temp_poles,
+-  order ;
++  order = 0;
+ 
+   Convert_CosAndSinEvalFunction *EvaluatorPtr=NULL ;
+ 
 Index: oce/src/DNaming/DNaming_TransformationDriver.cxx
 ===================================================================
 --- oce.orig/src/DNaming/DNaming_TransformationDriver.cxx
@@ -2056,7 +1842,7 @@ Index: oce/src/Graphic3d/Graphic3d_ArrayOfPrimitives.cxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_ArrayOfPrimitives.cxx
 +++ oce/src/Graphic3d/Graphic3d_ArrayOfPrimitives.cxx
-@@ -685,7 +685,7 @@
+@@ -686,7 +686,7 @@
  }
  
  Quantity_Color Graphic3d_ArrayOfPrimitives::BoundColor(const Standard_Integer aRank) const {
@@ -2504,12 +2290,186 @@ Index: oce/src/OSD/OSD_Environment.cxx
   DWORD            dwSize = 0;
   char*            envVal = NULL;
  
+Index: oce/src/OSD/OSD_File.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_File.cxx
++++ oce/src/OSD/OSD_File.cxx
+@@ -1498,7 +1498,7 @@
+                   const Standard_Integer Offset, const OSD_FromWhere Whence
+                  ) {
+ 
+- DWORD dwMoveMethod;
++ DWORD dwMoveMethod = 0;
+ 
+  TEST_RAISE(  TEXT( "Seek" )  );
+ 
+@@ -1922,7 +1922,7 @@
+  PTOKEN_OWNER         pTkOwner        = NULL;
+  PTOKEN_GROUPS        pTkGroups       = NULL;
+  PTOKEN_PRIMARY_GROUP pTkPrimaryGroup = NULL;
+- PSECURITY_DESCRIPTOR retVal;
++ PSECURITY_DESCRIPTOR retVal = NULL;
+  PSECURITY_DESCRIPTOR pfSD = NULL;
+  BOOL                 fDummy;
+  PFILE_ACE            pFileACE;
+@@ -2370,7 +2370,7 @@
+ 
+ static DWORD __fastcall _get_access_mask ( OSD_SingleProtection prt ) {
+ 
+- DWORD retVal;
++ DWORD retVal = 0;
+ 
+  switch ( prt ) {
+  
+@@ -2482,7 +2482,7 @@
+ 
+ static DWORD __fastcall _get_dir_access_mask ( OSD_SingleProtection prt ) {
+ 
+- DWORD retVal;
++ DWORD retVal = 0;
+ 
+  switch ( prt ) {
+  
+@@ -2599,7 +2599,7 @@
+                          ) {
+ 
+  HANDLE retVal = INVALID_HANDLE_VALUE;
+- DWORD  dwDesiredAccess;
++ DWORD  dwDesiredAccess = 0;
+  DWORD  dwCreationDistribution;
+ 
+  switch ( oMode ) {
+@@ -2662,7 +2662,7 @@
+                              Standard_CString fName, Standard_Integer fileHandle
+                             ) {
+ 
+- Standard_Integer retVal;
++ Standard_Integer retVal = 0;
+  DWORD            dwType;
+  int              fileType;
+ 
+@@ -3031,9 +3031,9 @@
+ BOOL __fastcall _osd_print (const Standard_PCharacter pName, Standard_CString fName ) {
+ 
+  BOOL   fOK, fJob;                
+- HANDLE hPrinter;
++ HANDLE hPrinter = NULL;
+  BYTE   jobInfo[ MAX_PATH + sizeof ( DWORD ) ];
+- DWORD  dwNeeded, dwCode;
++ DWORD  dwNeeded, dwCode = 0;
+ 
+  fOK = fJob = FALSE;
+ 
+Index: oce/src/OSD/OSD_FileNode.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_FileNode.cxx
++++ oce/src/OSD/OSD_FileNode.cxx
+@@ -833,7 +833,7 @@
+ Standard_Integer OSD_FileNode::UserId () {
+ 
+  PSID                    pSIDowner = NULL;
+- PSID                    retVal;
++ PSID                    retVal = NULL;
+  BOOL                    fDefaulted;
+  TCollection_AsciiString fName;
+  PSECURITY_DESCRIPTOR    pSD;
+@@ -984,7 +984,7 @@
+  FILETIME   ftCreationTime;
+  FILETIME   ftLastWriteTime;
+  LPFILETIME lpftPtr;
+- HANDLE     hFile;
++ HANDLE     hFile = INVALID_HANDLE_VALUE;
+ 
+  __try {
+ 
+Index: oce/src/OSD/OSD_Process.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_Process.cxx
++++ oce/src/OSD/OSD_Process.cxx
+@@ -322,7 +322,7 @@
+  Standard_Boolean retVal = FALSE;
+  PSID             pSIDadmin;
+  HANDLE           hProcessToken = INVALID_HANDLE_VALUE;
+- PTOKEN_GROUPS    pTKgroups;
++ PTOKEN_GROUPS    pTKgroups = NULL;
+ 
+  if (  !OpenProcessToken (
+          GetCurrentProcess (),
+Index: oce/src/OSD/OSD_WNT.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_WNT.cxx
++++ oce/src/OSD/OSD_WNT.cxx
+@@ -1044,7 +1044,7 @@
+  LPTSTR              pathSrc,  pathDst;
+  HANDLE              hFindFile;
+  BOOL                fFind;
+- BOOL                retVal;
++ BOOL                retVal = FALSE;
+  DIR_RESPONSE        response;
+  DWORD               level;
+ 
+@@ -1275,7 +1275,7 @@
+ /***/
+ BOOL CopyDirectory ( LPCTSTR dirSrc, LPCTSTR dirDst ) {
+ 
+- PWIN32_FIND_DATA    pFD;
++ PWIN32_FIND_DATA    pFD = NULL;
+  LPTSTR              pName = NULL;
+  LPTSTR              pFullNameSrc = NULL;
+  LPTSTR              pFullNameDst = NULL;
+Index: oce/src/OSD/OSD_WNT_1.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_WNT_1.cxx
++++ oce/src/OSD/OSD_WNT_1.cxx
+@@ -18,9 +18,9 @@
+  PWIN32_FIND_DATA pFD;
+  LPTSTR           pName = NULL;
+  LPTSTR           pFullName = NULL;
+- LPTSTR           pTmp;
++ LPTSTR           pTmp = NULL;
+  HANDLE           hFindFile = INVALID_HANDLE_VALUE;
+- BOOL             fFind;
++ BOOL             fFind = FALSE;
+  BOOL             retVal = TRUE;
+  HANDLE           hHeap = GetProcessHeap ();
+ 
+@@ -278,7 +278,7 @@
+ LONG GetTextParams ( HDC hdc, LPCTSTR lpText ) {
+   LONG res = 0;
+   SIZE size;
+-  _TCHAR* dummy;
++  _TCHAR* dummy = NULL;
+   __try {
+     dummy = _tcsdup (lpText);
+     if ( !dummy ) __leave;
+Index: oce/src/OSD/OSD_signal_WNT.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_signal_WNT.cxx
++++ oce/src/OSD/OSD_signal_WNT.cxx
+@@ -577,7 +577,7 @@
+ 
+  if ( !fDbgLoaded ) {
+  
+-  HKEY                hKey;
++  HKEY                hKey = NULL;
+   HANDLE              hEvent = INVALID_HANDLE_VALUE;
+   DWORD               dwKeyType;
+   DWORD               dwValueLen;
+@@ -638,7 +638,7 @@
+   __finally {
+   
+ //   cout << "_osd_debug -> CloseHandle(hKey) " << endl ;
+-   if ( hKey   != INVALID_HANDLE_VALUE ) CloseHandle ( hKey   );
++   if ( hKey   != NULL ) CloseHandle ( hKey   );
+ //   cout << "_osd_debug -> CloseHandle(hEvent) " << endl ;
+    if ( hEvent != INVALID_HANDLE_VALUE ) CloseHandle ( hEvent );
+ //   cout << "_osd_debug end __finally " << endl ;
 Index: oce/src/OpenGl/OpenGl_TextureBox.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_TextureBox.cxx
 +++ oce/src/OpenGl/OpenGl_TextureBox.cxx
-@@ -857,7 +857,7 @@
-   TextureDataID data;
+@@ -859,7 +859,7 @@
+   bool notResource = false; // if there old-style texture deletion
  
  #if defined(GL_EXT_texture_object)
 -  GLCONTEXT cur_context;
@@ -3045,7 +3005,7 @@ Index: oce/src/Select3D/Select3D_SensitiveFace.cxx
 ===================================================================
 --- oce.orig/src/Select3D/Select3D_SensitiveFace.cxx
 +++ oce/src/Select3D/Select3D_SensitiveFace.cxx
-@@ -76,7 +76,7 @@
+@@ -77,7 +77,7 @@
  #else
    Standard_Real DMin2;
  #endif
@@ -3283,6 +3243,33 @@ Index: oce/src/ShapeUpgrade/ShapeUpgrade_WireDivide.cxx
        Handle(Geom_Curve) c3d;
        Adaptor3d_CurveOnSurface AdCS;
        if(myEdgeDivide->HasCurve3d()) 
+Index: oce/src/Storage/Storage_Schema.cxx
+===================================================================
+--- oce.orig/src/Storage/Storage_Schema.cxx
++++ oce/src/Storage/Storage_Schema.cxx
+@@ -209,7 +209,12 @@
+     myCurrentIndex       = 0;
+     myMoreObject         = Standard_True;
+   }
+-  else myMoreObject         = Standard_False;
++  else {
++    myBucket             = NULL;
++    myCurrentBucket      = 0;
++    myBucketNumber       = 0;
++    myMoreObject         = Standard_False;
++  }
+ }
+ 
+ //=======================================================================
+@@ -572,7 +577,7 @@
+     }
+ 
+     if (result) {
+-      Standard_Integer otype,oref;
++      Standard_Integer otype,oref = 0;
+ 
+       errorCode = f.BeginReadRefSection();
+ 
 Index: oce/src/TopOpeBRep/TopOpeBRep_FFTransitionTool.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRep/TopOpeBRep_FFTransitionTool.cxx
@@ -3736,7 +3723,7 @@ Index: oce/src/V3d/V3d_Camera.cxx
 ===================================================================
 --- oce.orig/src/V3d/V3d_Camera.cxx
 +++ oce/src/V3d/V3d_Camera.cxx
-@@ -629,7 +629,7 @@
+@@ -626,7 +626,7 @@
  
    Standard_Real    Xp,Yp,Zp,Xc,Yc,Zc,Xv,Yv,Zv,Xf,Yf,Zf;
    Standard_Real    VX,VY,VZ,DXH,DYH,DZH,A,B,C,PXT,PYT,X1,Y1,Z1,Dist;
@@ -3745,7 +3732,7 @@ Index: oce/src/V3d/V3d_Camera.cxx
    Standard_Integer IPX,IPY,IHeight,IWidth;
    TColStd_Array2OfReal   MatRot(0,2,0,2);
    
-@@ -693,7 +693,7 @@
+@@ -690,7 +690,7 @@
  
    Standard_Real    Xp,Yp,Zp,Xc,Yc,Zc,Xv,Yv,Zv,Xf,Yf,Zf;
    Standard_Real    VX,VY,VZ,DXH,DYH,DZH,A,B,C,PXT,PYT,X1,Y1,Z1,Dist;
@@ -3784,7 +3771,7 @@ Index: oce/src/Visual3d/Visual3d_View.cxx
 ===================================================================
 --- oce.orig/src/Visual3d/Visual3d_View.cxx
 +++ oce/src/Visual3d/Visual3d_View.cxx
-@@ -773,10 +773,10 @@
+@@ -767,10 +767,10 @@
  
  Standard_Real X, Y, Z;
  
@@ -4121,3 +4108,16 @@ Index: oce/src/XmlMDataStd/XmlMDataStd_NamedDataDriver.cxx
        if (aCurNode.isNull())
  	aCurNode = anElement.getFirstChild();
        else 
+Index: oce/src/math/math_DirectPolynomialRoots.cxx
+===================================================================
+--- oce.orig/src/math/math_DirectPolynomialRoots.cxx
++++ oce/src/math/math_DirectPolynomialRoots.cxx
+@@ -52,6 +52,8 @@
+         Standard_Real Sol = IniSol;
+         Standard_Real IniVal = Value(N, Poly, IniSol);
+         Standard_Integer Index;
++	// set a possible initial value to avoid compiler complaining
++	Val = IniVal;
+ 
+ //      cout << "Improve\n";
+         for(Index = 1; Index < 10; Index++) {

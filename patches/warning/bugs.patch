@@ -5,11 +5,11 @@ Date:   Sat Jun 11 20:07:46 2011 +0200
     Fixed or marked some bugs thanks to warning messages.
     This includes a buffer overflow in Interface_MSG
 
-diff --git a/src/Interface/Interface_MSG.cxx b/src/Interface/Interface_MSG.cxx
-index bd8653b..7e6c14d 100644
---- a/src/Interface/Interface_MSG.cxx
-+++ b/src/Interface/Interface_MSG.cxx
-@@ -42,7 +42,7 @@ Interface_MSG::Interface_MSG
+Index: oce/src/Interface/Interface_MSG.cxx
+===================================================================
+--- oce.orig/src/Interface/Interface_MSG.cxx
++++ oce/src/Interface/Interface_MSG.cxx
+@@ -42,7 +42,7 @@
  {
    char mess[300];
    sprintf (mess, Interface_MSG::Translated(thekey), i1);
@@ -18,7 +18,7 @@ index bd8653b..7e6c14d 100644
    strcpy (theval,mess);
  }
  
-@@ -53,7 +53,7 @@ Interface_MSG::Interface_MSG
+@@ -53,7 +53,7 @@
  {
    char mess[300];
    sprintf (mess, Interface_MSG::Translated(thekey), i1,i2);
@@ -27,7 +27,7 @@ index bd8653b..7e6c14d 100644
    strcpy (theval,mess);
  }
  
-@@ -65,7 +65,7 @@ Interface_MSG::Interface_MSG
+@@ -65,7 +65,7 @@
    char mess[300];
    sprintf (mess, Interface_MSG::Translated(thekey),
  	   (intervals < 0 ? r1 : Interface_MSG::Intervalled(r1,intervals)) );
@@ -36,7 +36,7 @@ index bd8653b..7e6c14d 100644
    strcpy (theval,mess);
  }
  
-@@ -76,7 +76,7 @@ Interface_MSG::Interface_MSG
+@@ -76,7 +76,7 @@
  {
    char mess[300];
    sprintf (mess, Interface_MSG::Translated(thekey), str);
@@ -45,7 +45,7 @@ index bd8653b..7e6c14d 100644
    strcpy (theval,mess);
  }
  
-@@ -88,7 +88,7 @@ Interface_MSG::Interface_MSG
+@@ -88,7 +88,7 @@
  {
    char mess[300];
    sprintf (mess, Interface_MSG::Translated(thekey), val, str);
@@ -54,11 +54,11 @@ index bd8653b..7e6c14d 100644
    strcpy (theval,mess);
  }
  
-diff --git a/src/TestTopOpeDraw/TestTopOpeDraw_OtherCommands.cxx b/src/TestTopOpeDraw/TestTopOpeDraw_OtherCommands.cxx
-index 8c29deb..b93244c 100644
---- a/src/TestTopOpeDraw/TestTopOpeDraw_OtherCommands.cxx
-+++ b/src/TestTopOpeDraw/TestTopOpeDraw_OtherCommands.cxx
-@@ -98,21 +98,21 @@ Standard_EXPORT void OthersCommands_flags(Standard_Integer& na,const char** a,Te
+Index: oce/src/TestTopOpeDraw/TestTopOpeDraw_OtherCommands.cxx
+===================================================================
+--- oce.orig/src/TestTopOpeDraw/TestTopOpeDraw_OtherCommands.cxx
++++ oce/src/TestTopOpeDraw/TestTopOpeDraw_OtherCommands.cxx
+@@ -98,21 +98,21 @@
  	}
  	else if(a[iloc][j] == 'c') {
  	  col=Standard_True;

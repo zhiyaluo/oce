@@ -74,7 +74,7 @@ Index: oce/src/Graphic3d/Graphic3d_GraphicDevice.cxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_GraphicDevice.cxx
 +++ oce/src/Graphic3d/Graphic3d_GraphicDevice.cxx
-@@ -223,9 +223,13 @@
+@@ -215,9 +215,13 @@
      glshr = (char *) malloc (buffString.Length() + 1);
      memcpy(glshr, buffString.ToCString(), buffString.Length() + 1);
    } else {

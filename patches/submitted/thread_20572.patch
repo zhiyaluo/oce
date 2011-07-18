@@ -17,11 +17,11 @@ Date:   Thu May 5 00:46:58 2011 +0200
     
     Submitted upstream: http://www.opencascade.org/org/forum/thread_20572/
 
-diff --git a/src/Visual3d/Visual3d_TransientManager.cxx b/src/Visual3d/Visual3d_TransientManager.cxx
-index 194b37e..3d56ed0 100644
---- a/src/Visual3d/Visual3d_TransientManager.cxx
-+++ b/src/Visual3d/Visual3d_TransientManager.cxx
-@@ -120,11 +120,11 @@ Aspect_CLayer2d UnderCLayer;
+Index: oce/src/Visual3d/Visual3d_TransientManager.cxx
+===================================================================
+--- oce.orig/src/Visual3d/Visual3d_TransientManager.cxx
++++ oce/src/Visual3d/Visual3d_TransientManager.cxx
+@@ -120,11 +120,11 @@
  
  	if (! UnderLayer.IsNull ()){
  		UnderCLayer = UnderLayer->CLayer ();
@@ -35,7 +35,7 @@ index 194b37e..3d56ed0 100644
  	}
  
  	// Begin rendering
-@@ -188,10 +188,16 @@ void Visual3d_TransientManager::ClearDraw (const Handle(Visual3d_View)& AView,
+@@ -188,10 +188,16 @@
  
  	// Begin rendering
  	theCView	= *(CALL_DEF_VIEW *)AView->CView ();
@@ -56,7 +56,7 @@ index 194b37e..3d56ed0 100644
  
  	Handle(Aspect_GraphicDriver) agd = AView->GraphicDriver ();
  
-@@ -228,10 +234,16 @@ Standard_Boolean Visual3d_TransientManager::BeginAddDraw (const Handle(Visual3d_
+@@ -228,10 +234,16 @@
  
  	// Begin rendering
  	theCView	= *(CALL_DEF_VIEW *)AView->CView ();
