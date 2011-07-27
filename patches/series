@@ -1,14 +1,14 @@
 remove-duplicate-headers.patch
 
-submitted/OCC22327.patch
-submitted/OCC22332.patch
+submitted/OCC22327/fix-build-tcl-8.6.patch
+submitted/OCC22332/fix-layer-line.patch
 
-submitted/thread_20051.patch
-submitted/thread_20052.patch
-submitted/thread_20053.patch
-submitted/thread_20572.patch
-submitted/thread_20101.patch
-submitted/thread_20105.patch
+submitted/thread_20051/fix-build-failure-powerpc.patch
+submitted/thread_20052/fix-build-failure-gnu-kfreebsd.patch
+submitted/thread_20053/replace-x86-asm-by-gcc-atomic-extensions.patch
+submitted/thread_20572/fix-build-gcc-4.6.patch
+submitted/thread_20101/fix-XOpenDisplay-remote-call.patch
+submitted/thread_20105/add-openmp-support.patch
 
 warning/add-todos.patch
 warning/bugs.patch
