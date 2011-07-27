@@ -2,6 +2,7 @@ remove-duplicate-headers.patch
 
 submitted/OCC22327/fix-build-tcl-8.6.patch
 submitted/OCC22332/fix-layer-line.patch
+submitted/OCC22685/missing-parentheses-around-trigraphs.patch
 
 submitted/thread_20051/fix-build-failure-powerpc.patch
 submitted/thread_20052/fix-build-failure-gnu-kfreebsd.patch
@@ -9,13 +10,17 @@ submitted/thread_20053/replace-x86-asm-by-gcc-atomic-extensions.patch
 submitted/thread_20572/fix-build-gcc-4.6.patch
 submitted/thread_20101/fix-XOpenDisplay-remote-call.patch
 submitted/thread_20105/add-openmp-support.patch
+submitted/thread_20931/add-missing-include-stdlib.patch
 
 warning/add-todos.patch
 warning/bugs.patch
 
+warning/remove-extra-token-after-endif.patch
 warning/fix-assignment-in-conditional-expression.patch
 warning/fix-declared-but-never-defined.patch
 warning/fix-deprecated-conversion-from-string.patch
+warning/fix-comparison-between-different-enums.patch
+warning/deleting-void-ptr-is-undefined.patch
 warning/fix-empty-conditional-body.patch
 warning/fix-format-type-mismatch.patch
 warning/fix-function-never-returns.patch
@@ -26,13 +31,21 @@ warning/fix-label-not-used.patch
 warning/fix-multiline-comment.patch
 warning/fix-old_declarators.patch
 warning/fix-signed-unsigned-mismatch.patch
+warning/fix-logical-op-parentheses.patch
+warning/add-scope-to-declare-constant-variable.patch
+warning/fix-unhandled-enumeration-value.patch
 warning/fix-statement-has-no-effect.patch
+warning/remove-useless-statements-after-comma.patch
 warning/fix-uninitialized-var.patch
 warning/fix-unreachable-code.patch
 warning/fix-unused-function.patch
 warning/fix-unused-local-var.patch
 warning/fix-defined-but-not-used.patch
 warning/linker-warnings.patch
+#  This patch should drop const qualifiers in return value for all methods (only for objects, not pointers and references!)
+warning/remove-const-return-value.patch
+#  Do not report this bug to OCC, it has to be investigated
+review/fix-deprecated-conversion-from-string.patch
 
 cmake/remove-Autotools-generated-files.patch
 cmake/remove-Autotools-and-project-files.patch
@@ -69,6 +82,7 @@ ports/borland7.patch
 ports/borland8.patch
 ports/avoid-redefinition-warnings.patch
 ports/add-missing-Vfw32.lib.patch
+ports/workaround-clang-bug-remove-trampoline.patch
 
 undef-Convex.patch
 remove-TopOpeBRep_tools.hxx.patch

@@ -1,0 +1,27 @@
+From eaa2f86fd8cb1ca2e611e3cd5621f3f78221b9ef Mon Sep 17 00:00:00 2001
+From: Hugues Delorme <delorme.hugues@fougsys.fr>
+Date: Tue, 26 Jul 2011 17:14:04 +0200
+Subject: [PATCH 3/3] [warning-fix][comparison-between-different-enums]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fix obvious "comparison between ‘enum texStatus’ and ‘enum texDataStatus’"
+warning, the two remaining others are more risky.
+---
+ src/OpenGl/OpenGl_TextureBox.cxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Index: oce/src/OpenGl/OpenGl_TextureBox.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_TextureBox.cxx
++++ oce/src/OpenGl/OpenGl_TextureBox.cxx
+@@ -509,7 +509,7 @@
+   TextureDataID data;
+   data = textab[ID].data;
+ 
+-  if (textab[ID].status == TEXDATA_NONE)
++  if (textab[ID].status == TEX_NONE)
+     return;
+ 
+ #ifdef PRINT

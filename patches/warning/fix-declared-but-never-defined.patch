@@ -8,6 +8,27 @@ but never defined in OpenGl_PrimitiveArray.cxx
  src/OpenGl/OpenGl_PrimitiveArray.cxx |    2 --
  1 files changed, 0 insertions(+), 2 deletions(-)
 
+From e4660d30bf6943e09d6a0af1f3db5368124bc55e Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Mon, 25 Jul 2011 14:17:34 +0200
+Subject: [PATCH 4/4] Remove undefined form() function
+
+---
+ inc/InterfaceGraphic_wntio.hxx |    1 -
+ 1 files changed, 0 insertions(+), 1 deletions(-)
+
+Index: oce/inc/InterfaceGraphic_wntio.hxx
+===================================================================
+--- oce.orig/inc/InterfaceGraphic_wntio.hxx
++++ oce/inc/InterfaceGraphic_wntio.hxx
+@@ -15,7 +15,6 @@
+ 
+ __InterfaceGraphic_API int   cPrintf ( char*, ... );
+ __InterfaceGraphic_API int   fcPrintf ( int, char*, ... );
+-__InterfaceGraphic_API char* form ( char*, ... );
+ __InterfaceGraphic_API char* GetEnv ( char* );
+ 
+ # ifdef __cplusplus
 Index: oce/src/OpenGl/OpenGl_PrimitiveArray.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_PrimitiveArray.cxx

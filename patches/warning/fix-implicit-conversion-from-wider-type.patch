@@ -245,6 +245,19 @@ Subject: [PATCH 35/82] [warning-fix][implicit-conversion-from-wider-type]
  src/WNT/WNT_PixMap.cxx                             |    6 +++---
  46 files changed, 141 insertions(+), 140 deletions(-)
 
+From 0c7cc56a3ceed998474b5ca2d7e661d53e3a6f62 Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Thu, 12 May 2011 21:31:12 +0200
+Subject: [PATCH 13/26] [warning-fix][implicit-conversion-from-wider-type]
+
+Uses Standard_Char instead of Standard_Integer, as more appropriate (also fixes a bunch of related cast warnings)
+
+Note: this commit breaks ABI compatibility
+---
+ inc/OSD_Real2String.hxx     |    4 ++--
+ src/OSD/OSD_Real2String.cdl |    4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
 Index: oce/inc/Graphic3d_ArrayOfPrimitives.lxx
 ===================================================================
 --- oce.orig/inc/Graphic3d_ArrayOfPrimitives.lxx
@@ -262,6 +275,21 @@ Index: oce/inc/Graphic3d_ArrayOfPrimitives.lxx
      unsigned char alpha = 0;
      Standard_Integer outColor ;
      outColor = red;
+Index: oce/inc/OSD_Real2String.hxx
+===================================================================
+--- oce.orig/inc/OSD_Real2String.hxx
++++ oce/inc/OSD_Real2String.hxx
+@@ -76,8 +76,8 @@
+ 
+ 
+ 
+-Standard_Integer myReadDecimalPoint;
+-Standard_Integer myLocalDecimalPoint;
++Standard_Character myReadDecimalPoint;
++Standard_Character myLocalDecimalPoint;
+ 
+ 
+ };
 Index: oce/src/AlienImage/AlienImage_BMPAlienData.cxx
 ===================================================================
 --- oce.orig/src/AlienImage/AlienImage_BMPAlienData.cxx
@@ -1019,6 +1047,20 @@ Index: oce/src/OSD/OSD.cxx
  
  static void GetDecimalPoint() {
    float F1 = (float ) 1.1 ;
+Index: oce/src/OSD/OSD_Real2String.cdl
+===================================================================
+--- oce.orig/src/OSD/OSD_Real2String.cdl
++++ oce/src/OSD/OSD_Real2String.cdl
+@@ -35,7 +35,7 @@
+ 
+ fields
+ 
+-    myReadDecimalPoint: Integer from Standard;
+-    myLocalDecimalPoint: Integer from Standard;
++    myReadDecimalPoint: Character from Standard;
++    myLocalDecimalPoint: Character from Standard;
+ 
+ end Real2String;
 Index: oce/src/OSD/OSD_SystemFont.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_SystemFont.cxx
@@ -1155,7 +1197,7 @@ Index: oce/src/OpenGl/OpenGl_attri.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_attri.cxx
 +++ oce/src/OpenGl/OpenGl_attri.cxx
-@@ -982,7 +982,7 @@
+@@ -980,7 +980,7 @@
        attri_tail->TextZoomable = k[i]->data.ldata;  
        break;
      case TelTextAngle:
@@ -1164,7 +1206,7 @@ Index: oce/src/OpenGl/OpenGl_attri.cxx
        break;  
      case TelTextFontAspect:
        attri_tail->TextFontAspect = OSD_FontAspect(k[i]->data.ldata);
-@@ -1271,7 +1271,7 @@
+@@ -1269,7 +1269,7 @@
        k[i]->data.ldata = attri_tail->TextZoomable;
        break;
      case TelTextAngle:

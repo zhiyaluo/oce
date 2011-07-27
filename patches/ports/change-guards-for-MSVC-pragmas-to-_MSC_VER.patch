@@ -7,6 +7,16 @@ Date:   Thu Mar 17 13:12:18 2011 +0100
     These are mainly #pragma warnings or MSVCRT specific things.
     Left #pragma comment (lib, "") because other compilers seem to support these too.
 
+From 68c342332a2f6348765af35510ee397db05d5a82 Mon Sep 17 00:00:00 2001
+From: Muellni <mmuellen@gmx.de>
+Date: Tue, 19 Jul 2011 12:32:38 +0200
+Subject: [PATCH 06/26] proper MSVC compiler check to fix compilation errors
+ for other windows compilers
+
+---
+ src/OSD/OSD_MAllocHook.cxx |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
 Index: oce/src/BOPTools/BOPTools_PaveSet.cxx
 ===================================================================
 --- oce.orig/src/BOPTools/BOPTools_PaveSet.cxx
@@ -214,6 +224,37 @@ Index: oce/src/OSD/OSD_Environment.cxx
  
  static void __fastcall _set_error ( OSD_Error&, DWORD );
  
+Index: oce/src/OSD/OSD_MAllocHook.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_MAllocHook.cxx
++++ oce/src/OSD/OSD_MAllocHook.cxx
+@@ -70,7 +70,7 @@
+ // Platform-dependent methods
+ //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ 
+-#ifdef WNT
++#ifdef _MSC_VER
+ #include <crtdbg.h>
+ 
+ static long getRequestNum(void* pvData, long lRequest, size_t& theSize)
+@@ -149,7 +149,7 @@
+     _CrtSetAllocHook(MyAllocHook);
+ }
+ 
+-#else // ! WNT
++#else // ! _MSC_VER
+ 
+ // Not yet implemented for non-WNT platform
+ 
+@@ -158,7 +158,7 @@
+   MypCurrentCallback = theCB;
+ }
+ 
+-#endif // WNT
++#endif // _MSC_VER
+ 
+ //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ // LogFileHandler handler methods
 Index: oce/src/OSD/OSD_Process.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Process.cxx

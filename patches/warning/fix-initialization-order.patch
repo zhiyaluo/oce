@@ -20,6 +20,16 @@ Fi warnings like "var1 will initialized after var2 in ..."
  src/Voxel/Voxel_FastConverter.cxx          |   12 ++++++------
  14 files changed, 50 insertions(+), 40 deletions(-)
 
+From 19281c258730689d11221695ba12ab4882ca7e7b Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Wed, 20 Jul 2011 21:00:29 +0000
+Subject: [PATCH 10/26] [warning-fix][initialization-order]
+
+---
+ inc/NCollection_BaseVector.hxx     |    6 ++----
+ src/NIS/NIS_TriangulatedDrawer.cxx |    6 +++---
+ 2 files changed, 5 insertions(+), 7 deletions(-)
+
 Index: oce/inc/IntPatch_Point.lxx
 ===================================================================
 --- oce.orig/inc/IntPatch_Point.lxx
@@ -50,6 +60,26 @@ Index: oce/inc/IntPatch_Point.lxx
  {
  }
  
+Index: oce/inc/NCollection_BaseVector.hxx
+===================================================================
+--- oce.orig/inc/NCollection_BaseVector.hxx
++++ oce/inc/NCollection_BaseVector.hxx
+@@ -37,13 +37,11 @@
+   class MemBlock {
+   protected:
+     MemBlock (NCollection_BaseAllocator* theAlloc)
+-      : myAlloc(theAlloc),
+-        myFirstInd(0), myLength(0), mySize(0), myData(0L) {}
++      : myFirstInd(0), myLength(0), mySize(0), myAlloc(theAlloc), myData(0L) {}
+     MemBlock (const Standard_Integer theFirstInd,
+               const Standard_Integer theLength,
+               NCollection_BaseAllocator* theAlloc)
+-      : myAlloc(theAlloc),
+-        myFirstInd(theFirstInd), myLength(0), mySize(theLength), myData(0L) {}
++      : myFirstInd(theFirstInd), myLength(0), mySize(theLength), myAlloc(theAlloc), myData(0L) {}
+     virtual void        Reinit     (const Standard_Integer,
+                                     const size_t) {}
+     Standard_Integer    FirstIndex () const     { return myFirstInd; }
 Index: oce/inc/ShapeAnalysis_BoxBndTree.hxx
 ===================================================================
 --- oce.orig/inc/ShapeAnalysis_BoxBndTree.hxx
@@ -182,6 +212,24 @@ Index: oce/src/IntSurf/IntSurf_Quadric.cxx
  {}
  // ============================================================
  IntSurf_Quadric::IntSurf_Quadric (const gp_Pln& P):
+Index: oce/src/NIS/NIS_TriangulatedDrawer.cxx
+===================================================================
+--- oce.orig/src/NIS/NIS_TriangulatedDrawer.cxx
++++ oce/src/NIS/NIS_TriangulatedDrawer.cxx
+@@ -36,10 +36,10 @@
+                                 (const Quantity_Color theNormal,
+                                  const Quantity_Color theHilight,
+                                  const Quantity_Color theDynHilight)
+-  : myLineWidth      (1.f),
++  : myPolygonAsLineLoop (Standard_False),
++    myLineWidth      (1.f),
+     myIsDrawPolygons (Standard_False),
+-    myPolygonType    (NIS_Triangulated::Polygon_Default),
+-    myPolygonAsLineLoop (Standard_False)
++    myPolygonType    (NIS_Triangulated::Polygon_Default)
+ {
+   myColor[Draw_Normal]       = theNormal;
+   myColor[Draw_Top]          = theNormal;
 Index: oce/src/OSD/OSD_SystemFont.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_SystemFont.cxx

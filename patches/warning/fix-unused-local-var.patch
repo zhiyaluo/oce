@@ -189,6 +189,114 @@ Subject: [PATCH 74/82] [warning-fix][unused-local-var] Fix warnings: *
  src/IntTools/IntTools_EdgeFace.cxx |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
+From 51a80c93f482771d223638a2b5ca6f005203670d Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Tue, 19 Jul 2011 12:03:57 +0200
+Subject: [PATCH 04/26] [warning-fix][unused-local-var]
+
+The 'a' variable in OSD_MAllocHook.cxx was introduced only to
+enable inserting a breakpoint -> compiled in DEBUG mode only.
+---
+ src/OSD/OSD_MAllocHook.cxx |    6 +++++-
+ 1 files changed, 5 insertions(+), 1 deletions(-)
+
+From 0e1560c478bc26735ccba6634542d9d32aa0aa7f Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Tue, 19 Jul 2011 12:16:20 +0200
+Subject: [PATCH 05/26] [warning-fix][unused-local-var]
+
+Removed unused local vars, taking care to avoid side effects.
+---
+ src/BRepCheck/BRepCheck_Edge.cxx           |    2 +-
+ src/BRepExtrema/BRepExtrema_DistanceSS.cxx |    3 ---
+ src/OpenGl/OpenGl_togl_setplane.cxx        |    1 -
+ 3 files changed, 1 insertions(+), 5 deletions(-)
+
+From 95e0d033d99562b61d61a8968cdc3fe7e51da090 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Wed, 20 Jul 2011 20:59:16 +0000
+Subject: [PATCH 09/26] [warning-fix][unused-local-var]
+
+---
+ inc/AppParCurves_LeastSquare.gxx                   |    5 +---
+ inc/Approx_ComputeLine.gxx                         |   23 +++++++++++++-------
+ inc/GCPnts_UniformAbscissa.gxx                     |    2 -
+ inc/Image_GImage.gxx                               |    6 +---
+ inc/IntCurve_IntPolyPolyGen.gxx                    |   22 -------------------
+ inc/IntImpParGen_Intersector.gxx                   |    8 -------
+ inc/IntPatch_ImpImpIntersection_2.gxx              |    3 --
+ inc/IntPatch_ImpImpIntersection_5.gxx              |    3 +-
+ inc/IntWalk_PWalking_1.gxx                         |    6 +----
+ inc/Intf_InterferencePolygonPolyhedron.gxx         |    4 ---
+ inc/Intf_InterferencePolyhedron.gxx                |   14 +++++-------
+ inc/Primitives_Wedge.gxx                           |    7 ------
+ src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx         |    4 +--
+ src/AdvApp2Var/AdvApp2Var_ApproxAFunc2Var.cxx      |    3 +-
+ src/AdvApp2Var/AdvApp2Var_ApproxF2var.cxx          |    3 +-
+ src/AdvApp2Var/AdvApp2Var_MathBase.cxx             |    6 -----
+ src/AlienImage/AlienImage_SunRFAlienData.cxx       |    4 +--
+ src/AlienImage/AlienImage_X11XWDAlienData.cxx      |    4 +--
+ src/AppParCurves/AppParCurves.cxx                  |    4 +-
+ src/BOPTools/BOPTools_Checker.cxx                  |    4 +--
+ src/BRepCheck/BRepCheck_Edge.cxx                   |    3 +-
+ src/Bisector/Bisector_BisecAna.cxx                 |    7 +----
+ src/Bnd/Bnd_BoundSortBox.cxx                       |    3 +-
+ src/CSLib/CSLib_Class2d.cxx                        |    3 +-
+ src/Dynamic/Dynamic_FuzzyDefinitionsDictionary.cxx |    5 +---
+ .../Dynamic_MethodDefinitionsDictionary.cxx        |    5 +---
+ src/GccAna/GccAna_Circ2d3Tan_2.cxx                 |    4 ---
+ src/GccAna/GccAna_Circ2d3Tan_5.cxx                 |    4 ---
+ src/GccAna/GccAna_Circ2d3Tan_6.cxx                 |    4 ---
+ src/GccAna/GccAna_Lin2dTanPer.cxx                  |    4 ---
+ src/Geom/Geom_BSplineSurface.cxx                   |    8 -------
+ src/GeomConvert/GeomConvert_1.cxx                  |    2 -
+ src/GeomFill/GeomFill_ConstrainedFilling.cxx       |    6 +++++
+ src/GeomFill/GeomFill_Sweep.cxx                    |    3 +-
+ src/GeomInt/GeomInt_IntSS_1.cxx                    |    3 +-
+ src/IntAna/IntAna_IntQuadQuad.cxx                  |    6 +---
+ src/IntAna/IntAna_QuadQuadGeo.cxx                  |    3 +-
+ src/IntPatch/IntPatch_ALineToWLine.cxx             |    2 -
+ src/IntPatch/IntPatch_ImpPrmIntersection.cxx       |   11 +-------
+ src/IntPatch/IntPatch_Polyhedron.cxx               |    3 --
+ src/IntPatch/IntPatch_PrmPrmIntersection.cxx       |    4 +-
+ src/LDOM/LDOMParser.cxx                            |    2 -
+ src/MAT2d/MAT2d_Tool2d.cxx                         |    3 +-
+ src/PlotMgt/PlotMgt_PlotterParameter.cxx           |    2 -
+ src/TDF/TDF_CopyLabel.cxx                          |    3 --
+ src/TDF/TDF_Delta.cxx                              |    6 ++--
+ src/Units/Units_Sentence.cxx                       |    2 +
+ src/Xw/Xw_Driver.cxx                               |    2 -
+ src/Xw/Xw_draw_polytext.cxx                        |    3 +-
+ src/Xw/Xw_draw_text.cxx                            |    3 +-
+ src/Xw/Xw_draw_zoomed_image.cxx                    |    2 -
+ src/Xw/Xw_get_window_pixelcoord.cxx                |    2 -
+ src/Xw/Xw_set_line_attrib.cxx                      |    6 ++--
+ src/Xw/Xw_set_poly_attrib.cxx                      |    6 ++--
+ src/Xw/Xw_set_text_attrib.cxx                      |    6 ++--
+ src/Xw/Xw_zoom_image.cxx                           |    2 -
+ src/math/math_Recipes.cxx                          |    2 -
+ src/math/math_TrigonometricFunctionRoots.cxx       |    3 +-
+ 58 files changed, 74 insertions(+), 209 deletions(-)
+
+From 86eb65d693600d458b3901fb373cbc70eead4f31 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Wed, 20 Jul 2011 23:09:06 +0000
+Subject: [PATCH 17/26] [warning-fix][unused-local-var]
+
+To be merged with 95e0d03.
+---
+ src/Units/Units_Sentence.cxx |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+From c83287840c2f60cd97bbe0558dd22dda481edbab Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Wed, 20 Jul 2011 23:51:53 +0000
+Subject: [PATCH 18/26] [warning-fix][unused-local-var]
+
+---
+ inc/Graphic3d_ArrayOfPrimitives.lxx |    6 +-----
+ 1 files changed, 1 insertions(+), 5 deletions(-)
+
 Index: oce/drv/ShapeSchema/ShapeSchema_PCDM_Document.cxx
 ===================================================================
 --- oce.orig/drv/ShapeSchema/ShapeSchema_PCDM_Document.cxx
@@ -947,6 +1055,141 @@ Index: oce/drv/XCAFSchema/XCAFSchema_Standard_Persistent.cxx
  
      theSchema->ReadPersistentObjectHeader(f);
      f.BeginReadPersistentObjectData();
+Index: oce/inc/AppParCurves_LeastSquare.gxx
+===================================================================
+--- oce.orig/inc/AppParCurves_LeastSquare.gxx
++++ oce/inc/AppParCurves_LeastSquare.gxx
+@@ -417,7 +417,7 @@
+   if (!isready) {
+     return;
+   }
+-  Standard_Integer i, j, k, Ci, Nincx, Neq, i2, k1, k2;
++  Standard_Integer i, j, k, Ci, Nincx, i2, k1, k2;
+   Standard_Integer nbpol1 = nbpoles-1, Ninc1 = Ninc-1;
+   Standard_Real AD1, A0;
+ //  gp_Pnt Pt;
+@@ -511,7 +511,6 @@
+   // ===========================================================
+ 
+   Nincx = resfin-resinit+1;
+-  Neq = LastP-FirstP+1;
+   Standard_Integer deport = 0, Nincx2 = 2*Nincx;
+   
+   math_IntegerVector InternalIndex(1, Nincx);
+@@ -979,7 +978,6 @@
+   F = 0.0;
+   i2 = 1;
+   math_Vector Px(1, nbpoles), Py(1, nbpoles), Pz(1, nbpoles);
+-  Standard_Integer l;
+ 
+   for (k = 1 ; k <= nbP+nbP2d; k++) {
+     i21 = i2+1; i22 = i2+2;
+@@ -992,7 +990,6 @@
+       AA = 0.0; BB = 0.0; CC = 0.0;
+       indexdeb = myindex(i) + 1;
+       indexfin = indexdeb + deg;
+-      l = (i-1)*(deg+1)-indexdeb+1;
+       for (j = indexdeb; j <= indexfin; j++) {
+ 	AIJ = A(i, j);
+ 	AA += AIJ*Px(j);
+Index: oce/inc/Approx_ComputeLine.gxx
+===================================================================
+--- oce.orig/inc/Approx_ComputeLine.gxx
++++ oce/inc/Approx_ComputeLine.gxx
+@@ -601,7 +601,6 @@
+ 	// ========================================
+ 	GoUp = Standard_False;
+ 	Ok = Standard_True;
+-	Standard_Boolean FailOnPointsAdded = Standard_False;
+ 	if (MyStatus == Approx_PointsAdded) {
+ 	  // Appel recursif du decoupage:
+ 	  GoUp = Standard_True;
+@@ -615,7 +614,6 @@
+ 	  //-- Si MakeML a echoue   on retourne une ligne vide
+ 	  
+ 	  if(    (nbpdsotherligne == 0) || nbML >= 3) { 
+-	    FailOnPointsAdded = Standard_True; 
+ 	    //-- cout<<" ** ApproxComputeLine MakeML Echec ** LBR lbr "<<endl;
+ 	    if (myfirstpt == mylastpt) break;  // Pour etre sur de ne pas 
+ 	    // planter la station !!
+@@ -810,11 +808,10 @@
+ 			       const Standard_Integer lastP,
+ 			       math_Vector& TheParameters) const
+ {
+-  Standard_Integer i, j, Nbp, nbP2d, nbP3d;
++  Standard_Integer i, j, nbP2d, nbP3d;
+   Standard_Real dist;
+   gp_Pnt P1, P2;
+   gp_Pnt2d P12d, P22d;
+-  Nbp = lastP-firstP+1;
+ 
+   if (Par == Approx_ChordLength || Par == Approx_Centripetal) {
+     nbP3d = LineTool::NbP3d(Line);
+@@ -976,12 +973,12 @@
+   gp_Vec2d V12d, V22d;
+   gp_Pnt P1, P2;
+   gp_Pnt2d P12d, P22d;
+-  Standard_Boolean Tangent1, Tangent2, Parallel, mydone= Standard_False;
++  Standard_Boolean Tangent1, Tangent2, mydone= Standard_False;
++#ifdef DEB
++  Standard_Boolean Parallel;
++#endif
+   Standard_Integer myfirstpt = firstpt, mylastpt = lastpt;
+   Standard_Integer nbp = lastpt-firstpt+1, Kopt = 0;
+-  AppParCurves_Constraint FirstC, LastC;
+-  FirstC = AppParCurves_PassPoint;
+-  LastC = AppParCurves_PassPoint;
+   math_Vector Para(firstpt, lastpt);
+ 
+   Parameters(Line, firstpt, lastpt, Para);
+@@ -1024,13 +1021,17 @@
+   if (nbp == 2) {
+     // S il n y a que 2 points, on verifie quand meme que les tangentes sont 
+     // alignees.
++#ifdef DEB
+     Parallel = Standard_True;
++#endif
+     if (Tangent1) {
+       for (i = 1; i <= nbP3d; i++) {
+ 	gp_Vec PVec(tabP1(i), tabP2(i));
+ 	V13d = tabV1(i);
+ 	if (!PVec.IsParallel(V13d, Precision::Angular())) {
++#ifdef DEB
+ 	  Parallel = Standard_False;
++#endif
+ 	  break;
+ 	}
+       }
+@@ -1038,7 +1039,9 @@
+ 	gp_Vec2d PVec2d(tabP12d(i), tabP22d(i));
+ 	V12d = tabV12d(i);
+ 	if (!PVec2d.IsParallel(V12d, Precision::Angular())) {
++#ifdef DEB
+ 	  Parallel = Standard_False;
++#endif
+ 	  break;
+ 	}
+       }
+@@ -1049,7 +1052,9 @@
+ 	gp_Vec PVec(tabP1(i), tabP2(i));
+ 	V23d = tabV2(i);
+ 	if (!PVec.IsParallel(V23d, Precision::Angular())) {
++#ifdef DEB
+ 	  Parallel = Standard_False;
++#endif
+ 	  break;
+ 	}
+       }
+@@ -1057,7 +1062,9 @@
+ 	gp_Vec2d PVec2d(tabP12d(i), tabP22d(i));
+ 	V22d = tabV22d(i);
+ 	if (!PVec2d.IsParallel(V22d, Precision::Angular())) {
++#ifdef DEB
+ 	  Parallel = Standard_False;
++#endif
+ 	  break;
+ 	}
+       }
 Index: oce/inc/Extrema_GenExtCC.gxx
 ===================================================================
 --- oce.orig/inc/Extrema_GenExtCC.gxx
@@ -960,6 +1203,26 @@ Index: oce/inc/Extrema_GenExtCC.gxx
    const Handle(ArrayOfPnt)& aPntArray1 = aCache1->Points();
    const Handle(ArrayOfPnt)& aPntArray2 = aCache2->Points();
    Standard_Integer NoU, NoV;
+Index: oce/inc/GCPnts_UniformAbscissa.gxx
+===================================================================
+--- oce.orig/inc/GCPnts_UniformAbscissa.gxx
++++ oce/inc/GCPnts_UniformAbscissa.gxx
+@@ -156,7 +156,6 @@
+ {
+   Standard_Boolean NotDone = Standard_True;
+ //  Standard_Boolean LocalDone = Standard_True;
+-  Standard_Boolean Forward = Standard_True  ;
+   Standard_Real UU1 = Min(U1, U2);
+ //  Standard_Real UCurrent;
+   Standard_Real Delta, Ui;
+@@ -174,7 +173,6 @@
+ 
+ 
+   if (Abscissa < 0.0e0)    {
+-    Forward = Standard_False ;
+     UU2 = Min(U1, U2);
+     UU1 = Max(U1, U2);
+   }
 Index: oce/inc/GProp_TFunction.gxx
 ===================================================================
 --- oce.orig/inc/GProp_TFunction.gxx
@@ -973,6 +1236,54 @@ Index: oce/inc/GProp_TFunction.gxx
    Standard_Real    aTol          = myTolerance;
  
    //aTol /= myNbPntOuter;
+Index: oce/inc/Graphic3d_ArrayOfPrimitives.lxx
+===================================================================
+--- oce.orig/inc/Graphic3d_ArrayOfPrimitives.lxx
++++ oce/inc/Graphic3d_ArrayOfPrimitives.lxx
+@@ -177,13 +177,9 @@
+   Standard_Integer aColor;
+   VertexColor(anIndex, aColor);
+   if( myPrimitiveArray->vcolours ) { 
+-    Standard_Integer r,g,b,a;  
++    Standard_Integer r,g,b;  
+     Standard_Integer aColor;
+     VertexColor(anIndex, aColor);
+-    Standard_Real A;
+-    a = aColor & 0xff000000;
+-    a >>= 24;
+-    A = ((Standard_Real) a) / 255.;
+ 
+     b = aColor & 0x00ff0000;
+     b >>= 16;
+Index: oce/inc/Image_GImage.gxx
+===================================================================
+--- oce.orig/inc/Image_GImage.gxx
++++ oce/inc/Image_GImage.gxx
+@@ -300,10 +300,9 @@
+ void Image_GImage::FlipHorizontal()
+ 
+ { anyPixel P ;
+-  Standard_Integer x, y, HalfX, HalfY ;
++  Standard_Integer x, y, HalfY ;
+   Standard_Integer UpX = UpperX() ;
+ 
+-  HalfX = Width()  / 2 ;
+   HalfY = Height() / 2 ;
+ 
+ 	for ( x = LowerX() ; x <= UpX ; x++ ){
+@@ -318,11 +317,10 @@
+ void Image_GImage::FlipVertical()
+ 
+ { anyPixel P ;
+-  Standard_Integer x, y, HalfX, HalfY ;
++  Standard_Integer x, y, HalfX ;
+   Standard_Integer UpY = UpperY() ;
+ 
+   HalfX = Width()  / 2 ;
+-  HalfY = Height() / 2 ;
+ 
+ 	for ( y = LowerY() ; y <= UpY ; y++ ){
+           for ( x = 0 ; x < HalfX ; x++ ) {
 Index: oce/inc/IntCurveSurface_Polygon.gxx
 ===================================================================
 --- oce.orig/inc/IntCurveSurface_Polygon.gxx
@@ -985,6 +1296,167 @@ Index: oce/inc/IntCurveSurface_Polygon.gxx
    Standard_Integer i=1, i0 = Upars.Lower()-1;
    gp_Pnt P;
  
+Index: oce/inc/IntCurve_IntPolyPolyGen.gxx
+===================================================================
+--- oce.orig/inc/IntCurve_IntPolyPolyGen.gxx
++++ oce/inc/IntCurve_IntPolyPolyGen.gxx
+@@ -257,13 +257,6 @@
+   Standard_Real Tl=(TheTol < TOL_MINI)? TOL_MINI : TheTol;
+   Standard_Real TlConf=(TheTolConf < TOL_CONF_MINI)? TOL_CONF_MINI : TheTolConf;
+   Perform(C1,D1,TlConf,Tl,0,DU,DU);
+-  //----------------------------------------------------------------------
+-  //-- Traitement des points en bouts 
+-  //----------------------------------------------------------------------
+-  Standard_Boolean HeadOn1 = Standard_False;
+-  Standard_Boolean HeadOn2 = Standard_False;
+-  Standard_Boolean EndOn1  = Standard_False;
+-  Standard_Boolean EndOn2  = Standard_False;
+   Standard_Integer i;
+   Standard_Integer n=this->NbPoints();
+ 
+@@ -284,12 +277,7 @@
+ 
+   for(i=1;i<=n;i++) { 
+     IntRes2d_Position Pos1 = this->Point(i).TransitionOfFirst().PositionOnCurve();
+-    if(Pos1 == IntRes2d_Head) HeadOn1 = Standard_True;
+-    else if(Pos1 == IntRes2d_End) EndOn1 = Standard_True;
+-
+     IntRes2d_Position Pos2 =  this->Point(i).TransitionOfSecond().PositionOnCurve();
+-    if(Pos2 == IntRes2d_Head) HeadOn2 = Standard_True;
+-    else if(Pos2 == IntRes2d_End) EndOn2 = Standard_True;
+ 
+     if(Pos1 == IntRes2d_Head) { 
+       if(Pos2 == IntRes2d_Head)     PosSegment|=1;
+@@ -304,12 +292,7 @@
+   n=this->NbSegments();
+   for(i=1;i<=n;i++) { 
+     IntRes2d_Position Pos1 = this->Segment(i).FirstPoint().TransitionOfFirst().PositionOnCurve();
+-    if(Pos1 == IntRes2d_Head)     HeadOn1 = Standard_True;
+-    else if(Pos1 == IntRes2d_End) EndOn1  = Standard_True;
+-    
+     IntRes2d_Position Pos2 =  this->Segment(i).FirstPoint().TransitionOfSecond().PositionOnCurve();
+-    if(Pos2 == IntRes2d_Head)      HeadOn2 = Standard_True;
+-    else if(Pos2 == IntRes2d_End)  EndOn2  = Standard_True;
+ 
+     if(Pos1 == IntRes2d_Head) { 
+       if(Pos2 == IntRes2d_Head)     PosSegment|=1;
+@@ -321,12 +304,7 @@
+     }
+ 
+     Pos1 = this->Segment(i).LastPoint().TransitionOfFirst().PositionOnCurve();
+-    if(Pos1 == IntRes2d_Head)     HeadOn1 = Standard_True;
+-    else if(Pos1 == IntRes2d_End) EndOn1  = Standard_True;
+-    
+     Pos2 =  this->Segment(i).LastPoint().TransitionOfSecond().PositionOnCurve();
+-    if(Pos2 == IntRes2d_Head)     HeadOn2 = Standard_True;
+-    else if(Pos2 == IntRes2d_End) EndOn2  = Standard_True;
+ 
+     if(Pos1 == IntRes2d_Head) { 
+       if(Pos2 == IntRes2d_Head)     PosSegment|=1;
+Index: oce/inc/IntImpParGen_Intersector.gxx
+===================================================================
+--- oce.orig/inc/IntImpParGen_Intersector.gxx
++++ oce/inc/IntImpParGen_Intersector.gxx
+@@ -50,7 +50,6 @@
+   NbResultats=0;
+   
+   for(Standard_Integer i=1; i<=Nb_Bornes_Intersection; i+=2) {
+-    Standard_Boolean reverse=Standard_False;
+     
+     Standard_Real param1=Inter1.Value(i);
+     Standard_Real param2=Inter1.Value(i+1);
+@@ -62,7 +61,6 @@
+       Standard_Real t=param1; param1=param2; param2=t;
+       indice_1=i+1;
+       indice_2=i;
+-      reverse=Standard_True;
+     }
+ 
+     gp_Pnt2d Pt1=TheImpTool.Value(param1);
+@@ -70,10 +68,8 @@
+     gp_Pnt2d Pt;
+ 
+     Standard_Boolean IsOnTheImpCurveDomain1=Standard_True;
+-    Standard_Boolean IsOnABoundary1=Standard_False;
+ 
+     Standard_Boolean IsOnTheImpCurveDomain2=Standard_True;
+-    Standard_Boolean IsOnABoundary2=Standard_False;
+     //--------------------------------------------------------------------
+     if(TheImpCurveDomain.HasFirstPoint()) { 
+       if(param1<TheImpCurveDomain.FirstParameter()) {             
+@@ -81,7 +77,6 @@
+ 	   > TheImpCurveDomain.FirstTolerance()) {
+ 	  IsOnTheImpCurveDomain1=Standard_False; 
+ 	}
+-	else { 	  IsOnABoundary1=Standard_True; 	}
+       }
+     }
+     if(IsOnTheImpCurveDomain1 && TheImpCurveDomain.HasLastPoint()) {
+@@ -90,7 +85,6 @@
+ 	   > TheImpCurveDomain.FirstTolerance()) {
+ 	  IsOnTheImpCurveDomain1=Standard_False; 
+ 	}
+-	else {	  IsOnABoundary1=Standard_True; 	}
+       }
+     }
+     //--------------------------------------------------------------------
+@@ -100,7 +94,6 @@
+ 	   > TheImpCurveDomain.FirstTolerance()) {
+ 	  IsOnTheImpCurveDomain2=Standard_False; 
+ 	}
+-	else { 	  IsOnABoundary2=Standard_True; 	}
+       }
+     }
+     if(IsOnTheImpCurveDomain2 && TheImpCurveDomain.HasLastPoint()) {
+@@ -109,7 +102,6 @@
+ 	   > TheImpCurveDomain.FirstTolerance()) {
+ 	  IsOnTheImpCurveDomain2=Standard_False; 
+ 	}
+-	else {	  IsOnABoundary2=Standard_True; 	}
+       }
+     }
+ 
+Index: oce/inc/IntPatch_ImpImpIntersection_2.gxx
+===================================================================
+--- oce.orig/inc/IntPatch_ImpImpIntersection_2.gxx
++++ oce/inc/IntPatch_ImpImpIntersection_2.gxx
+@@ -587,10 +587,8 @@
+     Standard_Boolean Addl = Standard_False;
+     Standard_Integer v=0;
+ #endif
+-    Standard_Integer nbv;
+     if(slin.Value(i)->ArcType() == IntPatch_Circle) { 
+       const Handle(IntPatch_GLine)& glin = *((Handle(IntPatch_GLine)*)&slin.Value(i));
+-      nbv = glin->NbVertex();
+       if(glin->NbVertex() == 0) { 
+ 	gp_Circ Circ = glin->Circle();
+ 	P=ElCLib::Value(0.0,Circ);
+@@ -613,7 +611,6 @@
+     
+     else if(slin.Value(i)->ArcType() == IntPatch_Ellipse) { 
+       const Handle(IntPatch_GLine)& glin = *((Handle(IntPatch_GLine)*)&slin.Value(i));
+-      nbv = glin->NbVertex();
+       if(glin->NbVertex() == 0) { 
+ 	gp_Elips Elips = glin->Ellipse();
+ 	P=ElCLib::Value(0.0,Elips);
+Index: oce/inc/IntPatch_ImpImpIntersection_5.gxx
+===================================================================
+--- oce.orig/inc/IntPatch_ImpImpIntersection_5.gxx
++++ oce/inc/IntPatch_ImpImpIntersection_5.gxx
+@@ -84,12 +84,11 @@
+ 	situC2=IntSurf_Outside;
+       }
+       else {
+-	Standard_Real aR1, aR2;
++	Standard_Real aR1;
+ 	gp_Lin aLAx1(aPApex1, Co1.Axis().Direction());
+ 	gp_Lin aLAx2(aPApex2, Co2.Axis().Direction());
+ 	//
+ 	aR1=aLAx1.Distance(ptbid);
+-	aR2=aLAx2.Distance(ptbid);
+ 	//
+ 	situC1=IntSurf_Inside;
+ 	situC2=IntSurf_Outside;
 Index: oce/inc/IntStart_SearchOnBoundaries_1.gxx
 ===================================================================
 --- oce.orig/inc/IntStart_SearchOnBoundaries_1.gxx
@@ -1013,14 +1485,44 @@ Index: oce/inc/IntWalk_PWalking_1.gxx
 ===================================================================
 --- oce.orig/inc/IntWalk_PWalking_1.gxx
 +++ oce/inc/IntWalk_PWalking_1.gxx
-@@ -400,7 +400,6 @@
+@@ -357,11 +357,9 @@
+   close = Standard_False;
+   //
+   Standard_Integer i;
+-  Standard_Real aTmp;
+   TColStd_Array1OfReal Param(1,4);
+   //
+   for (i=1; i<=4; ++i) {
+-    aTmp = ParDep(i);
+     Param(i) = ParDep(i);
+   }
+   //-- calcul du premier point solution
+@@ -400,10 +398,8 @@
  			       const Standard_Real v2max)
  {
    //xf
 -  Standard_Integer iCnt=0;
    Standard_Integer i, NbPasOKConseq;
    Standard_Real UFirst1, VFirst1, ULast1, VLast1, UFirst2, VFirst2, ULast2, VLast2;
-   Standard_Real pasMaxSV[4], aTmp;
+-  Standard_Real pasMaxSV[4], aTmp;
+   TColStd_Array1OfReal Param(1,4);
+   IntImp_ConstIsoparametric ChoixIso;
+   //xt
+@@ -451,13 +447,12 @@
+   line = new IntSurf_LineOn2S ();
+   //
+   for (i=1; i<=4; ++i) {
+-    aTmp=ParDep(i);
+     Param(i)=ParDep(i);
+   }
+   //-- reprise des pas uv lies aux surfaces Caro1 et Caro2
+   //-- pasuv[] et pasSav[] sont modifies lors du cheminement
+   for(i = 0; i < 4; ++i) { 
+-    pasMaxSV[i] = pasSav[i] = pasuv[i] = pasInit[i]; 
++    pasSav[i] = pasuv[i] = pasInit[i]; 
+   }
+ 
+   //-- calcul du premier point solution
 Index: oce/inc/Intf_InterferencePolygonPolyhedron.gxx
 ===================================================================
 --- oce.orig/inc/Intf_InterferencePolygonPolyhedron.gxx
@@ -1035,7 +1537,23 @@ Index: oce/inc/Intf_InterferencePolygonPolyhedron.gxx
        Standard_Integer pTri[3];
        ToolPolyh::Triangle(thePolyh, indTri, pTri[0], pTri[1], pTri[2]);
        gp_XYZ triNor;                                   // Vecteur normal.
-@@ -1103,7 +1102,6 @@
+@@ -791,7 +790,6 @@
+   Standard_Real angl=triNor*segO;
+ #endif
+   Standard_Boolean NoIntersectionWithTriangle = Standard_False;
+-  Standard_Boolean PolygonCutsPlane           = Standard_True;
+ 
+ 
+ #if 0 
+@@ -822,7 +820,6 @@
+       NoIntersectionWithTriangle = Standard_False;
+     }
+     if (param<0. || param>1.) {
+-      PolygonCutsPlane = Standard_False;
+       NoIntersectionWithTriangle = Standard_True;
+     }
+   }
+@@ -1103,14 +1100,12 @@
    Standard_Integer pTri[3];
    ToolPolyh::Triangle(thePolyh, TTri, pTri[0], pTri[1], pTri[2]);
    gp_XYZ triNor = TriNormal;                                   // Vecteur normal.
@@ -1043,6 +1561,112 @@ Index: oce/inc/Intf_InterferencePolygonPolyhedron.gxx
  
  
  //   Standard_Real dBegTri=(triNor*BegO.XYZ())-triDp; // Distance <BegO> plan
+ //   Standard_Real dEndTri=(triNor*EndO.XYZ())-triDp; // Distance <EndO> plan
+ 
+   Standard_Boolean NoIntersectionWithTriangle = Standard_False;
+-  Standard_Boolean PolygonCutsPlane           = Standard_True;
+ 
+   Standard_Real param;
+   t = dBegTri-dEndTri;
+@@ -1130,7 +1125,6 @@
+       NoIntersectionWithTriangle = Standard_False;
+     }
+     if (param<0. || param>1.) {
+-      PolygonCutsPlane = Standard_False;
+       NoIntersectionWithTriangle = Standard_True;
+     }
+   }
+Index: oce/inc/Intf_InterferencePolyhedron.gxx
+===================================================================
+--- oce.orig/inc/Intf_InterferencePolyhedron.gxx
++++ oce/inc/Intf_InterferencePolyhedron.gxx
+@@ -761,8 +761,6 @@
+     tOP[nou]= Intf_EXTERNAL;
+     tTP[nou]= Intf_EXTERNAL;
+   }
+-  Standard_Integer iOP[4];
+-  Standard_Integer iTP[4];
+ 
+   Standard_Integer nbpInt=0;
+   Intf_SeqOfSectionPoint Tpi;
+@@ -777,8 +775,8 @@
+ 				     Intf_VERTEX, OI[nob], 0, 0., 
+ 				     Intf_VERTEX, TI[nou], 0, 0.,
+ 				     1.));
+-	tOP[nob]=Intf_VERTEX; iOP[nob]=nbpInt;
+-	tTP[nou]=Intf_VERTEX; iTP[nou]=nbpInt;
++	tOP[nob]=Intf_VERTEX;
++	tTP[nou]=Intf_VERTEX;
+ 	nbpInt++;
+ 	break;
+       }
+@@ -791,7 +789,7 @@
+ 					Intf_EDGE, Min(TI[nou], TI[nou2]),
+ 					Max(TI[nou], TI[nou2]), par,
+ 					1.));
+-	  tOP[nob]=Intf_EDGE; iOP[nob]=nbpInt;
++	  tOP[nob]=Intf_EDGE;
+ 	  nbpInt++;
+ 	  break;
+ 	}
+@@ -806,7 +804,7 @@
+ 				     Intf_VERTEX, OI[nob],  0, 0., 
+ 				     Intf_FACE,   Tri2, 0, 0.,
+ 				     1.));
+-	tOP[nob]=Intf_FACE; iOP[nob]=nbpInt;
++	tOP[nob]=Intf_FACE;
+ 	nbpInt++;
+       }
+     }
+@@ -829,7 +827,7 @@
+ 					   Intf_EDGE, Min(OI[nob], OI[nob2]),
+ 					   Max(OI[nob], OI[nob2]), par, 
+ 					   Intf_VERTEX, TI[nou], 0, 0., 1.));
+-	      tTP[nou]=Intf_EDGE;iTP[nou]=nbpInt;
++	      tTP[nou]=Intf_EDGE;
+ 	      nbpInt++;
+ 	      break;
+ 	    }
+@@ -844,7 +842,7 @@
+ 					 Intf_FACE,   Tri1, 0, 0.,
+ 					 Intf_VERTEX, TI[nou], 0, 0., 
+ 					 1.));
+-	    tTP[nou]=Intf_FACE; iTP[nou]=nbpInt;
++	    tTP[nou]=Intf_FACE;
+ 	    nbpInt++;
+ 	  }
+ 	}
+Index: oce/inc/Primitives_Wedge.gxx
+===================================================================
+--- oce.orig/inc/Primitives_Wedge.gxx
++++ oce/inc/Primitives_Wedge.gxx
+@@ -668,26 +668,19 @@
+   gp_Vec VX = myAxes.XDirection();
+   gp_Vec VY = myAxes.YDirection();
+   gp_Vec VZ = myAxes.Direction();
+-  Primitives_Direction dd1,dd2;
+   
+   switch (i/4) {
+     
+   case 0 :
+     D = myAxes.Direction();
+-    dd1 = Primitives_ZMin;
+-    dd2 = Primitives_ZMax;
+     break;
+     
+   case 1 :
+     D = myAxes.XDirection();
+-    dd1 = Primitives_XMin;
+-    dd2 = Primitives_XMax;
+     break;
+     
+   case 2 :
+     D = myAxes.YDirection();
+-    dd1 = Primitives_YMin;
+-    dd2 = Primitives_YMax;
+     break;
+     
+   };
 Index: oce/inc/Prs3d_Datum.gxx
 ===================================================================
 --- oce.orig/inc/Prs3d_Datum.gxx
@@ -1081,6 +1705,198 @@ Index: oce/inc/math_DoubleTab.gxx
    // free the data
    if(isAllocated) {
      Standard_Address it = (Standard_Address)&Value(LowR,LowC);
+Index: oce/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
+===================================================================
+--- oce.orig/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
++++ oce/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
+@@ -439,7 +439,6 @@
+ {
+   Standard_Real Tol=Precision::PConfusion()/10;
+   Standard_Real Comp1=0,DComp1=0;
+-  Standard_Boolean DIsNull = Standard_False;
+   if(Index==1)   {   Comp1=UV.X();
+ 		     DComp1=DUV.X();} 
+   else
+@@ -466,10 +465,9 @@
+ 		 if(Index==2) { LeftBot.SetY(I1);
+ 				RightTop.SetY(I2);}
+ 	       }
+-	   DIsNull=Standard_False;
+ 	 }
+     else 
+-      if(Abs(DComp1)<=Tol) {  DIsNull = Standard_True;
++      if(Abs(DComp1)<=Tol) {
+ 			      if(Index==1) { LeftBot.SetX(I1) ;
+ 					     RightTop.SetX(I2);}
+ 			      if(Index==2) { LeftBot.SetY(I1) ;
+Index: oce/src/AdvApp2Var/AdvApp2Var_ApproxAFunc2Var.cxx
+===================================================================
+--- oce.orig/src/AdvApp2Var/AdvApp2Var_ApproxAFunc2Var.cxx
++++ oce/src/AdvApp2Var/AdvApp2Var_ApproxAFunc2Var.cxx
+@@ -437,7 +437,7 @@
+ 					 const AdvApp2Var_EvaluatorFunc2Var& Func,
+ 					 const AdvApp2Var_Criterion& Crit)
+ {
+-  Standard_Real Udec, Vdec, CritValue, m0=0., m1=0.;
++  Standard_Real Udec, Vdec, CritValue, m1=0.;
+   Standard_Boolean Umore, Vmore, CritAbs = (Crit.Type() == AdvApp2Var_Absolute);
+   Standard_Integer NbPatch, NbU, NbV, NbInt, NumDec;
+   Standard_Integer FirstNA, decision=0;
+@@ -447,7 +447,6 @@
+ // completude de l'ensemble des contraintes 
+     ComputeConstraints(UChoice, VChoice, Func, Crit);
+     if (decision>0) {
+-      m0 = m1;
+       m1 = 0.;
+     }
+ 
+Index: oce/src/AdvApp2Var/AdvApp2Var_ApproxF2var.cxx
+===================================================================
+--- oce.orig/src/AdvApp2Var/AdvApp2Var_ApproxF2var.cxx
++++ oce/src/AdvApp2Var/AdvApp2Var_ApproxF2var.cxx
+@@ -1379,7 +1379,7 @@
+ {
+   /* System generated locals */
+   integer somtab_dim1, somtab_offset, diftab_dim1, diftab_offset, 
+-  crvjac_dim1, crvjac_offset, cgauss_dim1;
++  crvjac_dim1, crvjac_offset;
+   
+   /* Local variables */
+   static integer ibb;
+@@ -1451,7 +1451,6 @@
+     crvjac_dim1 = *ndgjac + 1;
+     crvjac_offset = crvjac_dim1;
+     crvjac -= crvjac_offset;
+-    cgauss_dim1 = *nbroot / 2 + 1;
+ 
+     /* Function Body */
+     ibb = AdvApp2Var_SysBase::mnfndeb_();
+Index: oce/src/AdvApp2Var/AdvApp2Var_MathBase.cxx
+===================================================================
+--- oce.orig/src/AdvApp2Var/AdvApp2Var_MathBase.cxx
++++ oce/src/AdvApp2Var/AdvApp2Var_MathBase.cxx
+@@ -7484,8 +7484,6 @@
+   
+     /* Initialized data */
+ 
+-    static integer nbcof = -1;
+-
+     /* System generated locals */
+     integer valjac_dim1, i__1, i__2;
+ 
+@@ -7601,8 +7599,6 @@
+ 		c__2, &i__2));
+     }
+ 
+-    nbcof = *ncoeff;
+-
+ /*      END IF */
+ 
+ /*  --- Positionements triviaux ----- */
+@@ -10404,7 +10400,6 @@
+   static logical colin;
+   static doublereal valaux;
+   static integer aux;
+-  static logical nul;
+  
+ /* ***********************************************************************
+  */
+@@ -10478,7 +10473,6 @@
+     if (*ndimen <= 1 || *ndimen > 3) {
+ 	goto L9101;
+     }
+-    nul = FALSE_;
+     d__ = 1;
+     aux = 0;
+     while(d__ <= *ndimen) {
+Index: oce/src/AlienImage/AlienImage_SunRFAlienData.cxx
+===================================================================
+--- oce.orig/src/AlienImage/AlienImage_SunRFAlienData.cxx
++++ oce/src/AlienImage/AlienImage_SunRFAlienData.cxx
+@@ -109,7 +109,7 @@
+ 
+ Standard_Boolean AlienImage_SunRFAlienData::Write( OSD_File& file ) const
+ 
+-{ Standard_Integer  size;
++{
+   AlienImage_SUNRFFileHeader TheHeader = myHeader ;
+ 
+   // Write out TheHeader information
+@@ -136,8 +136,6 @@
+ 	}
+   }
+ 
+-  size = ( Standard_Integer ) sizeof( TheHeader ) ;
+-
+   const Standard_Address pHeader = ( Standard_Address ) &TheHeader ;
+ 
+   file.Write( pHeader,  sizeof( TheHeader ) ) ;
+Index: oce/src/AlienImage/AlienImage_X11XWDAlienData.cxx
+===================================================================
+--- oce.orig/src/AlienImage/AlienImage_X11XWDAlienData.cxx
++++ oce/src/AlienImage/AlienImage_X11XWDAlienData.cxx
+@@ -46,7 +46,7 @@
+ 
+ void AlienImage_X11XWDAlienData::Clear()
+ 
+-{ Standard_Integer size ;
++{
+ 
+   myHeader.header_size	= sizeof( myHeader ) ; 
+ 				/* Size of the entire file header (bytes).*/
+@@ -84,8 +84,6 @@
+   }
+ 
+   if ( myColors ) {
+-	size = ( Standard_Integer ) 
+-			myHeader.ncolors * sizeof( AlienImage_X11XColor ) ;
+ 	//Free all allocated memory
+ 	Standard::Free(myColors);
+ 	myColors = NULL ;
+Index: oce/src/AppParCurves/AppParCurves.cxx
+===================================================================
+--- oce.orig/src/AppParCurves/AppParCurves.cxx
++++ oce/src/AppParCurves/AppParCurves.cxx
+@@ -92,8 +92,8 @@
+ //  Standard_Real U1 = 1-U, Y0, Y1, Xs;
+   Standard_Real Y0, Y1, Xs;
+   Standard_Integer NbPoles = DDA.Length();
+-  Standard_Integer id, j, N2, N3, N4, deg = NbPoles-1;
+-  N2 = deg-1; N3 = deg-2, N4 = deg*(deg-1);
++  Standard_Integer id, j, N4, deg = NbPoles-1;
++  N4 = deg*(deg-1);
+   math_Vector B(1, deg-1);
+   B(1) = 1.;
+   
+Index: oce/src/BOPTools/BOPTools_Checker.cxx
+===================================================================
+--- oce.orig/src/BOPTools/BOPTools_Checker.cxx
++++ oce/src/BOPTools/BOPTools_Checker.cxx
+@@ -373,7 +373,7 @@
+   myIsDone=Standard_False;
+ 
+   Standard_Boolean justaddinterference;
+-  Standard_Integer n1, n2, anIndexIn=0, nE1, nE2;
++  Standard_Integer n1, n2, nE1, nE2;
+   Standard_Integer aTmp, aWhat, aWith;
+   Standard_Integer i, aNbCPrts;
+   //
+@@ -459,7 +459,6 @@
+ 	  
+ 	aEE.Perform();
+ 	//
+-	anIndexIn=0;
+ 	//
+ 	if (aEE.IsDone()) {
+ 	  //
+@@ -483,7 +482,6 @@
+ 	  for (i=1; i<=aNbCPrts; i++) {
+ 	    const IntTools_CommonPrt& aCPart=aCPrts(i);
+ 	    //
+-	    anIndexIn=0;
+ 	    //
+ 	    TopAbs_ShapeEnum aType=aCPart.Type();
+ 	    switch (aType) {
 Index: oce/src/BOPTools/BOPTools_PaveFiller_2.cxx
 ===================================================================
 --- oce.orig/src/BOPTools/BOPTools_PaveFiller_2.cxx
@@ -1143,6 +1959,36 @@ Index: oce/src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx
            Standard_Real aDelta = arrDistance(i) - arrDistance(seqCandidates.Value(j));
            //if (arrDistance(i) <= arrDistance(seqCandidates.Value(j))) {
            if( aDelta < Precision::Confusion()) {
+Index: oce/src/BRepCheck/BRepCheck_Edge.cxx
+===================================================================
+--- oce.orig/src/BRepCheck/BRepCheck_Edge.cxx
++++ oce/src/BRepCheck/BRepCheck_Edge.cxx
+@@ -519,7 +519,7 @@
+ 
+   Standard_Real dist2, tol2, tolCal=0., prm;
+   gp_Pnt center, othP;
+-  Standard_Integer i, imax;
++  Standard_Integer i;
+   for (i= 0; i< NCONTROL; i++) {
+     prm = ((NCONTROL-1-i)*First + i*Last)/(NCONTROL-1);
+     tol2=dist2=0.;
+@@ -531,7 +531,6 @@
+     }
+     if (tol2>tolCal) {
+       tolCal=tol2;
+-      imax=i;
+     }
+   }
+   // On prend 5% de marge car au dessus on crontrole severement
+@@ -562,7 +561,7 @@
+ 	  fabs( Other.LastParameter()-Last) > aPC);
+   if (!proj) {
+     Standard_Integer i;
+-    Standard_Real Tol2, prm, aD2, dD;
++    Standard_Real Tol2, prm, dD;
+     gp_Pnt pref, pother;
+     //modified by NIZNHY-PKV Thu May 05 09:06:41 2011f
+     //OCC22428
 Index: oce/src/BRepCheck/BRepCheck_Wire.cxx
 ===================================================================
 --- oce.orig/src/BRepCheck/BRepCheck_Wire.cxx
@@ -1159,7 +2005,23 @@ Index: oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
 ===================================================================
 --- oce.orig/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
 +++ oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
-@@ -1077,7 +1077,6 @@
+@@ -775,7 +775,6 @@
+         gp_Pnt Pt,P1=BRep_Tool::Pnt(S1);
+         BRepClass_FaceClassifier classifier;
+         const Standard_Real tol = BRep_Tool::Tolerance(S2);
+-        const Standard_Real epsP = Precision::PConfusion();
+  
+         for (i = 1; i <= NbExtrema; i++)
+         {
+@@ -832,7 +831,6 @@
+         gp_Pnt Pt,P1=BRep_Tool::Pnt(S2);
+         BRepClass_FaceClassifier classifier;
+         const Standard_Real tol = BRep_Tool::Tolerance(S1);
+-        const Standard_Real epsP = Precision::PConfusion();
+  
+         for (i = 1; i <= NbExtrema; i++)
+         {
+@@ -1081,7 +1079,6 @@
  
        BRepExtrema_SeqOfSolution seqSol1;
        BRepExtrema_SeqOfSolution seqSol2;
@@ -1167,7 +2029,7 @@ Index: oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
        if (SeqSolution1.Length() > 0 && SeqSolution2.Length() > 0)
          MIN_SOLUTION(SeqSolution1, SeqSolution2, myDstRef, myEps, seqSol1, seqSol2);
  	    
-@@ -1223,7 +1222,6 @@
+@@ -1227,7 +1224,6 @@
  
        BRepExtrema_SeqOfSolution seqSol1;
        BRepExtrema_SeqOfSolution seqSol2;
@@ -1175,6 +2037,14 @@ Index: oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
        if (SeqSolution1.Length() > 0 && SeqSolution2.Length() > 0)
          MIN_SOLUTION(SeqSolution1, SeqSolution2, myDstRef, myEps, seqSol1, seqSol2);
  	    
+@@ -1271,7 +1267,6 @@
+         gp_Pnt2d PUV;
+         Standard_Real U1,V1,U2,V2;
+         BRepClass_FaceClassifier classifier;
+-        const Standard_Real epsP=Precision::PConfusion();
+  
+         for (i = 1; i <= NbExtrema; i++)
+         {
 Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_OffsetWire.cxx
@@ -1324,6 +2194,52 @@ Index: oce/src/BinMDataStd/BinMDataStd_ExtStringListDriver.cxx
    theTarget << aFirstInd << aLastInd;
    TDataStd_ListIteratorOfListOfExtendedString itr(anAtt->List());
    for (; itr.More(); itr.Next())
+Index: oce/src/Bisector/Bisector_BisecAna.cxx
+===================================================================
+--- oce.orig/src/Bisector/Bisector_BisecAna.cxx
++++ oce/src/Bisector/Bisector_BisecAna.cxx
+@@ -193,7 +193,7 @@
+ 
+   Standard_Boolean ok;
+   Standard_Real    distanceptsol,parameter,firstparameter =0.;
+-  Standard_Boolean thesense = Standard_False,sense,theSense;
++  Standard_Boolean thesense = Standard_False,sense;
+   Standard_Real    distancemini;
+   Standard_Integer nbsolution;
+   Standard_Real    PreConf = Precision::Confusion();
+@@ -397,7 +397,6 @@
+ 	}
+ 	else {ok = Standard_True;}
+ 
+-	theSense = sense;
+ 	if (ok) {
+ 	  sense = Standard_False;
+ //  Modified by skv - Tue Feb 15 17:51:29 2005 Integration Begin
+@@ -551,7 +550,6 @@
+ 	sense = Standard_True;
+ 	distanceptsol = Distance(apoint,solution,tan1,tan2,
+ 				 adirection,parameter,sense,ok);
+-	theSense = sense;
+ 	if (ok || !oncurve) {
+ 	  sense = Standard_False;
+ //  Modified by skv - Tue Feb 15 17:51:29 2005 Integration Begin
+@@ -758,7 +756,7 @@
+ 				const Standard_Boolean      oncurve       )
+ {
+   Standard_Boolean ok;
+-  Standard_Boolean thesense = Standard_False,sense,theSense;
++  Standard_Boolean thesense = Standard_False,sense;
+   Standard_Real    distanceptsol,parameter,firstparameter =0.,secondparameter;
+   Handle(Geom2d_Curve) curve;
+   Handle(GccInt_Bisec) TheSol;
+@@ -912,7 +910,6 @@
+     case 2 : {
+       GccAna_LinPnt2dBisec Bisector(line,asecondpoint->Pnt2d());
+       
+-      theSense = Standard_True;
+ #ifdef DEB
+       gp_Vec2d V(line.Direction());
+ #else
 Index: oce/src/BlendFunc/BlendFunc_RuledInv.cxx
 ===================================================================
 --- oce.orig/src/BlendFunc/BlendFunc_RuledInv.cxx
@@ -1336,6 +2252,23 @@ Index: oce/src/BlendFunc/BlendFunc_RuledInv.cxx
  
    gp_Vec dnplan;
    dnplan.SetLinearForm(-nplan.Dot(d2cur),nplan,d2cur);
+Index: oce/src/Bnd/Bnd_BoundSortBox.cxx
+===================================================================
+--- oce.orig/src/Bnd/Bnd_BoundSortBox.cxx
++++ oce/src/Bnd/Bnd_BoundSortBox.cxx
+@@ -627,11 +627,10 @@
+   //-- Rejection avec le tableau de bits
+   Standard_Boolean touch = Standard_True;
+   touch = Standard_False;
+-  Standard_Real _Xmin,_Ymin,_Zmin,_Xmax,_Ymax,_Zmax;
++  Standard_Real _Xmax,_Ymax,_Zmax;
+   BSB_T3Bits* Map = (BSB_T3Bits *)TabBits;
+   Standard_Real xmin, ymin, zmin, xmax, ymax, zmax;
+   _Xmax=Map->Xmax; _Ymax=Map->Ymax; _Zmax=Map->Zmax;
+-  _Xmin=Map->Xmin; _Ymin=Map->Ymin; _Zmin=Map->Zmin;
+   theBox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
+   Standard_Integer i0,i1,j0,j1,k0,k1;
+   if(xmin>Xmin) i0=(Standard_Integer )((xmin-Xmin)*deltaX)-1; else  i0=1;
 Index: oce/src/BndLib/BndLib_AddSurface.cxx
 ===================================================================
 --- oce.orig/src/BndLib/BndLib_AddSurface.cxx
@@ -1349,6 +2282,21 @@ Index: oce/src/BndLib/BndLib_AddSurface.cxx
    const Standard_Real  anAngularTol = RealEpsilon();
  
    // Get location of the plane as its barycenter
+Index: oce/src/CSLib/CSLib_Class2d.cxx
+===================================================================
+--- oce.orig/src/CSLib/CSLib_Class2d.cxx
++++ oce/src/CSLib/CSLib_Class2d.cxx
+@@ -220,9 +220,8 @@
+   Standard_Integer nbc, i, ip1, SH, NH, iRet;
+   Standard_Real *Pnts2dX, *Pnts2dY;
+   Standard_Real x, y, nx, ny, aX;
+-  Standard_Real aYmin, aTol;
++  Standard_Real aYmin;
+   //
+-  aTol=(Tolu>Tolv)? Tolu : Tolv;
+   nbc = 0;
+   i   = 0;
+   ip1 = 1;
 Index: oce/src/DNaming/DNaming_BooleanOperationDriver.cxx
 ===================================================================
 --- oce.orig/src/DNaming/DNaming_BooleanOperationDriver.cxx
@@ -1429,6 +2377,52 @@ Index: oce/src/Draw/Draw_Window.cxx
    SaveDC(aWorkDC);
    SelectObject(aWorkDC,GetStockObject(BLACK_PEN));
    Rectangle(aWorkDC, 0, 0, WidthWin(), HeightWin());
+Index: oce/src/Dynamic/Dynamic_FuzzyDefinitionsDictionary.cxx
+===================================================================
+--- oce.orig/src/Dynamic/Dynamic_FuzzyDefinitionsDictionary.cxx
++++ oce/src/Dynamic/Dynamic_FuzzyDefinitionsDictionary.cxx
+@@ -60,7 +60,7 @@
+   char line[255];
+   char name[80];
+   char type[80];
+-  char value[80],value1[80],value2[80],value3[80];
++  char value[80];
+   Handle(Dynamic_FuzzyDefinition) fuzzydefinition;
+   Handle(Dynamic_Parameter) parameter;
+   
+@@ -122,9 +122,6 @@
+ 
+ 	  for(i=0; i<80; i++)type   [i] = 0;
+ 	  for(i=0; i<80; i++)value  [i] = 0;
+-	  for(i=0; i<80; i++)value1 [i] = 0;
+-	  for(i=0; i<80; i++)value2 [i] = 0;
+-	  for(i=0; i<80; i++)value3 [i] = 0;
+ 
+ //	  fr = sscanf(&line[end+1],"%s%80c",&type,&value);
+ 	  fr = sscanf(&line[end+1],"%s%80c",type,value);
+Index: oce/src/Dynamic/Dynamic_MethodDefinitionsDictionary.cxx
+===================================================================
+--- oce.orig/src/Dynamic/Dynamic_MethodDefinitionsDictionary.cxx
++++ oce/src/Dynamic/Dynamic_MethodDefinitionsDictionary.cxx
+@@ -62,7 +62,7 @@
+   char name[80];
+   char mode[80];
+   char type[80];
+-  char value[80],value1[80],value2[80],value3[80];
++  char value[80];
+   Handle(Dynamic_CompiledMethod) methoddefinition;
+   Handle(Dynamic_Parameter) parameter;
+   
+@@ -125,9 +125,6 @@
+ 	  for(i=0; i<80; i++)mode   [i] = 0;
+ 	  for(i=0; i<80; i++)type   [i] = 0;
+ 	  for(i=0; i<80; i++)value  [i] = 0;
+-	  for(i=0; i<80; i++)value1 [i] = 0;
+-	  for(i=0; i<80; i++)value2 [i] = 0;
+-	  for(i=0; i<80; i++)value3 [i] = 0;
+ 
+ 	  //	  fr = sscanf(&line[end+1],"%s%s%80c",&mode,&type,&value);
+ 	  fr = sscanf(&line[end+1],"%s%s%80c",mode,type,value);
 Index: oce/src/Extrema/Extrema_ExtCS.cxx
 ===================================================================
 --- oce.orig/src/Extrema/Extrema_ExtCS.cxx
@@ -1443,6 +2437,271 @@ Index: oce/src/Extrema/Extrema_ExtCS.cxx
  	    Standard_Real xmin, ymin, zmin, xmax, ymax, zmax;
  	    aSurfBox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
  	    Standard_Real tmin = Precision::Infinite(), tmax = -tmin;
+Index: oce/src/GccAna/GccAna_Circ2d3Tan_2.cxx
+===================================================================
+--- oce.orig/src/GccAna/GccAna_Circ2d3Tan_2.cxx
++++ oce/src/GccAna/GccAna_Circ2d3Tan_2.cxx
+@@ -106,7 +106,6 @@
+ 	       Standard_Real dist2 = L2.Distance(Center);
+ 	       Standard_Real dist3 = L3.Distance(Center);
+ 	       Standard_Integer nbsol1 = 0;
+-	       Standard_Integer nbsol2 = 0;
+ 	       Standard_Integer nbsol3 = 0;
+ 	       Standard_Boolean ok = Standard_False;
+ 	       if (Qualified1.IsEnclosed()) {
+@@ -140,7 +139,6 @@
+ 		   for (Standard_Integer ii = 1 ; ii <= nbsol1 ; ii++) {
+ 		     if (Abs(dist2-Radius(ii)) < Tol) { 
+ 		       ok = Standard_True;
+-		       nbsol2 = 1;
+ 		       Radius(1) = Radius(ii);
+ 		     }
+ 		   }
+@@ -152,7 +150,6 @@
+ 		   for (Standard_Integer ii = 1 ; ii <= nbsol1 ; ii++) {
+ 		     if (Abs(dist2-Radius(ii)) < Tol) { 
+ 		       ok = Standard_True;
+-		       nbsol2 = 1;
+ 		       Radius(1) = Radius(ii);
+ 		     }
+ 		   }
+@@ -162,7 +159,6 @@
+ 		 for (Standard_Integer ii = 1 ; ii <= nbsol1 ; ii++) {
+ 		   if (Abs(dist2-Radius(ii)) < Tol) { 
+ 		     ok = Standard_True;
+-		     nbsol2 = 1;
+ 		     Radius(1) = Radius(ii);
+ 		   }
+ 		 }
+Index: oce/src/GccAna/GccAna_Circ2d3Tan_5.cxx
+===================================================================
+--- oce.orig/src/GccAna/GccAna_Circ2d3Tan_5.cxx
++++ oce/src/GccAna/GccAna_Circ2d3Tan_5.cxx
+@@ -110,7 +110,6 @@
+ 	     Standard_Real dist2 = L2.Distance(Center);
+ 	     Standard_Real dist3 = Center.Distance(Point3);
+ 	     Standard_Integer nbsol1 = 0;
+-	     Standard_Integer nbsol2 = 0;
+ 	     Standard_Integer nbsol3 = 0;
+ 	     Standard_Boolean ok = Standard_False;
+ 	     if (Qualified1.IsEnclosed()) {
+@@ -144,7 +143,6 @@
+ 		 for (Standard_Integer ii = 1 ; ii <= nbsol1 ; ii++) {
+ 		   if (Abs(dist2-Radius(ii)) < Tol) { 
+ 		     ok = Standard_True;
+-		     nbsol2 = 1;
+ 		     Radius(1) = Radius(ii);
+ 		   }
+ 		 }
+@@ -156,7 +154,6 @@
+ 		 for (Standard_Integer ii = 1 ; ii <= nbsol1 ; ii++) {
+ 		   if (Abs(dist2-Radius(ii)) < Tol) { 
+ 		     ok = Standard_True;
+-		     nbsol2 = 1;
+ 		     Radius(1) = Radius(ii);
+ 		   }
+ 		 }
+@@ -166,7 +163,6 @@
+ 	       for (Standard_Integer ii = 1 ; ii <= nbsol1 ; ii++) {
+ 		 if (Abs(dist2-Radius(ii)) < Tol) { 
+ 		   ok = Standard_True;
+-		   nbsol2 = 1;
+ 		   Radius(1) = Radius(ii);
+ 		 }
+ 	       }
+Index: oce/src/GccAna/GccAna_Circ2d3Tan_6.cxx
+===================================================================
+--- oce.orig/src/GccAna/GccAna_Circ2d3Tan_6.cxx
++++ oce/src/GccAna/GccAna_Circ2d3Tan_6.cxx
+@@ -98,7 +98,6 @@
+ 	     Standard_Real dist2 = L2.Distance(Center);
+ 	     Standard_Real dist3 = Center.Distance(Point3);
+ 	     Standard_Real Radius=0;
+-	     Standard_Integer nbsol1 = 0;
+ 	     Standard_Integer nbsol2 = 0;
+ 	     Standard_Integer nbsol3 = 0;
+ 	     Standard_Boolean ok = Standard_False;
+@@ -106,7 +105,6 @@
+ 	       if ((((origin1.X()-Center.X())*(-dir1.Y()))+
+ 		    ((origin1.Y()-Center.Y())*(dir1.X())))<=0){
+ 		 ok = Standard_True;
+-		 nbsol1 = 1;
+ 		 Radius = dist1;
+ 	       }
+ 	     }
+@@ -114,13 +112,11 @@
+ 	       if ((((origin1.X()-Center.X())*(-dir1.Y()))+
+ 		    ((origin1.Y()-Center.Y())*(dir1.X())))>=0){
+ 		 ok = Standard_True;
+-		 nbsol1 = 1;
+ 		 Radius = dist1;
+ 	       }
+ 	     }
+ 	     else if (Qualified1.IsUnqualified()) {
+ 	       ok = Standard_True;
+-	       nbsol1 = 1;
+ 	       Radius = dist1;
+ 	     }
+ 	     if (Qualified2.IsEnclosed()) {
+Index: oce/src/GccAna/GccAna_Lin2dTanPer.cxx
+===================================================================
+--- oce.orig/src/GccAna/GccAna_Lin2dTanPer.cxx
++++ oce/src/GccAna/GccAna_Lin2dTanPer.cxx
+@@ -196,7 +196,6 @@
+ 
+    WellDone = Standard_False;
+    NbrSol = 0;
+-   Standard_Integer nbsol = 0;
+    Standard_Integer signe = 0;
+    gp_Circ2d C1 = Qualified1.Qualified();
+ 
+@@ -206,19 +205,16 @@
+    }
+    else if (Qualified1.IsEnclosing()) {
+ // ==================================
+-     nbsol = 1;
+      signe = -1;
+      qualifier1(1) = GccEnt_enclosing;
+    }
+    else if (Qualified1.IsOutside()) {
+ // ================================
+-     nbsol = 1;
+      signe = 1;
+      qualifier1(1) = GccEnt_outside;
+    }
+    else if (Qualified1.IsUnqualified()) {
+ // ====================================
+-     nbsol = 2;
+      signe = -1;
+      qualifier1(1) = GccEnt_enclosing;
+      qualifier1(2) = GccEnt_outside;
+Index: oce/src/Geom/Geom_BSplineSurface.cxx
+===================================================================
+--- oce.orig/src/Geom/Geom_BSplineSurface.cxx
++++ oce/src/Geom/Geom_BSplineSurface.cxx
+@@ -1071,15 +1071,12 @@
+       Upper < 1 || Upper > uknots->Length() ) {
+     Standard_OutOfRange::Raise();
+   }
+-  Standard_Real Eps;
+   if (Lower > 1) {
+-    Eps = Abs (Epsilon (uknots->Value (Lower-1)));
+     if (Abs (UK (Lower) - uknots->Value (Lower-1)) <= gp::Resolution()) {
+       Standard_ConstructionError::Raise();
+     }
+   }
+   if (Upper < uknots->Length ()) {
+-    Eps = Abs (Epsilon (uknots->Value (Upper+1)));
+     if (Abs (UK (Upper) - uknots->Value (Upper+1)) <= gp::Resolution()) {
+       Standard_ConstructionError::Raise();
+     }
+@@ -1088,7 +1085,6 @@
+   for (Standard_Integer i = Lower; i <= Upper; i++) {
+     uknots->SetValue (i, UK(i));
+     if (i != Lower) {
+-      Eps = Abs (Epsilon (K1));
+       if (Abs (UK(i) - K1) <= gp::Resolution()) {
+         Standard_ConstructionError::Raise();
+       }
+@@ -1160,15 +1156,12 @@
+       Upper < 1 || Upper > vknots->Length() ) {
+     Standard_OutOfRange::Raise();
+   }
+-  Standard_Real Eps;
+   if (Lower > 1) {
+-    Eps = Abs (Epsilon (vknots->Value (Lower-1)));
+     if (Abs (VK (Lower) - vknots->Value (Lower-1)) <= gp::Resolution()) {
+       Standard_ConstructionError::Raise();
+     }
+   }
+   if (Upper < vknots->Length ()) {
+-    Eps = Abs (Epsilon (vknots->Value (Upper+1)));
+     if (Abs (VK (Upper) - vknots->Value (Upper+1)) <= gp::Resolution()) {
+       Standard_ConstructionError::Raise();
+     }
+@@ -1177,7 +1170,6 @@
+   for (Standard_Integer i = Lower; i <= Upper; i++) {
+     vknots->SetValue (i, VK(i));
+     if (i != Lower) {
+-      Eps = Abs (Epsilon (K1));
+       if (Abs (VK(i) - K1) <= gp::Resolution()) {
+         Standard_ConstructionError::Raise();
+       }
+Index: oce/src/GeomConvert/GeomConvert_1.cxx
+===================================================================
+--- oce.orig/src/GeomConvert/GeomConvert_1.cxx
++++ oce/src/GeomConvert/GeomConvert_1.cxx
+@@ -752,10 +752,8 @@
+       Weights.Init(1.);
+       if ( C->IsRational()) C->Weights(Weights);
+ 
+-      Standard_Integer nbUSpans;
+       Standard_Real AlfaU;
+       NbUKnots = 4;
+-      nbUSpans = 3;
+       AlfaU    = PI / 3.;
+       NbUPoles = 6;
+ 
+Index: oce/src/GeomFill/GeomFill_ConstrainedFilling.cxx
+===================================================================
+--- oce.orig/src/GeomFill/GeomFill_ConstrainedFilling.cxx
++++ oce/src/GeomFill/GeomFill_ConstrainedFilling.cxx
+@@ -1410,8 +1410,10 @@
+   }
+   gp_Pnt pbound[31],pres[31];
+   gp_Vec vbound[31],vres[31];
++#ifdef DRAW
+   Standard_Real ang[31];
+   Standard_Boolean hasang[31];
++#endif
+   Handle(GeomFill_Boundary) bou = ptch->Bound(I);
+   Standard_Integer k ;
+   for ( k = 0; k <= 30; k++){
+@@ -1426,10 +1428,14 @@
+ 	Standard_Real alpha = Abs(vres[k].Angle(vbound[k]));
+ 	alpha = Min(alpha,Abs(PI-alpha));
+ 	if(alpha > maxang) maxang = alpha;
++#ifdef DRAW
+ 	ang[k] = alpha;
+ 	hasang[k] = 1;
++#endif
+       }
++#ifdef DRAW
+       else hasang[k] = 0;
++#endif
+     }
+     if(pres[k].Distance(pbound[k]) > maxdist) maxdist = pres[k].Distance(pbound[k]);
+     uu += duu;
+Index: oce/src/GeomFill/GeomFill_Sweep.cxx
+===================================================================
+--- oce.orig/src/GeomFill/GeomFill_Sweep.cxx
++++ oce/src/GeomFill/GeomFill_Sweep.cxx
+@@ -241,8 +241,7 @@
+ 					   const Standard_Integer Segmax) 
+ {
+   Standard_Boolean Ok = Standard_False;
+-  Standard_Integer nbsegmax = Segmax, nbspan = myLoc->NbIntervals(GeomAbs_C1);
+-  if (Segmax < nbspan)  nbsegmax = nbspan;
++  Standard_Integer nbspan = myLoc->NbIntervals(GeomAbs_C1);
+ 
+   Handle(GeomFill_SweepFunction) Func 
+     = new (GeomFill_SweepFunction) (mySec, myLoc, First, SFirst,
+Index: oce/src/GeomInt/GeomInt_IntSS_1.cxx
+===================================================================
+--- oce.orig/src/GeomInt/GeomInt_IntSS_1.cxx
++++ oce/src/GeomInt/GeomInt_IntSS_1.cxx
+@@ -391,10 +391,9 @@
+ 	(Handle(IntPatch_GLine)::DownCast(L)->Ellipse());
+     }
+     //
+-    Standard_Real aPeriod, aNul, aRealEpsilon;
++    Standard_Real aPeriod, aRealEpsilon;
+     //
+     aRealEpsilon=RealEpsilon();
+-    aNul=0.;
+     aPeriod=PI+PI;
+     //
+     aNbParts=myLConstruct.NbParts();
 Index: oce/src/HLRTopoBRep/HLRTopoBRep_OutLiner.cxx
 ===================================================================
 --- oce.orig/src/HLRTopoBRep/HLRTopoBRep_OutLiner.cxx
@@ -1466,19 +2725,153 @@ Index: oce/src/HLRTopoBRep/HLRTopoBRep_OutLiner.cxx
    TopTools_ListOfShape& OutL = myDS.AddOutL(F);
  
    if (myDS.FaceHasIntL(F)) { // get the InternalOutLines on face F
+Index: oce/src/IntAna/IntAna_IntQuadQuad.cxx
+===================================================================
+--- oce.orig/src/IntAna/IntAna_IntQuadQuad.cxx
++++ oce/src/IntAna/IntAna_IntQuadQuad.cxx
+@@ -570,13 +570,11 @@
+ 				 const Standard_Real)  
+ { 
+   //
+-  Standard_Boolean UN_SEUL_Z_PAR_THETA, DEUX_Z_PAR_THETA, 
+-                   Z_POSITIF, Z_INDIFFERENT, Z_NEGATIF;
++  Standard_Boolean UN_SEUL_Z_PAR_THETA,
++                   Z_POSITIF, Z_NEGATIF;
+   //
+   UN_SEUL_Z_PAR_THETA=Standard_False;
+-  DEUX_Z_PAR_THETA=Standard_True;
+   Z_POSITIF=Standard_True;
+-  Z_INDIFFERENT=Standard_True;
+   Z_NEGATIF=Standard_False;
+   //
+   Standard_Integer i;
+Index: oce/src/IntAna/IntAna_QuadQuadGeo.cxx
+===================================================================
+--- oce.orig/src/IntAna/IntAna_QuadQuadGeo.cxx
++++ oce/src/IntAna/IntAna_QuadQuadGeo.cxx
+@@ -838,9 +838,8 @@
+   Standard_Real RmR, RmR_Relative;
+   RmR=(R1>R2)? (R1-R2) : (R2-R1);
+   {
+-    Standard_Real Rmax, Rmin;
++    Standard_Real Rmax;
+     Rmax=(R1>R2)? R1 : R2;
+-    Rmin=(R1>R2)? R2 : R1;
+     RmR_Relative=RmR/Rmax;
+   }
+ 
+Index: oce/src/IntPatch/IntPatch_ALineToWLine.cxx
+===================================================================
+--- oce.orig/src/IntPatch/IntPatch_ALineToWLine.cxx
++++ oce/src/IntPatch/IntPatch_ALineToWLine.cxx
+@@ -920,12 +920,10 @@
+ 			const Standard_Real anu1,
+ 			const Standard_Real anu2) 
+ { 
+-  Standard_Boolean bBothCylinders;
+   GeomAbs_SurfaceType aType1, aType2;
+   //
+   aType1=aQuad1.TypeQuadric();
+   aType2=aQuad2.TypeQuadric();
+-  bBothCylinders=(aType1==GeomAbs_Cylinder && aType2==GeomAbs_Cylinder);
+   //
+   while(anu1-u1 > 5.0) {
+     u1+=PI+PI;
 Index: oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
 +++ oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
-@@ -2337,7 +2337,7 @@
+@@ -1815,7 +1815,6 @@
+   Standard_Integer Index3 = (IsFirst) ? 3 : (Line->NbPoints()-2);
+ 
+   Standard_Boolean doU = Standard_False;
+-  Standard_Boolean doV = Standard_False;
+ 
+   Standard_Real U1 = 0., U2 = 0., V1 = 0., V2 = 0., U3 = 0., V3 = 0.;
+ 
+@@ -1855,8 +1854,6 @@
+     }
+   }
+ 
+-  if(fabs(fabs(V1)-fabs(V2)) > DDV) doV = Standard_True;
+-
+   if(doU) {
+     Standard_Real dU = Min((DDU/10.),5.e-8);
+     Standard_Real U = (U2 > U3) ? (U2 + dU) : (U2 - dU);
+@@ -2339,8 +2336,8 @@
    Standard_Real BSEAM = 1.5*PI; // delta U crossing seam
    Standard_Real BAPEX = PI/16.;  // delta U crossing apex
    
 -  Standard_Integer i = 0, k = 0;
+-  Standard_Real U1 = 0., U2 = 0., V1 = 0., V2 = 0., AnU1 = 0., AnV1 = 0., DU1 = 0., DV1 = 0.;
 +  Standard_Integer k = 0;
-   Standard_Real U1 = 0., U2 = 0., V1 = 0., V2 = 0., AnU1 = 0., AnV1 = 0., DU1 = 0., DV1 = 0.;
++  Standard_Real U1 = 0., U2 = 0., V1 = 0., V2 = 0., AnU1 = 0.;
    Standard_Integer Findex = 1, Lindex = NbPnts, Bindex = 0;
  
+   gp_Pnt aPnt, aSPnt;
+@@ -2359,8 +2356,7 @@
+ 
+   // reset variables
+   Standard_Boolean isDecomposited = Standard_False;
+-  Standard_Boolean is2PIDecomposed = Standard_False;
+-  U1 = 0.; V1 = 0.; U2 = 0.; V2 = 0.; AnU1 = 0.; AnV1 = 0.; DU1 = 0.; DV1 = 0.;
++  U1 = 0.; V1 = 0.; U2 = 0.; V2 = 0.; AnU1 = 0.;
+ 
+   // analyze other points
+   for(k = Findex; k <= Lindex; k++) {
+@@ -2374,7 +2370,6 @@
+ 	SSLine->Value(k).ParametersOnS1(AnU1,V1);    // S1 - quadric, set U,V by Pnt3D
+       }
+       sline->Add(SSLine->Value(k));
+-      AnV1 = V1;
+       continue;
+     }
+ 
+@@ -2389,7 +2384,6 @@
+     if(DeltaU > BSEAM) {
+       Bindex = k;
+       isDecomposited = Standard_True;
+-      is2PIDecomposed = Standard_True;
+       break;
+     }
+     else if((DeltaU > BAPEX) && (k >= (Findex+10) && k <= (Lindex-10))) {
+@@ -2401,7 +2395,6 @@
+ 
+     sline->Add(SSLine->Value(k));
+     AnU1=U1;
+-    AnV1=V1;
+   }
+  
+   IntSurf_PntOn2S aVF,aVL;
+Index: oce/src/IntPatch/IntPatch_Polyhedron.cxx
+===================================================================
+--- oce.orig/src/IntPatch/IntPatch_Polyhedron.cxx
++++ oce/src/IntPatch/IntPatch_Polyhedron.cxx
+@@ -513,9 +513,6 @@
+ #if MSG_DEBUG
+     cout<<" Probleme ds IntCurveSurface_Polyhedron : OtherP et PEdge Confondus "<<endl;
+ #endif
+-    Standard_Integer TempTri,TempOtherP;
+-    TempTri = TriCon;
+-    TempOtherP = OtherP;
+ 
+     return(0); //-- BUG NON CORRIGE ( a revoir le role de nbdeltaU et nbdeltaV)
+ 
+Index: oce/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
+===================================================================
+--- oce.orig/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
++++ oce/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
+@@ -1377,8 +1377,8 @@
+   Standard_Real V0 = S1->FirstVParameter();
+   Standard_Real V1 = S1->LastVParameter();
+ 
+-  Standard_Real resu0,resu1,resv0,resv1;
+-  resu0=U0;resu1=U1;resv1=V1;resv0=V0;
++  Standard_Real resu0,resv0;
++  resu0=U0;resv0=V0;
+ 
+   Standard_Real  du1,du2,dv1,dv2;
+   du1 = (U1-U0)/(SU1-1);
 Index: oce/src/IntPatch/IntPatch_PrmPrmIntersection_T3Bits.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_PrmPrmIntersection_T3Bits.cxx
@@ -1543,6 +2936,43 @@ Index: oce/src/IntTools/IntTools_EdgeFace.cxx
    Standard_Boolean bAllNullFlag;
    //
    bAllNullFlag=aCommonPrt.AllNullFlag();
+Index: oce/src/LDOM/LDOMParser.cxx
+===================================================================
+--- oce.orig/src/LDOM/LDOMParser.cxx
++++ oce/src/LDOM/LDOMParser.cxx
+@@ -148,7 +148,6 @@
+ {
+   Standard_Boolean      isError   = Standard_False;
+   Standard_Boolean      isElement = Standard_False;
+-  Standard_Boolean      isHeader  = Standard_False;
+   Standard_Boolean      isDoctype = Standard_False;
+ 
+   while (1) {
+@@ -160,7 +159,6 @@
+         isError = Standard_True;
+         break;
+       }
+-      isHeader = Standard_True;
+       continue;
+     case LDOM_XmlReader::XML_DOCTYPE:
+       if (isElement) {
+Index: oce/src/MAT2d/MAT2d_Tool2d.cxx
+===================================================================
+--- oce.orig/src/MAT2d/MAT2d_Tool2d.cxx
++++ oce/src/MAT2d/MAT2d_Tool2d.cxx
+@@ -396,11 +396,10 @@
+   
+   //gp_Vec2d             Tan1,Tan2;
+   gp_Pnt2d             Ori; //PEdge;
+-  Standard_Integer     IPrec,INext;
++  Standard_Integer     INext;
+ #ifdef DEB
+   Standard_Real        Tolerance = MAT2d_TOLCONF;
+ #endif
+-  IPrec = (IndexEdge == 1)  ? theCircuit->NumberOfItems() : (IndexEdge - 1);
+   INext = (IndexEdge == theCircuit->NumberOfItems()) ? 1  : (IndexEdge + 1);
+   
+   Handle(Standard_Type) EdgeType = theCircuit->Value(IndexEdge)->DynamicType();
 Index: oce/src/MeshVS/MeshVS_TextPrsBuilder.cxx
 ===================================================================
 --- oce.orig/src/MeshVS/MeshVS_TextPrsBuilder.cxx
@@ -1555,6 +2985,37 @@ Index: oce/src/MeshVS/MeshVS_TextPrsBuilder.cxx
    // Bold font is used by default for better text readability
    OSD_FontAspect           AFontAspectType  = OSD_FA_Bold;
    Standard_Integer         AAspect; 
+Index: oce/src/OSD/OSD_MAllocHook.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_MAllocHook.cxx
++++ oce/src/OSD/OSD_MAllocHook.cxx
+@@ -387,10 +387,12 @@
+     myMutex.Lock();
+     fprintf(myLogFile, "alloc %10lu %10"FMT_SZ_Q"u\n", theRequestNum, theSize);
+     myMutex.Unlock();
+-    if (myBreakSize == theSize)
++#ifdef DEBUG
++	if (myBreakSize == theSize)
+     {
+       int a = 1;
+     }
++#endif
+   }
+ }
+ 
+@@ -514,10 +516,12 @@
+                    (size_t      theSize,
+                     long        /*theRequestNum*/)
+ {
++#ifdef DEBUG
+   if (myBreakSize == theSize)
+   {
+     int a = 1;
+   }
++#endif
+   if (theSize > 0)
+   {
+     myMutex.Lock();
 Index: oce/src/OSD/OSD_signal_WNT.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_signal_WNT.cxx
@@ -1683,6 +3144,18 @@ Index: oce/src/OpenGl/OpenGl_togl_print.cxx
    HDC hPrnDC;
    DOCINFO   di;
  
+Index: oce/src/OpenGl/OpenGl_togl_setplane.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_togl_setplane.cxx
++++ oce/src/OpenGl/OpenGl_togl_setplane.cxx
+@@ -31,7 +31,6 @@
+   CMN_KEY_DATA    key;
+   tel_view_data   vptr;
+   TEL_VIEW_REP   *call_viewrep;
+-  CALL_DEF_PLANE *plane;
+   int j;
+   
+   // return view representation 
 Index: oce/src/OpenGl/OpenGl_txgl.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_txgl.cxx
@@ -1709,6 +3182,26 @@ Index: oce/src/OpenGl/OpenGl_ws.cxx
      ws_map.Bind( wsid, new WS_REC() );
    }
    ws_rec wsr = ws_map.ChangeFind( wsid );
+Index: oce/src/PlotMgt/PlotMgt_PlotterParameter.cxx
+===================================================================
+--- oce.orig/src/PlotMgt/PlotMgt_PlotterParameter.cxx
++++ oce/src/PlotMgt/PlotMgt_PlotterParameter.cxx
+@@ -288,7 +288,6 @@
+                                TCollection_AsciiString& aValue)
+ {
+   Standard_Integer i, n = myDescription -> Length ();
+-  Standard_Boolean fFound = Standard_False;
+   TCollection_AsciiString searchStr = myName, aLine;
+ //JR/Hp
+   searchStr += (Standard_CString ) (aParamSign ? aParamSign : "");
+@@ -304,7 +303,6 @@
+       STRING_TRIM(aLine);
+       myFlags |= aFlag;
+       aValue   = aLine;
+-      fFound   = Standard_True;
+       // Remove all other <aParamSign> strings
+       Standard_Integer j = 1;
+       while (j <= n) {
 Index: oce/src/RWHeaderSection/RWHeaderSection_ReadWriteModule.cxx
 ===================================================================
 --- oce.orig/src/RWHeaderSection/RWHeaderSection_ReadWriteModule.cxx
@@ -1797,6 +3290,68 @@ Index: oce/src/ShapeUpgrade/ShapeUpgrade_RemoveInternalWires.cxx
            for( ; aliter3.More();aliter3.Next()) {
              TopoDS_Shape aF2 = Context()->Apply(aliter3.Value());
              if(aF2.IsNull())
+Index: oce/src/TDF/TDF_CopyLabel.cxx
+===================================================================
+--- oce.orig/src/TDF/TDF_CopyLabel.cxx
++++ oce/src/TDF/TDF_CopyLabel.cxx
+@@ -70,7 +70,6 @@
+ 				       Handle(TDF_DataSet)& ds)
+ {
+ //  TCollection_AsciiString entr1,entr2; //d
+-  Standard_Boolean extRefFound = Standard_False;
+   for (TDF_AttributeIterator itr(aLabel); itr.More(); itr.Next()) {
+     itr.Value()->References(ds);
+     const TDF_AttributeMap& attMap = ds->Attributes(); //attMap
+@@ -84,7 +83,6 @@
+       if (aFilter.IsKept(att) && att->Label().IsDifferent(aRefLabel) &&
+ 	  !att->Label().IsDescendant(aRefLabel)) {
+ 	aExternals.Add(att);
+-	extRefFound = Standard_True;
+       }
+     }
+ 
+@@ -104,7 +102,6 @@
+ //       }
+ //     }
+ 
+-    extRefFound = Standard_False;
+     ds->Clear();
+   }
+ }
+Index: oce/src/TDF/TDF_Delta.cxx
+===================================================================
+--- oce.orig/src/TDF/TDF_Delta.cxx
++++ oce/src/TDF/TDF_Delta.cxx
+@@ -143,17 +143,17 @@
+ 
+ void TDF_Delta::Labels(TDF_LabelList& aLabelList) const
+ {
+-  Standard_Boolean inList;
+   TDF_LabelMap labMap;
+   // If <aLabelList> is not empty...
+ #ifdef DEB_DELTA
++  Standard_Boolean inList;
+   if (aLabelList.Extent() > 0) cout<<"Previously added as modified label(s) ";
+ #endif
+   for (TDF_ListIteratorOfLabelList it1(aLabelList);
+        it1.More(); it1.Next()) {
+     const TDF_Label& lab1 = it1.Value();
+-    inList = labMap.Add(lab1);
+ #ifdef DEB_DELTA
++    inList = labMap.Add(lab1);
+     if (!inList) {
+       lab1.EntryDump(cout);cout<<" | ";
+     }
+@@ -171,8 +171,8 @@
+        it2.More();
+        it2.Next()) {
+     const TDF_Label& lab1 = it2.Value()->Label();
+-    inList = labMap.Add(lab1);
+ #ifdef DEB_DELTA
++    inList = labMap.Add(lab1);
+     if (!inList) {
+       lab1.EntryDump(cout);cout<<" | ";
+     }
 Index: oce/src/TFunction/TFunction_Iterator.cxx
 ===================================================================
 --- oce.orig/src/TFunction/TFunction_Iterator.cxx
@@ -1821,6 +3376,35 @@ Index: oce/src/TNaming/TNaming_Naming.cxx
        const TNaming_MapOfShape& aMap = itdm.Value();
        if(!aMap.Contains(itm.Key())) {
  	isCommon = Standard_False;
+Index: oce/src/Units/Units_Sentence.cxx
+===================================================================
+--- oce.orig/src/Units/Units_Sentence.cxx
++++ oce/src/Units/Units_Sentence.cxx
+@@ -42,8 +42,9 @@
+ 			       const Standard_CString astring)
+ {
+   Standard_Integer index;
+-  Standard_Integer i,k,l,limchain;
+-  char chain[255];
++  Standard_Integer i,limchain;
++//  Standard_Integer k,l;
++//  char chain[255];
+   Handle(Units_Token) token;
+   Handle(Units_Token) referencetoken;
+   
+@@ -51,10 +52,12 @@
+   Handle(Units_TokensSequence) lstlexicon=alexicon->Sequence();
+   Units_NoSuchType_Raise_if(lstlexicon.IsNull(),"BAD LEXICON descriptor");
+   limchain=strlen(astring);
++/*
+   k=0;
+   for(l=0; l<255; l++) {
+     chain[l]=0;
+   }
++*/
+   i=0;
+ 
+   TCollection_AsciiString tmpstr = astring;
 Index: oce/src/V3d/V3d_View.cxx
 ===================================================================
 --- oce.orig/src/V3d/V3d_View.cxx
@@ -1944,7 +3528,7 @@ Index: oce/src/VrmlData/VrmlData_Scene.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_Scene.cxx
 +++ oce/src/VrmlData/VrmlData_Scene.cxx
-@@ -433,8 +433,7 @@
+@@ -443,8 +443,7 @@
    VrmlData_ErrorStatus    aStatus;
    Handle(VrmlData_Node)   aNode;
    TCollection_AsciiString aName;
@@ -2016,7 +3600,7 @@ Index: oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
 ===================================================================
 --- oce.orig/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
 +++ oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
-@@ -195,7 +195,6 @@
+@@ -196,7 +196,6 @@
      di << "use: storevrml shape file defl type_of_conversion (0, 1, 2)"    << "\n";
    }
    else {
@@ -2075,6 +3659,197 @@ Index: oce/src/XmlMFunction/XmlMFunction_ScopeDriver.cxx
    while (*aCurElement != anElement.getLastChild())
    {
      aValueStr = XmlObjMgt::GetStringValue( *aCurElement );
+Index: oce/src/Xw/Xw_Driver.cxx
+===================================================================
+--- oce.orig/src/Xw/Xw_Driver.cxx
++++ oce/src/Xw/Xw_Driver.cxx
+@@ -538,7 +538,6 @@
+ void Xw_Driver::InitializeMarkMap (const Handle(Aspect_MarkMap)& Markmap) {
+ Aspect_MarkMapEntry entry ;
+ Aspect_MarkerStyle style ;
+-Aspect_TypeOfMarker type ;
+ Standard_Integer index,iindex,oindex,minindex=IntegerLast(),maxindex= -minindex;
+ int hindex,length ;
+ 
+@@ -556,7 +555,6 @@
+             entry = Markmap->Entry(index) ;
+             iindex = entry.Index() ;
+             style = entry.Style() ;
+-            type = style.Type() ;
+             length = style.Length() ;
+             const TColStd_Array1OfBoolean& spoint(style.SValues());
+             const TShort_Array1OfShortReal& xpoint(style.XValues());
+Index: oce/src/Xw/Xw_draw_polytext.cxx
+===================================================================
+--- oce.orig/src/Xw/Xw_draw_polytext.cxx
++++ oce/src/Xw/Xw_draw_polytext.cxx
+@@ -235,7 +235,7 @@
+ XW_ATTRIB code ;
+ #endif /*XW_PROTOTYPE*/
+ {
+-int i,ix,iy,mode,length,font = QGFONT(code),type = QGTYPE(code) ;
++int i,ix,iy,length,font = QGFONT(code),type = QGTYPE(code) ;
+ float angle,marge,cosa,sina ;
+ char *pchar ;
+ XPoint points[5] ;
+@@ -252,7 +252,6 @@
+ 	      iy = ptextlist->rpoints[i].y ;
+ 	      angle = ptextlist->rangles[i] ;
+ 	    }
+-	    mode = ptextlist->modes[i] ;
+ 	    marge = ptextlist->marges[i] ;
+ 	    pchar = ptextlist->ptexts[i] ;
+             if( type & XW_EXTENDEDTEXT_MINHEIGHT ) {
+Index: oce/src/Xw/Xw_draw_text.cxx
+===================================================================
+--- oce.orig/src/Xw/Xw_draw_text.cxx
++++ oce/src/Xw/Xw_draw_text.cxx
+@@ -216,7 +216,7 @@
+ XW_ATTRIB code ;
+ #endif /*XW_PROTOTYPE*/
+ {
+-int i,ix,iy,mode,length,font = QGFONT(code),type = QGTYPE(code) ;
++int i,ix,iy,length,font = QGFONT(code),type = QGTYPE(code) ;
+ float angle,cosa,sina ;
+ char *pchar ;
+ 
+@@ -232,7 +232,6 @@
+ 	      iy = ptextlist->rpoints[i].y ;
+ 	      angle = ptextlist->rangles[i] ;
+ 	    }
+-	    mode = ptextlist->modes[i] ;
+ 	    pchar = ptextlist->ptexts[i] ;
+ 	    if( type & XW_EXTENDEDTEXT_MINHEIGHT ) {
+ //OCC186
+Index: oce/src/Xw/Xw_draw_zoomed_image.cxx
+===================================================================
+--- oce.orig/src/Xw/Xw_draw_zoomed_image.cxx
++++ oce/src/Xw/Xw_draw_zoomed_image.cxx
+@@ -34,7 +34,6 @@
+   int              wWidth, wHeight, xC, yC, wp, hp, dxp, dyp, isize;
+   int              x, y, xp, yp, xn, yn, xq, yq, nxC, nyC;
+   unsigned long    pixel;
+-  float            ratio;
+ 
+ #ifdef TRACE_DRAW_ZOOMED_IMAGE
+   if (Xw_get_trace ())
+@@ -86,7 +85,6 @@
+   wp = pximage->width;
+   hp = pximage->height;
+   dxp = dyp = 0;
+-  ratio = (float) wp/hp;
+   qximage->width  = (int )( wp * zoom );
+   qximage->height = (int )( hp * zoom );
+   nxC = wWidth  / 2;
+Index: oce/src/Xw/Xw_get_window_pixelcoord.cxx
+===================================================================
+--- oce.orig/src/Xw/Xw_get_window_pixelcoord.cxx
++++ oce/src/Xw/Xw_get_window_pixelcoord.cxx
+@@ -30,9 +30,7 @@
+ {
+ XW_EXT_WINDOW *pwindow = (XW_EXT_WINDOW*)awindow;
+ //XW_EXT_DISPLAY *pdisplay = pwindow->connexion ;
+-float size ;
+ 
+-	size = ( _WIDTH >= _HEIGHT) ? _WIDTH : _HEIGHT ;
+ 	*ux = UXPOINT(px) ;
+ 	*uy = UYPOINT(py) ;
+ 	
+Index: oce/src/Xw/Xw_set_line_attrib.cxx
+===================================================================
+--- oce.orig/src/Xw/Xw_set_line_attrib.cxx
++++ oce/src/Xw/Xw_set_line_attrib.cxx
+@@ -159,9 +159,9 @@
+ {
+ XW_EXT_WINDOW *pwindow = (XW_EXT_WINDOW*)awindow;
+ XW_ATTRIB code;
+-int j,k;
++int j;
+ 
+-  j = pwindow->lineindex; k = j+1;
++  j = pwindow->lineindex;
+ 
+   code = pwindow->qgline[j].code;
+ 
+@@ -173,7 +173,7 @@
+ #ifdef  TRACE_GET_LINE_ATTRIB
+ if( Xw_get_trace() > 1 ) {
+     printf(" %d = Xw_get_line_attrib(%lx,%d,%d,%d,%d)\n",
+-                                k,(long ) pwindow,*color,*type,*width,*mode) ;
++                                j+1,(long ) pwindow,*color,*type,*width,*mode) ;
+ }
+ #endif
+ 
+Index: oce/src/Xw/Xw_set_poly_attrib.cxx
+===================================================================
+--- oce.orig/src/Xw/Xw_set_poly_attrib.cxx
++++ oce/src/Xw/Xw_set_poly_attrib.cxx
+@@ -167,9 +167,9 @@
+ {
+ XW_EXT_WINDOW *pwindow = (XW_EXT_WINDOW*)awindow;
+ XW_ATTRIB code;
+-int j,k;
++int j;
+ 
+-  j = pwindow->polyindex; k = j+1;
++  j = pwindow->polyindex;
+ 
+   code = pwindow->qgpoly[j].code;
+ 
+@@ -181,7 +181,7 @@
+ #ifdef  TRACE_GET_POLY_ATTRIB
+ if( Xw_get_trace() > 1 ) {
+     printf(" %d = Xw_get_poly_attrib(%lx,%d,%d,%d,%d)\n",
+-				k,(long ) pwindow,*color,*type,*tile,*mode) ;
++				j+1,(long ) pwindow,*color,*type,*tile,*mode) ;
+ }
+ #endif
+ 
+Index: oce/src/Xw/Xw_set_text_attrib.cxx
+===================================================================
+--- oce.orig/src/Xw/Xw_set_text_attrib.cxx
++++ oce/src/Xw/Xw_set_text_attrib.cxx
+@@ -149,9 +149,9 @@
+ {
+ XW_EXT_WINDOW *pwindow = (XW_EXT_WINDOW*)awindow;
+ XW_ATTRIB code;
+-int j,k;
++int j;
+ 
+-  j = pwindow->textindex; k = j+1;
++  j = pwindow->textindex;
+ 
+   code = pwindow->qgtext[j].code;
+ 
+@@ -163,7 +163,7 @@
+ #ifdef  TRACE_GET_TEXT_ATTRIB
+ if( Xw_get_trace() > 1 ) {
+     printf(" %d = Xw_get_text_attrib(%lx,%d,%d,%d,%d)\n",
+-                                k,(long ) pwindow,*color,*type,*font,*mode) ;
++                                j+1,(long ) pwindow,*color,*type,*font,*mode) ;
+ }
+ #endif
+ 
+Index: oce/src/Xw/Xw_zoom_image.cxx
+===================================================================
+--- oce.orig/src/Xw/Xw_zoom_image.cxx
++++ oce/src/Xw/Xw_zoom_image.cxx
+@@ -31,7 +31,6 @@
+ XImage *pximage,*qximage ;
+ int i,j,isize,wp,hp,xp,yp,xq,yq,xn,yn,dxp,dyp,npixel,num_pixel[MAXCOLOR] ;
+ unsigned long pixel,bpixel,tab_pixel[MAXCOLOR];
+-float ratio;
+ 
+ 
+     if( !Xw_isdefine_image(pimage) ) {
+@@ -58,7 +57,6 @@
+     Xw_bytecopy((char*)pximage,(char*)qximage,sizeof(XImage)) ;
+ 
+     wp = pximage->width; hp = pximage->height;
+-    ratio = (float)wp/hp;
+     qximage->width = (int )( wp * zoom );
+     qximage->height = (int )( hp * zoom );
+     dxp = dyp = 0;
 Index: oce/src/math/math_BrentMinimum.cxx
 ===================================================================
 --- oce.orig/src/math/math_BrentMinimum.cxx
@@ -2119,3 +3894,40 @@ Index: oce/src/math/math_KronrodSingleIntegration.cxx
    Standard_Integer aNKronrod = theKronrodP.Length();
  
    Standard_Real    aGaussVal;
+Index: oce/src/math/math_Recipes.cxx
+===================================================================
+--- oce.orig/src/math/math_Recipes.cxx
++++ oce/src/math/math_Recipes.cxx
+@@ -639,11 +639,9 @@
+      Standard_Integer jr, jd, jh, is, k, id;
+      Standard_Integer jh1, idot, idot1, idot2;
+      Standard_Real aa, d, dot;
+-     Standard_Boolean diag;
+ 
+      jr = 0;
+      for (j = 1; j <= Neq; j++) {
+-       diag = Standard_False;
+        jd = indx(j);
+        jh = jd-jr;
+        is = j-jh+2;
+Index: oce/src/math/math_TrigonometricFunctionRoots.cxx
+===================================================================
+--- oce.orig/src/math/math_TrigonometricFunctionRoots.cxx
++++ oce/src/math/math_TrigonometricFunctionRoots.cxx
+@@ -123,7 +123,7 @@
+   Standard_Real Teta, X;
+   Standard_Real Eps, Tol1 = 1.e-15;
+   TColStd_Array1OfReal ko(1,5), Zer(1,4);
+-  Standard_Boolean Flag3, Flag4;
++  Standard_Boolean Flag4;
+   InfiniteStatus = Standard_False;
+   Done = Standard_True;
+ 
+@@ -336,7 +336,6 @@
+     X = Teta -MyBorneInf;
+     if ((X >= (-Epsilon(Delta))) && (X <= Delta+ Epsilon(Delta))) {
+       X = Teta;
+-      Flag3 = Standard_False;
+ 
+       // Appel de Newton:
+       //OCC541(apo):  Standard_Real TetaNewton=0;  

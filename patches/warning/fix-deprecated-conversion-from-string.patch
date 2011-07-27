@@ -12,6 +12,172 @@ Fixed warning: deprecated conversion from string constant to 'char*'
  src/OpenGl/OpenGl_degmodel.cxx         |    2 +-
  6 files changed, 6 insertions(+), 6 deletions(-)
 
+From 1b35e5df96313a8e2f70d8f44c37287f9d75dd84 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Wed, 20 Jul 2011 22:50:16 +0000
+Subject: [PATCH 15/26] [warning-fix][const-char*]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Replace 'char*' by 'const char*'
+
+gcc 4.3 print this warning:
+  deprecated conversion from string constant to ‘char*’
+
+Note: this commit breaks API compatibility
+---
+ inc/OpenGl_Extension.hxx                       |    4 ++--
+ inc/OpenGl_TextRender.hxx                      |    8 ++++----
+ inc/OpenGl_tgl_util.hxx                        |    2 +-
+ src/OpenGl/OpenGl_Extension.cxx                |    4 ++--
+ src/OpenGl/OpenGl_tgl_util.cxx                 |    2 +-
+ src/OpenGl/OpenGl_togl_begin_immediat_mode.cxx |    2 +-
+ src/OpenGl/OpenGl_txgl.cxx                     |    4 ++--
+ 7 files changed, 13 insertions(+), 13 deletions(-)
+
+From 140dc622232d82d5c65849f8ab0a56ac655b2890 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Fri, 22 Jul 2011 12:34:02 +0200
+Subject: [PATCH 22/26] [warning-fix][const-char*]
+
+Oops, forgot this chunk in 1b35e5d
+---
+ inc/OpenGl_Extension.hxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+From 58f1e9f293d52823262a1ef022eab5d3f8b63ac5 Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Fri, 22 Jul 2011 18:14:23 +0200
+Subject: [PATCH 23/26] [warning-fix][const-char*]
+
+Updated char* to const char* in OpenGl_Extension.cxx
+---
+ src/OpenGl/OpenGl_Extension.cxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+From 7c7881e84491cb45dede027ebcef03137d84e72a Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Fri, 22 Jul 2011 20:05:12 +0000
+Subject: [PATCH 24/26] [warning-fix][const-char*]
+
+Remove const_cast from QueryExtensionGLX calls, this
+is no more needed; but OpenGl_QueryExtension and
+OpenGl_QueryExtensionGLX are unused and may get
+dropped instead.
+---
+ src/OpenGl/OpenGl_GraphicDriver.cxx |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+From 615ca745ba0c2933b4954367054e35759404c2a8 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Mon, 25 Jul 2011 14:13:27 +0200
+Subject: [PATCH 2/4] Let first argument of GetEnv() be a const char*, like
+ with getenv() on Unix
+
+---
+ inc/InterfaceGraphic_wntio.hxx                    |    2 +-
+ src/InterfaceGraphic/InterfaceGraphic_cPrintf.cxx |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+From ea1698b5caad03a3f5e4bb0f8aba4a0cd2bc3633 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Mon, 25 Jul 2011 14:17:07 +0200
+Subject: [PATCH 3/4] In printf-like functions, fmt argument can be a const
+
+---
+ inc/InterfaceGraphic_wntio.hxx                    |    4 ++--
+ src/InterfaceGraphic/InterfaceGraphic_cPrintf.cxx |    4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+From 3487f37db04a2c1497bd3bdcbd5f139eb6471fb6 Mon Sep 17 00:00:00 2001
+From: Hugues Delorme <delorme.hugues@fougsys.fr>
+Date: Tue, 26 Jul 2011 16:34:03 +0200
+Subject: [PATCH 2/3] [warning-fix][deprecated-conversion-from-string]
+
+Fix proposed by Denis Barbier : modify global variable
+'console_command' instead of parameter 'filename'.
+---
+ src/Draw/Draw.cxx                         |    6 +++---
+ src/Graphic3d/Graphic3d_GraphicDevice.cxx |    7 ++++---
+ 2 files changed, 7 insertions(+), 6 deletions(-)
+
+Index: oce/inc/InterfaceGraphic_wntio.hxx
+===================================================================
+--- oce.orig/inc/InterfaceGraphic_wntio.hxx
++++ oce/inc/InterfaceGraphic_wntio.hxx
+@@ -13,9 +13,9 @@
+ #  endif  /* __InterfaceGraphic_DLL */
+ # endif  /* __InterfaceGraphic_API */
+ 
+-__InterfaceGraphic_API int   cPrintf ( char*, ... );
+-__InterfaceGraphic_API int   fcPrintf ( int, char*, ... );
+-__InterfaceGraphic_API char* GetEnv ( char* );
++__InterfaceGraphic_API int   cPrintf ( const char*, ... );
++__InterfaceGraphic_API int   fcPrintf ( int, const char*, ... );
++__InterfaceGraphic_API char* GetEnv ( const char* );
+ 
+ # ifdef __cplusplus
+ }
+Index: oce/inc/OpenGl_Extension.hxx
+===================================================================
+--- oce.orig/inc/OpenGl_Extension.hxx
++++ oce/inc/OpenGl_Extension.hxx
+@@ -118,15 +118,15 @@
+ 
+ 
+ extern GLboolean InitExtensionGLX(Display *display);
+-extern GLboolean QueryExtensionGLX(char *extName);
++extern GLboolean QueryExtensionGLX(const char *extName);
+ 
+-extern GLboolean QueryExtension(char *extName);
++extern GLboolean QueryExtension(const char *extName);
+ 
+ extern Display *GetCurrentDisplay(void);
+ 
+ extern GLboolean supportsOneDotOne(void);
+ 
+-extern GLboolean CheckExtension(char *extName, const char *extString);
++extern GLboolean CheckExtension(const char *extName, const char *extString);
+ 
+ 
+ /* Methods defined in OpenGl_GraphicDriver.cxx */
+Index: oce/inc/OpenGl_TextRender.hxx
+===================================================================
+--- oce.orig/inc/OpenGl_TextRender.hxx
++++ oce/inc/OpenGl_TextRender.hxx
+@@ -38,15 +38,15 @@
+ 
+   struct FontMapNode 
+   {
+-    char*     enumName;
+-    char*     FontName;
++    const char*     enumName;
++    const char*     FontName;
+     OSD_FontAspect  fontAspect;
+   };
+ 
+   struct FontEntry
+   {
+-    char*     name;
+-    char*     xlfd;
++    const char*     name;
++    const char*     xlfd;
+     float     xsizes[NUM_FONT_SIZES];
+     int       count;
+   };
+Index: oce/inc/OpenGl_tgl_util.hxx
+===================================================================
+--- oce.orig/inc/OpenGl_tgl_util.hxx
++++ oce/inc/OpenGl_tgl_util.hxx
+@@ -5,6 +5,6 @@
+ 
+ extern  void  call_util_init_filters(Tint); /* ws */
+ extern  Tint  call_util_test_structure(Tint); /* stid */
+-EXPORT extern  int   call_util_osd_getenv (char *, char *, int);
++EXPORT extern  int   call_util_osd_getenv (const char *, char *, int);
+ 
+ #endif
 Index: oce/src/Aspect/Aspect_Driver.cxx
 ===================================================================
 --- oce.orig/src/Aspect/Aspect_Driver.cxx
@@ -38,6 +204,54 @@ Index: oce/src/DPrsStd/DPrsStd.cxx
    plugin   = getenv("CSF_PluginDefaults");
    standard = getenv("CSF_StandardDefaults");
    casroot  = getenv("CASROOT");
+Index: oce/src/Draw/Draw.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw.cxx
++++ oce/src/Draw/Draw.cxx
+@@ -89,15 +89,15 @@
+ extern char console_command[1000];
+ #endif
+ 
+-static void ReadInitFile(char* filename)
++static void ReadInitFile(const char* filename)
+ {
+ #ifdef WNT
+   if (!Draw_Batch) {
+     try {
+       OCC_CATCH_SIGNALS
+-      for(Standard_Integer i = 0; filename[i] != 0; i++)
+-	if(filename[i] == '\\') filename[i] = '/';
+       sprintf(console_command,"source \"%s\"",filename);
++      for(Standard_Integer i = 0; console_command[i] != 0; i++)
++        if(console_command[i] == '\\') console_command[i] = '/';
+       console_semaphore = HAS_CONSOLE_COMMAND;
+       while (console_semaphore == HAS_CONSOLE_COMMAND)
+         Sleep(10);
+Index: oce/src/Graphic3d/Graphic3d_GraphicDevice.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d_GraphicDevice.cxx
++++ oce/src/Graphic3d/Graphic3d_GraphicDevice.cxx
+@@ -188,7 +188,7 @@
+ Standard_Boolean Graphic3d_GraphicDevice::ShrIsDefined (Standard_CString& aShr) const {
+ 
+   char *glso, *glul, *pkno;
+-  char *glshr, *casroot;
++  const char *glshr, *casroot;
+ 
+   casroot = getenv("CASROOT");
+   glso = getenv("CSF_GraphicShr");
+@@ -212,8 +212,9 @@
+ #else
+     buffString = buffString + "/lib/libTKOpenGl.so";
+ #endif
+-    glshr = (char *) malloc (buffString.Length() + 1);
+-    memcpy(glshr, buffString.ToCString(), buffString.Length() + 1);
++    char* newGlShr = (char *) malloc (buffString.Length() + 1);
++    memcpy(newGlShr, buffString.ToCString(), buffString.Length() + 1);
++    glshr = newGlShr;
+   } else {
+     aShr = NULL;
+     printf("You have not defined CSF_GraphicShr or CASROOT, aborting...");
 Index: oce/src/Graphic3d/Graphic3d_Texture1D.cxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_Texture1D.cxx
@@ -77,6 +291,85 @@ Index: oce/src/Graphic3d/Graphic3d_TextureEnv.cxx
      envir = getenv("CSF_MDTVTexturesDirectory") ;
      
      Standard_Boolean HasDefinition = Standard_False ;
+Index: oce/src/InterfaceGraphic/InterfaceGraphic_cPrintf.cxx
+===================================================================
+--- oce.orig/src/InterfaceGraphic/InterfaceGraphic_cPrintf.cxx
++++ oce/src/InterfaceGraphic/InterfaceGraphic_cPrintf.cxx
+@@ -35,7 +35,7 @@
+ 
+ static Init_ init;
+ 
+-int cPrintf ( char* fmt, ... ) {
++int cPrintf ( const char* fmt, ... ) {
+ 
+   static BOOL   first = TRUE;
+   static HANDLE hConsole = NULL;
+@@ -64,7 +64,7 @@
+ 
+ }  /* end cPrintf */
+ 
+-int fcPrintf ( int dummy, char* fmt, ... ) {
++int fcPrintf ( int dummy, const char* fmt, ... ) {
+ 
+   static BOOL   first = TRUE;
+   static HANDLE hConsole = NULL;
+@@ -93,7 +93,7 @@
+ 
+ }  /* end fcPrintf */
+ 
+-char* GetEnv ( char* name ) {
++char* GetEnv ( const char* name ) {
+ 
+   DWORD dwLen;
+   PENV  env = ( PENV )TlsGetValue ( tlsIndex );
+Index: oce/src/OpenGl/OpenGl_Extension.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_Extension.cxx
++++ oce/src/OpenGl/OpenGl_Extension.cxx
+@@ -70,7 +70,7 @@
+ */
+ 
+ /*----------------------------------------------------------------------*/
+-extern GLboolean CheckExtension(char *extName, const char *extString)
++extern GLboolean CheckExtension(const char *extName, const char *extString)
+ {
+   /*
+   ** Search for extName in the extensions string.  Use of strstr()
+@@ -143,7 +143,7 @@
+ }
+ 
+ /*----------------------------------------------------------------------*/
+-extern GLboolean QueryExtensionGLX(char *extName)
++extern GLboolean QueryExtensionGLX(const char *extName)
+ {
+   GLboolean result = GL_FALSE;
+ 
+@@ -178,7 +178,7 @@
+ }
+ 
+ /*----------------------------------------------------------------------*/
+-extern GLboolean QueryExtension(char *extName)
++extern GLboolean QueryExtension(const char *extName)
+ {
+   GLboolean result = GL_FALSE;
+ 
+Index: oce/src/OpenGl/OpenGl_GraphicDriver.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_GraphicDriver.cxx
++++ oce/src/OpenGl/OpenGl_GraphicDriver.cxx
+@@ -63,10 +63,10 @@
+ 
+ GLboolean OpenGl_QueryExtensionGLX (const char *extName)
+ {
+-  return QueryExtensionGLX(const_cast<char *>(extName));
++  return QueryExtensionGLX(extName);
+ }
+ 
+ GLboolean OpenGl_QueryExtension    (const char *extName)
+ {
+-  return QueryExtension(const_cast<char *>(extName));
++  return QueryExtension(extName);
+ }
 Index: oce/src/OpenGl/OpenGl_degmodel.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_degmodel.cxx
@@ -90,3 +383,47 @@ Index: oce/src/OpenGl/OpenGl_degmodel.cxx
  
    switch ( data.ldata ) {
  
+Index: oce/src/OpenGl/OpenGl_tgl_util.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_tgl_util.cxx
++++ oce/src/OpenGl/OpenGl_tgl_util.cxx
+@@ -114,7 +114,7 @@
+ Gets an environment variable.
+ */
+ 
+-EXPORT extern int    call_util_osd_getenv ( char *symbol,
++EXPORT extern int    call_util_osd_getenv ( const char *symbol,
+                                            char *value,
+                                            int lval )
+ {
+Index: oce/src/OpenGl/OpenGl_togl_begin_immediat_mode.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_togl_begin_immediat_mode.cxx
++++ oce/src/OpenGl/OpenGl_togl_begin_immediat_mode.cxx
+@@ -128,7 +128,7 @@
+ #include <OpenGl_tgl.hxx>
+ #include <OpenGl_tgl_subrvis.hxx>
+ 
+-int call_util_osd_getenv( char * , char * , int ) ;
++int call_util_osd_getenv( const char * , char * , int ) ;
+ 
+ /*----------------------------------------------------------------------*/
+ /* 
+Index: oce/src/OpenGl/OpenGl_txgl.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_txgl.cxx
++++ oce/src/OpenGl/OpenGl_txgl.cxx
+@@ -95,11 +95,11 @@
+ };
+ 
+ 
+-int call_util_osd_getenv ( char*, char*, int );
++int call_util_osd_getenv ( const char*, char*, int );
+ #endif  /* WNT */
+ 
+ #include <OpenGl_txgl.hxx>
+-int call_util_osd_getenv( char * , char * , int ) ;
++int call_util_osd_getenv( const char * , char * , int ) ;
+ 
+ /*----------------------------------------------------------------------*/
+ /*

@@ -323,6 +323,16 @@ in this function
  src/Storage/Storage_Schema.cxx |    7 ++++++-
  1 files changed, 6 insertions(+), 1 deletions(-)
 
+From 74b613cfaddaee006817ec84ea5e46249de91bc1 Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Tue, 19 Jul 2011 11:39:29 +0200
+Subject: [PATCH 02/26] [warning-fix][uninitialized-var] Fixed potential
+ uninitialized variable in NIS_View.cxx
+
+---
+ src/NIS/NIS_View.cxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
 Index: oce/inc/AppParCurves_ResolConstraint.gxx
 ===================================================================
 --- oce.orig/inc/AppParCurves_ResolConstraint.gxx
@@ -893,7 +903,7 @@ Index: oce/src/Aspect/Aspect_MarkMapEntry.cxx
 +  Standard_Real X = 0,Y = 0;
  
    cout << " Aspect_MarkMapEntry::Dump ()\n";
-   cout << "      MyStyleIsDef : " << (MyStyleIsDef) ? "True\n" : "False\n";
+   cout << "      MyStyleIsDef : " << (MyStyleIsDef ? "True\n" : "False\n");
 Index: oce/src/BOPTools/BOPTools_Tools3D.cxx
 ===================================================================
 --- oce.orig/src/BOPTools/BOPTools_Tools3D.cxx
@@ -1289,7 +1299,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_0.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder_0.cxx
 +++ oce/src/ChFi3d/ChFi3d_Builder_0.cxx
-@@ -2106,7 +2106,7 @@
+@@ -2107,7 +2107,7 @@
    Standard_Integer Iarc1 = 0,Iarc2 = 0;
    TopAbs_Orientation trafil1 = TopAbs_FORWARD, trafil2 = TopAbs_FORWARD;
    Standard_Integer IcFil1,IcFil2,Isurf,Ishape1,Ishape2;
@@ -1298,7 +1308,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_0.cxx
    TopAbs_Orientation ET1;
    Handle(TopOpeBRepDS_CurvePointInterference) Interfp1,Interfp2;
    Handle(TopOpeBRepDS_SurfaceCurveInterference) Interfc1,Interfc2;
-@@ -3036,7 +3036,7 @@
+@@ -3037,7 +3037,7 @@
    //in the direction of the start/end line.
    gp_Vec Vint, Vref(pdeb,pfin);
    gp_Pnt Pbid;
@@ -1307,7 +1317,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_0.cxx
    Standard_Real tolr1,tolr2;
    tolr1 = tolr2 = tolreached = tol3d;
    if((S1->GetType() == GeomAbs_Cylinder && S2->GetType() == GeomAbs_Plane)||
-@@ -3895,6 +3895,7 @@
+@@ -3896,6 +3896,7 @@
    Wreffin = WL;
    nwf = WF;
    nwl = WL;
@@ -1531,7 +1541,7 @@ Index: oce/src/DNaming/DNaming_TransformationDriver.cxx
 ===================================================================
 --- oce.orig/src/DNaming/DNaming_TransformationDriver.cxx
 +++ oce/src/DNaming/DNaming_TransformationDriver.cxx
-@@ -387,9 +387,9 @@
+@@ -390,9 +390,9 @@
    TopTools_DataMapIteratorOfDataMapOfShapeShape anIt(aTMap);
    Standard_Boolean aF, anE, aV;
    aF = anE = aV = Standard_True;
@@ -2100,7 +2110,7 @@ Index: oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
 +++ oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
-@@ -388,7 +388,7 @@
+@@ -390,7 +390,7 @@
  					   const Standard_Real Pas)
  {
    Standard_Boolean reversed, procf, procl, dofirst, dolast;
@@ -2277,6 +2287,19 @@ Index: oce/src/MoniTool/MoniTool_TypedValue.cxx
        EnumDef (startcase,endcase,match);
        if (!match) return Standard_True;
        if (EnumCase (val->ToCString()) >= startcase) return Standard_True;
+Index: oce/src/NIS/NIS_View.cxx
+===================================================================
+--- oce.orig/src/NIS/NIS_View.cxx
++++ oce/src/NIS/NIS_View.cxx
+@@ -116,7 +116,7 @@
+   // Check that the box is not empty
+   if (aBox.IsVoid() == Standard_False && MyView->IsDefined() == Standard_True) {
+     // Convert the 3D box to 2D representation in view coordinates
+-    Standard_Real Umin,Umax,Vmin,Vmax,U,V,W;
++    Standard_Real Umin=0.0,Umax=0.0,Vmin=0.0,Vmax=0.0,U,V,W;
+     gp_XYZ aCoord;
+ 
+     const gp_XYZ aCorner[2] = { aBox.CornerMin(), aBox.CornerMax() };
 Index: oce/src/OSD/OSD_Environment.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Environment.cxx
@@ -3816,7 +3839,7 @@ Index: oce/src/VrmlData/VrmlData_Scene.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_Scene.cxx
 +++ oce/src/VrmlData/VrmlData_Scene.cxx
-@@ -679,7 +679,7 @@
+@@ -689,7 +689,7 @@
                                   Standard_Boolean       isOnlyPos) const
  {
    Standard_Real aVal[3] = {0., 0., 0.};
@@ -3825,7 +3848,7 @@ Index: oce/src/VrmlData/VrmlData_Scene.cxx
    for (Standard_Integer i = 0; i < 3; i++) {
      if (!VrmlData_Node::OK(aStatus, VrmlData_Scene::ReadLine(theBuffer)))
        break;
-@@ -718,7 +718,7 @@
+@@ -728,7 +728,7 @@
                                   Standard_Boolean       isOnlyPos) const
  {
    Standard_Real aVal[2] = {0., 0.};

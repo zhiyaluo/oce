@@ -1,0 +1,112 @@
+From faeed9032eca478ce900ec0685b699335c7df534 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Wed, 20 Jul 2011 21:03:03 +0000
+Subject: [PATCH 11/26] Bugfix: wrong trigraph statements
+
+---
+ src/Aspect/Aspect_MarkMapEntry.cxx       |    4 ++--
+ src/Aspect/Aspect_TypeMapEntry.cxx       |    4 ++--
+ src/Aspect/Aspect_WidthMapEntry.cxx      |    4 ++--
+ src/TDataStd/TDataStd_ExtStringArray.cxx |    2 +-
+ src/TDataStd/TDataStd_IntPackedMap.cxx   |    2 +-
+ src/TDataStd/TDataStd_IntegerArray.cxx   |    2 +-
+ src/TDataStd/TDataStd_RealArray.cxx      |    2 +-
+ 7 files changed, 10 insertions(+), 10 deletions(-)
+
+Index: oce/src/Aspect/Aspect_MarkMapEntry.cxx
+===================================================================
+--- oce.orig/src/Aspect/Aspect_MarkMapEntry.cxx
++++ oce/src/Aspect/Aspect_MarkMapEntry.cxx
+@@ -128,8 +128,8 @@
+   Standard_Real X,Y;
+ 
+   cout << " Aspect_MarkMapEntry::Dump ()\n";
+-  cout << "      MyStyleIsDef : " << (MyStyleIsDef) ? "True\n" : "False\n";
+-  cout << "      MyIndexIsDef : " << (MyIndexIsDef) ? "True\n" : "False\n";
++  cout << "      MyStyleIsDef : " << (MyStyleIsDef ? "True\n" : "False\n");
++  cout << "      MyIndexIsDef : " << (MyIndexIsDef ? "True\n" : "False\n");
+   cout << "      MarkerStyle : " << (Standard_Integer) type << " Length : " << length << "\n";//WNT
+   if( length ) {
+     for( i=1 ; i<=length ; i++ ) 
+Index: oce/src/Aspect/Aspect_TypeMapEntry.cxx
+===================================================================
+--- oce.orig/src/Aspect/Aspect_TypeMapEntry.cxx
++++ oce/src/Aspect/Aspect_TypeMapEntry.cxx
+@@ -141,8 +141,8 @@
+   Standard_Integer i,length = MyType.Length() ;
+ 
+   cout << " Aspect_TypeMapEntry::Dump ()\n";
+-  cout << "      MyTypeIsDef : " << (MyTypeIsDef) ? "True\n" : "False\n";
+-  cout << "      MyIndexIsDef : " << (MyIndexIsDef) ? "True\n" : "False\n";
++  cout << "      MyTypeIsDef : " << (MyTypeIsDef ? "True\n" : "False\n");
++  cout << "      MyIndexIsDef : " << (MyIndexIsDef ? "True\n" : "False\n");
+   cout << "      LineStyle : " << (Standard_Integer) style << " Length : " << length << "\n";//WNT
+   if( length ) {
+     for( i=(MyType.Values()).Lower() ; i<=(MyType.Values()).Upper() ; i++ ) 
+Index: oce/src/Aspect/Aspect_WidthMapEntry.cxx
+===================================================================
+--- oce.orig/src/Aspect/Aspect_WidthMapEntry.cxx
++++ oce/src/Aspect/Aspect_WidthMapEntry.cxx
+@@ -147,8 +147,8 @@
+ void Aspect_WidthMapEntry::Dump () const {
+ 
+   cout << " Aspect_WidthMapEntry::Dump ()\n";
+-  cout << "      MyTypeIsDef : " << (MyTypeIsDef) ? "True\n" : "False\n";
+-  cout << "      MyIndexIsDef : " << (MyIndexIsDef) ? "True\n" : "False\n";
++  cout << "      MyTypeIsDef : " << (MyTypeIsDef ? "True\n" : "False\n");
++  cout << "      MyIndexIsDef : " << (MyIndexIsDef ? "True\n" : "False\n");
+   cout << "      TypeOfWidth : " << (Standard_Integer) MyType << "\n";//WNT
+   cout << "      LineWidth : " << MyWidth << "\n";
+   cout << flush;
+Index: oce/src/TDataStd/TDataStd_ExtStringArray.cxx
+===================================================================
+--- oce.orig/src/TDataStd/TDataStd_ExtStringArray.cxx
++++ oce/src/TDataStd/TDataStd_ExtStringArray.cxx
+@@ -241,7 +241,7 @@
+     for(i = lower; i<=upper; i++)
+       anOS << "\t" <<myValue->Value(i)<<endl;
+   }
+-  anOS << " Delta is " << myIsDelta ? "ON":"OFF";
++  anOS << " Delta is " << (myIsDelta ? "ON":"OFF");
+   anOS << endl;
+   return anOS;
+ }
+Index: oce/src/TDataStd/TDataStd_IntPackedMap.cxx
+===================================================================
+--- oce.orig/src/TDataStd/TDataStd_IntPackedMap.cxx
++++ oce/src/TDataStd/TDataStd_IntPackedMap.cxx
+@@ -187,7 +187,7 @@
+ {
+   Standard_OStream& anOS = TDF_Attribute::Dump( theOS );
+   anOS << "IntPackedMap size = " << Extent();
+-  anOS << " Delta is " << myIsDelta ? "ON":"OFF";
++  anOS << " Delta is " << (myIsDelta ? "ON":"OFF");
+   anOS << endl;
+   return anOS;
+ }
+Index: oce/src/TDataStd/TDataStd_IntegerArray.cxx
+===================================================================
+--- oce.orig/src/TDataStd/TDataStd_IntegerArray.cxx
++++ oce/src/TDataStd/TDataStd_IntegerArray.cxx
+@@ -244,7 +244,7 @@
+     for(i = lower; i<=upper; i++)
+       anOS << " " <<myValue->Value(i);
+   }
+-  anOS << " Delta is " << myIsDelta ? "ON":"OFF";
++  anOS << " Delta is " << (myIsDelta ? "ON":"OFF");
+   anOS << endl;
+ 
+   // anOS <<"\nAttribute fields: ";
+Index: oce/src/TDataStd/TDataStd_RealArray.cxx
+===================================================================
+--- oce.orig/src/TDataStd/TDataStd_RealArray.cxx
++++ oce/src/TDataStd/TDataStd_RealArray.cxx
+@@ -242,7 +242,7 @@
+     for(i = lower; i<=upper; i++)
+       anOS << " " <<myValue->Value(i);
+   }
+-  anOS << " Delta is " << myIsDelta ? "ON":"OFF";
++  anOS << " Delta is " << (myIsDelta ? "ON":"OFF");
+   anOS << endl;
+   return anOS;
+ }

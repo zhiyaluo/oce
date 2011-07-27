@@ -1167,7 +1167,7 @@ Index: oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
 +++ oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
-@@ -1381,24 +1381,6 @@
+@@ -1383,24 +1383,6 @@
    return u;
  }
  

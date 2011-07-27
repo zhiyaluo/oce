@@ -594,9 +594,9 @@ Index: oce/src/NCollection/NCollection_BaseAllocator.cxx
  
 +#include <stdio.h>
 +
- IMPLEMENT_STANDARD_HANDLE(NCollection_BaseAllocator,MMgt_TShared)
- IMPLEMENT_STANDARD_RTTIEXT(NCollection_BaseAllocator,MMgt_TShared)
- 
+ #if defined(_MSC_VER)
+ # define FMT_SZ_Q "I"
+ #elif defined(__GNUC__)
 Index: oce/src/NCollection/NCollection_HeapAllocator.cxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_HeapAllocator.cxx
@@ -607,9 +607,9 @@ Index: oce/src/NCollection/NCollection_HeapAllocator.cxx
  
 +#include <stdio.h>
 +
- IMPLEMENT_STANDARD_HANDLE (NCollection_HeapAllocator, NCollection_BaseAllocator)
- IMPLEMENT_STANDARD_RTTIEXT(NCollection_HeapAllocator, NCollection_BaseAllocator)
- 
+ #if defined(_MSC_VER)
+ # define FMT_SZ_Q "I"
+ #elif defined(__GNUC__)
 Index: oce/src/NIS/NIS_View.cxx
 ===================================================================
 --- oce.orig/src/NIS/NIS_View.cxx
@@ -1832,10 +1832,10 @@ Index: oce/src/VrmlData/VrmlData_Scene.cxx
  
 +#include <stdio.h>
 +
- static void     dumpNode        (Standard_OStream&              theStream,
-                                  const Handle(VrmlData_Node)&   theNode,
-                                  const TCollection_AsciiString& theIndent);
-@@ -82,8 +84,12 @@
+ #if defined(_MSC_VER)
+ # define FMT_SZ_Q "I"
+ #elif defined(__GNUC__)
+@@ -92,8 +94,12 @@
    if (theN.IsNull() == Standard_False)
      if (theN->IsKind (STANDARD_TYPE(VrmlData_WorldInfo)) == Standard_False) {
        myMutex.Lock();
@@ -1854,7 +1854,7 @@ Index: oce/src/VrmlData/VrmlData_ShapeConvert.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_ShapeConvert.cxx
 +++ oce/src/VrmlData/VrmlData_ShapeConvert.cxx
-@@ -284,8 +284,12 @@
+@@ -285,8 +285,12 @@
          if (aTShapeNode.IsNull() == Standard_False) {
            const Handle(VrmlData_ShapeNode) aShapeNode =
              new VrmlData_ShapeNode (myScene, 0L);

@@ -547,7 +547,7 @@ Index: oce/src/Graphic2d/Graphic2d_SetOfMarkers.cxx
 ===================================================================
 --- oce.orig/src/Graphic2d/Graphic2d_SetOfMarkers.cxx
 +++ oce/src/Graphic2d/Graphic2d_SetOfMarkers.cxx
-@@ -430,8 +430,9 @@
+@@ -432,8 +432,9 @@
  {
  #ifdef OCC402
    return (myMapOfSelected.Extent() > 0);

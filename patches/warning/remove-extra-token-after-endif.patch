@@ -1,0 +1,24 @@
+From 34b44a3a6eb1ead23570e6eda51d74e25eb16ed2 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Thu, 21 Jul 2011 19:26:07 +0200
+Subject: [PATCH 19/26] Remove extra token after #endif
+
+Reported by Clang:
+src/OSD/OSD_FontMgr.cxx:136:8: warning: extra tokens at end of #endif directive [-Wextra-tokens]
+---
+ src/OSD/OSD_FontMgr.cxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Index: oce/src/OSD/OSD_FontMgr.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_FontMgr.cxx
++++ oce/src/OSD/OSD_FontMgr.cxx
+@@ -133,7 +133,7 @@
+ 
+ #ifdef TRACE
+   cout << "System font directory: " << font_dir << "\n";
+-#endif TRACE
++#endif
+ 
+   //read registry
+   HKEY fonts_hkey;

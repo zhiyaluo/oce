@@ -9,57 +9,250 @@ Fixed format %d expects type int but argument XX is long unsigned int
  src/VrmlData/VrmlData_Scene.cxx               |    4 ++--
  3 files changed, 5 insertions(+), 5 deletions(-)
 
+From f78b73589534a99bf13e99e16c681f2b9d2f55ba Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Tue, 19 Jul 2011 16:21:08 +0200
+Subject: [PATCH 08/26] [warning-fix][printf-format-mismatch]
+
+---
+ src/NCollection/NCollection_BaseAllocator.cxx |    4 ++--
+ src/NCollection/NCollection_IncAllocator.cxx  |    2 +-
+ src/OSD/OSD_MAllocHook.cxx                    |   12 ++++++------
+ 3 files changed, 9 insertions(+), 9 deletions(-)
+
+From 8e28a14d1222d1cbfd4dafc4fe7f7f1dd8b2b8c3 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Fri, 22 Jul 2011 00:26:37 +0000
+Subject: [PATCH 21/26] [warning-fix][printf-format-mismatch]
+
+Fix printf format specifier for size_t arguments.
+There is no standard, MSVC defines %I and GCC %z.
+Moreover, it is long on 64bit machines and int otherwise.
+---
+ src/NCollection/NCollection_BaseAllocator.cxx |   18 ++++++++++++++----
+ src/NCollection/NCollection_HeapAllocator.cxx |   12 +++++++++++-
+ src/NCollection/NCollection_IncAllocator.cxx  |   12 +++++++++++-
+ src/OSD/OSD_MAllocHook.cxx                    |   22 ++++++++++++++++------
+ src/VrmlData/VrmlData_Scene.cxx               |   14 ++++++++++++--
+ 5 files changed, 64 insertions(+), 14 deletions(-)
+
 Index: oce/src/NCollection/NCollection_BaseAllocator.cxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_BaseAllocator.cxx
 +++ oce/src/NCollection/NCollection_BaseAllocator.cxx
-@@ -257,12 +257,12 @@
+@@ -10,6 +10,16 @@
+ #include <NCollection_List.hxx>
+ #include <Standard_Mutex.hxx>
+ 
++#if defined(_MSC_VER)
++# define FMT_SZ_Q "I"
++#elif defined(__GNUC__)
++# define FMT_SZ_Q "z"
++#elif defined(_OCC64)
++# define FMT_SZ_Q "l"
++#else
++# define FMT_SZ_Q ""
++#endif
++
+ IMPLEMENT_STANDARD_HANDLE(NCollection_BaseAllocator,MMgt_TShared)
+ IMPLEMENT_STANDARD_RTTIEXT(NCollection_BaseAllocator,MMgt_TShared)
+ 
+@@ -257,20 +267,20 @@
      Standard_Integer nbLeft = aInfo.nbAlloc - aInfo.nbFree;
      Standard_Size aSizeAlloc = aInfo.nbAlloc * aInfo.roundSize;
      Standard_Size aSizeLeft = nbLeft * aInfo.roundSize;
 -    fprintf(ff, "%12d %12d %12d %12d %12d\n", aInfo.roundSize,
-+    fprintf(ff, "%12lu %12d %12d %12lu %12lu\n", aInfo.roundSize,
++    fprintf(ff, "%12"FMT_SZ_Q"u %12d %12d %12"FMT_SZ_Q"u %12"FMT_SZ_Q"u\n", aInfo.roundSize,
              aInfo.nbAlloc, nbLeft, aSizeAlloc, aSizeLeft);
      aTotAlloc += aSizeAlloc;
      aTotLeft += aSizeLeft;
    }
 -  fprintf(ff, "%12s %12s %12s %12d %12d\n", "Total:", "", "",
-+  fprintf(ff, "%12s %12s %12s %12lu %12lu\n", "Total:", "", "",
++  fprintf(ff, "%12s %12s %12s %12"FMT_SZ_Q"u %12"FMT_SZ_Q"u\n", "Total:", "", "",
            aTotAlloc, aTotLeft);
  
    if (!StorageIDSet().IsEmpty())
+   {
+-    fprintf(ff, "Alive allocation numbers of size=%d\n", StandardCallBack_CatchSize());
++    fprintf(ff, "Alive allocation numbers of size=%"FMT_SZ_Q"u\n", StandardCallBack_CatchSize());
+     NCollection_Map<Standard_Size>::Iterator itMap1(StorageIDSet());
+     for (; itMap1.More(); itMap1.Next())
+-      fprintf(ff, "%d\n", itMap1.Key());
++      fprintf(ff, "%"FMT_SZ_Q"u\n", itMap1.Key());
+   }
+   fclose(ff);
+ }
 Index: oce/src/NCollection/NCollection_HeapAllocator.cxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_HeapAllocator.cxx
 +++ oce/src/NCollection/NCollection_HeapAllocator.cxx
-@@ -23,7 +23,7 @@
+@@ -8,6 +8,16 @@
+ #include <Standard_OutOfMemory.hxx>
+ #include <Standard_Mutex.hxx>
+ 
++#if defined(_MSC_VER)
++# define FMT_SZ_Q "I"
++#elif defined(__GNUC__)
++# define FMT_SZ_Q "z"
++#elif defined(_OCC64)
++# define FMT_SZ_Q "l"
++#else
++# define FMT_SZ_Q ""
++#endif
++
+ IMPLEMENT_STANDARD_HANDLE (NCollection_HeapAllocator, NCollection_BaseAllocator)
+ IMPLEMENT_STANDARD_RTTIEXT(NCollection_HeapAllocator, NCollection_BaseAllocator)
+ 
+@@ -23,7 +33,7 @@
    void * pResult = malloc(aRoundSize);
    if (!pResult) {
      char buf[128];
 -    sprintf (buf, "Failed to allocate %d bytes in global dynamic heap",theSize);
-+    sprintf (buf, "Failed to allocate %lu bytes in global dynamic heap",theSize);
++    sprintf (buf, "Failed to allocate %"FMT_SZ_Q"u bytes in global dynamic heap",theSize);
      Standard_OutOfMemory::Raise(&buf[0]);
    }
    return pResult;
+Index: oce/src/NCollection/NCollection_IncAllocator.cxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_IncAllocator.cxx
++++ oce/src/NCollection/NCollection_IncAllocator.cxx
+@@ -10,6 +10,16 @@
+ #include <Standard_OutOfMemory.hxx>
+ #include <stdio.h>
+ 
++#if defined(_MSC_VER)
++# define FMT_SZ_Q "I"
++#elif defined(__GNUC__)
++# define FMT_SZ_Q "z"
++#elif defined(_OCC64)
++# define FMT_SZ_Q "l"
++#else
++# define FMT_SZ_Q ""
++#endif
++
+ IMPLEMENT_STANDARD_HANDLE  (NCollection_IncAllocator,NCollection_BaseAllocator)
+ IMPLEMENT_STANDARD_RTTIEXT (NCollection_IncAllocator,NCollection_BaseAllocator)
+ 
+@@ -134,7 +144,7 @@
+         Standard_Size aSize = anAlloc->GetMemSize();
+         aTotSize += aSize;
+         nbAlloc++;
+-        fprintf(ff, "%-8d %8.1f\n", anID, double(aSize)/1024);
++        fprintf(ff, "%-8"FMT_SZ_Q"u %8.1f\n", anID, double(aSize)/1024);
+       }
+       fprintf(ff, "Total:\n%-8d %8.1f\n", nbAlloc, double(aTotSize)/1024);
+       fclose(ff);
+Index: oce/src/OSD/OSD_MAllocHook.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_MAllocHook.cxx
++++ oce/src/OSD/OSD_MAllocHook.cxx
+@@ -22,6 +22,16 @@
+ 
+ #define MAX_STR 80
+ 
++#if defined(_MSC_VER)
++# define FMT_SZ_Q "I"
++#elif defined(__GNUC__)
++# define FMT_SZ_Q "z"
++#elif defined(_OCC64)
++# define FMT_SZ_Q "l"
++#else
++# define FMT_SZ_Q ""
++#endif
++
+ static OSD_MAllocHook::Callback* MypCurrentCallback = NULL;
+ 
+ //=======================================================================
+@@ -342,7 +352,7 @@
+     Standard_Size aSizeAlloc = aInfo.nbAlloc * aInfo.size;
+     Standard_Size aSizeLeft = nbLeft * aInfo.size;
+     Standard_Size aSizePeak = aInfo.nbLeftPeak * aInfo.size;
+-    fprintf(aRepFile, "%10d %10d %10d %10d %10Iu %10Iu %10Iu\n", aInfo.size,
++    fprintf(aRepFile, "%10"FMT_SZ_Q"u %10d %10d %10d %10"FMT_SZ_Q"u %10"FMT_SZ_Q"u %10"FMT_SZ_Q"u\n", aInfo.size,
+             aInfo.nbAlloc, nbLeft, aInfo.nbLeftPeak,
+             aSizeAlloc, aSizeLeft, aSizePeak);
+     if (aTotAlloc + aSizeAlloc < aTotAlloc) // overflow ?
+@@ -356,7 +366,7 @@
+         fprintf(aRepFile, "%10lu\n", *it1);
+     }
+   }
+-  fprintf(aRepFile, "%10s %10s %10s %10s%c%10Iu %10Iu %10Iu\n", "Total:",
++  fprintf(aRepFile, "%10s %10s %10s %10s%c %10"FMT_SZ_Q"u %10"FMT_SZ_Q"u %10"FMT_SZ_Q"u\n", "Total:",
+           "", "", "", (aTotAlloc == SIZE_MAX ? '>' : ' '), aTotAlloc,
+           aTotalLeftSize, aTotalPeakSize);
+   fclose(aRepFile);
+@@ -375,7 +385,7 @@
+   if (myLogFile != NULL)
+   {
+     myMutex.Lock();
+-    fprintf(myLogFile, "alloc %10lu %10u\n", theRequestNum, theSize);
++    fprintf(myLogFile, "alloc %10lu %10"FMT_SZ_Q"u\n", theRequestNum, theSize);
+     myMutex.Unlock();
+     if (myBreakSize == theSize)
+     {
+@@ -397,7 +407,7 @@
+   if (myLogFile != NULL)
+   {
+     myMutex.Lock();
+-    fprintf(myLogFile, "free  %10lu %10u\n", theRequestNum, theSize);
++    fprintf(myLogFile, "free  %10lu %10"FMT_SZ_Q"u\n", theRequestNum, theSize);
+     myMutex.Unlock();
+   }
+ }
+@@ -479,7 +489,7 @@
+       Standard_Size aSizeAlloc = myArray[i].nbAlloc * aSize;
+       Standard_Size aSizeLeft = nbLeft * aSize;
+       Standard_Size aSizePeak = myArray[i].nbLeftPeak * aSize;
+-      fprintf(aRepFile, "%10d %10d %10d %10d %10Iu %10Iu %10Iu\n", aSize,
++      fprintf(aRepFile, "%10d %10d %10d %10d %10"FMT_SZ_Q"u %10"FMT_SZ_Q"u %10"FMT_SZ_Q"u\n", aSize,
+               myArray[i].nbAlloc, nbLeft, myArray[i].nbLeftPeak,
+               aSizeAlloc, aSizeLeft, aSizePeak);
+       if (aTotAlloc + aSizeAlloc < aTotAlloc) // overflow ?
+@@ -488,7 +498,7 @@
+         aTotAlloc += aSizeAlloc;
+     }
+   }
+-  fprintf(aRepFile, "%10s %10s %10s %10s%c%10Iu %10Iu %10Iu\n", "Total:",
++  fprintf(aRepFile, "%10s %10s %10s %10s%c %10"FMT_SZ_Q"u %10"FMT_SZ_Q"u %10"FMT_SZ_Q"u\n", "Total:",
+           "", "", "", (aTotAlloc == SIZE_MAX ? '>' : ' '), aTotAlloc,
+           myTotalLeftSize, myTotalPeakSize);
+   fclose(aRepFile);
 Index: oce/src/VrmlData/VrmlData_Scene.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_Scene.cxx
 +++ oce/src/VrmlData/VrmlData_Scene.cxx
-@@ -1108,7 +1108,7 @@
+@@ -38,6 +38,16 @@
+ #pragma warning (disable:4996)
+ #endif
+ 
++#if defined(_MSC_VER)
++# define FMT_SZ_Q "I"
++#elif defined(__GNUC__)
++# define FMT_SZ_Q "z"
++#elif defined(_OCC64)
++# define FMT_SZ_Q "l"
++#else
++# define FMT_SZ_Q ""
++#endif
++
+ static void     dumpNode        (Standard_OStream&              theStream,
+                                  const Handle(VrmlData_Node)&   theNode,
+                                  const TCollection_AsciiString& theIndent);
+@@ -1108,7 +1118,7 @@
      const Standard_Size nCoord = aNode->Coordinates()->Length();
      const Standard_Size nPoly  = aNode->Polygons (ppDummy);
      char buf[64];
 -    sprintf (buf, "IndexedFaceSet (%d vertices, %d polygons)", nCoord, nPoly);
-+    sprintf (buf, "IndexedFaceSet (%lu vertices, %lu polygons)", nCoord, nPoly);
++    sprintf (buf, "IndexedFaceSet (%"FMT_SZ_Q"u vertices, %"FMT_SZ_Q"u polygons)", nCoord, nPoly);
      dumpNodeHeader (theStream, theIndent, buf, theNode->Name());
    } else if (theNode->IsKind(STANDARD_TYPE(VrmlData_IndexedLineSet))) {
      const Handle(VrmlData_IndexedLineSet) aNode =
-@@ -1117,7 +1117,7 @@
+@@ -1117,7 +1127,7 @@
      const Standard_Size nCoord = aNode->Coordinates()->Length();
      const Standard_Size nPoly  = aNode->Polygons (ppDummy);
      char buf[64];
 -    sprintf (buf, "IndexedLineSet (%d vertices, %d polygons)", nCoord, nPoly);
-+    sprintf (buf, "IndexedLineSet (%lu vertices, %lu polygons)", nCoord, nPoly);
++    sprintf (buf, "IndexedLineSet (%"FMT_SZ_Q"u vertices, %"FMT_SZ_Q"u polygons)", nCoord, nPoly);
      dumpNodeHeader (theStream, theIndent, buf, theNode->Name());
    } else if (theNode->IsKind(STANDARD_TYPE(VrmlData_Material))) {
  //     const Handle(VrmlData_Material) aMaterial = 
