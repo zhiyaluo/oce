@@ -732,17 +732,6 @@ Index: oce/src/OpenGl/OpenGl_GraphicDriver_9.cxx
          }
          call_togl_create_bg_texture( (CALL_DEF_VIEW*)&MyCView, width, height, data, (int)FillStyle );
          // delete data here
-@@ -481,7 +481,9 @@
-     cubic.xname = (char*) xname;
-     cubic.yname = (char*) yname; 
-     cubic.zname = (char*) zname;
--    /* Draw names */
-+    
-+	/* @todo fields in cubic should be booleans intead of chars? */
-+	/* Draw names */
-     cubic.xdrawname = xdrawname; 
-     cubic.ydrawname = ydrawname; 
-     cubic.zdrawname = zdrawname;
 Index: oce/src/OpenGl/OpenGl_togl_print.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_togl_print.cxx

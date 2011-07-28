@@ -1,0 +1,705 @@
+From e46cfb98b6513a040387a93bfb8269a359d2bc76 Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Sun, 24 Jul 2011 17:54:00 +0200
+Subject: [PATCH 01/11] [warning-fix] MSVC pragmas
+
+Removed many MSVC warning pragmas, that previously hide some possible warning fixes.
+Corrected some others to be disabled instead of level 4 (actually used to do the fixes)
+---
+ drv/ShapeSchema/ShapeSchema.cxx                    |    5 +++++
+ drv/StdLSchema/StdLSchema.cxx                      |    5 +++++
+ drv/StdSchema/StdSchema.cxx                        |    5 +++++
+ drv/XCAFSchema/XCAFSchema.cxx                      |    5 +++++
+ src/BOPTools/BOPTools_PaveSet.cxx                  |    7 +------
+ src/BinDrivers/BinDrivers.cxx                      |    2 +-
+ src/BinLDrivers/BinLDrivers.cxx                    |    2 +-
+ src/BinTObjDrivers/BinTObjDrivers.cxx              |    2 +-
+ src/BinXCAFDrivers/BinXCAFDrivers.cxx              |    2 +-
+ .../BooleanOperations_ShapesDataStructure.cxx      |   10 ----------
+ src/FWOSDriver/FWOSDriver.cxx                      |    2 +-
+ src/IntTools/IntTools.cxx                          |    7 -------
+ src/IntTools/IntTools_EdgeFace.cxx                 |    8 --------
+ src/LDOM/LDOM_BasicAttribute.cxx                   |    5 -----
+ src/LDOM/LDOM_BasicElement.cxx                     |    5 -----
+ src/LDOM/LDOM_BasicText.cxx                        |    5 -----
+ src/OSD/OSD_Environment.cxx                        |    4 ----
+ src/OSD/OSD_Process.cxx                            |    4 ----
+ src/PlotMgt/PlotMgt_TextManager.cxx                |    4 ----
+ src/Poly/Poly_CoherentNode.cxx                     |    4 ----
+ src/Poly/Poly_CoherentTriPtr.cxx                   |    4 ----
+ src/StdDrivers/StdDrivers.cxx                      |    2 +-
+ src/StdLDrivers/StdLDrivers.cxx                    |    2 +-
+ src/TDF/TDF_Data.cxx                               |    9 ---------
+ src/TDF/TDF_Label.cxx                              |    9 ---------
+ src/TopExp/TopExp_Explorer.cxx                     |    8 --------
+ src/ViewerTest/ViewerTest.cxx                      |    1 -
+ src/ViewerTest/ViewerTest_ObjectCommands.cxx       |    1 -
+ src/ViewerTest/ViewerTest_ViewerCommands.cxx       |    1 -
+ src/VrmlData/VrmlData_Geometry.cxx                 |    1 -
+ src/VrmlData/VrmlData_Group.cxx                    |    1 -
+ src/VrmlData/VrmlData_IndexedFaceSet.cxx           |    1 -
+ src/VrmlData/VrmlData_IndexedLineSet.cxx           |    1 -
+ src/VrmlData/VrmlData_Material.cxx                 |    1 -
+ src/VrmlData/VrmlData_Node.cxx                     |    1 -
+ src/VrmlData/VrmlData_Scene.cxx                    |    1 -
+ src/VrmlData/VrmlData_WorldInfo.cxx                |    1 -
+ src/XCAFDrivers/XCAFDrivers.cxx                    |    2 +-
+ src/XmlDrivers/XmlDrivers.cxx                      |    2 +-
+ src/XmlLDrivers/XmlLDrivers.cxx                    |    2 +-
+ src/XmlTObjDrivers/XmlTObjDrivers.cxx              |    2 +-
+ src/XmlXCAFDrivers/XmlXCAFDrivers.cxx              |    2 +-
+ 42 files changed, 33 insertions(+), 115 deletions(-)
+
+diff --git a/drv/ShapeSchema/ShapeSchema.cxx b/drv/ShapeSchema/ShapeSchema.cxx
+index bf82839..9d67ffc 100644
+--- a/drv/ShapeSchema/ShapeSchema.cxx
++++ b/drv/ShapeSchema/ShapeSchema.cxx
+@@ -518,6 +518,11 @@
+ #include <ShapeSchema_PCollection_HExtendedString.hxx>
+ #endif
+ 
++// avoid warnings on 'extern "C"' functions returning C++ classes
++#ifdef _MSC_VER
++#pragma warning(disable:4190)
++#endif
++
+ IMPLEMENT_STANDARD_HANDLE(ShapeSchema,Storage_Schema)
+ IMPLEMENT_STANDARD_RTTIEXT(ShapeSchema,Storage_Schema)
+ 
+diff --git a/drv/StdLSchema/StdLSchema.cxx b/drv/StdLSchema/StdLSchema.cxx
+index 09abce6..a22852d 100644
+--- a/drv/StdLSchema/StdLSchema.cxx
++++ b/drv/StdLSchema/StdLSchema.cxx
+@@ -161,6 +161,11 @@
+ #include <StdLSchema_PColStd_HArray2OfInteger.hxx>
+ #endif
+ 
++// avoid warnings on 'extern "C"' functions returning C++ classes
++#ifdef _MSC_VER
++#pragma warning(disable:4190)
++#endif
++
+ IMPLEMENT_STANDARD_HANDLE(StdLSchema,Storage_Schema)
+ IMPLEMENT_STANDARD_RTTIEXT(StdLSchema,Storage_Schema)
+ 
+diff --git a/drv/StdSchema/StdSchema.cxx b/drv/StdSchema/StdSchema.cxx
+index 11a77aa..99579bd 100644
+--- a/drv/StdSchema/StdSchema.cxx
++++ b/drv/StdSchema/StdSchema.cxx
+@@ -95,6 +95,11 @@
+ #include <StdSchema_PTopLoc_ItemLocation.hxx>
+ #endif
+ 
++// avoid warnings on 'extern "C"' functions returning C++ classes
++#ifdef _MSC_VER
++#pragma warning(disable:4190)
++#endif
++
+ IMPLEMENT_STANDARD_HANDLE(StdSchema,Storage_Schema)
+ IMPLEMENT_STANDARD_RTTIEXT(StdSchema,Storage_Schema)
+ 
+diff --git a/drv/XCAFSchema/XCAFSchema.cxx b/drv/XCAFSchema/XCAFSchema.cxx
+index f0a0dbc..81e55e6 100644
+--- a/drv/XCAFSchema/XCAFSchema.cxx
++++ b/drv/XCAFSchema/XCAFSchema.cxx
+@@ -83,6 +83,11 @@
+ #include <XCAFSchema_PCollection_HExtendedString.hxx>
+ #endif
+ 
++// avoid warnings on 'extern "C"' functions returning C++ classes
++#ifdef _MSC_VER
++#pragma warning(disable:4190)
++#endif
++
+ IMPLEMENT_STANDARD_HANDLE(XCAFSchema,Storage_Schema)
+ IMPLEMENT_STANDARD_RTTIEXT(XCAFSchema,Storage_Schema)
+ 
+diff --git a/src/BOPTools/BOPTools_PaveSet.cxx b/src/BOPTools/BOPTools_PaveSet.cxx
+index 02acff2..6e08534 100644
+--- a/src/BOPTools/BOPTools_PaveSet.cxx
++++ b/src/BOPTools/BOPTools_PaveSet.cxx
+@@ -11,9 +11,6 @@
+ #include <BOPTools_QuickSortPave.hxx>
+ #include <BOPTools_ComparePave.hxx>
+ 
+-#ifdef _MSC_VER
+-#pragma warning ( disable : 4101 )
+-#endif
+ 
+ //=======================================================================
+ // function: BOPTools_PaveSet::BOPTools_PaveSet
+@@ -75,6 +72,4 @@
+     }
+   }
+ }
+-#ifdef _MSC_VER
+-#pragma warning ( default : 4101 )
+-#endif
++
+diff --git a/src/BinDrivers/BinDrivers.cxx b/src/BinDrivers/BinDrivers.cxx
+index 96bd673..452f223 100644
+--- a/src/BinDrivers/BinDrivers.cxx
++++ b/src/BinDrivers/BinDrivers.cxx
+@@ -19,7 +19,7 @@
+ 
+ // avoid warnings on 'extern "C"' functions returning C++ classes
+ #ifdef _MSC_VER
+-#pragma warning(4:4190)
++#pragma warning(disable:4190)
+ #endif
+ 
+ static Standard_GUID BinStorageDriver  ("03a56835-8269-11d5-aab2-0050044b1af1");
+diff --git a/src/BinLDrivers/BinLDrivers.cxx b/src/BinLDrivers/BinLDrivers.cxx
+index e38e93b..35e7819 100644
+--- a/src/BinLDrivers/BinLDrivers.cxx
++++ b/src/BinLDrivers/BinLDrivers.cxx
+@@ -16,7 +16,7 @@
+ 
+ // avoid warnings on 'extern "C"' functions returning C++ classes
+ #ifdef _MSC_VER
+-#pragma warning(4:4190)
++#pragma warning(disable:4190)
+ #endif
+ 
+ static Standard_GUID BinLStorageDriver  ("13a56835-8269-11d5-aab2-0050044b1af1");
+diff --git a/src/BinTObjDrivers/BinTObjDrivers.cxx b/src/BinTObjDrivers/BinTObjDrivers.cxx
+index 83c946a..339e6ac 100644
+--- a/src/BinTObjDrivers/BinTObjDrivers.cxx
++++ b/src/BinTObjDrivers/BinTObjDrivers.cxx
+@@ -18,7 +18,7 @@
+ 
+ // avoid warnings on 'extern "C"' functions returning C++ classes
+ #ifdef _MSC_VER
+-#pragma warning(4:4190)
++#pragma warning(disable:4190)
+ #endif
+ 
+ static Standard_GUID BinStorageDriver  ("f78ff4a2-a779-11d5-aab4-0050044b1af1");
+diff --git a/src/BinXCAFDrivers/BinXCAFDrivers.cxx b/src/BinXCAFDrivers/BinXCAFDrivers.cxx
+index 31ed2bb..ad94adc 100644
+--- a/src/BinXCAFDrivers/BinXCAFDrivers.cxx
++++ b/src/BinXCAFDrivers/BinXCAFDrivers.cxx
+@@ -14,7 +14,7 @@
+ 
+ // avoid warnings on 'extern "C"' functions returning C++ classes
+ #ifdef _MSC_VER
+-#pragma warning(4:4190)
++#pragma warning(disable:4190)
+ #endif
+ 
+ static Standard_GUID BinXCAFStorageDriver  ("a78ff496-a779-11d5-aab4-0050044b1af1");
+diff --git a/src/BooleanOperations/BooleanOperations_ShapesDataStructure.cxx b/src/BooleanOperations/BooleanOperations_ShapesDataStructure.cxx
+index 38607f1..72ee466 100644
+--- a/src/BooleanOperations/BooleanOperations_ShapesDataStructure.cxx
++++ b/src/BooleanOperations/BooleanOperations_ShapesDataStructure.cxx
+@@ -43,11 +43,6 @@
+ #include <TColStd_MapOfInteger.hxx>
+ #include <BOPTColStd_Dump.hxx>
+ 
+-
+-#ifdef _MSC_VER
+-#pragma warning ( disable : 4291 )
+-#endif
+-
+ static
+   void Message(const Standard_Integer i);
+ 
+@@ -887,11 +882,6 @@ void Message(const Standard_Integer i)
+ }
+ //modified by NIZNHY-PKV Wed Feb  2 14:44:08 2005f
+ /*
+-#ifdef WNT
+-#pragma warning ( default : 4291 )
+-#endif
+-*/
+-/*
+ //===========================================================================
+ //function : InsertInterference
+ //purpose  : 
+diff --git a/src/FWOSDriver/FWOSDriver.cxx b/src/FWOSDriver/FWOSDriver.cxx
+index f54b077..3e093a1 100644
+--- a/src/FWOSDriver/FWOSDriver.cxx
++++ b/src/FWOSDriver/FWOSDriver.cxx
+@@ -11,7 +11,7 @@
+ 
+ // avoid warnings on 'extern "C"' functions returning C++ classes
+ #ifdef _MSC_VER
+-#pragma warning(4:4190)
++#pragma warning(disable:4190)
+ #endif
+ 
+ PLUGIN(FWOSDriver)
+diff --git a/src/IntTools/IntTools.cxx b/src/IntTools/IntTools.cxx
+index 0065e00..19a0e38 100644
+--- a/src/IntTools/IntTools.cxx
++++ b/src/IntTools/IntTools.cxx
+@@ -23,9 +23,6 @@
+ #include <TColStd_ListIteratorOfListOfReal.hxx>
+ #include <gce_ErrorType.hxx>
+ 
+-#ifdef _MSC_VER
+-#pragma warning ( disable : 4101 )
+-#endif
+ //=======================================================================
+ //function : IntTools::GetRadius
+ //purpose  : 
+@@ -365,7 +362,3 @@
+   }
+   return 1;
+ }
+-
+-#ifdef _MSC_VER
+-#pragma warning ( default : 4101 )
+-#endif
+diff --git a/src/IntTools/IntTools_EdgeFace.cxx b/src/IntTools/IntTools_EdgeFace.cxx
+index 46954b6..43b0b13 100644
+--- a/src/IntTools/IntTools_EdgeFace.cxx
++++ b/src/IntTools/IntTools_EdgeFace.cxx
+@@ -55,10 +55,6 @@
+ #include <GeomAdaptor_HSurface.hxx>
+ #include <IntCurveSurface_IntersectionPoint.hxx>
+ 
+-#ifdef _MSC_VER
+-#pragma warning ( disable : 4101 )
+-#endif
+-
+ static
+   Standard_Boolean IsCoplanar (const BRepAdaptor_Curve&  ,
+ 			       const BRepAdaptor_Surface& );
+@@ -1595,7 +1591,3 @@ Standard_Integer AdaptiveDiscret (const Standard_Integer iDiscret,
+   return iDiscretNew;
+ }
+ 
+-
+-#ifdef _MSC_VER
+-#pragma warning ( default : 4101 )
+-#endif
+diff --git a/src/LDOM/LDOM_BasicAttribute.cxx b/src/LDOM/LDOM_BasicAttribute.cxx
+index 1f5a89a..2f76893 100644
+--- a/src/LDOM/LDOM_BasicAttribute.cxx
++++ b/src/LDOM/LDOM_BasicAttribute.cxx
+@@ -7,11 +7,6 @@
+ #include <LDOM_BasicAttribute.hxx>
+ #include <LDOM_MemManager.hxx>
+ 
+-#ifdef _MSC_VER
+-// Disable the warning: "operator new unmatched by delete"
+-#pragma warning (disable:4291)
+-#endif
+-
+ //=======================================================================
+ //function : LDOM_BasicAttribute
+ //purpose  : 
+diff --git a/src/LDOM/LDOM_BasicElement.cxx b/src/LDOM/LDOM_BasicElement.cxx
+index 6fa061b..dd943bd 100644
+--- a/src/LDOM/LDOM_BasicElement.cxx
++++ b/src/LDOM/LDOM_BasicElement.cxx
+@@ -9,11 +9,6 @@
+ #include <LDOM_BasicText.hxx>
+ #include <LDOM_MemManager.hxx>
+ 
+-#ifdef _MSC_VER
+-// Disable the warning: "operator new unmatched by delete"
+-#pragma warning (disable:4291)
+-#endif
+-
+ //=======================================================================
+ //function : Create
+ //purpose  : construction in the Document's data pool
+diff --git a/src/LDOM/LDOM_BasicText.cxx b/src/LDOM/LDOM_BasicText.cxx
+index 48c8b07..c92f527 100644
+--- a/src/LDOM/LDOM_BasicText.cxx
++++ b/src/LDOM/LDOM_BasicText.cxx
+@@ -8,11 +8,6 @@
+ #include <LDOM_BasicText.hxx>
+ #include <LDOM_MemManager.hxx>
+ 
+-#ifdef _MSC_VER
+-// Disable the warning: "operator new unmatched by delete"
+-#pragma warning (disable:4291)
+-#endif
+-
+ //=======================================================================
+ //function : LDOM_BasicText()
+ //purpose  : Constructor
+diff --git a/src/OSD/OSD_Environment.cxx b/src/OSD/OSD_Environment.cxx
+index 46c2260..92df1f4 100644
+--- a/src/OSD/OSD_Environment.cxx
++++ b/src/OSD/OSD_Environment.cxx
+@@ -217,10 +217,6 @@ Standard_Integer OSD_Environment::Error() const
+ 
+ #include <stdio.h>
+ 
+-#ifdef _MSC_VER
+-#pragma warning( disable : 4700 )
+-#endif
+-
+ static void __fastcall _set_error ( OSD_Error&, DWORD );
+ 
+ OSD_Environment :: OSD_Environment () {
+diff --git a/src/OSD/OSD_Process.cxx b/src/OSD/OSD_Process.cxx
+index 2e07268..c542ebc 100644
+--- a/src/OSD/OSD_Process.cxx
++++ b/src/OSD/OSD_Process.cxx
+@@ -214,10 +214,6 @@ Standard_Integer OSD_Process::Error()const{
+ #include <OSD_WNT_1.hxx>
+ #include <lmcons.h> /// pour UNLEN  ( see MSDN about GetUserName() )
+ 
+-#ifdef _MSC_VER
+-#pragma warning( disable : 4700 )
+-#endif
+-
+ void _osd_wnt_set_error ( OSD_Error&, OSD_WhoAmI, ... );
+ 
+ OSD_Process :: OSD_Process () {
+diff --git a/src/PlotMgt/PlotMgt_TextManager.cxx b/src/PlotMgt/PlotMgt_TextManager.cxx
+index 463798c..7088867 100644
+--- a/src/PlotMgt/PlotMgt_TextManager.cxx
++++ b/src/PlotMgt/PlotMgt_TextManager.cxx
+@@ -6,10 +6,6 @@
+ #include <PlotMgt_TextManager.ixx>
+ #include <Aspect_Units.hxx>
+ 
+-#ifdef _MSC_VER
+-#pragma warning (disable : 4244)
+-#endif
+-
+ //#define TRACE
+ #define MAXPATHPOINTS  800
+ #define MAXCHARPATHS   20
+diff --git a/src/Poly/Poly_CoherentNode.cxx b/src/Poly/Poly_CoherentNode.cxx
+index 7fc53fe..88222f7 100644
+--- a/src/Poly/Poly_CoherentNode.cxx
++++ b/src/Poly/Poly_CoherentNode.cxx
+@@ -7,10 +7,6 @@
+ #include <Poly_CoherentNode.hxx>
+ #include <Poly_CoherentTriangle.hxx>
+ 
+-#ifdef _MSC_VER
+-#pragma warning(disable:4291 4996)
+-#endif
+-
+ #include <stdio.h>
+ 
+ //=======================================================================
+diff --git a/src/Poly/Poly_CoherentTriPtr.cxx b/src/Poly/Poly_CoherentTriPtr.cxx
+index 2a683f0..d5d15d6 100644
+--- a/src/Poly/Poly_CoherentTriPtr.cxx
++++ b/src/Poly/Poly_CoherentTriPtr.cxx
+@@ -6,10 +6,6 @@
+ 
+ #include <Poly_CoherentTriPtr.hxx>
+ 
+-#ifdef _MSC_VER
+-#pragma warning(disable:4291)
+-#endif
+-
+ //=======================================================================
+ //function : Iterator::Next
+ //purpose  :
+diff --git a/src/StdDrivers/StdDrivers.cxx b/src/StdDrivers/StdDrivers.cxx
+index 66caade..3455ea3 100644
+--- a/src/StdDrivers/StdDrivers.cxx
++++ b/src/StdDrivers/StdDrivers.cxx
+@@ -17,7 +17,7 @@
+ 
+ // avoid warnings on 'extern "C"' functions returning C++ classes
+ #ifdef _MSC_VER
+-#pragma warning(4:4190)
++#pragma warning(disable:4190)
+ #endif
+ 
+ static Standard_GUID StdStorageDriver     ("ad696000-5b34-11d1-b5ba-00a0c9064368");
+diff --git a/src/StdLDrivers/StdLDrivers.cxx b/src/StdLDrivers/StdLDrivers.cxx
+index bda579a..6669fac 100644
+--- a/src/StdLDrivers/StdLDrivers.cxx
++++ b/src/StdLDrivers/StdLDrivers.cxx
+@@ -16,7 +16,7 @@
+ 
+ // avoid warnings on 'extern "C"' functions returning C++ classes
+ #ifdef _MSC_VER
+-#pragma warning(4:4190)
++#pragma warning(disable:4190)
+ #endif
+ 
+ static Standard_GUID StdLStorageDriver     ("bd696000-5b34-11d1-b5ba-00a0c9064368");
+diff --git a/src/TDF/TDF_Data.cxx b/src/TDF/TDF_Data.cxx
+index 65d2e26..5943d23 100644
+--- a/src/TDF/TDF_Data.cxx
++++ b/src/TDF/TDF_Data.cxx
+@@ -75,11 +75,6 @@ if (withDelta) { \
+   aDelta->AddAttributeDelta(DELTACREATION); \
+ }
+ 
+-#ifdef _MSC_VER
+-// Disable the warning: "operator new unmatched by delete"
+-#pragma warning (disable:4291)
+-#endif
+-
+ //=======================================================================
+ //function : TDF_Data
+ //purpose  : empty constructor
+@@ -98,10 +93,6 @@ myAllowModification     (Standard_True)
+   myRoot = new (anIncAllocator) TDF_LabelNode (this);
+ }
+ 
+-#ifdef _MSC_VER
+-#pragma warning (default:4291)
+-#endif
+-
+ //=======================================================================
+ //function : Destroy
+ //purpose  : Used to implement the destructor ~.
+diff --git a/src/TDF/TDF_Label.cxx b/src/TDF/TDF_Label.cxx
+index 16f71a5..8e7f7a2 100644
+--- a/src/TDF/TDF_Label.cxx
++++ b/src/TDF/TDF_Label.cxx
+@@ -308,11 +308,6 @@ void TDF_Label::EntryDump(Standard_OStream& anOS) const
+   }
+ }
+ 
+-#ifdef _MSC_VER
+-// Disable the warning: "operator new unmatched by delete"
+-#pragma warning (disable:4291)
+-#endif
+-
+ //=======================================================================
+ //function : FindOrAddChild
+ //purpose  : Finds or adds a label child having <aTag> as tag.
+@@ -373,10 +368,6 @@ TDF_LabelNode* TDF_Label::FindOrAddChild
+   return childLabelNode;
+ }
+ 
+-#ifdef _MSC_VER
+-#pragma warning (default:4291)
+-#endif
+-
+ //=======================================================================
+ //function : InternalDump
+ //purpose  : Private method.
+diff --git a/src/TopExp/TopExp_Explorer.cxx b/src/TopExp/TopExp_Explorer.cxx
+index 34cddb4..b36537f 100644
+--- a/src/TopExp/TopExp_Explorer.cxx
++++ b/src/TopExp/TopExp_Explorer.cxx
+@@ -127,11 +127,6 @@ const TopoDS_Shape&  TopExp_Explorer::Current()const
+ //purpose  : 
+ //=======================================================================
+ 
+-#ifdef _MSC_VER
+-#pragma warning(push)
+-#pragma warning(disable: 4291) // to avoid warning when using new(buffer) syntax
+-#endif
+-
+ void  TopExp_Explorer::Next()
+ {
+   Standard_Integer NewSize;
+@@ -209,9 +204,6 @@ void  TopExp_Explorer::Next()
+   hasMore = Standard_False;
+ }
+ 
+-#ifdef _MSC_VER
+-#pragma warning(pop)
+-#endif
+ 
+ //=======================================================================
+ //function : ReInit
+diff --git a/src/ViewerTest/ViewerTest.cxx b/src/ViewerTest/ViewerTest.cxx
+index ec756a9..f693482 100644
+--- a/src/ViewerTest/ViewerTest.cxx
++++ b/src/ViewerTest/ViewerTest.cxx
+@@ -56,7 +56,6 @@
+ #ifdef _MSC_VER
+ #define _CRT_SECURE_NO_DEPRECATE
+ #pragma warning(4:4190)
+-#pragma warning (disable:4996)
+ #endif
+ 
+ #include <NIS_InteractiveContext.hxx>
+diff --git a/src/ViewerTest/ViewerTest_ObjectCommands.cxx b/src/ViewerTest/ViewerTest_ObjectCommands.cxx
+index 8fe1380..af79e63 100644
+--- a/src/ViewerTest/ViewerTest_ObjectCommands.cxx
++++ b/src/ViewerTest/ViewerTest_ObjectCommands.cxx
+@@ -82,7 +82,6 @@
+ 
+ #ifdef _MSC_VER
+ #define _CRT_SECURE_NO_DEPRECATE
+-#pragma warning (disable:4996)
+ #endif
+ 
+ extern ViewerTest_DoubleMapOfInteractiveAndName& GetMapOfAIS();
+diff --git a/src/ViewerTest/ViewerTest_ViewerCommands.cxx b/src/ViewerTest/ViewerTest_ViewerCommands.cxx
+index fd0e73d..fe1cb33 100644
+--- a/src/ViewerTest/ViewerTest_ViewerCommands.cxx
++++ b/src/ViewerTest/ViewerTest_ViewerCommands.cxx
+@@ -42,7 +42,6 @@
+ 
+ #ifdef _MSC_VER
+ #define _CRT_SECURE_NO_DEPRECATE
+-#pragma warning (disable:4996)
+ #endif
+ 
+ #endif
+diff --git a/src/VrmlData/VrmlData_Geometry.cxx b/src/VrmlData/VrmlData_Geometry.cxx
+index 22d772e..65a68a1 100644
+--- a/src/VrmlData/VrmlData_Geometry.cxx
++++ b/src/VrmlData/VrmlData_Geometry.cxx
+@@ -25,7 +25,6 @@
+ 
+ #ifdef _MSC_VER
+ #define _CRT_SECURE_NO_DEPRECATE
+-#pragma warning (disable:4996)
+ #endif
+ 
+ #include <stdio.h>
+diff --git a/src/VrmlData/VrmlData_Group.cxx b/src/VrmlData/VrmlData_Group.cxx
+index 3d6219b..a5f93f0 100644
+--- a/src/VrmlData/VrmlData_Group.cxx
++++ b/src/VrmlData/VrmlData_Group.cxx
+@@ -16,7 +16,6 @@
+ 
+ #ifdef _MSC_VER
+ #define _CRT_SECURE_NO_DEPRECATE
+-#pragma warning (disable:4996)
+ #endif
+ 
+ #include <stdio.h>
+diff --git a/src/VrmlData/VrmlData_IndexedFaceSet.cxx b/src/VrmlData/VrmlData_IndexedFaceSet.cxx
+index 1b540ef..667206f 100644
+--- a/src/VrmlData/VrmlData_IndexedFaceSet.cxx
++++ b/src/VrmlData/VrmlData_IndexedFaceSet.cxx
+@@ -22,7 +22,6 @@
+ 
+ #ifdef _MSC_VER
+ #define _CRT_SECURE_NO_DEPRECATE
+-#pragma warning (disable:4996)
+ #endif
+ 
+ #include <stdio.h>
+diff --git a/src/VrmlData/VrmlData_IndexedLineSet.cxx b/src/VrmlData/VrmlData_IndexedLineSet.cxx
+index dd347eb..4b9a88c 100644
+--- a/src/VrmlData/VrmlData_IndexedLineSet.cxx
++++ b/src/VrmlData/VrmlData_IndexedLineSet.cxx
+@@ -17,7 +17,6 @@
+ 
+ #ifdef _MSC_VER
+ #define _CRT_SECURE_NO_DEPRECATE
+-#pragma warning (disable:4996)
+ #endif
+ 
+ IMPLEMENT_STANDARD_HANDLE  (VrmlData_IndexedLineSet, VrmlData_Geometry)
+diff --git a/src/VrmlData/VrmlData_Material.cxx b/src/VrmlData/VrmlData_Material.cxx
+index d5e5439..50c0774 100644
+--- a/src/VrmlData/VrmlData_Material.cxx
++++ b/src/VrmlData/VrmlData_Material.cxx
+@@ -11,7 +11,6 @@
+ 
+ #ifdef _MSC_VER
+ #define _CRT_SECURE_NO_DEPRECATE
+-#pragma warning (disable:4996)
+ #endif
+ 
+ #include <stdio.h>
+diff --git a/src/VrmlData/VrmlData_Node.cxx b/src/VrmlData/VrmlData_Node.cxx
+index 13a3316..9e4b369 100644
+--- a/src/VrmlData/VrmlData_Node.cxx
++++ b/src/VrmlData/VrmlData_Node.cxx
+@@ -16,7 +16,6 @@
+ 
+ #ifdef _MSC_VER
+ #define _CRT_SECURE_NO_DEPRECATE
+-#pragma warning (disable:4996)
+ #endif
+ 
+ IMPLEMENT_STANDARD_HANDLE  (VrmlData_Node, Standard_Transient)
+diff --git a/src/VrmlData/VrmlData_Scene.cxx b/src/VrmlData/VrmlData_Scene.cxx
+index e542fda..b8c187f 100644
+--- a/src/VrmlData/VrmlData_Scene.cxx
++++ b/src/VrmlData/VrmlData_Scene.cxx
+@@ -35,7 +35,6 @@
+ 
+ #ifdef _MSC_VER
+ #define _CRT_SECURE_NO_DEPRECATE
+-#pragma warning (disable:4996)
+ #endif
+ 
+ #include <stdio.h>
+diff --git a/src/VrmlData/VrmlData_WorldInfo.cxx b/src/VrmlData/VrmlData_WorldInfo.cxx
+index bc68291..c0652cb 100644
+--- a/src/VrmlData/VrmlData_WorldInfo.cxx
++++ b/src/VrmlData/VrmlData_WorldInfo.cxx
+@@ -10,7 +10,6 @@
+ 
+ #ifdef _MSC_VER
+ #define _CRT_SECURE_NO_DEPRECATE
+-#pragma warning (disable:4996)
+ #endif
+ 
+ #include <stdio.h>
+diff --git a/src/XCAFDrivers/XCAFDrivers.cxx b/src/XCAFDrivers/XCAFDrivers.cxx
+index c53ba83..1ccbd52 100644
+--- a/src/XCAFDrivers/XCAFDrivers.cxx
++++ b/src/XCAFDrivers/XCAFDrivers.cxx
+@@ -21,7 +21,7 @@
+ 
+ // avoid warnings on 'extern "C"' functions returning C++ classes
+ #ifdef _MSC_VER
+-#pragma warning(4:4190)
++#pragma warning(disable:4190)
+ #endif
+ 
+ static Standard_GUID XSStorageDriver  ("ed8793f8-3142-11d4-b9b5-0060b0ee281b");
+diff --git a/src/XmlDrivers/XmlDrivers.cxx b/src/XmlDrivers/XmlDrivers.cxx
+index 2603c67..cd638e7 100644
+--- a/src/XmlDrivers/XmlDrivers.cxx
++++ b/src/XmlDrivers/XmlDrivers.cxx
+@@ -25,7 +25,7 @@
+ 
+ // avoid warnings on 'extern "C"' functions returning C++ classes
+ #ifdef _MSC_VER
+-#pragma warning(4:4190)
++#pragma warning(disable:4190)
+ #endif
+ 
+ static Standard_GUID XmlStorageDriver  ("03a56820-8269-11d5-aab2-0050044b1af1");
+diff --git a/src/XmlLDrivers/XmlLDrivers.cxx b/src/XmlLDrivers/XmlLDrivers.cxx
+index 51600b4..5b325e3 100644
+--- a/src/XmlLDrivers/XmlLDrivers.cxx
++++ b/src/XmlLDrivers/XmlLDrivers.cxx
+@@ -20,7 +20,7 @@
+ 
+ // avoid warnings on 'extern "C"' functions returning C++ classes
+ #ifdef _MSC_VER
+-#pragma warning(4:4190)
++#pragma warning(disable:4190)
+ #endif
+ 
+ static Standard_GUID XmlLStorageDriver  ("13a56820-8269-11d5-aab2-0050044b1af1");
+diff --git a/src/XmlTObjDrivers/XmlTObjDrivers.cxx b/src/XmlTObjDrivers/XmlTObjDrivers.cxx
+index 7cb7855..3f2d7d5 100644
+--- a/src/XmlTObjDrivers/XmlTObjDrivers.cxx
++++ b/src/XmlTObjDrivers/XmlTObjDrivers.cxx
+@@ -19,7 +19,7 @@
+ 
+ // avoid warnings on 'extern "C"' functions returning C++ classes
+ #ifdef _MSC_VER
+-#pragma warning(4:4190)
++#pragma warning(disable:4190)
+ #endif
+ 
+ static Standard_GUID XmlStorageDriver  ("f78ff4a0-a779-11d5-aab4-0050044b1af1");
+diff --git a/src/XmlXCAFDrivers/XmlXCAFDrivers.cxx b/src/XmlXCAFDrivers/XmlXCAFDrivers.cxx
+index 4f99f46..a78dba0 100644
+--- a/src/XmlXCAFDrivers/XmlXCAFDrivers.cxx
++++ b/src/XmlXCAFDrivers/XmlXCAFDrivers.cxx
+@@ -15,7 +15,7 @@
+ 
+ // avoid warnings on 'extern "C"' functions returning C++ classes
+ #ifdef _MSC_VER
+-#pragma warning(4:4190)
++#pragma warning(disable:4190)
+ #endif
+ 
+ static Standard_GUID XSStorageDriver  ("f78ff496-a779-11d5-aab4-0050044b1af1");
+-- 
+1.7.5.4
+

@@ -84,6 +84,14 @@ ports/avoid-redefinition-warnings.patch
 ports/add-missing-Vfw32.lib.patch
 ports/workaround-clang-bug-remove-trampoline.patch
 
+warning/modify-MSVC-pragmas.patch
+warning/fix-Standard_IMPORT-usage.patch
+warning/add-placement-delete.patch
+warning/add-placement-delete-allocator.patch
+warning/add-equal-operator.patch
+warning/fix-unreachable-code-rewrite-loops.patch
+
+review/avoid-macro-redefinition.patch
 undef-Convex.patch
 remove-TopOpeBRep_tools.hxx.patch
 remove-ExprIntrp.tab.c.patch

@@ -79,6 +79,19 @@ Index: oce/inc/Extrema_GExtCC.gxx
        //algorithm uses inverse order of arguments
        anInd1 = 1;
        anInd2 = 0;
+Index: oce/src/AlienImage/AlienImage_SGIRGBAlienData.cxx
+===================================================================
+--- oce.orig/src/AlienImage/AlienImage_SGIRGBAlienData.cxx
++++ oce/src/AlienImage/AlienImage_SGIRGBAlienData.cxx
+@@ -693,7 +693,7 @@
+ #define doexpand				\
+ 	while(1) {				\
+ 	    pixel = *iptr++;			\
+-	    if ( !(bblcount = (pixel & 0x7f)) )	\
++	    if ( (bblcount = (pixel & 0x7f)) == 0)	\
+ 		return;				\
+ 	    if(pixel & 0x80) {			\
+ 	       while(bblcount--)		\
 Index: oce/src/BRepClass3d/BRepClass3d_Intersector3d.cxx
 ===================================================================
 --- oce.orig/src/BRepClass3d/BRepClass3d_Intersector3d.cxx

@@ -1,0 +1,27 @@
+From 40c70022609c4f0f3afedf351b27c1d9a52fca9a Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Sun, 24 Jul 2011 18:24:13 +0200
+Subject: [PATCH 11/11] [warning-fix] Preprocessor warning
+
+removed a "symbol alredy defined" warning
+---
+ .../TopOpeBRepBuild_ShapeListOfShape.cxx           |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+diff --git a/src/TopOpeBRepBuild/TopOpeBRepBuild_ShapeListOfShape.cxx b/src/TopOpeBRepBuild/TopOpeBRepBuild_ShapeListOfShape.cxx
+index 745daf0..995f484 100644
+--- a/src/TopOpeBRepBuild/TopOpeBRepBuild_ShapeListOfShape.cxx
++++ b/src/TopOpeBRepBuild/TopOpeBRepBuild_ShapeListOfShape.cxx
+@@ -30,7 +30,9 @@
+ #define Msr Standard_Real
+ #define Msi Standard_Integer
+ #define Msb Standard_Boolean
++#ifndef Mso
+ #define Mso Standard_Ostream
++#endif
+ #define Mtcas TCollection_AsciiString
+ 
+ #ifdef DEB
+-- 
+1.7.5.4
+

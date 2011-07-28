@@ -258,6 +258,20 @@ Note: this commit breaks ABI compatibility
  src/OSD/OSD_Real2String.cdl |    4 ++--
  2 files changed, 4 insertions(+), 4 deletions(-)
 
+From a173bf19d9f068f30b7c365c228cac4c8b0d7c69 Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Sun, 24 Jul 2011 18:19:40 +0200
+Subject: [PATCH 08/11] [warning-fix][implicit-conversion-from-wider-type]
+
+Changed some of the interface types (inc files) to correct some implicit casts.
+---
+ inc/InterfaceGraphic_Visual3d.hxx     |   10 +++++-----
+ inc/LDOM_OSStream.hxx                 |    2 +-
+ src/LDOM/LDOM_OSStream.cxx            |    5 ++---
+ src/OpenGl/OpenGl_GraphicDriver_9.cxx |    1 -
+ src/PlotMgt/PlotMgt_TextManager.cxx   |   20 ++++++++++----------
+ 5 files changed, 18 insertions(+), 20 deletions(-)
+
 Index: oce/inc/Graphic3d_ArrayOfPrimitives.lxx
 ===================================================================
 --- oce.orig/inc/Graphic3d_ArrayOfPrimitives.lxx
@@ -275,6 +289,50 @@ Index: oce/inc/Graphic3d_ArrayOfPrimitives.lxx
      unsigned char alpha = 0;
      Standard_Integer outColor ;
      outColor = red;
+Index: oce/inc/InterfaceGraphic_Visual3d.hxx
+===================================================================
+--- oce.orig/inc/InterfaceGraphic_Visual3d.hxx
++++ oce/inc/InterfaceGraphic_Visual3d.hxx
+@@ -263,13 +263,13 @@
+     /* Names of axes */
+     char *xname, *yname, *zname;
+     /* Draw names */
+-    unsigned char xdrawname, ydrawname, zdrawname;
++    Standard_Boolean xdrawname, ydrawname, zdrawname;
+     /* Draw values */
+-    unsigned char xdrawvalues, ydrawvalues, zdrawvalues;
++    Standard_Boolean xdrawvalues, ydrawvalues, zdrawvalues;
+     /* Draw grid */
+-    unsigned char drawgrid;
++    Standard_Boolean drawgrid;
+     /* Draw axes */
+-    unsigned char drawaxes;
++    Standard_Boolean drawaxes;
+     /* Number of splits along axes */
+     unsigned int nbx, nby, nbz;
+     /* Offset for drawing values */
+@@ -277,7 +277,7 @@
+     /* Offset for drawing names of axes */
+     int xaxisoffset, yaxisoffset, zaxisoffset;
+     /* Draw tickmarks */
+-    unsigned char xdrawtickmarks, ydrawtickmarks, zdrawtickmarks;
++    Standard_Boolean xdrawtickmarks, ydrawtickmarks, zdrawtickmarks;
+     /* Length of tickmarks */
+     unsigned int xtickmarklength, ytickmarklength, ztickmarklength;
+     /* Grid color */
+Index: oce/inc/LDOM_OSStream.hxx
+===================================================================
+--- oce.orig/inc/LDOM_OSStream.hxx
++++ oce/inc/LDOM_OSStream.hxx
+@@ -55,7 +55,7 @@
+ 
+     // Methods of streambuf
+ 
+-    Standard_EXPORT virtual int overflow(int c = EOF);
++    Standard_EXPORT virtual int overflow(signed char c = EOF);
+     Standard_EXPORT virtual int underflow();
+     //virtual int uflow();
+ 
 Index: oce/inc/OSD_Real2String.hxx
 ===================================================================
 --- oce.orig/inc/OSD_Real2String.hxx
@@ -1004,14 +1062,18 @@ Index: oce/src/LDOM/LDOM_OSStream.cxx
 ===================================================================
 --- oce.orig/src/LDOM/LDOM_OSStream.cxx
 +++ oce/src/LDOM/LDOM_OSStream.cxx
-@@ -90,6 +90,7 @@
+@@ -88,9 +88,9 @@
+ //function : overflow()
+ //purpose  : redefined virtual
  //=======================================================================
- int LDOM_SBuffer::overflow(int c)
+-int LDOM_SBuffer::overflow(int c)
++int LDOM_SBuffer::overflow(signed char c)
  {
-+  // @todo This buffer should not be "int"
-   char cc = c;
+-  char cc = c;
++  char cc = (char)c;
    return xsputn(&cc,1);
  }
+ 
 Index: oce/src/LDOM/LDOM_XmlReader.cxx
 ===================================================================
 --- oce.orig/src/LDOM/LDOM_XmlReader.cxx
@@ -1331,6 +1393,72 @@ Index: oce/src/OpenGl/OpenGl_view.cxx
         corner2 = dcorner1;
         corner4 = dcorner2;  
         break;
+Index: oce/src/PlotMgt/PlotMgt_TextManager.cxx
+===================================================================
+--- oce.orig/src/PlotMgt/PlotMgt_TextManager.cxx
++++ oce/src/PlotMgt/PlotMgt_TextManager.cxx
+@@ -73,7 +73,7 @@
+   if (theUnderlinePos > 0.) {
+     if (!theNchar)
+       theXmin = Standard_ShortReal (X1);
+-    theXmax = Sqrt(X2*X2 + Y2*Y2);
++    theXmax = (Standard_ShortReal) Sqrt(X2*X2 + Y2*Y2);
+   }
+   return Standard_True;
+ }
+@@ -106,7 +106,7 @@
+   // Force to OUTLINE if required
+   if (!thePaintType && (theTypeOfText == Aspect_TOT_OUTLINE))
+     thePaintType = 2;
+-  theX = X; theY = Y;
++  theX = (Standard_ShortReal) X; theY = (Standard_ShortReal) Y;
+   theXmin = theXmax = 0.;
+   theNchar = 0;
+   theSlant = aSlant;
+@@ -136,8 +136,8 @@
+   thePoint     = 0;
+   thePathCount = 0;
+   theCPath[0]  = 0;
+-  thePX        = X;
+-  thePY        = Y;
++  thePX        = (Standard_ShortReal)X;
++  thePY        = (Standard_ShortReal)Y;
+   return Standard_True;
+ }
+ 
+@@ -153,8 +153,8 @@
+   else if (theCPath[thePathCount] > 0)
+     --thePoint;
+   theCPath[thePathCount] = 1;
+-  thePX = X; thePY = Y;
+-  ADD_POINT (theX, theY, X, Y);
++  thePX = (Standard_ShortReal)X; thePY = (Standard_ShortReal)Y;
++  ADD_POINT (theX, theY, (Standard_ShortReal)X, (Standard_ShortReal)Y);
+   return Standard_True;
+ }
+ 
+@@ -166,7 +166,7 @@
+   cout << " PlotMgt_TextManager::Lineto(" << X << "," << Y << ")" << endl << flush;
+ #endif
+   theCPath[thePathCount]++;
+-  ADD_POINT (theX, theY, X, Y);
++  ADD_POINT (theX, theY, (Standard_ShortReal)X, (Standard_ShortReal)Y);
+   return Standard_True;
+ }
+ 
+@@ -189,9 +189,9 @@
+     if (theCPath[thePathCount] > 0)
+       thePathCount++;
+     theCPath[thePathCount] = -1;
+-    ADD_POINT (theX, theY, X2, Y2);
+-    ADD_POINT (theX, theY, X3, Y3);
+-    ADD_POINT (theX, theY, X4, Y4);
++    ADD_POINT (theX, theY, (Standard_ShortReal)X2, (Standard_ShortReal) Y2);
++    ADD_POINT (theX, theY, (Standard_ShortReal)X3, (Standard_ShortReal)Y3);
++    ADD_POINT (theX, theY, (Standard_ShortReal)X4, (Standard_ShortReal)Y4);
+     thePathCount++;
+     theCPath[thePathCount] = 0;
+     return Standard_True;
 Index: oce/src/Prs2d/Prs2d_Angle.cxx
 ===================================================================
 --- oce.orig/src/Prs2d/Prs2d_Angle.cxx

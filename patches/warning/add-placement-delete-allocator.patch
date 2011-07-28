@@ -1,0 +1,49 @@
+From d613a67b081df2b90fd4f16fe992a22f6947efe8 Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Sun, 24 Jul 2011 18:05:40 +0200
+Subject: [PATCH 04/11] [warning-fix][missing-operators]
+
+Added placement delete operators with allocators, when there is
+new() method.
+---
+ inc/Poly_CoherentTriPtr.hxx |    6 ++++++
+ inc/TDF_LabelNode.hxx       |    6 ++++++
+ 2 files changed, 12 insertions(+), 0 deletions(-)
+
+diff --git a/inc/Poly_CoherentTriPtr.hxx b/inc/Poly_CoherentTriPtr.hxx
+index 69706ff..2d02e99 100644
+--- a/inc/Poly_CoherentTriPtr.hxx
++++ b/inc/Poly_CoherentTriPtr.hxx
+@@ -84,6 +84,12 @@ class Poly_CoherentTriPtr
+     return theAllocator->Allocate(theSize);
+   }
+ 
++  /** Matching Operator for deletion. Does nothing. The operator does nothing and is called in case of "new" throwing. */
++  void operator delete (void * aBuffer, const Handle(NCollection_BaseAllocator)& theAllocator) 
++  {
++	  theAllocator->Free(aBuffer);
++  };
++
+   /**
+    * Query the stored pointer to Triangle.
+    */
+diff --git a/inc/TDF_LabelNode.hxx b/inc/TDF_LabelNode.hxx
+index 5293a8a..d0ed714 100644
+--- a/inc/TDF_LabelNode.hxx
++++ b/inc/TDF_LabelNode.hxx
+@@ -109,6 +109,12 @@ class TDF_LabelNode {
+   void * operator new (size_t aSize,
+                        const Handle(NCollection_IncAllocator)& anAlloc)
+         { return anAlloc -> Allocate (aSize); }
++  
++  void operator delete ( void * aBuffer , const Handle(NCollection_IncAllocator)& anAlloc )
++  {
++	  anAlloc->Free(aBuffer);
++  }
++
+   void  operator delete(void *) { }
+         // nothing to do in operator delete since IncAllocator does not need it
+   // Public Friends
+-- 
+1.7.5.4
+

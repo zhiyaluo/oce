@@ -1,0 +1,227 @@
+From 6b44b34fa9873ada8b90cebcf9c6120f3ece3130 Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Sun, 24 Jul 2011 18:13:19 +0200
+Subject: [PATCH 06/11] [warning-fix][unreachable-code] Fixes unreachable code
+ warnings
+
+---
+ src/BOP/BOP_WireEdgeClassifier.cxx       |    2 +-
+ src/BRepAlgo/BRepAlgo_FaceRestrictor.cxx |    5 ++---
+ src/BRepCheck/BRepCheck_Face.cxx         |    5 ++---
+ src/ExprIntrp/ExprIntrp.cxx              |   11 +++++++++--
+ src/FWOSDriver/FWOSDriver_Driver.cxx     |    2 +-
+ src/Graphic2d/Graphic2d_Buffer.cxx       |    6 ++----
+ src/MeshVS/MeshVS_MeshOwner.cxx          |   15 +++++++--------
+ src/TNaming/TNaming_Localizer.cxx        |    3 +--
+ src/TNaming/TNaming_Name.cxx             |    3 +--
+ src/TNaming/TNaming_Naming.cxx           |    3 +--
+ 10 files changed, 27 insertions(+), 28 deletions(-)
+
+Index: oce/src/BOP/BOP_WireEdgeClassifier.cxx
+===================================================================
+--- oce.orig/src/BOP/BOP_WireEdgeClassifier.cxx
++++ oce/src/BOP/BOP_WireEdgeClassifier.cxx
+@@ -256,7 +256,7 @@
+   IntTools_Tools::MakeFaceFromWireAndFace (aW2, theFace, aFN2);  
+   
+   anExp1.Init (aFN1, TopAbs_EDGE);
+-  for (; anExp1.More(); anExp1.Next()){
++  if(anExp1.More()){
+     const TopoDS_Edge& aE1=TopoDS::Edge(anExp1.Current());
+     //
+     // The block that choises step in 2D taking into account
+Index: oce/src/BRepAlgo/BRepAlgo_FaceRestrictor.cxx
+===================================================================
+--- oce.orig/src/BRepAlgo/BRepAlgo_FaceRestrictor.cxx
++++ oce/src/BRepAlgo/BRepAlgo_FaceRestrictor.cxx
+@@ -246,9 +246,8 @@
+ 
+ //Standard_Real U,V;
+   TopExp_Explorer exp;
+-  for (exp.Init(wir,TopAbs_EDGE);
+-       exp.More();
+-       exp.Next()) {
++  exp.Init(wir,TopAbs_EDGE);
++  if(exp.More()) {
+     const TopoDS_Edge& edg = TopoDS::Edge(exp.Current());
+     Standard_Real f,l;
+     Handle(Geom2d_Curve) C2d = BRep_Tool::CurveOnSurface(edg,F,f,l);
+Index: oce/src/BRepCheck/BRepCheck_Face.cxx
+===================================================================
+--- oce.orig/src/BRepCheck/BRepCheck_Face.cxx
++++ oce/src/BRepCheck/BRepCheck_Face.cxx
+@@ -644,9 +644,8 @@
+ {
+   // Standard_Real U,V;
+   TopExp_Explorer exp;
+-  for (exp.Init(wir,TopAbs_EDGE);
+-       exp.More();
+-       exp.Next()) {
++  exp.Init(wir,TopAbs_EDGE);
++  if(exp.More()) {
+ 
+     const TopoDS_Edge& edg = TopoDS::Edge(exp.Current());
+     Standard_Real f,l;
+Index: oce/src/ExprIntrp/ExprIntrp.cxx
+===================================================================
+--- oce.orig/src/ExprIntrp/ExprIntrp.cxx
++++ oce/src/ExprIntrp/ExprIntrp.cxx
+@@ -33,9 +33,16 @@
+       return Standard_True;
+     }
+     catch (Standard_Failure) {
+-      return Standard_False;
+-    }
++
++#if defined(NO_CXX_EXCEPTION) || defined(OCC_CONVERT_SIGNALS)
++		return Standard_False;
++#endif
++
++	}
+   }
++
++#if defined(NO_CXX_EXCEPTION) || defined(OCC_CONVERT_SIGNALS)
+   return Standard_False;
++#endif
+ }
+ 
+Index: oce/src/FWOSDriver/FWOSDriver_Driver.cxx
+===================================================================
+--- oce.orig/src/FWOSDriver/FWOSDriver_Driver.cxx
++++ oce/src/FWOSDriver/FWOSDriver_Driver.cxx
+@@ -56,7 +56,7 @@
+     case OSD_RWXD:
+       return Standard_True;
+     default:
+-      return Standard_False;
++		break;
+     }
+   return Standard_False;
+ }
+Index: oce/src/Graphic2d/Graphic2d_Buffer.cxx
+===================================================================
+--- oce.orig/src/Graphic2d/Graphic2d_Buffer.cxx
++++ oce/src/Graphic2d/Graphic2d_Buffer.cxx
+@@ -344,11 +344,9 @@
+ 
+ 	    // The color of the 1st primitive from the buffer is required
+ 	    if( theColorIndex < 0) {
+-	        Standard_Integer i;
+-                for (i=1; i<=myPrimitives.Length(); i++) {
++	        Standard_Integer i=1;
++                if(i<=myPrimitives.Length()) {
+ 		  theColorIndex = myPrimitives.Value (i)->ColorIndex ();
+-		    break;
+- 
+ 		}
+ 		if( theColorIndex < 0 ) theColorIndex = 0;
+ 	    }
+Index: oce/src/MeshVS/MeshVS_MeshOwner.cxx
+===================================================================
+--- oce.orig/src/MeshVS/MeshVS_MeshOwner.cxx
++++ oce/src/MeshVS/MeshVS_MeshOwner.cxx
+@@ -136,21 +136,21 @@
+     if( !aNodes.IsNull() && aNodes->Map().Extent() == 1 )
+     {
+       TColStd_MapIteratorOfPackedMapOfInteger anIt( aNodes->Map() );
+-      for( ; anIt.More(); anIt.Next() )
++      if(anIt.More())
+       {
+ 	if( myLastID != anIt.Key() )
+ 	  myLastID = anIt.Key();
+-	break;
++	
+       }
+     }  
+     else if( !aElems.IsNull() && aElems->Map().Extent() == 1 )
+     {
+       TColStd_MapIteratorOfPackedMapOfInteger anIt( aElems->Map() );
+-      for( ; anIt.More(); anIt.Next() )
++      if(anIt.More())
+       {
+ 	if( myLastID != anIt.Key() )
+ 	  myLastID = anIt.Key();
+-	break;
++
+       }
+     }
+ 
+@@ -186,24 +186,23 @@
+     if( !aNodes.IsNull() && aNodes->Map().Extent() == 1 )
+     {
+       TColStd_MapIteratorOfPackedMapOfInteger anIt( aNodes->Map() );
+-      for( ; anIt.More(); anIt.Next() )
++      if(anIt.More())
+       {
+ 	aKey = anIt.Key();
+ 	if( myLastID == aKey )
+ 	  aHilight = Standard_False;
+-	break;
++
+       }
+     }  
+     Handle(TColStd_HPackedMapOfInteger) aElems = GetDetectedElements();
+     if( !aElems.IsNull() && aElems->Map().Extent() == 1 )
+     {
+       TColStd_MapIteratorOfPackedMapOfInteger anIt( aElems->Map() );
+-      for( ; anIt.More(); anIt.Next() )
++      if(anIt.More())
+       {
+ 	aKey = anIt.Key();
+ 	if( myLastID == aKey )
+ 	  aHilight = Standard_False;
+-	break;
+       }
+     }
+   } 
+Index: oce/src/TNaming/TNaming_Localizer.cxx
+===================================================================
+--- oce.orig/src/TNaming/TNaming_Localizer.cxx
++++ oce/src/TNaming/TNaming_Localizer.cxx
+@@ -302,9 +302,8 @@
+     //----------------------------------------------------------
+     TDF_Label        Father  = Lab.Father();
+     TNaming_Iterator itLab(Father);
+-    for (; itLab.More(); itLab.Next()) {
++    if(itLab.More()) {
+       Sol = itLab.OldShape();
+-      break;
+     }
+     //-------------------------------------------
+     // Recherche des ancetres dans des features.
+Index: oce/src/TNaming/TNaming_Name.cxx
+===================================================================
+--- oce.orig/src/TNaming/TNaming_Name.cxx
++++ oce/src/TNaming/TNaming_Name.cxx
+@@ -1060,7 +1060,7 @@
+   if(aNum < 1) return aResult;  
+   TopTools_ListOfShape List;
+   TNaming_DataMapIteratorOfDataMapOfShapeMapOfShape it(DM);
+-  for (;it.More();it.Next()) {
++  if(it.More()) {
+     const TopoDS_Shape& aKey1 = it.Key();
+     const TNaming_MapOfShape& aMap = it.Value();
+ 
+@@ -1078,7 +1078,6 @@
+       if(isCand)
+ 	List.Append(aS);
+     }
+-    break; 
+   }
+   if(List.IsEmpty()) return aResult;
+   if(List.Extent() == 1) return List.First();
+Index: oce/src/TNaming/TNaming_Naming.cxx
+===================================================================
+--- oce.orig/src/TNaming/TNaming_Naming.cxx
++++ oce/src/TNaming/TNaming_Naming.cxx
+@@ -549,9 +549,8 @@
+ {  
+   TDF_Label         Father  = NS->Label().Father(); 
+   TNaming_Iterator  itLab(Father);
+-  for (; itLab.More(); itLab.Next()) {
++  if(itLab.More()) {
+     SC= itLab.NewShape();
+-    break;
+   }
+ }
+ 

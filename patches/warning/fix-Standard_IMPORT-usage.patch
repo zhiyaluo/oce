@@ -1,0 +1,209 @@
+From e9ce51f1a0dd1e3ff67addc87a7469f49ca264f2 Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Sun, 24 Jul 2011 17:59:56 +0200
+Subject: [PATCH 02/11] [warning-fix][linker-warnings]
+
+Fixed many linker warnings due to wrong Standard_IMPORT usage
+---
+ src/BRepAlgo/BRepAlgo_BooleanOperation.cxx         |    6 +++---
+ src/Draw/Draw_Window.cxx                           |    2 +-
+ src/TestTopOpe/TestTopOpe.cxx                      |    4 ++--
+ src/TestTopOpe/TestTopOpe_BOOP.cxx                 |    2 +-
+ src/TestTopOpe/TestTopOpe_BOOPCommands.cxx         |    2 +-
+ src/TestTopOpe/TestTopOpe_HDSCommands.cxx          |    2 +-
+ src/TopOpeBRep/TopOpeBRep_DSFiller.cxx             |    8 ++++----
+ src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx   |    2 +-
+ src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1_1.cxx |    2 +-
+ src/TopOpeBRepBuild/TopOpeBRepBuild_GridEE.cxx     |    4 ++--
+ src/Viewer2dTest/Viewer2dTest_ObjectCommands.cxx   |    2 +-
+ src/ViewerTest/ViewerTest_ObjectCommands.cxx       |    2 +-
+ 12 files changed, 19 insertions(+), 19 deletions(-)
+
+diff --git a/src/BRepAlgo/BRepAlgo_BooleanOperation.cxx b/src/BRepAlgo/BRepAlgo_BooleanOperation.cxx
+index a254686..9c8a7e3 100644
+--- a/src/BRepAlgo/BRepAlgo_BooleanOperation.cxx
++++ b/src/BRepAlgo/BRepAlgo_BooleanOperation.cxx
+@@ -60,11 +60,11 @@ Standard_IMPORT Standard_Integer TopOpeBRepTool_BOOOPE_CHECK_DEB;
+ //modified by NIZHNY-MZV  Wed Apr 19 17:19:11 2000
+ //see comments at the top of file TopOpeBRepBuild_Builder1.cxx
+ //about using of this global variable
+-Standard_IMPORT Standard_Boolean GLOBAL_USE_NEW_BUILDER;
++extern Standard_Boolean GLOBAL_USE_NEW_BUILDER;
+ //
+ //modified by NIZNHY-PKV Sun Dec 15 17:17:56 2002 f
+-Standard_IMPORT void FDSCNX_Close();// see TopOpeBRepDS_connex.cxx
+-Standard_IMPORT void FDSSDM_Close();// see TopOpeBRepDS_samdom.cxx
++extern void FDSCNX_Close();// see TopOpeBRepDS_connex.cxx
++extern void FDSSDM_Close();// see TopOpeBRepDS_samdom.cxx
+ 
+ //=======================================================================
+ //function : Delete 
+diff --git a/src/Draw/Draw_Window.cxx b/src/Draw/Draw_Window.cxx
+index 86d861b..996bc06 100644
+--- a/src/Draw/Draw_Window.cxx
++++ b/src/Draw/Draw_Window.cxx
+@@ -23,7 +23,7 @@
+ #include <Image_PixMap.hxx>
+ 
+ extern Draw_Interpretor theCommands;
+-Standard_IMPORT Standard_Boolean Draw_VirtualWindows;
++extern Standard_Boolean Draw_VirtualWindows;
+ static Tcl_Interp *interp;        /* Interpreter for this application. */
+ 
+ /*
+diff --git a/src/TestTopOpe/TestTopOpe.cxx b/src/TestTopOpe/TestTopOpe.cxx
+index 797cbd3..2ef5b11 100644
+--- a/src/TestTopOpe/TestTopOpe.cxx
++++ b/src/TestTopOpe/TestTopOpe.cxx
+@@ -40,9 +40,9 @@ void  TestTopOpe::AllCommands(Draw_Interpretor& theCommands)
+ }
+ 
+ //Standard_IMPORT extern TestTopOpe_HDSDisplayer* PHDSD;
+-Standard_IMPORT TestTopOpe_HDSDisplayer* PHDSD;
++extern TestTopOpe_HDSDisplayer* PHDSD;
+ //Standard_IMPORT extern TestTopOpe_BOOP* PBOOP;
+-Standard_IMPORT TestTopOpe_BOOP* PBOOP;
++extern TestTopOpe_BOOP* PBOOP;
+ 
+ //=======================================================================
+ //function : Shapes
+diff --git a/src/TestTopOpe/TestTopOpe_BOOP.cxx b/src/TestTopOpe/TestTopOpe_BOOP.cxx
+index ca8873e..3c29668 100644
+--- a/src/TestTopOpe/TestTopOpe_BOOP.cxx
++++ b/src/TestTopOpe/TestTopOpe_BOOP.cxx
+@@ -37,7 +37,7 @@
+ Standard_IMPORT Draw_Viewer dout;
+ #endif
+ 
+-Standard_IMPORT Standard_Integer TOPOPE_SeeShape(char *name);
++extern Standard_Integer TOPOPE_SeeShape(char *name);
+ 
+ #ifdef DEB
+ #include <TopOpeBRepTool_KRO.hxx>
+diff --git a/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx b/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
+index 49a975b..245de63 100644
+--- a/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
++++ b/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
+@@ -18,7 +18,7 @@
+ # include <strings.h>
+ #endif
+ 
+-Standard_IMPORT void suppressarg(Standard_Integer& na,const char** a,const Standard_Integer d);
++extern void suppressarg(Standard_Integer& na,const char** a,const Standard_Integer d);
+ #ifdef DEB
+ Standard_IMPORT void TopOpeBRepTool_SettraceEND(const Standard_Boolean);
+ Standard_IMPORT Standard_Boolean TopOpeBRepTool_GettraceEND();
+diff --git a/src/TestTopOpe/TestTopOpe_HDSCommands.cxx b/src/TestTopOpe/TestTopOpe_HDSCommands.cxx
+index 64f1b61..3f7ae9e 100644
+--- a/src/TestTopOpe/TestTopOpe_HDSCommands.cxx
++++ b/src/TestTopOpe/TestTopOpe_HDSCommands.cxx
+@@ -729,7 +729,7 @@ static void tds_help(Draw_Interpretor& di)
+ }
+ 
+ typedef Standard_Integer (*tf_SeeShape)(const Standard_Integer I,const TopoDS_Shape& S);
+-Standard_IMPORT void OthersCommands_flags(Standard_Integer& na,const char** a,TestTopOpeDraw_Displayer& TD);
++extern void OthersCommands_flags(Standard_Integer& na,const char** a,TestTopOpeDraw_Displayer& TD);
+ void COUTNOHDS(Draw_Interpretor& di) {di<<"no current HDS"<<"\n";}
+ Standard_Integer tsee_SeeShapefunc(Draw_Interpretor& di,Standard_Integer na_in,const char** a,tf_SeeShape SeeShapefunc)
+ {
+diff --git a/src/TopOpeBRep/TopOpeBRep_DSFiller.cxx b/src/TopOpeBRep/TopOpeBRep_DSFiller.cxx
+index 225e88a..65a2d8e 100644
+--- a/src/TopOpeBRep/TopOpeBRep_DSFiller.cxx
++++ b/src/TopOpeBRep/TopOpeBRep_DSFiller.cxx
+@@ -27,8 +27,8 @@
+ #include <TopOpeBRepDS_ShapeWithState.hxx>
+ #include <TopTools_IndexedMapOfShape.hxx>
+ 
+-Standard_IMPORT void BREP_sortonparameter(const Handle(TopOpeBRepDS_HDataStructure)& HDS);
+-Standard_IMPORT void BREP_mergePDS(const Handle(TopOpeBRepDS_HDataStructure)& HDS);
++void BREP_sortonparameter(const Handle(TopOpeBRepDS_HDataStructure)& HDS);
++void BREP_mergePDS(const Handle(TopOpeBRepDS_HDataStructure)& HDS);
+ 
+ 
+ #ifdef DEB
+@@ -305,8 +305,8 @@ static
+ 
+ } // FUN_shareNOG
+ 
+-Standard_IMPORT  TopoDS_Shape GLOBALDS_shape1;
+-Standard_IMPORT  TopoDS_Shape GLOBALDS_shape2;
++extern TopoDS_Shape GLOBALDS_shape1;
++extern TopoDS_Shape GLOBALDS_shape2;
+ 
+ //=======================================================================
+ //function : Insert
+diff --git a/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx b/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
+index d832db0..b1f0dea 100644
+--- a/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
++++ b/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
+@@ -997,7 +997,7 @@ void TopOpeBRepBuild_Builder1::GFillEdgeSameDomWES(const TopoDS_Shape& EOR,
+   }
+ } // GFillEdgeWES
+ 
+-Standard_IMPORT Standard_Boolean TopOpeBRepBuild_FUN_aresamegeom(const TopoDS_Shape& S1,const TopoDS_Shape& S2);
++Standard_Boolean TopOpeBRepBuild_FUN_aresamegeom(const TopoDS_Shape& S1,const TopoDS_Shape& S2);
+ 
+ //=======================================================================
+ //function : PerformONParts
+diff --git a/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1_1.cxx b/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1_1.cxx
+index 9405a31..4687202 100644
+--- a/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1_1.cxx
++++ b/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1_1.cxx
+@@ -59,7 +59,7 @@ static TopTools_IndexedMapOfShape processedEdges;
+ static TopTools_IndexedMapOfShape theUsedVertexMap;
+ static TopTools_MapOfShape theUnkStateVer;
+ 
+-Standard_IMPORT Standard_Boolean GLOBAL_faces2d;
++extern Standard_Boolean GLOBAL_faces2d;
+ 
+ //modified by NIZNHY-PKV Mon Dec 16 11:38:55 2002 f
+ //=======================================================================
+diff --git a/src/TopOpeBRepBuild/TopOpeBRepBuild_GridEE.cxx b/src/TopOpeBRepBuild/TopOpeBRepBuild_GridEE.cxx
+index ab0d98e..a58a277 100644
+--- a/src/TopOpeBRepBuild/TopOpeBRepBuild_GridEE.cxx
++++ b/src/TopOpeBRepBuild/TopOpeBRepBuild_GridEE.cxx
+@@ -221,13 +221,13 @@ void debfillp2(const Standard_Integer i) {cout <<"+ + debfillp2 "<<i<<endl;}
+ #endif
+ 
+ //Standard_IMPORT extern Standard_Boolean GLOBAL_faces2d;
+-Standard_IMPORT Standard_Boolean GLOBAL_faces2d;
++extern Standard_Boolean GLOBAL_faces2d;
+ 
+ Standard_EXPORT Standard_Boolean FDS_SIisGIofIofSBAofTofI(const TopOpeBRepDS_DataStructure& BDS,const Standard_Integer SI,const Handle(TopOpeBRepDS_Interference)& I);
+ //Standard_IMPORT extern Standard_Boolean GLOBAL_IEtoMERGE; // xpu240498
+ Standard_IMPORT Standard_Boolean GLOBAL_IEtoMERGE; // xpu240498
+ //Standard_IMPORT extern Standard_Integer GLOBAL_issp;
+-Standard_IMPORT Standard_Integer GLOBAL_issp;
++extern Standard_Integer GLOBAL_issp;
+ //Standard_IMPORT extern Standard_Integer GLOBAL_hassd;
+ Standard_IMPORT Standard_Integer GLOBAL_hassd;
+ 
+diff --git a/src/Viewer2dTest/Viewer2dTest_ObjectCommands.cxx b/src/Viewer2dTest/Viewer2dTest_ObjectCommands.cxx
+index d381f07..14f86b9 100644
+--- a/src/Viewer2dTest/Viewer2dTest_ObjectCommands.cxx
++++ b/src/Viewer2dTest/Viewer2dTest_ObjectCommands.cxx
+@@ -74,7 +74,7 @@
+ #include <GC_MakePlane.hxx>
+ 
+ extern Viewer2dTest_DoubleMapOfInteractiveAndName& GetMapOfAIS2D();
+-Standard_IMPORT int ViewerMainLoop2d (Standard_Integer argc, const char** argv);
++extern int ViewerMainLoop2d (Standard_Integer argc, const char** argv);
+ extern Handle(AIS2D_InteractiveContext)& TheAIS2DContext();
+ 
+ //==============================================================================
+diff --git a/src/ViewerTest/ViewerTest_ObjectCommands.cxx b/src/ViewerTest/ViewerTest_ObjectCommands.cxx
+index af79e63..945625d 100644
+--- a/src/ViewerTest/ViewerTest_ObjectCommands.cxx
++++ b/src/ViewerTest/ViewerTest_ObjectCommands.cxx
+@@ -85,7 +85,7 @@
+ #endif
+ 
+ extern ViewerTest_DoubleMapOfInteractiveAndName& GetMapOfAIS();
+-Standard_IMPORT int ViewerMainLoop(Standard_Integer argc, const char** argv);
++extern int ViewerMainLoop(Standard_Integer argc, const char** argv);
+ extern Handle(AIS_InteractiveContext)& TheAISContext();
+ 
+ 
+-- 
+1.7.5.4
+

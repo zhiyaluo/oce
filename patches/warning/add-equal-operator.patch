@@ -1,0 +1,114 @@
+From 6b8fcda167453de1f9109d01734f5c22b7a46667 Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Sun, 24 Jul 2011 18:05:40 +0200
+Subject: [PATCH 05/11] [warning-fix][missing-operators]
+
+Added some private assignment operators to stop compiler complaning.
+The operators are empty, if someone will ever want to use them, an implementation
+is required.
+---
+ inc/LDOM_MemManager.hxx          |    5 +++++
+ inc/SelectMgr_CompareResults.hxx |    2 ++
+ inc/VrmlData_InBuffer.hxx        |    4 ++++
+ inc/VrmlData_ShapeConvert.hxx    |    5 ++++-
+ src/Extrema/Extrema_GenExtPS.cxx |    2 ++
+ src/LDOM/LDOM_CharReference.cxx  |    3 +++
+ 6 files changed, 20 insertions(+), 1 deletions(-)
+
+diff --git a/inc/LDOM_MemManager.hxx b/inc/LDOM_MemManager.hxx
+index 28818c7..6267f7c 100644
+--- a/inc/LDOM_MemManager.hxx
++++ b/inc/LDOM_MemManager.hxx
+@@ -81,6 +81,7 @@ class LDOM_MemManager : public MMgt_TShared
+ 
+   // ---- CLASS HashTable ----
+   class HashTable {
++
+     friend class LDOM_MemManager;
+     HashTable                   (/* const Standard_Integer theMask, */
+                                  LDOM_MemManager&       theMemManager);
+@@ -89,6 +90,10 @@ class LDOM_MemManager : public MMgt_TShared
+                                  Standard_Integer&      theHashIndex);
+     static Standard_Integer Hash(const char             * theString,
+                                  const Standard_Integer theLen);
++
++	// Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
++	HashTable & operator = (const HashTable &) { return *this; }
++	
+     struct TableItem {
+       char             * str;
+       struct TableItem * next;
+diff --git a/inc/SelectMgr_CompareResults.hxx b/inc/SelectMgr_CompareResults.hxx
+index 5464bd1..5d511fd 100644
+--- a/inc/SelectMgr_CompareResults.hxx
++++ b/inc/SelectMgr_CompareResults.hxx
+@@ -9,6 +9,8 @@
+ 
+ class SelectMgr_CompareResults: public TCollection_CompareOfInteger
+ {
++	// Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
++	SelectMgr_CompareResults & operator = ( const SelectMgr_CompareResults & ) { return *this; } ;
+  public:
+   SelectMgr_CompareResults
+         (const SelectMgr_IndexedDataMapOfOwnerCriterion& aMapOfCriterion)
+diff --git a/inc/VrmlData_InBuffer.hxx b/inc/VrmlData_InBuffer.hxx
+index 6455a39..196c6cf 100644
+--- a/inc/VrmlData_InBuffer.hxx
++++ b/inc/VrmlData_InBuffer.hxx
+@@ -14,6 +14,10 @@
+  * Structure passed to the methods dealing with input stream.
+  */
+ struct VrmlData_InBuffer {
++private:
++	// Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
++	VrmlData_InBuffer & operator = (const VrmlData_InBuffer &) { return *this; }
++public:
+   Standard_IStream& Input;
+   char              Line[8096];
+   char *            LinePtr;
+diff --git a/inc/VrmlData_ShapeConvert.hxx b/inc/VrmlData_ShapeConvert.hxx
+index 442eb0b..4fadb0b 100644
+--- a/inc/VrmlData_ShapeConvert.hxx
++++ b/inc/VrmlData_ShapeConvert.hxx
+@@ -23,7 +23,10 @@ class Handle_VrmlData_Coordinate;
+ 
+ class VrmlData_ShapeConvert 
+ {
+- public:
++	// Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
++	VrmlData_ShapeConvert & operator = (const VrmlData_ShapeConvert &) { return *this; }
++
++public:
+ 
+   typedef struct {
+     TCollection_AsciiString Name;
+diff --git a/src/Extrema/Extrema_GenExtPS.cxx b/src/Extrema/Extrema_GenExtPS.cxx
+index e19a2fe..62ab01c 100644
+--- a/src/Extrema/Extrema_GenExtPS.cxx
++++ b/src/Extrema/Extrema_GenExtPS.cxx
+@@ -27,6 +27,8 @@
+ 
+ class Bnd_SphereUBTreeSelector : public Extrema_UBTreeOfSphere::Selector
+ {
++	// Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
++	Bnd_SphereUBTreeSelector & operator=( const Bnd_SphereUBTreeSelector & ) { return *this; }
+  public:
+ 
+   Bnd_SphereUBTreeSelector (const Handle(Bnd_HArray1OfSphere)& theSphereArray,
+diff --git a/src/LDOM/LDOM_CharReference.cxx b/src/LDOM/LDOM_CharReference.cxx
+index 005e831..806fb4d 100644
+--- a/src/LDOM/LDOM_CharReference.cxx
++++ b/src/LDOM/LDOM_CharReference.cxx
+@@ -25,6 +25,9 @@ struct entityRef {
+   const char * name;
+   const int    length;
+   entityRef (const char * aName, const int aLen) : name(aName), length(aLen) {}
++private:
++	// Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
++	entityRef & operator = (const entityRef & ) { return *this; }
+ };
+ 
+ //=======================================================================
+-- 
+1.7.5.4
+
