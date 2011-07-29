@@ -2337,7 +2337,50 @@ Index: oce/src/OSD/OSD_File.cxx
  
   TEST_RAISE(  TEXT( "Seek" )  );
  
-@@ -1922,7 +1922,7 @@
+@@ -1750,7 +1750,7 @@
+ 
+ void OSD_File :: SetLock ( const OSD_LockType Lock ) {
+ 
+- DWORD      dwFlags;
++ DWORD      dwFlags = 0;
+  OVERLAPPED ovlp;
+ 
+  TEST_RAISE(  TEXT( "SetLock" )  );
+@@ -1886,28 +1886,28 @@
+                                  const OSD_Protection& prot, BOOL fDir, char* fName
+                                 ) {
+ 
+- int                  i, j;
++ int                  i, j = 0;
+  BOOL                 fOK      = FALSE;
+  PACL                 pACL     = NULL;
+  HANDLE               hProcess = NULL;
+- PSID                 pSIDowner;
+- PSID                 pSIDadmin;
+- PSID                 pSIDworld;
+- PSID                 pSIDtemp;
+- DWORD                dwAccessAdmin;
+- DWORD                dwAccessGroup;
+- DWORD                dwAccessOwner;
+- DWORD                dwAccessWorld;
+- DWORD                dwAccessAdminDir;
+- DWORD                dwAccessGroupDir;
+- DWORD                dwAccessOwnerDir;
+- DWORD                dwAccessWorldDir;
++ PSID                 pSIDowner = NULL;
++ PSID                 pSIDadmin = NULL;
++ PSID                 pSIDworld = NULL;
++ PSID                 pSIDtemp = NULL;
++ DWORD                dwAccessAdmin = 0;
++ DWORD                dwAccessGroup = 0;
++ DWORD                dwAccessOwner = 0;
++ DWORD                dwAccessWorld = 0;
++ DWORD                dwAccessAdminDir = 0;
++ DWORD                dwAccessGroupDir = 0;
++ DWORD                dwAccessOwnerDir = 0;
++ DWORD                dwAccessWorldDir = 0;
+  DWORD                dwACLsize       = sizeof ( ACL );
+  DWORD                dwIndex         = 0;
   PTOKEN_OWNER         pTkOwner        = NULL;
   PTOKEN_GROUPS        pTkGroups       = NULL;
   PTOKEN_PRIMARY_GROUP pTkPrimaryGroup = NULL;
@@ -2346,7 +2389,7 @@ Index: oce/src/OSD/OSD_File.cxx
   PSECURITY_DESCRIPTOR pfSD = NULL;
   BOOL                 fDummy;
   PFILE_ACE            pFileACE;
-@@ -2370,7 +2370,7 @@
+@@ -2367,7 +2367,7 @@
  
  static DWORD __fastcall _get_access_mask ( OSD_SingleProtection prt ) {
  
@@ -2355,7 +2398,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
   switch ( prt ) {
   
-@@ -2482,7 +2482,7 @@
+@@ -2479,7 +2479,7 @@
  
  static DWORD __fastcall _get_dir_access_mask ( OSD_SingleProtection prt ) {
  
@@ -2364,7 +2407,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
   switch ( prt ) {
   
-@@ -2599,7 +2599,7 @@
+@@ -2596,7 +2596,7 @@
                           ) {
  
   HANDLE retVal = INVALID_HANDLE_VALUE;
@@ -2373,7 +2416,7 @@ Index: oce/src/OSD/OSD_File.cxx
   DWORD  dwCreationDistribution;
  
   switch ( oMode ) {
-@@ -2662,7 +2662,7 @@
+@@ -2659,7 +2659,7 @@
                               Standard_CString fName, Standard_Integer fileHandle
                              ) {
  
@@ -2382,7 +2425,24 @@ Index: oce/src/OSD/OSD_File.cxx
   DWORD            dwType;
   int              fileType;
  
-@@ -3031,9 +3031,9 @@
+@@ -2718,11 +2718,11 @@
+  int           i;
+  BOOL          fPresent;
+  BOOL          fDefaulted;
+- PACL          pACL;
+- PSID          pSIDowner;
+- PSID          pSIDadmin;
+- PSID          pSIDworld;
+- LPVOID        pACE;
++ PACL          pACL = NULL;
++ PSID          pSIDowner = NULL;
++ PSID          pSIDadmin = NULL;
++ PSID          pSIDworld = NULL;
++ LPVOID        pACE = NULL;
+  DWORD         dwAccessOwner = 0;
+  DWORD         dwAccessGroup = 0;
+  DWORD         dwAccessAdmin = 0;
+@@ -3028,9 +3028,9 @@
  BOOL __fastcall _osd_print (const Standard_PCharacter pName, Standard_CString fName ) {
  
   BOOL   fOK, fJob;                
@@ -2391,9 +2451,9 @@ Index: oce/src/OSD/OSD_File.cxx
   BYTE   jobInfo[ MAX_PATH + sizeof ( DWORD ) ];
 - DWORD  dwNeeded, dwCode;
 + DWORD  dwNeeded, dwCode = 0;
+  bool Ret = true;
  
   fOK = fJob = FALSE;
- 
 Index: oce/src/OSD/OSD_FileNode.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_FileNode.cxx
@@ -2407,15 +2467,15 @@ Index: oce/src/OSD/OSD_FileNode.cxx
   BOOL                    fDefaulted;
   TCollection_AsciiString fName;
   PSECURITY_DESCRIPTOR    pSD;
-@@ -984,7 +984,7 @@
+@@ -979,7 +979,7 @@
   FILETIME   ftCreationTime;
   FILETIME   ftLastWriteTime;
   LPFILETIME lpftPtr;
 - HANDLE     hFile;
 + HANDLE     hFile = INVALID_HANDLE_VALUE;
- 
-  __try {
- 
+  bool       Ret = true;
+  
+   if (   (  hFile = CreateFile (
 Index: oce/src/OSD/OSD_Process.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Process.cxx
@@ -2442,7 +2502,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_WNT.cxx
 +++ oce/src/OSD/OSD_WNT.cxx
-@@ -1044,7 +1044,7 @@
+@@ -996,7 +996,7 @@
   LPTSTR              pathSrc,  pathDst;
   HANDLE              hFindFile;
   BOOL                fFind;
@@ -2451,7 +2511,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
   DIR_RESPONSE        response;
   DWORD               level;
  
-@@ -1275,7 +1275,7 @@
+@@ -1227,7 +1227,7 @@
  /***/
  BOOL CopyDirectory ( LPCTSTR dirSrc, LPCTSTR dirDst ) {
  
@@ -2476,20 +2536,20 @@ Index: oce/src/OSD/OSD_WNT_1.cxx
   BOOL             retVal = TRUE;
   HANDLE           hHeap = GetProcessHeap ();
  
-@@ -278,7 +278,7 @@
+@@ -272,7 +272,7 @@
  LONG GetTextParams ( HDC hdc, LPCTSTR lpText ) {
    LONG res = 0;
    SIZE size;
 -  _TCHAR* dummy;
 +  _TCHAR* dummy = NULL;
-   __try {
+   bool Ret = true;
+ 
      dummy = _tcsdup (lpText);
-     if ( !dummy ) __leave;
 Index: oce/src/OSD/OSD_signal_WNT.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_signal_WNT.cxx
 +++ oce/src/OSD/OSD_signal_WNT.cxx
-@@ -577,7 +577,7 @@
+@@ -571,7 +571,7 @@
  
   if ( !fDbgLoaded ) {
   
@@ -2498,9 +2558,9 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
    HANDLE              hEvent = INVALID_HANDLE_VALUE;
    DWORD               dwKeyType;
    DWORD               dwValueLen;
-@@ -638,7 +638,7 @@
-   __finally {
+@@ -636,7 +636,7 @@
    
+   } 
  //   cout << "_osd_debug -> CloseHandle(hKey) " << endl ;
 -   if ( hKey   != INVALID_HANDLE_VALUE ) CloseHandle ( hKey   );
 +   if ( hKey   != NULL ) CloseHandle ( hKey   );
@@ -3946,7 +4006,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
 ===================================================================
 --- oce.orig/src/WNT/WNT_ImageProcessor.cxx
 +++ oce/src/WNT/WNT_ImageProcessor.cxx
-@@ -212,9 +212,9 @@
+@@ -219,9 +219,9 @@
      ) {
  
   int      retVal = I_ERROR;
@@ -3956,19 +4016,19 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
 + HDC      hDCmem = NULL;
 + HBITMAP  hBmp = NULL, hOldBmp = NULL;
 + HPALETTE hOldPal = NULL;
+  bool Ret = true;
  
-  __try {
- 
-@@ -334,7 +334,7 @@
+  if (Ret) {
+@@ -339,7 +339,7 @@
  {
    int      retVal  = I_ERROR;
    HBITMAP  hNewBmp = NULL;
 -  HPALETTE hOldPal;
 +  HPALETTE hOldPal = NULL;
    BOOL     newBmp  = FALSE, newDC = FALSE;
- 
-   __try {
-@@ -407,10 +407,10 @@
+   bool Ret = true;
+   if (Ret) {
+@@ -414,10 +414,10 @@
   UINT             red_shift, green_shift, blue_shift;
   HBITMAP          retVal = NULL;
   PBITMAPINFO      pBmi   = NULL;
@@ -3982,7 +4042,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
   LONG             lPixel;
   WORD             wPixel;
   BYTE             bPixel;
-@@ -897,15 +897,15 @@
+@@ -902,15 +902,15 @@
  static HBITMAP loadBMP (  Handle( WNT_GraphicDevice )& gDev  ) {
  
   HBITMAP           retVal = NULL;
@@ -4001,9 +4061,9 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
   DWORD             dwWidth, dwHeight;
 - BOOL              os2Flag;
 + BOOL              os2Flag = FALSE;
+  bool Ret = true;
  
-  __try {
- 
+   pBmfh = ( PBITMAPFILEHEADER )lpvFile;
 @@ -1010,13 +1010,13 @@
   HBITMAP  retVal = NULL;
   UINT     Bits, BitMask, CodeSize, ClearCode, EOFCode, FreeCode,
