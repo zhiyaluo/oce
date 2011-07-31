@@ -30,7 +30,7 @@ Index: oce/src/BOPTools/BOPTools_PaveSet.cxx
  #pragma warning ( disable : 4101 )
  #endif
  
-@@ -75,6 +75,6 @@
+@@ -74,6 +74,6 @@
      }
    }
  }
@@ -142,7 +142,7 @@ Index: oce/src/IntTools/IntTools.cxx
  #pragma warning ( disable : 4101 )
  #endif
  //=======================================================================
-@@ -366,6 +366,6 @@
+@@ -365,6 +365,6 @@
    return 1;
  }
  
@@ -163,7 +163,7 @@ Index: oce/src/IntTools/IntTools_EdgeFace.cxx
  #pragma warning ( disable : 4101 )
  #endif
  
-@@ -1596,6 +1596,6 @@
+@@ -1595,6 +1595,6 @@
  }
  
  

@@ -201,7 +201,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest.cxx
 +++ oce/src/ViewerTest/ViewerTest.cxx
-@@ -1601,6 +1601,11 @@
+@@ -1600,6 +1600,11 @@
      Standard_Boolean HasDefinition = Standard_False ;
      if ( !envir ) {
        casroot  = getenv("CASROOT");

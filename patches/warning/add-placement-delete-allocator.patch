@@ -10,11 +10,11 @@ new() method.
  inc/TDF_LabelNode.hxx       |    6 ++++++
  2 files changed, 12 insertions(+), 0 deletions(-)
 
-diff --git a/inc/Poly_CoherentTriPtr.hxx b/inc/Poly_CoherentTriPtr.hxx
-index 69706ff..2d02e99 100644
---- a/inc/Poly_CoherentTriPtr.hxx
-+++ b/inc/Poly_CoherentTriPtr.hxx
-@@ -84,6 +84,12 @@ class Poly_CoherentTriPtr
+Index: oce/inc/Poly_CoherentTriPtr.hxx
+===================================================================
+--- oce.orig/inc/Poly_CoherentTriPtr.hxx
++++ oce/inc/Poly_CoherentTriPtr.hxx
+@@ -84,6 +84,12 @@
      return theAllocator->Allocate(theSize);
    }
  
@@ -27,11 +27,11 @@ index 69706ff..2d02e99 100644
    /**
     * Query the stored pointer to Triangle.
     */
-diff --git a/inc/TDF_LabelNode.hxx b/inc/TDF_LabelNode.hxx
-index 5293a8a..d0ed714 100644
---- a/inc/TDF_LabelNode.hxx
-+++ b/inc/TDF_LabelNode.hxx
-@@ -109,6 +109,12 @@ class TDF_LabelNode {
+Index: oce/inc/TDF_LabelNode.hxx
+===================================================================
+--- oce.orig/inc/TDF_LabelNode.hxx
++++ oce/inc/TDF_LabelNode.hxx
+@@ -109,6 +109,12 @@
    void * operator new (size_t aSize,
                         const Handle(NCollection_IncAllocator)& anAlloc)
          { return anAlloc -> Allocate (aSize); }
@@ -44,6 +44,3 @@ index 5293a8a..d0ed714 100644
    void  operator delete(void *) { }
          // nothing to do in operator delete since IncAllocator does not need it
    // Public Friends
--- 
-1.7.5.4
-

@@ -82,7 +82,7 @@ Index: oce/src/Visual3d/Visual3d_ViewManager.cxx
 ===================================================================
 --- oce.orig/src/Visual3d/Visual3d_ViewManager.cxx
 +++ oce/src/Visual3d/Visual3d_ViewManager.cxx
-@@ -985,7 +985,7 @@
+@@ -984,7 +984,7 @@
  // The marking is activated only if the data is correct
  Standard_Boolean DoPick = Standard_False;
  

@@ -21,54 +21,63 @@ Index: oce/inc/OpenGl_FontMgr.hxx
 ===================================================================
 --- oce.orig/inc/OpenGl_FontMgr.hxx
 +++ oce/inc/OpenGl_FontMgr.hxx
-@@ -8,7 +8,7 @@
+@@ -7,7 +7,7 @@
+ # include <stdlib.h>
  #endif
  
- #ifdef HAVE_CONFIG_H
--# include <config.h>
-+# include <oce-config.h>
- #endif
+-#include <config.h>
++#include <oce-config.h>
  
  #ifdef HAVE_FTGL_NEWER212
+ # include <FTGL/ftgl.h>
 Index: oce/inc/Standard_Macro.hxx
 ===================================================================
 --- oce.orig/inc/Standard_Macro.hxx
 +++ oce/inc/Standard_Macro.hxx
-@@ -8,7 +8,7 @@
+@@ -7,7 +7,7 @@
+ #ifndef _Standard_Macro_HeaderFile
  # define _Standard_Macro_HeaderFile
  
- #ifdef HAVE_CONFIG_H
 -# include <config.h>
 +# include <oce-config.h>
- #endif /* HAVE_CONFIG_H */
  
  // Standard OCC macros: Handle(), STANDARD_TYPE()
+ # define   Handle(ClassName)  Handle_##ClassName
 Index: oce/inc/Standard_values.h
 ===================================================================
 --- oce.orig/inc/Standard_values.h
 +++ oce/inc/Standard_values.h
-@@ -24,7 +24,7 @@
- 
- #ifndef WNT
- #ifdef HAVE_CONFIG_H
--# include <config.h>
-+# include <oce-config.h>
+@@ -22,7 +22,7 @@
+ #error "Wrong compiler options has been detected. Add /DWNT option for proper compilation!!!!!"
  #endif
  
+-#include <config.h>
++#include <oce-config.h>
+ 
+ #ifndef WNT
  #ifdef HAVE_LIMITS
+@@ -30,7 +30,7 @@
+ #elif defined (HAVE_LIMITS_H)
+ # include <limits.h>
+ #else
+-#error "check config.h file or compilation options: either HAVE_LIMITS or HAVE_LIMITS_H should be defined"
++#error "check oce-config.h file or compilation options: either HAVE_LIMITS or HAVE_LIMITS_H should be defined"
+ #endif
+ #endif
+ 
 Index: oce/inc/Xw_Extension.h
 ===================================================================
 --- oce.orig/inc/Xw_Extension.h
 +++ oce/inc/Xw_Extension.h
-@@ -23,7 +23,7 @@
+@@ -22,7 +22,7 @@
+ #define min(a,b) 	(a>b ? b : a)
  #endif
  
- #ifdef HAVE_CONFIG_H
--# include <config.h>
-+# include <oce-config.h>
- #endif
+-#include <config.h>
++#include <oce-config.h>
  
  #ifdef HAVE_X11_EXTENSIONS_TRANSOLV_H
+ #include <X11/extensions/transovl.h>
 Index: oce/src/AIS2D/AIS2D.cxx
 ===================================================================
 --- oce.orig/src/AIS2D/AIS2D.cxx

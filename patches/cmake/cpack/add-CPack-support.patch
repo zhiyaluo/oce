@@ -73,7 +73,7 @@ Index: oce/CMakeLists.txt
 ===================================================================
 --- oce.orig/CMakeLists.txt
 +++ oce/CMakeLists.txt
-@@ -788,3 +788,85 @@
+@@ -807,3 +807,85 @@
  IF(NOT (WIN32 AND (CMAKE_CONFIGURATION_TYPES OR NMAKE)))
  INSTALL(EXPORT ${PROJECT_NAME}-libraries DESTINATION ${${PROJECT_NAME}_INSTALL_CMAKE_DATA_DIR} COMPONENT Development)
  ENDIF(NOT (WIN32 AND (CMAKE_CONFIGURATION_TYPES OR NMAKE)))

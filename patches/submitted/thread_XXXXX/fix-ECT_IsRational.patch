@@ -1,0 +1,24 @@
+From 86a8b470a2cb574490cfacc62a1c55d23a78e815 Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Wed, 27 Jul 2011 18:59:28 +0200
+Subject: [PATCH] Fixes wrong Extrema_CurveTool adaptor function call. The
+ wrong function call was hidden by the unsigned int
+ Standard_Boolean type
+
+---
+ inc/Extrema_CurveTool.lxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Index: oce/inc/Extrema_CurveTool.lxx
+===================================================================
+--- oce.orig/inc/Extrema_CurveTool.lxx
++++ oce/inc/Extrema_CurveTool.lxx
+@@ -207,7 +207,7 @@
+ 
+  inline Standard_Boolean Extrema_CurveTool::IsRational(const Adaptor3d_Curve& C)
+ {
+-  return C.Degree();
++  return C.IsRational();
+ }
+ 
+ //=======================================================================

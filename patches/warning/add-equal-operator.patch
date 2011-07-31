@@ -15,11 +15,11 @@ is required.
  src/LDOM/LDOM_CharReference.cxx  |    3 +++
  6 files changed, 20 insertions(+), 1 deletions(-)
 
-diff --git a/inc/LDOM_MemManager.hxx b/inc/LDOM_MemManager.hxx
-index 28818c7..6267f7c 100644
---- a/inc/LDOM_MemManager.hxx
-+++ b/inc/LDOM_MemManager.hxx
-@@ -81,6 +81,7 @@ class LDOM_MemManager : public MMgt_TShared
+Index: oce/inc/LDOM_MemManager.hxx
+===================================================================
+--- oce.orig/inc/LDOM_MemManager.hxx
++++ oce/inc/LDOM_MemManager.hxx
+@@ -81,6 +81,7 @@
  
    // ---- CLASS HashTable ----
    class HashTable {
@@ -27,7 +27,7 @@ index 28818c7..6267f7c 100644
      friend class LDOM_MemManager;
      HashTable                   (/* const Standard_Integer theMask, */
                                   LDOM_MemManager&       theMemManager);
-@@ -89,6 +90,10 @@ class LDOM_MemManager : public MMgt_TShared
+@@ -89,6 +90,10 @@
                                   Standard_Integer&      theHashIndex);
      static Standard_Integer Hash(const char             * theString,
                                   const Standard_Integer theLen);
@@ -38,10 +38,10 @@ index 28818c7..6267f7c 100644
      struct TableItem {
        char             * str;
        struct TableItem * next;
-diff --git a/inc/SelectMgr_CompareResults.hxx b/inc/SelectMgr_CompareResults.hxx
-index 5464bd1..5d511fd 100644
---- a/inc/SelectMgr_CompareResults.hxx
-+++ b/inc/SelectMgr_CompareResults.hxx
+Index: oce/inc/SelectMgr_CompareResults.hxx
+===================================================================
+--- oce.orig/inc/SelectMgr_CompareResults.hxx
++++ oce/inc/SelectMgr_CompareResults.hxx
 @@ -9,6 +9,8 @@
  
  class SelectMgr_CompareResults: public TCollection_CompareOfInteger
@@ -51,10 +51,10 @@ index 5464bd1..5d511fd 100644
   public:
    SelectMgr_CompareResults
          (const SelectMgr_IndexedDataMapOfOwnerCriterion& aMapOfCriterion)
-diff --git a/inc/VrmlData_InBuffer.hxx b/inc/VrmlData_InBuffer.hxx
-index 6455a39..196c6cf 100644
---- a/inc/VrmlData_InBuffer.hxx
-+++ b/inc/VrmlData_InBuffer.hxx
+Index: oce/inc/VrmlData_InBuffer.hxx
+===================================================================
+--- oce.orig/inc/VrmlData_InBuffer.hxx
++++ oce/inc/VrmlData_InBuffer.hxx
 @@ -14,6 +14,10 @@
   * Structure passed to the methods dealing with input stream.
   */
@@ -66,11 +66,11 @@ index 6455a39..196c6cf 100644
    Standard_IStream& Input;
    char              Line[8096];
    char *            LinePtr;
-diff --git a/inc/VrmlData_ShapeConvert.hxx b/inc/VrmlData_ShapeConvert.hxx
-index 442eb0b..4fadb0b 100644
---- a/inc/VrmlData_ShapeConvert.hxx
-+++ b/inc/VrmlData_ShapeConvert.hxx
-@@ -23,7 +23,10 @@ class Handle_VrmlData_Coordinate;
+Index: oce/inc/VrmlData_ShapeConvert.hxx
+===================================================================
+--- oce.orig/inc/VrmlData_ShapeConvert.hxx
++++ oce/inc/VrmlData_ShapeConvert.hxx
+@@ -23,7 +23,10 @@
  
  class VrmlData_ShapeConvert 
  {
@@ -82,10 +82,10 @@ index 442eb0b..4fadb0b 100644
  
    typedef struct {
      TCollection_AsciiString Name;
-diff --git a/src/Extrema/Extrema_GenExtPS.cxx b/src/Extrema/Extrema_GenExtPS.cxx
-index e19a2fe..62ab01c 100644
---- a/src/Extrema/Extrema_GenExtPS.cxx
-+++ b/src/Extrema/Extrema_GenExtPS.cxx
+Index: oce/src/Extrema/Extrema_GenExtPS.cxx
+===================================================================
+--- oce.orig/src/Extrema/Extrema_GenExtPS.cxx
++++ oce/src/Extrema/Extrema_GenExtPS.cxx
 @@ -27,6 +27,8 @@
  
  class Bnd_SphereUBTreeSelector : public Extrema_UBTreeOfSphere::Selector
@@ -95,11 +95,11 @@ index e19a2fe..62ab01c 100644
   public:
  
    Bnd_SphereUBTreeSelector (const Handle(Bnd_HArray1OfSphere)& theSphereArray,
-diff --git a/src/LDOM/LDOM_CharReference.cxx b/src/LDOM/LDOM_CharReference.cxx
-index 005e831..806fb4d 100644
---- a/src/LDOM/LDOM_CharReference.cxx
-+++ b/src/LDOM/LDOM_CharReference.cxx
-@@ -25,6 +25,9 @@ struct entityRef {
+Index: oce/src/LDOM/LDOM_CharReference.cxx
+===================================================================
+--- oce.orig/src/LDOM/LDOM_CharReference.cxx
++++ oce/src/LDOM/LDOM_CharReference.cxx
+@@ -25,6 +25,9 @@
    const char * name;
    const int    length;
    entityRef (const char * aName, const int aLen) : name(aName), length(aLen) {}
@@ -109,6 +109,3 @@ index 005e831..806fb4d 100644
  };
  
  //=======================================================================
--- 
-1.7.5.4
-

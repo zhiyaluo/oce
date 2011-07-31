@@ -78,7 +78,7 @@ Index: oce/CMakeLists.txt
 ===================================================================
 --- oce.orig/CMakeLists.txt
 +++ oce/CMakeLists.txt
-@@ -86,6 +86,11 @@
+@@ -88,6 +88,11 @@
  OPTION_WITH_DEFAULT( ${PROJECT_NAME}_WITH_FREEIMAGE "Build with FreeImage" OFF )
  OPTION_WITH_DEFAULT( ${PROJECT_NAME}_EXTRA_WARNINGS "Enable Maximum Warnings Level" OFF )
  MARK_AS_ADVANCED(${PROJECT_NAME}_EXTRA_WARNINGS)
@@ -90,7 +90,7 @@ Index: oce/CMakeLists.txt
  
  IF( NOT DEFINED ${PROJECT_NAME}_MULTITHREAD_LIBRARY)
  	SET( ${PROJECT_NAME}_MULTITHREAD_LIBRARY "NONE" CACHE STRING "(values are: NONE TBB OPENMP)" )
-@@ -789,6 +794,25 @@
+@@ -808,6 +813,25 @@
  INSTALL(EXPORT ${PROJECT_NAME}-libraries DESTINATION ${${PROJECT_NAME}_INSTALL_CMAKE_DATA_DIR} COMPONENT Development)
  ENDIF(NOT (WIN32 AND (CMAKE_CONFIGURATION_TYPES OR NMAKE)))
  

@@ -11,6 +11,7 @@ submitted/thread_20572/fix-build-gcc-4.6.patch
 submitted/thread_20101/fix-XOpenDisplay-remote-call.patch
 submitted/thread_20105/add-openmp-support.patch
 submitted/thread_20931/add-missing-include-stdlib.patch
+submitted/thread_XXXXX/fix-ECT_IsRational.patch
 
 warning/bugs.patch
 build-with-newer-ftgl.patch
@@ -44,11 +45,11 @@ warning/fix-unused-function.patch
 warning/fix-unused-local-var.patch
 warning/fix-defined-but-not-used.patch
 warning/linker-warnings.patch
-warning/fix-Standard_IMPORT-usage.patch
 warning/add-placement-delete.patch
 warning/add-placement-delete-allocator.patch
 warning/add-equal-operator.patch
 warning/fix-unreachable-code-rewrite-loops.patch
+warning/fix-Standard_IMPORT-usage.patch
 
 #  This patch should drop const qualifiers in return value for all methods (only for objects, not pointers and references!)
 warning/remove-const-return-value.patch
@@ -58,8 +59,7 @@ review/fix-deprecated-conversion-from-string.patch
 cmake/remove-Autotools-generated-files.patch
 cmake/remove-Autotools-and-project-files.patch
 cmake/copy-CMake-files-from-5e184f9.patch
-cmake/increased-version-number-to-0.4.0.patch
-release-OCE-0.4.0.patch
+cmake/bump-version-number.patch
 
 cmake/cpack/add-CPack-support.patch
 
@@ -98,7 +98,8 @@ remove-ExprIntrp.tab.c.patch
 
 get-rid-of-environment-variables.patch
 
-cmake/rename-config.h-into-oce-config.h.patch
+config/unconditionnally-include-config.h.patch
+config/rename-config.h-into-oce-config.h.patch
 config/add-OCE-prefix-to-macros.patch
 
 review/add-todos.patch

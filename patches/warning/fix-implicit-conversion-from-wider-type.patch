@@ -1140,7 +1140,7 @@ Index: oce/src/OSD/OSD_WNT_1.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_WNT_1.cxx
 +++ oce/src/OSD/OSD_WNT_1.cxx
-@@ -489,14 +489,14 @@
+@@ -473,14 +473,14 @@
      // Update width & height of a dialog
      _TINT nW = (butSpace+3+butMaxWidth)*butCount;
      if ( nW > *pWidth ) {
@@ -1158,7 +1158,7 @@ Index: oce/src/OSD/OSD_WNT_1.cxx
  
      // Childs  ============================================================ //
      short butNum = 0;
-@@ -508,7 +508,7 @@
+@@ -492,7 +492,7 @@
                lStyle,
                8 + butOffset + butNum*(butMaxWidth+butSpace),
                *pHeight - butMaxHeight - 4,
@@ -1259,7 +1259,7 @@ Index: oce/src/OpenGl/OpenGl_attri.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_attri.cxx
 +++ oce/src/OpenGl/OpenGl_attri.cxx
-@@ -980,7 +980,7 @@
+@@ -984,7 +984,7 @@
        attri_tail->TextZoomable = k[i]->data.ldata;  
        break;
      case TelTextAngle:
@@ -1268,7 +1268,7 @@ Index: oce/src/OpenGl/OpenGl_attri.cxx
        break;  
      case TelTextFontAspect:
        attri_tail->TextFontAspect = OSD_FontAspect(k[i]->data.ldata);
-@@ -1269,7 +1269,7 @@
+@@ -1273,7 +1273,7 @@
        k[i]->data.ldata = attri_tail->TextZoomable;
        break;
      case TelTextAngle:
@@ -2002,7 +2002,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
 ===================================================================
 --- oce.orig/src/WNT/WNT_ImageProcessor.cxx
 +++ oce/src/WNT/WNT_ImageProcessor.cxx
-@@ -580,9 +580,9 @@
+@@ -587,9 +587,9 @@
  
  	   if ( ptrDIB[ k ] == xColor[ j ].pixel )
  

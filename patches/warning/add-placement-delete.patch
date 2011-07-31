@@ -69,11 +69,11 @@ have one (and the compiler complained)
  inc/TopoDS_Shape.hxx                               |    3 +++
  61 files changed, 189 insertions(+), 0 deletions(-)
 
-diff --git a/inc/BooleanOperations_AncestorsAndSuccessors.hxx b/inc/BooleanOperations_AncestorsAndSuccessors.hxx
-index 101e403..86886c7 100644
---- a/inc/BooleanOperations_AncestorsAndSuccessors.hxx
-+++ b/inc/BooleanOperations_AncestorsAndSuccessors.hxx
-@@ -44,7 +44,10 @@ public:
+Index: oce/inc/BooleanOperations_AncestorsAndSuccessors.hxx
+===================================================================
+--- oce.orig/inc/BooleanOperations_AncestorsAndSuccessors.hxx
++++ oce/inc/BooleanOperations_AncestorsAndSuccessors.hxx
+@@ -44,7 +44,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -84,11 +84,11 @@ index 101e403..86886c7 100644
    
    Standard_EXPORT   BooleanOperations_AncestorsAndSuccessors();
    //! allocates space and fills it with the data of AncSuccessors. <br>
-diff --git a/inc/BooleanOperations_ShapeAndInterferences.hxx b/inc/BooleanOperations_ShapeAndInterferences.hxx
-index 2c0c00d..77af220 100644
---- a/inc/BooleanOperations_ShapeAndInterferences.hxx
-+++ b/inc/BooleanOperations_ShapeAndInterferences.hxx
-@@ -58,6 +58,10 @@ public:
+Index: oce/inc/BooleanOperations_ShapeAndInterferences.hxx
+===================================================================
+--- oce.orig/inc/BooleanOperations_ShapeAndInterferences.hxx
++++ oce/inc/BooleanOperations_ShapeAndInterferences.hxx
+@@ -58,6 +58,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -99,11 +99,11 @@ index 2c0c00d..77af220 100644
  
    
    Standard_EXPORT   BooleanOperations_ShapeAndInterferences();
-diff --git a/inc/DBC_VArrayOfCharacter.hxx b/inc/DBC_VArrayOfCharacter.hxx
-index cf16b95..c1edba7 100644
---- a/inc/DBC_VArrayOfCharacter.hxx
-+++ b/inc/DBC_VArrayOfCharacter.hxx
-@@ -55,6 +55,10 @@ public:
+Index: oce/inc/DBC_VArrayOfCharacter.hxx
+===================================================================
+--- oce.orig/inc/DBC_VArrayOfCharacter.hxx
++++ oce/inc/DBC_VArrayOfCharacter.hxx
+@@ -55,6 +55,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -114,11 +114,11 @@ index cf16b95..c1edba7 100644
  
    
    Standard_EXPORT   DBC_VArrayOfCharacter();
-diff --git a/inc/DBC_VArrayTNodeOfVArrayOfCharacter.hxx b/inc/DBC_VArrayTNodeOfVArrayOfCharacter.hxx
-index 9875d90..5560ca8 100644
---- a/inc/DBC_VArrayTNodeOfVArrayOfCharacter.hxx
-+++ b/inc/DBC_VArrayTNodeOfVArrayOfCharacter.hxx
-@@ -42,6 +42,10 @@ public:
+Index: oce/inc/DBC_VArrayTNodeOfVArrayOfCharacter.hxx
+===================================================================
+--- oce.orig/inc/DBC_VArrayTNodeOfVArrayOfCharacter.hxx
++++ oce/inc/DBC_VArrayTNodeOfVArrayOfCharacter.hxx
+@@ -42,6 +42,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -129,11 +129,11 @@ index 9875d90..5560ca8 100644
  
    
        DBC_VArrayTNodeOfVArrayOfCharacter();
-diff --git a/inc/DBC_VArrayTNodeOfVArrayOfExtCharacter.hxx b/inc/DBC_VArrayTNodeOfVArrayOfExtCharacter.hxx
-index 991e411..5c87afd 100644
---- a/inc/DBC_VArrayTNodeOfVArrayOfExtCharacter.hxx
-+++ b/inc/DBC_VArrayTNodeOfVArrayOfExtCharacter.hxx
-@@ -42,6 +42,10 @@ public:
+Index: oce/inc/DBC_VArrayTNodeOfVArrayOfExtCharacter.hxx
+===================================================================
+--- oce.orig/inc/DBC_VArrayTNodeOfVArrayOfExtCharacter.hxx
++++ oce/inc/DBC_VArrayTNodeOfVArrayOfExtCharacter.hxx
+@@ -42,6 +42,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -144,11 +144,11 @@ index 991e411..5c87afd 100644
  
    
        DBC_VArrayTNodeOfVArrayOfExtCharacter();
-diff --git a/inc/DBC_VArrayTNodeOfVArrayOfInteger.hxx b/inc/DBC_VArrayTNodeOfVArrayOfInteger.hxx
-index 921bb96..3e081d1 100644
---- a/inc/DBC_VArrayTNodeOfVArrayOfInteger.hxx
-+++ b/inc/DBC_VArrayTNodeOfVArrayOfInteger.hxx
-@@ -42,7 +42,10 @@ public:
+Index: oce/inc/DBC_VArrayTNodeOfVArrayOfInteger.hxx
+===================================================================
+--- oce.orig/inc/DBC_VArrayTNodeOfVArrayOfInteger.hxx
++++ oce/inc/DBC_VArrayTNodeOfVArrayOfInteger.hxx
+@@ -42,7 +42,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -159,11 +159,11 @@ index 921bb96..3e081d1 100644
    
        DBC_VArrayTNodeOfVArrayOfInteger();
    
-diff --git a/inc/DBC_VArrayTNodeOfVArrayOfReal.hxx b/inc/DBC_VArrayTNodeOfVArrayOfReal.hxx
-index c0faaa8..fcc3cb6 100644
---- a/inc/DBC_VArrayTNodeOfVArrayOfReal.hxx
-+++ b/inc/DBC_VArrayTNodeOfVArrayOfReal.hxx
-@@ -42,7 +42,10 @@ public:
+Index: oce/inc/DBC_VArrayTNodeOfVArrayOfReal.hxx
+===================================================================
+--- oce.orig/inc/DBC_VArrayTNodeOfVArrayOfReal.hxx
++++ oce/inc/DBC_VArrayTNodeOfVArrayOfReal.hxx
+@@ -42,7 +42,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -174,11 +174,11 @@ index c0faaa8..fcc3cb6 100644
    
        DBC_VArrayTNodeOfVArrayOfReal();
    
-diff --git a/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfBSplineCurve.hxx b/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfBSplineCurve.hxx
-index 0951346..00ed496 100644
---- a/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfBSplineCurve.hxx
-+++ b/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfBSplineCurve.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfBSplineCurve.hxx
+===================================================================
+--- oce.orig/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfBSplineCurve.hxx
++++ oce/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfBSplineCurve.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -189,11 +189,11 @@ index 0951346..00ed496 100644
    
        PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfBSplineCurve();
    
-diff --git a/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfBezierCurve.hxx b/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfBezierCurve.hxx
-index 0139828..f5fa962 100644
---- a/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfBezierCurve.hxx
-+++ b/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfBezierCurve.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfBezierCurve.hxx
+===================================================================
+--- oce.orig/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfBezierCurve.hxx
++++ oce/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfBezierCurve.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -204,11 +204,11 @@ index 0139828..f5fa962 100644
    
        PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfBezierCurve();
    
-diff --git a/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfBoundedCurve.hxx b/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfBoundedCurve.hxx
-index 2572ee7..d716f70 100644
---- a/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfBoundedCurve.hxx
-+++ b/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfBoundedCurve.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfBoundedCurve.hxx
+===================================================================
+--- oce.orig/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfBoundedCurve.hxx
++++ oce/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfBoundedCurve.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -219,11 +219,11 @@ index 2572ee7..d716f70 100644
    
        PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfBoundedCurve();
    
-diff --git a/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfCurve.hxx b/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfCurve.hxx
-index 85cd9e6..8e1b738 100644
---- a/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfCurve.hxx
-+++ b/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfCurve.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfCurve.hxx
+===================================================================
+--- oce.orig/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfCurve.hxx
++++ oce/inc/PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfCurve.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -234,11 +234,11 @@ index 85cd9e6..8e1b738 100644
    
        PColPGeom2d_VArrayTNodeOfFieldOfHArray1OfCurve();
    
-diff --git a/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBSplineCurve.hxx b/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBSplineCurve.hxx
-index b8dde59..29b3f67 100644
---- a/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBSplineCurve.hxx
-+++ b/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBSplineCurve.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBSplineCurve.hxx
+===================================================================
+--- oce.orig/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBSplineCurve.hxx
++++ oce/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBSplineCurve.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -249,11 +249,11 @@ index b8dde59..29b3f67 100644
    
        PColPGeom_VArrayTNodeOfFieldOfHArray1OfBSplineCurve();
    
-diff --git a/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBezierCurve.hxx b/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBezierCurve.hxx
-index 26efb85..ce66db6 100644
---- a/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBezierCurve.hxx
-+++ b/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBezierCurve.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBezierCurve.hxx
+===================================================================
+--- oce.orig/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBezierCurve.hxx
++++ oce/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBezierCurve.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -264,11 +264,11 @@ index 26efb85..ce66db6 100644
    
        PColPGeom_VArrayTNodeOfFieldOfHArray1OfBezierCurve();
    
-diff --git a/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBoundedCurve.hxx b/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBoundedCurve.hxx
-index 531c109..dd47ac5 100644
---- a/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBoundedCurve.hxx
-+++ b/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBoundedCurve.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBoundedCurve.hxx
+===================================================================
+--- oce.orig/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBoundedCurve.hxx
++++ oce/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBoundedCurve.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -279,11 +279,11 @@ index 531c109..dd47ac5 100644
    
        PColPGeom_VArrayTNodeOfFieldOfHArray1OfBoundedCurve();
    
-diff --git a/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBoundedSurface.hxx b/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBoundedSurface.hxx
-index 85e3023..9d99adf 100644
---- a/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBoundedSurface.hxx
-+++ b/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBoundedSurface.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBoundedSurface.hxx
+===================================================================
+--- oce.orig/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBoundedSurface.hxx
++++ oce/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfBoundedSurface.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -294,11 +294,11 @@ index 85e3023..9d99adf 100644
    
        PColPGeom_VArrayTNodeOfFieldOfHArray1OfBoundedSurface();
    
-diff --git a/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfCurve.hxx b/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfCurve.hxx
-index 0fec1d8..ba82d8e 100644
---- a/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfCurve.hxx
-+++ b/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfCurve.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfCurve.hxx
+===================================================================
+--- oce.orig/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfCurve.hxx
++++ oce/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfCurve.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -309,11 +309,11 @@ index 0fec1d8..ba82d8e 100644
    
        PColPGeom_VArrayTNodeOfFieldOfHArray1OfCurve();
    
-diff --git a/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfSurface.hxx b/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfSurface.hxx
-index 2ae361b..42b2738 100644
---- a/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfSurface.hxx
-+++ b/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfSurface.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfSurface.hxx
+===================================================================
+--- oce.orig/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfSurface.hxx
++++ oce/inc/PColPGeom_VArrayTNodeOfFieldOfHArray1OfSurface.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -324,11 +324,11 @@ index 2ae361b..42b2738 100644
    
        PColPGeom_VArrayTNodeOfFieldOfHArray1OfSurface();
    
-diff --git a/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfBSplineSurface.hxx b/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfBSplineSurface.hxx
-index adfceb6..543e18e 100644
---- a/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfBSplineSurface.hxx
-+++ b/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfBSplineSurface.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfBSplineSurface.hxx
+===================================================================
+--- oce.orig/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfBSplineSurface.hxx
++++ oce/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfBSplineSurface.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -339,11 +339,11 @@ index adfceb6..543e18e 100644
    
        PColPGeom_VArrayTNodeOfFieldOfHArray2OfBSplineSurface();
    
-diff --git a/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfBezierSurface.hxx b/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfBezierSurface.hxx
-index 74ce3bf..4ac3a86 100644
---- a/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfBezierSurface.hxx
-+++ b/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfBezierSurface.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfBezierSurface.hxx
+===================================================================
+--- oce.orig/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfBezierSurface.hxx
++++ oce/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfBezierSurface.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -354,11 +354,11 @@ index 74ce3bf..4ac3a86 100644
    
        PColPGeom_VArrayTNodeOfFieldOfHArray2OfBezierSurface();
    
-diff --git a/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfBoundedSurface.hxx b/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfBoundedSurface.hxx
-index 35c52d3..fb80adc 100644
---- a/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfBoundedSurface.hxx
-+++ b/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfBoundedSurface.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfBoundedSurface.hxx
+===================================================================
+--- oce.orig/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfBoundedSurface.hxx
++++ oce/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfBoundedSurface.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -369,11 +369,11 @@ index 35c52d3..fb80adc 100644
    
        PColPGeom_VArrayTNodeOfFieldOfHArray2OfBoundedSurface();
    
-diff --git a/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfSurface.hxx b/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfSurface.hxx
-index e3fd28c..757af83 100644
---- a/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfSurface.hxx
-+++ b/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfSurface.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfSurface.hxx
+===================================================================
+--- oce.orig/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfSurface.hxx
++++ oce/inc/PColPGeom_VArrayTNodeOfFieldOfHArray2OfSurface.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -384,11 +384,11 @@ index e3fd28c..757af83 100644
    
        PColPGeom_VArrayTNodeOfFieldOfHArray2OfSurface();
    
-diff --git a/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfExtendedString.hxx b/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfExtendedString.hxx
-index 832a05e..3c06ccc 100644
---- a/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfExtendedString.hxx
-+++ b/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfExtendedString.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfExtendedString.hxx
+===================================================================
+--- oce.orig/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfExtendedString.hxx
++++ oce/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfExtendedString.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -399,11 +399,11 @@ index 832a05e..3c06ccc 100644
    
        PColStd_VArrayTNodeOfFieldOfHArray1OfExtendedString();
    
-diff --git a/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfInteger.hxx b/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfInteger.hxx
-index 5fb56f4..018b6df 100644
---- a/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfInteger.hxx
-+++ b/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfInteger.hxx
-@@ -42,7 +42,10 @@ public:
+Index: oce/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfInteger.hxx
+===================================================================
+--- oce.orig/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfInteger.hxx
++++ oce/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfInteger.hxx
+@@ -42,7 +42,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -414,11 +414,11 @@ index 5fb56f4..018b6df 100644
    
        PColStd_VArrayTNodeOfFieldOfHArray1OfInteger();
    
-diff --git a/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfPersistent.hxx b/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfPersistent.hxx
-index ed05362..f166def 100644
---- a/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfPersistent.hxx
-+++ b/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfPersistent.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfPersistent.hxx
+===================================================================
+--- oce.orig/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfPersistent.hxx
++++ oce/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfPersistent.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -429,11 +429,11 @@ index ed05362..f166def 100644
    
        PColStd_VArrayTNodeOfFieldOfHArray1OfPersistent();
    
-diff --git a/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfReal.hxx b/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfReal.hxx
-index 7e7488d..cf43a96 100644
---- a/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfReal.hxx
-+++ b/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfReal.hxx
-@@ -42,7 +42,10 @@ public:
+Index: oce/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfReal.hxx
+===================================================================
+--- oce.orig/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfReal.hxx
++++ oce/inc/PColStd_VArrayTNodeOfFieldOfHArray1OfReal.hxx
+@@ -42,7 +42,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -444,11 +444,11 @@ index 7e7488d..cf43a96 100644
    
        PColStd_VArrayTNodeOfFieldOfHArray1OfReal();
    
-diff --git a/inc/PColStd_VArrayTNodeOfFieldOfHArray2OfInteger.hxx b/inc/PColStd_VArrayTNodeOfFieldOfHArray2OfInteger.hxx
-index 1eaf8dc..af278db 100644
---- a/inc/PColStd_VArrayTNodeOfFieldOfHArray2OfInteger.hxx
-+++ b/inc/PColStd_VArrayTNodeOfFieldOfHArray2OfInteger.hxx
-@@ -42,7 +42,10 @@ public:
+Index: oce/inc/PColStd_VArrayTNodeOfFieldOfHArray2OfInteger.hxx
+===================================================================
+--- oce.orig/inc/PColStd_VArrayTNodeOfFieldOfHArray2OfInteger.hxx
++++ oce/inc/PColStd_VArrayTNodeOfFieldOfHArray2OfInteger.hxx
+@@ -42,7 +42,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -459,11 +459,11 @@ index 1eaf8dc..af278db 100644
    
        PColStd_VArrayTNodeOfFieldOfHArray2OfInteger();
    
-diff --git a/inc/PColStd_VArrayTNodeOfFieldOfHArray2OfPersistent.hxx b/inc/PColStd_VArrayTNodeOfFieldOfHArray2OfPersistent.hxx
-index cb8ca10..dfaa521 100644
---- a/inc/PColStd_VArrayTNodeOfFieldOfHArray2OfPersistent.hxx
-+++ b/inc/PColStd_VArrayTNodeOfFieldOfHArray2OfPersistent.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColStd_VArrayTNodeOfFieldOfHArray2OfPersistent.hxx
+===================================================================
+--- oce.orig/inc/PColStd_VArrayTNodeOfFieldOfHArray2OfPersistent.hxx
++++ oce/inc/PColStd_VArrayTNodeOfFieldOfHArray2OfPersistent.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -474,11 +474,11 @@ index cb8ca10..dfaa521 100644
    
        PColStd_VArrayTNodeOfFieldOfHArray2OfPersistent();
    
-diff --git a/inc/PColStd_VArrayTNodeOfFieldOfHArray2OfReal.hxx b/inc/PColStd_VArrayTNodeOfFieldOfHArray2OfReal.hxx
-index 61f7408..b78e7e2 100644
---- a/inc/PColStd_VArrayTNodeOfFieldOfHArray2OfReal.hxx
-+++ b/inc/PColStd_VArrayTNodeOfFieldOfHArray2OfReal.hxx
-@@ -42,7 +42,10 @@ public:
+Index: oce/inc/PColStd_VArrayTNodeOfFieldOfHArray2OfReal.hxx
+===================================================================
+--- oce.orig/inc/PColStd_VArrayTNodeOfFieldOfHArray2OfReal.hxx
++++ oce/inc/PColStd_VArrayTNodeOfFieldOfHArray2OfReal.hxx
+@@ -42,7 +42,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -489,11 +489,11 @@ index 61f7408..b78e7e2 100644
    
        PColStd_VArrayTNodeOfFieldOfHArray2OfReal();
    
-diff --git a/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfCirc2d.hxx b/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfCirc2d.hxx
-index f67fd66..7c30889 100644
---- a/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfCirc2d.hxx
-+++ b/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfCirc2d.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfCirc2d.hxx
+===================================================================
+--- oce.orig/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfCirc2d.hxx
++++ oce/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfCirc2d.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -504,11 +504,11 @@ index f67fd66..7c30889 100644
    
        PColgp_VArrayTNodeOfFieldOfHArray1OfCirc2d();
    
-diff --git a/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfDir.hxx b/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfDir.hxx
-index 67dfbea..bd7e403 100644
---- a/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfDir.hxx
-+++ b/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfDir.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfDir.hxx
+===================================================================
+--- oce.orig/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfDir.hxx
++++ oce/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfDir.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -519,11 +519,11 @@ index 67dfbea..bd7e403 100644
    
        PColgp_VArrayTNodeOfFieldOfHArray1OfDir();
    
-diff --git a/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfDir2d.hxx b/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfDir2d.hxx
-index 3071da7..3a0f2a9 100644
---- a/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfDir2d.hxx
-+++ b/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfDir2d.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfDir2d.hxx
+===================================================================
+--- oce.orig/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfDir2d.hxx
++++ oce/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfDir2d.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -534,11 +534,11 @@ index 3071da7..3a0f2a9 100644
    
        PColgp_VArrayTNodeOfFieldOfHArray1OfDir2d();
    
-diff --git a/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfLin2d.hxx b/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfLin2d.hxx
-index 20ae1e8..33b1d01 100644
---- a/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfLin2d.hxx
-+++ b/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfLin2d.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfLin2d.hxx
+===================================================================
+--- oce.orig/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfLin2d.hxx
++++ oce/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfLin2d.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -549,11 +549,11 @@ index 20ae1e8..33b1d01 100644
    
        PColgp_VArrayTNodeOfFieldOfHArray1OfLin2d();
    
-diff --git a/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfPnt.hxx b/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfPnt.hxx
-index 5d4a422..a66a907 100644
---- a/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfPnt.hxx
-+++ b/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfPnt.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfPnt.hxx
+===================================================================
+--- oce.orig/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfPnt.hxx
++++ oce/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfPnt.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -564,11 +564,11 @@ index 5d4a422..a66a907 100644
    
        PColgp_VArrayTNodeOfFieldOfHArray1OfPnt();
    
-diff --git a/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfPnt2d.hxx b/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfPnt2d.hxx
-index 32e7a7b..fcefa0a 100644
---- a/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfPnt2d.hxx
-+++ b/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfPnt2d.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfPnt2d.hxx
+===================================================================
+--- oce.orig/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfPnt2d.hxx
++++ oce/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfPnt2d.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -579,11 +579,11 @@ index 32e7a7b..fcefa0a 100644
    
        PColgp_VArrayTNodeOfFieldOfHArray1OfPnt2d();
    
-diff --git a/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfVec.hxx b/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfVec.hxx
-index 3a0a881..2dacb4e 100644
---- a/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfVec.hxx
-+++ b/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfVec.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfVec.hxx
+===================================================================
+--- oce.orig/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfVec.hxx
++++ oce/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfVec.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -594,11 +594,11 @@ index 3a0a881..2dacb4e 100644
    
        PColgp_VArrayTNodeOfFieldOfHArray1OfVec();
    
-diff --git a/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfVec2d.hxx b/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfVec2d.hxx
-index 57501f4..6cf2c7f 100644
---- a/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfVec2d.hxx
-+++ b/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfVec2d.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfVec2d.hxx
+===================================================================
+--- oce.orig/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfVec2d.hxx
++++ oce/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfVec2d.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -609,11 +609,11 @@ index 57501f4..6cf2c7f 100644
    
        PColgp_VArrayTNodeOfFieldOfHArray1OfVec2d();
    
-diff --git a/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfXY.hxx b/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfXY.hxx
-index cee39a1..863a589 100644
---- a/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfXY.hxx
-+++ b/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfXY.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfXY.hxx
+===================================================================
+--- oce.orig/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfXY.hxx
++++ oce/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfXY.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -624,11 +624,11 @@ index cee39a1..863a589 100644
    
        PColgp_VArrayTNodeOfFieldOfHArray1OfXY();
    
-diff --git a/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfXYZ.hxx b/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfXYZ.hxx
-index 76d9f1d..996ed9c 100644
---- a/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfXYZ.hxx
-+++ b/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfXYZ.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfXYZ.hxx
+===================================================================
+--- oce.orig/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfXYZ.hxx
++++ oce/inc/PColgp_VArrayTNodeOfFieldOfHArray1OfXYZ.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -639,11 +639,11 @@ index 76d9f1d..996ed9c 100644
    
        PColgp_VArrayTNodeOfFieldOfHArray1OfXYZ();
    
-diff --git a/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfCirc2d.hxx b/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfCirc2d.hxx
-index 40cb035..f1dee30 100644
---- a/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfCirc2d.hxx
-+++ b/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfCirc2d.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfCirc2d.hxx
+===================================================================
+--- oce.orig/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfCirc2d.hxx
++++ oce/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfCirc2d.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -654,11 +654,11 @@ index 40cb035..f1dee30 100644
    
        PColgp_VArrayTNodeOfFieldOfHArray2OfCirc2d();
    
-diff --git a/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfDir.hxx b/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfDir.hxx
-index f8cf9b5..11dad54 100644
---- a/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfDir.hxx
-+++ b/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfDir.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfDir.hxx
+===================================================================
+--- oce.orig/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfDir.hxx
++++ oce/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfDir.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -669,11 +669,11 @@ index f8cf9b5..11dad54 100644
    
        PColgp_VArrayTNodeOfFieldOfHArray2OfDir();
    
-diff --git a/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfDir2d.hxx b/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfDir2d.hxx
-index 9f3bb5e..99ed9a4 100644
---- a/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfDir2d.hxx
-+++ b/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfDir2d.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfDir2d.hxx
+===================================================================
+--- oce.orig/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfDir2d.hxx
++++ oce/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfDir2d.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -684,11 +684,11 @@ index 9f3bb5e..99ed9a4 100644
    
        PColgp_VArrayTNodeOfFieldOfHArray2OfDir2d();
    
-diff --git a/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfLin2d.hxx b/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfLin2d.hxx
-index 2e3fbe8..7915507 100644
---- a/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfLin2d.hxx
-+++ b/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfLin2d.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfLin2d.hxx
+===================================================================
+--- oce.orig/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfLin2d.hxx
++++ oce/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfLin2d.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -699,11 +699,11 @@ index 2e3fbe8..7915507 100644
    
        PColgp_VArrayTNodeOfFieldOfHArray2OfLin2d();
    
-diff --git a/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfPnt.hxx b/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfPnt.hxx
-index 581c218..5bdcad3 100644
---- a/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfPnt.hxx
-+++ b/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfPnt.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfPnt.hxx
+===================================================================
+--- oce.orig/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfPnt.hxx
++++ oce/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfPnt.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -714,11 +714,11 @@ index 581c218..5bdcad3 100644
    
        PColgp_VArrayTNodeOfFieldOfHArray2OfPnt();
    
-diff --git a/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfPnt2d.hxx b/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfPnt2d.hxx
-index eaa6d13..c2ce097 100644
---- a/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfPnt2d.hxx
-+++ b/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfPnt2d.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfPnt2d.hxx
+===================================================================
+--- oce.orig/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfPnt2d.hxx
++++ oce/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfPnt2d.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -729,11 +729,11 @@ index eaa6d13..c2ce097 100644
    
        PColgp_VArrayTNodeOfFieldOfHArray2OfPnt2d();
    
-diff --git a/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfVec.hxx b/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfVec.hxx
-index cb9c797..8a1bf4b 100644
---- a/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfVec.hxx
-+++ b/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfVec.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfVec.hxx
+===================================================================
+--- oce.orig/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfVec.hxx
++++ oce/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfVec.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -744,11 +744,11 @@ index cb9c797..8a1bf4b 100644
    
        PColgp_VArrayTNodeOfFieldOfHArray2OfVec();
    
-diff --git a/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfVec2d.hxx b/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfVec2d.hxx
-index b93c3c6..27c6afb 100644
---- a/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfVec2d.hxx
-+++ b/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfVec2d.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfVec2d.hxx
+===================================================================
+--- oce.orig/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfVec2d.hxx
++++ oce/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfVec2d.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -759,11 +759,11 @@ index b93c3c6..27c6afb 100644
    
        PColgp_VArrayTNodeOfFieldOfHArray2OfVec2d();
    
-diff --git a/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfXY.hxx b/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfXY.hxx
-index fc5e9f2..21cbcc5 100644
---- a/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfXY.hxx
-+++ b/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfXY.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfXY.hxx
+===================================================================
+--- oce.orig/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfXY.hxx
++++ oce/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfXY.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -774,11 +774,11 @@ index fc5e9f2..21cbcc5 100644
    
        PColgp_VArrayTNodeOfFieldOfHArray2OfXY();
    
-diff --git a/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfXYZ.hxx b/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfXYZ.hxx
-index b4c4599..c554748 100644
---- a/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfXYZ.hxx
-+++ b/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfXYZ.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfXYZ.hxx
+===================================================================
+--- oce.orig/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfXYZ.hxx
++++ oce/inc/PColgp_VArrayTNodeOfFieldOfHArray2OfXYZ.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -789,11 +789,11 @@ index b4c4599..c554748 100644
    
        PColgp_VArrayTNodeOfFieldOfHArray2OfXYZ();
    
-diff --git a/inc/PDF_VArrayTNodeOfFieldOfHAttributeArray1.hxx b/inc/PDF_VArrayTNodeOfFieldOfHAttributeArray1.hxx
-index 70aa5fb..cc8921e 100644
---- a/inc/PDF_VArrayTNodeOfFieldOfHAttributeArray1.hxx
-+++ b/inc/PDF_VArrayTNodeOfFieldOfHAttributeArray1.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PDF_VArrayTNodeOfFieldOfHAttributeArray1.hxx
+===================================================================
+--- oce.orig/inc/PDF_VArrayTNodeOfFieldOfHAttributeArray1.hxx
++++ oce/inc/PDF_VArrayTNodeOfFieldOfHAttributeArray1.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -804,11 +804,11 @@ index 70aa5fb..cc8921e 100644
    
        PDF_VArrayTNodeOfFieldOfHAttributeArray1();
    
-diff --git a/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfByte.hxx b/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfByte.hxx
-index fdebf54..dcc8044 100644
---- a/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfByte.hxx
-+++ b/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfByte.hxx
-@@ -42,7 +42,10 @@ public:
+Index: oce/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfByte.hxx
+===================================================================
+--- oce.orig/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfByte.hxx
++++ oce/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfByte.hxx
+@@ -42,7 +42,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -819,11 +819,11 @@ index fdebf54..dcc8044 100644
    
        PDataStd_VArrayTNodeOfFieldOfHArray1OfByte();
    
-diff --git a/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfHArray1OfInteger.hxx b/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfHArray1OfInteger.hxx
-index b96f0e8..f526fd4 100644
---- a/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfHArray1OfInteger.hxx
-+++ b/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfHArray1OfInteger.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfHArray1OfInteger.hxx
+===================================================================
+--- oce.orig/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfHArray1OfInteger.hxx
++++ oce/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfHArray1OfInteger.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -834,11 +834,11 @@ index b96f0e8..f526fd4 100644
    
        PDataStd_VArrayTNodeOfFieldOfHArray1OfHArray1OfInteger();
    
-diff --git a/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfHArray1OfReal.hxx b/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfHArray1OfReal.hxx
-index 9ca8f87..2bcd4eb 100644
---- a/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfHArray1OfReal.hxx
-+++ b/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfHArray1OfReal.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfHArray1OfReal.hxx
+===================================================================
+--- oce.orig/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfHArray1OfReal.hxx
++++ oce/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfHArray1OfReal.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -849,11 +849,11 @@ index 9ca8f87..2bcd4eb 100644
    
        PDataStd_VArrayTNodeOfFieldOfHArray1OfHArray1OfReal();
    
-diff --git a/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfHAsciiString.hxx b/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfHAsciiString.hxx
-index 9bbc2f8..92dc503 100644
---- a/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfHAsciiString.hxx
-+++ b/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfHAsciiString.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfHAsciiString.hxx
+===================================================================
+--- oce.orig/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfHAsciiString.hxx
++++ oce/inc/PDataStd_VArrayTNodeOfFieldOfHArray1OfHAsciiString.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -864,11 +864,11 @@ index 9bbc2f8..92dc503 100644
    
        PDataStd_VArrayTNodeOfFieldOfHArray1OfHAsciiString();
    
-diff --git a/inc/PNaming_VArrayTNodeOfFieldOfHArray1OfNamedShape.hxx b/inc/PNaming_VArrayTNodeOfFieldOfHArray1OfNamedShape.hxx
-index 6b277c8..3e44748 100644
---- a/inc/PNaming_VArrayTNodeOfFieldOfHArray1OfNamedShape.hxx
-+++ b/inc/PNaming_VArrayTNodeOfFieldOfHArray1OfNamedShape.hxx
-@@ -43,6 +43,10 @@ public:
+Index: oce/inc/PNaming_VArrayTNodeOfFieldOfHArray1OfNamedShape.hxx
+===================================================================
+--- oce.orig/inc/PNaming_VArrayTNodeOfFieldOfHArray1OfNamedShape.hxx
++++ oce/inc/PNaming_VArrayTNodeOfFieldOfHArray1OfNamedShape.hxx
+@@ -43,6 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -879,11 +879,11 @@ index 6b277c8..3e44748 100644
  
    
        PNaming_VArrayTNodeOfFieldOfHArray1OfNamedShape();
-diff --git a/inc/PPoly_VArrayTNodeOfFieldOfHArray1OfTriangle.hxx b/inc/PPoly_VArrayTNodeOfFieldOfHArray1OfTriangle.hxx
-index e3fd93b..05bbd41 100644
---- a/inc/PPoly_VArrayTNodeOfFieldOfHArray1OfTriangle.hxx
-+++ b/inc/PPoly_VArrayTNodeOfFieldOfHArray1OfTriangle.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PPoly_VArrayTNodeOfFieldOfHArray1OfTriangle.hxx
+===================================================================
+--- oce.orig/inc/PPoly_VArrayTNodeOfFieldOfHArray1OfTriangle.hxx
++++ oce/inc/PPoly_VArrayTNodeOfFieldOfHArray1OfTriangle.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -894,11 +894,11 @@ index e3fd93b..05bbd41 100644
    
        PPoly_VArrayTNodeOfFieldOfHArray1OfTriangle();
    
-diff --git a/inc/PShort_VArrayTNodeOfFieldOfHArray1OfShortReal.hxx b/inc/PShort_VArrayTNodeOfFieldOfHArray1OfShortReal.hxx
-index 882b506..bafdfe0 100644
---- a/inc/PShort_VArrayTNodeOfFieldOfHArray1OfShortReal.hxx
-+++ b/inc/PShort_VArrayTNodeOfFieldOfHArray1OfShortReal.hxx
-@@ -42,7 +42,10 @@ public:
+Index: oce/inc/PShort_VArrayTNodeOfFieldOfHArray1OfShortReal.hxx
+===================================================================
+--- oce.orig/inc/PShort_VArrayTNodeOfFieldOfHArray1OfShortReal.hxx
++++ oce/inc/PShort_VArrayTNodeOfFieldOfHArray1OfShortReal.hxx
+@@ -42,7 +42,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -909,11 +909,11 @@ index 882b506..bafdfe0 100644
    
        PShort_VArrayTNodeOfFieldOfHArray1OfShortReal();
    
-diff --git a/inc/PShort_VArrayTNodeOfFieldOfHArray2OfShortReal.hxx b/inc/PShort_VArrayTNodeOfFieldOfHArray2OfShortReal.hxx
-index 24a496f..4fa184d 100644
---- a/inc/PShort_VArrayTNodeOfFieldOfHArray2OfShortReal.hxx
-+++ b/inc/PShort_VArrayTNodeOfFieldOfHArray2OfShortReal.hxx
-@@ -42,7 +42,10 @@ public:
+Index: oce/inc/PShort_VArrayTNodeOfFieldOfHArray2OfShortReal.hxx
+===================================================================
+--- oce.orig/inc/PShort_VArrayTNodeOfFieldOfHArray2OfShortReal.hxx
++++ oce/inc/PShort_VArrayTNodeOfFieldOfHArray2OfShortReal.hxx
+@@ -42,7 +42,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -924,11 +924,11 @@ index 24a496f..4fa184d 100644
    
        PShort_VArrayTNodeOfFieldOfHArray2OfShortReal();
    
-diff --git a/inc/PTopoDS_VArrayTNodeOfFieldOfHArray1OfHShape.hxx b/inc/PTopoDS_VArrayTNodeOfFieldOfHArray1OfHShape.hxx
-index 97073dc..c21a2fe 100644
---- a/inc/PTopoDS_VArrayTNodeOfFieldOfHArray1OfHShape.hxx
-+++ b/inc/PTopoDS_VArrayTNodeOfFieldOfHArray1OfHShape.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PTopoDS_VArrayTNodeOfFieldOfHArray1OfHShape.hxx
+===================================================================
+--- oce.orig/inc/PTopoDS_VArrayTNodeOfFieldOfHArray1OfHShape.hxx
++++ oce/inc/PTopoDS_VArrayTNodeOfFieldOfHArray1OfHShape.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -939,11 +939,11 @@ index 97073dc..c21a2fe 100644
    
        PTopoDS_VArrayTNodeOfFieldOfHArray1OfHShape();
    
-diff --git a/inc/PTopoDS_VArrayTNodeOfFieldOfHArray1OfShape1.hxx b/inc/PTopoDS_VArrayTNodeOfFieldOfHArray1OfShape1.hxx
-index 7fd5604..2f7961c 100644
---- a/inc/PTopoDS_VArrayTNodeOfFieldOfHArray1OfShape1.hxx
-+++ b/inc/PTopoDS_VArrayTNodeOfFieldOfHArray1OfShape1.hxx
-@@ -43,7 +43,10 @@ public:
+Index: oce/inc/PTopoDS_VArrayTNodeOfFieldOfHArray1OfShape1.hxx
+===================================================================
+--- oce.orig/inc/PTopoDS_VArrayTNodeOfFieldOfHArray1OfShape1.hxx
++++ oce/inc/PTopoDS_VArrayTNodeOfFieldOfHArray1OfShape1.hxx
+@@ -43,7 +43,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -954,11 +954,11 @@ index 7fd5604..2f7961c 100644
    
        PTopoDS_VArrayTNodeOfFieldOfHArray1OfShape1();
    
-diff --git a/inc/TopoDS_Iterator.hxx b/inc/TopoDS_Iterator.hxx
-index b0365ff..56c9fc2 100644
---- a/inc/TopoDS_Iterator.hxx
-+++ b/inc/TopoDS_Iterator.hxx
-@@ -53,6 +53,10 @@ public:
+Index: oce/inc/TopoDS_Iterator.hxx
+===================================================================
+--- oce.orig/inc/TopoDS_Iterator.hxx
++++ oce/inc/TopoDS_Iterator.hxx
+@@ -53,6 +53,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -969,11 +969,11 @@ index b0365ff..56c9fc2 100644
  
    //! Creates an empty Iterator. <br>
        TopoDS_Iterator();
-diff --git a/inc/TopoDS_Shape.hxx b/inc/TopoDS_Shape.hxx
-index cee1440..569925e 100644
---- a/inc/TopoDS_Shape.hxx
-+++ b/inc/TopoDS_Shape.hxx
-@@ -70,7 +70,10 @@ public:
+Index: oce/inc/TopoDS_Shape.hxx
+===================================================================
+--- oce.orig/inc/TopoDS_Shape.hxx
++++ oce/inc/TopoDS_Shape.hxx
+@@ -63,7 +63,10 @@
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
    }
@@ -984,6 +984,3 @@ index cee1440..569925e 100644
    //! Creates a NULL Shape referring to nothing. <br>
        TopoDS_Shape();
    //! Returns true if this shape is null. In other words, it <br>
--- 
-1.7.5.4
-

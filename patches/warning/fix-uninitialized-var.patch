@@ -2389,7 +2389,7 @@ Index: oce/src/OSD/OSD_File.cxx
   PSECURITY_DESCRIPTOR pfSD = NULL;
   BOOL                 fDummy;
   PFILE_ACE            pFileACE;
-@@ -2367,7 +2367,7 @@
+@@ -2360,7 +2360,7 @@
  
  static DWORD __fastcall _get_access_mask ( OSD_SingleProtection prt ) {
  
@@ -2398,7 +2398,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
   switch ( prt ) {
   
-@@ -2479,7 +2479,7 @@
+@@ -2472,7 +2472,7 @@
  
  static DWORD __fastcall _get_dir_access_mask ( OSD_SingleProtection prt ) {
  
@@ -2407,7 +2407,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
   switch ( prt ) {
   
-@@ -2596,7 +2596,7 @@
+@@ -2589,7 +2589,7 @@
                           ) {
  
   HANDLE retVal = INVALID_HANDLE_VALUE;
@@ -2416,7 +2416,7 @@ Index: oce/src/OSD/OSD_File.cxx
   DWORD  dwCreationDistribution;
  
   switch ( oMode ) {
-@@ -2659,7 +2659,7 @@
+@@ -2652,7 +2652,7 @@
                               Standard_CString fName, Standard_Integer fileHandle
                              ) {
  
@@ -2425,7 +2425,7 @@ Index: oce/src/OSD/OSD_File.cxx
   DWORD            dwType;
   int              fileType;
  
-@@ -2718,11 +2718,11 @@
+@@ -2706,11 +2706,11 @@
   int           i;
   BOOL          fPresent;
   BOOL          fDefaulted;
@@ -2442,7 +2442,7 @@ Index: oce/src/OSD/OSD_File.cxx
   DWORD         dwAccessOwner = 0;
   DWORD         dwAccessGroup = 0;
   DWORD         dwAccessAdmin = 0;
-@@ -3028,9 +3028,9 @@
+@@ -3008,9 +3008,9 @@
  BOOL __fastcall _osd_print (const Standard_PCharacter pName, Standard_CString fName ) {
  
   BOOL   fOK, fJob;                

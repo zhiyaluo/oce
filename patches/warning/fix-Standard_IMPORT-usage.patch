@@ -19,11 +19,11 @@ Fixed many linker warnings due to wrong Standard_IMPORT usage
  src/ViewerTest/ViewerTest_ObjectCommands.cxx       |    2 +-
  12 files changed, 19 insertions(+), 19 deletions(-)
 
-diff --git a/src/BRepAlgo/BRepAlgo_BooleanOperation.cxx b/src/BRepAlgo/BRepAlgo_BooleanOperation.cxx
-index a254686..9c8a7e3 100644
---- a/src/BRepAlgo/BRepAlgo_BooleanOperation.cxx
-+++ b/src/BRepAlgo/BRepAlgo_BooleanOperation.cxx
-@@ -60,11 +60,11 @@ Standard_IMPORT Standard_Integer TopOpeBRepTool_BOOOPE_CHECK_DEB;
+Index: oce/src/BRepAlgo/BRepAlgo_BooleanOperation.cxx
+===================================================================
+--- oce.orig/src/BRepAlgo/BRepAlgo_BooleanOperation.cxx
++++ oce/src/BRepAlgo/BRepAlgo_BooleanOperation.cxx
+@@ -60,11 +60,11 @@
  //modified by NIZHNY-MZV  Wed Apr 19 17:19:11 2000
  //see comments at the top of file TopOpeBRepBuild_Builder1.cxx
  //about using of this global variable
@@ -38,10 +38,10 @@ index a254686..9c8a7e3 100644
  
  //=======================================================================
  //function : Delete 
-diff --git a/src/Draw/Draw_Window.cxx b/src/Draw/Draw_Window.cxx
-index 86d861b..996bc06 100644
---- a/src/Draw/Draw_Window.cxx
-+++ b/src/Draw/Draw_Window.cxx
+Index: oce/src/Draw/Draw_Window.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw_Window.cxx
++++ oce/src/Draw/Draw_Window.cxx
 @@ -23,7 +23,7 @@
  #include <Image_PixMap.hxx>
  
@@ -51,11 +51,11 @@ index 86d861b..996bc06 100644
  static Tcl_Interp *interp;        /* Interpreter for this application. */
  
  /*
-diff --git a/src/TestTopOpe/TestTopOpe.cxx b/src/TestTopOpe/TestTopOpe.cxx
-index 797cbd3..2ef5b11 100644
---- a/src/TestTopOpe/TestTopOpe.cxx
-+++ b/src/TestTopOpe/TestTopOpe.cxx
-@@ -40,9 +40,9 @@ void  TestTopOpe::AllCommands(Draw_Interpretor& theCommands)
+Index: oce/src/TestTopOpe/TestTopOpe.cxx
+===================================================================
+--- oce.orig/src/TestTopOpe/TestTopOpe.cxx
++++ oce/src/TestTopOpe/TestTopOpe.cxx
+@@ -40,9 +40,9 @@
  }
  
  //Standard_IMPORT extern TestTopOpe_HDSDisplayer* PHDSD;
@@ -67,10 +67,10 @@ index 797cbd3..2ef5b11 100644
  
  //=======================================================================
  //function : Shapes
-diff --git a/src/TestTopOpe/TestTopOpe_BOOP.cxx b/src/TestTopOpe/TestTopOpe_BOOP.cxx
-index ca8873e..3c29668 100644
---- a/src/TestTopOpe/TestTopOpe_BOOP.cxx
-+++ b/src/TestTopOpe/TestTopOpe_BOOP.cxx
+Index: oce/src/TestTopOpe/TestTopOpe_BOOP.cxx
+===================================================================
+--- oce.orig/src/TestTopOpe/TestTopOpe_BOOP.cxx
++++ oce/src/TestTopOpe/TestTopOpe_BOOP.cxx
 @@ -37,7 +37,7 @@
  Standard_IMPORT Draw_Viewer dout;
  #endif
@@ -80,10 +80,10 @@ index ca8873e..3c29668 100644
  
  #ifdef DEB
  #include <TopOpeBRepTool_KRO.hxx>
-diff --git a/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx b/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
-index 49a975b..245de63 100644
---- a/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
-+++ b/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
+Index: oce/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
+===================================================================
+--- oce.orig/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
++++ oce/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
 @@ -18,7 +18,7 @@
  # include <strings.h>
  #endif
@@ -93,11 +93,11 @@ index 49a975b..245de63 100644
  #ifdef DEB
  Standard_IMPORT void TopOpeBRepTool_SettraceEND(const Standard_Boolean);
  Standard_IMPORT Standard_Boolean TopOpeBRepTool_GettraceEND();
-diff --git a/src/TestTopOpe/TestTopOpe_HDSCommands.cxx b/src/TestTopOpe/TestTopOpe_HDSCommands.cxx
-index 64f1b61..3f7ae9e 100644
---- a/src/TestTopOpe/TestTopOpe_HDSCommands.cxx
-+++ b/src/TestTopOpe/TestTopOpe_HDSCommands.cxx
-@@ -729,7 +729,7 @@ static void tds_help(Draw_Interpretor& di)
+Index: oce/src/TestTopOpe/TestTopOpe_HDSCommands.cxx
+===================================================================
+--- oce.orig/src/TestTopOpe/TestTopOpe_HDSCommands.cxx
++++ oce/src/TestTopOpe/TestTopOpe_HDSCommands.cxx
+@@ -729,7 +729,7 @@
  }
  
  typedef Standard_Integer (*tf_SeeShape)(const Standard_Integer I,const TopoDS_Shape& S);
@@ -106,10 +106,10 @@ index 64f1b61..3f7ae9e 100644
  void COUTNOHDS(Draw_Interpretor& di) {di<<"no current HDS"<<"\n";}
  Standard_Integer tsee_SeeShapefunc(Draw_Interpretor& di,Standard_Integer na_in,const char** a,tf_SeeShape SeeShapefunc)
  {
-diff --git a/src/TopOpeBRep/TopOpeBRep_DSFiller.cxx b/src/TopOpeBRep/TopOpeBRep_DSFiller.cxx
-index 225e88a..65a2d8e 100644
---- a/src/TopOpeBRep/TopOpeBRep_DSFiller.cxx
-+++ b/src/TopOpeBRep/TopOpeBRep_DSFiller.cxx
+Index: oce/src/TopOpeBRep/TopOpeBRep_DSFiller.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRep/TopOpeBRep_DSFiller.cxx
++++ oce/src/TopOpeBRep/TopOpeBRep_DSFiller.cxx
 @@ -27,8 +27,8 @@
  #include <TopOpeBRepDS_ShapeWithState.hxx>
  #include <TopTools_IndexedMapOfShape.hxx>
@@ -121,7 +121,7 @@ index 225e88a..65a2d8e 100644
  
  
  #ifdef DEB
-@@ -305,8 +305,8 @@ static
+@@ -305,8 +305,8 @@
  
  } // FUN_shareNOG
  
@@ -132,11 +132,11 @@ index 225e88a..65a2d8e 100644
  
  //=======================================================================
  //function : Insert
-diff --git a/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx b/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
-index d832db0..b1f0dea 100644
---- a/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
-+++ b/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
-@@ -997,7 +997,7 @@ void TopOpeBRepBuild_Builder1::GFillEdgeSameDomWES(const TopoDS_Shape& EOR,
+Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
++++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
+@@ -997,7 +997,7 @@
    }
  } // GFillEdgeWES
  
@@ -145,11 +145,11 @@ index d832db0..b1f0dea 100644
  
  //=======================================================================
  //function : PerformONParts
-diff --git a/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1_1.cxx b/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1_1.cxx
-index 9405a31..4687202 100644
---- a/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1_1.cxx
-+++ b/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1_1.cxx
-@@ -59,7 +59,7 @@ static TopTools_IndexedMapOfShape processedEdges;
+Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1_1.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1_1.cxx
++++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1_1.cxx
+@@ -59,7 +59,7 @@
  static TopTools_IndexedMapOfShape theUsedVertexMap;
  static TopTools_MapOfShape theUnkStateVer;
  
@@ -158,11 +158,11 @@ index 9405a31..4687202 100644
  
  //modified by NIZNHY-PKV Mon Dec 16 11:38:55 2002 f
  //=======================================================================
-diff --git a/src/TopOpeBRepBuild/TopOpeBRepBuild_GridEE.cxx b/src/TopOpeBRepBuild/TopOpeBRepBuild_GridEE.cxx
-index ab0d98e..a58a277 100644
---- a/src/TopOpeBRepBuild/TopOpeBRepBuild_GridEE.cxx
-+++ b/src/TopOpeBRepBuild/TopOpeBRepBuild_GridEE.cxx
-@@ -221,13 +221,13 @@ void debfillp2(const Standard_Integer i) {cout <<"+ + debfillp2 "<<i<<endl;}
+Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_GridEE.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_GridEE.cxx
++++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_GridEE.cxx
+@@ -221,13 +221,13 @@
  #endif
  
  //Standard_IMPORT extern Standard_Boolean GLOBAL_faces2d;
@@ -178,10 +178,10 @@ index ab0d98e..a58a277 100644
  //Standard_IMPORT extern Standard_Integer GLOBAL_hassd;
  Standard_IMPORT Standard_Integer GLOBAL_hassd;
  
-diff --git a/src/Viewer2dTest/Viewer2dTest_ObjectCommands.cxx b/src/Viewer2dTest/Viewer2dTest_ObjectCommands.cxx
-index d381f07..14f86b9 100644
---- a/src/Viewer2dTest/Viewer2dTest_ObjectCommands.cxx
-+++ b/src/Viewer2dTest/Viewer2dTest_ObjectCommands.cxx
+Index: oce/src/Viewer2dTest/Viewer2dTest_ObjectCommands.cxx
+===================================================================
+--- oce.orig/src/Viewer2dTest/Viewer2dTest_ObjectCommands.cxx
++++ oce/src/Viewer2dTest/Viewer2dTest_ObjectCommands.cxx
 @@ -74,7 +74,7 @@
  #include <GC_MakePlane.hxx>
  
@@ -191,11 +191,11 @@ index d381f07..14f86b9 100644
  extern Handle(AIS2D_InteractiveContext)& TheAIS2DContext();
  
  //==============================================================================
-diff --git a/src/ViewerTest/ViewerTest_ObjectCommands.cxx b/src/ViewerTest/ViewerTest_ObjectCommands.cxx
-index af79e63..945625d 100644
---- a/src/ViewerTest/ViewerTest_ObjectCommands.cxx
-+++ b/src/ViewerTest/ViewerTest_ObjectCommands.cxx
-@@ -85,7 +85,7 @@
+Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
+===================================================================
+--- oce.orig/src/ViewerTest/ViewerTest_ObjectCommands.cxx
++++ oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
+@@ -86,7 +86,7 @@
  #endif
  
  extern ViewerTest_DoubleMapOfInteractiveAndName& GetMapOfAIS();
@@ -204,6 +204,3 @@ index af79e63..945625d 100644
  extern Handle(AIS_InteractiveContext)& TheAISContext();
  
  
--- 
-1.7.5.4
-

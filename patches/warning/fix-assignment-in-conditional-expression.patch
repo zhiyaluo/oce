@@ -473,7 +473,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_WNT.cxx
 +++ oce/src/OSD/OSD_WNT.cxx
-@@ -1176,11 +1176,11 @@
+@@ -1128,11 +1128,11 @@
  
       if ( pFD -> dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ) {
  
@@ -487,7 +487,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
                             pFullNameSrc, pFullNameDst,
                             MOVEFILE_REPLACE_EXISTING | MOVEFILE_COPY_ALLOWED
                            )
-@@ -1336,11 +1336,11 @@
+@@ -1288,11 +1288,11 @@
  
       if ( pFD -> dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ) {
  
@@ -541,8 +541,8 @@ Index: oce/src/OpenGl/OpenGl_txgl.cxx
 -    HDC    hdc    = NULL;
 -    HGLRC  hglrc  = NULL;
      TStatus       retVal = TFailure;
+     bool Ret = true;
  
-     __try {
 Index: oce/src/PlotMgt/PlotMgt_Plotter.cxx
 ===================================================================
 --- oce.orig/src/PlotMgt/PlotMgt_Plotter.cxx

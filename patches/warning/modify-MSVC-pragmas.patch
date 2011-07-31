@@ -50,10 +50,10 @@ Corrected some others to be disabled instead of level 4 (actually used to do the
  src/XmlXCAFDrivers/XmlXCAFDrivers.cxx              |    2 +-
  42 files changed, 33 insertions(+), 115 deletions(-)
 
-diff --git a/drv/ShapeSchema/ShapeSchema.cxx b/drv/ShapeSchema/ShapeSchema.cxx
-index bf82839..9d67ffc 100644
---- a/drv/ShapeSchema/ShapeSchema.cxx
-+++ b/drv/ShapeSchema/ShapeSchema.cxx
+Index: oce/drv/ShapeSchema/ShapeSchema.cxx
+===================================================================
+--- oce.orig/drv/ShapeSchema/ShapeSchema.cxx
++++ oce/drv/ShapeSchema/ShapeSchema.cxx
 @@ -518,6 +518,11 @@
  #include <ShapeSchema_PCollection_HExtendedString.hxx>
  #endif
@@ -66,10 +66,10 @@ index bf82839..9d67ffc 100644
  IMPLEMENT_STANDARD_HANDLE(ShapeSchema,Storage_Schema)
  IMPLEMENT_STANDARD_RTTIEXT(ShapeSchema,Storage_Schema)
  
-diff --git a/drv/StdLSchema/StdLSchema.cxx b/drv/StdLSchema/StdLSchema.cxx
-index 09abce6..a22852d 100644
---- a/drv/StdLSchema/StdLSchema.cxx
-+++ b/drv/StdLSchema/StdLSchema.cxx
+Index: oce/drv/StdLSchema/StdLSchema.cxx
+===================================================================
+--- oce.orig/drv/StdLSchema/StdLSchema.cxx
++++ oce/drv/StdLSchema/StdLSchema.cxx
 @@ -161,6 +161,11 @@
  #include <StdLSchema_PColStd_HArray2OfInteger.hxx>
  #endif
@@ -82,10 +82,10 @@ index 09abce6..a22852d 100644
  IMPLEMENT_STANDARD_HANDLE(StdLSchema,Storage_Schema)
  IMPLEMENT_STANDARD_RTTIEXT(StdLSchema,Storage_Schema)
  
-diff --git a/drv/StdSchema/StdSchema.cxx b/drv/StdSchema/StdSchema.cxx
-index 11a77aa..99579bd 100644
---- a/drv/StdSchema/StdSchema.cxx
-+++ b/drv/StdSchema/StdSchema.cxx
+Index: oce/drv/StdSchema/StdSchema.cxx
+===================================================================
+--- oce.orig/drv/StdSchema/StdSchema.cxx
++++ oce/drv/StdSchema/StdSchema.cxx
 @@ -95,6 +95,11 @@
  #include <StdSchema_PTopLoc_ItemLocation.hxx>
  #endif
@@ -98,10 +98,10 @@ index 11a77aa..99579bd 100644
  IMPLEMENT_STANDARD_HANDLE(StdSchema,Storage_Schema)
  IMPLEMENT_STANDARD_RTTIEXT(StdSchema,Storage_Schema)
  
-diff --git a/drv/XCAFSchema/XCAFSchema.cxx b/drv/XCAFSchema/XCAFSchema.cxx
-index f0a0dbc..81e55e6 100644
---- a/drv/XCAFSchema/XCAFSchema.cxx
-+++ b/drv/XCAFSchema/XCAFSchema.cxx
+Index: oce/drv/XCAFSchema/XCAFSchema.cxx
+===================================================================
+--- oce.orig/drv/XCAFSchema/XCAFSchema.cxx
++++ oce/drv/XCAFSchema/XCAFSchema.cxx
 @@ -83,6 +83,11 @@
  #include <XCAFSchema_PCollection_HExtendedString.hxx>
  #endif
@@ -114,10 +114,10 @@ index f0a0dbc..81e55e6 100644
  IMPLEMENT_STANDARD_HANDLE(XCAFSchema,Storage_Schema)
  IMPLEMENT_STANDARD_RTTIEXT(XCAFSchema,Storage_Schema)
  
-diff --git a/src/BOPTools/BOPTools_PaveSet.cxx b/src/BOPTools/BOPTools_PaveSet.cxx
-index 02acff2..6e08534 100644
---- a/src/BOPTools/BOPTools_PaveSet.cxx
-+++ b/src/BOPTools/BOPTools_PaveSet.cxx
+Index: oce/src/BOPTools/BOPTools_PaveSet.cxx
+===================================================================
+--- oce.orig/src/BOPTools/BOPTools_PaveSet.cxx
++++ oce/src/BOPTools/BOPTools_PaveSet.cxx
 @@ -11,9 +11,6 @@
  #include <BOPTools_QuickSortPave.hxx>
  #include <BOPTools_ComparePave.hxx>
@@ -128,7 +128,7 @@ index 02acff2..6e08534 100644
  
  //=======================================================================
  // function: BOPTools_PaveSet::BOPTools_PaveSet
-@@ -75,6 +72,4 @@
+@@ -74,6 +71,4 @@
      }
    }
  }
@@ -136,10 +136,10 @@ index 02acff2..6e08534 100644
 -#pragma warning ( default : 4101 )
 -#endif
 +
-diff --git a/src/BinDrivers/BinDrivers.cxx b/src/BinDrivers/BinDrivers.cxx
-index 96bd673..452f223 100644
---- a/src/BinDrivers/BinDrivers.cxx
-+++ b/src/BinDrivers/BinDrivers.cxx
+Index: oce/src/BinDrivers/BinDrivers.cxx
+===================================================================
+--- oce.orig/src/BinDrivers/BinDrivers.cxx
++++ oce/src/BinDrivers/BinDrivers.cxx
 @@ -19,7 +19,7 @@
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
@@ -149,10 +149,10 @@ index 96bd673..452f223 100644
  #endif
  
  static Standard_GUID BinStorageDriver  ("03a56835-8269-11d5-aab2-0050044b1af1");
-diff --git a/src/BinLDrivers/BinLDrivers.cxx b/src/BinLDrivers/BinLDrivers.cxx
-index e38e93b..35e7819 100644
---- a/src/BinLDrivers/BinLDrivers.cxx
-+++ b/src/BinLDrivers/BinLDrivers.cxx
+Index: oce/src/BinLDrivers/BinLDrivers.cxx
+===================================================================
+--- oce.orig/src/BinLDrivers/BinLDrivers.cxx
++++ oce/src/BinLDrivers/BinLDrivers.cxx
 @@ -16,7 +16,7 @@
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
@@ -162,10 +162,10 @@ index e38e93b..35e7819 100644
  #endif
  
  static Standard_GUID BinLStorageDriver  ("13a56835-8269-11d5-aab2-0050044b1af1");
-diff --git a/src/BinTObjDrivers/BinTObjDrivers.cxx b/src/BinTObjDrivers/BinTObjDrivers.cxx
-index 83c946a..339e6ac 100644
---- a/src/BinTObjDrivers/BinTObjDrivers.cxx
-+++ b/src/BinTObjDrivers/BinTObjDrivers.cxx
+Index: oce/src/BinTObjDrivers/BinTObjDrivers.cxx
+===================================================================
+--- oce.orig/src/BinTObjDrivers/BinTObjDrivers.cxx
++++ oce/src/BinTObjDrivers/BinTObjDrivers.cxx
 @@ -18,7 +18,7 @@
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
@@ -175,10 +175,10 @@ index 83c946a..339e6ac 100644
  #endif
  
  static Standard_GUID BinStorageDriver  ("f78ff4a2-a779-11d5-aab4-0050044b1af1");
-diff --git a/src/BinXCAFDrivers/BinXCAFDrivers.cxx b/src/BinXCAFDrivers/BinXCAFDrivers.cxx
-index 31ed2bb..ad94adc 100644
---- a/src/BinXCAFDrivers/BinXCAFDrivers.cxx
-+++ b/src/BinXCAFDrivers/BinXCAFDrivers.cxx
+Index: oce/src/BinXCAFDrivers/BinXCAFDrivers.cxx
+===================================================================
+--- oce.orig/src/BinXCAFDrivers/BinXCAFDrivers.cxx
++++ oce/src/BinXCAFDrivers/BinXCAFDrivers.cxx
 @@ -14,7 +14,7 @@
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
@@ -188,10 +188,10 @@ index 31ed2bb..ad94adc 100644
  #endif
  
  static Standard_GUID BinXCAFStorageDriver  ("a78ff496-a779-11d5-aab4-0050044b1af1");
-diff --git a/src/BooleanOperations/BooleanOperations_ShapesDataStructure.cxx b/src/BooleanOperations/BooleanOperations_ShapesDataStructure.cxx
-index 38607f1..72ee466 100644
---- a/src/BooleanOperations/BooleanOperations_ShapesDataStructure.cxx
-+++ b/src/BooleanOperations/BooleanOperations_ShapesDataStructure.cxx
+Index: oce/src/BooleanOperations/BooleanOperations_ShapesDataStructure.cxx
+===================================================================
+--- oce.orig/src/BooleanOperations/BooleanOperations_ShapesDataStructure.cxx
++++ oce/src/BooleanOperations/BooleanOperations_ShapesDataStructure.cxx
 @@ -43,11 +43,6 @@
  #include <TColStd_MapOfInteger.hxx>
  #include <BOPTColStd_Dump.hxx>
@@ -204,7 +204,7 @@ index 38607f1..72ee466 100644
  static
    void Message(const Standard_Integer i);
  
-@@ -887,11 +882,6 @@ void Message(const Standard_Integer i)
+@@ -887,11 +882,6 @@
  }
  //modified by NIZNHY-PKV Wed Feb  2 14:44:08 2005f
  /*
@@ -216,10 +216,10 @@ index 38607f1..72ee466 100644
  //===========================================================================
  //function : InsertInterference
  //purpose  : 
-diff --git a/src/FWOSDriver/FWOSDriver.cxx b/src/FWOSDriver/FWOSDriver.cxx
-index f54b077..3e093a1 100644
---- a/src/FWOSDriver/FWOSDriver.cxx
-+++ b/src/FWOSDriver/FWOSDriver.cxx
+Index: oce/src/FWOSDriver/FWOSDriver.cxx
+===================================================================
+--- oce.orig/src/FWOSDriver/FWOSDriver.cxx
++++ oce/src/FWOSDriver/FWOSDriver.cxx
 @@ -11,7 +11,7 @@
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
@@ -229,10 +229,10 @@ index f54b077..3e093a1 100644
  #endif
  
  PLUGIN(FWOSDriver)
-diff --git a/src/IntTools/IntTools.cxx b/src/IntTools/IntTools.cxx
-index 0065e00..19a0e38 100644
---- a/src/IntTools/IntTools.cxx
-+++ b/src/IntTools/IntTools.cxx
+Index: oce/src/IntTools/IntTools.cxx
+===================================================================
+--- oce.orig/src/IntTools/IntTools.cxx
++++ oce/src/IntTools/IntTools.cxx
 @@ -23,9 +23,6 @@
  #include <TColStd_ListIteratorOfListOfReal.hxx>
  #include <gce_ErrorType.hxx>
@@ -243,7 +243,7 @@ index 0065e00..19a0e38 100644
  //=======================================================================
  //function : IntTools::GetRadius
  //purpose  : 
-@@ -365,7 +362,3 @@
+@@ -364,7 +361,3 @@
    }
    return 1;
  }
@@ -251,10 +251,10 @@ index 0065e00..19a0e38 100644
 -#ifdef _MSC_VER
 -#pragma warning ( default : 4101 )
 -#endif
-diff --git a/src/IntTools/IntTools_EdgeFace.cxx b/src/IntTools/IntTools_EdgeFace.cxx
-index 46954b6..43b0b13 100644
---- a/src/IntTools/IntTools_EdgeFace.cxx
-+++ b/src/IntTools/IntTools_EdgeFace.cxx
+Index: oce/src/IntTools/IntTools_EdgeFace.cxx
+===================================================================
+--- oce.orig/src/IntTools/IntTools_EdgeFace.cxx
++++ oce/src/IntTools/IntTools_EdgeFace.cxx
 @@ -55,10 +55,6 @@
  #include <GeomAdaptor_HSurface.hxx>
  #include <IntCurveSurface_IntersectionPoint.hxx>
@@ -266,7 +266,7 @@ index 46954b6..43b0b13 100644
  static
    Standard_Boolean IsCoplanar (const BRepAdaptor_Curve&  ,
  			       const BRepAdaptor_Surface& );
-@@ -1595,7 +1591,3 @@ Standard_Integer AdaptiveDiscret (const Standard_Integer iDiscret,
+@@ -1594,7 +1590,3 @@
    return iDiscretNew;
  }
  
@@ -274,10 +274,10 @@ index 46954b6..43b0b13 100644
 -#ifdef _MSC_VER
 -#pragma warning ( default : 4101 )
 -#endif
-diff --git a/src/LDOM/LDOM_BasicAttribute.cxx b/src/LDOM/LDOM_BasicAttribute.cxx
-index 1f5a89a..2f76893 100644
---- a/src/LDOM/LDOM_BasicAttribute.cxx
-+++ b/src/LDOM/LDOM_BasicAttribute.cxx
+Index: oce/src/LDOM/LDOM_BasicAttribute.cxx
+===================================================================
+--- oce.orig/src/LDOM/LDOM_BasicAttribute.cxx
++++ oce/src/LDOM/LDOM_BasicAttribute.cxx
 @@ -7,11 +7,6 @@
  #include <LDOM_BasicAttribute.hxx>
  #include <LDOM_MemManager.hxx>
@@ -290,10 +290,10 @@ index 1f5a89a..2f76893 100644
  //=======================================================================
  //function : LDOM_BasicAttribute
  //purpose  : 
-diff --git a/src/LDOM/LDOM_BasicElement.cxx b/src/LDOM/LDOM_BasicElement.cxx
-index 6fa061b..dd943bd 100644
---- a/src/LDOM/LDOM_BasicElement.cxx
-+++ b/src/LDOM/LDOM_BasicElement.cxx
+Index: oce/src/LDOM/LDOM_BasicElement.cxx
+===================================================================
+--- oce.orig/src/LDOM/LDOM_BasicElement.cxx
++++ oce/src/LDOM/LDOM_BasicElement.cxx
 @@ -9,11 +9,6 @@
  #include <LDOM_BasicText.hxx>
  #include <LDOM_MemManager.hxx>
@@ -306,10 +306,10 @@ index 6fa061b..dd943bd 100644
  //=======================================================================
  //function : Create
  //purpose  : construction in the Document's data pool
-diff --git a/src/LDOM/LDOM_BasicText.cxx b/src/LDOM/LDOM_BasicText.cxx
-index 48c8b07..c92f527 100644
---- a/src/LDOM/LDOM_BasicText.cxx
-+++ b/src/LDOM/LDOM_BasicText.cxx
+Index: oce/src/LDOM/LDOM_BasicText.cxx
+===================================================================
+--- oce.orig/src/LDOM/LDOM_BasicText.cxx
++++ oce/src/LDOM/LDOM_BasicText.cxx
 @@ -8,11 +8,6 @@
  #include <LDOM_BasicText.hxx>
  #include <LDOM_MemManager.hxx>
@@ -322,11 +322,11 @@ index 48c8b07..c92f527 100644
  //=======================================================================
  //function : LDOM_BasicText()
  //purpose  : Constructor
-diff --git a/src/OSD/OSD_Environment.cxx b/src/OSD/OSD_Environment.cxx
-index 46c2260..92df1f4 100644
---- a/src/OSD/OSD_Environment.cxx
-+++ b/src/OSD/OSD_Environment.cxx
-@@ -217,10 +217,6 @@ Standard_Integer OSD_Environment::Error() const
+Index: oce/src/OSD/OSD_Environment.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_Environment.cxx
++++ oce/src/OSD/OSD_Environment.cxx
+@@ -217,10 +217,6 @@
  
  #include <stdio.h>
  
@@ -337,11 +337,11 @@ index 46c2260..92df1f4 100644
  static void __fastcall _set_error ( OSD_Error&, DWORD );
  
  OSD_Environment :: OSD_Environment () {
-diff --git a/src/OSD/OSD_Process.cxx b/src/OSD/OSD_Process.cxx
-index 2e07268..c542ebc 100644
---- a/src/OSD/OSD_Process.cxx
-+++ b/src/OSD/OSD_Process.cxx
-@@ -214,10 +214,6 @@ Standard_Integer OSD_Process::Error()const{
+Index: oce/src/OSD/OSD_Process.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_Process.cxx
++++ oce/src/OSD/OSD_Process.cxx
+@@ -214,10 +214,6 @@
  #include <OSD_WNT_1.hxx>
  #include <lmcons.h> /// pour UNLEN  ( see MSDN about GetUserName() )
  
@@ -352,10 +352,10 @@ index 2e07268..c542ebc 100644
  void _osd_wnt_set_error ( OSD_Error&, OSD_WhoAmI, ... );
  
  OSD_Process :: OSD_Process () {
-diff --git a/src/PlotMgt/PlotMgt_TextManager.cxx b/src/PlotMgt/PlotMgt_TextManager.cxx
-index 463798c..7088867 100644
---- a/src/PlotMgt/PlotMgt_TextManager.cxx
-+++ b/src/PlotMgt/PlotMgt_TextManager.cxx
+Index: oce/src/PlotMgt/PlotMgt_TextManager.cxx
+===================================================================
+--- oce.orig/src/PlotMgt/PlotMgt_TextManager.cxx
++++ oce/src/PlotMgt/PlotMgt_TextManager.cxx
 @@ -6,10 +6,6 @@
  #include <PlotMgt_TextManager.ixx>
  #include <Aspect_Units.hxx>
@@ -367,10 +367,10 @@ index 463798c..7088867 100644
  //#define TRACE
  #define MAXPATHPOINTS  800
  #define MAXCHARPATHS   20
-diff --git a/src/Poly/Poly_CoherentNode.cxx b/src/Poly/Poly_CoherentNode.cxx
-index 7fc53fe..88222f7 100644
---- a/src/Poly/Poly_CoherentNode.cxx
-+++ b/src/Poly/Poly_CoherentNode.cxx
+Index: oce/src/Poly/Poly_CoherentNode.cxx
+===================================================================
+--- oce.orig/src/Poly/Poly_CoherentNode.cxx
++++ oce/src/Poly/Poly_CoherentNode.cxx
 @@ -7,10 +7,6 @@
  #include <Poly_CoherentNode.hxx>
  #include <Poly_CoherentTriangle.hxx>
@@ -382,10 +382,10 @@ index 7fc53fe..88222f7 100644
  #include <stdio.h>
  
  //=======================================================================
-diff --git a/src/Poly/Poly_CoherentTriPtr.cxx b/src/Poly/Poly_CoherentTriPtr.cxx
-index 2a683f0..d5d15d6 100644
---- a/src/Poly/Poly_CoherentTriPtr.cxx
-+++ b/src/Poly/Poly_CoherentTriPtr.cxx
+Index: oce/src/Poly/Poly_CoherentTriPtr.cxx
+===================================================================
+--- oce.orig/src/Poly/Poly_CoherentTriPtr.cxx
++++ oce/src/Poly/Poly_CoherentTriPtr.cxx
 @@ -6,10 +6,6 @@
  
  #include <Poly_CoherentTriPtr.hxx>
@@ -397,10 +397,10 @@ index 2a683f0..d5d15d6 100644
  //=======================================================================
  //function : Iterator::Next
  //purpose  :
-diff --git a/src/StdDrivers/StdDrivers.cxx b/src/StdDrivers/StdDrivers.cxx
-index 66caade..3455ea3 100644
---- a/src/StdDrivers/StdDrivers.cxx
-+++ b/src/StdDrivers/StdDrivers.cxx
+Index: oce/src/StdDrivers/StdDrivers.cxx
+===================================================================
+--- oce.orig/src/StdDrivers/StdDrivers.cxx
++++ oce/src/StdDrivers/StdDrivers.cxx
 @@ -17,7 +17,7 @@
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
@@ -410,10 +410,10 @@ index 66caade..3455ea3 100644
  #endif
  
  static Standard_GUID StdStorageDriver     ("ad696000-5b34-11d1-b5ba-00a0c9064368");
-diff --git a/src/StdLDrivers/StdLDrivers.cxx b/src/StdLDrivers/StdLDrivers.cxx
-index bda579a..6669fac 100644
---- a/src/StdLDrivers/StdLDrivers.cxx
-+++ b/src/StdLDrivers/StdLDrivers.cxx
+Index: oce/src/StdLDrivers/StdLDrivers.cxx
+===================================================================
+--- oce.orig/src/StdLDrivers/StdLDrivers.cxx
++++ oce/src/StdLDrivers/StdLDrivers.cxx
 @@ -16,7 +16,7 @@
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
@@ -423,11 +423,11 @@ index bda579a..6669fac 100644
  #endif
  
  static Standard_GUID StdLStorageDriver     ("bd696000-5b34-11d1-b5ba-00a0c9064368");
-diff --git a/src/TDF/TDF_Data.cxx b/src/TDF/TDF_Data.cxx
-index 65d2e26..5943d23 100644
---- a/src/TDF/TDF_Data.cxx
-+++ b/src/TDF/TDF_Data.cxx
-@@ -75,11 +75,6 @@ if (withDelta) { \
+Index: oce/src/TDF/TDF_Data.cxx
+===================================================================
+--- oce.orig/src/TDF/TDF_Data.cxx
++++ oce/src/TDF/TDF_Data.cxx
+@@ -75,11 +75,6 @@
    aDelta->AddAttributeDelta(DELTACREATION); \
  }
  
@@ -439,7 +439,7 @@ index 65d2e26..5943d23 100644
  //=======================================================================
  //function : TDF_Data
  //purpose  : empty constructor
-@@ -98,10 +93,6 @@ myAllowModification     (Standard_True)
+@@ -98,10 +93,6 @@
    myRoot = new (anIncAllocator) TDF_LabelNode (this);
  }
  
@@ -450,11 +450,11 @@ index 65d2e26..5943d23 100644
  //=======================================================================
  //function : Destroy
  //purpose  : Used to implement the destructor ~.
-diff --git a/src/TDF/TDF_Label.cxx b/src/TDF/TDF_Label.cxx
-index 16f71a5..8e7f7a2 100644
---- a/src/TDF/TDF_Label.cxx
-+++ b/src/TDF/TDF_Label.cxx
-@@ -308,11 +308,6 @@ void TDF_Label::EntryDump(Standard_OStream& anOS) const
+Index: oce/src/TDF/TDF_Label.cxx
+===================================================================
+--- oce.orig/src/TDF/TDF_Label.cxx
++++ oce/src/TDF/TDF_Label.cxx
+@@ -308,11 +308,6 @@
    }
  }
  
@@ -466,7 +466,7 @@ index 16f71a5..8e7f7a2 100644
  //=======================================================================
  //function : FindOrAddChild
  //purpose  : Finds or adds a label child having <aTag> as tag.
-@@ -373,10 +368,6 @@ TDF_LabelNode* TDF_Label::FindOrAddChild
+@@ -373,10 +368,6 @@
    return childLabelNode;
  }
  
@@ -477,11 +477,11 @@ index 16f71a5..8e7f7a2 100644
  //=======================================================================
  //function : InternalDump
  //purpose  : Private method.
-diff --git a/src/TopExp/TopExp_Explorer.cxx b/src/TopExp/TopExp_Explorer.cxx
-index 34cddb4..b36537f 100644
---- a/src/TopExp/TopExp_Explorer.cxx
-+++ b/src/TopExp/TopExp_Explorer.cxx
-@@ -127,11 +127,6 @@ const TopoDS_Shape&  TopExp_Explorer::Current()const
+Index: oce/src/TopExp/TopExp_Explorer.cxx
+===================================================================
+--- oce.orig/src/TopExp/TopExp_Explorer.cxx
++++ oce/src/TopExp/TopExp_Explorer.cxx
+@@ -127,11 +127,6 @@
  //purpose  : 
  //=======================================================================
  
@@ -493,7 +493,7 @@ index 34cddb4..b36537f 100644
  void  TopExp_Explorer::Next()
  {
    Standard_Integer NewSize;
-@@ -209,9 +204,6 @@ void  TopExp_Explorer::Next()
+@@ -209,9 +204,6 @@
    hasMore = Standard_False;
  }
  
@@ -503,10 +503,10 @@ index 34cddb4..b36537f 100644
  
  //=======================================================================
  //function : ReInit
-diff --git a/src/ViewerTest/ViewerTest.cxx b/src/ViewerTest/ViewerTest.cxx
-index ec756a9..f693482 100644
---- a/src/ViewerTest/ViewerTest.cxx
-+++ b/src/ViewerTest/ViewerTest.cxx
+Index: oce/src/ViewerTest/ViewerTest.cxx
+===================================================================
+--- oce.orig/src/ViewerTest/ViewerTest.cxx
++++ oce/src/ViewerTest/ViewerTest.cxx
 @@ -56,7 +56,6 @@
  #ifdef _MSC_VER
  #define _CRT_SECURE_NO_DEPRECATE
@@ -515,10 +515,10 @@ index ec756a9..f693482 100644
  #endif
  
  #include <NIS_InteractiveContext.hxx>
-diff --git a/src/ViewerTest/ViewerTest_ObjectCommands.cxx b/src/ViewerTest/ViewerTest_ObjectCommands.cxx
-index 8fe1380..af79e63 100644
---- a/src/ViewerTest/ViewerTest_ObjectCommands.cxx
-+++ b/src/ViewerTest/ViewerTest_ObjectCommands.cxx
+Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
+===================================================================
+--- oce.orig/src/ViewerTest/ViewerTest_ObjectCommands.cxx
++++ oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 @@ -82,7 +82,6 @@
  
  #ifdef _MSC_VER
@@ -527,10 +527,10 @@ index 8fe1380..af79e63 100644
  #endif
  
  extern ViewerTest_DoubleMapOfInteractiveAndName& GetMapOfAIS();
-diff --git a/src/ViewerTest/ViewerTest_ViewerCommands.cxx b/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-index fd0e73d..fe1cb33 100644
---- a/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-+++ b/src/ViewerTest/ViewerTest_ViewerCommands.cxx
+Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
+===================================================================
+--- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
++++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 @@ -42,7 +42,6 @@
  
  #ifdef _MSC_VER
@@ -539,10 +539,10 @@ index fd0e73d..fe1cb33 100644
  #endif
  
  #endif
-diff --git a/src/VrmlData/VrmlData_Geometry.cxx b/src/VrmlData/VrmlData_Geometry.cxx
-index 22d772e..65a68a1 100644
---- a/src/VrmlData/VrmlData_Geometry.cxx
-+++ b/src/VrmlData/VrmlData_Geometry.cxx
+Index: oce/src/VrmlData/VrmlData_Geometry.cxx
+===================================================================
+--- oce.orig/src/VrmlData/VrmlData_Geometry.cxx
++++ oce/src/VrmlData/VrmlData_Geometry.cxx
 @@ -25,7 +25,6 @@
  
  #ifdef _MSC_VER
@@ -551,10 +551,10 @@ index 22d772e..65a68a1 100644
  #endif
  
  #include <stdio.h>
-diff --git a/src/VrmlData/VrmlData_Group.cxx b/src/VrmlData/VrmlData_Group.cxx
-index 3d6219b..a5f93f0 100644
---- a/src/VrmlData/VrmlData_Group.cxx
-+++ b/src/VrmlData/VrmlData_Group.cxx
+Index: oce/src/VrmlData/VrmlData_Group.cxx
+===================================================================
+--- oce.orig/src/VrmlData/VrmlData_Group.cxx
++++ oce/src/VrmlData/VrmlData_Group.cxx
 @@ -16,7 +16,6 @@
  
  #ifdef _MSC_VER
@@ -563,10 +563,10 @@ index 3d6219b..a5f93f0 100644
  #endif
  
  #include <stdio.h>
-diff --git a/src/VrmlData/VrmlData_IndexedFaceSet.cxx b/src/VrmlData/VrmlData_IndexedFaceSet.cxx
-index 1b540ef..667206f 100644
---- a/src/VrmlData/VrmlData_IndexedFaceSet.cxx
-+++ b/src/VrmlData/VrmlData_IndexedFaceSet.cxx
+Index: oce/src/VrmlData/VrmlData_IndexedFaceSet.cxx
+===================================================================
+--- oce.orig/src/VrmlData/VrmlData_IndexedFaceSet.cxx
++++ oce/src/VrmlData/VrmlData_IndexedFaceSet.cxx
 @@ -22,7 +22,6 @@
  
  #ifdef _MSC_VER
@@ -575,10 +575,10 @@ index 1b540ef..667206f 100644
  #endif
  
  #include <stdio.h>
-diff --git a/src/VrmlData/VrmlData_IndexedLineSet.cxx b/src/VrmlData/VrmlData_IndexedLineSet.cxx
-index dd347eb..4b9a88c 100644
---- a/src/VrmlData/VrmlData_IndexedLineSet.cxx
-+++ b/src/VrmlData/VrmlData_IndexedLineSet.cxx
+Index: oce/src/VrmlData/VrmlData_IndexedLineSet.cxx
+===================================================================
+--- oce.orig/src/VrmlData/VrmlData_IndexedLineSet.cxx
++++ oce/src/VrmlData/VrmlData_IndexedLineSet.cxx
 @@ -17,7 +17,6 @@
  
  #ifdef _MSC_VER
@@ -587,10 +587,10 @@ index dd347eb..4b9a88c 100644
  #endif
  
  IMPLEMENT_STANDARD_HANDLE  (VrmlData_IndexedLineSet, VrmlData_Geometry)
-diff --git a/src/VrmlData/VrmlData_Material.cxx b/src/VrmlData/VrmlData_Material.cxx
-index d5e5439..50c0774 100644
---- a/src/VrmlData/VrmlData_Material.cxx
-+++ b/src/VrmlData/VrmlData_Material.cxx
+Index: oce/src/VrmlData/VrmlData_Material.cxx
+===================================================================
+--- oce.orig/src/VrmlData/VrmlData_Material.cxx
++++ oce/src/VrmlData/VrmlData_Material.cxx
 @@ -11,7 +11,6 @@
  
  #ifdef _MSC_VER
@@ -599,10 +599,10 @@ index d5e5439..50c0774 100644
  #endif
  
  #include <stdio.h>
-diff --git a/src/VrmlData/VrmlData_Node.cxx b/src/VrmlData/VrmlData_Node.cxx
-index 13a3316..9e4b369 100644
---- a/src/VrmlData/VrmlData_Node.cxx
-+++ b/src/VrmlData/VrmlData_Node.cxx
+Index: oce/src/VrmlData/VrmlData_Node.cxx
+===================================================================
+--- oce.orig/src/VrmlData/VrmlData_Node.cxx
++++ oce/src/VrmlData/VrmlData_Node.cxx
 @@ -16,7 +16,6 @@
  
  #ifdef _MSC_VER
@@ -611,10 +611,10 @@ index 13a3316..9e4b369 100644
  #endif
  
  IMPLEMENT_STANDARD_HANDLE  (VrmlData_Node, Standard_Transient)
-diff --git a/src/VrmlData/VrmlData_Scene.cxx b/src/VrmlData/VrmlData_Scene.cxx
-index e542fda..b8c187f 100644
---- a/src/VrmlData/VrmlData_Scene.cxx
-+++ b/src/VrmlData/VrmlData_Scene.cxx
+Index: oce/src/VrmlData/VrmlData_Scene.cxx
+===================================================================
+--- oce.orig/src/VrmlData/VrmlData_Scene.cxx
++++ oce/src/VrmlData/VrmlData_Scene.cxx
 @@ -35,7 +35,6 @@
  
  #ifdef _MSC_VER
@@ -623,10 +623,10 @@ index e542fda..b8c187f 100644
  #endif
  
  #include <stdio.h>
-diff --git a/src/VrmlData/VrmlData_WorldInfo.cxx b/src/VrmlData/VrmlData_WorldInfo.cxx
-index bc68291..c0652cb 100644
---- a/src/VrmlData/VrmlData_WorldInfo.cxx
-+++ b/src/VrmlData/VrmlData_WorldInfo.cxx
+Index: oce/src/VrmlData/VrmlData_WorldInfo.cxx
+===================================================================
+--- oce.orig/src/VrmlData/VrmlData_WorldInfo.cxx
++++ oce/src/VrmlData/VrmlData_WorldInfo.cxx
 @@ -10,7 +10,6 @@
  
  #ifdef _MSC_VER
@@ -635,10 +635,10 @@ index bc68291..c0652cb 100644
  #endif
  
  #include <stdio.h>
-diff --git a/src/XCAFDrivers/XCAFDrivers.cxx b/src/XCAFDrivers/XCAFDrivers.cxx
-index c53ba83..1ccbd52 100644
---- a/src/XCAFDrivers/XCAFDrivers.cxx
-+++ b/src/XCAFDrivers/XCAFDrivers.cxx
+Index: oce/src/XCAFDrivers/XCAFDrivers.cxx
+===================================================================
+--- oce.orig/src/XCAFDrivers/XCAFDrivers.cxx
++++ oce/src/XCAFDrivers/XCAFDrivers.cxx
 @@ -21,7 +21,7 @@
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
@@ -648,10 +648,10 @@ index c53ba83..1ccbd52 100644
  #endif
  
  static Standard_GUID XSStorageDriver  ("ed8793f8-3142-11d4-b9b5-0060b0ee281b");
-diff --git a/src/XmlDrivers/XmlDrivers.cxx b/src/XmlDrivers/XmlDrivers.cxx
-index 2603c67..cd638e7 100644
---- a/src/XmlDrivers/XmlDrivers.cxx
-+++ b/src/XmlDrivers/XmlDrivers.cxx
+Index: oce/src/XmlDrivers/XmlDrivers.cxx
+===================================================================
+--- oce.orig/src/XmlDrivers/XmlDrivers.cxx
++++ oce/src/XmlDrivers/XmlDrivers.cxx
 @@ -25,7 +25,7 @@
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
@@ -661,10 +661,10 @@ index 2603c67..cd638e7 100644
  #endif
  
  static Standard_GUID XmlStorageDriver  ("03a56820-8269-11d5-aab2-0050044b1af1");
-diff --git a/src/XmlLDrivers/XmlLDrivers.cxx b/src/XmlLDrivers/XmlLDrivers.cxx
-index 51600b4..5b325e3 100644
---- a/src/XmlLDrivers/XmlLDrivers.cxx
-+++ b/src/XmlLDrivers/XmlLDrivers.cxx
+Index: oce/src/XmlLDrivers/XmlLDrivers.cxx
+===================================================================
+--- oce.orig/src/XmlLDrivers/XmlLDrivers.cxx
++++ oce/src/XmlLDrivers/XmlLDrivers.cxx
 @@ -20,7 +20,7 @@
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
@@ -674,10 +674,10 @@ index 51600b4..5b325e3 100644
  #endif
  
  static Standard_GUID XmlLStorageDriver  ("13a56820-8269-11d5-aab2-0050044b1af1");
-diff --git a/src/XmlTObjDrivers/XmlTObjDrivers.cxx b/src/XmlTObjDrivers/XmlTObjDrivers.cxx
-index 7cb7855..3f2d7d5 100644
---- a/src/XmlTObjDrivers/XmlTObjDrivers.cxx
-+++ b/src/XmlTObjDrivers/XmlTObjDrivers.cxx
+Index: oce/src/XmlTObjDrivers/XmlTObjDrivers.cxx
+===================================================================
+--- oce.orig/src/XmlTObjDrivers/XmlTObjDrivers.cxx
++++ oce/src/XmlTObjDrivers/XmlTObjDrivers.cxx
 @@ -19,7 +19,7 @@
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
@@ -687,10 +687,10 @@ index 7cb7855..3f2d7d5 100644
  #endif
  
  static Standard_GUID XmlStorageDriver  ("f78ff4a0-a779-11d5-aab4-0050044b1af1");
-diff --git a/src/XmlXCAFDrivers/XmlXCAFDrivers.cxx b/src/XmlXCAFDrivers/XmlXCAFDrivers.cxx
-index 4f99f46..a78dba0 100644
---- a/src/XmlXCAFDrivers/XmlXCAFDrivers.cxx
-+++ b/src/XmlXCAFDrivers/XmlXCAFDrivers.cxx
+Index: oce/src/XmlXCAFDrivers/XmlXCAFDrivers.cxx
+===================================================================
+--- oce.orig/src/XmlXCAFDrivers/XmlXCAFDrivers.cxx
++++ oce/src/XmlXCAFDrivers/XmlXCAFDrivers.cxx
 @@ -15,7 +15,7 @@
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
@@ -700,6 +700,3 @@ index 4f99f46..a78dba0 100644
  #endif
  
  static Standard_GUID XSStorageDriver  ("f78ff496-a779-11d5-aab4-0050044b1af1");
--- 
-1.7.5.4
-

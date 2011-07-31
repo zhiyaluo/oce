@@ -24,7 +24,7 @@ Index: oce/CMakeLists.txt
 ===================================================================
 --- oce.orig/CMakeLists.txt
 +++ oce/CMakeLists.txt
-@@ -75,6 +75,12 @@
+@@ -77,6 +77,12 @@
  	OPTION_WITH_DEFAULT( ${PROJECT_NAME}_USE_BUNDLE "Use OCE Windows Bundle" OFF )
  ENDIF(MSVC)
  
