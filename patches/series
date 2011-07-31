@@ -13,6 +13,8 @@ submitted/thread_20105/add-openmp-support.patch
 submitted/thread_20931/add-missing-include-stdlib.patch
 
 warning/bugs.patch
+build-with-newer-ftgl.patch
+fix-freeimage-gl2ps-support.patch
 ports/remove-__try-__finally.patch
 
 warning/remove-extra-token-after-endif.patch
@@ -58,9 +60,6 @@ cmake/remove-Autotools-and-project-files.patch
 cmake/copy-CMake-files-from-5e184f9.patch
 cmake/increased-version-number-to-0.4.0.patch
 release-OCE-0.4.0.patch
-build-with-newer-ftgl.patch
-fix-freeimage-gl2ps-support.patch
-cmake/rename-config.h-into-oce-config.h.patch
 
 cmake/cpack/add-CPack-support.patch
 
@@ -99,6 +98,7 @@ remove-ExprIntrp.tab.c.patch
 
 get-rid-of-environment-variables.patch
 
+cmake/rename-config.h-into-oce-config.h.patch
 config/add-OCE-prefix-to-macros.patch
 
 review/add-todos.patch
