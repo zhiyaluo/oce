@@ -226,14 +226,12 @@ Index: oce/src/OSD/OSD_File.cxx
  
  BOOL __fastcall _osd_wnt_sd_to_protection (
                   PSECURITY_DESCRIPTOR pSD, OSD_Protection& prot, BOOL fDir
-@@ -2731,23 +2716,31 @@
-  DWORD         dwAccessAdmin = 0;
-  DWORD         dwAccessWorld = 0;
+@@ -2733,21 +2718,29 @@
   BOOL          retVal = FALSE;
-+ BOOL          Ret = true;
   GET_PROT_FUNC _get_prot_func = fDir ? &_get_protection_dir : &_get_protection;
  
 - __try {
++ BOOL          Ret = true;
 + if (Ret) {
  
 -  if (  !GetSecurityDescriptorOwner ( pSD, &pSIDowner, &fDefaulted )  ) __leave;
@@ -943,13 +941,12 @@ Index: oce/src/OpenGl/OpenGl_txgl.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_txgl.cxx
 +++ oce/src/OpenGl/OpenGl_txgl.cxx
-@@ -697,13 +697,18 @@
-     HDC    hdc    = NULL;
+@@ -698,12 +698,17 @@
      HGLRC  hglrc  = NULL;
      TStatus       retVal = TFailure;
-+    bool Ret = true;
  
 -    __try {
++    bool Ret = true;
 +    if (Ret){
  
        if ( !_Txgl_Map.IsBound( ( Tint )win ) ) {

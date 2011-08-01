@@ -177,7 +177,7 @@ Index: oce/src/Adaptor3d/Adaptor3d_SurfaceOfLinearExtrusion.cxx
  
    default:
 -    return GeomAbs_SurfaceOfExtrusion;
-+     break;
++    break;
  
    }
    
@@ -190,7 +190,7 @@ Index: oce/src/Adaptor3d/Adaptor3d_SurfaceOfRevolution.cxx
      
    default:
 -    return GeomAbs_SurfaceOfRevolution;
-+     break;
++    break;
    }
    
    // portage WNT
@@ -685,7 +685,7 @@ Index: oce/src/MNaming/MNaming_NamingRetrievalDriver.cxx
      case  7 : return TopAbs_VERTEX;
        default :
 -	return TopAbs_SHAPE;
-+	    break;
++	break;
      }
    return TopAbs_SHAPE;
  }
@@ -698,7 +698,7 @@ Index: oce/src/MNaming/MNaming_NamingRetrievalDriver_1.cxx
      case  7 : return TopAbs_VERTEX;
        default :
 -	return TopAbs_SHAPE;
-+	    break;
++	break;
      }
    return TopAbs_SHAPE;
  }

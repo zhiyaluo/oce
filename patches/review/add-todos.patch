@@ -78,6 +78,26 @@ Index: oce/src/IFSelect/IFSelect_WorkSession.cxx
    for (chl.Start(); chl.More(); chl.Next()) {
      Standard_Integer num = chl.Number();
      const Handle(Interface_Check) ach = chl.Value();
+Index: oce/src/OpenGl/OpenGl_TextureBox.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_TextureBox.cxx
++++ oce/src/OpenGl/OpenGl_TextureBox.cxx
+@@ -519,6 +519,7 @@
+   if (textab[ID].use_bind_texture[Context])
+   {
+     /* OCC11904 - make sure that the correct texture is bound before drawing */
++	// @todo Check here if it is correct : compare .status with the wrong ENUM type (the value matches)
+     GLenum aParamName = textab[ID].status == TEXDATA_1D ? 
+ GL_TEXTURE_BINDING_1D : GL_TEXTURE_BINDING_2D;
+     GLint aCurrTex = -1;
+@@ -536,6 +537,7 @@
+ #endif /* GL_EXT_texture_object */
+   {
+     /* OCC11904 - make sure that the correct texture is bound before drawing */
++	// @todo Check here if it is correct : compare .status with the wrong ENUM type (the value matches)
+     GLenum aParamName = textab[ID].status == TEXDATA_1D ? 
+ GL_TEXTURE_BINDING_1D : GL_TEXTURE_BINDING_2D;
+     GLint aCurrTex = -1;
 Index: oce/src/Visual3d/Visual3d_ViewManager.cxx
 ===================================================================
 --- oce.orig/src/Visual3d/Visual3d_ViewManager.cxx

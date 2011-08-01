@@ -14,14 +14,13 @@ Index: oce/inc/Poly_CoherentTriPtr.hxx
 ===================================================================
 --- oce.orig/inc/Poly_CoherentTriPtr.hxx
 +++ oce/inc/Poly_CoherentTriPtr.hxx
-@@ -84,6 +84,12 @@
+@@ -84,6 +84,11 @@
      return theAllocator->Allocate(theSize);
    }
  
-+  /** Matching Operator for deletion. Does nothing. The operator does nothing and is called in case of "new" throwing. */
 +  void operator delete (void * aBuffer, const Handle(NCollection_BaseAllocator)& theAllocator) 
 +  {
-+	  theAllocator->Free(aBuffer);
++    theAllocator->Free(aBuffer);
 +  };
 +
    /**
@@ -38,7 +37,7 @@ Index: oce/inc/TDF_LabelNode.hxx
 +  
 +  void operator delete ( void * aBuffer , const Handle(NCollection_IncAllocator)& anAlloc )
 +  {
-+	  anAlloc->Free(aBuffer);
++    anAlloc->Free(aBuffer);
 +  }
 +
    void  operator delete(void *) { }

@@ -3082,7 +3082,7 @@ Index: oce/src/OSD/OSD_MAllocHook.cxx
      myMutex.Unlock();
 -    if (myBreakSize == theSize)
 +#ifdef DEBUG
-+	if (myBreakSize == theSize)
++    if (myBreakSize == theSize)
      {
        int a = 1;
      }
@@ -3169,7 +3169,7 @@ Index: oce/src/OpenGl/OpenGl_togl_begin.cxx
    status = call_tox_set_display (pdisplay);
    if( status ) {
  #ifndef WNT
-+	 char *pvalue = NULL;
++    char *pvalue = NULL;
      if ((pvalue = getenv ("CSF_GraphicSync")) != NULL)
        XSynchronize (call_thedisplay, 1);
      InitExtensionGLX(call_thedisplay);
@@ -3247,7 +3247,32 @@ Index: oce/src/OpenGl/OpenGl_txgl.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_txgl.cxx
 +++ oce/src/OpenGl/OpenGl_txgl.cxx
-@@ -776,8 +776,7 @@
+@@ -386,7 +386,6 @@
+ 
+     HTBL_ENTRY*           hte;
+     PIXELFORMATDESCRIPTOR pfd;
+-    BOOL                  DBuffer = TRUE;
+     int                   iPixelFormat;
+     char                  string[ CALL_DEF_STRING_LENGTH ];
+ 
+@@ -578,7 +577,6 @@
+     cmn_htbl_elem         rec;*/
+     HTBL_ENTRY*           hte;
+     PIXELFORMATDESCRIPTOR pfd;
+-    BOOL                  DBuffer = TRUE;
+     int                   iPixelFormat;
+     char                  string[ CALL_DEF_STRING_LENGTH ];
+ 
+@@ -694,8 +692,6 @@
+ #else /* WNT */
+ 
+     HTBL_ENTRY*   hte;
+-    HDC    hdc    = NULL;
+-    HGLRC  hglrc  = NULL;
+     TStatus       retVal = TFailure;
+ 
+     bool Ret = true;
+@@ -780,8 +776,7 @@
  #ifndef WNT
  
      GLXContext ctx;
@@ -3425,7 +3450,7 @@ Index: oce/src/TDF/TDF_Delta.cxx
 -    const TDF_Label& lab1 = it1.Value();
 -    inList = labMap.Add(lab1);
  #ifdef DEB_DELTA
-+	const TDF_Label& lab1 = it1.Value();
++    const TDF_Label& lab1 = it1.Value();
 +    inList = labMap.Add(lab1);
      if (!inList) {
        lab1.EntryDump(cout);cout<<" | ";
@@ -3437,7 +3462,7 @@ Index: oce/src/TDF/TDF_Delta.cxx
 -    const TDF_Label& lab1 = it2.Value()->Label();
 -    inList = labMap.Add(lab1);
  #ifdef DEB_DELTA
-+	const TDF_Label& lab1 = it2.Value()->Label();
++    const TDF_Label& lab1 = it2.Value()->Label();
 +    inList = labMap.Add(lab1);
      if (!inList) {
        lab1.EntryDump(cout);cout<<" | ";

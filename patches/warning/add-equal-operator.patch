@@ -32,9 +32,9 @@ Index: oce/inc/LDOM_MemManager.hxx
      static Standard_Integer Hash(const char             * theString,
                                   const Standard_Integer theLen);
 +
-+	// Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
-+	HashTable & operator = (const HashTable &) { return *this; }
-+	
++    // Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
++    HashTable & operator = (const HashTable &) { return *this; }
++
      struct TableItem {
        char             * str;
        struct TableItem * next;
@@ -46,8 +46,8 @@ Index: oce/inc/SelectMgr_CompareResults.hxx
  
  class SelectMgr_CompareResults: public TCollection_CompareOfInteger
  {
-+	// Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
-+	SelectMgr_CompareResults & operator = ( const SelectMgr_CompareResults & ) { return *this; } ;
++  // Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
++  SelectMgr_CompareResults & operator = ( const SelectMgr_CompareResults & ) { return *this; } ;
   public:
    SelectMgr_CompareResults
          (const SelectMgr_IndexedDataMapOfOwnerCriterion& aMapOfCriterion)
@@ -60,8 +60,8 @@ Index: oce/inc/VrmlData_InBuffer.hxx
   */
  struct VrmlData_InBuffer {
 +private:
-+	// Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
-+	VrmlData_InBuffer & operator = (const VrmlData_InBuffer &) { return *this; }
++  // Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
++  VrmlData_InBuffer & operator = (const VrmlData_InBuffer &) { return *this; }
 +public:
    Standard_IStream& Input;
    char              Line[8096];
@@ -75,8 +75,8 @@ Index: oce/inc/VrmlData_ShapeConvert.hxx
  class VrmlData_ShapeConvert 
  {
 - public:
-+	// Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
-+	VrmlData_ShapeConvert & operator = (const VrmlData_ShapeConvert &) { return *this; }
++  // Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
++  VrmlData_ShapeConvert & operator = (const VrmlData_ShapeConvert &) { return *this; }
 +
 +public:
  
@@ -90,8 +90,8 @@ Index: oce/src/Extrema/Extrema_GenExtPS.cxx
  
  class Bnd_SphereUBTreeSelector : public Extrema_UBTreeOfSphere::Selector
  {
-+	// Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
-+	Bnd_SphereUBTreeSelector & operator=( const Bnd_SphereUBTreeSelector & ) { return *this; }
++  // Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
++  Bnd_SphereUBTreeSelector & operator=( const Bnd_SphereUBTreeSelector & ) { return *this; }
   public:
  
    Bnd_SphereUBTreeSelector (const Handle(Bnd_HArray1OfSphere)& theSphereArray,
@@ -104,8 +104,8 @@ Index: oce/src/LDOM/LDOM_CharReference.cxx
    const int    length;
    entityRef (const char * aName, const int aLen) : name(aName), length(aLen) {}
 +private:
-+	// Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
-+	entityRef & operator = (const entityRef & ) { return *this; }
++  // Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
++  entityRef & operator = (const entityRef & ) { return *this; }
  };
  
  //=======================================================================

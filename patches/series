@@ -19,7 +19,6 @@ fix-freeimage-gl2ps-support.patch
 ports/remove-__try-__finally.patch
 
 warning/remove-extra-token-after-endif.patch
-warning/fix-assignment-in-conditional-expression.patch
 warning/fix-declared-but-never-defined.patch
 warning/fix-deprecated-conversion-from-string.patch
 warning/fix-comparison-between-different-enums.patch
@@ -47,6 +46,9 @@ warning/fix-defined-but-not-used.patch
 warning/linker-warnings.patch
 warning/add-placement-delete.patch
 warning/add-placement-delete-allocator.patch
+
+#  Do not submit patches below
+warning/fix-assignment-in-conditional-expression.patch
 warning/add-equal-operator.patch
 warning/fix-unreachable-code-rewrite-loops.patch
 warning/fix-Standard_IMPORT-usage.patch

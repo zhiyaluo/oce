@@ -91,7 +91,7 @@ Index: oce/inc/ShapeAnalysis_BoxBndTree.hxx
 -    :  mySeq(theSeq), myShared(theShared), myNb(0), myTol(1e-7), myMin3d(1e-7),
 -      myStatus(ShapeExtend::EncodeStatus (ShapeExtend_OK)){}
 +    :  mySeq(theSeq), myShared(theShared), myStatus(ShapeExtend::EncodeStatus (ShapeExtend_OK)),
-+	   myNb(0), myTol(1e-7), myMin3d(1e-7){}
++      myNb(0), myTol(1e-7), myMin3d(1e-7){}
    
    void DefineBoxes (const Bnd_Box& theFBox, const Bnd_Box& theLBox)
      { myFBox = theFBox;
@@ -105,8 +105,8 @@ Index: oce/inc/TopClass_Classifier2d.gxx
         myFirstCompare(Standard_True),
 -       myIsHeadOrEnd(Standard_False), // skv OCC12627
 -       myState(TopAbs_UNKNOWN)        // skv OCC12627
-+	   myState(TopAbs_UNKNOWN),        // skv OCC12627
-+	   myIsHeadOrEnd(Standard_False) // skv OCC12627
++       myState(TopAbs_UNKNOWN),       // skv OCC12627
++       myIsHeadOrEnd(Standard_False)  // skv OCC12627
  
  {
  }

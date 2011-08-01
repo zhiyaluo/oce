@@ -74,10 +74,10 @@ Index: oce/src/ExprIntrp/ExprIntrp.cxx
 -    }
 +
 +#if defined(NO_CXX_EXCEPTION) || defined(OCC_CONVERT_SIGNALS)
-+		return Standard_False;
++      return Standard_False;
 +#endif
 +
-+	}
++    }
    }
 +
 +#if defined(NO_CXX_EXCEPTION) || defined(OCC_CONVERT_SIGNALS)
@@ -94,7 +94,7 @@ Index: oce/src/FWOSDriver/FWOSDriver_Driver.cxx
        return Standard_True;
      default:
 -      return Standard_False;
-+		break;
++      break;
      }
    return Standard_False;
  }

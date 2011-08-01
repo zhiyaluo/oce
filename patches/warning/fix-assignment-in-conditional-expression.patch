@@ -514,35 +514,6 @@ Index: oce/src/OpenGl/OpenGl_togl_begin_animation.cxx
    g_fUpdateAM                = ( aview -> IsDegenerates ==
      aview -> IsDegeneratesPrev
      ) ? GL_FALSE : GL_TRUE;
-Index: oce/src/OpenGl/OpenGl_txgl.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_txgl.cxx
-+++ oce/src/OpenGl/OpenGl_txgl.cxx
-@@ -386,7 +386,6 @@
- 
-     HTBL_ENTRY*           hte;
-     PIXELFORMATDESCRIPTOR pfd;
--    BOOL                  DBuffer = TRUE;
-     int                   iPixelFormat;
-     char                  string[ CALL_DEF_STRING_LENGTH ];
- 
-@@ -578,7 +577,6 @@
-     cmn_htbl_elem         rec;*/
-     HTBL_ENTRY*           hte;
-     PIXELFORMATDESCRIPTOR pfd;
--    BOOL                  DBuffer = TRUE;
-     int                   iPixelFormat;
-     char                  string[ CALL_DEF_STRING_LENGTH ];
- 
-@@ -694,8 +692,6 @@
- #else /* WNT */
- 
-     HTBL_ENTRY*   hte;
--    HDC    hdc    = NULL;
--    HGLRC  hglrc  = NULL;
-     TStatus       retVal = TFailure;
-     bool Ret = true;
- 
 Index: oce/src/PlotMgt/PlotMgt_Plotter.cxx
 ===================================================================
 --- oce.orig/src/PlotMgt/PlotMgt_Plotter.cxx

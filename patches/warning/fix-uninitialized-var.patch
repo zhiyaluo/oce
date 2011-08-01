@@ -595,7 +595,7 @@ Index: oce/inc/Intf_InterferencePolygonPolyhedron.gxx
    if(NoIntersectionWithTriangle == Standard_False) { 
      gp_XYZ spLieu=BegO.XYZ()+((EndO.XYZ()-BegO.XYZ())*param);
      Standard_Real dPiE[3], dPtPi[3], sigd;
-+	dPiE[0]=dPiE[1]=dPiE[2]=0;
++    dPiE[0]=dPiE[1]=dPiE[2]=0;
  #ifndef DEB
      Standard_Integer is =0;
  #else
@@ -603,7 +603,7 @@ Index: oce/inc/Intf_InterferencePolygonPolyhedron.gxx
    if(NoIntersectionWithTriangle == Standard_False) { 
      gp_XYZ spLieu=BegO.XYZ()+((EndO.XYZ()-BegO.XYZ())*param);
      Standard_Real dPiE[3], dPtPi[3], sigd;
-+	dPiE[0]=dPiE[1]=dPiE[2]=0;
++    dPiE[0]=dPiE[1]=dPiE[2]=0;
  #ifndef DEB
      Standard_Integer is =0;
  #else
@@ -3542,7 +3542,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_BuildTool.cxx
    
    if(C3D.IsNull()) {
 -    Standard_Real tolreached2d1, tolreached2d2, r1, r2, tol=0;
-+	Standard_Real tolreached2d1 = Precision::Confusion() , tolreached2d2 = Precision::Confusion(), r1, r2, tol=0;
++    Standard_Real tolreached2d1 = Precision::Confusion() , tolreached2d2 = Precision::Confusion(), r1, r2, tol=0;
      if (comppc1) PC1new = myCurveTool.MakePCurveOnFace(F1,C3D,tolreached2d1);
      if (comppc2) PC2new = myCurveTool.MakePCurveOnFace(F2,C3D,tolreached2d2);
      
@@ -4219,8 +4219,8 @@ Index: oce/src/math/math_DirectPolynomialRoots.cxx
          Standard_Real Sol = IniSol;
          Standard_Real IniVal = Value(N, Poly, IniSol);
          Standard_Integer Index;
-+	// set a possible initial value to avoid compiler complaining
-+	Val = IniVal;
++        // set a possible initial value to avoid compiler complaining
++        Val = IniVal;
  
  //      cout << "Improve\n";
          for(Index = 1; Index < 10; Index++) {
