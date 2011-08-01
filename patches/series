@@ -46,8 +46,7 @@ warning/fix-defined-but-not-used.patch
 warning/linker-warnings.patch
 warning/add-placement-delete.patch
 warning/add-placement-delete-allocator.patch
-
-#  Do not submit patches below
+#  Do not submit
 warning/fix-assignment-in-conditional-expression.patch
 warning/add-equal-operator.patch
 warning/fix-unreachable-code-rewrite-loops.patch

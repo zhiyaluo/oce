@@ -2571,7 +2571,7 @@ Index: oce/src/OpenGl/OpenGl_TextureBox.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_TextureBox.cxx
 +++ oce/src/OpenGl/OpenGl_TextureBox.cxx
-@@ -859,7 +859,7 @@
+@@ -857,7 +857,7 @@
    bool notResource = false; // if there old-style texture deletion
  
  #if defined(GL_EXT_texture_object)

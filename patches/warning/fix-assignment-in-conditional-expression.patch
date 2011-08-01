@@ -112,7 +112,7 @@ Index: oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_TrimShellCorner.cxx
 +++ oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
-@@ -916,8 +916,8 @@
+@@ -907,8 +907,8 @@
        for(vvit = 1; !bvertexfound && (vvit <= aVVs.Extent()); vvit++) {
  	const BOPTools_VVInterference& aVV = aVVs(vvit);
  
@@ -190,7 +190,7 @@ Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx
 +++ oce/src/Draw/Draw_Window.cxx
-@@ -2004,7 +2004,7 @@
+@@ -2005,7 +2005,7 @@
  
      hWndFrame = NULL;
  

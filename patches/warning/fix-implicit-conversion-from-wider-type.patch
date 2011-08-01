@@ -1350,7 +1350,7 @@ Index: oce/src/OpenGl/OpenGl_txgl.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_txgl.cxx
 +++ oce/src/OpenGl/OpenGl_txgl.cxx
-@@ -1028,11 +1028,11 @@
+@@ -1032,11 +1032,11 @@
  
      for (i = 0; i < sizeof(dBits) / sizeof(int); i++) {
  

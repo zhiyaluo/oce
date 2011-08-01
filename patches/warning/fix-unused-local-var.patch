@@ -3080,9 +3080,8 @@ Index: oce/src/OSD/OSD_MAllocHook.cxx
      myMutex.Lock();
      fprintf(myLogFile, "alloc %10lu %10"FMT_SZ_Q"u\n", theRequestNum, theSize);
      myMutex.Unlock();
--    if (myBreakSize == theSize)
 +#ifdef DEBUG
-+    if (myBreakSize == theSize)
+     if (myBreakSize == theSize)
      {
        int a = 1;
      }
@@ -3447,11 +3446,10 @@ Index: oce/src/TDF/TDF_Delta.cxx
  #endif
    for (TDF_ListIteratorOfLabelList it1(aLabelList);
         it1.More(); it1.Next()) {
--    const TDF_Label& lab1 = it1.Value();
--    inList = labMap.Add(lab1);
- #ifdef DEB_DELTA
-+    const TDF_Label& lab1 = it1.Value();
-+    inList = labMap.Add(lab1);
++#ifdef DEB_DELTA
+     const TDF_Label& lab1 = it1.Value();
+     inList = labMap.Add(lab1);
+-#ifdef DEB_DELTA
      if (!inList) {
        lab1.EntryDump(cout);cout<<" | ";
      }
@@ -3459,11 +3457,10 @@ Index: oce/src/TDF/TDF_Delta.cxx
    for (TDF_ListIteratorOfAttributeDeltaList it2(myAttDeltaList);
         it2.More();
         it2.Next()) {
--    const TDF_Label& lab1 = it2.Value()->Label();
--    inList = labMap.Add(lab1);
- #ifdef DEB_DELTA
-+    const TDF_Label& lab1 = it2.Value()->Label();
-+    inList = labMap.Add(lab1);
++#ifdef DEB_DELTA
+     const TDF_Label& lab1 = it2.Value()->Label();
+     inList = labMap.Add(lab1);
+-#ifdef DEB_DELTA
      if (!inList) {
        lab1.EntryDump(cout);cout<<" | ";
      }
