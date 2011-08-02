@@ -23,32 +23,32 @@ warning/fix-declared-but-never-defined.patch
 warning/fix-deprecated-conversion-from-string.patch
 warning/fix-comparison-between-different-enums.patch
 warning/deleting-void-ptr-is-undefined.patch
-warning/fix-empty-conditional-body.patch
 warning/fix-format-type-mismatch.patch
 warning/fix-function-never-returns.patch
 warning/fix-implicit-conversion-from-wider-type.patch
 warning/fix-initialization-order.patch
-warning/fix-invalid-enum-value-in-switch.patch
 warning/fix-label-not-used.patch
 warning/fix-multiline-comment.patch
 warning/fix-old_declarators.patch
 warning/fix-signed-unsigned-mismatch.patch
 warning/fix-logical-op-parentheses.patch
 warning/add-scope-to-declare-constant-variable.patch
-warning/fix-unhandled-enumeration-value.patch
 warning/fix-statement-has-no-effect.patch
 warning/remove-useless-statements-after-comma.patch
 warning/fix-uninitialized-var.patch
-warning/fix-unreachable-code.patch
 warning/fix-unused-function.patch
 warning/fix-unused-local-var.patch
 warning/fix-defined-but-not-used.patch
 warning/linker-warnings.patch
 warning/add-placement-delete.patch
 warning/add-placement-delete-allocator.patch
-#  Do not submit
+#  Do not submit, either needs to be reworked, or are unsuitable
+warning/fix-empty-conditional-body.patch
+warning/fix-invalid-enum-value-in-switch.patch
+warning/fix-unhandled-enumeration-value.patch
 warning/fix-assignment-in-conditional-expression.patch
 warning/add-equal-operator.patch
+warning/fix-unreachable-code.patch
 warning/fix-unreachable-code-rewrite-loops.patch
 warning/fix-Standard_IMPORT-usage.patch
 
