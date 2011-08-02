@@ -463,7 +463,7 @@ Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
  					      AC, aDefl, f, l, Precision::Confusion(),
  					      2);
  
-@@ -2301,40 +2302,6 @@
+@@ -2299,40 +2300,6 @@
  
  
  //=======================================================================
@@ -504,7 +504,7 @@ Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
  //function : QuasiFleche
  //purpose  : 
  //=======================================================================
-@@ -2414,3 +2381,37 @@
+@@ -2412,3 +2379,37 @@
    }
  }
  			
@@ -1167,7 +1167,7 @@ Index: oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
 +++ oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
-@@ -1383,24 +1383,6 @@
+@@ -1381,24 +1381,6 @@
    return u;
  }
  

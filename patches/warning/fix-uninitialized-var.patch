@@ -1310,7 +1310,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_0.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder_0.cxx
 +++ oce/src/ChFi3d/ChFi3d_Builder_0.cxx
-@@ -2107,7 +2107,7 @@
+@@ -2106,7 +2106,7 @@
    Standard_Integer Iarc1 = 0,Iarc2 = 0;
    TopAbs_Orientation trafil1 = TopAbs_FORWARD, trafil2 = TopAbs_FORWARD;
    Standard_Integer IcFil1,IcFil2,Isurf,Ishape1,Ishape2;
@@ -1319,7 +1319,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_0.cxx
    TopAbs_Orientation ET1;
    Handle(TopOpeBRepDS_CurvePointInterference) Interfp1,Interfp2;
    Handle(TopOpeBRepDS_SurfaceCurveInterference) Interfc1,Interfc2;
-@@ -3037,7 +3037,7 @@
+@@ -3036,7 +3036,7 @@
    //in the direction of the start/end line.
    gp_Vec Vint, Vref(pdeb,pfin);
    gp_Pnt Pbid;
@@ -1328,7 +1328,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_0.cxx
    Standard_Real tolr1,tolr2;
    tolr1 = tolr2 = tolreached = tol3d;
    if((S1->GetType() == GeomAbs_Cylinder && S2->GetType() == GeomAbs_Plane)||
-@@ -3896,6 +3896,7 @@
+@@ -3895,6 +3895,7 @@
    Wreffin = WL;
    nwf = WF;
    nwl = WL;
@@ -1552,7 +1552,7 @@ Index: oce/src/DNaming/DNaming_TransformationDriver.cxx
 ===================================================================
 --- oce.orig/src/DNaming/DNaming_TransformationDriver.cxx
 +++ oce/src/DNaming/DNaming_TransformationDriver.cxx
-@@ -390,9 +390,9 @@
+@@ -389,9 +389,9 @@
    TopTools_DataMapIteratorOfDataMapOfShapeShape anIt(aTMap);
    Standard_Boolean aF, anE, aV;
    aF = anE = aV = Standard_True;
@@ -2121,7 +2121,7 @@ Index: oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
 +++ oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
-@@ -390,7 +390,7 @@
+@@ -388,7 +388,7 @@
  					   const Standard_Real Pas)
  {
    Standard_Boolean reversed, procf, procl, dofirst, dolast;
