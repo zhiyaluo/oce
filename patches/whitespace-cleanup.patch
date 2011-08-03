@@ -1,0 +1,801 @@
+diff --git a/inc/Intf_InterferencePolygonPolyhedron.gxx b/inc/Intf_InterferencePolygonPolyhedron.gxx
+index b69aad6..15ee11f 100644
+--- a/inc/Intf_InterferencePolygonPolyhedron.gxx
++++ b/inc/Intf_InterferencePolygonPolyhedron.gxx
+@@ -826,7 +826,7 @@ void Intf_InterferencePolygonPolyhedron::Intersect
+   if(NoIntersectionWithTriangle == Standard_False) { 
+     gp_XYZ spLieu=BegO.XYZ()+((EndO.XYZ()-BegO.XYZ())*param);
+     Standard_Real dPiE[3], dPtPi[3], sigd;
+-    dPiE[0]=dPiE[1]=dPiE[2]=0;
++	dPiE[0]=dPiE[1]=dPiE[2]=0;
+ #ifndef DEB
+     Standard_Integer is =0;
+ #else
+@@ -1131,7 +1131,7 @@ void Intf_InterferencePolygonPolyhedron::Intersect
+   if(NoIntersectionWithTriangle == Standard_False) { 
+     gp_XYZ spLieu=BegO.XYZ()+((EndO.XYZ()-BegO.XYZ())*param);
+     Standard_Real dPiE[3], dPtPi[3], sigd;
+-    dPiE[0]=dPiE[1]=dPiE[2]=0;
++	dPiE[0]=dPiE[1]=dPiE[2]=0;
+ #ifndef DEB
+     Standard_Integer is =0;
+ #else
+diff --git a/inc/LDOM_MemManager.hxx b/inc/LDOM_MemManager.hxx
+index df46ecc..6267f7c 100644
+--- a/inc/LDOM_MemManager.hxx
++++ b/inc/LDOM_MemManager.hxx
+@@ -91,9 +91,9 @@ class LDOM_MemManager : public MMgt_TShared
+     static Standard_Integer Hash(const char             * theString,
+                                  const Standard_Integer theLen);
+ 
+-    // Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
+-    HashTable & operator = (const HashTable &) { return *this; }
+-
++	// Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
++	HashTable & operator = (const HashTable &) { return *this; }
++	
+     struct TableItem {
+       char             * str;
+       struct TableItem * next;
+diff --git a/inc/Poly_CoherentTriPtr.hxx b/inc/Poly_CoherentTriPtr.hxx
+index d67b4ee..2d02e99 100644
+--- a/inc/Poly_CoherentTriPtr.hxx
++++ b/inc/Poly_CoherentTriPtr.hxx
+@@ -84,9 +84,10 @@ class Poly_CoherentTriPtr
+     return theAllocator->Allocate(theSize);
+   }
+ 
++  /** Matching Operator for deletion. Does nothing. The operator does nothing and is called in case of "new" throwing. */
+   void operator delete (void * aBuffer, const Handle(NCollection_BaseAllocator)& theAllocator) 
+   {
+-    theAllocator->Free(aBuffer);
++	  theAllocator->Free(aBuffer);
+   };
+ 
+   /**
+diff --git a/inc/SelectMgr_CompareResults.hxx b/inc/SelectMgr_CompareResults.hxx
+index c06f6ae..5d511fd 100644
+--- a/inc/SelectMgr_CompareResults.hxx
++++ b/inc/SelectMgr_CompareResults.hxx
+@@ -9,8 +9,8 @@
+ 
+ class SelectMgr_CompareResults: public TCollection_CompareOfInteger
+ {
+-  // Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
+-  SelectMgr_CompareResults & operator = ( const SelectMgr_CompareResults & ) { return *this; } ;
++	// Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
++	SelectMgr_CompareResults & operator = ( const SelectMgr_CompareResults & ) { return *this; } ;
+  public:
+   SelectMgr_CompareResults
+         (const SelectMgr_IndexedDataMapOfOwnerCriterion& aMapOfCriterion)
+diff --git a/inc/ShapeAnalysis_BoxBndTree.hxx b/inc/ShapeAnalysis_BoxBndTree.hxx
+index e58cc5d..a9018fa 100644
+--- a/inc/ShapeAnalysis_BoxBndTree.hxx
++++ b/inc/ShapeAnalysis_BoxBndTree.hxx
+@@ -27,7 +27,7 @@ class ShapeAnalysis_BoxBndTreeSelector
+     (Handle (TopTools_HArray1OfShape) theSeq,
+      Standard_Boolean theShared)
+     :  mySeq(theSeq), myShared(theShared), myStatus(ShapeExtend::EncodeStatus (ShapeExtend_OK)),
+-      myNb(0), myTol(1e-7), myMin3d(1e-7){}
++	   myNb(0), myTol(1e-7), myMin3d(1e-7){}
+   
+   void DefineBoxes (const Bnd_Box& theFBox, const Bnd_Box& theLBox)
+     { myFBox = theFBox;
+diff --git a/inc/TDF_LabelNode.hxx b/inc/TDF_LabelNode.hxx
+index ff8bac4..d0ed714 100644
+--- a/inc/TDF_LabelNode.hxx
++++ b/inc/TDF_LabelNode.hxx
+@@ -112,7 +112,7 @@ class TDF_LabelNode {
+   
+   void operator delete ( void * aBuffer , const Handle(NCollection_IncAllocator)& anAlloc )
+   {
+-    anAlloc->Free(aBuffer);
++	  anAlloc->Free(aBuffer);
+   }
+ 
+   void  operator delete(void *) { }
+diff --git a/inc/TopClass_Classifier2d.gxx b/inc/TopClass_Classifier2d.gxx
+index e506c68..67968f4 100644
+--- a/inc/TopClass_Classifier2d.gxx
++++ b/inc/TopClass_Classifier2d.gxx
+@@ -23,8 +23,8 @@
+ TopClass_Classifier2d::TopClass_Classifier2d() :
+        myIsSet(Standard_False),
+        myFirstCompare(Standard_True),
+-       myState(TopAbs_UNKNOWN),       // skv OCC12627
+-       myIsHeadOrEnd(Standard_False)  // skv OCC12627
++	   myState(TopAbs_UNKNOWN),        // skv OCC12627
++	   myIsHeadOrEnd(Standard_False) // skv OCC12627
+ 
+ {
+ }
+diff --git a/inc/VrmlData_InBuffer.hxx b/inc/VrmlData_InBuffer.hxx
+index bfa79ee..196c6cf 100644
+--- a/inc/VrmlData_InBuffer.hxx
++++ b/inc/VrmlData_InBuffer.hxx
+@@ -15,8 +15,8 @@
+  */
+ struct VrmlData_InBuffer {
+ private:
+-  // Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
+-  VrmlData_InBuffer & operator = (const VrmlData_InBuffer &) { return *this; }
++	// Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
++	VrmlData_InBuffer & operator = (const VrmlData_InBuffer &) { return *this; }
+ public:
+   Standard_IStream& Input;
+   char              Line[8096];
+diff --git a/inc/VrmlData_ShapeConvert.hxx b/inc/VrmlData_ShapeConvert.hxx
+index a93aa84..4fadb0b 100644
+--- a/inc/VrmlData_ShapeConvert.hxx
++++ b/inc/VrmlData_ShapeConvert.hxx
+@@ -23,8 +23,8 @@ class Handle_VrmlData_Coordinate;
+ 
+ class VrmlData_ShapeConvert 
+ {
+-  // Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
+-  VrmlData_ShapeConvert & operator = (const VrmlData_ShapeConvert &) { return *this; }
++	// Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
++	VrmlData_ShapeConvert & operator = (const VrmlData_ShapeConvert &) { return *this; }
+ 
+ public:
+ 
+diff --git a/src/Adaptor3d/Adaptor3d_HSurfaceTool.cxx b/src/Adaptor3d/Adaptor3d_HSurfaceTool.cxx
+index 003b67c..b6faf8d 100644
+--- a/src/Adaptor3d/Adaptor3d_HSurfaceTool.cxx
++++ b/src/Adaptor3d/Adaptor3d_HSurfaceTool.cxx
+@@ -17,7 +17,7 @@ Standard_Integer Adaptor3d_HSurfaceTool::NbSamplesU(const Handle(Adaptor3d_HSurf
+       return (nbs < 2 ? 2 : nbs);
+     }
+     case GeomAbs_Torus: return 20;
+-    default: /* Do nothing */ break;
++	default: /* Do nothing */ break;
+   }
+   return 10;
+ }
+@@ -39,7 +39,7 @@ Standard_Integer Adaptor3d_HSurfaceTool::NbSamplesV(const Handle(Adaptor3d_HSurf
+     case GeomAbs_Torus:
+     case GeomAbs_SurfaceOfRevolution:
+     case GeomAbs_SurfaceOfExtrusion: return 15;
+-    default: /* Do nothing */ break;
++	default: /* Do nothing */ break;
+   }
+   return 10;
+ }
+diff --git a/src/Adaptor3d/Adaptor3d_SurfaceOfLinearExtrusion.cxx b/src/Adaptor3d/Adaptor3d_SurfaceOfLinearExtrusion.cxx
+index af4fbb4..dd8223d 100644
+--- a/src/Adaptor3d/Adaptor3d_SurfaceOfLinearExtrusion.cxx
++++ b/src/Adaptor3d/Adaptor3d_SurfaceOfLinearExtrusion.cxx
+@@ -473,7 +473,7 @@ GeomAbs_SurfaceType Adaptor3d_SurfaceOfLinearExtrusion::GetType() const
+     }
+ 
+   default:
+-    break;
++     break;
+ 
+   }
+   
+diff --git a/src/Adaptor3d/Adaptor3d_SurfaceOfRevolution.cxx b/src/Adaptor3d/Adaptor3d_SurfaceOfRevolution.cxx
+index aeced51..8487ee2 100644
+--- a/src/Adaptor3d/Adaptor3d_SurfaceOfRevolution.cxx
++++ b/src/Adaptor3d/Adaptor3d_SurfaceOfRevolution.cxx
+@@ -597,7 +597,7 @@ GeomAbs_SurfaceType Adaptor3d_SurfaceOfRevolution::GetType() const
+     }
+     
+   default:
+-    break;
++     break;
+   }
+   
+   // portage WNT
+diff --git a/src/Aspect/Aspect_ColorScale.cxx b/src/Aspect/Aspect_ColorScale.cxx
+index cc61ecf..72bb74b 100644
+--- a/src/Aspect/Aspect_ColorScale.cxx
++++ b/src/Aspect/Aspect_ColorScale.cxx
+@@ -506,7 +506,7 @@ void Aspect_ColorScale::DrawScale( const Quantity_Color& aBgColor,
+     case Aspect_TOCSP_RIGHT:
+       x += colorWidth + spacer;
+       break;
+-    default: /* Do nothing */ break;
++	default: /* Do nothing */ break;
+     }
+     while ( i2 - i1 >= filter || ( i2 == 0 && i1 == 0 ) ) {
+       Standard_Integer pos1 = i1;
+diff --git a/src/BRepExtrema/BRepExtrema_DistShapeShape.cxx b/src/BRepExtrema/BRepExtrema_DistShapeShape.cxx
+index b016679..d6c3d6e 100644
+--- a/src/BRepExtrema/BRepExtrema_DistShapeShape.cxx
++++ b/src/BRepExtrema/BRepExtrema_DistShapeShape.cxx
+@@ -455,7 +455,7 @@ void BRepExtrema_DistShapeShape::Dump(Standard_OStream& o) const
+         ParOnFaceS1(i,r1,r2);
+         o << "parameters on the first face :  u= " << r1 << " v=" <<  r2 << endl;
+         break;
+-      default: /* Do nothing */ break;
++	  default: /* Do nothing */ break;
+     }
+     switch (SupportTypeShape2(i))
+     {
+@@ -467,7 +467,7 @@ void BRepExtrema_DistShapeShape::Dump(Standard_OStream& o) const
+         ParOnFaceS2(i,r1,r2);
+         o << "parameters on the second face : u= " << r1 << " v=" <<  r2 << endl;
+         break;
+-      default: /* Do nothing */ break;
++	  default: /* Do nothing */ break;
+     }
+     o<<endl;
+   } 
+diff --git a/src/BRepExtrema/BRepExtrema_DistanceSS.cxx b/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
+index 8e23252..30fc83d 100644
+--- a/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
++++ b/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
+@@ -529,7 +529,7 @@ void BRepExtrema_DistanceSS::Perform(const TopoDS_Shape& S1, const TopoDS_Shape&
+           Perform( V1, F2, B1, B2 );
+           break;
+         }
+-        default: /* Do nothing */ break;
++		default: /* Do nothing */ break;
+       }
+       break;
+     }
+@@ -570,7 +570,7 @@ void BRepExtrema_DistanceSS::Perform(const TopoDS_Shape& S1, const TopoDS_Shape&
+           Perform( E1, F2, B1, B2 );
+           break;
+         }
+-        default: /* Do nothing */ break;
++		default: /* Do nothing */ break;
+       }
+       break;
+     }
+@@ -603,11 +603,11 @@ void BRepExtrema_DistanceSS::Perform(const TopoDS_Shape& S1, const TopoDS_Shape&
+           Perform( F1, F2, B1, B2 );
+           break;
+         }
+-        default: /* Do nothing */ break;
++		default: /* Do nothing */ break;
+       }
+       break;
+     }
+-    default: /* Do nothing */ break;
++	default: /* Do nothing */ break;
+   }
+ }
+ 
+diff --git a/src/BinMDataStd/BinMDataStd_NamedDataDriver.cxx b/src/BinMDataStd/BinMDataStd_NamedDataDriver.cxx
+index 8a4320a..ab91378 100644
+--- a/src/BinMDataStd/BinMDataStd_NamedDataDriver.cxx
++++ b/src/BinMDataStd/BinMDataStd_NamedDataDriver.cxx
+@@ -163,7 +163,7 @@ Standard_Boolean BinMDataStd_NamedDataDriver::Paste(const BinObjMgt_Persistent&
+       if (! (theSource >> low >> up))
+         return Standard_False;
+       if(up < low)
+-        return Standard_False;
++		return Standard_False;
+       if(low | up) {
+         Handle(TColStd_HArray1OfReal) aTargetArray =
+           new TColStd_HArray1OfReal(low, up);
+diff --git a/src/BinMNaming/BinMNaming_NamedShapeDriver.cxx b/src/BinMNaming/BinMNaming_NamedShapeDriver.cxx
+index fefb268..c70d1d1 100644
+--- a/src/BinMNaming/BinMNaming_NamedShapeDriver.cxx
++++ b/src/BinMNaming/BinMNaming_NamedShapeDriver.cxx
+@@ -283,7 +283,7 @@ void BinMNaming_NamedShapeDriver::ReadShapeSection (Standard_IStream& theIS)
+ {
+   // check section title string; note that some versions of OCCT (up to 6.3.1) 
+   // might avoid writing shape section if it is empty
+-  std::streamsize aPos = theIS.tellg();
++	std::streamsize aPos = theIS.tellg();
+   TCollection_AsciiString aSectionTitle;
+   theIS >> aSectionTitle;
+   if(aSectionTitle.Length() > 0 && aSectionTitle == SHAPESET) {
+diff --git a/src/ChFi3d/ChFi3d_Builder_0.cxx b/src/ChFi3d/ChFi3d_Builder_0.cxx
+index 5823cec..19d8cdb 100644
+--- a/src/ChFi3d/ChFi3d_Builder_0.cxx
++++ b/src/ChFi3d/ChFi3d_Builder_0.cxx
+@@ -1749,7 +1749,7 @@ TopAbs_Orientation ChFi3d_TrsfTrans(const IntSurf_TypeTrans T1)
+   switch (T1)  {
+     case IntSurf_In:  return TopAbs_FORWARD;
+     case IntSurf_Out: return TopAbs_REVERSED;
+-    default: /* Do nothing */ break;
++	default: /* Do nothing */ break;
+   }
+   return TopAbs_INTERNAL;
+ }
+diff --git a/src/DDocStd/DDocStd_ApplicationCommands.cxx b/src/DDocStd/DDocStd_ApplicationCommands.cxx
+index a258ad6..6d18910 100644
+--- a/src/DDocStd/DDocStd_ApplicationCommands.cxx
++++ b/src/DDocStd/DDocStd_ApplicationCommands.cxx
+@@ -193,7 +193,7 @@ static Standard_Integer DDocStd_Open (Draw_Interpretor& di,
+ 	di << " could not retrieve , permission denied " << "\n" ;  
+ 	break;
+       }
+-      default: /* Do nothing */ break;
++	  default: /* Do nothing */ break;
+       }
+       di << "DDocStd_Open : Error" << "\n";
+     }	
+@@ -255,7 +255,7 @@ static Standard_Integer DDocStd_SaveAs (Draw_Interpretor& di,
+       case CDF_SS_Failure: {
+ 	di << " Write failure " << "\n" ;  
+       }
+-      default: /* Do nothing */ break;
++	  default: /* Do nothing */ break;
+       }
+       return 1;
+     } else {
+diff --git a/src/ExprIntrp/ExprIntrp.cxx b/src/ExprIntrp/ExprIntrp.cxx
+index 5708101..9d3a236 100644
+--- a/src/ExprIntrp/ExprIntrp.cxx
++++ b/src/ExprIntrp/ExprIntrp.cxx
+@@ -35,10 +35,10 @@ Standard_Boolean ExprIntrp::Parse(const Handle(ExprIntrp_Generator)& gen, const
+     catch (Standard_Failure) {
+ 
+ #if defined(NO_CXX_EXCEPTION) || defined(OCC_CONVERT_SIGNALS)
+-      return Standard_False;
++		return Standard_False;
+ #endif
+ 
+-    }
++	}
+   }
+ 
+ #if defined(NO_CXX_EXCEPTION) || defined(OCC_CONVERT_SIGNALS)
+diff --git a/src/Extrema/Extrema_GenExtPS.cxx b/src/Extrema/Extrema_GenExtPS.cxx
+index dd74b3c..c780fcf 100644
+--- a/src/Extrema/Extrema_GenExtPS.cxx
++++ b/src/Extrema/Extrema_GenExtPS.cxx
+@@ -27,8 +27,8 @@
+ 
+ class Bnd_SphereUBTreeSelector : public Extrema_UBTreeOfSphere::Selector
+ {
+-  // Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
+-  Bnd_SphereUBTreeSelector & operator=( const Bnd_SphereUBTreeSelector & ) { return *this; }
++	// Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
++	Bnd_SphereUBTreeSelector & operator=( const Bnd_SphereUBTreeSelector & ) { return *this; }
+  public:
+ 
+   Bnd_SphereUBTreeSelector (const Handle(Bnd_HArray1OfSphere)& theSphereArray,
+diff --git a/src/FWOSDriver/FWOSDriver_Driver.cxx b/src/FWOSDriver/FWOSDriver_Driver.cxx
+index b7b78ec..60e15a9 100644
+--- a/src/FWOSDriver/FWOSDriver_Driver.cxx
++++ b/src/FWOSDriver/FWOSDriver_Driver.cxx
+@@ -56,7 +56,7 @@ Standard_Boolean FWOSDriver_Driver::HasReadPermission(const TCollection_Extended
+     case OSD_RWXD:
+       return Standard_True;
+     default:
+-      break;
++		break;
+     }
+   return Standard_False;
+ }
+diff --git a/src/GeomAdaptor/GeomAdaptor_Surface.cxx b/src/GeomAdaptor/GeomAdaptor_Surface.cxx
+index f604520..a8aabd3 100644
+--- a/src/GeomAdaptor/GeomAdaptor_Surface.cxx
++++ b/src/GeomAdaptor/GeomAdaptor_Surface.cxx
+@@ -181,7 +181,7 @@ GeomAbs_Shape GeomAdaptor_Surface::UContinuity() const
+         case GeomAbs_CN : return GeomAbs_CN; 
+         case GeomAbs_C2 : return GeomAbs_C1; 
+         case GeomAbs_C1 : return GeomAbs_C0;
+-        default: /* Do nothing */ break;
++		default: /* Do nothing */ break;
+       }
+       Standard_NoSuchObject::Raise("GeomAdaptor_Surface::UContinuity");
+ 	  break;
+@@ -224,7 +224,7 @@ GeomAbs_Shape GeomAdaptor_Surface::VContinuity() const
+         case GeomAbs_CN : return GeomAbs_CN; 
+         case GeomAbs_C2 : return GeomAbs_C1;
+         case GeomAbs_C1 : return GeomAbs_C0;
+-        default: /* Do nothing */ break;
++		default: /* Do nothing */ break;
+       }
+       Standard_NoSuchObject::Raise("GeomAdaptor_Surface::VContinuity");
+       break;
+@@ -274,12 +274,12 @@ Standard_Integer GeomAdaptor_Surface::NbUIntervals(const GeomAbs_Shape S) const
+         case GeomAbs_C0: BaseS = GeomAbs_C1; break;
+         case GeomAbs_C1: BaseS = GeomAbs_C2; break;
+         case GeomAbs_C2: BaseS = GeomAbs_C3; break;
+-        default: /* Do nothing */ break;
++		default: /* Do nothing */ break;
+       }
+       GeomAdaptor_Surface Sur((*((Handle(Geom_OffsetSurface)*)&mySurface))->BasisSurface());
+       return Sur.NbUIntervals(BaseS);
+     }
+-    default: /* Do nothing */ break;
++	default: /* Do nothing */ break;
+   }
+   return 1;
+ }
+@@ -317,12 +317,12 @@ Standard_Integer GeomAdaptor_Surface::NbVIntervals(const GeomAbs_Shape S) const
+         case GeomAbs_C0: BaseS = GeomAbs_C1; break;
+         case GeomAbs_C1: BaseS = GeomAbs_C2; break;
+         case GeomAbs_C2: BaseS = GeomAbs_C3; break;
+-        default: /* Do nothing */ break;
++		default: /* Do nothing */ break;
+       }
+       GeomAdaptor_Surface Sur((*((Handle(Geom_OffsetSurface)*)&mySurface))->BasisSurface());
+       return Sur.NbVIntervals(BaseS);
+ 	}
+-    default: /* Do nothing */ break;
++	default: /* Do nothing */ break;
+   }
+   return 1;
+ }
+@@ -367,13 +367,13 @@ void GeomAdaptor_Surface::UIntervals(TColStd_Array1OfReal& T, const GeomAbs_Shap
+         case GeomAbs_C0: BaseS = GeomAbs_C1; break;
+         case GeomAbs_C1: BaseS = GeomAbs_C2; break;
+         case GeomAbs_C2: BaseS = GeomAbs_C3; break;
+-        default: /* Do nothing */ break;
++		default: /* Do nothing */ break;
+       }
+       GeomAdaptor_Surface Sur((*((Handle(Geom_OffsetSurface)*)&mySurface))->BasisSurface());
+       myNbUIntervals = Sur.NbUIntervals(BaseS);
+       Sur.UIntervals(T, BaseS);
+     }
+-    default: /* Do nothing */ break;
++	default: /* Do nothing */ break;
+   }
+ 
+   T(T.Lower()) = myUFirst;
+@@ -420,13 +420,13 @@ void GeomAdaptor_Surface::VIntervals(TColStd_Array1OfReal& T, const GeomAbs_Shap
+         case GeomAbs_C0: BaseS = GeomAbs_C1; break;
+         case GeomAbs_C1: BaseS = GeomAbs_C2; break;
+         case GeomAbs_C2: BaseS = GeomAbs_C3; break;
+-        default: /* Do nothing */ break;
++		default: /* Do nothing */ break;
+       }
+       GeomAdaptor_Surface Sur((*((Handle(Geom_OffsetSurface)*)&mySurface))->BasisSurface());
+       myNbVIntervals = Sur.NbVIntervals(BaseS);
+       Sur.VIntervals(T, BaseS);
+     }
+-    default: /* Do nothing */ break;
++	default: /* Do nothing */ break;
+   }
+   
+   T(T.Lower()) = myVFirst;
+diff --git a/src/GeomInt/GeomInt_LineConstructor.cxx b/src/GeomInt/GeomInt_LineConstructor.cxx
+index fa0c642..5bf2acc 100644
+--- a/src/GeomInt/GeomInt_LineConstructor.cxx
++++ b/src/GeomInt/GeomInt_LineConstructor.cxx
+@@ -244,7 +244,7 @@ void GeomInt_LineConstructor::Perform(const Handle(IntPatch_Line)& L)
+           case IntPatch_Ellipse:   Pmid = ElCLib::Value(pmid,GLine->Ellipse()); break;
+           case IntPatch_Hyperbola: Pmid = ElCLib::Value(pmid,GLine->Hyperbola()); break;
+           case IntPatch_Parabola:  Pmid = ElCLib::Value(pmid,GLine->Parabola()); break;
+-          default: /* Do nothing */ break;
++		  default: /* Do nothing */ break;
+         }
+         Parameters(myHS1,myHS2,Pmid,u1,v1,u2,v2);
+         Recadre(myHS1,myHS2,u1,v1,u2,v2);
+diff --git a/src/Graphic2d/Graphic2d_SetOfMarkers.cxx b/src/Graphic2d/Graphic2d_SetOfMarkers.cxx
+index b0bf613..fe6200c 100644
+--- a/src/Graphic2d/Graphic2d_SetOfMarkers.cxx
++++ b/src/Graphic2d/Graphic2d_SetOfMarkers.cxx
+@@ -292,7 +292,7 @@ Standard_Boolean Graphic2d_SetOfMarkers::Pick( const Standard_ShortReal X1,
+ 	return Standard_True;
+       break;
+     }
+-    default: /* Do nothing */ break;
++	default: /* Do nothing */ break;
+   }
+ #endif
+   return Standard_False;
+@@ -333,7 +333,7 @@ Standard_Boolean Graphic2d_SetOfMarkers
+ 	return Standard_True;
+       break;
+     }
+-    default: /* Do nothing */ break;
++	default: /* Do nothing */ break;
+   }
+ #endif
+   return Standard_False;
+diff --git a/src/IntPatch/IntPatch_HInterTool.cxx b/src/IntPatch/IntPatch_HInterTool.cxx
+index d48e7fb..730b4c9 100644
+--- a/src/IntPatch/IntPatch_HInterTool.cxx
++++ b/src/IntPatch/IntPatch_HInterTool.cxx
+@@ -46,7 +46,7 @@ Standard_Integer IntPatch_HInterTool::NbSamplesV (const Handle(Adaptor3d_HSurfac
+     case GeomAbs_Torus:
+     case GeomAbs_SurfaceOfRevolution:
+     case GeomAbs_SurfaceOfExtrusion: return 15;
+-    default: /* do nothing */ break;
++	default: /* do nothing */ break;
+   }
+   return 10;
+ }
+@@ -72,7 +72,7 @@ Standard_Integer IntPatch_HInterTool::NbSamplesU (const Handle(Adaptor3d_HSurfac
+     //case GeomAbs_Sphere:
+     //case GeomAbs_SurfaceOfRevolution:
+     //case GeomAbs_SurfaceOfExtrusion: return 10;
+-    default: /* Do nothing */ break;
++	default: /* Do nothing */ break;
+   }
+   return 10;
+ }
+diff --git a/src/IntPatch/IntPatch_ImpPrmIntersection.cxx b/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
+index 082c6fd..af7a0d6 100644
+--- a/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
++++ b/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
+@@ -359,7 +359,7 @@ void Recadre(const Standard_Boolean ,
+     case GeomAbs_Sphere:
+       while(U1<(U1p-1.5*PI)) U1+=PI+PI;
+       while(U1>(U1p+1.5*PI)) U1-=PI+PI;
+-    default: /* Do nothing */ break;
++	default: /* Do nothing */ break;
+   }
+   switch(typeS2)
+   { 
+@@ -371,7 +371,7 @@ void Recadre(const Standard_Boolean ,
+     case GeomAbs_Sphere:
+       while(U2<(U2p-1.5*PI)) U2+=PI+PI;
+       while(U2>(U2p+1.5*PI)) U2-=PI+PI;
+-    default: /* Do nothing */ break;
++	default: /* Do nothing */ break;
+   }
+   pt.SetParameters(U1,V1,U2,V2);
+ }
+diff --git a/src/IntPatch/IntPatch_Intersection.cxx b/src/IntPatch/IntPatch_Intersection.cxx
+index 5395aa8..3bd86c7 100644
+--- a/src/IntPatch/IntPatch_Intersection.cxx
++++ b/src/IntPatch/IntPatch_Intersection.cxx
+@@ -614,7 +614,7 @@ static void FUN_NewFirstLast(const GeomAbs_CurveType& ga_ct,
+ 	  }
+       break;
+     }
+-    default: /* Do nothing */ break;
++	default: /* Do nothing */ break;
+   }
+ }
+ //================================================================================
+diff --git a/src/IntTools/IntTools_LineConstructor.cxx b/src/IntTools/IntTools_LineConstructor.cxx
+index 5645718..5782189 100644
+--- a/src/IntTools/IntTools_LineConstructor.cxx
++++ b/src/IntTools/IntTools_LineConstructor.cxx
+@@ -323,7 +323,7 @@ void IntTools_LineConstructor::Perform(const Handle(IntPatch_Line)& L)
+           case IntPatch_Ellipse:   Pmid = ElCLib::Value(pmid,GLine->Ellipse()); break;
+           case IntPatch_Hyperbola: Pmid = ElCLib::Value(pmid,GLine->Hyperbola()); break;
+           case IntPatch_Parabola:  Pmid = ElCLib::Value(pmid,GLine->Parabola()); break;
+-          default: /* Do nothing */ break;
++		  default: /* Do nothing */ break;
+         }
+ 	Parameters(myHS1,myHS2,Pmid,u1,v1,u2,v2);
+ 	Recadre(myHS1,myHS2,u1,v1,u2,v2);
+diff --git a/src/LDOM/LDOM_CharReference.cxx b/src/LDOM/LDOM_CharReference.cxx
+index d77257a..806fb4d 100644
+--- a/src/LDOM/LDOM_CharReference.cxx
++++ b/src/LDOM/LDOM_CharReference.cxx
+@@ -26,8 +26,8 @@ struct entityRef {
+   const int    length;
+   entityRef (const char * aName, const int aLen) : name(aName), length(aLen) {}
+ private:
+-  // Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
+-  entityRef & operator = (const entityRef & ) { return *this; }
++	// Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
++	entityRef & operator = (const entityRef & ) { return *this; }
+ };
+ 
+ //=======================================================================
+diff --git a/src/MNaming/MNaming_NamingRetrievalDriver.cxx b/src/MNaming/MNaming_NamingRetrievalDriver.cxx
+index c4472d4..8a1823f 100644
+--- a/src/MNaming/MNaming_NamingRetrievalDriver.cxx
++++ b/src/MNaming/MNaming_NamingRetrievalDriver.cxx
+@@ -34,7 +34,7 @@ static TopAbs_ShapeEnum IntegerToShapeEnum (const Standard_Integer I)
+     case  6 : return TopAbs_EDGE;
+     case  7 : return TopAbs_VERTEX;
+       default :
+-	break;
++	    break;
+     }
+   return TopAbs_SHAPE;
+ }
+diff --git a/src/MNaming/MNaming_NamingRetrievalDriver_1.cxx b/src/MNaming/MNaming_NamingRetrievalDriver_1.cxx
+index f4ca230..987fc56 100644
+--- a/src/MNaming/MNaming_NamingRetrievalDriver_1.cxx
++++ b/src/MNaming/MNaming_NamingRetrievalDriver_1.cxx
+@@ -37,7 +37,7 @@ static TopAbs_ShapeEnum IntegerToShapeEnum (const Standard_Integer I)
+     case  6 : return TopAbs_EDGE;
+     case  7 : return TopAbs_VERTEX;
+       default :
+-	break;
++	    break;
+     }
+   return TopAbs_SHAPE;
+ }
+diff --git a/src/OSD/OSD_File.cxx b/src/OSD/OSD_File.cxx
+index 936793d..fdddd68 100644
+--- a/src/OSD/OSD_File.cxx
++++ b/src/OSD/OSD_File.cxx
+@@ -2716,9 +2716,9 @@ BOOL __fastcall _osd_wnt_sd_to_protection (
+  DWORD         dwAccessAdmin = 0;
+  DWORD         dwAccessWorld = 0;
+  BOOL          retVal = FALSE;
++ BOOL          Ret = true;
+  GET_PROT_FUNC _get_prot_func = fDir ? &_get_protection_dir : &_get_protection;
+ 
+- BOOL          Ret = true;
+  if (Ret) {
+ 
+   if (  !GetSecurityDescriptorOwner ( pSD, &pSIDowner, &fDefaulted )  ) Ret = false;
+diff --git a/src/OSD/OSD_MAllocHook.cxx b/src/OSD/OSD_MAllocHook.cxx
+index 7885ff0..c0e5b6f 100644
+--- a/src/OSD/OSD_MAllocHook.cxx
++++ b/src/OSD/OSD_MAllocHook.cxx
+@@ -388,7 +388,7 @@ void OSD_MAllocHook::LogFileHandler::AllocEvent
+     fprintf(myLogFile, "alloc %10lu %10"FMT_SZ_Q"u\n", theRequestNum, theSize);
+     myMutex.Unlock();
+ #ifdef DEBUG
+-    if (myBreakSize == theSize)
++	if (myBreakSize == theSize)
+     {
+       int a = 1;
+     }
+diff --git a/src/OSD/OSD_WNT.cxx b/src/OSD/OSD_WNT.cxx
+index acbddbe..c4c4493 100644
+--- a/src/OSD/OSD_WNT.cxx
++++ b/src/OSD/OSD_WNT.cxx
+@@ -51,6 +51,8 @@ static RESPONSE_DIR_PROC _response_dir_proc;
+ #define SID_ADMIN         6
+ #define SID_WORLD         7
+ #define SID_NULL          8
++
++
+ /***/
+ /******************************************************************************/
+ /* Function : AllocSD                                                       */
+diff --git a/src/OSD/OSD_WNT_1.cxx b/src/OSD/OSD_WNT_1.cxx
+index 0bd447e..1159c7d 100644
+--- a/src/OSD/OSD_WNT_1.cxx
++++ b/src/OSD/OSD_WNT_1.cxx
+@@ -3,7 +3,6 @@
+ 
+ #include <windowsx.h>
+ 
+-
+ #ifndef max
+ # define max(a, b)  (((a) > (b)) ? (a) : (b)) 
+ #endif
+diff --git a/src/OpenGl/OpenGl_GraphicDriver_713.cxx b/src/OpenGl/OpenGl_GraphicDriver_713.cxx
+index a32f6cf..820948e 100644
+--- a/src/OpenGl/OpenGl_GraphicDriver_713.cxx
++++ b/src/OpenGl/OpenGl_GraphicDriver_713.cxx
+@@ -69,7 +69,7 @@ Standard_Boolean OpenGl_GraphicDriver
+   if ( call_togl_isgllight( &MyCView ) )
+     return Standard_True;
+ #endif
+-  return Standard_True;
++    return Standard_True;
+ }
+ 
+ void OpenGl_GraphicDriver :: PrimitiveArray( const Graphic3d_CGroup& ACGroup,
+diff --git a/src/OpenGl/OpenGl_GraphicDriver_9.cxx b/src/OpenGl/OpenGl_GraphicDriver_9.cxx
+index 60b0693..1d042ec 100644
+--- a/src/OpenGl/OpenGl_GraphicDriver_9.cxx
++++ b/src/OpenGl/OpenGl_GraphicDriver_9.cxx
+@@ -481,7 +481,8 @@ void OpenGl_GraphicDriver::GraduatedTrihedronDisplay(const Graphic3d_CView& view
+     cubic.xname = (char*) xname;
+     cubic.yname = (char*) yname; 
+     cubic.zname = (char*) zname;
+-    /* Draw names */
++    
++	/* Draw names */
+     cubic.xdrawname = xdrawname; 
+     cubic.ydrawname = ydrawname; 
+     cubic.zdrawname = zdrawname;
+diff --git a/src/OpenGl/OpenGl_togl_begin.cxx b/src/OpenGl/OpenGl_togl_begin.cxx
+index 1603fb6..034f467 100644
+--- a/src/OpenGl/OpenGl_togl_begin.cxx
++++ b/src/OpenGl/OpenGl_togl_begin.cxx
+@@ -119,7 +119,7 @@ call_togl_begin_display
+   status = call_tox_set_display (pdisplay);
+   if( status ) {
+ #ifndef WNT
+-    char *pvalue = NULL;
++	 char *pvalue = NULL;
+     if ((pvalue = getenv ("CSF_GraphicSync")) != NULL)
+       XSynchronize (call_thedisplay, 1);
+     InitExtensionGLX(call_thedisplay);
+diff --git a/src/OpenGl/OpenGl_txgl.cxx b/src/OpenGl/OpenGl_txgl.cxx
+index 2f29681..248410a 100644
+--- a/src/OpenGl/OpenGl_txgl.cxx
++++ b/src/OpenGl/OpenGl_txgl.cxx
+@@ -693,8 +693,8 @@ __declspec( dllexport ) int __fastcall __OpenGl_INIT__ (
+ 
+     HTBL_ENTRY*   hte;
+     TStatus       retVal = TFailure;
+-
+     bool Ret = true;
++
+     if (Ret){
+ 
+       if ( !_Txgl_Map.IsBound( ( Tint )win ) ) {
+diff --git a/src/TDF/TDF_Delta.cxx b/src/TDF/TDF_Delta.cxx
+index 7b88bc2..8c7334d 100644
+--- a/src/TDF/TDF_Delta.cxx
++++ b/src/TDF/TDF_Delta.cxx
+@@ -152,7 +152,7 @@ void TDF_Delta::Labels(TDF_LabelList& aLabelList) const
+   for (TDF_ListIteratorOfLabelList it1(aLabelList);
+        it1.More(); it1.Next()) {
+ #ifdef DEB_DELTA
+-    const TDF_Label& lab1 = it1.Value();
++	const TDF_Label& lab1 = it1.Value();
+     inList = labMap.Add(lab1);
+     if (!inList) {
+       lab1.EntryDump(cout);cout<<" | ";
+@@ -171,7 +171,7 @@ void TDF_Delta::Labels(TDF_LabelList& aLabelList) const
+        it2.More();
+        it2.Next()) {
+ #ifdef DEB_DELTA
+-    const TDF_Label& lab1 = it2.Value()->Label();
++	const TDF_Label& lab1 = it2.Value()->Label();
+     inList = labMap.Add(lab1);
+     if (!inList) {
+       lab1.EntryDump(cout);cout<<" | ";
+diff --git a/src/TopOpeBRep/TopOpeBRep_LineInter.cxx b/src/TopOpeBRep/TopOpeBRep_LineInter.cxx
+index 259e6c6..0d3a961 100644
+--- a/src/TopOpeBRep/TopOpeBRep_LineInter.cxx
++++ b/src/TopOpeBRep/TopOpeBRep_LineInter.cxx
+@@ -329,7 +329,7 @@ Standard_Boolean TopOpeBRep_LineInter::IsPeriodic() const
+   {
+     case TopOpeBRep_CIRCLE  :
+     case TopOpeBRep_ELLIPSE : return Standard_True;
+-    default: /* Do nothing */ break;
++	default: /* Do nothing */ break;
+   }
+   return Standard_False;
+ }
+@@ -395,7 +395,7 @@ Standard_Integer TopOpeBRep_LineInter::NbWPoint() const
+   switch (myTypeLineCurve)
+   {
+     case TopOpeBRep_WALKING : return myILW->NbPnts();
+-    default: /* Do nothing */ break;
++	default: /* Do nothing */ break;
+   }
+   return 0;
+ }
+diff --git a/src/TopOpeBRepDS/TopOpeBRepDS_BuildTool.cxx b/src/TopOpeBRepDS/TopOpeBRepDS_BuildTool.cxx
+index 828a6bc..b8c91f5 100644
+--- a/src/TopOpeBRepDS/TopOpeBRepDS_BuildTool.cxx
++++ b/src/TopOpeBRepDS/TopOpeBRepDS_BuildTool.cxx
+@@ -871,7 +871,7 @@ void TopOpeBRepDS_BuildTool::ComputePCurves
+   Handle(Geom2d_Curve) PC2new;
+   
+   if(C3D.IsNull()) {
+-    Standard_Real tolreached2d1 = Precision::Confusion() , tolreached2d2 = Precision::Confusion(), r1, r2, tol=0;
++	Standard_Real tolreached2d1 = Precision::Confusion() , tolreached2d2 = Precision::Confusion(), r1, r2, tol=0;
+     if (comppc1) PC1new = myCurveTool.MakePCurveOnFace(F1,C3D,tolreached2d1);
+     if (comppc2) PC2new = myCurveTool.MakePCurveOnFace(F2,C3D,tolreached2d2);
+     
+diff --git a/src/VrmlData/VrmlData_ShapeConvert.cxx b/src/VrmlData/VrmlData_ShapeConvert.cxx
+index 6cb1098..6407ae1 100644
+--- a/src/VrmlData/VrmlData_ShapeConvert.cxx
++++ b/src/VrmlData/VrmlData_ShapeConvert.cxx
+@@ -279,7 +279,7 @@ void VrmlData_ShapeConvert::Convert (const Standard_Boolean theExtractFaces,
+             }
+           }
+           break;
+-        default: /* Do nothing */ break;
++	   default: /* Do nothing */ break;
+         }
+         
+         if (aTShapeNode.IsNull() == Standard_False) {
+diff --git a/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx b/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
+index b4e130e..8606480 100644
+--- a/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
++++ b/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
+@@ -163,7 +163,7 @@ static Standard_Integer loadvrml
+       case VrmlData_NonPositiveSize:    aStr = "NonPositiveSize"; break;
+       case VrmlData_ReadUnknownNode:    aStr = "ReadUnknownNode"; break;
+       case VrmlData_NonSupportedFeature:aStr = "NonSupportedFeature"; break;
+-      default: /* Do nothing */ break;
++	  default: /* Do nothing */ break;
+       }
+       if (aStr) {
+         di << " ++ VRML Error: " << aStr << " in line "
+diff --git a/src/math/math_DirectPolynomialRoots.cxx b/src/math/math_DirectPolynomialRoots.cxx
+index 9a4bd77..b8af596 100644
+--- a/src/math/math_DirectPolynomialRoots.cxx
++++ b/src/math/math_DirectPolynomialRoots.cxx
+@@ -52,8 +52,8 @@
+         Standard_Real Sol = IniSol;
+         Standard_Real IniVal = Value(N, Poly, IniSol);
+         Standard_Integer Index;
+-        // set a possible initial value to avoid compiler complaining
+-        Val = IniVal;
++	// set a possible initial value to avoid compiler complaining
++	Val = IniVal;
+ 
+ //      cout << "Improve\n";
+         for(Index = 1; Index < 10; Index++) {

@@ -7,11 +7,11 @@ Subject: [PATCH 1/9] [cppcheck-fix][extra-qualification-unnecessary]
  inc/Standard.hxx |    4 ++--
  1 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/inc/Standard.hxx b/inc/Standard.hxx
-index 280c4fc..6846c81 100644
---- a/inc/Standard.hxx
-+++ b/inc/Standard.hxx
-@@ -46,11 +46,11 @@ public:
+Index: oce/inc/Standard.hxx
+===================================================================
+--- oce.orig/inc/Standard.hxx
++++ oce/inc/Standard.hxx
+@@ -46,11 +46,11 @@
    }
    void* operator new(size_t size) 
    {
@@ -25,6 +25,3 @@ index 280c4fc..6846c81 100644
    }
  
    //!  Allocates memory blocks <br>
--- 
-1.7.5.4
-

@@ -2037,7 +2037,7 @@ Index: oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
 ===================================================================
 --- oce.orig/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
 +++ oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
-@@ -771,7 +771,6 @@
+@@ -773,7 +773,6 @@
          gp_Pnt Pt,P1=BRep_Tool::Pnt(S1);
          BRepClass_FaceClassifier classifier;
          const Standard_Real tol = BRep_Tool::Tolerance(S2);
@@ -2045,7 +2045,7 @@ Index: oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
   
          for (i = 1; i <= NbExtrema; i++)
          {
-@@ -828,7 +827,6 @@
+@@ -830,7 +829,6 @@
          gp_Pnt Pt,P1=BRep_Tool::Pnt(S2);
          BRepClass_FaceClassifier classifier;
          const Standard_Real tol = BRep_Tool::Tolerance(S1);
@@ -2053,7 +2053,7 @@ Index: oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
   
          for (i = 1; i <= NbExtrema; i++)
          {
-@@ -1077,7 +1075,6 @@
+@@ -1079,7 +1077,6 @@
  
        BRepExtrema_SeqOfSolution seqSol1;
        BRepExtrema_SeqOfSolution seqSol2;
@@ -2061,7 +2061,7 @@ Index: oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
        if (SeqSolution1.Length() > 0 && SeqSolution2.Length() > 0)
          MIN_SOLUTION(SeqSolution1, SeqSolution2, myDstRef, myEps, seqSol1, seqSol2);
  	    
-@@ -1223,7 +1220,6 @@
+@@ -1225,7 +1222,6 @@
  
        BRepExtrema_SeqOfSolution seqSol1;
        BRepExtrema_SeqOfSolution seqSol2;
@@ -2069,7 +2069,7 @@ Index: oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
        if (SeqSolution1.Length() > 0 && SeqSolution2.Length() > 0)
          MIN_SOLUTION(SeqSolution1, SeqSolution2, myDstRef, myEps, seqSol1, seqSol2);
  	    
-@@ -1267,7 +1263,6 @@
+@@ -1269,7 +1265,6 @@
          gp_Pnt2d PUV;
          Standard_Real U1,V1,U2,V2;
          BRepClass_FaceClassifier classifier;

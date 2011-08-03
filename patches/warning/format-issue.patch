@@ -9,11 +9,11 @@ Subject: [PATCH 6/9] [warning-fix][formati-issue]
  src/OpenGl/OpenGl_degmodel.cxx         |    2 +-
  3 files changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/src/BOPTest/BOPTest_LowCommands.cxx b/src/BOPTest/BOPTest_LowCommands.cxx
-index c68194b..748c304 100644
---- a/src/BOPTest/BOPTest_LowCommands.cxx
-+++ b/src/BOPTest/BOPTest_LowCommands.cxx
-@@ -716,19 +716,19 @@ void PrintState (Draw_Interpretor& aDI,
+Index: oce/src/BOPTest/BOPTest_LowCommands.cxx
+===================================================================
+--- oce.orig/src/BOPTest/BOPTest_LowCommands.cxx
++++ oce/src/BOPTest/BOPTest_LowCommands.cxx
+@@ -716,19 +716,19 @@
    //
    switch (aState) {
    case TopAbs_IN:		
@@ -38,11 +38,11 @@ index c68194b..748c304 100644
      break;
    }
    aDI<<sbf; 
-diff --git a/src/IFSelect/IFSelect_SessionPilot.cxx b/src/IFSelect/IFSelect_SessionPilot.cxx
-index 53be144..361d721 100644
---- a/src/IFSelect/IFSelect_SessionPilot.cxx
-+++ b/src/IFSelect/IFSelect_SessionPilot.cxx
-@@ -222,7 +222,7 @@ static TCollection_AsciiString nulword;
+Index: oce/src/IFSelect/IFSelect_SessionPilot.cxx
+===================================================================
+--- oce.orig/src/IFSelect/IFSelect_SessionPilot.cxx
++++ oce/src/IFSelect/IFSelect_SessionPilot.cxx
+@@ -222,7 +222,7 @@
  
    for (;;) {
      char ligne[100];
@@ -51,11 +51,11 @@ index 53be144..361d721 100644
      ligne[0] = '\0';
      fgets(ligne,100,fic);
      if (feof(fic)) break;
-diff --git a/src/OpenGl/OpenGl_degmodel.cxx b/src/OpenGl/OpenGl_degmodel.cxx
-index a8eb1e0..d96f674 100644
---- a/src/OpenGl/OpenGl_degmodel.cxx
-+++ b/src/OpenGl/OpenGl_degmodel.cxx
-@@ -102,7 +102,7 @@ static TStatus DegenerateModelPrint ( TSM_ELEM_DATA data, Tint n, cmn_key* k ) {
+Index: oce/src/OpenGl/OpenGl_degmodel.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_degmodel.cxx
++++ oce/src/OpenGl/OpenGl_degmodel.cxx
+@@ -102,7 +102,7 @@
  
    }  /* end switch */
  
@@ -64,6 +64,3 @@ index a8eb1e0..d96f674 100644
  
    return TSuccess;
  
--- 
-1.7.5.4
-

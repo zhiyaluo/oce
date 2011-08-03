@@ -7,11 +7,11 @@ Subject: [PATCH 3/9] [cppcheck-fix][resource-leak]
  src/DrawResources/DIFF.c |    4 +++-
  1 files changed, 3 insertions(+), 1 deletions(-)
 
-diff --git a/src/DrawResources/DIFF.c b/src/DrawResources/DIFF.c
-index 7548f33..a070f43 100644
---- a/src/DrawResources/DIFF.c
-+++ b/src/DrawResources/DIFF.c
-@@ -17,6 +17,7 @@ int main(int argc, char **argv) {
+Index: oce/src/DrawResources/DIFF.c
+===================================================================
+--- oce.orig/src/DrawResources/DIFF.c
++++ oce/src/DrawResources/DIFF.c
+@@ -17,6 +17,7 @@
    FILE *fp2 = fopen(argv[2],"r");
    if(fp2 == NULL) { 
      fprintf(stderr,"\n Unable to open file2:%s \n",argv[2]);
@@ -19,7 +19,7 @@ index 7548f33..a070f43 100644
      return(-3);
    }
  
-@@ -38,7 +39,8 @@ int main(int argc, char **argv) {
+@@ -38,7 +39,8 @@
        }    
      }
    }
@@ -29,6 +29,3 @@ index 7548f33..a070f43 100644
    return(0);
  }
    
--- 
-1.7.5.4
-

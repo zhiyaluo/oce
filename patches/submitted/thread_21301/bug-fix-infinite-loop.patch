@@ -8,11 +8,11 @@ Subject: [PATCH] Fixes inifinite loop in BRepExtrema_DistanceSS reported at
  src/BRepExtrema/BRepExtrema_DistanceSS.cxx |    2 ++
  1 files changed, 2 insertions(+), 0 deletions(-)
 
-diff --git a/src/BRepExtrema/BRepExtrema_DistanceSS.cxx b/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
-index cf3fdc5..30fc83d 100644
---- a/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
-+++ b/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
-@@ -347,6 +347,8 @@ static void TRIM_INFINIT_FACE(const TopoDS_Shape& S1, const TopoDS_Shape& S2,
+Index: oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
+===================================================================
+--- oce.orig/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
++++ oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
+@@ -347,6 +347,8 @@
  	    Vmin = aV;
  	  else if (aV > Vmax)
  	    Vmax = aV;
@@ -21,6 +21,3 @@ index cf3fdc5..30fc83d 100644
  	}
        
      GeomAdaptor_Surface aGAS(pSurf);
--- 
-1.7.5.4
-

@@ -7,18 +7,15 @@ Subject: [PATCH 7/9] [warning-fix][unhandled-enumeration-value]
  src/IntPatch/IntPatch_HInterTool.cxx |    1 +
  1 files changed, 1 insertions(+), 0 deletions(-)
 
-diff --git a/src/IntPatch/IntPatch_HInterTool.cxx b/src/IntPatch/IntPatch_HInterTool.cxx
-index 4e8b12f..730b4c9 100644
---- a/src/IntPatch/IntPatch_HInterTool.cxx
-+++ b/src/IntPatch/IntPatch_HInterTool.cxx
-@@ -46,6 +46,7 @@ Standard_Integer IntPatch_HInterTool::NbSamplesV (const Handle(Adaptor3d_HSurfac
+Index: oce/src/IntPatch/IntPatch_HInterTool.cxx
+===================================================================
+--- oce.orig/src/IntPatch/IntPatch_HInterTool.cxx
++++ oce/src/IntPatch/IntPatch_HInterTool.cxx
+@@ -46,6 +46,7 @@
      case GeomAbs_Torus:
      case GeomAbs_SurfaceOfRevolution:
      case GeomAbs_SurfaceOfExtrusion: return 15;
-+	default: /* do nothing */ break;
++    default: /* do nothing */ break;
    }
    return 10;
  }
--- 
-1.7.5.4
-

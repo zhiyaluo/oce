@@ -113,3 +113,6 @@ config/rename-config.h-into-oce-config.h.patch
 config/add-OCE-prefix-to-macros.patch
 
 review/add-todos.patch
+
+#  This patch must be applied against master (reversed)
+whitespace-cleanup.patch

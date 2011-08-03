@@ -7,11 +7,11 @@ Subject: [PATCH 2/9] [cppcheck-fix][uninitialized-var]
  inc/ApproxInt_Approx.gxx |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/inc/ApproxInt_Approx.gxx b/inc/ApproxInt_Approx.gxx
-index bd7a544..f288e44 100644
---- a/inc/ApproxInt_Approx.gxx
-+++ b/inc/ApproxInt_Approx.gxx
-@@ -99,7 +99,7 @@ static void  ComputeTrsf2d(const Handle(TheWLine)& theline,
+Index: oce/inc/ApproxInt_Approx.gxx
+===================================================================
+--- oce.orig/inc/ApproxInt_Approx.gxx
++++ oce/inc/ApproxInt_Approx.gxx
+@@ -99,7 +99,7 @@
      pfunc = &IntSurf_PntOn2S::ParametersOnS2;
    for(Standard_Integer i=1;i<=nbp;i++) { 
      const IntSurf_PntOn2S&  POn2S = theline->Point(i);
@@ -20,6 +20,3 @@ index bd7a544..f288e44 100644
      (POn2S.*pfunc)(U,V);
      if(U<u0) u0=U;
      if(U>u1) u1=U;
--- 
-1.7.5.4
-

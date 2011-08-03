@@ -8,10 +8,10 @@ Fix */ within comment.
  src/V3d/V3d_View_1.cxx |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
-diff --git a/src/V3d/V3d_View_1.cxx b/src/V3d/V3d_View_1.cxx
-index 7b8ee94..7d9da0c 100644
---- a/src/V3d/V3d_View_1.cxx
-+++ b/src/V3d/V3d_View_1.cxx
+Index: oce/src/V3d/V3d_View_1.cxx
+===================================================================
+--- oce.orig/src/V3d/V3d_View_1.cxx
++++ oce/src/V3d/V3d_View_1.cxx
 @@ -4,7 +4,7 @@
       ----------
          File V3d_View_1.cxx :
@@ -21,6 +21,3 @@ index 7b8ee94..7d9da0c 100644
  /*----------------------------------------------------------------------*/
  /*
   * Includes
--- 
-1.7.5.4
-
