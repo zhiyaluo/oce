@@ -5,6 +5,7 @@ submitted/OCC22332/fix-layer-line.patch
 submitted/OCC22685/missing-parentheses-around-trigraphs.patch
 submitted/OCC22692/fix-ECT_IsRational.patch
 
+submitted/thread_21301/bug-fix-infinite-loop.patch
 submitted/thread_20051/fix-build-failure-powerpc.patch
 submitted/thread_20052/fix-build-failure-gnu-kfreebsd.patch
 submitted/thread_20053/replace-x86-asm-by-gcc-atomic-extensions.patch
@@ -60,6 +61,7 @@ warning/fix-unreachable-code-rewrite-loops.patch
 warning/fix-Standard_IMPORT-usage.patch
 
 #  This patch should drop const qualifiers in return value for all methods (only for objects, not pointers and references!)
+warning/fix-implicit-conversion-from-wider-type.patch
 warning/remove-const-return-value.patch
 #  Do not report this bug to OCC, it has to be investigated
 review/fix-deprecated-conversion-from-string.patch

@@ -35,6 +35,37 @@ Subject: [PATCH 3/3] Version.rc needs numerical value, add a suffix for
  CMakeLists.txt |    6 ++++--
  1 files changed, 4 insertions(+), 2 deletions(-)
 
+From 8a921d62339908f6479ab221a5c4e6d176a4c32f Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Mon, 1 Aug 2011 12:45:04 +0200
+Subject: [PATCH 1/2] Updated authros and news for 0.5.0 release
+
+---
+ AUTHORS |    2 ++
+ NEWS    |   33 +++++++++++++++++++++++++++++++++
+ 2 files changed, 35 insertions(+), 0 deletions(-)
+
+From 1df0329cd1fd32c59f59a4be3c936aeed58e8c6d Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Mon, 1 Aug 2011 12:45:32 +0200
+Subject: [PATCH 2/2] Removed -dev tag to the version info
+
+---
+ CMakeLists.txt |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Index: oce/AUTHORS
+===================================================================
+--- oce.orig/AUTHORS
++++ oce/AUTHORS
+@@ -9,5 +9,7 @@
+ Jérôme Robert (jrobert dot pro at gmail dot com)
+ Fotis Sioutis (sfotis at gmail dot com)
+ Hugh Sorby ()
++Hugues Delorme ()
++Philippe Carret ()
+ 
+ Copyright 2011
 Index: oce/CMakeLists.txt
 ===================================================================
 --- oce.orig/CMakeLists.txt
@@ -47,7 +78,7 @@ Index: oce/CMakeLists.txt
 +SET(OCE_VERSION_MINOR 5)
  SET(OCE_VERSION_PATCH 0)
 +#  Empty for official releases, set to -dev, -rc1, etc for development releases
-+SET(OCE_VERSION_DEVEL -dev)
++SET(OCE_VERSION_DEVEL )
  
 -SET(OCE_VERSION ${OCE_VERSION_MAJOR}.${OCE_VERSION_MINOR}.${OCE_VERSION_PATCH})
 +SET(OCE_VERSION ${OCE_VERSION_MAJOR}.${OCE_VERSION_MINOR}.${OCE_VERSION_PATCH}${OCE_VERSION_DEVEL})
@@ -63,7 +94,40 @@ Index: oce/NEWS
 ===================================================================
 --- oce.orig/NEWS
 +++ oce/NEWS
-@@ -1,3 +1,32 @@
+@@ -1,3 +1,65 @@
++Version 0.5.0 - August 2011
++
++This released integrated OCCT 6.5.1, continued on the warning cleanup, and 
++fixed some bugs. This a ABI breaking release, due to the warning fixes 
++and the new OCCT version. 
++Programs compiled with OCCT 6.5.1 will compile untouched with OCE 0.5.0
++
++ *   OCCT 6.5.1 : aligned to the lasted OpenCascade Tecnology release, 
++     while mantaining all the patches previously applyed.
++ 
++ *   Breaking changes : to allow the removal of many compiler warnings, we 
++     did some breaking changes in some of the headers, mainly related to the 
++     type of private class fields. Existing code will still compile untouched.
++     
++ *   Warning removal and code cleanup : we removed many other warnings and 
++     cleaned up some functions. Some cppcheck warnings were also fixed.
++     
++ *   Added TBB support in memory allocation : OCE builds compiled with the 
++     TBB option on will benefit from it's multithreaded memory allocator.
++    
++ *   Bug fixes : some bugs were spotted during the cleanup process, and 
++     were fixed and reported. Other bugs were noticed from the forum and
++     fixed.
++
++ *   Installing version information : Programs using CMake will allow to find 
++     OCE with a specific version string.
++ 
++ *   Program using OCE won't require to compile with -DHAVE_OCE_CONFIG anymore.
++ 
++Users who contributed to this release:
++     Thomas Paviot, Denis Barbier, QbProg, Hugues Delorme, Muellni,
++     Philippe Carret
++     
 +Version 0.4.0 - July 2011
 +
 +This release focused on improving code quality and the cmake build system.

@@ -1,0 +1,101 @@
+From 4fafd4f2c8ee7f644ce266405e2464b11d89e6eb Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Sun, 24 Jul 2011 18:19:40 +0200
+Subject: [PATCH] [warning-fix][implicit-conversion-from-wider-type]
+
+Changed some of the interface types (inc files) related to time_t
+to correct some implicit casts.
+---
+ inc/Dynamic_FuzzyDefinitionsDictionary.hxx  |    6 +++++-
+ inc/Dynamic_MethodDefinitionsDictionary.hxx |    6 +++++-
+ inc/Materials_MaterialsDictionary.hxx       |    6 +++++-
+ inc/Units_Lexicon.hxx                       |    2 +-
+ inc/Units_UnitsLexicon.hxx                  |    2 +-
+ 5 files changed, 17 insertions(+), 5 deletions(-)
+
+diff --git a/inc/Dynamic_FuzzyDefinitionsDictionary.hxx b/inc/Dynamic_FuzzyDefinitionsDictionary.hxx
+index e4e668b..2ea5f9f 100644
+--- a/inc/Dynamic_FuzzyDefinitionsDictionary.hxx
++++ b/inc/Dynamic_FuzzyDefinitionsDictionary.hxx
+@@ -104,9 +104,13 @@ private:
+ 
+ 
+ Handle_TCollection_HAsciiString thefilename;
+-Standard_Integer thetime;
+ Handle_Dynamic_SequenceOfFuzzyDefinitions thesequenceoffuzzydefinitions;
+ 
++#ifdef _MSC_VER
++__time64_t thetime;
++#else
++time_t thetime;
++#endif
+ 
+ };
+ 
+diff --git a/inc/Dynamic_MethodDefinitionsDictionary.hxx b/inc/Dynamic_MethodDefinitionsDictionary.hxx
+index 7a93107..72b61c0 100644
+--- a/inc/Dynamic_MethodDefinitionsDictionary.hxx
++++ b/inc/Dynamic_MethodDefinitionsDictionary.hxx
+@@ -108,9 +108,13 @@ private:
+ 
+ 
+ Handle_TCollection_HAsciiString thefilename;
+-Standard_Integer thetime;
+ Handle_Dynamic_SequenceOfMethodDefinitions thesequenceofmethoddefinitions;
+ 
++#ifdef _MSC_VER
++__time64_t thetime;
++#else
++time_t thetime;
++#endif
+ 
+ };
+ 
+diff --git a/inc/Materials_MaterialsDictionary.hxx b/inc/Materials_MaterialsDictionary.hxx
+index 4c83dc1..f0cdbee 100644
+--- a/inc/Materials_MaterialsDictionary.hxx
++++ b/inc/Materials_MaterialsDictionary.hxx
+@@ -89,9 +89,13 @@ private:
+ 
+ 
+ Handle_TCollection_HAsciiString thefilename;
+-Standard_Integer thetime;
+ Handle_Materials_MaterialsSequence thematerialssequence;
+ 
++#ifdef _MSC_VER
++__time64_t thetime;
++#else
++time_t thetime;
++#endif
+ 
+ };
+ 
+diff --git a/inc/Units_Lexicon.hxx b/inc/Units_Lexicon.hxx
+index 4c994d5..e09a60c 100644
+--- a/inc/Units_Lexicon.hxx
++++ b/inc/Units_Lexicon.hxx
+@@ -85,7 +85,7 @@ private:
+ 
+ 
+ Handle_TCollection_HAsciiString thefilename;
+-Standard_Integer thetime;
++time_t thetime;
+ Handle_Units_TokensSequence thesequenceoftokens;
+ 
+ 
+diff --git a/inc/Units_UnitsLexicon.hxx b/inc/Units_UnitsLexicon.hxx
+index cabe9b4..219c858 100644
+--- a/inc/Units_UnitsLexicon.hxx
++++ b/inc/Units_UnitsLexicon.hxx
+@@ -72,7 +72,7 @@ private:
+ 
+ 
+ Handle_TCollection_HAsciiString thefilename;
+-Standard_Integer thetime;
++time_t thetime;
+ 
+ 
+ };
+-- 
+1.7.5.4
+
