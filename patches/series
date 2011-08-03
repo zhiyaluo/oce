@@ -42,6 +42,13 @@ warning/fix-defined-but-not-used.patch
 warning/linker-warnings.patch
 warning/add-placement-delete.patch
 warning/add-placement-delete-allocator.patch
+cppcheck/fix-extra-qualification-unnecessary.patch
+cppcheck/fix-uninitialized-var.patch
+cppcheck/fix-resource-leak.patch
+cppcheck/fix-memory-leak.patch
+warning/format-issue.patch
+warning/fix-unhandled-enumeration-value2.patch
+warning/fix-comment-format.patch
 #  Do not submit, either needs to be reworked, or are unsuitable
 warning/fix-empty-conditional-body.patch
 warning/fix-invalid-enum-value-in-switch.patch

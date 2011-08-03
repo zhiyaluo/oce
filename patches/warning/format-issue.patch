@@ -1,0 +1,69 @@
+From 6c31800b5afb8637b48626d38ed352c55aab7d5e Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Thu, 28 Jul 2011 14:17:16 +0200
+Subject: [PATCH 6/9] [warning-fix][formati-issue]
+
+---
+ src/BOPTest/BOPTest_LowCommands.cxx    |   10 +++++-----
+ src/IFSelect/IFSelect_SessionPilot.cxx |    2 +-
+ src/OpenGl/OpenGl_degmodel.cxx         |    2 +-
+ 3 files changed, 7 insertions(+), 7 deletions(-)
+
+diff --git a/src/BOPTest/BOPTest_LowCommands.cxx b/src/BOPTest/BOPTest_LowCommands.cxx
+index c68194b..748c304 100644
+--- a/src/BOPTest/BOPTest_LowCommands.cxx
++++ b/src/BOPTest/BOPTest_LowCommands.cxx
+@@ -716,19 +716,19 @@ void PrintState (Draw_Interpretor& aDI,
+   //
+   switch (aState) {
+   case TopAbs_IN:		
+-    sprintf(sbf, sIN.ToCString());
++    sprintf(sbf, "%s",sIN.ToCString());
+     break;
+   case TopAbs_OUT:		
+-    sprintf(sbf, sOUT.ToCString());
++    sprintf(sbf, "%s",sOUT.ToCString());
+     break;
+   case TopAbs_ON:		
+-    sprintf(sbf, sON.ToCString());
++    sprintf(sbf, "%s",sON.ToCString());
+     break;
+   case TopAbs_UNKNOWN:		
+-    sprintf(sbf, sUNKNOWN.ToCString());
++    sprintf(sbf, "%s",sUNKNOWN.ToCString());
+     break;
+   default:
+-    sprintf(sbf, sUNKNOWN.ToCString()); 
++    sprintf(sbf, "%s",sUNKNOWN.ToCString()); 
+     break;
+   }
+   aDI<<sbf; 
+diff --git a/src/IFSelect/IFSelect_SessionPilot.cxx b/src/IFSelect/IFSelect_SessionPilot.cxx
+index 53be144..361d721 100644
+--- a/src/IFSelect/IFSelect_SessionPilot.cxx
++++ b/src/IFSelect/IFSelect_SessionPilot.cxx
+@@ -222,7 +222,7 @@ static TCollection_AsciiString nulword;
+ 
+   for (;;) {
+     char ligne[100];
+-    if (!lefic) printf (theprompt.ToCString());
++    if (!lefic) printf ("%s",theprompt.ToCString());
+     ligne[0] = '\0';
+     fgets(ligne,100,fic);
+     if (feof(fic)) break;
+diff --git a/src/OpenGl/OpenGl_degmodel.cxx b/src/OpenGl/OpenGl_degmodel.cxx
+index a8eb1e0..d96f674 100644
+--- a/src/OpenGl/OpenGl_degmodel.cxx
++++ b/src/OpenGl/OpenGl_degmodel.cxx
+@@ -102,7 +102,7 @@ static TStatus DegenerateModelPrint ( TSM_ELEM_DATA data, Tint n, cmn_key* k ) {
+ 
+   }  /* end switch */
+ 
+-  fprintf ( stdout, ptr );
++  fprintf ( stdout,"%s", ptr );
+ 
+   return TSuccess;
+ 
+-- 
+1.7.5.4
+

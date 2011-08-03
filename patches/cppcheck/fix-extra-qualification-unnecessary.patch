@@ -1,0 +1,30 @@
+From 32207c5eae61587f900cfeba82d58816dbd433c2 Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Thu, 28 Jul 2011 08:31:02 +0200
+Subject: [PATCH 1/9] [cppcheck-fix][extra-qualification-unnecessary]
+
+---
+ inc/Standard.hxx |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/inc/Standard.hxx b/inc/Standard.hxx
+index 280c4fc..6846c81 100644
+--- a/inc/Standard.hxx
++++ b/inc/Standard.hxx
+@@ -46,11 +46,11 @@ public:
+   }
+   void* operator new(size_t size) 
+   {
+-    return Standard::Allocate(size); 
++    return Allocate(size); 
+   }
+   void  operator delete(void *anAddress) 
+   {
+-    if (anAddress) Standard::Free((Standard_Address&)anAddress); 
++    if (anAddress) Free((Standard_Address&)anAddress); 
+   }
+ 
+   //!  Allocates memory blocks <br>
+-- 
+1.7.5.4
+

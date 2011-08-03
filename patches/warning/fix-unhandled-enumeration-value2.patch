@@ -1,0 +1,24 @@
+From 57f5939c8639669062124a0d804fcc51a2ddde1b Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Thu, 28 Jul 2011 15:10:15 +0200
+Subject: [PATCH 7/9] [warning-fix][unhandled-enumeration-value]
+
+---
+ src/IntPatch/IntPatch_HInterTool.cxx |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+diff --git a/src/IntPatch/IntPatch_HInterTool.cxx b/src/IntPatch/IntPatch_HInterTool.cxx
+index 4e8b12f..730b4c9 100644
+--- a/src/IntPatch/IntPatch_HInterTool.cxx
++++ b/src/IntPatch/IntPatch_HInterTool.cxx
+@@ -46,6 +46,7 @@ Standard_Integer IntPatch_HInterTool::NbSamplesV (const Handle(Adaptor3d_HSurfac
+     case GeomAbs_Torus:
+     case GeomAbs_SurfaceOfRevolution:
+     case GeomAbs_SurfaceOfExtrusion: return 15;
++	default: /* do nothing */ break;
+   }
+   return 10;
+ }
+-- 
+1.7.5.4
+

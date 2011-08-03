@@ -1,0 +1,56 @@
+From 05e221bd3f3603dd13141c6f6eabf48e6be39d25 Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Thu, 28 Jul 2011 09:52:22 +0200
+Subject: [PATCH 4/9] [cppcheck-fix][memory-leak]
+
+Allocating firstarea and lastarea only if noofarea allocation
+is successful.
+---
+ inc/MAT_Mat.gxx |    5 +++--
+ 1 files changed, 3 insertions(+), 2 deletions(-)
+
+From ba025a987fb824cccd3e1f6e2c9e72ff501636c8 Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Thu, 28 Jul 2011 09:59:38 +0200
+Subject: [PATCH 5/9] [cppcheck-fix][memory-leak]
+
+Free thedefault before exiting the else statement.
+---
+ src/Draw/Draw.cxx |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+From 5e57cc68bf0a58ab620784e4192688f7a01033cb Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Fri, 29 Jul 2011 21:22:40 +0200
+Subject: [PATCH 9/9] In 05e221b, firstarea or lastarea may be NULL if memory
+ is exhausted
+
+---
+ inc/MAT_Mat.gxx |    7 ++++---
+ 1 files changed, 4 insertions(+), 3 deletions(-)
+
+Index: oce/inc/MAT_Mat.gxx
+===================================================================
+--- oce.orig/inc/MAT_Mat.gxx
++++ oce/inc/MAT_Mat.gxx
+@@ -152,6 +152,8 @@
+ 
+   if (noofarea == 0) {
+     cout <<" Erreur d allocation "<<endl;
++    delete [] firstarea;
++    delete [] lastarea;
+     return;
+   }
+ 
+Index: oce/src/Draw/Draw.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw.cxx
++++ oce/src/Draw/Draw.cxx
+@@ -281,6 +281,7 @@
+       strcat(thedefault,casroot);
+       strcat (thedefault,"/src/DrawResources/DrawDefault");
+       ReadInitFile(thedefault);
++      free(thedefault);
+     }
+   }
+   else
