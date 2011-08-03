@@ -16,17 +16,17 @@ submitted/thread_20931/add-missing-include-stdlib.patch
 warning/bugs.patch
 build-with-newer-ftgl.patch
 fix-freeimage-gl2ps-support.patch
-ports/remove-__try-__finally.patch
+submitted/thread_21346/ports/remove-__try-__finally.patch
 
-warning/remove-extra-token-after-endif.patch
-warning/fix-declared-but-never-defined.patch
-warning/fix-deprecated-conversion-from-string.patch
-warning/fix-comparison-between-different-enums.patch
-warning/deleting-void-ptr-is-undefined.patch
-warning/fix-format-type-mismatch.patch
-warning/fix-function-never-returns.patch
-warning/fix-implicit-conversion-from-wider-type.patch
-warning/fix-initialization-order.patch
+submitted/thread_21347/warning/remove-extra-token-after-endif.patch
+submitted/thread_21348/warning/fix-declared-but-never-defined.patch
+submitted/thread_21349/warning/fix-deprecated-conversion-from-string.patch
+submitted/thread_21350/warning/fix-comparison-between-different-enums.patch
+submitted/thread_21351/warning/deleting-void-ptr-is-undefined.patch
+submitted/thread_21352/warning/fix-format-type-mismatch.patch
+submitted/thread_21353/warning/fix-function-never-returns.patch
+submitted/thread_21354/warning/fix-implicit-conversion-from-wider-type.patch
+submitted/thread_21355/warning/fix-initialization-order.patch
 warning/fix-label-not-used.patch
 warning/fix-multiline-comment.patch
 warning/fix-old_declarators.patch
