@@ -74,6 +74,21 @@ Subject: [PATCH 18/82] Build static lib in case of code coverage test (much
  CMakeLists.txt |    2 ++
  1 files changed, 2 insertions(+), 0 deletions(-)
 
+From 7d9fbf50e90423ee0e9c38e9c23b9769b4c8985d Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Fri, 5 Aug 2011 08:42:08 +0200
+Subject: [PATCH] Use tabulations to indent CMake files, and remove trailing
+ spaces
+
+---
+ CMakeLists.txt                     |  548 ++++++++++++++++++------------------
+ ProjectConfigVersion.cmake.in      |   10 +-
+ adm/cmake/DRAWEXE/CMakeLists.txt   |    6 +-
+ adm/cmake/OccBuildKit.cmake        |   98 +++----
+ adm/cmake/TKOpenGl/CMakeLists.txt  |    6 +-
+ adm/cmake/TKService/CMakeLists.txt |    6 +-
+ 6 files changed, 333 insertions(+), 341 deletions(-)
+
 Index: oce/CMakeLists.txt
 ===================================================================
 --- oce.orig/CMakeLists.txt
@@ -98,19 +113,19 @@ Index: oce/CMakeLists.txt
 +# UnitTesting #
 +###############
 +IF(${PROJECT_NAME}_TESTING)
-+    SET( ${PROJECT_NAME}_EXTRA_WARNINGS ON CACHE BOOL "Extra warnings required by testing framework" FORCE)
-+    INCLUDE(CTest)
-+    ENABLE_TESTING()
-+    SUBDIRS(test)	
++	SET( ${PROJECT_NAME}_EXTRA_WARNINGS ON CACHE BOOL "Extra warnings required by testing framework" FORCE)
++	INCLUDE(CTest)
++	ENABLE_TESTING()
++	SUBDIRS(test)
 +ENDIF(${PROJECT_NAME}_TESTING)
 +IF(${PROJECT_NAME}_COVERAGE)
-+    SET(${PROJECT_NAME}_TESTING ON CACHE BOOL "Testing enabled by coverage option" FORCE)
-+    # build static libs, better coverage report
-+    SET( ${PROJECT_NAME}_BUILD_SHARED_LIB OFF CACHE BOOL "Build static libs" FORCE )
-+    SET(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -fprofile-arcs -ftest-coverage" CACHE STRING "Extra compile flags required by code coverage" FORCE)
-+    SET(CMAKE_C_FLAGS_DEBUG "-O0 -g -fprofile-arcs -ftest-coverage" CACHE STRING "Extra compile flags required by code coverage" FORCE)
-+    SET(CMAKE_MODULE_LINKER_FLAGS_DEBUG "-fprofile-arcs -ftest-coverage" CACHE STRING "Extra linker flags required by code coverage" FORCE)
-+    SET(${PROJECT_NAME}_BUILD_TYPE "Debug" CACHE STRING "Build type required by testing framework" FORCE)
++	SET(${PROJECT_NAME}_TESTING ON CACHE BOOL "Testing enabled by coverage option" FORCE)
++	# build static libs, better coverage report
++	SET( ${PROJECT_NAME}_BUILD_SHARED_LIB OFF CACHE BOOL "Build static libs" FORCE )
++	SET(CMAKE_CXX_FLAGS_DEBUG "-O0 -g -fprofile-arcs -ftest-coverage" CACHE STRING "Extra compile flags required by code coverage" FORCE)
++	SET(CMAKE_C_FLAGS_DEBUG "-O0 -g -fprofile-arcs -ftest-coverage" CACHE STRING "Extra compile flags required by code coverage" FORCE)
++	SET(CMAKE_MODULE_LINKER_FLAGS_DEBUG "-fprofile-arcs -ftest-coverage" CACHE STRING "Extra linker flags required by code coverage" FORCE)
++	SET(${PROJECT_NAME}_BUILD_TYPE "Debug" CACHE STRING "Build type required by testing framework" FORCE)
 +ENDIF(${PROJECT_NAME}_COVERAGE)
 +
  ###############################################################################
