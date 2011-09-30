@@ -109,6 +109,8 @@ remove-ExprIntrp.tab.c.patch
 
 get-rid-of-environment-variables.patch
 
+TKernel-drop-X11-depends.patch
+
 config/unconditionnally-include-config.h.patch
 config/rename-config.h-into-oce-config.h.patch
 config/add-OCE-prefix-to-macros.patch
