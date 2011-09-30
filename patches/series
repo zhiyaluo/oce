@@ -99,6 +99,7 @@ ports/borland8.patch
 ports/avoid-redefinition-warnings.patch
 ports/add-missing-Vfw32.lib.patch
 ports/workaround-clang-bug-remove-trampoline.patch
+ports/workaround-gcc42-bug-gpMat.patch
 
 warning/modify-MSVC-pragmas.patch
 review/avoid-macro-redefinition.patch
