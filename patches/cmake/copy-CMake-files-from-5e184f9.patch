@@ -238,6 +238,122 @@ Subject: [PATCH] Use tabulations to indent CMake files, and remove trailing
  adm/cmake/TKService/CMakeLists.txt |    6 +-
  6 files changed, 333 insertions(+), 341 deletions(-)
 
+From 56c72cd479aa7a9b5240fc5fdfe5006265ff61b7 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Wed, 10 Aug 2011 02:06:01 +0200
+Subject: [PATCH] Change OSD_FontMgr.cxx so that TKernel does not depend on
+ X11
+
+This class uses X11 calls to get the list of available fonts,
+which is then used by OpenGl_FontMgr.cxx; see
+  http://www.opencascade.org/org/forum/thread_21351/
+for details about why this is a bad idea.
+
+Here we use an environment variable to get the list of directories
+where fonts have to be looked for.  If it is unset, default paths
+are set when compiling:
+ * On Darwin, /usr/X11/lib/X11/fonts:/Library/Fonts:/System/Library/Fonts
+ * On other Unix, /usr/share/X11/fonts:/usr/share/fonts/X11
+
+Closes issue #12.
+
+Tkernel indirectly depends on libdl through libX11, so this commit
+must be applied after ca78eea, otherwise applications may have
+unresolved symbols when linking against TKernel.
+---
+ CMakeLists.txt                   |   23 +++++++---
+ adm/cmake/OccBuildKit.cmake      |    3 +
+ adm/cmake/TKernel/CMakeLists.txt |    3 -
+ src/OSD/OSD_FontMgr.cxx          |   92 ++++++++++++++++++++------------------
+ 4 files changed, 67 insertions(+), 54 deletions(-)
+
+From a9dcc411f7ab17b0c2a1633049b25efc08c00d2e Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Tue, 23 Aug 2011 12:40:33 +0200
+Subject: [PATCH] Workaround for cmake bug that prevented build in
+ Win64+MSVC+static libs
+
+---
+ adm/cmake/OccBuildKit.cmake |    6 ++++++
+ 1 files changed, 6 insertions(+), 0 deletions(-)
+
+From 5a1c0f3928de825b81c0572668ee33efe5eda0a2 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Wed, 31 Aug 2011 08:19:33 +0200
+Subject: [PATCH] Rename OccBuildKit.cmake into BuildToolkit.cmake
+
+---
+ adm/cmake/BuildToolkit.cmake           |  180 ++++++++++++++++++++++++++++++++
+ adm/cmake/FWOSPlugin/CMakeLists.txt    |    2 +-
+ adm/cmake/OccBuildKit.cmake            |  180 --------------------------------
+ adm/cmake/PTKernel/CMakeLists.txt      |    2 +-
+ adm/cmake/TKAdvTools/CMakeLists.txt    |    2 +-
+ adm/cmake/TKBO/CMakeLists.txt          |    2 +-
+ adm/cmake/TKBRep/CMakeLists.txt        |    2 +-
+ adm/cmake/TKBin/CMakeLists.txt         |    2 +-
+ adm/cmake/TKBinL/CMakeLists.txt        |    2 +-
+ adm/cmake/TKBinTObj/CMakeLists.txt     |    2 +-
+ adm/cmake/TKBinXCAF/CMakeLists.txt     |    2 +-
+ adm/cmake/TKBool/CMakeLists.txt        |    2 +-
+ adm/cmake/TKCAF/CMakeLists.txt         |    2 +-
+ adm/cmake/TKCDF/CMakeLists.txt         |    2 +-
+ adm/cmake/TKDCAF/CMakeLists.txt        |    2 +-
+ adm/cmake/TKDraw/CMakeLists.txt        |    2 +-
+ adm/cmake/TKFeat/CMakeLists.txt        |    2 +-
+ adm/cmake/TKFillet/CMakeLists.txt      |    2 +-
+ adm/cmake/TKG2d/CMakeLists.txt         |    2 +-
+ adm/cmake/TKG3d/CMakeLists.txt         |    2 +-
+ adm/cmake/TKGeomAlgo/CMakeLists.txt    |    2 +-
+ adm/cmake/TKGeomBase/CMakeLists.txt    |    2 +-
+ adm/cmake/TKHLR/CMakeLists.txt         |    2 +-
+ adm/cmake/TKIGES/CMakeLists.txt        |    2 +-
+ adm/cmake/TKLCAF/CMakeLists.txt        |    2 +-
+ adm/cmake/TKMath/CMakeLists.txt        |    2 +-
+ adm/cmake/TKMesh/CMakeLists.txt        |    2 +-
+ adm/cmake/TKMeshVS/CMakeLists.txt      |    2 +-
+ adm/cmake/TKNIS/CMakeLists.txt         |    2 +-
+ adm/cmake/TKOffset/CMakeLists.txt      |    2 +-
+ adm/cmake/TKOpenGl/CMakeLists.txt      |    2 +-
+ adm/cmake/TKPCAF/CMakeLists.txt        |    2 +-
+ adm/cmake/TKPLCAF/CMakeLists.txt       |    2 +-
+ adm/cmake/TKPShape/CMakeLists.txt      |    2 +-
+ adm/cmake/TKPrim/CMakeLists.txt        |    2 +-
+ adm/cmake/TKSTEP/CMakeLists.txt        |    2 +-
+ adm/cmake/TKSTEP209/CMakeLists.txt     |    2 +-
+ adm/cmake/TKSTEPAttr/CMakeLists.txt    |    2 +-
+ adm/cmake/TKSTEPBase/CMakeLists.txt    |    2 +-
+ adm/cmake/TKSTL/CMakeLists.txt         |    2 +-
+ adm/cmake/TKService/CMakeLists.txt     |    2 +-
+ adm/cmake/TKShHealing/CMakeLists.txt   |    2 +-
+ adm/cmake/TKShapeSchema/CMakeLists.txt |    2 +-
+ adm/cmake/TKStdLSchema/CMakeLists.txt  |    2 +-
+ adm/cmake/TKStdSchema/CMakeLists.txt   |    2 +-
+ adm/cmake/TKTObj/CMakeLists.txt        |    2 +-
+ adm/cmake/TKTObjDRAW/CMakeLists.txt    |    2 +-
+ adm/cmake/TKTopAlgo/CMakeLists.txt     |    2 +-
+ adm/cmake/TKTopTest/CMakeLists.txt     |    2 +-
+ adm/cmake/TKV2d/CMakeLists.txt         |    2 +-
+ adm/cmake/TKV3d/CMakeLists.txt         |    2 +-
+ adm/cmake/TKVRML/CMakeLists.txt        |    2 +-
+ adm/cmake/TKViewerTest/CMakeLists.txt  |    2 +-
+ adm/cmake/TKVoxel/CMakeLists.txt       |    2 +-
+ adm/cmake/TKXCAF/CMakeLists.txt        |    2 +-
+ adm/cmake/TKXCAFSchema/CMakeLists.txt  |    2 +-
+ adm/cmake/TKXDEDRAW/CMakeLists.txt     |    2 +-
+ adm/cmake/TKXDEIGES/CMakeLists.txt     |    2 +-
+ adm/cmake/TKXDESTEP/CMakeLists.txt     |    2 +-
+ adm/cmake/TKXMesh/CMakeLists.txt       |    2 +-
+ adm/cmake/TKXSBase/CMakeLists.txt      |    2 +-
+ adm/cmake/TKXSDRAW/CMakeLists.txt      |    2 +-
+ adm/cmake/TKXml/CMakeLists.txt         |    2 +-
+ adm/cmake/TKXmlL/CMakeLists.txt        |    2 +-
+ adm/cmake/TKXmlTObj/CMakeLists.txt     |    2 +-
+ adm/cmake/TKXmlXCAF/CMakeLists.txt     |    2 +-
+ adm/cmake/TKernel/CMakeLists.txt       |    2 +-
+ 67 files changed, 245 insertions(+), 245 deletions(-)
+ create mode 100644 adm/cmake/BuildToolkit.cmake
+ delete mode 100644 adm/cmake/OccBuildKit.cmake
+
 Index: oce/AUTHORS
 ===================================================================
 --- /dev/null
@@ -494,7 +610,7 @@ Index: oce/CMakeLists.txt
 ===================================================================
 --- /dev/null
 +++ oce/CMakeLists.txt
-@@ -0,0 +1,803 @@
+@@ -0,0 +1,812 @@
 +# REQUIREMENTS: this script needs CMake 2.6 or higher. Downloads are available at http://www.cmake.org
 +
 +# How to build OCE using CMake under Unix (Linux, Darwin etc.)?
@@ -700,16 +816,25 @@ Index: oce/CMakeLists.txt
 +	MARK_AS_ADVANCED(FREEIMAGE_INCLUDE_DIR FREEIMAGE_LIBRARY)
 +ENDIF(${PROJECT_NAME}_VISUALISATION AND ${PROJECT_NAME}_WITH_FREEIMAGE)
 +
-+#
-+# X11 is needed on Unix to compile OSD/OSD_FontMgr.cxx
-+#
-+IF (NOT WIN32)
-+	FIND_PACKAGE(X11 REQUIRED)
-+ENDIF (NOT WIN32)
-+
 +IF(${PROJECT_NAME}_VISUALISATION_FULL)
 +	IF (NOT WIN32)
++		FIND_PACKAGE(X11 REQUIRED)
 +		FIND_LIBRARY( X11_Xmu_LIB Xmu PATHS /usr/openwin/lib )
++		IF( NOT DEFINED X11_FONT_PATH )
++			IF(NOT APPLE)
++				SET(X11_FONT_PATH
++					"/usr/share/X11/fonts"
++					"/usr/share/fonts/X11")
++			ELSE(NOT APPLE)
++				SET(X11_FONT_PATH
++					"/usr/X11/lib/X11/fonts"
++					"/Library/Fonts"
++					"/System/Library/Fonts")
++			ENDIF(NOT APPLE)
++		ENDIF( NOT DEFINED X11_FONT_PATH )
++		SET(X11_FONT_PATH ${X11_FONT_PATH} CACHE PATH
++			"Font directories containing fonts.dir listing files")
++		MARK_AS_ADVANCED(X11_FONT_PATH)
 +	ENDIF(NOT WIN32)
 +
 +	IF (NOT APPLE)
@@ -1776,6 +1901,139 @@ Index: oce/Version.rc.cmake
 +  END
 +  
 \ No newline at end of file
+Index: oce/adm/cmake/BuildToolkit.cmake
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/BuildToolkit.cmake
+@@ -0,0 +1,128 @@
++
++MESSAGE(STATUS "Processing ToolKit: ${TOOLKIT} (${TOOLKIT_MODULES})")
++SET(TOOLKIT_SOURCE_FILES)
++IF(DEFINED TOOLKIT_INCLUDE_DIRECTORIES)
++	INCLUDE_DIRECTORIES(${TOOLKIT_INCLUDE_DIRECTORIES})
++ENDIF(DEFINED TOOLKIT_INCLUDE_DIRECTORIES)
++FOREACH(MODULE ${TOOLKIT_MODULES})
++	# add all .cxx/*.c files or each module
++	FILE(GLOB source_files
++		${${PROJECT_NAME}_SOURCE_DIR}/src/${MODULE}/*.cxx
++		${${PROJECT_NAME}_SOURCE_DIR}/src/${MODULE}/*.c
++		${${PROJECT_NAME}_SOURCE_DIR}/drv/${MODULE}/*.cxx
++		${${PROJECT_NAME}_SOURCE_DIR}/drv/${MODULE}/*.c)
++	#MESSAGE(STATUS "${source_files}")
++
++	IF (WIN32)
++		# For compilers under Windows a define must be set per file to correctly set the export macro
++		SET_SOURCE_FILES_PROPERTIES(${source_files} PROPERTIES COMPILE_FLAGS "-D__${MODULE}_DLL")
++	ENDIF(WIN32)
++
++	SOURCE_GROUP (${MODULE} FILES ${source_files})
++
++	# append these source files to the list of source files of the toolkit
++	SET(TOOLKIT_SOURCE_FILES ${TOOLKIT_SOURCE_FILES} ${source_files})
++	# required include paths
++	INCLUDE_DIRECTORIES(${${PROJECT_NAME}_SOURCE_DIR}/src/${MODULE} ${${PROJECT_NAME}_SOURCE_DIR}/drv/${MODULE})
++ENDFOREACH(MODULE ${TOOLKIT_MODULES})
++
++# Version info
++IF(MSVC)
++	SET(TOOLKIT_RESOURCES ${CMAKE_BINARY_DIR}/Version.rc)
++ENDIF(MSVC)
++
++ADD_LIBRARY(${TOOLKIT} ${${PROJECT_NAME}_LIBRARY_TYPE} ${TOOLKIT_SOURCE_FILES} ${TOOLKIT_RESOURCES} )
++
++# TODO Add current toolkit header files into a source group?
++# Add target specific locations of *.lxx and *.ixx files
++SET_TARGET_PROPERTIES(${TOOLKIT} PROPERTIES
++	SOVERSION ${${PROJECT_NAME}_ABI_SOVERSION}
++	VERSION ${${PROJECT_NAME}_ABI_VERSION}
++)
++IF(DEFINED X11_FONT_PATH)
++	SET_SOURCE_FILES_PROPERTIES("${${PROJECT_NAME}_SOURCE_DIR}/src/OSD/OSD_FontMgr.cxx" PROPERTIES COMPILE_FLAGS "-DX11_FONT_PATH=\"${X11_FONT_PATH}\"")
++ENDIF(DEFINED X11_FONT_PATH)
++
++# Workaround for Cmake bug #0011240 (see http://public.kitware.com/Bug/view.php?id=11240)
++# Win64+MSVC+static libs = linker error
++IF(MSVC AND (NOT ${PROJECT_NAME}_BUILD_SHARED_LIB) AND (BIT EQUAL 64))
++  set_target_properties(${TOOLKIT} PROPERTIES STATIC_LIBRARY_FLAGS "/machine:x64")
++ENDIF()
++
++# Set dependencies for thit ToolKit
++IF ( NOT "${TOOLKIT}" STREQUAL "TKernel" )
++	LIST(REMOVE_DUPLICATES TOOLKIT_DEPENDS)
++ENDIF ( NOT "${TOOLKIT}" STREQUAL "TKernel" )
++TARGET_LINK_LIBRARIES(${TOOLKIT} ${TOOLKIT_DEPENDS} ${TOOLKIT_LIBS} ${WIN32_LIBS})
++
++IF(TOOLKIT_LIBS_OPTIMIZED)
++	FOREACH(lib ${TOOLKIT_LIBS_OPTIMIZED})
++		TARGET_LINK_LIBRARIES(${TOOLKIT} optimized ${lib})
++	ENDFOREACH(lib ${TOOLKIT_LIBS_OPTIMIZED})
++ENDIF(TOOLKIT_LIBS_OPTIMIZED)
++
++IF(TOOLKIT_LIBS_DEBUG)
++	FOREACH(lib ${TOOLKIT_LIBS_DEBUG})
++		TARGET_LINK_LIBRARIES(${TOOLKIT} debug ${lib})
++	ENDFOREACH(lib ${TOOLKIT_LIBS_DEBUG})
++ENDIF(TOOLKIT_LIBS_DEBUG)
++
++IF(TOOLKIT_DEPENDS)
++	ADD_DEPENDENCIES(${TOOLKIT} ${TOOLKIT_DEPENDS})
++ENDIF(TOOLKIT_DEPENDS)
++
++###########
++# INSTALL #
++###########
++SET(TOOLKIT_INSTALL_BIN_DIR ${${PROJECT_NAME}_INSTALL_BIN_DIR})
++
++IF(CMAKE_CONFIGURATION_TYPES OR NMAKE)
++	SET(TOOLKIT_INSTALL_BIN_DEBUG_DIR ${${PROJECT_NAME}_INSTALL_BIN_DEBUG_DIR})
++ENDIF(CMAKE_CONFIGURATION_TYPES OR NMAKE)
++
++IF(TOOLKIT_IS_PRIVATE)
++	SET(TOOLKIT_INSTALL_LIB_DIR ${${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DIR})
++	IF(CMAKE_CONFIGURATION_TYPES OR NMAKE)
++		SET(TOOLKIT_INSTALL_LIB_DEBUG_DIR ${${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DEBUG_DIR})
++	ENDIF(CMAKE_CONFIGURATION_TYPES OR NMAKE)
++ELSE(TOOLKIT_IS_PRIVATE)
++	SET(TOOLKIT_INSTALL_LIB_DIR ${${PROJECT_NAME}_INSTALL_LIB_DIR})
++	IF(CMAKE_CONFIGURATION_TYPES OR NMAKE)
++		SET(TOOLKIT_INSTALL_LIB_DEBUG_DIR ${${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DEBUG_DIR})
++	ENDIF(CMAKE_CONFIGURATION_TYPES OR NMAKE)
++	SET_TARGET_PROPERTIES(${TOOLKIT} PROPERTIES INSTALL_RPATH "${${PROJECT_NAME}_INSTALL_PREFIX}/${${PROJECT_NAME}_INSTALL_LIB_DIR}")
++ENDIF(TOOLKIT_IS_PRIVATE)
++
++IF(WIN32 AND (CMAKE_CONFIGURATION_TYPES OR NMAKE))
++	# In win32 put the .dll in the bin folder
++	INSTALL(TARGETS ${TOOLKIT}
++		RUNTIME DESTINATION ${TOOLKIT_INSTALL_BIN_DIR} CONFIGURATIONS Release RelWithDebInfo MinSizeRel COMPONENT RuntimeLibraries
++		LIBRARY DESTINATION ${TOOLKIT_INSTALL_LIB_DIR} CONFIGURATIONS Release RelWithDebInfo MinSizeRel COMPONENT RuntimeLibraries
++		ARCHIVE DESTINATION ${TOOLKIT_INSTALL_LIB_DIR} CONFIGURATIONS Release RelWithDebInfo MinSizeRel COMPONENT Development
++		)
++	INSTALL(TARGETS ${TOOLKIT}
++		RUNTIME DESTINATION ${TOOLKIT_INSTALL_BIN_DEBUG_DIR} CONFIGURATIONS "Debug" COMPONENT RuntimeLibraries
++		LIBRARY DESTINATION ${TOOLKIT_INSTALL_LIB_DEBUG_DIR} CONFIGURATIONS "Debug" COMPONENT RuntimeLibraries
++		ARCHIVE DESTINATION ${TOOLKIT_INSTALL_LIB_DEBUG_DIR} CONFIGURATIONS "Debug" COMPONENT Development
++		)
++
++	IF(MSVC AND ${PROJECT_NAME}_INSTALL_PDB_FILES )
++		IF (CMAKE_CONFIGURATION_TYPES)
++			INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/RelWithDebInfo/${TOOLKIT}.pdb DESTINATION ${TOOLKIT_INSTALL_LIB_DIR} CONFIGURATIONS RelWithDebInfo)
++			INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/Debug/${TOOLKIT}${CMAKE_DEBUG_POSTFIX}.pdb DESTINATION ${TOOLKIT_INSTALL_LIB_DEBUG_DIR} CONFIGURATIONS Debug)
++		ELSE(CMAKE_CONFIGURATION_TYPES)
++			INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/${TOOLKIT}.pdb DESTINATION ${TOOLKIT_INSTALL_LIB_DIR} CONFIGURATIONS RelWithDebInfo)
++			INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/${TOOLKIT}${CMAKE_DEBUG_POSTFIX}.pdb DESTINATION ${TOOLKIT_INSTALL_LIB_DEBUG_DIR} CONFIGURATIONS Debug)
++		ENDIF (CMAKE_CONFIGURATION_TYPES)
++
++
++	ENDIF(MSVC AND ${PROJECT_NAME}_INSTALL_PDB_FILES )
++ELSE(WIN32 AND (CMAKE_CONFIGURATION_TYPES OR NMAKE))
++	INSTALL(TARGETS ${TOOLKIT}
++		EXPORT ${PROJECT_NAME}-libraries
++		RUNTIME DESTINATION ${TOOLKIT_INSTALL_BIN_DIR} COMPONENT RuntimeLibraries
++		LIBRARY DESTINATION ${TOOLKIT_INSTALL_LIB_DIR} COMPONENT RuntimeLibraries
++		ARCHIVE DESTINATION ${TOOLKIT_INSTALL_LIB_DIR} COMPONENT Development
++		)
++ENDIF(WIN32 AND (CMAKE_CONFIGURATION_TYPES OR NMAKE))
++
 Index: oce/adm/cmake/DRAWEXE/CMakeLists.txt
 ===================================================================
 --- /dev/null
@@ -1880,131 +2138,7 @@ Index: oce/adm/cmake/FWOSPlugin/CMakeLists.txt
 +	TKernel
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
-+
-Index: oce/adm/cmake/OccBuildKit.cmake
-===================================================================
---- /dev/null
-+++ oce/adm/cmake/OccBuildKit.cmake
-@@ -0,0 +1,119 @@
-+
-+MESSAGE(STATUS "Processing ToolKit: ${TOOLKIT} (${TOOLKIT_MODULES})")
-+SET(TOOLKIT_SOURCE_FILES)
-+IF(DEFINED TOOLKIT_INCLUDE_DIRECTORIES)
-+	INCLUDE_DIRECTORIES(${TOOLKIT_INCLUDE_DIRECTORIES})
-+ENDIF(DEFINED TOOLKIT_INCLUDE_DIRECTORIES)
-+FOREACH(MODULE ${TOOLKIT_MODULES})
-+	# add all .cxx/*.c files or each module
-+	FILE(GLOB source_files
-+		${${PROJECT_NAME}_SOURCE_DIR}/src/${MODULE}/*.cxx
-+		${${PROJECT_NAME}_SOURCE_DIR}/src/${MODULE}/*.c
-+		${${PROJECT_NAME}_SOURCE_DIR}/drv/${MODULE}/*.cxx
-+		${${PROJECT_NAME}_SOURCE_DIR}/drv/${MODULE}/*.c)
-+	#MESSAGE(STATUS "${source_files}")
-+
-+	IF (WIN32)
-+		# For compilers under Windows a define must be set per file to correctly set the export macro
-+		SET_SOURCE_FILES_PROPERTIES(${source_files} PROPERTIES COMPILE_FLAGS "-D__${MODULE}_DLL")
-+	ENDIF(WIN32)
-+
-+	SOURCE_GROUP (${MODULE} FILES ${source_files})
-+
-+	# append these source files to the list of source files of the toolkit
-+	SET(TOOLKIT_SOURCE_FILES ${TOOLKIT_SOURCE_FILES} ${source_files})
-+	# required include paths
-+	INCLUDE_DIRECTORIES(${${PROJECT_NAME}_SOURCE_DIR}/src/${MODULE} ${${PROJECT_NAME}_SOURCE_DIR}/drv/${MODULE})
-+ENDFOREACH(MODULE ${TOOLKIT_MODULES})
-+
-+# Version info
-+IF(MSVC)
-+	SET(TOOLKIT_RESOURCES ${CMAKE_BINARY_DIR}/Version.rc)
-+ENDIF(MSVC)
-+
-+ADD_LIBRARY(${TOOLKIT} ${${PROJECT_NAME}_LIBRARY_TYPE} ${TOOLKIT_SOURCE_FILES} ${TOOLKIT_RESOURCES} )
-+
-+# TODO Add current toolkit header files into a source group?
-+# Add target specific locations of *.lxx and *.ixx files
-+SET_TARGET_PROPERTIES(${TOOLKIT} PROPERTIES
-+	SOVERSION ${${PROJECT_NAME}_ABI_SOVERSION}
-+	VERSION ${${PROJECT_NAME}_ABI_VERSION}
-+)
-+
-+# Set dependencies for thit ToolKit
-+IF ( NOT "${TOOLKIT}" STREQUAL "TKernel" )
-+	LIST(REMOVE_DUPLICATES TOOLKIT_DEPENDS)
-+ENDIF ( NOT "${TOOLKIT}" STREQUAL "TKernel" )
-+TARGET_LINK_LIBRARIES(${TOOLKIT} ${TOOLKIT_DEPENDS} ${TOOLKIT_LIBS} ${WIN32_LIBS})
-+
-+IF(TOOLKIT_LIBS_OPTIMIZED)
-+	FOREACH(lib ${TOOLKIT_LIBS_OPTIMIZED})
-+		TARGET_LINK_LIBRARIES(${TOOLKIT} optimized ${lib})
-+	ENDFOREACH(lib ${TOOLKIT_LIBS_OPTIMIZED})
-+ENDIF(TOOLKIT_LIBS_OPTIMIZED)
-+
-+IF(TOOLKIT_LIBS_DEBUG)
-+	FOREACH(lib ${TOOLKIT_LIBS_DEBUG})
-+		TARGET_LINK_LIBRARIES(${TOOLKIT} debug ${lib})
-+	ENDFOREACH(lib ${TOOLKIT_LIBS_DEBUG})
-+ENDIF(TOOLKIT_LIBS_DEBUG)
-+
-+IF(TOOLKIT_DEPENDS)
-+	ADD_DEPENDENCIES(${TOOLKIT} ${TOOLKIT_DEPENDS})
-+ENDIF(TOOLKIT_DEPENDS)
-+
-+###########
-+# INSTALL #
-+###########
-+SET(TOOLKIT_INSTALL_BIN_DIR ${${PROJECT_NAME}_INSTALL_BIN_DIR})
-+
-+IF(CMAKE_CONFIGURATION_TYPES OR NMAKE)
-+	SET(TOOLKIT_INSTALL_BIN_DEBUG_DIR ${${PROJECT_NAME}_INSTALL_BIN_DEBUG_DIR})
-+ENDIF(CMAKE_CONFIGURATION_TYPES OR NMAKE)
-+
-+IF(TOOLKIT_IS_PRIVATE)
-+	SET(TOOLKIT_INSTALL_LIB_DIR ${${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DIR})
-+	IF(CMAKE_CONFIGURATION_TYPES OR NMAKE)
-+		SET(TOOLKIT_INSTALL_LIB_DEBUG_DIR ${${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DEBUG_DIR})
-+	ENDIF(CMAKE_CONFIGURATION_TYPES OR NMAKE)
-+ELSE(TOOLKIT_IS_PRIVATE)
-+	SET(TOOLKIT_INSTALL_LIB_DIR ${${PROJECT_NAME}_INSTALL_LIB_DIR})
-+	IF(CMAKE_CONFIGURATION_TYPES OR NMAKE)
-+		SET(TOOLKIT_INSTALL_LIB_DEBUG_DIR ${${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DEBUG_DIR})
-+	ENDIF(CMAKE_CONFIGURATION_TYPES OR NMAKE)
-+	SET_TARGET_PROPERTIES(${TOOLKIT} PROPERTIES INSTALL_RPATH "${${PROJECT_NAME}_INSTALL_PREFIX}/${${PROJECT_NAME}_INSTALL_LIB_DIR}")
-+ENDIF(TOOLKIT_IS_PRIVATE)
-+
-+IF(WIN32 AND (CMAKE_CONFIGURATION_TYPES OR NMAKE))
-+	# In win32 put the .dll in the bin folder
-+	INSTALL(TARGETS ${TOOLKIT}
-+		RUNTIME DESTINATION ${TOOLKIT_INSTALL_BIN_DIR} CONFIGURATIONS Release RelWithDebInfo MinSizeRel COMPONENT RuntimeLibraries
-+		LIBRARY DESTINATION ${TOOLKIT_INSTALL_LIB_DIR} CONFIGURATIONS Release RelWithDebInfo MinSizeRel COMPONENT RuntimeLibraries
-+		ARCHIVE DESTINATION ${TOOLKIT_INSTALL_LIB_DIR} CONFIGURATIONS Release RelWithDebInfo MinSizeRel COMPONENT Development
-+		)
-+	INSTALL(TARGETS ${TOOLKIT}
-+		RUNTIME DESTINATION ${TOOLKIT_INSTALL_BIN_DEBUG_DIR} CONFIGURATIONS "Debug" COMPONENT RuntimeLibraries
-+		LIBRARY DESTINATION ${TOOLKIT_INSTALL_LIB_DEBUG_DIR} CONFIGURATIONS "Debug" COMPONENT RuntimeLibraries
-+		ARCHIVE DESTINATION ${TOOLKIT_INSTALL_LIB_DEBUG_DIR} CONFIGURATIONS "Debug" COMPONENT Development
-+		)
-+
-+	IF(MSVC AND ${PROJECT_NAME}_INSTALL_PDB_FILES )
-+		IF (CMAKE_CONFIGURATION_TYPES)
-+			INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/RelWithDebInfo/${TOOLKIT}.pdb DESTINATION ${TOOLKIT_INSTALL_LIB_DIR} CONFIGURATIONS RelWithDebInfo)
-+			INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/Debug/${TOOLKIT}${CMAKE_DEBUG_POSTFIX}.pdb DESTINATION ${TOOLKIT_INSTALL_LIB_DEBUG_DIR} CONFIGURATIONS Debug)
-+		ELSE(CMAKE_CONFIGURATION_TYPES)
-+			INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/${TOOLKIT}.pdb DESTINATION ${TOOLKIT_INSTALL_LIB_DIR} CONFIGURATIONS RelWithDebInfo)
-+			INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/${TOOLKIT}${CMAKE_DEBUG_POSTFIX}.pdb DESTINATION ${TOOLKIT_INSTALL_LIB_DEBUG_DIR} CONFIGURATIONS Debug)
-+		ENDIF (CMAKE_CONFIGURATION_TYPES)
-+
-+
-+	ENDIF(MSVC AND ${PROJECT_NAME}_INSTALL_PDB_FILES )
-+ELSE(WIN32 AND (CMAKE_CONFIGURATION_TYPES OR NMAKE))
-+	INSTALL(TARGETS ${TOOLKIT}
-+		EXPORT ${PROJECT_NAME}-libraries
-+		RUNTIME DESTINATION ${TOOLKIT_INSTALL_BIN_DIR} COMPONENT RuntimeLibraries
-+		LIBRARY DESTINATION ${TOOLKIT_INSTALL_LIB_DIR} COMPONENT RuntimeLibraries
-+		ARCHIVE DESTINATION ${TOOLKIT_INSTALL_LIB_DIR} COMPONENT Development
-+		)
-+ENDIF(WIN32 AND (CMAKE_CONFIGURATION_TYPES OR NMAKE))
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/PTKernel/CMakeLists.txt
 ===================================================================
@@ -2027,7 +2161,7 @@ Index: oce/adm/cmake/PTKernel/CMakeLists.txt
 +	TKernel
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKAdvTools/CMakeLists.txt
 ===================================================================
@@ -2048,7 +2182,7 @@ Index: oce/adm/cmake/TKAdvTools/CMakeLists.txt
 +	TKernel
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKBO/CMakeLists.txt
 ===================================================================
@@ -2076,7 +2210,7 @@ Index: oce/adm/cmake/TKBO/CMakeLists.txt
 +	TKGeomAlgo
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKBRep/CMakeLists.txt
 ===================================================================
@@ -2102,7 +2236,7 @@ Index: oce/adm/cmake/TKBRep/CMakeLists.txt
 +	TKG3d
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKBin/CMakeLists.txt
 ===================================================================
@@ -2131,7 +2265,7 @@ Index: oce/adm/cmake/TKBin/CMakeLists.txt
 +	TKCDF
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKBinL/CMakeLists.txt
 ===================================================================
@@ -2154,7 +2288,7 @@ Index: oce/adm/cmake/TKBinL/CMakeLists.txt
 +	TKernel
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKBinTObj/CMakeLists.txt
 ===================================================================
@@ -2175,7 +2309,7 @@ Index: oce/adm/cmake/TKBinTObj/CMakeLists.txt
 +	TKCDF
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKBinXCAF/CMakeLists.txt
 ===================================================================
@@ -2202,7 +2336,7 @@ Index: oce/adm/cmake/TKBinXCAF/CMakeLists.txt
 +	TKCDF
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKBool/CMakeLists.txt
 ===================================================================
@@ -2234,7 +2368,7 @@ Index: oce/adm/cmake/TKBool/CMakeLists.txt
 +	TKPrim
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKCAF/CMakeLists.txt
 ===================================================================
@@ -2264,7 +2398,7 @@ Index: oce/adm/cmake/TKCAF/CMakeLists.txt
 +	TKV2d
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKCDF/CMakeLists.txt
 ===================================================================
@@ -2284,7 +2418,7 @@ Index: oce/adm/cmake/TKCDF/CMakeLists.txt
 +	TKernel
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKDCAF/CMakeLists.txt
 ===================================================================
@@ -2327,7 +2461,7 @@ Index: oce/adm/cmake/TKDCAF/CMakeLists.txt
 +
 +SET(TOOLKIT_IS_PRIVATE TRUE)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKDraw/CMakeLists.txt
 ===================================================================
@@ -2365,7 +2499,7 @@ Index: oce/adm/cmake/TKDraw/CMakeLists.txt
 +
 +SET(TOOLKIT_IS_PRIVATE TRUE)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKFeat/CMakeLists.txt
 ===================================================================
@@ -2392,7 +2526,7 @@ Index: oce/adm/cmake/TKFeat/CMakeLists.txt
 +	TKPrim
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKFillet/CMakeLists.txt
 ===================================================================
@@ -2424,7 +2558,7 @@ Index: oce/adm/cmake/TKFillet/CMakeLists.txt
 +	TKBRep
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKG2d/CMakeLists.txt
 ===================================================================
@@ -2448,7 +2582,7 @@ Index: oce/adm/cmake/TKG2d/CMakeLists.txt
 +	TKMath
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKG3d/CMakeLists.txt
 ===================================================================
@@ -2472,7 +2606,7 @@ Index: oce/adm/cmake/TKG3d/CMakeLists.txt
 +	TKG2d
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKGeomAlgo/CMakeLists.txt
 ===================================================================
@@ -2527,7 +2661,7 @@ Index: oce/adm/cmake/TKGeomAlgo/CMakeLists.txt
 +	TKBRep
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKGeomBase/CMakeLists.txt
 ===================================================================
@@ -2567,7 +2701,7 @@ Index: oce/adm/cmake/TKGeomBase/CMakeLists.txt
 +	TKG2d
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKHLR/CMakeLists.txt
 ===================================================================
@@ -2596,7 +2730,7 @@ Index: oce/adm/cmake/TKHLR/CMakeLists.txt
 +	TKG2d
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKIGES/CMakeLists.txt
 ===================================================================
@@ -2641,7 +2775,7 @@ Index: oce/adm/cmake/TKIGES/CMakeLists.txt
 +	TKPrim
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKLCAF/CMakeLists.txt
 ===================================================================
@@ -2662,7 +2796,7 @@ Index: oce/adm/cmake/TKLCAF/CMakeLists.txt
 +	TKernel
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKMath/CMakeLists.txt
 ===================================================================
@@ -2690,7 +2824,7 @@ Index: oce/adm/cmake/TKMath/CMakeLists.txt
 +)
 +SET(TOOLKIT_DEPENDS TKernel)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKMesh/CMakeLists.txt
 ===================================================================
@@ -2725,7 +2859,7 @@ Index: oce/adm/cmake/TKMesh/CMakeLists.txt
 +	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
 +ENDIF(${PROJECT_NAME}_MULTITHREAD_LIBRARY STREQUAL "OPENMP" AND OPENMP_FOUND)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKMeshVS/CMakeLists.txt
 ===================================================================
@@ -2747,7 +2881,7 @@ Index: oce/adm/cmake/TKMeshVS/CMakeLists.txt
 +	TKG3d
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKNIS/CMakeLists.txt
 ===================================================================
@@ -2771,7 +2905,7 @@ Index: oce/adm/cmake/TKNIS/CMakeLists.txt
 +SET(TOOLKIT_LIBS ${OPENGL_LIBRARIES})
 +SET(TOOLKIT_INCLUDE_DIRECTORIES ${OPENGL_INCLUDE_DIR})
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKOffset/CMakeLists.txt
 ===================================================================
@@ -2802,7 +2936,7 @@ Index: oce/adm/cmake/TKOffset/CMakeLists.txt
 +	TKPrim
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKOpenGl/CMakeLists.txt
 ===================================================================
@@ -2843,7 +2977,7 @@ Index: oce/adm/cmake/TKOpenGl/CMakeLists.txt
 +	SET(TOOLKIT_INCLUDE_DIRECTORIES ${TOOLKIT_INCLUDE_DIRECTORIES} ${GL2PS_INCLUDE_DIR})
 +ENDIF(GL2PS_LIBRARY AND ${PROJECT_NAME}_WITH_GL2PS)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKPCAF/CMakeLists.txt
 ===================================================================
@@ -2877,7 +3011,7 @@ Index: oce/adm/cmake/TKPCAF/CMakeLists.txt
 +	TKBRep
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKPLCAF/CMakeLists.txt
 ===================================================================
@@ -2903,7 +3037,7 @@ Index: oce/adm/cmake/TKPLCAF/CMakeLists.txt
 +	PTKernel
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKPShape/CMakeLists.txt
 ===================================================================
@@ -2938,7 +3072,7 @@ Index: oce/adm/cmake/TKPShape/CMakeLists.txt
 +	TKG3d
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKPrim/CMakeLists.txt
 ===================================================================
@@ -2964,7 +3098,7 @@ Index: oce/adm/cmake/TKPrim/CMakeLists.txt
 +	TKTopAlgo
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKSTEP/CMakeLists.txt
 ===================================================================
@@ -3005,7 +3139,7 @@ Index: oce/adm/cmake/TKSTEP/CMakeLists.txt
 +)
 +SET(TOOLKIT_LIBS ${CSF_wsock32_LIB})
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKSTEP209/CMakeLists.txt
 ===================================================================
@@ -3026,7 +3160,7 @@ Index: oce/adm/cmake/TKSTEP209/CMakeLists.txt
 +	TKXSBase
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKSTEPAttr/CMakeLists.txt
 ===================================================================
@@ -3047,7 +3181,7 @@ Index: oce/adm/cmake/TKSTEPAttr/CMakeLists.txt
 +	TKXSBase
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKSTEPBase/CMakeLists.txt
 ===================================================================
@@ -3072,7 +3206,7 @@ Index: oce/adm/cmake/TKSTEPBase/CMakeLists.txt
 +	TKMath
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKSTL/CMakeLists.txt
 ===================================================================
@@ -3097,7 +3231,7 @@ Index: oce/adm/cmake/TKSTL/CMakeLists.txt
 +	TKTopAlgo
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKService/CMakeLists.txt
 ===================================================================
@@ -3147,7 +3281,7 @@ Index: oce/adm/cmake/TKService/CMakeLists.txt
 +	SET(TOOLKIT_INCLUDE_DIRECTORIES ${TOOLKIT_INCLUDE_DIRECTORIES} ${FREEIMAGE_INCLUDE_DIR})
 +ENDIF(FREEIMAGE_LIBRARY AND ${PROJECT_NAME}_WITH_FREEIMAGE)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKShHealing/CMakeLists.txt
 ===================================================================
@@ -3180,7 +3314,7 @@ Index: oce/adm/cmake/TKShHealing/CMakeLists.txt
 +)
 +SET(TOOLKIT_LIBS ${CSF_wsock32_LIB})
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKShapeSchema/CMakeLists.txt
 ===================================================================
@@ -3202,7 +3336,7 @@ Index: oce/adm/cmake/TKShapeSchema/CMakeLists.txt
 +	TKCDF
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKStdLSchema/CMakeLists.txt
 ===================================================================
@@ -3224,7 +3358,7 @@ Index: oce/adm/cmake/TKStdLSchema/CMakeLists.txt
 +	TKShapeSchema
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKStdSchema/CMakeLists.txt
 ===================================================================
@@ -3253,7 +3387,7 @@ Index: oce/adm/cmake/TKStdSchema/CMakeLists.txt
 +	TKStdLSchema
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKTObj/CMakeLists.txt
 ===================================================================
@@ -3272,7 +3406,7 @@ Index: oce/adm/cmake/TKTObj/CMakeLists.txt
 +	TKCDF
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKTObjDRAW/CMakeLists.txt
 ===================================================================
@@ -3296,7 +3430,7 @@ Index: oce/adm/cmake/TKTObjDRAW/CMakeLists.txt
 +
 +SET(TOOLKIT_IS_PRIVATE TRUE)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKTopAlgo/CMakeLists.txt
 ===================================================================
@@ -3333,7 +3467,7 @@ Index: oce/adm/cmake/TKTopAlgo/CMakeLists.txt
 +	TKBRep
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKTopTest/CMakeLists.txt
 ===================================================================
@@ -3379,7 +3513,7 @@ Index: oce/adm/cmake/TKTopTest/CMakeLists.txt
 +
 +SET(TOOLKIT_IS_PRIVATE TRUE)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKV2d/CMakeLists.txt
 ===================================================================
@@ -3409,7 +3543,7 @@ Index: oce/adm/cmake/TKV2d/CMakeLists.txt
 +	TKGeomAlgo
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKV3d/CMakeLists.txt
 ===================================================================
@@ -3447,7 +3581,7 @@ Index: oce/adm/cmake/TKV3d/CMakeLists.txt
 +)
 +SET(TOOLKIT_LIBS ${CSF_user32_LIB} ${CSF_gdi32_LIB})
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKVRML/CMakeLists.txt
 ===================================================================
@@ -3478,7 +3612,7 @@ Index: oce/adm/cmake/TKVRML/CMakeLists.txt
 +	TKV3d
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKViewerTest/CMakeLists.txt
 ===================================================================
@@ -3525,7 +3659,7 @@ Index: oce/adm/cmake/TKViewerTest/CMakeLists.txt
 +
 +SET(TOOLKIT_IS_PRIVATE TRUE)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKVoxel/CMakeLists.txt
 ===================================================================
@@ -3554,7 +3688,7 @@ Index: oce/adm/cmake/TKVoxel/CMakeLists.txt
 +SET(TOOLKIT_LIBS ${OPENGL_LIBRARIES})
 +SET(TOOLKIT_INCLUDE_DIRECTORIES ${OPENGL_INCLUDE_DIR})
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKXCAF/CMakeLists.txt
 ===================================================================
@@ -3583,7 +3717,7 @@ Index: oce/adm/cmake/TKXCAF/CMakeLists.txt
 +	TKTopAlgo
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKXCAFSchema/CMakeLists.txt
 ===================================================================
@@ -3612,7 +3746,7 @@ Index: oce/adm/cmake/TKXCAFSchema/CMakeLists.txt
 +	TKStdLSchema
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKXDEDRAW/CMakeLists.txt
 ===================================================================
@@ -3653,7 +3787,7 @@ Index: oce/adm/cmake/TKXDEDRAW/CMakeLists.txt
 +
 +SET(TOOLKIT_IS_PRIVATE TRUE)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKXDEIGES/CMakeLists.txt
 ===================================================================
@@ -3677,7 +3811,7 @@ Index: oce/adm/cmake/TKXDEIGES/CMakeLists.txt
 +	TKCDF
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKXDESTEP/CMakeLists.txt
 ===================================================================
@@ -3705,7 +3839,7 @@ Index: oce/adm/cmake/TKXDESTEP/CMakeLists.txt
 +	TKCDF
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKXMesh/CMakeLists.txt
 ===================================================================
@@ -3725,7 +3859,7 @@ Index: oce/adm/cmake/TKXMesh/CMakeLists.txt
 +	TKBRep
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKXSBase/CMakeLists.txt
 ===================================================================
@@ -3763,7 +3897,7 @@ Index: oce/adm/cmake/TKXSBase/CMakeLists.txt
 +	TKTopAlgo
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKXSDRAW/CMakeLists.txt
 ===================================================================
@@ -3807,7 +3941,7 @@ Index: oce/adm/cmake/TKXSDRAW/CMakeLists.txt
 +
 +SET(TOOLKIT_IS_PRIVATE TRUE)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKXml/CMakeLists.txt
 ===================================================================
@@ -3836,7 +3970,7 @@ Index: oce/adm/cmake/TKXml/CMakeLists.txt
 +	TKGeomBase
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKXmlL/CMakeLists.txt
 ===================================================================
@@ -3860,7 +3994,7 @@ Index: oce/adm/cmake/TKXmlL/CMakeLists.txt
 +	TKCDF
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKXmlTObj/CMakeLists.txt
 ===================================================================
@@ -3881,7 +4015,7 @@ Index: oce/adm/cmake/TKXmlTObj/CMakeLists.txt
 +	TKCDF
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKXmlXCAF/CMakeLists.txt
 ===================================================================
@@ -3909,13 +4043,13 @@ Index: oce/adm/cmake/TKXmlXCAF/CMakeLists.txt
 +	TKXml
 +)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/adm/cmake/TKernel/CMakeLists.txt
 ===================================================================
 --- /dev/null
 +++ oce/adm/cmake/TKernel/CMakeLists.txt
-@@ -0,0 +1,58 @@
+@@ -0,0 +1,55 @@
 +SET(TOOLKIT TKernel)
 +
 +SET(TOOLKIT_MODULES
@@ -3959,9 +4093,6 @@ Index: oce/adm/cmake/TKernel/CMakeLists.txt
 +			SET(TOOLKIT_LIBS ${TOOLKIT_LIBS} rt)
 +		ENDIF(NOT CLOCK_GETTIME_IN_LIBC)
 +	ENDIF(NOT APPLE)
-+
-+	SET(TOOLKIT_INCLUDE_DIRECTORIES ${TOOLKIT_INCLUDE_DIRECTORIES} ${X11_X11_INCLUDE_PATH})
-+	SET(TOOLKIT_LIBS ${TOOLKIT_LIBS} ${X11_X11_LIB})
 +ENDIF(WIN32)
 +
 +# Adde-DHAVE_TBB in TKernel in order to benefit from Standard_MMgrTBBalloc
@@ -3972,7 +4103,7 @@ Index: oce/adm/cmake/TKernel/CMakeLists.txt
 +	SET(TOOLKIT_LIBS_DEBUG ${TBB_MALLOC_LIBRARY_DEBUG})
 +ENDIF(${PROJECT_NAME}_TBB_MALLOC_SUPPORT AND TBB_INCLUDE_DIR AND TBB_MALLOC_LIBRARY)
 +
-+INCLUDE(../OccBuildKit.cmake)
++INCLUDE(../BuildToolkit.cmake)
 +
 Index: oce/env.csh
 ===================================================================
