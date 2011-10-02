@@ -396,6 +396,34 @@ Subject: [PATCH 3/3] Rename OCE_VISUALISATION_FULL option into
  adm/cmake/TKService/CMakeLists.txt |    4 ++--
  2 files changed, 14 insertions(+), 14 deletions(-)
 
+From 3efe3e41a47db44690f25809d429e6ceedcf4984 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Sun, 21 Aug 2011 09:08:05 +0200
+Subject: [PATCH] Change installation paths
+
+ * header files: include/oce
+ * env.{sh,csh}: lib/oce-X.Y.Z
+ * src: share/oce-X.Y.Z
+
+Rationale: These paths are more standard, at least on Unix.
+Version is added to paths of runtime files, so that users may
+have two different OCE versions, this may be needed if they
+have one program linked against OCE X1.Y1.Z1 and another one
+against OCE X2.Y2.Z2.
+
+On the other hand, header files and .cmake files are not
+versioned, because it would then be difficult to know which
+version to use.
+
+Closes issue #2.
+---
+ CMakeLists.txt           |   11 +++++++----
+ DrawDefault.cmake        |    2 +-
+ env.csh.cmake            |    2 +-
+ env.sh.cmake             |    2 +-
+ oce_build_config.h.cmake |    2 +-
+ 5 files changed, 11 insertions(+), 8 deletions(-)
+
 Index: oce/AUTHORS
 ===================================================================
 --- /dev/null
@@ -652,7 +680,7 @@ Index: oce/CMakeLists.txt
 ===================================================================
 --- /dev/null
 +++ oce/CMakeLists.txt
-@@ -0,0 +1,812 @@
+@@ -0,0 +1,815 @@
 +# REQUIREMENTS: this script needs CMake 2.6 or higher. Downloads are available at http://www.cmake.org
 +
 +# How to build OCE using CMake under Unix (Linux, Darwin etc.)?
@@ -1281,6 +1309,7 @@ Index: oce/CMakeLists.txt
 +ELSE(WIN32)
 +	SET(_PSUFFIX "")
 +ENDIF(WIN32)
++STRING(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWERCASE)
 +
 +# Binaries
 +IF(NOT DEFINED ${PROJECT_NAME}_INSTALL_BIN_DIR)
@@ -1313,24 +1342,26 @@ Index: oce/CMakeLists.txt
 +	ENDIF(NOT DEFINED ${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DIR)
 +ELSE(MSVC)
 +	IF(NOT DEFINED ${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DIR)
-+		SET(${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DIR lib/${PROJECT_NAME})
++		SET(${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DIR lib/${PROJECT_NAME_LOWERCASE}-${${PROJECT_NAME}_VERSION})
 +	ENDIF(NOT DEFINED ${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DIR)
 +ENDIF(MSVC)
 +
 +# Includes
 +IF(NOT DEFINED ${PROJECT_NAME}_INSTALL_INCLUDE_DIR)
-+	SET(${PROJECT_NAME}_INSTALL_INCLUDE_DIR inc)
++	SET(${PROJECT_NAME}_INSTALL_INCLUDE_DIR include/${PROJECT_NAME_LOWERCASE})
 +ENDIF(NOT DEFINED ${PROJECT_NAME}_INSTALL_INCLUDE_DIR)
 +
 +# Scripts
 +IF(NOT DEFINED ${PROJECT_NAME}_INSTALL_SCRIPT_DIR)
-+	SET(${PROJECT_NAME}_INSTALL_SCRIPT_DIR ${CMAKE_INSTALL_PREFIX})
++	SET(${PROJECT_NAME}_INSTALL_SCRIPT_DIR ${${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DIR})
 +ENDIF(NOT DEFINED ${PROJECT_NAME}_INSTALL_SCRIPT_DIR)
 +
 +# Data
 +IF(NOT DEFINED ${PROJECT_NAME}_INSTALL_DATA_DIR)
-+	SET(${PROJECT_NAME}_INSTALL_DATA_DIR ${CMAKE_INSTALL_PREFIX})
++	SET(${PROJECT_NAME}_INSTALL_DATA_DIR share/${PROJECT_NAME_LOWERCASE}-${${PROJECT_NAME}_VERSION})
 +ENDIF(NOT DEFINED ${PROJECT_NAME}_INSTALL_DATA_DIR)
++# Absolute path, written into oce-config.h
++SET(${PROJECT_NAME}_ABSPATH_DATA_DIR ${CMAKE_INSTALL_PREFIX}/${${PROJECT_NAME}_INSTALL_DATA_DIR})
 +
 +# CMake
 +IF(NOT DEFINED ${PROJECT_NAME}_INSTALL_CMAKE_DATA_DIR)
@@ -1483,7 +1514,7 @@ Index: oce/DrawDefault.cmake
 +    if { [info exists env(CASROOT) ] } {
 +  set dir [file join $env(CASROOT) src DrawResources]
 +    } else {
-+  set dir [file join "@OCE_INSTALL_DATA_DIR@" src DrawResources]
++  set dir [file join "@OCE_ABSPATH_DATA_DIR@" src DrawResources]
 +    }
 +}
 +
@@ -4228,7 +4259,7 @@ Index: oce/env.csh.cmake
 @@ -0,0 +1,23 @@
 +#!/bin/csh
 +
-+setenv CASROOT @OCE_INSTALL_DATA_DIR@
++setenv CASROOT @OCE_ABSPATH_DATA_DIR@
 +
 +setenv CSF_MDTVFontDirectory $CASROOT/src/FontMFT
 +setenv CSF_LANGUAGE us
@@ -4314,7 +4345,7 @@ Index: oce/env.sh.cmake
 @@ -0,0 +1,23 @@
 +#!/bin/sh
 +
-+export CASROOT=@OCE_INSTALL_DATA_DIR@
++export CASROOT=@OCE_ABSPATH_DATA_DIR@
 +
 +export CSF_MDTVFontDirectory=$CASROOT/src/FontMFT
 +export CSF_LANGUAGE=us
@@ -4596,7 +4627,7 @@ Index: oce/oce_build_config.h.cmake
 +#cmakedefine _POSIX_SOURCE
 +
 +/* Location where resource files will be installed. */
-+#cmakedefine OCE_INSTALL_DATA_DIR "@OCE_INSTALL_DATA_DIR@"
++#cmakedefine OCE_INSTALL_DATA_DIR "@OCE_ABSPATH_DATA_DIR@"
 +
 +/* Location where TKOpenGl shared library will be installed. */
 +#cmakedefine OCE_DEFAULT_CSF_GraphicShr "@OCE_DEFAULT_CSF_GraphicShr@"
