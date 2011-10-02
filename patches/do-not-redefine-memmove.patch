@@ -1,0 +1,119 @@
+From 551189d83498940a268cba5daba1a73aeafa09f2 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Tue, 6 Sep 2011 01:11:08 +0200
+Subject: [PATCH 1/2] Do not redefine memmove as an alias for memcpy
+
+In math_Memory.hxx, memmove is redefined as an alias for
+memcpy.  This is plain wrong, it may break user code if
+memmove is used because memory regions do overlap.
+
+The reverse_move function is kept to not break API, but
+it is useless and should be removed too.
+
+Fixes issue #94.
+---
+ inc/math_DoubleTab.gxx |    2 +-
+ inc/math_DoubleTab.lxx |    2 +-
+ inc/math_Memory.hxx    |   18 ------------------
+ inc/math_SingleTab.gxx |    2 +-
+ inc/math_SingleTab.lxx |    2 +-
+ 5 files changed, 4 insertions(+), 22 deletions(-)
+
+From 087669e23655033005261c1c93f7f46e0d00171b Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Wed, 7 Sep 2011 18:56:12 +0200
+Subject: [PATCH 2/2] Include <cstring> instead of <string.h>
+
+---
+ inc/math_DoubleTab.gxx |    2 +-
+ inc/math_DoubleTab.lxx |    2 +-
+ inc/math_SingleTab.gxx |    2 +-
+ inc/math_SingleTab.lxx |    2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
+
+Index: oce/inc/math_DoubleTab.gxx
+===================================================================
+--- oce.orig/inc/math_DoubleTab.gxx
++++ oce/inc/math_DoubleTab.gxx
+@@ -2,10 +2,10 @@
+ // Lpa, le 7/02/92
+ 
+ 
+-#include <math_Memory.hxx>
+ #include <Standard_OutOfRange.hxx>
+ #include <Standard_Failure.hxx>
+ #include <Standard_Integer.hxx>
++#include <cstring>
+ 
+ void math_DoubleTab::Allocate()
+ {
+Index: oce/inc/math_DoubleTab.lxx
+===================================================================
+--- oce.orig/inc/math_DoubleTab.lxx
++++ oce/inc/math_DoubleTab.lxx
+@@ -1,8 +1,8 @@
+ // File math_DoubleTab.lxx
+ // Lpa, le 7/02/92
+ 
+-#include <math_Memory.hxx>
+ #include <Standard_OutOfRange.hxx>
++#include <cstring>
+ 
+ inline Item& math_DoubleTab::Value (const Standard_Integer RowIndex,
+ 				    const Standard_Integer ColIndex) const
+Index: oce/inc/math_Memory.hxx
+===================================================================
+--- oce.orig/inc/math_Memory.hxx
++++ oce/inc/math_Memory.hxx
+@@ -1,26 +1,8 @@
+ #ifndef math_Memory_HeaderFile 
+ #define math_Memory_HeaderFile 
+ 
+-#include <string.h>
+-
+-// uniquement parce que memmove n'existe pas sur SUN
+ #ifndef WNT
+ void *reverse_move(void *s1, void *s2, int size);
+ 
+-inline void *memmove(void *s1, void *s2, int size) {
+-
+-/*
+-     void *result;
+-
+-     if(s2 < s1) {
+-       result = reverse_move(s1, s2, size);
+-     }
+-     else {
+-       result = memcpy(s1, s2, size);
+-     }      
+-     return result;
+-*/
+-     return memcpy(s1, s2, size);
+-   }
+ #endif
+ #endif
+Index: oce/inc/math_SingleTab.gxx
+===================================================================
+--- oce.orig/inc/math_SingleTab.gxx
++++ oce/inc/math_SingleTab.gxx
+@@ -1,8 +1,8 @@
+ //
+ 
+-#include <math_Memory.hxx>
+ #include <Standard_OutOfRange.hxx>
+ #include <Standard_Failure.hxx>
++#include <cstring>
+ 
+ math_SingleTab::math_SingleTab(const Standard_Integer LowerIndex,
+ 		               const Standard_Integer UpperIndex) :
+Index: oce/inc/math_SingleTab.lxx
+===================================================================
+--- oce.orig/inc/math_SingleTab.lxx
++++ oce/inc/math_SingleTab.lxx
+@@ -1,5 +1,5 @@
+ #include <Standard_OutOfRange.hxx>
+-#include <math_Memory.hxx>
++#include <cstring>
+ 
+ inline Item& math_SingleTab::Value(const Standard_Integer Index) const
+ {
