@@ -1,0 +1,220 @@
+Index: oce/examples/find_package/CMakeLists.txt
+===================================================================
+--- /dev/null
++++ oce/examples/find_package/CMakeLists.txt
+@@ -0,0 +1,49 @@
++# This example shows how to use find_package(OCE).
++# If OCE is not found, try to find an OpenCascade installation.
++
++cmake_minimum_required(VERSION 2.6)
++
++find_package(OCE)
++if(OCE_FOUND)
++    message(STATUS "Found OCE version ${OCE_VERSION}")
++    # Include files reside in ${OCE_INCLUDE_DIRS};
++    include_directories(${OCE_INCLUDE_DIRS})
++    # We do not need library path, they will be automatically imported.
++else(OCE_FOUND)
++    # OCE not found; either it is not found and user
++    # has to set OCE_DIR to the directory containing
++    # OCEConfig.cmake, or OCE is not installed and we
++    # try to find OpenCascade files.
++    if(DEFINED ENV{CASROOT})
++        if(NOT DEFINED OCC_INCLUDE_PATH)
++            set(OCC_INCLUDE_PATH "$ENV{CASROOT}/inc")
++        endif(NOT DEFINED OCC_INCLUDE_PATH)
++        if(NOT DEFINED OCC_LIB_PATH)
++            if(WIN32)
++                set(OCC_LIB_PATH "$ENV{CASROOT}/win32/lib")
++            else(WIN32)
++                if(APPLE)
++                    set(OCC_LIB_PATH "/Library/OpenCASCADE/6.3.0/lib")
++                else(APPLE)
++                    set(OCC_LIB_PATH "$ENV{CASROOT}/lin/lib")
++                endif(APPLE)
++            endif(WIN32)
++        endif(NOT DEFINED OCC_LIB_PATH)
++    else(DEFINED ENV{CASROOT})
++        if(NOT DEFINED OCC_INCLUDE_PATH OR NOT DEFINED OCC_LIB_PATH)
++            message(WARNING "To specify paths of OpenCascade files, you may either define the CASROOT environment variable, or set both OCC_INCLUDE_PATH and OCC_LIB_PATH variables.")
++        endif(NOT DEFINED OCC_INCLUDE_PATH OR NOT DEFINED OCC_LIB_PATH)
++    endif(DEFINED ENV{CASROOT})
++    if(DEFINED OCC_INCLUDE_PATH)
++        message(STATUS "OCC search path for include files: OCC_INCLUDE_PATH=${OCC_INCLUDE_PATH}")
++        include_directories(${OCC_INCLUDE_PATH})
++    endif(DEFINED OCC_INCLUDE_PATH)
++    if(DEFINED OCC_LIB_PATH)
++        message(STATUS "OCC search path for libraries: OCC_LIB_PATH=${OCC_LIB_PATH}")
++        link_directories(${OCC_LIB_PATH})
++    endif(DEFINED OCC_LIB_PATH)
++endif(OCE_FOUND)
++
++add_executable(computeSurface computeSurface.cpp)
++target_link_libraries(computeSurface TKPrim)
++
+Index: oce/examples/find_package/computeSurface.cpp
+===================================================================
+--- /dev/null
++++ oce/examples/find_package/computeSurface.cpp
+@@ -0,0 +1,22 @@
++#include <TopoDS_Shape.hxx>
++#include <BRep_Builder.hxx>
++#include <BRepTools.hxx>
++#include <BRepGProp.hxx>
++#include <GProp_GProps.hxx>
++#include <iostream>
++
++int main(int argc, char **argv){
++    TopoDS_Shape shape;
++    BRep_Builder builder;
++    GProp_GProps prop;
++
++    if (argc < 2)
++    {
++        std::cerr << "Usage: computeSurface file.brep" << std::endl;
++        exit(1);
++    }
++    BRepTools::Read(shape, argv[1], builder);
++    BRepGProp::SurfaceProperties(shape, prop);
++    std::cout << "Total surface of all shapes: " << prop.Mass() << std::endl;
++    return 0;
++}
+Index: oce/examples/find_package_components/CMakeLists.txt
+===================================================================
+--- /dev/null
++++ oce/examples/find_package_components/CMakeLists.txt
+@@ -0,0 +1,59 @@
++# This example shows how to use find_package(OCE) by specifying
++# a list of toolkits.
++# If a toolkit is missing or if OCE is not found, try to find
++# an OpenCascade installation.
++
++cmake_minimum_required(VERSION 2.6)
++
++set(OCE_TOOLKITS TKPrim)
++find_package(OCE COMPONENTS ${OCE_TOOLKITS})
++if(OCE_FOUND)
++    message(STATUS "Found OCE version ${OCE_VERSION}")
++    if(NOT OCE_ALL_FOUND)
++      set(OCE_FOUND false)
++      message(WARNING "Ignoring OCE installation due to missing toolkit(s): ${OCE_MISSING_TOOLKITS}")
++    endif(NOT OCE_ALL_FOUND)
++endif(OCE_FOUND)
++
++if(OCE_FOUND)
++    # Include files reside in ${OCE_INCLUDE_DIRS};
++    include_directories(${OCE_INCLUDE_DIRS})
++    # We do not need library path, they will be automatically imported.
++else(OCE_FOUND)
++    # OCE not found; either it is not found and user
++    # has to set OCE_DIR to the directory containing
++    # OCEConfig.cmake, or OCE is not installed and we
++    # try to find OpenCascade files.
++    if(DEFINED ENV{CASROOT})
++        if(NOT DEFINED OCC_INCLUDE_PATH)
++            set(OCC_INCLUDE_PATH "$ENV{CASROOT}/inc")
++        endif(NOT DEFINED OCC_INCLUDE_PATH)
++        if(NOT DEFINED OCC_LIB_PATH)
++            if(WIN32)
++                set(OCC_LIB_PATH "$ENV{CASROOT}/win32/lib")
++            else(WIN32)
++                if(APPLE)
++                    set(OCC_LIB_PATH "/Library/OpenCASCADE/6.3.0/lib")
++                else(APPLE)
++                    set(OCC_LIB_PATH "$ENV{CASROOT}/lin/lib")
++                endif(APPLE)
++            endif(WIN32)
++        endif(NOT DEFINED OCC_LIB_PATH)
++    else(DEFINED ENV{CASROOT})
++        if(NOT DEFINED OCC_INCLUDE_PATH OR NOT DEFINED OCC_LIB_PATH)
++            message(WARNING "To specify paths of OpenCascade files, you may either define the CASROOT environment variable, or set both OCC_INCLUDE_PATH and OCC_LIB_PATH variables.")
++        endif(NOT DEFINED OCC_INCLUDE_PATH OR NOT DEFINED OCC_LIB_PATH)
++    endif(DEFINED ENV{CASROOT})
++    if(DEFINED OCC_INCLUDE_PATH)
++        message(STATUS "OCC search path for include files: OCC_INCLUDE_PATH=${OCC_INCLUDE_PATH}")
++        include_directories(${OCC_INCLUDE_PATH})
++    endif(DEFINED OCC_INCLUDE_PATH)
++    if(DEFINED OCC_LIB_PATH)
++        message(STATUS "OCC search path for libraries: OCC_LIB_PATH=${OCC_LIB_PATH}")
++        link_directories(${OCC_LIB_PATH})
++    endif(DEFINED OCC_LIB_PATH)
++endif(OCE_FOUND)
++
++add_executable(computeSurface computeSurface.cpp)
++target_link_libraries(computeSurface TKPrim)
++
+Index: oce/examples/find_package_components/computeSurface.cpp
+===================================================================
+--- /dev/null
++++ oce/examples/find_package_components/computeSurface.cpp
+@@ -0,0 +1,22 @@
++#include <TopoDS_Shape.hxx>
++#include <BRep_Builder.hxx>
++#include <BRepTools.hxx>
++#include <BRepGProp.hxx>
++#include <GProp_GProps.hxx>
++#include <iostream>
++
++int main(int argc, char **argv){
++    TopoDS_Shape shape;
++    BRep_Builder builder;
++    GProp_GProps prop;
++
++    if (argc < 2)
++    {
++        std::cerr << "Usage: computeSurface file.brep" << std::endl;
++        exit(1);
++    }
++    BRepTools::Read(shape, argv[1], builder);
++    BRepGProp::SurfaceProperties(shape, prop);
++    std::cout << "Total surface of all shapes: " << prop.Mass() << std::endl;
++    return 0;
++}
+Index: oce/examples/find_package_oce/CMakeLists.txt
+===================================================================
+--- /dev/null
++++ oce/examples/find_package_oce/CMakeLists.txt
+@@ -0,0 +1,16 @@
++# This example shows how to use find_package(OCE) by specifying
++# a list of toolkits.
++# If a toolkit is missing or if OCE is not found, a fatal error
++# is thrown, we do not try to find an Opencascade installation.
++
++cmake_minimum_required(VERSION 2.6)
++
++find_package(OCE REQUIRED COMPONENTS TKPrim)
++
++# Include files reside in ${OCE_INCLUDE_DIRS};
++include_directories(${OCE_INCLUDE_DIRS})
++
++# We do not need library path, they will be automatically imported.
++add_executable(computeSurface computeSurface.cpp)
++target_link_libraries(computeSurface TKPrim)
++
+Index: oce/examples/find_package_oce/computeSurface.cpp
+===================================================================
+--- /dev/null
++++ oce/examples/find_package_oce/computeSurface.cpp
+@@ -0,0 +1,22 @@
++#include <TopoDS_Shape.hxx>
++#include <BRep_Builder.hxx>
++#include <BRepTools.hxx>
++#include <BRepGProp.hxx>
++#include <GProp_GProps.hxx>
++#include <iostream>
++
++int main(int argc, char **argv){
++    TopoDS_Shape shape;
++    BRep_Builder builder;
++    GProp_GProps prop;
++
++    if (argc < 2)
++    {
++        std::cerr << "Usage: computeSurface file.brep" << std::endl;
++        exit(1);
++    }
++    BRepTools::Read(shape, argv[1], builder);
++    BRepGProp::SurfaceProperties(shape, prop);
++    std::cout << "Total surface of all shapes: " << prop.Mass() << std::endl;
++    return 0;
++}

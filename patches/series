@@ -86,6 +86,7 @@ cmake/precompiled-headers/add-the-effective-precompiled-headers.patch
 
 cmake/remove-pragmas.patch
 cmake/remove-RETSIGTYPE-in-Csemaphore.c.patch
+cmake/add-examples.patch
 
 ports/add-BDS10-Borland-project-files.patch
 ports/drop-utsname-usage-for-unknown-architectures.patch
