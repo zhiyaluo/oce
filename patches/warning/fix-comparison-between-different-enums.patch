@@ -1,0 +1,39 @@
+From 23ca5ad4f8a3c6972e7f60b8c4a0fb04a017cb4a Mon Sep 17 00:00:00 2001
+From: Hugues Delorme <delorme.hugues@fougsys.fr>
+Date: Mon, 22 Aug 2011 18:04:31 +0200
+Subject: [PATCH] [warning-fix][comparison-between-different-enums]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+In module TKOpenGL, fixed the two remaining GCC warnings of the form :
+  "comparison between ‘enum texStatus’ and ‘enum texDataStatus’"
+Obviously texdata[data].status is wanted instead of textab[ID].status.
+  enum texDataStatus conveys the dimensional of the texture (1D or 2D),
+  whereas enum texStatus only conveys the "allocated" information.
+---
+ src/OpenGl/OpenGl_TextureBox.cxx |    6 ++----
+ 1 files changed, 2 insertions(+), 4 deletions(-)
+
+Index: oce/src/OpenGl/OpenGl_TextureBox.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_TextureBox.cxx
++++ oce/src/OpenGl/OpenGl_TextureBox.cxx
+@@ -519,7 +519,7 @@
+   if (textab[ID].use_bind_texture[Context])
+   {
+     /* OCC11904 - make sure that the correct texture is bound before drawing */
+-    GLenum aParamName = textab[ID].status == TEXDATA_1D ? 
++    GLenum aParamName = texdata[data].status == TEXDATA_1D ?
+ GL_TEXTURE_BINDING_1D : GL_TEXTURE_BINDING_2D;
+     GLint aCurrTex = -1;
+     glGetIntegerv( aParamName, &aCurrTex );
+@@ -536,7 +536,7 @@
+ #endif /* GL_EXT_texture_object */
+   {
+     /* OCC11904 - make sure that the correct texture is bound before drawing */
+-    GLenum aParamName = textab[ID].status == TEXDATA_1D ? 
++    GLenum aParamName = texdata[data].status == TEXDATA_1D ?
+ GL_TEXTURE_BINDING_1D : GL_TEXTURE_BINDING_2D;
+     GLint aCurrTex = -1;
+     glGetIntegerv( aParamName, &aCurrTex );

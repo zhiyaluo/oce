@@ -4,6 +4,23 @@ Date:   Sun Jun 19 18:20:09 2011 +0200
 
     Marked @todos related to some of the MSVC warnings
 
+From 23ca5ad4f8a3c6972e7f60b8c4a0fb04a017cb4a Mon Sep 17 00:00:00 2001
+From: Hugues Delorme <delorme.hugues@fougsys.fr>
+Date: Mon, 22 Aug 2011 18:04:31 +0200
+Subject: [PATCH] [warning-fix][comparison-between-different-enums]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+In module TKOpenGL, fixed the two remaining GCC warnings of the form :
+  "comparison between ‘enum texStatus’ and ‘enum texDataStatus’"
+Obviously texdata[data].status is wanted instead of textab[ID].status.
+  enum texDataStatus conveys the dimensional of the texture (1D or 2D),
+  whereas enum texStatus only conveys the "allocated" information.
+---
+ src/OpenGl/OpenGl_TextureBox.cxx |    6 ++----
+ 1 files changed, 2 insertions(+), 4 deletions(-)
+
 Index: oce/inc/Prs2d_Dimension.hxx
 ===================================================================
 --- oce.orig/inc/Prs2d_Dimension.hxx
@@ -78,26 +95,6 @@ Index: oce/src/IFSelect/IFSelect_WorkSession.cxx
    for (chl.Start(); chl.More(); chl.Next()) {
      Standard_Integer num = chl.Number();
      const Handle(Interface_Check) ach = chl.Value();
-Index: oce/src/OpenGl/OpenGl_TextureBox.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_TextureBox.cxx
-+++ oce/src/OpenGl/OpenGl_TextureBox.cxx
-@@ -519,6 +519,7 @@
-   if (textab[ID].use_bind_texture[Context])
-   {
-     /* OCC11904 - make sure that the correct texture is bound before drawing */
-+	// @todo Check here if it is correct : compare .status with the wrong ENUM type (the value matches)
-     GLenum aParamName = textab[ID].status == TEXDATA_1D ? 
- GL_TEXTURE_BINDING_1D : GL_TEXTURE_BINDING_2D;
-     GLint aCurrTex = -1;
-@@ -536,6 +537,7 @@
- #endif /* GL_EXT_texture_object */
-   {
-     /* OCC11904 - make sure that the correct texture is bound before drawing */
-+	// @todo Check here if it is correct : compare .status with the wrong ENUM type (the value matches)
-     GLenum aParamName = textab[ID].status == TEXDATA_1D ? 
- GL_TEXTURE_BINDING_1D : GL_TEXTURE_BINDING_2D;
-     GLint aCurrTex = -1;
 Index: oce/src/Visual3d/Visual3d_ViewManager.cxx
 ===================================================================
 --- oce.orig/src/Visual3d/Visual3d_ViewManager.cxx
