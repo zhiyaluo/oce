@@ -84,11 +84,26 @@ Subject: [PATCH] Use tabulations to indent CMake files, and remove trailing
  adm/cmake/TKService/CMakeLists.txt |    6 +-
  6 files changed, 333 insertions(+), 341 deletions(-)
 
+From 4051d938563f43470c0b4abcbaf4d4cce12b4381 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Wed, 14 Sep 2011 19:44:57 +0200
+Subject: [PATCH] Tests were not found when NOT WIN32
+
+Use the new (CMake 2.8) add_test(NAME name COMMAND command)
+signature, as explained at
+  http://www.cmake.org/pipermail/cmake/2002-January/002644.html
+
+Bump CMake requirement to 2.8.
+---
+ CMakeLists.txt      |   16 +++++++---------
+ test/CMakeLists.txt |   11 +----------
+ 2 files changed, 8 insertions(+), 19 deletions(-)
+
 Index: oce/CMakeLists.txt
 ===================================================================
 --- oce.orig/CMakeLists.txt
 +++ oce/CMakeLists.txt
-@@ -803,3 +803,85 @@
+@@ -846,3 +846,85 @@
  IF(NOT (WIN32 AND (CMAKE_CONFIGURATION_TYPES OR NMAKE)))
  INSTALL(EXPORT ${PROJECT_NAME}-libraries DESTINATION ${${PROJECT_NAME}_INSTALL_CMAKE_DATA_DIR} COMPONENT Development)
  ENDIF(NOT (WIN32 AND (CMAKE_CONFIGURATION_TYPES OR NMAKE)))
@@ -123,7 +138,7 @@ Index: oce/CMakeLists.txt
 +	endif()
 +	set(CPACK_DEBIAN_PACKAGE_SECTION "science")
 +	# debian source packages aren't yet supported by cmake, but the following list will help anyone who is trying to figure out what to apt-get install before building.
-+	set(CPACK_DEBIAN_PACKAGE_BUILDS_DEPENDS "debhelper (>= 6.0.7~), quilt, cmake (>= 2.6), libtool,
++	set(CPACK_DEBIAN_PACKAGE_BUILDS_DEPENDS "debhelper (>= 6.0.7~), quilt, cmake (>= 2.8), libtool,
 +		libx11-dev, libxmu-dev, libxext-dev, tcl8.5-dev, tk8.5-dev,
 +		libgl1-mesa-dev | libgl-dev, libglu1-mesa-dev | libglu-dev,
 +		libftgl-dev, libgl2ps-dev")
