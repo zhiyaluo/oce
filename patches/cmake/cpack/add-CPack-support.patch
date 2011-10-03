@@ -103,11 +103,10 @@ Index: oce/CMakeLists.txt
 ===================================================================
 --- oce.orig/CMakeLists.txt
 +++ oce/CMakeLists.txt
-@@ -846,3 +846,85 @@
- IF(NOT (WIN32 AND (CMAKE_CONFIGURATION_TYPES OR NMAKE)))
- INSTALL(EXPORT ${PROJECT_NAME}-libraries DESTINATION ${${PROJECT_NAME}_INSTALL_CMAKE_DATA_DIR} COMPONENT Development)
- ENDIF(NOT (WIN32 AND (CMAKE_CONFIGURATION_TYPES OR NMAKE)))
-+
+@@ -902,3 +902,84 @@
+ ENDIF(${PROJECT_NAME}_BUNDLE_AUTOINSTALL)
+ 
+ 
 +###############################################################################
 +# OCE Packaging                                                               #
 +# $make package                                                               #
@@ -509,7 +508,7 @@ Index: oce/README
 -oce stands for *o*pencascade *c*ommunity *e*dition.
 -
 -This project aims at gathering patches/changes/improvements from the OCC community over the latest release
--(currently OCCT 6.5.0).
+-(currently OCCT 6.5.1).
 -
 -We use the following online resources:
 -  * Sources
@@ -541,7 +540,7 @@ Index: oce/README.txt
 +oce stands for *o*pencascade *c*ommunity *e*dition.
 +
 +This project aims at gathering patches/changes/improvements from the OCC community over the latest release
-+(currently OCCT 6.5.0).
++(currently OCCT 6.5.1).
 +
 +We use the following online resources:
 +  * Sources
