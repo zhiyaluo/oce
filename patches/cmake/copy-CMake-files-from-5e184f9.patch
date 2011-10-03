@@ -267,6 +267,34 @@ unresolved symbols when linking against TKernel.
  src/OSD/OSD_FontMgr.cxx          |   92 ++++++++++++++++++++------------------
  4 files changed, 67 insertions(+), 54 deletions(-)
 
+From ca78eea2574a680a3fb6d27536b57b69dd16f006 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Thu, 11 Aug 2011 00:51:08 +0200
+Subject: [PATCH 1/2] Let TKernel depend on ${CMAKE_DL_LIBS}
+
+dlopen(), dlclose(), etc. are used in src/OSD/OSD_SharedLibrary.cxx,
+thus TKernel must depend on ${CMAKE_DL_LIBS}.
+
+This is not a problem just now because TKernel depends on Xmu which
+itself links against libdl, but indirect dependencies cause trouble
+and must be avoided.
+
+Closes issue #78
+---
+ adm/cmake/TKernel/CMakeLists.txt |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+From 871003911064c81ce96a4a0ce08cd574c1dc276e Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Fri, 12 Aug 2011 20:00:26 +0200
+Subject: [PATCH 2/2] Drop dependency of DRAWEXE against ${CMAKE_DL_LIBS}
+
+It had been added in c3cc969, but log message does not explain why.
+Remove it now, it should no more be needed thanks to ca78eea.
+---
+ adm/cmake/DRAWEXE/CMakeLists.txt |    3 ---
+ 1 files changed, 0 insertions(+), 3 deletions(-)
+
 From a9dcc411f7ab17b0c2a1633049b25efc08c00d2e Mon Sep 17 00:00:00 2001
 From: QbProg <tholag@gmail.com>
 Date: Tue, 23 Aug 2011 12:40:33 +0200
@@ -424,6 +452,60 @@ Closes issue #2.
  oce_build_config.h.cmake |    2 +-
  5 files changed, 11 insertions(+), 8 deletions(-)
 
+From eb52815a1ea924700621d9f3cfeb7582c7b4b6c7 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Wed, 31 Aug 2011 08:59:56 +0200
+Subject: [PATCH 1/3] Cosmetics: fix whitespace
+
+---
+ CMakeLists.txt |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+From 0fe366b3c0c762e3d202b76ee527a12282983a21 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Wed, 31 Aug 2011 09:04:47 +0200
+Subject: [PATCH 2/3] Rename PROCESS_OCC_MODULE macro into PROCESS_MODULE
+
+---
+ CMakeLists.txt |   22 +++++++++++-----------
+ 1 files changed, 11 insertions(+), 11 deletions(-)
+
+From 8c429472fb7dad0f81f78bb9800a146edf33f1e1 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Wed, 31 Aug 2011 09:06:53 +0200
+Subject: [PATCH 3/3] Rename OCE_BUNDLE_ROOT_PATH into
+ ${PROJECT_NAME}_BUNDLE_ROOT_PATH
+
+---
+ CMakeLists.txt |   34 +++++++++++++++++-----------------
+ 1 files changed, 17 insertions(+), 17 deletions(-)
+
+From 3d244c7b2d6f6fef4d354cf659856584b2c6ad5a Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Thu, 8 Sep 2011 00:07:28 +0200
+Subject: [PATCH] Revisit the problem of building without X11
+
+There had been some efforts to remove unnecessary dependencies against X11.
+But several toolkits (especially TKV3d) are needed by OCAF and Data Exchange,
+and they cannot easily be compiled without X11.
+
+This commit uses a different approach, based on Debian packages.  A new
+OCE_DISABLE_X11 option is added (for non-MSVC builds); it is OFF by default,
+and can be set to ON when compiling without X11.
+
+The list of toolkits passed to the PROCESS_MODULE macro is splitted into
+two parts, the first one contains toolkits which can be compiled without
+X11, and the second one (optional) contains toolkits which are compiled
+only if OCE_DISABLE_X11 is OFF.
+
+This allows building many toolkits from OCAF and Data Exchange without X11.
+Of course, VISUALISATION and DRAW modules are disabled when OCE_DISABLE_X11
+is ON.
+---
+ CMakeLists.txt                     |   97 +++++++++++++++++++++---------------
+ adm/cmake/TKService/CMakeLists.txt |   12 ++---
+ 2 files changed, 61 insertions(+), 48 deletions(-)
+
 From 0fb88c4cce2390cdfac19fe9d9d9b6b5e9e32ca3 Mon Sep 17 00:00:00 2001
 From: Denis Barbier <bouzim@gmail.com>
 Date: Wed, 7 Sep 2011 21:29:20 +0200
@@ -469,6 +551,83 @@ Subject: [PATCH 6/6] Fix handling of REQUIRED in OCEConfig.cmake
 ---
  ProjectConfig.cmake.in |    5 ++---
  1 files changed, 2 insertions(+), 3 deletions(-)
+
+From 4051d938563f43470c0b4abcbaf4d4cce12b4381 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Wed, 14 Sep 2011 19:44:57 +0200
+Subject: [PATCH] Tests were not found when NOT WIN32
+
+Use the new (CMake 2.8) add_test(NAME name COMMAND command)
+signature, as explained at
+  http://www.cmake.org/pipermail/cmake/2002-January/002644.html
+
+Bump CMake requirement to 2.8.
+---
+ CMakeLists.txt      |   16 +++++++---------
+ test/CMakeLists.txt |   11 +----------
+ 2 files changed, 8 insertions(+), 19 deletions(-)
+
+From 0dc9faf2decb2a15b84242e30bb04116a8289808 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Thu, 22 Sep 2011 13:16:12 +0200
+Subject: [PATCH] Mark OCE_DISABLE_X11 option as advanced except on Mac and
+ Win32
+
+---
+ CMakeLists.txt |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+From 43c5bab58f92cbc100cfcb3016bfb095d3f63bb4 Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Sat, 24 Sep 2011 16:11:00 +0200
+Subject: [PATCH 1/3] Enable config.h support in WIN32 platforms
+
+---
+ CMakeLists.txt |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+From b0683f1431426fb27eb776cab78b57ded5b61ffa Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Sat, 24 Sep 2011 16:22:30 +0200
+Subject: [PATCH 2/3] Correctly use debug postfix in MSVC builds. This allows
+ to load DRAWEXE/TKOpenGL even in Debug builds
+
+---
+ CMakeLists.txt                               |    6 +++++-
+ oce_build_config.h.cmake                     |   11 +++++++++++
+ src/Draw/Draw.cxx                            |    2 +-
+ src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx |    2 +-
+ src/Plugin/Plugin.cxx                        |    2 +-
+ 5 files changed, 19 insertions(+), 4 deletions(-)
+
+From c9fb74cfc1f0e1ab0bc043b9d154ba50639e53fb Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Sat, 24 Sep 2011 20:49:58 +0200
+Subject: [PATCH 3/3] In MSVC, don't include version number in the CASROOT
+ path
+
+---
+ CMakeLists.txt |    6 +++++-
+ 1 files changed, 5 insertions(+), 1 deletions(-)
+
+From 785b1cf7c3e94fc8d9933443f17e3a4b8254067f Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Sat, 24 Sep 2011 17:35:10 +0200
+Subject: [PATCH 3/3] Disable DRAW when static build is ON
+
+---
+ CMakeLists.txt |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+From e8d54d2a917ab84e3291f4fd16066eae176afeab Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Mon, 26 Sep 2011 20:44:56 +0200
+Subject: [PATCH] Fixes wrong variable usage in commit
+ 785b1cf7c3e94fc8d9933443f17e3a4b8254067f
+
+---
+ CMakeLists.txt |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
 
 Index: oce/AUTHORS
 ===================================================================
@@ -726,8 +885,8 @@ Index: oce/CMakeLists.txt
 ===================================================================
 --- /dev/null
 +++ oce/CMakeLists.txt
-@@ -0,0 +1,815 @@
-+# REQUIREMENTS: this script needs CMake 2.6 or higher. Downloads are available at http://www.cmake.org
+@@ -0,0 +1,846 @@
++# REQUIREMENTS: this script needs CMake 2.8 or higher. Downloads are available at http://www.cmake.org
 +
 +# How to build OCE using CMake under Unix (Linux, Darwin etc.)?
 +# 1. Copy this file, as-is, to the top-level OCE folder
@@ -757,8 +916,8 @@ Index: oce/CMakeLists.txt
 +SET(OCE_ABI_SOVERSION 0)
 +SET(OCE_ABI_VERSION 0.0.0)
 +
-+# Set the minimum version of cmake required to 2.6
-+CMAKE_MINIMUM_REQUIRED( VERSION 2.6 )
++# Set the minimum version of cmake required to 2.8
++CMAKE_MINIMUM_REQUIRED( VERSION 2.8 )
 +
 +# Define helper macro OPTION_WITH_DEFAULT
 +MACRO( OPTION_WITH_DEFAULT OPTION_NAME OPTION_STRING OPTION_DEFAULT )
@@ -768,9 +927,9 @@ Index: oce/CMakeLists.txt
 +	OPTION( ${OPTION_NAME} "${OPTION_STRING}" ${${OPTION_NAME}} )
 +ENDMACRO( OPTION_WITH_DEFAULT OPTION_NAME OPTION_STRING OPTION_DEFAULT )
 +
-+IF( "${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}" LESS 2.5 )
-+	MESSAGE( FATAL_ERROR "CMake >= 2.6.0 required" )
-+ENDIF( "${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}" LESS 2.5 )
++IF( "${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}" LESS 2.7 )
++	MESSAGE( FATAL_ERROR "CMake >= 2.8.0 required" )
++ENDIF( "${CMAKE_MAJOR_VERSION}.${CMAKE_MINOR_VERSION}" LESS 2.7 )
 +
 +############################
 +# Check 32/64 bit platform #
@@ -805,6 +964,12 @@ Index: oce/CMakeLists.txt
 +ENDIF(MSVC)
 +
 +OPTION_WITH_DEFAULT( ${PROJECT_NAME}_BUILD_SHARED_LIB "Build shared ${PROJECT_NAME} libs" ON )
++IF(NOT MSVC)
++	OPTION_WITH_DEFAULT( ${PROJECT_NAME}_DISABLE_X11 "Disable components requiring X11 support" OFF )
++	IF(NOT APPLE AND NOT WIN32)
++		MARK_AS_ADVANCED(${PROJECT_NAME}_DISABLE_X11)
++	ENDIF(NOT APPLE AND NOT WIN32)
++ENDIF(NOT MSVC)
 +OPTION_WITH_DEFAULT( ${PROJECT_NAME}_MODEL "Build model components" ON )
 +OPTION_WITH_DEFAULT( ${PROJECT_NAME}_OCAF "Build application framework" ON )
 +OPTION_WITH_DEFAULT( ${PROJECT_NAME}_DATAEXCHANGE "Build data exchange" ON )
@@ -867,22 +1032,35 @@ Index: oce/CMakeLists.txt
 +# Check components dependencies
 +#
 +SET(${PROJECT_NAME}_FOUNDATION TRUE)
-+SET(${PROJECT_NAME}_VISU_DEP FALSE)
++IF(NOT ${PROJECT_NAME}_DISABLE_X11 AND (
++		${PROJECT_NAME}_OCAF OR ${PROJECT_NAME}_DATAEXCHANGE OR
++		${PROJECT_NAME}_VISUALISATION OR ${PROJECT_NAME}_DRAW))
++	SET(${PROJECT_NAME}_VISU_DEP TRUE)
++ENDIF(NOT ${PROJECT_NAME}_DISABLE_X11 AND (
++		${PROJECT_NAME}_OCAF OR ${PROJECT_NAME}_DATAEXCHANGE OR
++		${PROJECT_NAME}_VISUALISATION OR ${PROJECT_NAME}_DRAW))
++IF(${PROJECT_NAME}_DISABLE_X11)
++	SET(${PROJECT_NAME}_DRAW OFF CACHE BOOL "Build DRAWEXE" FORCE)
++	SET(${PROJECT_NAME}_VISUALISATION OFF CACHE BOOL "Build visualisation component" FORCE)
++ENDIF(${PROJECT_NAME}_DISABLE_X11)
++
++IF(NOT ${PROJECT_NAME}_BUILD_SHARED_LIB AND ${PROJECT_NAME}_DRAW)
++	SET(${PROJECT_NAME}_DRAW OFF CACHE BOOL "Build DRAWEXE" FORCE)
++	MESSAGE("Warning : DRAW disabled when statically linking")
++ENDIF(NOT ${PROJECT_NAME}_BUILD_SHARED_LIB AND ${PROJECT_NAME}_DRAW)
++
 +IF(${PROJECT_NAME}_DRAW AND NOT ${PROJECT_NAME}_DATAEXCHANGE)
 +	SET(${PROJECT_NAME}_DATAEXCHANGE ON CACHE BOOL "Build data exchange" FORCE)
 +ENDIF(${PROJECT_NAME}_DRAW AND NOT ${PROJECT_NAME}_DATAEXCHANGE)
 +IF(${PROJECT_NAME}_DATAEXCHANGE AND NOT ${PROJECT_NAME}_OCAF)
 +	SET(${PROJECT_NAME}_OCAF ON CACHE BOOL "Build application framework" FORCE)
 +ENDIF(${PROJECT_NAME}_DATAEXCHANGE AND NOT ${PROJECT_NAME}_OCAF)
-+IF(${PROJECT_NAME}_OCAF AND NOT ${PROJECT_NAME}_VISU_DEP)
-+	SET(${PROJECT_NAME}_VISU_DEP TRUE)
-+ENDIF(${PROJECT_NAME}_OCAF AND NOT ${PROJECT_NAME}_VISU_DEP)
-+IF(${PROJECT_NAME}_VISU_DEP AND NOT ${PROJECT_NAME}_MODEL)
++IF(${PROJECT_NAME}_OCAF AND NOT ${PROJECT_NAME}_MODEL)
 +	SET(${PROJECT_NAME}_MODEL ON CACHE BOOL "Build model components" FORCE)
-+ENDIF(${PROJECT_NAME}_VISU_DEP AND NOT ${PROJECT_NAME}_MODEL)
-+IF(${PROJECT_NAME}_VISUALISATION AND NOT ${PROJECT_NAME}_VISU_DEP)
-+	SET(${PROJECT_NAME}_VISU_DEP ON CACHE BOOL "Build visualisation components needed by other modules" FORCE)
-+ENDIF(${PROJECT_NAME}_VISUALISATION AND NOT ${PROJECT_NAME}_VISU_DEP)
++ENDIF(${PROJECT_NAME}_OCAF AND NOT ${PROJECT_NAME}_MODEL)
++IF(${PROJECT_NAME}_VISUALISATION AND NOT ${PROJECT_NAME}_MODEL)
++	SET(${PROJECT_NAME}_MODEL ON CACHE BOOL "Build model components" FORCE)
++ENDIF(${PROJECT_NAME}_VISUALISATION AND NOT ${PROJECT_NAME}_MODEL)
 +IF(${PROJECT_NAME}_DRAW AND NOT ${PROJECT_NAME}_VISUALISATION)
 +	SET(${PROJECT_NAME}_VISUALISATION ON CACHE BOOL "Build visualisation component" FORCE)
 +ENDIF(${PROJECT_NAME}_DRAW AND NOT ${PROJECT_NAME}_VISUALISATION)
@@ -917,22 +1095,22 @@ Index: oce/CMakeLists.txt
 +ENDIF(${PROJECT_NAME}_MULTITHREAD_LIBRARY STREQUAL "OPENMP")
 +
 +IF (${PROJECT_NAME}_USE_BUNDLE)
-+	FIND_PATH(OCE_BUNDLE_ROOT_PATH oce-bundle-root.empty "Path for the OCE-win-bundle")
++	FIND_PATH(${PROJECT_NAME}_BUNDLE_ROOT_PATH oce-bundle-root.empty "Path for the OCE-win-bundle")
 +ENDIF(${PROJECT_NAME}_USE_BUNDLE)
 +
-+IF(${PROJECT_NAME}_VISU_DEP AND ${PROJECT_NAME}_WITH_FREEIMAGE)
-+	FIND_PATH(FREEIMAGE_INCLUDE_DIR FreeImagePlus.h DOC "Location of header files for FreeImage" ${CMAKE_SYSTEM_INCLUDE_PATH})
-+	IF(FREEIMAGE_INCLUDE_DIR)
-+		FIND_LIBRARY( FREEIMAGE_LIBRARY freeimageplus "Path to the freeimage library" )
-+
-+		IF(CMAKE_CONFIGURATION_TYPES OR NMAKE)
-+			FIND_LIBRARY( FREEIMAGE_LIBRARY_DEBUG freeimageplusd "Path to the freeimage debug library" )
-+		ENDIF(CMAKE_CONFIGURATION_TYPES OR NMAKE)
-+	ENDIF(FREEIMAGE_INCLUDE_DIR)
-+	MARK_AS_ADVANCED(FREEIMAGE_INCLUDE_DIR FREEIMAGE_LIBRARY)
-+ENDIF(${PROJECT_NAME}_VISU_DEP AND ${PROJECT_NAME}_WITH_FREEIMAGE)
-+
 +IF(${PROJECT_NAME}_VISUALISATION)
++	IF(${PROJECT_NAME}_WITH_FREEIMAGE)
++		FIND_PATH(FREEIMAGE_INCLUDE_DIR FreeImagePlus.h DOC "Location of header files for FreeImage" ${CMAKE_SYSTEM_INCLUDE_PATH})
++		IF(FREEIMAGE_INCLUDE_DIR)
++			FIND_LIBRARY( FREEIMAGE_LIBRARY freeimageplus "Path to the freeimage library" )
++	
++			IF(CMAKE_CONFIGURATION_TYPES OR NMAKE)
++				FIND_LIBRARY( FREEIMAGE_LIBRARY_DEBUG freeimageplusd "Path to the freeimage debug library" )
++			ENDIF(CMAKE_CONFIGURATION_TYPES OR NMAKE)
++		ENDIF(FREEIMAGE_INCLUDE_DIR)
++		MARK_AS_ADVANCED(FREEIMAGE_INCLUDE_DIR FREEIMAGE_LIBRARY)
++	ENDIF(${PROJECT_NAME}_WITH_FREEIMAGE)
++
 +	IF (NOT WIN32)
 +		FIND_PACKAGE(X11 REQUIRED)
 +		FIND_LIBRARY( X11_Xmu_LIB Xmu PATHS /usr/openwin/lib )
@@ -1065,33 +1243,33 @@ Index: oce/CMakeLists.txt
 +		src/DrawResources/wing.brep )
 +ENDIF(${PROJECT_NAME}_DRAW)
 +
-+IF (${PROJECT_NAME}_USE_BUNDLE AND OCE_BUNDLE_ROOT_PATH)
++IF (${PROJECT_NAME}_USE_BUNDLE AND ${PROJECT_NAME}_BUNDLE_ROOT_PATH)
 +	MESSAGE("Using OCE Bundle")
 +	IF (${PROJECT_NAME}_VISUALISATION)
-+		SET(FTGL_INCLUDE_DIR ${OCE_BUNDLE_ROOT_PATH}/include/FTGL CACHE PATH "" FORCE)
-+		SET(FREETYPE_INCLUDE_DIR_freetype2 ${OCE_BUNDLE_ROOT_PATH}/include/freetype CACHE PATH "" FORCE)
-+		SET(FREETYPE_INCLUDE_DIR_ft2build ${OCE_BUNDLE_ROOT_PATH}/include/freetype CACHE PATH "" FORCE)
++		SET(FTGL_INCLUDE_DIR ${${PROJECT_NAME}_BUNDLE_ROOT_PATH}/include/FTGL CACHE PATH "" FORCE)
++		SET(FREETYPE_INCLUDE_DIR_freetype2 ${${PROJECT_NAME}_BUNDLE_ROOT_PATH}/include/freetype CACHE PATH "" FORCE)
++		SET(FREETYPE_INCLUDE_DIR_ft2build ${${PROJECT_NAME}_BUNDLE_ROOT_PATH}/include/freetype CACHE PATH "" FORCE)
 +		SET(FREETYPE_INCLUDE_DIRS ${FREETYPE_INCLUDE_DIR_freetype2} ${FREETYPE_INCLUDE_DIR_ft2build})
-+		SET(FREETYPE_LIBRARY ${OCE_BUNDLE_ROOT_PATH}/Win${BIT}/lib/freetype.lib CACHE FILEPATH "" FORCE)
-+		SET(FREETYPE_LIBRARIES ${OCE_BUNDLE_ROOT_PATH}/Win${BIT}/lib/freetype.lib CACHE FILEPATH "" FORCE)
-+		SET(FREETYPE_LIBRARY_DEBUG ${OCE_BUNDLE_ROOT_PATH}/Win${BIT}/libd/freetyped.lib CACHE FILEPATH "" FORCE)
-+		SET(FTGL_LIBRARY ${OCE_BUNDLE_ROOT_PATH}/Win${BIT}/lib/ftgl.lib CACHE FILEPATH "" FORCE)
-+		SET(FTGL_LIBRARY_DEBUG ${OCE_BUNDLE_ROOT_PATH}/Win${BIT}/libd/ftgld.lib CACHE FILEPATH "" FORCE)
++		SET(FREETYPE_LIBRARY ${${PROJECT_NAME}_BUNDLE_ROOT_PATH}/Win${BIT}/lib/freetype.lib CACHE FILEPATH "" FORCE)
++		SET(FREETYPE_LIBRARIES ${${PROJECT_NAME}_BUNDLE_ROOT_PATH}/Win${BIT}/lib/freetype.lib CACHE FILEPATH "" FORCE)
++		SET(FREETYPE_LIBRARY_DEBUG ${${PROJECT_NAME}_BUNDLE_ROOT_PATH}/Win${BIT}/libd/freetyped.lib CACHE FILEPATH "" FORCE)
++		SET(FTGL_LIBRARY ${${PROJECT_NAME}_BUNDLE_ROOT_PATH}/Win${BIT}/lib/ftgl.lib CACHE FILEPATH "" FORCE)
++		SET(FTGL_LIBRARY_DEBUG ${${PROJECT_NAME}_BUNDLE_ROOT_PATH}/Win${BIT}/libd/ftgld.lib CACHE FILEPATH "" FORCE)
 +		ADD_DEFINITIONS(-DHAVE_FTGL_NEWER212)
++
++		IF(${PROJECT_NAME}_WITH_GL2PS)
++			SET(GL2PS_LIBRARY ${${PROJECT_NAME}_BUNDLE_ROOT_PATH}/Win${BIT}/lib/gl2ps.lib CACHE FILEPATH "" FORCE)
++			SET(GL2PS_LIBRARY_DEBUG ${${PROJECT_NAME}_BUNDLE_ROOT_PATH}/Win${BIT}/libd/gl2psd.lib CACHE FILEPATH "" FORCE)
++			SET(GL2PS_INCLUDE_DIR ${${PROJECT_NAME}_BUNDLE_ROOT_PATH}/include/gl2ps CACHE PATH "" FORCE)
++		ENDIF(${PROJECT_NAME}_WITH_GL2PS)
++
++		IF(${PROJECT_NAME}_WITH_FREEIMAGE)
++			SET(FREEIMAGE_LIBRARY ${${PROJECT_NAME}_BUNDLE_ROOT_PATH}/Win${BIT}/lib/FreeImage.lib CACHE FILEPATH "" FORCE)
++			SET(FREEIMAGE_LIBRARY_DEBUG ${${PROJECT_NAME}_BUNDLE_ROOT_PATH}/Win${BIT}/libd/FreeImaged.lib CACHE FILEPATH "" FORCE)
++			SET(FREEIMAGE_INCLUDE_DIR ${${PROJECT_NAME}_BUNDLE_ROOT_PATH}/include/FreeImage CACHE PATH "" FORCE)
++		ENDIF(${PROJECT_NAME}_WITH_FREEIMAGE)
 +	ENDIF (${PROJECT_NAME}_VISUALISATION)
-+
-+	IF(${PROJECT_NAME}_VISU_DEP AND ${PROJECT_NAME}_WITH_GL2PS)
-+		SET(GL2PS_LIBRARY ${OCE_BUNDLE_ROOT_PATH}/Win${BIT}/lib/gl2ps.lib CACHE FILEPATH "" FORCE)
-+		SET(GL2PS_LIBRARY_DEBUG ${OCE_BUNDLE_ROOT_PATH}/Win${BIT}/libd/gl2psd.lib CACHE FILEPATH "" FORCE)
-+		SET(GL2PS_INCLUDE_DIR ${OCE_BUNDLE_ROOT_PATH}/include/gl2ps CACHE PATH "" FORCE)
-+	ENDIF(${PROJECT_NAME}_VISU_DEP AND ${PROJECT_NAME}_WITH_GL2PS)
-+
-+	IF(${PROJECT_NAME}_VISU_DEP AND ${PROJECT_NAME}_WITH_FREEIMAGE)
-+		SET(FREEIMAGE_LIBRARY ${OCE_BUNDLE_ROOT_PATH}/Win${BIT}/lib/FreeImage.lib CACHE FILEPATH "" FORCE)
-+		SET(FREEIMAGE_LIBRARY_DEBUG ${OCE_BUNDLE_ROOT_PATH}/Win${BIT}/libd/FreeImaged.lib CACHE FILEPATH "" FORCE)
-+		SET(FREEIMAGE_INCLUDE_DIR ${OCE_BUNDLE_ROOT_PATH}/include/FreeImage CACHE PATH "" FORCE)
-+	ENDIF(${PROJECT_NAME}_VISU_DEP AND ${PROJECT_NAME}_WITH_FREEIMAGE)
-+ENDIF(${PROJECT_NAME}_USE_BUNDLE AND OCE_BUNDLE_ROOT_PATH)
++ENDIF(${PROJECT_NAME}_USE_BUNDLE AND ${PROJECT_NAME}_BUNDLE_ROOT_PATH)
 +
 +IF(MSVC)
 +	SET( CMAKE_DEBUG_POSTFIX "d" )
@@ -1278,7 +1456,7 @@ Index: oce/CMakeLists.txt
 +	IF(WIN32)
 +		######### Windows ###########
 +		MESSAGE(STATUS "Windows system detected")
-+		ADD_DEFINITIONS(-DWNT -DWIN32 -D_WINDOWS -DCSFDB)
++		ADD_DEFINITIONS(-DWNT -DWIN32 -D_WINDOWS -DCSFDB -DHAVE_CONFIG_H )
 +		SET(PLATFORM win)
 +	ELSE(WIN32)
 +		MESSAGE(STATUS "Unknown platform")
@@ -1332,8 +1510,8 @@ Index: oce/CMakeLists.txt
 +
 +# DISABLE SECURE CRT WARNINGS AND OTHER MS CRT SPECIFC THINGS
 +IF (MSVC)
-+   ADD_DEFINITIONS("/D_CRT_SECURE_NO_WARNINGS")
-+   ADD_DEFINITIONS("/D_CRT_NONSTDC_NO_WARNINGS")
++	ADD_DEFINITIONS("/D_CRT_SECURE_NO_WARNINGS")
++	ADD_DEFINITIONS("/D_CRT_NONSTDC_NO_WARNINGS")
 +ENDIF(MSVC)
 +
 +IF(MSVC_IDE)
@@ -1404,7 +1582,11 @@ Index: oce/CMakeLists.txt
 +
 +# Data
 +IF(NOT DEFINED ${PROJECT_NAME}_INSTALL_DATA_DIR)
-+	SET(${PROJECT_NAME}_INSTALL_DATA_DIR share/${PROJECT_NAME_LOWERCASE}-${${PROJECT_NAME}_VERSION})
++	IF(NOT MSVC)
++		SET(${PROJECT_NAME}_INSTALL_DATA_DIR share/${PROJECT_NAME_LOWERCASE}-${${PROJECT_NAME}_VERSION})
++	ELSE ()
++		SET(${PROJECT_NAME}_INSTALL_DATA_DIR "share/${PROJECT_NAME_LOWERCASE}")
++	ENDIF(NOT MSVC)
 +ENDIF(NOT DEFINED ${PROJECT_NAME}_INSTALL_DATA_DIR)
 +# Absolute path, written into oce-config.h
 +SET(${PROJECT_NAME}_ABSPATH_DATA_DIR ${CMAKE_INSTALL_PREFIX}/${${PROJECT_NAME}_INSTALL_DATA_DIR})
@@ -1447,7 +1629,11 @@ Index: oce/CMakeLists.txt
 +)
 +
 +SET(OCE_INSTALL_DATA_DIR ${${PROJECT_NAME}_INSTALL_DATA_DIR})
-+SET(OCE_DEFAULT_CSF_GraphicShr ${${PROJECT_NAME}_INSTALL_PREFIX}/${${PROJECT_NAME}_INSTALL_LIB_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}TKOpenGl${CMAKE_SHARED_LIBRARY_SUFFIX})
++IF (NOT MSVC) 
++   SET(OCE_DEFAULT_CSF_GraphicShr ${${PROJECT_NAME}_INSTALL_PREFIX}/${${PROJECT_NAME}_INSTALL_LIB_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}TKOpenGl${CMAKE_SHARED_LIBRARY_SUFFIX})
++ELSE()
++   SET(OCE_DEFAULT_CSF_GraphicShr ${CMAKE_SHARED_LIBRARY_PREFIX}TKOpenGl)
++ENDIF(NOT MSVC)
 +
 +#this is the header used to build OCE
 +CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/oce_build_config.h.cmake
@@ -1473,7 +1659,11 @@ Index: oce/CMakeLists.txt
 +CONFIGURE_FILE (${CMAKE_CURRENT_SOURCE_DIR}/Version.rc.cmake
 +				${CMAKE_CURRENT_BINARY_DIR}/Version.rc)
 +
-+MACRO(PROCESS_OCC_MODULE modulename modules)
++MACRO(PROCESS_MODULE modulename modules_std)
++	set(modules ${modules_std})
++	IF(NOT ${PROJECT_NAME}_DISABLE_X11)
++		LIST(APPEND modules ${ARGN})
++	ENDIF(NOT ${PROJECT_NAME}_DISABLE_X11)
 +	FOREACH(module ${modules})
 +		LIST(APPEND ${PROJECT_NAME}_LIBRARIES ${module})
 +		SET(TOOLKIT_MODULES "")
@@ -1486,50 +1676,50 @@ Index: oce/CMakeLists.txt
 +			SET_TARGET_PROPERTIES(${module} PROPERTIES FOLDER ${modulename} )
 +		ENDIF(USE_SOLUTION_FOLDERS)
 +	ENDFOREACH(module ${modules})
-+ENDMACRO(PROCESS_OCC_MODULE modulename modules)
++ENDMACRO(PROCESS_MODULE modulename modules_std)
 +
 +####################################################################################
 +# Process modules of each ToolKit                                                  #
 +####################################################################################
 +# Foundation
-+PROCESS_OCC_MODULE( "Kernel" "TKernel;TKMath;TKAdvTools" )
++PROCESS_MODULE( "Kernel" "TKernel;TKMath;TKAdvTools" )
 +
 +# Modeling Data
 +IF (${PROJECT_NAME}_MODEL)
-+	PROCESS_OCC_MODULE( "Modeling Data" "TKG2d;TKG3d;TKGeomBase;TKBRep" )
++	PROCESS_MODULE( "Modeling Data" "TKG2d;TKG3d;TKGeomBase;TKBRep" )
 +ENDIF (${PROJECT_NAME}_MODEL)
 +
 +# Modeling Algorithms
 +IF (${PROJECT_NAME}_MODEL)
-+	PROCESS_OCC_MODULE( "Modeling Algorithms" "TKGeomAlgo;TKTopAlgo;TKPrim;TKBO;TKHLR;TKMesh;TKShHealing;TKXMesh;TKBool;TKFillet;TKFeat;TKOffset" )
++	PROCESS_MODULE( "Modeling Algorithms" "TKGeomAlgo;TKTopAlgo;TKPrim;TKBO;TKHLR;TKMesh;TKShHealing;TKXMesh;TKBool;TKFillet;TKFeat;TKOffset" )
 +ENDIF (${PROJECT_NAME}_MODEL)
 +
 +# Visualisation
 +IF(${PROJECT_NAME}_VISU_DEP)
-+	PROCESS_OCC_MODULE( "Visualization" "TKService;TKV2d;TKV3d" )
++	PROCESS_MODULE( "Visualization" "" "TKService;TKV2d;TKV3d" )
 +ENDIF(${PROJECT_NAME}_VISU_DEP)
 +IF(${PROJECT_NAME}_VISUALISATION)
-+	PROCESS_OCC_MODULE( "Visualization" "TKOpenGl;TKMeshVS;TKNIS;TKVoxel" )
++	PROCESS_MODULE( "Visualization" "" "TKOpenGl;TKMeshVS;TKNIS;TKVoxel" )
 +ENDIF(${PROJECT_NAME}_VISUALISATION)
 +
 +# Application framework
 +IF(${PROJECT_NAME}_OCAF)
-+	PROCESS_OCC_MODULE( "OCAF" "TKCDF;PTKernel;TKLCAF;FWOSPlugin;TKPShape;TKCAF;TKBinL;TKXmlL;TKPLCAF;TKTObj;TKShapeSchema;TKBin;TKXml;TKPCAF;TKBinTObj;TKXmlTObj;TKStdLSchema;TKStdSchema" )
++	PROCESS_MODULE( "OCAF" "TKCDF;PTKernel;TKLCAF;FWOSPlugin;TKPShape;TKBinL;TKXmlL;TKPLCAF;TKTObj;TKShapeSchema;TKStdLSchema" "TKCAF;TKBin;TKXml;TKPCAF;TKBinTObj;TKXmlTObj;TKStdSchema" )
 +ENDIF(${PROJECT_NAME}_OCAF)
 +
 +# Data exchange
 +IF(${PROJECT_NAME}_DATAEXCHANGE)
-+	PROCESS_OCC_MODULE( "Data Exchange" "TKVRML;TKXCAF;TKSTL;TKXSBase;TKXCAFSchema;TKXmlXCAF;TKBinXCAF;TKSTEPBase;TKIGES;TKSTEPAttr;TKSTEP209;TKXDEIGES;TKSTEP;TKXDESTEP" )
++	PROCESS_MODULE( "Data Exchange" "TKSTL;TKXSBase;TKSTEPBase;TKIGES;TKSTEPAttr;TKSTEP209;TKSTEP" "TKVRML;TKXCAF;TKXCAFSchema;TKXmlXCAF;TKBinXCAF;TKXDEIGES;TKXDESTEP" )
 +ENDIF(${PROJECT_NAME}_DATAEXCHANGE)
 +
 +# Draw
 +IF(${PROJECT_NAME}_DRAW)
-+	PROCESS_OCC_MODULE( "Draw" "TKDraw;TKTopTest;TKViewerTest;TKXSDRAW;TKDCAF;TKXDEDRAW;TKTObjDRAW" )
++	PROCESS_MODULE( "Draw" "" "TKDraw;TKTopTest;TKViewerTest;TKXSDRAW;TKDCAF;TKXDEDRAW;TKTObjDRAW" )
 +ENDIF(${PROJECT_NAME}_DRAW)
 +
 +# DRAWEXE application
 +IF(${PROJECT_NAME}_DRAW)
-+	PROCESS_OCC_MODULE( "Draw" DRAWEXE )
++	PROCESS_MODULE( "Draw" "" DRAWEXE )
 +ENDIF(${PROJECT_NAME}_DRAW)
 +
 +CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/ProjectConfig.cmake.in
@@ -2183,7 +2373,7 @@ Index: oce/adm/cmake/DRAWEXE/CMakeLists.txt
 ===================================================================
 --- /dev/null
 +++ oce/adm/cmake/DRAWEXE/CMakeLists.txt
-@@ -0,0 +1,84 @@
+@@ -0,0 +1,81 @@
 +SET(TOOLKIT_APP DRAWEXE)
 +
 +SET(TOOLKIT_APP_MODULES
@@ -2203,9 +2393,6 @@ Index: oce/adm/cmake/DRAWEXE/CMakeLists.txt
 +	TKernel
 +	TKService
 +)
-+IF(NOT ${PROJECT_NAME}_BUILD_SHARED_LIB AND NOT WIN32)
-+	SET(TOOLKIT_APP_LIBS ${TOOLKIT_APP_LIBS} ${CMAKE_DL_LIBS} )
-+ENDIF(NOT ${PROJECT_NAME}_BUILD_SHARED_LIB AND NOT WIN32)
 +
 +MESSAGE(STATUS "Processing application: ${TOOLKIT_APP} (${TOOLKIT_APP_MODULES})")
 +SET(TOOLKIT_APP_SOURCE_FILES)
@@ -3382,7 +3569,7 @@ Index: oce/adm/cmake/TKService/CMakeLists.txt
 ===================================================================
 --- /dev/null
 +++ oce/adm/cmake/TKService/CMakeLists.txt
-@@ -0,0 +1,45 @@
+@@ -0,0 +1,43 @@
 +SET(TOOLKIT TKService)
 +
 +SET(TOOLKIT_MODULES
@@ -3403,13 +3590,11 @@ Index: oce/adm/cmake/TKService/CMakeLists.txt
 +		WNT
 +	)
 +ELSE(WIN32)
-+	IF(${PROJECT_NAME}_VISUALISATION)
-+		SET(TOOLKIT_MODULES ${TOOLKIT_MODULES}
-+			ImageUtility
-+			Xw
-+		)
-+		SET(TOOLKIT_LIBS ${X11_Xmu_LIB} ${X11_LIBRARIES})
-+	ENDIF(${PROJECT_NAME}_VISUALISATION)
++	SET(TOOLKIT_MODULES ${TOOLKIT_MODULES}
++		ImageUtility
++		Xw
++	)
++	SET(TOOLKIT_LIBS ${X11_Xmu_LIB} ${X11_LIBRARIES})
 +ENDIF(WIN32)
 +SET(TOOLKIT_DEPENDS TKMath TKernel)
 +
@@ -4221,7 +4406,7 @@ Index: oce/adm/cmake/TKernel/CMakeLists.txt
 +IF(CMAKE_THREAD_LIBS_INIT)
 +	SET(TOOLKIT_LIBS ${CMAKE_THREAD_LIBS_INIT})
 +ENDIF(CMAKE_THREAD_LIBS_INIT)
-+SET(TOOLKIT_LIBS ${TOOLKIT_LIBS} ${LM})
++SET(TOOLKIT_LIBS ${TOOLKIT_LIBS} ${CMAKE_DL_LIBS} ${LM})
 +IF(WIN32)
 +	SET(TOOLKIT_LIBS ${TOOLKIT_LIBS} ${CSF_SOCKETLibs_LIB} ${CSF_advapi32_LIB} ${CSF_gdi32_LIB} ${CSF_user32_LIB} ${CSF_kernel32_LIB})
 +ELSE(WIN32)
@@ -4442,7 +4627,7 @@ Index: oce/oce_build_config.h.cmake
 ===================================================================
 --- /dev/null
 +++ oce/oce_build_config.h.cmake
-@@ -0,0 +1,261 @@
+@@ -0,0 +1,272 @@
 +/****************************************************************
 +**
 +**  File: oce_build_config.h.cmake, build-inc/oce-config.h
@@ -4701,8 +4886,19 @@ Index: oce/oce_build_config.h.cmake
 +/* Location where resource files will be installed. */
 +#cmakedefine OCE_INSTALL_DATA_DIR "@OCE_ABSPATH_DATA_DIR@"
 +
++/* Debug postfix for DLLs */
++#if defined(_MSC_VER) && defined(_DEBUG)
++#define OCE_DEBUG_POSTFIX "@CMAKE_DEBUG_POSTFIX@"
++#else
++#define OCE_DEBUG_POSTFIX ""
++#endif
++
 +/* Location where TKOpenGl shared library will be installed. */
++#ifdef _MSC_VER
++#define OCE_DEFAULT_CSF_GraphicShr "@OCE_DEFAULT_CSF_GraphicShr@" OCE_DEBUG_POSTFIX ".dll"
++#else
 +#cmakedefine OCE_DEFAULT_CSF_GraphicShr "@OCE_DEFAULT_CSF_GraphicShr@"
++#endif
 +
 Index: oce/oce_install_config.h.cmake
 ===================================================================
@@ -4734,6 +4930,32 @@ Index: oce/oce_install_config.h.cmake
 +#cmakedefine OCE_HAVE_LIMITS 1
 +#cmakedefine OCE_HAVE_CLIMITS 1
 +#cmakedefine OCE_HAVE_LIMITS_H 1
+Index: oce/src/Draw/Draw.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw.cxx
++++ oce/src/Draw/Draw.cxx
+@@ -526,7 +526,7 @@
+ #endif
+     aPluginLibrary +=  aPluginResource->Value(theKey.ToCString());
+ #ifdef WNT
+-    aPluginLibrary += ".dll";
++	aPluginLibrary += OCE_DEBUG_POSTFIX ".dll";
+ #elif __APPLE__
+     aPluginLibrary += ".dylib";
+ #elif defined (HPUX) || defined(_hpux)
+Index: oce/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
++++ oce/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
+@@ -51,7 +51,7 @@
+   OSD_Function new_GLGraphicDriver;
+   Standard_CString TheShr = getenv("CSF_GraphicShr");
+   if ( ! TheShr || ( strlen( TheShr ) == 0 ) )
+-    TheShr = "TKOpenGl.dll";
++	  TheShr = "TKOpenGl" OCE_DEBUG_POSTFIX ".dll";
+ 
+   MySharedLibrary.SetName ( TheShr );
+   Result = MySharedLibrary.DlOpen (OSD_RTLD_LAZY);
 Index: oce/src/OSD/OSD_Chronometer.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Chronometer.cxx
@@ -4897,3 +5119,16 @@ Index: oce/src/OSD/gettime_osx.h
 +#endif // _GETTIME_H
 +	
 +}
+Index: oce/src/Plugin/Plugin.cxx
+===================================================================
+--- oce.orig/src/Plugin/Plugin.cxx
++++ oce/src/Plugin/Plugin.cxx
+@@ -47,7 +47,7 @@
+ #endif
+     thePluginLibrary +=  PluginResource->Value(theResource.ToCString());
+ #ifdef WNT
+-    thePluginLibrary += ".dll";
++	thePluginLibrary += OCE_DEBUG_POSTFIX ".dll";
+ #elif defined(__APPLE__)
+     thePluginLibrary += ".dylib";
+ #elif defined (HPUX) || defined(_hpux)
