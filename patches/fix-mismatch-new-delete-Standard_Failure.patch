@@ -1,0 +1,22 @@
+From 6b043bc32349d9dc4eaeaae90ad3f6ce4be16f11 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Sat, 27 Aug 2011 14:54:50 +0200
+Subject: [PATCH] Fix mismatch new/delete
+
+---
+ src/Standard/Standard_Failure.cxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Index: oce/src/Standard/Standard_Failure.cxx
+===================================================================
+--- oce.orig/src/Standard/Standard_Failure.cxx
++++ oce/src/Standard/Standard_Failure.cxx
+@@ -38,7 +38,7 @@
+   if(aMessage) {
+     (*((Standard_Integer*)aMessage))--;
+     if(*((Standard_Integer*)aMessage)==0)
+-      delete (Standard_PCharacter)aMessage;
++      delete [](Standard_PCharacter)aMessage;
+   }
+ }
+ 
