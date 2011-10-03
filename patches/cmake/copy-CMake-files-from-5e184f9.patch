@@ -424,6 +424,52 @@ Closes issue #2.
  oce_build_config.h.cmake |    2 +-
  5 files changed, 11 insertions(+), 8 deletions(-)
 
+From 0fb88c4cce2390cdfac19fe9d9d9b6b5e9e32ca3 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Wed, 7 Sep 2011 21:29:20 +0200
+Subject: [PATCH 1/6] Let users specify COMPONENTS in find_package(OCE)
+
+Those components are OpenCascade toolkits, or in other words,
+library names.
+If REQUIRED is also specified, a FATAL_ERROR is thrown if at least
+one library is missing.  If REQUIRED is not specified, processing
+continues even if a library is missing.  User can check afterwards
+if OCE_<toolkit>_FOUND is set to true or false.
+---
+ ProjectConfig.cmake.in |   18 ++++++++++++++++++
+ 1 files changed, 18 insertions(+), 0 deletions(-)
+
+From 52dc0a6784ffd04d6053a656b47a80205e9b55fe Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Fri, 9 Sep 2011 07:54:19 +0200
+Subject: [PATCH 3/6] Fix indentation of ProjectConfig.cmake.in
+
+---
+ ProjectConfig.cmake.in |   20 ++++++++++----------
+ 1 files changed, 10 insertions(+), 10 deletions(-)
+
+From 37724c9adc1ac32ed2b3cf0ee1e34dba6a47a475 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Fri, 9 Sep 2011 08:02:00 +0200
+Subject: [PATCH 4/6] New variables in OCEConfig.cmake: OCE_ALL_FOUND and
+ OCE_MISSING_TOOLKITS
+
+OCE_ALL_FOUND is set to TRUE if all requested components are defined,
+otherwise FALSE.  If FALSE, OCE_MISSING_TOOLKITS contains the list
+of missing toolkits.
+---
+ ProjectConfig.cmake.in |    9 +++++++++
+ 1 files changed, 9 insertions(+), 0 deletions(-)
+
+From f44e2cfba7c7b63a1cc9965f6b9cff86eccb85f4 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Fri, 9 Sep 2011 19:12:19 +0200
+Subject: [PATCH 6/6] Fix handling of REQUIRED in OCEConfig.cmake
+
+---
+ ProjectConfig.cmake.in |    5 ++---
+ 1 files changed, 2 insertions(+), 3 deletions(-)
+
 Index: oce/AUTHORS
 ===================================================================
 --- /dev/null
@@ -1861,11 +1907,21 @@ Index: oce/ProjectConfig.cmake.in
 ===================================================================
 --- /dev/null
 +++ oce/ProjectConfig.cmake.in
-@@ -0,0 +1,11 @@
+@@ -0,0 +1,37 @@
 +# - Config file for the ${PROJECT_NAME} package
 +# It defines the following variables
 +#  ${PROJECT_NAME}_INCLUDE_DIRS - include directory for ${PROJECT_NAME}
 +#  ${PROJECT_NAME}_LIBRARIES    - all libraries to link against (warning, may be slower than just specify the used libs)
++#  ${PROJECT_NAME}_ALL_FOUND    - set to TRUE if all requested COMPONENTS are specified (see below), false otherwise
++#  ${PROJECT_NAME}_MISSING_TOOLKITS - when ${PROJECT_NAME}_ALL_FOUND is FALSE, contains a list of missing toolkits
++#
++# If COMPONENTS is specified in the find_package() commands, it contains
++# a list of toolkit modules which are requested.  For each component,
++# ${PROJECT_NAME}_<toolkit>_FOUND is set to TRUE or FALSE.
++# Warning: <toolkit> is case-sensitive, for instance TKernel.
++# For convenience, ${PROJECT_NAME}_ALL_FOUND is set to TRUE if all
++# toolkits are found, otherwise FALSE.  In the latter case,
++# ${PROJECT_NAME}_MISSING_TOOLKITS contains the list of missing toolkits.
 + 
 +# Tell the user project where to find our headers and libraries
 +GET_FILENAME_COMPONENT(SELF_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
@@ -1873,6 +1929,22 @@ Index: oce/ProjectConfig.cmake.in
 +SET(@PROJECT_NAME@_INCLUDE_DIRS "${SELF_DIR}/@OCE_CMAKE_DATA_TO_INCLUDE_RELATIVE_DIR@")
 +SET(@PROJECT_NAME@_LIBRARIES "@OCE_LIBRARIES@")
 +INCLUDE("${SELF_DIR}/@PROJECT_NAME@-libraries.cmake")
++
++SET(@PROJECT_NAME@_ALL_FOUND true)
++IF(@PROJECT_NAME@_FIND_COMPONENTS)
++	FOREACH(toolkit ${@PROJECT_NAME@_FIND_COMPONENTS})
++		IF(TARGET ${toolkit})
++			SET(@PROJECT_NAME@_${toolkit}_FOUND true)
++		ELSE(TARGET ${toolkit})
++			SET(@PROJECT_NAME@_ALL_FOUND false)
++			SET(@PROJECT_NAME@_${toolkit}_FOUND false)
++			SET(@PROJECT_NAME@_MISSING_TOOLKITS ${@PROJECT_NAME@_MISSING_TOOLKITS} ${toolkit})
++			IF(@PROJECT_NAME@_FIND_REQUIRED)
++				MESSAGE(FATAL_ERROR "@PROJECT_NAME@ ${toolkit} not available.")
++			ENDIF(@PROJECT_NAME@_FIND_REQUIRED)
++		ENDIF(TARGET ${toolkit})
++	ENDFOREACH(toolkit ${@PROJECT_NAME@_FIND_COMPONENTS})
++ENDIF(@PROJECT_NAME@_FIND_COMPONENTS)
 Index: oce/ProjectConfigVersion.cmake.in
 ===================================================================
 --- /dev/null
