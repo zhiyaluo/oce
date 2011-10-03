@@ -1,0 +1,39 @@
+From 766afb8c9f539258035ed1c1a44a74e2fc75cbaf Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Thu, 22 Sep 2011 12:54:59 +0200
+Subject: [PATCH] Let HashCode call
+ HashCode(Standard_Address,Standard_Integer), defined in
+ Standard_Address.hxx
+
+The current implementation calls HashCode(Handle_Standard_Transient,Standard_Integer)
+due to implicit conversion operator.  But if object is allocated on the stack,
+a segmentation fault occurs when the Handle_Standard_Transient temporary object
+is deleted.  This happens if MMGT_OPT is set and different from 1.
+
+Fixes issue #113
+---
+ src/Standard/Standard_Transient.cxx |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+diff --git a/src/Standard/Standard_Transient.cxx b/src/Standard/Standard_Transient.cxx
+index a8f9b25..13235d4 100644
+--- a/src/Standard/Standard_Transient.cxx
++++ b/src/Standard/Standard_Transient.cxx
+@@ -1,4 +1,5 @@
+ #include <Standard_Transient.hxx>
++#include <Standard_Address.hxx>
+ 
+ //
+ // The Initialization of the Standard_Transient variables
+@@ -58,7 +59,7 @@ Standard_Boolean Standard_Transient::IsKind (const Standard_CString theTypeName)
+ //============================================================================
+ Standard_Integer Standard_Transient::HashCode(const Standard_Integer Lim) const
+ {
+-  return ::HashCode(this, Lim);
++  return ::HashCode((Standard_Address)this, Lim);
+ }
+ 
+ 
+-- 
+1.7.6.3
+
