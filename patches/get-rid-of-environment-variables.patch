@@ -32,7 +32,7 @@ Index: oce/CMakeLists.txt
 ===================================================================
 --- oce.orig/CMakeLists.txt
 +++ oce/CMakeLists.txt
-@@ -355,6 +355,7 @@
+@@ -364,6 +364,7 @@
  		${DRAWRESOURCES_TCL_FILES}
  		src/DrawResources/DRAW.doc
  		src/DrawResources/DRAW.info
@@ -40,7 +40,7 @@ Index: oce/CMakeLists.txt
  		src/DrawResources/DrawPlugin
  		src/DrawResources/demo
  		src/DrawResources/demo.bat
-@@ -773,13 +774,6 @@
+@@ -798,13 +799,6 @@
  INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/install_inc/oce-config.h
  		DESTINATION ${${PROJECT_NAME}_INSTALL_INCLUDE_DIR} COMPONENT Development )
  

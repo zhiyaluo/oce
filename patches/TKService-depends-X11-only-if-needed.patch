@@ -14,10 +14,10 @@ Closes issue #36.
  src/AlienImage/AlienImage_X11XWDFileHeader.cxx |    4 +---
  4 files changed, 4 insertions(+), 7 deletions(-)
 
-diff --git a/inc/Aspect_XWD.hxx b/inc/Aspect_XWD.hxx
-index 1a00364..c80e5c8 100644
---- a/inc/Aspect_XWD.hxx
-+++ b/inc/Aspect_XWD.hxx
+Index: oce/inc/Aspect_XWD.hxx
+===================================================================
+--- oce.orig/inc/Aspect_XWD.hxx
++++ oce/inc/Aspect_XWD.hxx
 @@ -3,6 +3,7 @@
  
  # ifndef WNT
@@ -26,10 +26,10 @@ index 1a00364..c80e5c8 100644
  # else
  
  # ifdef WORD64
-diff --git a/src/AlienImage/AlienImage_X11XWDAlienData.cxx b/src/AlienImage/AlienImage_X11XWDAlienData.cxx
-index dea0f86..8672265 100644
---- a/src/AlienImage/AlienImage_X11XWDAlienData.cxx
-+++ b/src/AlienImage/AlienImage_X11XWDAlienData.cxx
+Index: oce/src/AlienImage/AlienImage_X11XWDAlienData.cxx
+===================================================================
+--- oce.orig/src/AlienImage/AlienImage_X11XWDAlienData.cxx
++++ oce/src/AlienImage/AlienImage_X11XWDAlienData.cxx
 @@ -11,9 +11,7 @@
  #define TEST	//GG_140699
  //		Check file extension, must be ".xwd".
@@ -41,10 +41,10 @@ index dea0f86..8672265 100644
  #include <Aspect_GenericColorMap.hxx>
  #include <Image_PseudoColorImage.hxx>
  #include <AlienImage_MemoryOperations.hxx>
-diff --git a/src/AlienImage/AlienImage_X11XWDFileHeader.cxx b/src/AlienImage/AlienImage_X11XWDFileHeader.cxx
-index ba12864..3a8ea76 100644
---- a/src/AlienImage/AlienImage_X11XWDFileHeader.cxx
-+++ b/src/AlienImage/AlienImage_X11XWDFileHeader.cxx
+Index: oce/src/AlienImage/AlienImage_X11XWDFileHeader.cxx
+===================================================================
+--- oce.orig/src/AlienImage/AlienImage_X11XWDFileHeader.cxx
++++ oce/src/AlienImage/AlienImage_X11XWDFileHeader.cxx
 @@ -1,6 +1,4 @@
 -#ifndef WNT
 -# include <X11/Xlib.h>
@@ -53,6 +53,3 @@ index ba12864..3a8ea76 100644
  #include <AlienImage_X11XWDFileHeader.hxx>
  
  const Handle(Standard_Type)& STANDARD_TYPE(AlienImage_X11XWDFileHeader)
--- 
-1.7.6.3
-

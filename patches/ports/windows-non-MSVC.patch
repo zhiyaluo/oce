@@ -469,8 +469,8 @@ Index: oce/inc/math_DoubleTab.lxx
 --- oce.orig/inc/math_DoubleTab.lxx
 +++ oce/inc/math_DoubleTab.lxx
 @@ -4,6 +4,10 @@
- #include <math_Memory.hxx>
  #include <Standard_OutOfRange.hxx>
+ #include <cstring>
  
 +#ifdef __BORLANDC__
 +#include <mem.h>
@@ -672,7 +672,7 @@ Index: oce/src/OSD/OSD_Process.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Process.cxx
 +++ oce/src/OSD/OSD_Process.cxx
-@@ -212,7 +212,7 @@
+@@ -216,7 +216,7 @@
  #include <Quantity_Date.hxx>
  
  #include <OSD_WNT_1.hxx>

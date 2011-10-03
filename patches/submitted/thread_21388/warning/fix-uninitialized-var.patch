@@ -2480,7 +2480,7 @@ Index: oce/src/OSD/OSD_Process.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Process.cxx
 +++ oce/src/OSD/OSD_Process.cxx
-@@ -322,7 +322,7 @@
+@@ -326,7 +326,7 @@
   Standard_Boolean retVal = FALSE;
   PSID             pSIDadmin;
   HANDLE           hProcessToken = INVALID_HANDLE_VALUE;
@@ -2489,7 +2489,7 @@ Index: oce/src/OSD/OSD_Process.cxx
  
   if (  !OpenProcessToken (
           GetCurrentProcess (),
-@@ -366,7 +366,7 @@
+@@ -370,7 +370,7 @@
  
  OSD_Path OSD_Process :: CurrentDirectory () {
  

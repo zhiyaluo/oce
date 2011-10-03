@@ -341,7 +341,7 @@ Index: oce/src/OSD/OSD_Process.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Process.cxx
 +++ oce/src/OSD/OSD_Process.cxx
-@@ -214,10 +214,6 @@
+@@ -218,10 +218,6 @@
  #include <OSD_WNT_1.hxx>
  #include <lmcons.h> /// pour UNLEN  ( see MSDN about GetUserName() )
  

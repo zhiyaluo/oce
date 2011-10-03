@@ -15,17 +15,17 @@ Fixes issue #113
  src/Standard/Standard_Transient.cxx |    3 ++-
  1 files changed, 2 insertions(+), 1 deletions(-)
 
-diff --git a/src/Standard/Standard_Transient.cxx b/src/Standard/Standard_Transient.cxx
-index a8f9b25..13235d4 100644
---- a/src/Standard/Standard_Transient.cxx
-+++ b/src/Standard/Standard_Transient.cxx
+Index: oce/src/Standard/Standard_Transient.cxx
+===================================================================
+--- oce.orig/src/Standard/Standard_Transient.cxx
++++ oce/src/Standard/Standard_Transient.cxx
 @@ -1,4 +1,5 @@
  #include <Standard_Transient.hxx>
 +#include <Standard_Address.hxx>
  
  //
  // The Initialization of the Standard_Transient variables
-@@ -58,7 +59,7 @@ Standard_Boolean Standard_Transient::IsKind (const Standard_CString theTypeName)
+@@ -58,7 +59,7 @@
  //============================================================================
  Standard_Integer Standard_Transient::HashCode(const Standard_Integer Lim) const
  {
@@ -34,6 +34,3 @@ index a8f9b25..13235d4 100644
  }
  
  
--- 
-1.7.6.3
-

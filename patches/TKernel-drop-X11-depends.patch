@@ -27,10 +27,10 @@ unresolved symbols when linking against TKernel.
  src/OSD/OSD_FontMgr.cxx          |   92 ++++++++++++++++++++------------------
  4 files changed, 67 insertions(+), 54 deletions(-)
 
-diff --git a/src/OSD/OSD_FontMgr.cxx b/src/OSD/OSD_FontMgr.cxx
-index e65ccca..7c6af1f 100644
---- a/src/OSD/OSD_FontMgr.cxx
-+++ b/src/OSD/OSD_FontMgr.cxx
+Index: oce/src/OSD/OSD_FontMgr.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_FontMgr.cxx
++++ oce/src/OSD/OSD_FontMgr.cxx
 @@ -9,9 +9,6 @@
  #ifdef WNT
  # include <windows.h>
@@ -41,7 +41,7 @@ index e65ccca..7c6af1f 100644
  #endif //WNT
  
  #include <NCollection_List.hxx>
-@@ -40,6 +37,14 @@ static Standard_Character font_service_conf[font_service_conf_size][64] = { {"/e
+@@ -40,6 +37,14 @@
                                                                              {"/usr/X11/lib/X11/fs/config"}
                                                                             };
  
@@ -56,7 +56,7 @@ index e65ccca..7c6af1f 100644
  DEFINE_LIST( StringList, NCollection_List, TCollection_HAsciiString );
  
  void find_path_with_font_dir( const TCollection_AsciiString& dir,StringList& dirs )
-@@ -107,6 +112,41 @@ OSD_FontMgr::OSD_FontMgr() {
+@@ -107,6 +112,41 @@
  }
  
  
@@ -98,7 +98,7 @@ index e65ccca..7c6af1f 100644
  void OSD_FontMgr::InitFontDataBase() {
  
    MyListOfFonts.Clear();
-@@ -235,48 +275,12 @@ void OSD_FontMgr::InitFontDataBase() {
+@@ -235,48 +275,12 @@
  
  #ifndef WNT
    StringList dirs;
@@ -152,6 +152,3 @@ index e65ccca..7c6af1f 100644
  
    OSD_OpenMode aMode =  OSD_ReadOnly;
    OSD_Protection  aProtect( OSD_R, OSD_R, OSD_R, OSD_R );
--- 
-1.7.6.3
-

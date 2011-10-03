@@ -39,9 +39,9 @@ Index: oce/CMakeLists.txt
 ===================================================================
 --- oce.orig/CMakeLists.txt
 +++ oce/CMakeLists.txt
-@@ -77,6 +77,12 @@
- 	OPTION_WITH_DEFAULT( ${PROJECT_NAME}_USE_BUNDLE "Use OCE Windows Bundle" OFF )
- ENDIF(MSVC)
+@@ -82,6 +82,12 @@
+ 	MARK_AS_ADVANCED(${PROJECT_NAME}_BUNDLE_AUTOINSTALL)
+ ENDIF(${PROJECT_NAME}_USE_BUNDLE)
  
 +IF (MSVC AND NOT NMAKE)
 +	SET(${PROJECT_NAME}_COMPILER_SUPPORTS_PCH TRUE)
@@ -50,11 +50,11 @@ Index: oce/CMakeLists.txt
 +ENDIF(MSVC AND NOT NMAKE)
 +
  OPTION_WITH_DEFAULT( ${PROJECT_NAME}_BUILD_SHARED_LIB "Build shared ${PROJECT_NAME} libs" ON )
- OPTION_WITH_DEFAULT( ${PROJECT_NAME}_MODEL "Build model components" ON )
- OPTION_WITH_DEFAULT( ${PROJECT_NAME}_OCAF "Build application framework" ON )
+ IF(NOT MSVC)
+ 	OPTION_WITH_DEFAULT( ${PROJECT_NAME}_DISABLE_X11 "Disable components requiring X11 support" OFF )
 Index: oce/adm/cmake/BuildToolkit.cmake
 ===================================================================
---- oce.orig/adm/cmake/OccBuildToolkit.cmake
+--- oce.orig/adm/cmake/BuildToolkit.cmake
 +++ oce/adm/cmake/BuildToolkit.cmake
 @@ -1,4 +1,46 @@
  
@@ -103,7 +103,7 @@ Index: oce/adm/cmake/BuildToolkit.cmake
  MESSAGE(STATUS "Processing ToolKit: ${TOOLKIT} (${TOOLKIT_MODULES})")
  SET(TOOLKIT_SOURCE_FILES)
  IF(DEFINED TOOLKIT_INCLUDE_DIRECTORIES)
-@@ -15,7 +57,7 @@
+@@ -21,7 +63,7 @@
  
  	IF (WIN32)
  		# For compilers under Windows a define must be set per file to correctly set the export macro
@@ -112,7 +112,7 @@ Index: oce/adm/cmake/BuildToolkit.cmake
  	ENDIF(WIN32)
  
  	SOURCE_GROUP (${MODULE} FILES ${source_files})
-@@ -31,6 +73,16 @@
+@@ -37,6 +79,16 @@
  	SET(TOOLKIT_RESOURCES ${CMAKE_BINARY_DIR}/Version.rc)
  ENDIF(MSVC)
  

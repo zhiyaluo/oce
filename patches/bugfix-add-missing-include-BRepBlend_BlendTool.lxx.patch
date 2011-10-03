@@ -7,10 +7,10 @@ Subject: [PATCH] Added missing include in BRepBlend_BlendTool.lxx
  inc/BRepBlend_BlendTool.lxx |    2 ++
  1 files changed, 2 insertions(+), 0 deletions(-)
 
-diff --git a/inc/BRepBlend_BlendTool.lxx b/inc/BRepBlend_BlendTool.lxx
-index 9d611d7..a624e8c 100644
---- a/inc/BRepBlend_BlendTool.lxx
-+++ b/inc/BRepBlend_BlendTool.lxx
+Index: oce/inc/BRepBlend_BlendTool.lxx
+===================================================================
+--- oce.orig/inc/BRepBlend_BlendTool.lxx
++++ oce/inc/BRepBlend_BlendTool.lxx
 @@ -3,6 +3,8 @@
  // Author    : Jacques GOUSSARD
  // Copyright : Matra Datavision 1993
@@ -20,6 +20,3 @@ index 9d611d7..a624e8c 100644
  inline Standard_Boolean BRepBlend_BlendTool::SingularOnUMin (const Handle(Adaptor3d_HSurface)& )
  {
    return Standard_False;
--- 
-1.7.6.3
-

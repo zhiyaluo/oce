@@ -1,7 +1,7 @@
-diff --git a/test/BRepAlgoAPI_test/CMakeLists.txt b/test/BRepAlgoAPI_test/CMakeLists.txt
-index e60a92d..05379ac 100644
---- a/test/BRepAlgoAPI_test/CMakeLists.txt
-+++ b/test/BRepAlgoAPI_test/CMakeLists.txt
+Index: oce/test/BRepAlgoAPI_test/CMakeLists.txt
+===================================================================
+--- oce.orig/test/BRepAlgoAPI_test/CMakeLists.txt
++++ oce/test/BRepAlgoAPI_test/CMakeLists.txt
 @@ -1,8 +1 @@
 -FILE(GLOB TEST_SOURCES *.cpp)
 -SET(SOURCE_FILES ${TEST_SOURCES})
@@ -12,11 +12,10 @@ index e60a92d..05379ac 100644
 -
 -GTEST_ADD_TESTS(boolean_ops_test "" ${SOURCE_FILES})
 +ADD_OCE_TEST(boolean_ops_test "TKPrim;TKBO")
-diff --git a/test/BRepExtrema_test/BRepExtrema_test.cpp b/test/BRepExtrema_test/BRepExtrema_test.cpp
-new file mode 100644
-index 0000000..f24c512
+Index: oce/test/BRepExtrema_test/BRepExtrema_test.cpp
+===================================================================
 --- /dev/null
-+++ b/test/BRepExtrema_test/BRepExtrema_test.cpp
++++ oce/test/BRepExtrema_test/BRepExtrema_test.cpp
 @@ -0,0 +1,81 @@
 +#include <BRepExtrema_DistShapeShape.hxx>
 +#include <BRepPrimAPI_MakeSphere.hxx>
@@ -99,17 +98,16 @@ index 0000000..f24c512
 +  testing::InitGoogleTest(&argc, argv);
 +  return RUN_ALL_TESTS();
 +}
-diff --git a/test/BRepExtrema_test/CMakeLists.txt b/test/BRepExtrema_test/CMakeLists.txt
-new file mode 100644
-index 0000000..808eaff
+Index: oce/test/BRepExtrema_test/CMakeLists.txt
+===================================================================
 --- /dev/null
-+++ b/test/BRepExtrema_test/CMakeLists.txt
++++ oce/test/BRepExtrema_test/CMakeLists.txt
 @@ -0,0 +1 @@
 +ADD_OCE_TEST(BRepExtrema_test "TKPrim")
-diff --git a/test/BRepGProp_test/BRepGProp_test.cpp b/test/BRepGProp_test/BRepGProp_test.cpp
-index 9368f30..dc50898 100644
---- a/test/BRepGProp_test/BRepGProp_test.cpp
-+++ b/test/BRepGProp_test/BRepGProp_test.cpp
+Index: oce/test/BRepGProp_test/BRepGProp_test.cpp
+===================================================================
+--- oce.orig/test/BRepGProp_test/BRepGProp_test.cpp
++++ oce/test/BRepGProp_test/BRepGProp_test.cpp
 @@ -1,5 +1,5 @@
  #include <BRepPrimAPI_MakeBox.hxx>
 -#include <BRepPrimAPI_MakeSPhere.hxx>
@@ -117,10 +115,10 @@ index 9368f30..dc50898 100644
  #include <BRepGProp.hxx>
  #include <GProp_GProps.hxx>
  #include <gtest/gtest.h>
-diff --git a/test/BRepGProp_test/CMakeLists.txt b/test/BRepGProp_test/CMakeLists.txt
-index ab6c288..23d2614 100644
---- a/test/BRepGProp_test/CMakeLists.txt
-+++ b/test/BRepGProp_test/CMakeLists.txt
+Index: oce/test/BRepGProp_test/CMakeLists.txt
+===================================================================
+--- oce.orig/test/BRepGProp_test/CMakeLists.txt
++++ oce/test/BRepGProp_test/CMakeLists.txt
 @@ -1,8 +1 @@
 -FILE(GLOB TEST_SOURCES *.cpp)
 -SET(SOURCE_FILES ${TEST_SOURCES})
@@ -131,11 +129,10 @@ index ab6c288..23d2614 100644
 -
 -GTEST_ADD_TESTS(BRepGProp_test "" ${SOURCE_FILES})
 +ADD_OCE_TEST(BRepGProp_test "TKG2d;TKPrim;TKTopAlgo")
-diff --git a/test/BRepOffsetAPI_test/BRepOffsetAPI_test.cpp b/test/BRepOffsetAPI_test/BRepOffsetAPI_test.cpp
-new file mode 100644
-index 0000000..c7267a6
+Index: oce/test/BRepOffsetAPI_test/BRepOffsetAPI_test.cpp
+===================================================================
 --- /dev/null
-+++ b/test/BRepOffsetAPI_test/BRepOffsetAPI_test.cpp
++++ oce/test/BRepOffsetAPI_test/BRepOffsetAPI_test.cpp
 @@ -0,0 +1,36 @@
 +#include <BRepBuilderAPI_MakePolygon.hxx>
 +#include <BRepPrimAPI_MakeBox.hxx>
@@ -173,17 +170,16 @@ index 0000000..c7267a6
 +  testing::InitGoogleTest(&argc, argv);
 +  return RUN_ALL_TESTS();
 +}
-diff --git a/test/BRepOffsetAPI_test/CMakeLists.txt b/test/BRepOffsetAPI_test/CMakeLists.txt
-new file mode 100644
-index 0000000..c797ccf
+Index: oce/test/BRepOffsetAPI_test/CMakeLists.txt
+===================================================================
 --- /dev/null
-+++ b/test/BRepOffsetAPI_test/CMakeLists.txt
++++ oce/test/BRepOffsetAPI_test/CMakeLists.txt
 @@ -0,0 +1 @@
 +ADD_OCE_TEST(BRepOffsetAPI_test "TKOffset")
-diff --git a/test/BRepPrimAPI_test/CMakeLists.txt b/test/BRepPrimAPI_test/CMakeLists.txt
-index 0409132..27d6bcf 100644
---- a/test/BRepPrimAPI_test/CMakeLists.txt
-+++ b/test/BRepPrimAPI_test/CMakeLists.txt
+Index: oce/test/BRepPrimAPI_test/CMakeLists.txt
+===================================================================
+--- oce.orig/test/BRepPrimAPI_test/CMakeLists.txt
++++ oce/test/BRepPrimAPI_test/CMakeLists.txt
 @@ -1,8 +1 @@
 -FILE(GLOB TEST_SOURCES *.cpp)
 -SET(SOURCE_FILES ${TEST_SOURCES})
@@ -195,10 +191,10 @@ index 0409132..27d6bcf 100644
 -GTEST_ADD_TESTS(BRepPrimAPI_test "" ${SOURCE_FILES})
 \ No newline at end of file
 +ADD_OCE_TEST(BRepPrimAPI_test "TKPrim")
-diff --git a/test/CMakeLists.txt b/test/CMakeLists.txt
-index 8831e8b..ea6145b 100644
---- a/test/CMakeLists.txt
-+++ b/test/CMakeLists.txt
+Index: oce/test/CMakeLists.txt
+===================================================================
+--- oce.orig/test/CMakeLists.txt
++++ oce/test/CMakeLists.txt
 @@ -2,8 +2,53 @@
  # The OCE unittest framework use GoogleTest 1.6.0 (aka GTest)
  # The GTest source code is available in the /test/gtest-1.6.0 folder
@@ -255,10 +251,10 @@ index 8831e8b..ea6145b 100644
  FILE(GLOB TEST_DIRECTORIES ./*_test gtest_sandbox)
  SUBDIRS(${TEST_DIRECTORIES})
 +
-diff --git a/test/gp_test/CMakeLists.txt b/test/gp_test/CMakeLists.txt
-index 200931c..1ae4675 100644
---- a/test/gp_test/CMakeLists.txt
-+++ b/test/gp_test/CMakeLists.txt
+Index: oce/test/gp_test/CMakeLists.txt
+===================================================================
+--- oce.orig/test/gp_test/CMakeLists.txt
++++ oce/test/gp_test/CMakeLists.txt
 @@ -1,8 +1 @@
 -FILE(GLOB TEST_SOURCES *.cpp)
 -SET(SOURCE_FILES ${TEST_SOURCES})
@@ -269,11 +265,11 @@ index 200931c..1ae4675 100644
 -
 -GTEST_ADD_TESTS(gp_test "" ${SOURCE_FILES})
 +ADD_OCE_TEST(gp_test "TKG2d")
-diff --git a/test/gp_test/gp_test.cpp b/test/gp_test/gp_test.cpp
-index 1187f6c..bcae9a1 100644
---- a/test/gp_test/gp_test.cpp
-+++ b/test/gp_test/gp_test.cpp
-@@ -24,6 +24,20 @@ TEST(gpTestSuite, testBuildThousandsPoints)
+Index: oce/test/gp_test/gp_test.cpp
+===================================================================
+--- oce.orig/test/gp_test/gp_test.cpp
++++ oce/test/gp_test/gp_test.cpp
+@@ -24,6 +24,20 @@
      }
  }
  
@@ -294,121 +290,10 @@ index 1187f6c..bcae9a1 100644
  int main(int argc, char **argv){
    testing::InitGoogleTest(&argc, argv);
    return RUN_ALL_TESTS();
-diff --git a/test/gtest-1.6.0/build-aux/config.guess b/test/gtest-1.6.0/build-aux/config.guess
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/build-aux/config.sub b/test/gtest-1.6.0/build-aux/config.sub
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/build-aux/depcomp b/test/gtest-1.6.0/build-aux/depcomp
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/build-aux/install-sh b/test/gtest-1.6.0/build-aux/install-sh
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/build-aux/ltmain.sh b/test/gtest-1.6.0/build-aux/ltmain.sh
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/build-aux/missing b/test/gtest-1.6.0/build-aux/missing
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/configure b/test/gtest-1.6.0/configure
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/msvc/gtest-md.sln b/test/gtest-1.6.0/msvc/gtest-md.sln
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/msvc/gtest-md.vcproj b/test/gtest-1.6.0/msvc/gtest-md.vcproj
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/msvc/gtest.sln b/test/gtest-1.6.0/msvc/gtest.sln
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/msvc/gtest.vcproj b/test/gtest-1.6.0/msvc/gtest.vcproj
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/msvc/gtest_main-md.vcproj b/test/gtest-1.6.0/msvc/gtest_main-md.vcproj
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/msvc/gtest_main.vcproj b/test/gtest-1.6.0/msvc/gtest_main.vcproj
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/msvc/gtest_prod_test-md.vcproj b/test/gtest-1.6.0/msvc/gtest_prod_test-md.vcproj
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/msvc/gtest_prod_test.vcproj b/test/gtest-1.6.0/msvc/gtest_prod_test.vcproj
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/msvc/gtest_unittest-md.vcproj b/test/gtest-1.6.0/msvc/gtest_unittest-md.vcproj
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/msvc/gtest_unittest.vcproj b/test/gtest-1.6.0/msvc/gtest_unittest.vcproj
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/scripts/fuse_gtest_files.py b/test/gtest-1.6.0/scripts/fuse_gtest_files.py
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/scripts/gen_gtest_pred_impl.py b/test/gtest-1.6.0/scripts/gen_gtest_pred_impl.py
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/scripts/gtest-config.in b/test/gtest-1.6.0/scripts/gtest-config.in
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/scripts/pump.py b/test/gtest-1.6.0/scripts/pump.py
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/test/gtest_break_on_failure_unittest.py b/test/gtest-1.6.0/test/gtest_break_on_failure_unittest.py
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/test/gtest_catch_exceptions_test.py b/test/gtest-1.6.0/test/gtest_catch_exceptions_test.py
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/test/gtest_color_test.py b/test/gtest-1.6.0/test/gtest_color_test.py
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/test/gtest_env_var_test.py b/test/gtest-1.6.0/test/gtest_env_var_test.py
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/test/gtest_filter_unittest.py b/test/gtest-1.6.0/test/gtest_filter_unittest.py
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/test/gtest_help_test.py b/test/gtest-1.6.0/test/gtest_help_test.py
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/test/gtest_list_tests_unittest.py b/test/gtest-1.6.0/test/gtest_list_tests_unittest.py
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/test/gtest_output_test.py b/test/gtest-1.6.0/test/gtest_output_test.py
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/test/gtest_shuffle_test.py b/test/gtest-1.6.0/test/gtest_shuffle_test.py
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/test/gtest_test_utils.py b/test/gtest-1.6.0/test/gtest_test_utils.py
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/test/gtest_throw_on_failure_test.py b/test/gtest-1.6.0/test/gtest_throw_on_failure_test.py
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/test/gtest_uninitialized_test.py b/test/gtest-1.6.0/test/gtest_uninitialized_test.py
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/test/gtest_xml_outfiles_test.py b/test/gtest-1.6.0/test/gtest_xml_outfiles_test.py
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/test/gtest_xml_output_unittest.py b/test/gtest-1.6.0/test/gtest_xml_output_unittest.py
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/test/gtest_xml_test_utils.py b/test/gtest-1.6.0/test/gtest_xml_test_utils.py
-old mode 100644
-new mode 100755
-diff --git a/test/gtest-1.6.0/xcode/Scripts/versiongenerate.py b/test/gtest-1.6.0/xcode/Scripts/versiongenerate.py
-old mode 100644
-new mode 100755
-diff --git a/test/gtest_sandbox/CMakeLists.txt b/test/gtest_sandbox/CMakeLists.txt
-index fcdee27..7b27884 100644
---- a/test/gtest_sandbox/CMakeLists.txt
-+++ b/test/gtest_sandbox/CMakeLists.txt
+Index: oce/test/gtest_sandbox/CMakeLists.txt
+===================================================================
+--- oce.orig/test/gtest_sandbox/CMakeLists.txt
++++ oce/test/gtest_sandbox/CMakeLists.txt
 @@ -1,6 +1 @@
 -FILE(GLOB TEST_SOURCES *.cpp)
 -SET(SOURCE_FILES ${TEST_SOURCES})

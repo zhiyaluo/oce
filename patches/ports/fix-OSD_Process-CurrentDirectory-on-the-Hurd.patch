@@ -11,7 +11,7 @@ Index: oce/src/OSD/OSD_Process.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Process.cxx
 +++ oce/src/OSD/OSD_Process.cxx
-@@ -113,11 +113,18 @@
+@@ -117,11 +117,18 @@
  
  
  OSD_Path OSD_Process::CurrentDirectory(){
@@ -32,7 +32,7 @@ Index: oce/src/OSD/OSD_Process.cxx
     myError.SetValue (errno, Iam, "Where");
   else {
     Name = cwd;
-@@ -147,6 +154,9 @@
+@@ -151,6 +158,9 @@
     //      result.SetValues("","","","",Name,"","");
  #endif
  
