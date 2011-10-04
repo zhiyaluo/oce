@@ -1,3 +1,7 @@
+Without this patch, the simple program below does not compile:
+  #include<BRepBlend_AppFunc.hxx>
+  #include<BRepBlend_BlendTool.hxx>
+
 From 6a09ce38ff68847c082db0db927e5fe6305c1905 Mon Sep 17 00:00:00 2001
 From: tpaviot <tpaviot@gmail.com>
 Date: Fri, 26 Aug 2011 22:30:21 +0200

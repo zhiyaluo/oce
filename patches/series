@@ -17,7 +17,6 @@ submitted/thread_20931/add-missing-include-stdlib.patch
 
 warning/bugs.patch
 build-with-newer-ftgl.patch
-bugfix-add-missing-include-BRepBlend_BlendTool.lxx.patch
 fix-cast-OSD_Process.patch
 
 submitted/thread_21346/ports/remove-__try-__finally.patch
@@ -48,6 +47,7 @@ submitted/thread_21395/warning/add-placement-delete-allocator.patch
 
 submitted/thread_21948/fix-freeimage-gl2ps-support.patch
 submitted/thread_21949/fix-mismatch-new-delete-Standard_Failure.patch
+submitted/thread_21963/bugfix-add-missing-include-BRepBlend_BlendTool.lxx.patch
 
 do-not-redefine-memmove.patch
 
