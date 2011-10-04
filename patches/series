@@ -16,13 +16,10 @@ submitted/thread_20931/add-missing-include-stdlib.patch
 
 warning/bugs.patch
 build-with-newer-ftgl.patch
-fix-freeimage-gl2ps-support.patch
 bugfix-add-missing-include-BRepBlend_BlendTool.lxx.patch
-fix-hashcode.patch
 fix-cast-OSD_Process.patch
-fix-mismatch-new-delete-Standard_Failure.patch
-submitted/thread_21346/ports/remove-__try-__finally.patch
 
+submitted/thread_21346/ports/remove-__try-__finally.patch
 submitted/thread_21347/warning/remove-extra-token-after-endif.patch
 submitted/thread_21348/warning/fix-declared-but-never-defined.patch
 submitted/thread_21349/warning/fix-deprecated-conversion-from-string.patch
@@ -47,6 +44,10 @@ submitted/thread_21392/warning/fix-defined-but-not-used.patch
 submitted/thread_21393/warning/linker-warnings.patch
 submitted/thread_21394/warning/add-placement-delete.patch
 submitted/thread_21395/warning/add-placement-delete-allocator.patch
+
+submitted/thread_21948/fix-freeimage-gl2ps-support.patch
+submitted/thread_21949/fix-mismatch-new-delete-Standard_Failure.patch
+submitted/thread_21955/fix-hashcode.patch
 
 do-not-redefine-memmove.patch
 
