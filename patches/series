@@ -4,6 +4,7 @@ submitted/OCC22327/fix-build-tcl-8.6.patch
 submitted/OCC22332/fix-layer-line.patch
 submitted/OCC22685/missing-parentheses-around-trigraphs.patch
 submitted/OCC22692/fix-ECT_IsRational.patch
+submitted/OCC22749/fix-hashcode.patch
 
 submitted/thread_21301/bug-fix-infinite-loop.patch
 submitted/thread_20051/fix-build-failure-powerpc.patch
@@ -47,7 +48,6 @@ submitted/thread_21395/warning/add-placement-delete-allocator.patch
 
 submitted/thread_21948/fix-freeimage-gl2ps-support.patch
 submitted/thread_21949/fix-mismatch-new-delete-Standard_Failure.patch
-submitted/thread_21955/fix-hashcode.patch
 
 do-not-redefine-memmove.patch
 
