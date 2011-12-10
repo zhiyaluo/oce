@@ -225,6 +225,88 @@ Date:   Thu Apr 7 09:44:58 2011 +0200
     only on Unix, and X11 includes and libraries are added
     since they are used in src/ViewerTest/ViewerTest_ViewerCommands.cxx
 
+From bbfeb103e2136f159ee5d5cbd3f1c5801e04aa50 Mon Sep 17 00:00:00 2001
+From: Jerome Robert <jeromerobert@users.sf.net>
+Date: Wed, 19 Oct 2011 10:16:39 +0200
+Subject: [PATCH] mingw-w64: IDYES was not declared in this scope
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Fix this compilation error:
+src/OSD/OSD_signal_WNT.cxx:194:39: error: ‘IDI_HAND’ was not declared in this scope
+src/OSD/OSD_signal_WNT.cxx:195:32: error: ‘IDYES’ was not declared in this scope
+src/OSD/OSD_signal_WNT.cxx:196:32: error: ‘IDNO’ was not declared in this scope
+src/OSD/OSD_signal_WNT.cxx:197:32: error: ‘IDCANCEL’ was not declared in this scope
+src/OSD/OSD_signal_WNT.cxx: In function ‘BOOL _osd_ctrl_break_handler(DWORD)’:
+src/OSD/OSD_signal_WNT.cxx:608:17: error: ‘MB_ICONEXCLAMATION’ was not declared in this scope
+src/OSD/OSD_signal_WNT.cxx:608:36: error: ‘MessageBeep’ was not declared in this scope
+src/OSD/OSD_signal_WNT.cxx: In function ‘void _debug_break(Standard_PCharacter)’:
+src/OSD/OSD_signal_WNT.cxx:802:39: error: ‘MB_SYSTEMMODAL’ was not declared in this scope
+src/OSD/OSD_signal_WNT.cxx:802:56: error: ‘MB_ICONQUESTION’ was not declared in this scope
+src/OSD/OSD_signal_WNT.cxx:802:74: error: ‘MB_YESNO’ was not declared in this scope
+src/OSD/OSD_signal_WNT.cxx:803:8: error: ‘MessageBox’ was not declared in this scope
+src/OSD/OSD_signal_WNT.cxx:803:13: error: ‘IDYES’ was not declared in this scope
+---
+ src/OSD/OSD_signal_WNT.cxx |    6 ++++++
+ 1 files changed, 6 insertions(+), 0 deletions(-)
+
+From 22d95318c17ebbf8c5cbc53ef349f763d976f9a2 Mon Sep 17 00:00:00 2001
+From: Jerome Robert <jeromerobert@users.sf.net>
+Date: Wed, 19 Oct 2011 10:43:25 +0200
+Subject: [PATCH] mingw-w64: min was not declared in this scope
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+src/OSD/OSD_WNT_1.cxx:481:36: error: ‘min’ was not declared in this scope
+---
+ src/OSD/OSD_WNT_1.cxx |    3 +++
+ 1 files changed, 3 insertions(+), 0 deletions(-)
+
+From 297fadf8deca561dc9497a2f6cd311eae21f1d3d Mon Sep 17 00:00:00 2001
+From: Jerome Robert <jeromerobert@users.sf.net>
+Date: Thu, 20 Oct 2011 09:35:29 +0200
+Subject: [PATCH] mingw-w64: atol was not declared
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+src/OSD/OSD_MAllocHook.cxx:294:24: error: ‘atol’ was not declared in this scope
+---
+ src/OSD/OSD_MAllocHook.cxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+From 2a38a2953e320c721345035008e32798d6500905 Mon Sep 17 00:00:00 2001
+From: Jerome Robert <jeromerobert@users.sf.net>
+Date: Tue, 25 Oct 2011 14:30:56 +0200
+Subject: [PATCH] Define WNT from compiler pre-define macros
+
+---
+ inc/Standard_Macro.hxx |    5 ++---
+ 1 files changed, 2 insertions(+), 3 deletions(-)
+
+From e88ffdd79fee79817f075e36603cda86bd0c69a1 Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Fri, 18 Nov 2011 12:09:35 +0200
+Subject: [PATCH] Removal of __BORLANDC__ deprecated macros
+
+---
+ src/Draw/CommandWindow.cxx    |    3 ---
+ src/OpenGl/OpenGl_FontMgr.cxx |    5 -----
+ 2 files changed, 0 insertions(+), 8 deletions(-)
+
+From 9cedb2b0eb22262dc81c9a33a62ac406ff12171a Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Fri, 18 Nov 2011 12:13:00 +0200
+Subject: [PATCH] stdint.h and stdlib.h inclusion for bcc
+
+While WNT does not include those headers, mingw and
+borland needs them.
+---
+ src/OSD/OSD_MAllocHook.cxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
 From e26fdfda4b134f1d9053ef8d48a9b7eba0e0db57 Mon Sep 17 00:00:00 2001
 From: Fotios Sioutis <sfotis@gmail.com>
 Date: Fri, 18 Nov 2011 15:17:56 +0200
@@ -365,16 +447,19 @@ Index: oce/inc/Standard_Macro.hxx
 ===================================================================
 --- oce.orig/inc/Standard_Macro.hxx
 +++ oce/inc/Standard_Macro.hxx
-@@ -20,7 +20,7 @@
+@@ -19,9 +19,8 @@
+ // Windows-specific definitions
  //======================================================
  
- // check if WNT macro is not defined but compiler is MSVC
+-// check if WNT macro is not defined but compiler is MSVC
 -#if defined(_MSC_VER) && !defined(WNT)
-+#if (defined(_MSC_VER) || defined(__BORLANDC__)) && !defined(WNT)
- #error "Wrong compiler options has been detected. Add /DWNT option for proper compilation!!!!!"
+-#error "Wrong compiler options has been detected. Add /DWNT option for proper compilation!!!!!"
++#if (defined(_MSC_VER) || defined(__BORLANDC__) || defined(__MINGW32__) || defined(__MINGW64__)) && !defined(WNT)
++#define WNT
  #endif
  
-@@ -50,7 +50,7 @@
+ # if defined(WNT) && !defined(HAVE_NO_DLL)
+@@ -50,7 +49,7 @@
  #define WIN32_LEAN_AND_MEAN   /* exclude extra Windows stuff */
  #endif
  #ifndef NOMINMAX
@@ -383,7 +468,7 @@ Index: oce/inc/Standard_Macro.hxx
  #endif
  #ifndef NOMSG
  #define NOMSG NOMSG           /* avoid #define SendMessage etc. */
-@@ -120,9 +120,15 @@
+@@ -120,9 +119,15 @@
  #   if !defined(WNT) || defined(__Standard_DLL) || defined(__FSD_DLL) || defined(__MMgt_DLL) || defined(__OSD_DLL) || defined(__Plugin_DLL) || defined(__Quantity_DLL) || defined(__Resource_DLL) || defined(__SortTools_DLL) || defined(__StdFail_DLL) || defined(__Storage_DLL) || defined(__TColStd_DLL) || defined(__TCollection_DLL) || defined(__TShort_DLL) || defined(__Units_DLL) || defined(__UnitsAPI_DLL) || defined(__Dico_DLL) || defined(__Message_DLL)
  #    define __Standard_API Standard_EXPORT
  #    define __Standard_APIEXTERN Standard_EXPORTEXTERN
@@ -510,17 +595,14 @@ Index: oce/src/Draw/CommandWindow.cxx
 ===================================================================
 --- oce.orig/src/Draw/CommandWindow.cxx
 +++ oce/src/Draw/CommandWindow.cxx
-@@ -16,7 +16,9 @@
- #include <MainWindow.h>
+@@ -17,7 +17,6 @@
  #include <Draw_Appli.hxx>
  
--
-+#ifdef __BORLANDC__
-+#pragma link "tcl85.lib"
-+#endif
  
+-
  /****************************************************\
  *  CommandWindow.cxx :
+ *
 Index: oce/src/Draw/Draw.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw.cxx
@@ -695,6 +777,19 @@ Index: oce/src/OSD/OSD_FileNode.cxx
  #define TEST_RAISE( arg ) _test_raise (  fName, ( arg )  )
  #define RAISE( arg ) Standard_ProgramError :: Raise (  ( arg )  )
  
+Index: oce/src/OSD/OSD_MAllocHook.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_MAllocHook.cxx
++++ oce/src/OSD/OSD_MAllocHook.cxx
+@@ -5,7 +5,7 @@
+ 
+ #include <OSD_MAllocHook.hxx>
+ 
+-#ifndef WNT
++#if !defined(WNT) || defined(__MINGW32__) || defined(__BORLANDC__)
+ #if !defined __STDC_LIMIT_MACROS
+ #define __STDC_LIMIT_MACROS
+ #endif
 Index: oce/src/OSD/OSD_Process.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Process.cxx
@@ -748,10 +843,13 @@ Index: oce/src/OSD/OSD_WNT_1.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_WNT_1.cxx
 +++ oce/src/OSD/OSD_WNT_1.cxx
-@@ -3,6 +3,11 @@
+@@ -3,6 +3,14 @@
  
  #include <windowsx.h>
  
++#ifndef min
++# define min(a, b)  (((a) < (b)) ? (a) : (b))
++#endif
 +
 +#ifndef max
 +# define max(a, b)  (((a) > (b)) ? (a) : (b)) 
@@ -773,7 +871,20 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
                             Standard_True;
  #else
                             Standard_False;
-@@ -44,6 +44,136 @@
+@@ -16,6 +16,12 @@
+ #ifdef NOUSER
+ #undef NOUSER
+ #endif
++#ifdef NOICONS
++#undef NOICONS
++#endif
++#ifdef NOGDI
++#undef NOGDI
++#endif
+ #include <windows.h>
+ 
+ #include <OSD_Exception_ACCESS_VIOLATION.hxx>
+@@ -44,6 +50,136 @@
  #include <malloc.h>
  #endif
  
@@ -910,7 +1021,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
  #include <process.h>
  #include <signal.h>
  #include <float.h>
-@@ -282,7 +412,7 @@
+@@ -282,7 +418,7 @@
  
    case EXCEPTION_STACK_OVERFLOW:
  //      cout << "CallHandler : EXCEPTION_STACK_OVERFLOW:" << endl ;
@@ -919,7 +1030,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
      // try recovering from stack overflow: available in MS VC++ 7.0
      if (!_resetstkoflw())
        lstrcpy (  buffer, TEXT( "Unrecoverable STACK OVERFLOW" )  );
-@@ -357,7 +487,7 @@
+@@ -357,7 +493,7 @@
  //purpose  : Translate Structural Exceptions into C++ exceptions
  //=======================================================================
  
@@ -928,7 +1039,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
  static void TranslateSE( unsigned int theCode, EXCEPTION_POINTERS* theExcPtr )
  {
    ptrdiff_t info1 = 0, info0 = 0;
-@@ -373,7 +503,7 @@
+@@ -373,7 +509,7 @@
  //==== SetSignal 
  //============================================================================
  
@@ -937,7 +1048,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
  // MSV 31.08.2005
  // If we compile this file under MSVC 7.1 with the default options for 
  // exception handling (/GX or /EHsc) then the following warning is issued:
-@@ -425,7 +555,7 @@
+@@ -425,7 +561,7 @@
     SetConsoleCtrlHandler ( &_osd_ctrl_break_handler, TRUE );
   }
  
@@ -946,7 +1057,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
   if (fSETranslator) {
     // use Structural Exception translator (one per thread)
     _set_se_translator( TranslateSE );
-@@ -550,8 +680,10 @@
+@@ -550,8 +686,10 @@
    case EXCEPTION_FLT_INVALID_OPERATION:
    case EXCEPTION_FLT_DENORMAL_OPERAND:
    case EXCEPTION_FLT_INEXACT_RESULT:
@@ -957,7 +1068,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
         Standard_NumericError :: Raise ( msg );
    default:
      break;
-@@ -700,12 +832,12 @@
+@@ -700,12 +838,12 @@
  //=======================================================================
  
  void OSD::UseSETranslator( const Standard_Boolean
@@ -976,7 +1087,7 @@ Index: oce/src/OpenGl/OpenGl_FontMgr.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_FontMgr.cxx
 +++ oce/src/OpenGl/OpenGl_FontMgr.cxx
-@@ -4,10 +4,17 @@
+@@ -4,6 +4,8 @@
  
  #include <FTGL/FTGLTextureFont.h>
  
@@ -985,15 +1096,6 @@ Index: oce/src/OpenGl/OpenGl_FontMgr.cxx
  #undef TRACE
  
  #define DEFAULT_FONT_HEIGHT 16
- 
-+#ifdef __BORLANDC__
-+#pragma link "freetype.lib"
-+#pragma link "ftgl_dynamic_MTD.lib"
-+#endif
-+
- float h_scale = 0;
- 
- void dump_texture( int id);
 Index: oce/src/OpenGl/OpenGl_TextRender.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_TextRender.cxx

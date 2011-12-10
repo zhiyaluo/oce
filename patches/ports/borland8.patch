@@ -19,6 +19,18 @@ Subject: [PATCH] Fixed convertion from int to Handle under bcc32
  inc/AIS_InteractiveContext.lxx |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
+From 29c06652969463d012eb97990f07a8bf6feeae77 Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Fri, 11 Nov 2011 23:34:40 +0200
+Subject: [PATCH] Resolves a possible bcc32 compiler bug.
+
+For a strange reason this file must not have
+exception handling compiler option enabled,
+otherwise an internal compiler error occurs.
+---
+ src/ShapeFix/ShapeFix_ComposeShell.cxx |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
+
 Index: oce/inc/AIS_InteractiveContext.lxx
 ===================================================================
 --- oce.orig/inc/AIS_InteractiveContext.lxx
@@ -32,6 +44,21 @@ Index: oce/inc/AIS_InteractiveContext.lxx
  
  inline const TCollection_AsciiString& AIS_InteractiveContext::CurrentName() const 
  {return myCurrentName;} 
+Index: oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
+===================================================================
+--- oce.orig/src/ShapeFix/ShapeFix_ComposeShell.cxx
++++ oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
+@@ -6,6 +6,10 @@
+ //    abv  22.07.99 implementing patch indices
+ //    svv  10.01.00 porting on DEC
+ 
++#ifdef __BORLANDC__
++#pragma option -x-
++#endif
++
+ #include <ShapeFix_ComposeShell.ixx>
+ 
+ #include <Precision.hxx>
 Index: oce/src/Standard/Standard_ErrorHandler.cxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_ErrorHandler.cxx
