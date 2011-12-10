@@ -44,6 +44,16 @@ Subject: [PATCH 03/26] [warning-fix][unused-function] Unused functions
  src/NCollection/NCollection_IncAllocator.cxx |    5 ++---
  1 files changed, 2 insertions(+), 3 deletions(-)
 
+From 420547a0d211f7bb661f52953fc1824559f97b2d Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Sat, 19 Nov 2011 09:53:39 +0100
+Subject: [PATCH] Replaced #ifdef DEBUG introduced in 89ada85 with #ifdef
+ _DEBUG
+
+---
+ src/NCollection/NCollection_IncAllocator.cxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
 Index: oce/drv/ExprIntrp/lex.ExprIntrp.c
 ===================================================================
 --- oce.orig/drv/ExprIntrp/lex.ExprIntrp.c
@@ -265,7 +275,7 @@ Index: oce/src/NCollection/NCollection_IncAllocator.cxx
   * numbering of allocators.
   */
  //=======================================================================
-+#ifdef DEBUG
++#ifdef _DEBUG
  static Standard_Size CurrentID = 0;
  static Standard_Size CATCH_ID = 0;
  
