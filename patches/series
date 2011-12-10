@@ -113,6 +113,7 @@ ports/avoid-redefinition-warnings.patch
 ports/add-missing-Vfw32.lib.patch
 ports/workaround-clang-bug-remove-trampoline.patch
 ports/workaround-gcc42-bug-gpMat.patch
+ports/rename-PPC-in-cdl.patch
 
 warning/modify-MSVC-pragmas.patch
 review/avoid-macro-redefinition.patch

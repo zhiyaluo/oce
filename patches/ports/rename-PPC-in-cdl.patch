@@ -1,0 +1,91 @@
+From 57f27d6668e58a00e22ad7a36d71516a37754ccb Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Thu, 10 Nov 2011 16:32:12 +0200
+Subject: [PATCH] Renamed PPC to ppc in Plate cdl declarations.
+
+---
+ src/Plate/Plate_LinearScalarConstraint.cdl |   14 +++++++-------
+ src/Plate/Plate_LinearXYZConstraint.cdl    |   12 ++++++------
+ 2 files changed, 13 insertions(+), 13 deletions(-)
+
+diff --git a/src/Plate/Plate_LinearScalarConstraint.cdl b/src/Plate/Plate_LinearScalarConstraint.cdl
+index 497cbb1..3bf6454 100644
+--- a/src/Plate/Plate_LinearScalarConstraint.cdl
++++ b/src/Plate/Plate_LinearScalarConstraint.cdl
+@@ -26,21 +26,21 @@ is
+     Create
+          returns LinearScalarConstraint;
+ 
+-    Create  (PPC1  :  PinpointConstraint; coeff  :  XYZ ) 
++    Create  (ppc1  :  PinpointConstraint; coeff  :  XYZ ) 
+            returns LinearScalarConstraint; 
+ 
+-    Create  (PPC  :  Array1OfPinpointConstraint; coeff  :  Array1OfXYZ ) 
++    Create  (ppc  :  Array1OfPinpointConstraint; coeff  :  Array1OfXYZ ) 
+            returns LinearScalarConstraint
+ 	   raises DimensionMismatch from Standard;
+-    -- PPC and coeff have to be of the same length
++    -- ppc and coeff have to be of the same length
+ 
+-    Create  (PPC  :  Array1OfPinpointConstraint; coeff  :  Array2OfXYZ )
++    Create  (ppc  :  Array1OfPinpointConstraint; coeff  :  Array2OfXYZ )
+            returns LinearScalarConstraint
+ 	   raises DimensionMismatch from Standard;
+-    --  the length of PPC  have to be the  Row lentgth of  coeff
++    --  the length of ppc  have to be the  Row lentgth of  coeff
+ 
+     Create  (ColLen,RowLen  :  Integer ) 
+-    -- initialize with 0 valued PPC and Coeffs
++    -- initialize with 0 valued ppc and Coeffs
+            returns LinearScalarConstraint;
+ 
+     -- Accessors :
+@@ -57,7 +57,7 @@ is
+     	Value: PinpointConstraint) 
+     	---Purpose:  Sets   the PinPointConstraint of   index Index to
+     	--          Value raise if Index is greater than the length of
+-    	--          PPC or the Row length of coeff or lower  than 1
++    	--          ppc or the Row length of coeff or lower  than 1
+     	raises OutOfRange from Standard;
+ 
+     SetCoeff (me : in out;  
+diff --git a/src/Plate/Plate_LinearXYZConstraint.cdl b/src/Plate/Plate_LinearXYZConstraint.cdl
+index 0cf0532..aeda5e6 100644
+--- a/src/Plate/Plate_LinearXYZConstraint.cdl
++++ b/src/Plate/Plate_LinearXYZConstraint.cdl
+@@ -27,18 +27,18 @@ raises
+ is
+     Create returns LinearXYZConstraint; 
+     
+-    Create  (PPC  :  Array1OfPinpointConstraint; coeff  :  Array1OfReal )
++    Create  (ppc  :  Array1OfPinpointConstraint; coeff  :  Array1OfReal )
+            returns LinearXYZConstraint 
+ 	   raises DimensionMismatch from Standard;
+-    --  the length of PPC  have to be the  Row lentgth of  coeff
++    --  the length of ppc  have to be the  Row lentgth of  coeff
+     --  
+-    Create  (PPC  :  Array1OfPinpointConstraint; coeff  :  Array2OfReal )
++    Create  (ppc  :  Array1OfPinpointConstraint; coeff  :  Array2OfReal )
+            returns LinearXYZConstraint 
+ 	   raises DimensionMismatch from Standard;
+-    --  the length of PPC  have to be the  Row lentgth of  coeff
++    --  the length of ppc  have to be the  Row lentgth of  coeff
+ 
+     Create  (ColLen,RowLen  :  Integer ) 
+-    -- initialize with 0 valued PPC and Coeffs
++    -- initialize with 0 valued ppc and Coeffs
+            returns LinearXYZConstraint;
+ 
+      -- Accessors :
+@@ -55,7 +55,7 @@ is
+     	Value: PinpointConstraint) 
+     	---Purpose:  Sets   the PinPointConstraint of   index Index to
+     	--          Value raise if Index is greater than the length of
+-    	--          PPC or the Row length of coeff or lower  than 1
++    	--          ppc or the Row length of coeff or lower  than 1
+     	raises OutOfRange from Standard;
+ 
+     SetCoeff (me : in out;  
+-- 
+1.7.7.3
+
