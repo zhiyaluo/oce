@@ -7,6 +7,33 @@ Subject: [PATCH 6/9] BCC does not support placement delete
  ros/inc/W32_Allocator.hxx |    3 +++
  1 files changed, 3 insertions(+), 0 deletions(-)
 
+From d258740cf6dc45f2e14e04c5073ee5c689aa2545 Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Fri, 18 Nov 2011 12:01:05 +0200
+Subject: [PATCH] In placement delete not supported under bcc32
+
+---
+ inc/TDF_LabelNode.hxx |    3 ++-
+ 1 files changed, 2 insertions(+), 1 deletions(-)
+
+Index: oce/inc/TDF_LabelNode.hxx
+===================================================================
+--- oce.orig/inc/TDF_LabelNode.hxx
++++ oce/inc/TDF_LabelNode.hxx
+@@ -109,11 +109,12 @@
+   void * operator new (size_t aSize,
+                        const Handle(NCollection_IncAllocator)& anAlloc)
+         { return anAlloc -> Allocate (aSize); }
+-  
++#ifndef __BORLANDC__
+   void operator delete ( void * aBuffer , const Handle(NCollection_IncAllocator)& anAlloc )
+   {
+     anAlloc->Free(aBuffer);
+   }
++#endif
+ 
+   void  operator delete(void *) { }
+         // nothing to do in operator delete since IncAllocator does not need it
 Index: oce/inc/W32_Allocator.hxx
 ===================================================================
 --- oce.orig/inc/W32_Allocator.hxx

@@ -1,0 +1,32 @@
+From e467f9956b2dbd3e2e3322ec545543b53b7a0796 Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Mon, 5 Dec 2011 13:53:04 +0200
+Subject: [PATCH] Fixed Standard_StdAllocator for bcc32
+
+When a template parameter of type class is used,
+implicit call to its destructor requires usage of
+the class name and not of its typedef.
+---
+ inc/Standard_StdAllocator.hxx |    5 +++++
+ 1 files changed, 5 insertions(+), 0 deletions(-)
+
+diff --git a/inc/Standard_StdAllocator.hxx b/inc/Standard_StdAllocator.hxx
+index df4d027..9a20bc8 100755
+--- a/inc/Standard_StdAllocator.hxx
++++ b/inc/Standard_StdAllocator.hxx
+@@ -86,7 +86,12 @@ public:
+ 
+     //! Destroys the object.
+     /*! Uses object destructor.*/
++    /*  Destructor name must match the class name for __BORLANDC__.*/
++#ifdef __BORLANDC__
++    void destroy( pointer p ) { p->~T(); }
++#else
+     void destroy( pointer p ) { p->~value_type(); }
++#endif
+ };
+ 
+ //! Implements specialization Standard_StdAllocator<void>.
+-- 
+1.7.7.3
+

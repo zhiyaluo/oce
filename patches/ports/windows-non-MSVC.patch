@@ -225,6 +225,17 @@ Date:   Thu Apr 7 09:44:58 2011 +0200
     only on Unix, and X11 includes and libraries are added
     since they are used in src/ViewerTest/ViewerTest_ViewerCommands.cxx
 
+From e26fdfda4b134f1d9053ef8d48a9b7eba0e0db57 Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Fri, 18 Nov 2011 15:17:56 +0200
+Subject: [PATCH] Bcc needs two functions declared as global
+
+This fix has been introduced again in oce in past, but
+lost due to upstream changes.Corrects bcc compilation issue.
+---
+ src/BRepMesh/BRepMesh_CellFilter.hxx |    8 ++++++++
+ 1 files changed, 8 insertions(+), 0 deletions(-)
+
 Index: oce/inc/Handle_Standard_Transient.hxx
 ===================================================================
 --- oce.orig/inc/Handle_Standard_Transient.hxx
@@ -479,6 +490,22 @@ Index: oce/inc/math_DoubleTab.lxx
  inline Item& math_DoubleTab::Value (const Standard_Integer RowIndex,
  				    const Standard_Integer ColIndex) const
  {
+Index: oce/src/BRepMesh/BRepMesh_CellFilter.hxx
+===================================================================
+--- oce.orig/src/BRepMesh/BRepMesh_CellFilter.hxx
++++ oce/src/BRepMesh/BRepMesh_CellFilter.hxx
+@@ -10,3 +10,11 @@
+ #include <BRepMesh_CircleInspector.hxx>
+ 
+ typedef NCollection_CellFilter<BRepMesh_CircleInspector> BRepMesh_CellFilter;
++
++#ifdef __BORLANDC__
++  // definition of global functions is needed for map
++  Standard_Integer HashCode (const NCollection_CellFilter<BRepMesh_CircleInspector>::Cell &aCell, const Standard_Integer theUpper)
++  { return aCell.HashCode(theUpper); }
++  Standard_Boolean IsEqual (const NCollection_CellFilter<BRepMesh_CircleInspector>::Cell &aCell1, const NCollection_CellFilter<BRepMesh_CircleInspector>::Cell &aCell2)
++  { return aCell1.IsEqual(aCell2); }
++#endif
 Index: oce/src/Draw/CommandWindow.cxx
 ===================================================================
 --- oce.orig/src/Draw/CommandWindow.cxx

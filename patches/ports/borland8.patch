@@ -10,6 +10,28 @@ which disappears when GetThreadID() is defined before static members.
  ros/src/Standard/Standard_ErrorHandler.cxx |   17 +++++++++--------
  1 files changed, 9 insertions(+), 8 deletions(-)
 
+From 63bfacb18355d6e03bc3098c50f25486e533acb1 Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Fri, 18 Nov 2011 12:03:23 +0200
+Subject: [PATCH] Fixed convertion from int to Handle under bcc32
+
+---
+ inc/AIS_InteractiveContext.lxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+Index: oce/inc/AIS_InteractiveContext.lxx
+===================================================================
+--- oce.orig/inc/AIS_InteractiveContext.lxx
++++ oce/inc/AIS_InteractiveContext.lxx
+@@ -78,7 +78,7 @@
+ {return myCurLocalIndex != 0;}
+ 
+ inline Handle_AIS_LocalContext AIS_InteractiveContext::LocalContext() const
+-{ return (myCurLocalIndex > 0) ? myLocalContexts(myCurLocalIndex) : NULL; }
++{ return (myCurLocalIndex > 0) ? myLocalContexts(myCurLocalIndex) : (Handle_AIS_LocalContext) NULL; }
+ 
+ inline const TCollection_AsciiString& AIS_InteractiveContext::CurrentName() const 
+ {return myCurrentName;} 
 Index: oce/src/Standard/Standard_ErrorHandler.cxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_ErrorHandler.cxx

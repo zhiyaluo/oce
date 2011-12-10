@@ -1,0 +1,53 @@
+From 372ed506e93f7135afad6af75ab5e381cfae8c40 Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Thu, 10 Nov 2011 11:52:36 +0200
+Subject: [PATCH] Fixed Handle()& issue under latest bcc32
+
+The compiler did not allow a pointer object (created with new) to be
+assigned to a reference Handle object (occ smart pointer) for some
+reason.This fix bypasses this issue.
+---
+ src/AIS/AIS_ParallelRelation.cxx        |    4 ++--
+ src/DDataStd/DDataStd_BasicCommands.cxx |    4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/AIS/AIS_ParallelRelation.cxx b/src/AIS/AIS_ParallelRelation.cxx
+index 6bb6d6e..979413c 100644
+--- a/src/AIS/AIS_ParallelRelation.cxx
++++ b/src/AIS/AIS_ParallelRelation.cxx
+@@ -292,8 +292,8 @@ void AIS_ParallelRelation::ComputeTwoEdgesParallel(const Handle(Prs3d_Presentati
+     }
+   else return;
+ 
+-  const Handle(Geom_Line)& geom_lin1 = new Geom_Line(l1);
+-  const Handle(Geom_Line)& geom_lin2 = new Geom_Line(l2);
++  const Handle(Geom_Line) geom_lin1 = new Geom_Line(l1);
++  const Handle(Geom_Line) geom_lin2 = new Geom_Line(l2);
+ 
+   myDirAttach = l1.Direction();
+   // size
+diff --git a/src/DDataStd/DDataStd_BasicCommands.cxx b/src/DDataStd/DDataStd_BasicCommands.cxx
+index f0af9b7..b4dd3ff 100644
+--- a/src/DDataStd/DDataStd_BasicCommands.cxx
++++ b/src/DDataStd/DDataStd_BasicCommands.cxx
+@@ -1276,7 +1276,7 @@ static Standard_Integer DDataStd_SetIntPackedMap (Draw_Interpretor& di,
+       aMap.Add (atoi(arg[j]));
+       j++;
+     }
+-    const Handle(TColStd_HPackedMapOfInteger)& aHMap = new TColStd_HPackedMapOfInteger(aMap);
++    const Handle(TColStd_HPackedMapOfInteger) aHMap = new TColStd_HPackedMapOfInteger(aMap);
+     anAtt->ChangeMap(aHMap);
+     cout << "Map extent = " << anAtt->Extent()<<endl;
+     return 0; 
+@@ -1474,7 +1474,7 @@ static Standard_Integer DDataStd_SetIntPHugeMap (Draw_Interpretor& di,
+     for(Standard_Integer i = 1; i<=aNum; i++) {
+       aMap.Add (i);
+     }
+-    const Handle(TColStd_HPackedMapOfInteger)& aHMap = new TColStd_HPackedMapOfInteger(aMap);
++    const Handle(TColStd_HPackedMapOfInteger) aHMap = new TColStd_HPackedMapOfInteger(aMap);
+     anAtt->ChangeMap(aHMap);
+     cout << "Map extent = " << anAtt->Extent()<<endl;
+     return 0; 
+-- 
+1.7.7.3
+

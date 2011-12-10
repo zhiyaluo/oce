@@ -18,6 +18,18 @@ Subject: [PATCH 2/9] Templates related fixes needed by BCC
  ros/inc/NCollection_IndexedMap.hxx     |    4 ++++
  4 files changed, 26 insertions(+), 0 deletions(-)
 
+From 430e79b442c6ef08038c90300ab51d83e7f5a07e Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Fri, 18 Nov 2011 12:04:57 +0200
+Subject: [PATCH] Template class issue for bcc32
+
+When a template parameter of type class is used,
+implicit call to its destructor requires usage of
+the class name and not of its typedef.
+---
+ inc/NCollection_Vector.hxx |    8 ++++++++
+ 1 files changed, 8 insertions(+), 0 deletions(-)
+
 Index: oce/inc/NCollection_CellFilter.hxx
 ===================================================================
 --- oce.orig/inc/NCollection_CellFilter.hxx
@@ -75,3 +87,31 @@ Index: oce/inc/NCollection_IndexedMap.hxx
        myIndex(1) {}
      //! Query if the end of collection is reached by iterator
      virtual Standard_Boolean More(void) const
+Index: oce/inc/NCollection_Vector.hxx
+===================================================================
+--- oce.orig/inc/NCollection_Vector.hxx
++++ oce/inc/NCollection_Vector.hxx
+@@ -89,7 +89,11 @@
+     {
+       if (myData) {
+         for (size_t i=0; i < mySize; i++)
++#ifdef __BORLANDC__
++          ((TheItemType *) myData)[i].~TheItemType();
++#else
+           ((TheItemType *) myData)[i].~TheItemTypeD();
++#endif
+         myAlloc->Free(myData);
+         myData = NULL;
+       }
+@@ -107,7 +111,11 @@
+     {
+       if (myData) {
+         for (size_t i=0; i < Size(); i++)
++#ifdef __BORLANDC__
++          ((TheItemType *) myData)[i].~TheItemType();
++#else
+           ((TheItemType *) myData)[i].~TheItemTypeD();
++#endif
+         myAlloc->Free(myData);
+         myData = NULL;
+       }
