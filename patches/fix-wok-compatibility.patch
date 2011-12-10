@@ -1,0 +1,79 @@
+From 1c6ff0e5e3d8374869d31b36abeffe0b67bf773f Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Mon, 19 Sep 2011 14:21:03 +0300
+Subject: [PATCH] Modifications needed for correct building of oce under WOK
+
+---
+ src/FSD/FSD_File.cdl                           |    2 +-
+ src/MeshVS/FILES                               |    1 -
+ src/StepFile/StepFile_CODEGEN.edl              |    2 +-
+ src/TCollection/TCollection_ExtendedString.cdl |    2 +-
+ src/TopOpeBRep/FILES                           |    1 -
+ 5 files changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/src/FSD/FSD_File.cdl b/src/FSD/FSD_File.cdl
+index 08eb1d5..e4db50c 100644
+--- a/src/FSD/FSD_File.cdl
++++ b/src/FSD/FSD_File.cdl
+@@ -325,7 +325,7 @@ is
+ 
+     MagicNumber(myclass)
+     	returns CString from Standard is private;
+-    ---C++: return const
++--    ---C++: return const
+     
+     fields
+     
+diff --git a/src/MeshVS/FILES b/src/MeshVS/FILES
+index ad727f3..2d01b41 100644
+--- a/src/MeshVS/FILES
++++ b/src/MeshVS/FILES
+@@ -2,7 +2,6 @@ MeshVS_Buffer.hxx
+ MeshVS_EntityType.hxx
+ MeshVS_DisplayModeFlags.hxx
+ MeshVS_BuilderPriority.hxx
+-MeshVS_MeshPrsBuilder.lxx
+ MeshVS_TwoColors.hxx
+ MeshVS_TwoColors.cxx
+ MeshVS_TwoNodes.hxx
+diff --git a/src/StepFile/StepFile_CODEGEN.edl b/src/StepFile/StepFile_CODEGEN.edl
+index a47399a..9c0a47f 100644
+--- a/src/StepFile/StepFile_CODEGEN.edl
++++ b/src/StepFile/StepFile_CODEGEN.edl
+@@ -22,7 +22,7 @@ $%CODEGEN_FlexBisHome/flex -P%BaseName  -L -8 %Source
+ $%CODEGEN_LEX_CmdPath -P <Module>  -L -8 <LexFile>
+ @end;
+ 
+-@set %CODEGEN_LEX_CmdPath = "%WOKHOME%/lib/wnt/flex";
++@set %CODEGEN_LEX_CmdPath = "flex";
+ 
+ @template CODEGEN_LEX_CmdLine  ( %CODEGEN_LEX_CmdPath, %Source, %BaseName, %OutputDir ) is
+ $cd %OutputDir;
+diff --git a/src/TCollection/TCollection_ExtendedString.cdl b/src/TCollection/TCollection_ExtendedString.cdl
+index 60f8a97..db706c8 100644
+--- a/src/TCollection/TCollection_ExtendedString.cdl
++++ b/src/TCollection/TCollection_ExtendedString.cdl
+@@ -297,7 +297,7 @@ is
+    ToExtString(me) returns ExtString
+    ---Level: Public
+    ---Purpose: Returns pointer to ExtString
+-   ---C++: return const
++--   ---C++: return const
+    is static;
+ 
+    Trunc (me : out ; ahowmany  : Integer)
+diff --git a/src/TopOpeBRep/FILES b/src/TopOpeBRep/FILES
+index 0eddc0d..d9c5897 100644
+--- a/src/TopOpeBRep/FILES
++++ b/src/TopOpeBRep/FILES
+@@ -8,7 +8,6 @@ TopOpeBRep_vprdeg.cxx
+ TopOpeBRep_kpart.cxx
+ TopOpeBRep_FaceEdgeFiller_DEB.cxx
+ TopOpeBRep_ProcessGR.cxx
+-TopOpeBRep_tools.hxx
+ TopOpeBRep_ProcessSectionEdges.cxx
+ TopOpeBRep_trace.cxx
+ TopOpeBRep_traceBOOPNINT.cxx
+-- 
+1.7.7.3
+
