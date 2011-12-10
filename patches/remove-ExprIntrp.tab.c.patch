@@ -1256,3 +1256,12 @@ Index: oce/src/ExprIntrp/ExprIntrp.tab.c
 -  goto yynewstate;
 -}
 -#line 150 "j:/kas/c40/ros/src/exprintrp/exprintrp.yacc"
+Index: oce/src/ExprIntrp/FILES
+===================================================================
+--- oce.orig/src/ExprIntrp/FILES
++++ oce/src/ExprIntrp/FILES
+@@ -7,4 +7,3 @@
+ ExprIntrp_yaccintrf.hxx
+ ExprIntrp_yacclex.cxx
+ ExprIntrp_Replace.tcl
+-ExprIntrp.tab.c
