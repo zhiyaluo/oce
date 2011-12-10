@@ -683,6 +683,39 @@ Subject: [PATCH] Fixes wrong variable usage in commit
  CMakeLists.txt |    4 ++--
  1 files changed, 2 insertions(+), 2 deletions(-)
 
+From fd482ad09dd7b7f0a12b1cb1e4837279fa425c35 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Fri, 28 Oct 2011 22:55:43 +0200
+Subject: [PATCH 1/3] Update instructions in INSTALL.Unix
+
+Slightly change CMake cache variables.
+Add instructions for running our test suite.
+---
+ INSTALL.Unix |   10 ++++++++--
+ 1 files changed, 8 insertions(+), 2 deletions(-)
+
+From 321e7742895259e25b762d468276d7220bc0ff3d Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Fri, 28 Oct 2011 22:57:39 +0200
+Subject: [PATCH 2/3] Update instructions in INSTALL.MSVC.txt
+
+Debug and Release directories have been merged.
+---
+ INSTALL.MSVC.txt |   11 +++++------
+ 1 files changed, 5 insertions(+), 6 deletions(-)
+
+From 7b62e95b1c8a453b8656a3c515201424df598f1c Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Fri, 28 Oct 2011 23:08:23 +0200
+Subject: [PATCH 3/3] Update BUILD.MSVC.txt
+
+We now require CMake 2.8.
+Advocate using unversioned oce-win-bundle directories, these dependencies will seldom change.
+Debug and Release installation directories have been merged.
+---
+ BUILD.MSVC.txt |   22 +++++++++++-----------
+ 1 files changed, 11 insertions(+), 11 deletions(-)
+
 Index: oce/AUTHORS
 ===================================================================
 --- /dev/null
@@ -744,7 +777,7 @@ Index: oce/BUILD.MSVC.txt
 +2) PREREQUISITES
 +
 +  2.1) Cmake
-+  OCE build system requires CMake 2.6 to function. Download and install it at www.cmake.org
++  OCE build system requires CMake 2.8 to function. Download and install it at www.cmake.org
 +
 +  2.2) External Libraries
 +    Some modules of OCE require external libraries. These include
@@ -782,7 +815,7 @@ Index: oce/BUILD.MSVC.txt
 +        If you want to rebuild the bundle from sources, follow the instructions at 
 +        http://www.github.com/QbProg/oce-win-bundle
 +        
-+        In this example we will extract the precompiled bundle in C:\oce-win-bundle-win32-0.3\
++        In this example we will extract the precompiled bundle in C:\oce-win-bundle-win32\
 +  --
 +    
 +3) Extracting the sources
@@ -791,7 +824,7 @@ Index: oce/BUILD.MSVC.txt
 +
 +4) Configuring
 +
-+  We strongly suggest the use of out-of-source cmake builds. This means that the temporary
++  We strongly suggest the use of out-of-source CMake builds. This means that the temporary
 +  compilation projects and objects will not pollute the source folder.
 +
 +  4.1) Designate a build directory 
@@ -799,7 +832,7 @@ Index: oce/BUILD.MSVC.txt
 +    In this case we will use c:\oce-src\Build32\
 +
 +  4.2) Run cmake-gui 
-+     This is the gui front-end to cmake. It will help you to select
++     This is the GUI front-end to CMake. It will help you to select
 +     the compilation options and configurations.  
 +
 +    - In the "Where is the source code" field put the oce source directory : C:\oce-src
@@ -827,20 +860,21 @@ Index: oce/BUILD.MSVC.txt
 +      - OCE_xxxxxx : enables or disables a specific component to be built. (i.e. OCE_VISUALIZATION, OCE_DRAW , etc...) 
 +      - OCE_INSTALL_PDB_FILES : enable this if you want to copy resulting PDB files (debug symbols) in the INSTALL directory
 +
-+      After you set the required options , press CONFIGURE. You will likely get errors.
++      After you set the required options , press CONFIGURE. You will likely get errors.  To fix those errors, you
++      have to tell CMake where to find headers and libraries for dependencies, this is discussed just below.
 +      
 +   4.5) Configuring library paths
 +      Now, depending on the enabled options, it's time to set the external library directories.
 +
 +    4.5.1) TCL
-+      If you use ActiveState TCL, cmake will find it automatically. Else, you should set the variables 
++      If you use ActiveState TCL, CMake will find it automatically. Else, you should set the variables 
 +      starting with TCL_ and TK (eventually available in the "Advanced" section of cmake-gui)
 +
 +    4.5.2) OCE bundle
 +     
 +      - Enable the OCE_USE_BUNDLE option
 +      - Press Configure
-+      - Set OCE_BUNDLE_ROOT_PATH to point to the oce-win-bundle installation directory. For example C:/oce-win-bundle-win32-0.2/
++      - Set OCE_BUNDLE_ROOT_PATH to point to the oce-win-bundle installation directory. For example C:/oce-win-bundle-win32/
 +      - Configure again
 +      
 +      It should automatically set all the library paths. Some of them will appear in red, but the CONFIGURE phase will end successfully at 
@@ -892,11 +926,10 @@ Index: oce/BUILD.MSVC.txt
 + After the INSTALL phase, we'll find the result in c:\oce-bin\Win32
 + 
 + 6.1) External libs
-+  We miss just one piece : unless you have these in your path, copy all the external DLLs in the \bind and \bin folder of the installation directory.
++  We miss just one piece : unless you have these in your path, copy all the external DLLs in the \bin folder of the installation directory.
 +  (remember tcl85.dll too)
 +
-+  If you used oce-win-bundle, copy the dlls from c:\oce-win-bundle-win32-0.3\bin and c:\oce-win-bundle-win32-0.3\bind to your c:\oce-bin\Win32\bind and 
-+  c:\oce-bin\Win32\bin  folders. 
++  If you used oce-win-bundle, copy the dlls from c:\oce-win-bundle-win32\bin and c:\oce-win-bundle-win32\bind to your c:\oce-bin\Win32\bin forlder.
 + 
 + 6.2) Command line
 +   Again, in MSVC2010 command prompt you can run
@@ -912,7 +945,7 @@ Index: oce/BUILD.MSVC.txt
 +   - Use a "Win64" generator in the Configure phase
 +   - Use the "win64" oce-win-bundle packages
 +   - Install TCL for 64 bit and all your libs compiled for 64bits
-+   - Use a Build64 folder in the cmake configuration phase
++   - Use a Build64 folder in the CMake configuration phase
 +   - Installation files will go in OCE_INSTALL_PREFIX/Win64
 +   
 +8) Building for both Win32 and Win64
@@ -1888,7 +1921,7 @@ Index: oce/INSTALL.MSVC.txt
 ===================================================================
 --- /dev/null
 +++ oce/INSTALL.MSVC.txt
-@@ -0,0 +1,33 @@
+@@ -0,0 +1,32 @@
 +****** STUB *******
 +
 +If you want to build OCE from sources with MSVC, read BUILD.MSVC.txt
@@ -1902,21 +1935,20 @@ Index: oce/INSTALL.MSVC.txt
 +  Set these pointing to <oce-install-dir>\inc
 +
 +- Linker \ Additional Directories 
-+  In DEBUG set these point to <oce-install-dir>\Win32\libd
-+  In RELEASE set these point to <oce-install-dir>\Win32\lib
++  Set these point to <oce-install-dir>\Win32\lib
 +  Eventually change Win32 with Win64 when required
 +
 +- Linker "Input Libraries"
-+  For each toolkit you use , you must add the corresponding .lib files
++  For each toolkit you use, you must add the corresponding .lib files
 +  Debug libraries have a "d" suffix.
 +  For example, you will have to add TKernel.lib in RELEASE and TKerneld.lib in DEBUG
 +  to use the Kernel module.
 +  If you get linker errors, you likely forgot to add a .lib file to that list.
 +
 +- Binary search path
-+  When you run the program, the system must be able to find the OCE libraries somewhere. You can add the 
-+  <oce-install-dir>\Win32\bind and <oce-install-dir>\Win32\bin to your PATH environment variable or 
-+  add it locally to your project (preferred way). Also you can copy all the DLLs to your project binary folder.
++  When you run the program, the system must be able to find the OCE libraries somewhere. You can add
++  <oce-install-dir>\Win32\bin to your PATH environment variable or add it locally to your project
++  (preferred way). Also you can copy all the DLLs to your project binary folder.
 +
 +  Be careful when adding multiple OCE version in your search PATH, you will likely end up with loader errors.
 +
@@ -1927,7 +1959,7 @@ Index: oce/INSTALL.Unix
 ===================================================================
 --- /dev/null
 +++ oce/INSTALL.Unix
-@@ -0,0 +1,112 @@
+@@ -0,0 +1,118 @@
 +This file describes how to build OCE from sources on Linux or MacOSX.
 +
 +Since the OCE release 0.3, the dev team definitely dropped the autotools
@@ -1976,13 +2008,11 @@ Index: oce/INSTALL.Unix
 + OCE_BUILD_TYPE              Release
 + OCE_DATAEXCHANGE            ON
 + OCE_DRAW                    OFF
-+ OCE_EXTRA_WARNINGS          OFF
 + OCE_INSTALL_PREFIX          /usr/local
 + OCE_MODEL                   ON
 + OCE_MULTITHREAD_LIBRARY     NONE
 + OCE_OCAF                    ON
 + OCE_VISUALISATION           ON
-+ OCE_VISUALISATION_FULL      ON
 + OCE_WITH_FREEIMAGE          OFF
 + OCE_WITH_GL2PS              OFF
 +
@@ -2027,6 +2057,14 @@ Index: oce/INSTALL.Unix
 + make -j2
 +to enable multiprocessed compilation and speedup the whole compilation
 +process.
++
++If you enabled tests when configuring by passing -DOCE_TESTING:BOOL=ON
++flag to CMake, you can now run our battery of tests:
++
++ make test
++
++All tests should pass except BRepMeshTestSuite.testMeshTorus, this test
++exhibits a bug which has not been fixed yet.
 +
 +4. Test installation: OCE Draw Test Harness
 +===========================================
