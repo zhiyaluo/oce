@@ -1,0 +1,48 @@
+From 17a37c040b2e280c5f2632bea4b95193d2c5d6ae Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Fri, 21 Oct 2011 05:36:32 +0200
+Subject: [PATCH] Explicitely specify 64bit UndefinedAdress as long long
+ unsigned int
+
+---
+ inc/Handle_Standard_Persistent.hxx |    2 +-
+ inc/Handle_Standard_Transient.hxx  |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+From 4e9a318043380cfe46b631aeba1ce241750f3e13 Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Thu, 27 Oct 2011 20:30:25 +0200
+Subject: [PATCH] Use ull instead of llu for unsigned long long suffix. This
+ makes it compatible with MSVC
+
+---
+ inc/Handle_Standard_Persistent.hxx |    2 +-
+ inc/Handle_Standard_Transient.hxx  |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+Index: oce/inc/Handle_Standard_Persistent.hxx
+===================================================================
+--- oce.orig/inc/Handle_Standard_Persistent.hxx
++++ oce/inc/Handle_Standard_Persistent.hxx
+@@ -26,7 +26,7 @@
+ 
+ #ifndef PUndefinedAddress 
+ #ifdef _OCC64
+-#define PUndefinedAddress ((Standard_Persistent *)0xfefdfefdfefd0000)
++#define PUndefinedAddress ((Standard_Persistent *)0xfefdfefdfefd0000ull)
+ #else
+ #define PUndefinedAddress ((Standard_Persistent *)0xfefd0000)
+ #endif
+Index: oce/inc/Handle_Standard_Transient.hxx
+===================================================================
+--- oce.orig/inc/Handle_Standard_Transient.hxx
++++ oce/inc/Handle_Standard_Transient.hxx
+@@ -21,7 +21,7 @@
+ 
+ #ifndef UndefinedHandleAddress 
+ #ifdef _OCC64
+-#define UndefinedHandleAddress ((Standard_Transient *)0xfefdfefdfefd0000)
++#define UndefinedHandleAddress ((Standard_Transient *)0xfefdfefdfefd0000ull)
+ #else
+ #define UndefinedHandleAddress ((Standard_Transient *)0xfefd0000)
+ #endif
