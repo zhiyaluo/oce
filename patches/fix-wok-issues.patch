@@ -1,0 +1,41 @@
+From de5564d575aef01821d460c60937a9b0509330d1 Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Fri, 2 Dec 2011 13:48:03 +0200
+Subject: [PATCH] Corrects upstream issue with unit type
+
+Upstream wrongly declared VrmlData as "package" type, since it is
+a "nocdlpack" type under wok
+---
+ adm/UDLIST              |    2 +-
+ adm/UDLIST.DataExchange |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/adm/UDLIST b/adm/UDLIST
+index 11aa2c5..2db4638 100644
+--- a/adm/UDLIST
++++ b/adm/UDLIST
+@@ -427,7 +427,7 @@ p UnitsMethods
+ p Vrml
+ p VrmlAPI
+ p VrmlConverter
+-p VrmlData
++n VrmlData
+ p XCAFApp
+ p XCAFDoc
+ p XCAFDrivers
+diff --git a/adm/UDLIST.DataExchange b/adm/UDLIST.DataExchange
+index c72c291..13348a6 100644
+--- a/adm/UDLIST.DataExchange
++++ b/adm/UDLIST.DataExchange
+@@ -72,7 +72,7 @@ p UnitsMethods
+ p Vrml
+ p VrmlAPI
+ p VrmlConverter
+-p VrmlData
++n VrmlData
+ p XCAFApp
+ p XCAFDoc
+ p XCAFDrivers
+-- 
+1.7.7.3
+
