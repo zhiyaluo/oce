@@ -314,6 +314,15 @@ Subject: [PATCH 07/11] [warning-fix][unused-local-var] Fixes warnings like :
  src/TDF/TDF_Delta.cxx                     |    4 ++--
  7 files changed, 7 insertions(+), 13 deletions(-)
 
+From 80addda91a582908af3926cb969d0af4cd394a4e Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Sat, 19 Nov 2011 14:19:55 +0100
+Subject: [PATCH] Fix missing MilTol2 in debug mode
+
+---
+ src/BRepOffset/BRepOffset_Inter2d.cxx |    6 ++++++
+ 1 files changed, 6 insertions(+), 0 deletions(-)
+
 Index: oce/drv/ShapeSchema/ShapeSchema_PCDM_Document.cxx
 ===================================================================
 --- oce.orig/drv/ShapeSchema/ShapeSchema_PCDM_Document.cxx
@@ -2160,23 +2169,27 @@ Index: oce/src/BRepOffset/BRepOffset_Inter2d.cxx
 ===================================================================
 --- oce.orig/src/BRepOffset/BRepOffset_Inter2d.cxx
 +++ oce/src/BRepOffset/BRepOffset_Inter2d.cxx
-@@ -279,7 +279,6 @@
+@@ -279,7 +279,9 @@
      return;
  
    Standard_Real f[3],l[3];
--  Standard_Real MilTol2 = 1000*Tol*Tol;
++#ifdef DEB
+   Standard_Real MilTol2 = 1000*Tol*Tol;
++#endif
    Standard_Real TolDub = 1.e-7;  // Faire un calcul plus malin !!! NYI
    Standard_Integer i;
  
-@@ -550,7 +549,6 @@
+@@ -550,7 +552,9 @@
      return;
  
    Standard_Real f[3],l[3];
--  Standard_Real MilTol2 = 1000*Tol*Tol;
++#ifdef DEB
+   Standard_Real MilTol2 = 1000*Tol*Tol;
++#endif
    Standard_Real TolDub = 1.e-7;  // Faire un calcul plus malin !!! NYI
    Standard_Integer i;
  
-@@ -1112,8 +1110,6 @@
+@@ -1112,8 +1116,6 @@
        MinLoc = E.Location() * MinLoc;
        if (!C3d.IsNull())
  	{
