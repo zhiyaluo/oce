@@ -5084,32 +5084,6 @@ Index: oce/oce_install_config.h.cmake
 +#cmakedefine OCE_HAVE_LIMITS 1
 +#cmakedefine OCE_HAVE_CLIMITS 1
 +#cmakedefine OCE_HAVE_LIMITS_H 1
-Index: oce/src/Draw/Draw.cxx
-===================================================================
---- oce.orig/src/Draw/Draw.cxx
-+++ oce/src/Draw/Draw.cxx
-@@ -526,7 +526,7 @@
- #endif
-     aPluginLibrary +=  aPluginResource->Value(theKey.ToCString());
- #ifdef WNT
--    aPluginLibrary += ".dll";
-+	aPluginLibrary += OCE_DEBUG_POSTFIX ".dll";
- #elif __APPLE__
-     aPluginLibrary += ".dylib";
- #elif defined (HPUX) || defined(_hpux)
-Index: oce/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
-===================================================================
---- oce.orig/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
-+++ oce/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
-@@ -51,7 +51,7 @@
-   OSD_Function new_GLGraphicDriver;
-   Standard_CString TheShr = getenv("CSF_GraphicShr");
-   if ( ! TheShr || ( strlen( TheShr ) == 0 ) )
--    TheShr = "TKOpenGl.dll";
-+	  TheShr = "TKOpenGl" OCE_DEBUG_POSTFIX ".dll";
- 
-   MySharedLibrary.SetName ( TheShr );
-   Result = MySharedLibrary.DlOpen (OSD_RTLD_LAZY);
 Index: oce/src/OSD/OSD_Chronometer.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Chronometer.cxx
@@ -5273,16 +5247,3 @@ Index: oce/src/OSD/gettime_osx.h
 +#endif // _GETTIME_H
 +	
 +}
-Index: oce/src/Plugin/Plugin.cxx
-===================================================================
---- oce.orig/src/Plugin/Plugin.cxx
-+++ oce/src/Plugin/Plugin.cxx
-@@ -47,7 +47,7 @@
- #endif
-     thePluginLibrary +=  PluginResource->Value(theResource.ToCString());
- #ifdef WNT
--    thePluginLibrary += ".dll";
-+	thePluginLibrary += OCE_DEBUG_POSTFIX ".dll";
- #elif defined(__APPLE__)
-     thePluginLibrary += ".dylib";
- #elif defined (HPUX) || defined(_hpux)

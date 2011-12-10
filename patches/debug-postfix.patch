@@ -1,0 +1,79 @@
+From b0683f1431426fb27eb776cab78b57ded5b61ffa Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Sat, 24 Sep 2011 16:22:30 +0200
+Subject: [PATCH] Correctly use debug postfix in MSVC builds. This allows to
+ load DRAWEXE/TKOpenGL even in Debug builds
+
+---
+ CMakeLists.txt                               |    6 +++++-
+ oce_build_config.h.cmake                     |   11 +++++++++++
+ src/Draw/Draw.cxx                            |    2 +-
+ src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx |    2 +-
+ src/Plugin/Plugin.cxx                        |    2 +-
+ 5 files changed, 19 insertions(+), 4 deletions(-)
+
+From 37c467271dfa53441fb40f5b41fa91de83879ed4 Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Mon, 14 Nov 2011 10:09:24 +0200
+Subject: [PATCH] OCE_DEBUG_POSTFIX undefined in non cmake envs.
+
+This symbol should be used only and when defined by
+the build environment.Resolves wok building without
+applying any modifications to wok.
+---
+ src/Draw/Draw.cxx                            |    4 ++++
+ src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx |    4 ++++
+ src/Plugin/Plugin.cxx                        |    4 ++++
+ 3 files changed, 12 insertions(+), 0 deletions(-)
+
+Index: oce/src/Draw/Draw.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw.cxx
++++ oce/src/Draw/Draw.cxx
+@@ -531,7 +531,11 @@
+ #endif
+     aPluginLibrary +=  aPluginResource->Value(theKey.ToCString());
+ #ifdef WNT
+-    aPluginLibrary += ".dll";
++#ifdef OCE_DEBUG_POSTFIX 
++	aPluginLibrary += OCE_DEBUG_POSTFIX ".dll";
++#else
++	aPluginLibrary += ".dll";
++#endif /* OCE_DEBUG_POSTFIX */
+ #elif __APPLE__
+     aPluginLibrary += ".dylib";
+ #elif defined (HPUX) || defined(_hpux)
+Index: oce/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
++++ oce/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
+@@ -52,7 +52,11 @@
+   OSD_Function new_GLGraphicDriver;
+   Standard_CString TheShr = getenv("CSF_GraphicShr");
+   if ( ! TheShr || ( strlen( TheShr ) == 0 ) )
+-    TheShr = "TKOpenGl.dll";
++#ifdef OCE_DEBUG_POSTFIX
++	  TheShr = "TKOpenGl" OCE_DEBUG_POSTFIX ".dll";
++#else
++	  TheShr = "TKOpenGl.dll";
++#endif /* OCE_DEBUG_POSTFIX */
+ 
+   MySharedLibrary.SetName ( TheShr );
+   Result = MySharedLibrary.DlOpen (OSD_RTLD_LAZY);
+Index: oce/src/Plugin/Plugin.cxx
+===================================================================
+--- oce.orig/src/Plugin/Plugin.cxx
++++ oce/src/Plugin/Plugin.cxx
+@@ -47,7 +47,11 @@
+ #endif
+     thePluginLibrary +=  PluginResource->Value(theResource.ToCString());
+ #ifdef WNT
+-    thePluginLibrary += ".dll";
++#ifdef OCE_DEBUG_POSTFIX
++	thePluginLibrary += OCE_DEBUG_POSTFIX ".dll";
++#else
++	thePluginLibrary += ".dll";
++#endif /* OCE_DEBUG_POSTFIX */
+ #elif defined(__APPLE__)
+     thePluginLibrary += ".dylib";
+ #elif defined (HPUX) || defined(_hpux)

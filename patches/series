@@ -126,6 +126,7 @@ get-rid-of-environment-variables.patch
 TKernel-drop-X11-depends.patch
 TKService-depends-X11-only-if-needed.patch
 static-tkopengl.patch
+debug-postfix.patch
 
 config/unconditionnally-include-config.h.patch
 config/rename-config.h-into-oce-config.h.patch
