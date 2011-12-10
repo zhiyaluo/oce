@@ -1,0 +1,42 @@
+From eabbbc1e840dcc403498b78dd009c24d34a4b45b Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Mon, 14 Nov 2011 22:31:05 +0200
+Subject: [PATCH] Macro fixes in Draw package
+
+In draw package there was a case (building with HAVE_NO_DLL outside
+cmake build system) that the import or export decorator of a symbol
+would not be defined in any case, and result in compiler error.
+---
+ inc/Draw_Viewer.hxx |    2 ++
+ inc/Draw_Window.hxx |    2 ++
+ 2 files changed, 4 insertions(+), 0 deletions(-)
+
+diff --git a/inc/Draw_Viewer.hxx b/inc/Draw_Viewer.hxx
+index 54897cf..e30925c 100644
+--- a/inc/Draw_Viewer.hxx
++++ b/inc/Draw_Viewer.hxx
+@@ -27,6 +27,8 @@
+ # else
+ #  define __Draw_API /*__declspec( dllimport )*/
+ # endif
++#else
++# define __Draw_API  
+ #endif
+ #else
+ #  define __Draw_API  
+diff --git a/inc/Draw_Window.hxx b/inc/Draw_Window.hxx
+index 72d3e12..f3c47c1 100644
+--- a/inc/Draw_Window.hxx
++++ b/inc/Draw_Window.hxx
+@@ -188,6 +188,8 @@ void GetNextEvent(Event&);
+ # else
+ #  define __Draw_API __declspec( dllimport )
+ # endif
++#else
++# define __Draw_API
+ #endif
+ 
+ // definition de la classe Segment
+-- 
+1.7.7.3
+
