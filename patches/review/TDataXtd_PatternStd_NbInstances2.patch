@@ -1,0 +1,27 @@
+From 10ce720680631240be68336aa6129ab5aa321190 Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Sun, 20 Nov 2011 15:43:03 +0100
+Subject: [PATCH] Solves a copy-paste bug in TDataXtd_PatternStd
+
+---
+ src/TDataXtd/TDataXtd_PatternStd.cxx |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/TDataXtd/TDataXtd_PatternStd.cxx b/src/TDataXtd/TDataXtd_PatternStd.cxx
+index 064a826..8f8a442 100644
+--- a/src/TDataXtd/TDataXtd_PatternStd.cxx
++++ b/src/TDataXtd/TDataXtd_PatternStd.cxx
+@@ -188,8 +188,8 @@ void TDataXtd_PatternStd::NbInstances1(const Handle(TDataStd_Integer)& NbInstanc
+ void TDataXtd_PatternStd::NbInstances2(const Handle(TDataStd_Integer)& NbInstances2) 
+ {
+   // OCC2932 correction
+-  if(!myNb1.IsNull())
+-    if(myNb1->Get() == NbInstances2->Get())
++  if(!myNb2.IsNull())
++    if(myNb2->Get() == NbInstances2->Get())
+       return;
+ 
+   Backup();
+-- 
+1.7.7.3
+
