@@ -25,7 +25,7 @@ Index: oce/inc/Prs2d_Dimension.hxx
 ===================================================================
 --- oce.orig/inc/Prs2d_Dimension.hxx
 +++ oce/inc/Prs2d_Dimension.hxx
-@@ -122,7 +122,8 @@
+@@ -122,7 +122,8 @@ public:
          Standard_Boolean ArrowIsReversed() const;
    //! Return true if symbol is drawn, false - in otherwise <br>
          Standard_Boolean IsDrawSymbol() const;
@@ -39,7 +39,7 @@ Index: oce/src/Aspect/Aspect.cxx
 ===================================================================
 --- oce.orig/src/Aspect/Aspect.cxx
 +++ oce/src/Aspect/Aspect.cxx
-@@ -100,7 +100,7 @@
+@@ -100,7 +100,7 @@ Standard_PCharacter pstring;
           estring.SetValue(i,c);
        } else if( (c > Standard_ExtCharacter(0x0020)) && 
  			(c <= Standard_ExtCharacter(0x007F)) ) {
@@ -52,7 +52,7 @@ Index: oce/src/DDF/DDF_IOStream.cxx
 ===================================================================
 --- oce.orig/src/DDF/DDF_IOStream.cxx
 +++ oce/src/DDF/DDF_IOStream.cxx
-@@ -296,6 +296,13 @@
+@@ -296,6 +296,13 @@ void DDF_IOStream::ReadString(TCollectio
  
    IsEnd = Standard_False;
  
@@ -66,7 +66,7 @@ Index: oce/src/DDF/DDF_IOStream.cxx
    while (!IsEnd && !DDF_IOStream::IsEnd()) {
      buffer += c;
      myIStream->get(c);
-@@ -321,7 +328,14 @@
+@@ -321,7 +328,14 @@ void DDF_IOStream::ReadWord(TCollection_
    }
  
    IsEnd = Standard_False;
@@ -86,7 +86,7 @@ Index: oce/src/IFSelect/IFSelect_WorkSession.cxx
 ===================================================================
 --- oce.orig/src/IFSelect/IFSelect_WorkSession.cxx
 +++ oce/src/IFSelect/IFSelect_WorkSession.cxx
-@@ -2814,7 +2814,7 @@
+@@ -2814,7 +2814,7 @@ void IFSelect_WorkSession::QueryCheckLis
  {
    if (!IsLoaded()) return;
    Standard_Integer i,nb = themodel->NbEntities();
@@ -99,7 +99,7 @@ Index: oce/src/Visual3d/Visual3d_ViewManager.cxx
 ===================================================================
 --- oce.orig/src/Visual3d/Visual3d_ViewManager.cxx
 +++ oce/src/Visual3d/Visual3d_ViewManager.cxx
-@@ -984,7 +984,7 @@
+@@ -984,7 +984,7 @@ Visual3d_PickDescriptor Visual3d_ViewMan
  // The marking is activated only if the data is correct
  Standard_Boolean DoPick = Standard_False;
  

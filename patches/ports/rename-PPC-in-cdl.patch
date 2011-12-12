@@ -8,10 +8,10 @@ Subject: [PATCH] Renamed PPC to ppc in Plate cdl declarations.
  src/Plate/Plate_LinearXYZConstraint.cdl    |   12 ++++++------
  2 files changed, 13 insertions(+), 13 deletions(-)
 
-diff --git a/src/Plate/Plate_LinearScalarConstraint.cdl b/src/Plate/Plate_LinearScalarConstraint.cdl
-index 497cbb1..3bf6454 100644
---- a/src/Plate/Plate_LinearScalarConstraint.cdl
-+++ b/src/Plate/Plate_LinearScalarConstraint.cdl
+Index: oce/src/Plate/Plate_LinearScalarConstraint.cdl
+===================================================================
+--- oce.orig/src/Plate/Plate_LinearScalarConstraint.cdl
++++ oce/src/Plate/Plate_LinearScalarConstraint.cdl
 @@ -26,21 +26,21 @@ is
      Create
           returns LinearScalarConstraint;
@@ -49,10 +49,10 @@ index 497cbb1..3bf6454 100644
      	raises OutOfRange from Standard;
  
      SetCoeff (me : in out;  
-diff --git a/src/Plate/Plate_LinearXYZConstraint.cdl b/src/Plate/Plate_LinearXYZConstraint.cdl
-index 0cf0532..aeda5e6 100644
---- a/src/Plate/Plate_LinearXYZConstraint.cdl
-+++ b/src/Plate/Plate_LinearXYZConstraint.cdl
+Index: oce/src/Plate/Plate_LinearXYZConstraint.cdl
+===================================================================
+--- oce.orig/src/Plate/Plate_LinearXYZConstraint.cdl
++++ oce/src/Plate/Plate_LinearXYZConstraint.cdl
 @@ -27,18 +27,18 @@ raises
  is
      Create returns LinearXYZConstraint; 
@@ -86,6 +86,3 @@ index 0cf0532..aeda5e6 100644
      	raises OutOfRange from Standard;
  
      SetCoeff (me : in out;  
--- 
-1.7.7.3
-

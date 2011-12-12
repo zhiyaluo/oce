@@ -13,7 +13,7 @@ Index: oce/src/OSD/OSD_FontMgr.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_FontMgr.cxx
 +++ oce/src/OSD/OSD_FontMgr.cxx
-@@ -133,7 +133,7 @@
+@@ -133,7 +133,7 @@ void OSD_FontMgr::InitFontDataBase() {
  
  #ifdef TRACE
    cout << "System font directory: " << font_dir << "\n";

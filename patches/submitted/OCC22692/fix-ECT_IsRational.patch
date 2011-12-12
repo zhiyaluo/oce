@@ -13,7 +13,7 @@ Index: oce/inc/Extrema_CurveTool.lxx
 ===================================================================
 --- oce.orig/inc/Extrema_CurveTool.lxx
 +++ oce/inc/Extrema_CurveTool.lxx
-@@ -207,7 +207,7 @@
+@@ -207,7 +207,7 @@ inline gp_Parab Extrema_CurveTool::Parab
  
   inline Standard_Boolean Extrema_CurveTool::IsRational(const Adaptor3d_Curve& C)
  {

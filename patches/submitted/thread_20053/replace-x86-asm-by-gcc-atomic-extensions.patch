@@ -12,7 +12,7 @@ Index: oce/inc/Standard_Atomic.hxx
 ===================================================================
 --- oce.orig/inc/Standard_Atomic.hxx
 +++ oce/inc/Standard_Atomic.hxx
-@@ -45,13 +45,13 @@
+@@ -45,13 +45,13 @@ inline int Standard_Atomic_DecrementTest
  }
  
  //===================================================
@@ -28,7 +28,7 @@ Index: oce/inc/Standard_Atomic.hxx
  
  inline void Standard_Atomic_Increment (int volatile* var)
  {
-@@ -83,6 +83,30 @@
+@@ -83,6 +83,30 @@ inline int Standard_Atomic_DecrementTest
  }
  
  //===================================================

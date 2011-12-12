@@ -12,7 +12,7 @@ Index: oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
 ===================================================================
 --- oce.orig/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
 +++ oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
-@@ -347,6 +347,8 @@
+@@ -347,6 +347,8 @@ static void TRIM_INFINIT_FACE(const Topo
  	    Vmin = aV;
  	  else if (aV > Vmax)
  	    Vmax = aV;

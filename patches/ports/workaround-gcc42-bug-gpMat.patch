@@ -114,7 +114,7 @@ Index: oce/inc/gp_Mat.lxx
    Mat00 =
      Mat01 =
        Mat02 =
-@@ -57,7 +56,6 @@
+@@ -57,7 +56,6 @@ inline gp_Mat::gp_Mat (const Standard_Re
  		       const Standard_Real a32,
  		       const Standard_Real a33) {
  
@@ -122,7 +122,7 @@ Index: oce/inc/gp_Mat.lxx
    Mat00 = a11;
    Mat01 = a12;
    Mat02 = a13;
-@@ -73,20 +71,17 @@
+@@ -73,20 +71,17 @@ inline void gp_Mat::SetDiagonal (const S
  				 const Standard_Real X2,
  				 const Standard_Real X3)
  {
@@ -143,7 +143,7 @@ Index: oce/inc/gp_Mat.lxx
    Mat00 = Mat11 =  Mat22 = S;
    Mat01 = Mat02 = Mat10 = Mat12 = Mat20 = Mat21 = 0.0;
  }
-@@ -102,7 +97,6 @@
+@@ -102,7 +97,6 @@ inline void gp_Mat::SetValue (const Stan
  
  inline Standard_Real gp_Mat::Determinant () const
  {
@@ -151,7 +151,7 @@ Index: oce/inc/gp_Mat.lxx
    return
      Mat00 * (Mat11 * Mat22 - Mat21 * Mat12) -
        Mat01 * (Mat10 * Mat22 - Mat20 * Mat12) +
-@@ -135,8 +129,6 @@
+@@ -135,8 +129,6 @@ inline Standard_Boolean gp_Mat::IsSingul
  
  inline void gp_Mat::Add (const gp_Mat& Other)
  {
@@ -160,7 +160,7 @@ Index: oce/inc/gp_Mat.lxx
    Mat00 = Mat00 + Oat00;
    Mat01 = Mat01 + Oat01;
    Mat02 = Mat02 + Oat02;
-@@ -151,9 +143,6 @@
+@@ -151,9 +143,6 @@ inline void gp_Mat::Add (const gp_Mat& O
  inline gp_Mat gp_Mat::Added (const gp_Mat& Other) const
  {
    gp_Mat NewMat;
@@ -170,7 +170,7 @@ Index: oce/inc/gp_Mat.lxx
    Nat00 = Mat00 + Oat00;
    Nat01 = Mat01 + Oat01;
    Nat02 = Mat02 + Oat02;
-@@ -173,7 +162,6 @@
+@@ -173,7 +162,6 @@ inline void gp_Mat::Divide (const Standa
    Standard_ConstructionError_Raise_if
        (val <= gp::Resolution(),"gp_Mat : Divide by 0");
    Standard_Real UnSurScalar = 1.0 / Scalar;
@@ -178,7 +178,7 @@ Index: oce/inc/gp_Mat.lxx
    Mat00 *= UnSurScalar;
    Mat01 *= UnSurScalar; 
    Mat02 *= UnSurScalar; 
-@@ -192,8 +180,6 @@
+@@ -192,8 +180,6 @@ inline gp_Mat gp_Mat::Divided (const Sta
    Standard_ConstructionError_Raise_if
        (val <= gp::Resolution(),"gp_Mat : Divide by 0");
    gp_Mat NewMat;
@@ -187,7 +187,7 @@ Index: oce/inc/gp_Mat.lxx
    Standard_Real UnSurScalar = 1.0 / Scalar;
    Nat00 = Mat00 * UnSurScalar;
    Nat01 = Mat01 * UnSurScalar; 
-@@ -216,8 +202,6 @@
+@@ -216,8 +202,6 @@ inline gp_Mat gp_Mat::Multiplied (const
  
  inline void gp_Mat::Multiply (const gp_Mat& Other)
  {
@@ -196,7 +196,7 @@ Index: oce/inc/gp_Mat.lxx
    Standard_Real T00,T01,T02,T10,T11,T12,T20,T21,T22;
    T00 = Mat00 * Oat00 + Mat01 * Oat10 + Mat02 * Oat20;
    T01 = Mat00 * Oat01 + Mat01 * Oat11 + Mat02 * Oat21;
-@@ -241,8 +225,6 @@
+@@ -241,8 +225,6 @@ inline void gp_Mat::Multiply (const gp_M
  
  inline void gp_Mat::PreMultiply (const gp_Mat& Other)
  {
@@ -205,7 +205,7 @@ Index: oce/inc/gp_Mat.lxx
    Standard_Real T00,T01,T02,T10,T11,T12,T20,T21,T22;
    T00 = Oat00 * Mat00 + Oat01 * Mat10 + Oat02 * Mat20;
    T01 = Oat00 * Mat01 + Oat01 * Mat11 + Oat02 * Mat21;
-@@ -267,8 +249,6 @@
+@@ -267,8 +249,6 @@ inline void gp_Mat::PreMultiply (const g
  inline gp_Mat gp_Mat::Multiplied (const Standard_Real Scalar) const
  {
    gp_Mat NewMat;
@@ -214,7 +214,7 @@ Index: oce/inc/gp_Mat.lxx
    Nat00 = Scalar * Mat00;
    Nat01 = Scalar * Mat01;
    Nat02 = Scalar * Mat02;
-@@ -283,7 +263,6 @@
+@@ -283,7 +263,6 @@ inline gp_Mat gp_Mat::Multiplied (const
  
  inline void gp_Mat::Multiply (const Standard_Real Scalar)
  {
@@ -222,7 +222,7 @@ Index: oce/inc/gp_Mat.lxx
    Mat00 *= Scalar; 
    Mat01 *= Scalar; 
    Mat02 *= Scalar; 
-@@ -304,8 +283,6 @@
+@@ -304,8 +283,6 @@ inline gp_Mat gp_Mat::Powered (const Sta
  
  inline void gp_Mat::Subtract (const gp_Mat& Other)
  {
@@ -231,7 +231,7 @@ Index: oce/inc/gp_Mat.lxx
    Mat00 -= Oat00;
    Mat01 -= Oat01;
    Mat02 -= Oat02;
-@@ -320,9 +297,6 @@
+@@ -320,9 +297,6 @@ inline void gp_Mat::Subtract (const gp_M
  inline gp_Mat gp_Mat::Subtracted (const gp_Mat& Other) const
  {
    gp_Mat NewMat;
@@ -241,7 +241,7 @@ Index: oce/inc/gp_Mat.lxx
    Nat00 = Mat00 - Oat00;
    Nat01 = Mat01 - Oat01;
    Nat02 = Mat02 - Oat02;
-@@ -337,7 +311,6 @@
+@@ -337,7 +311,6 @@ inline gp_Mat gp_Mat::Subtracted (const
  
  inline void gp_Mat::Transpose ()
  {
@@ -312,7 +312,7 @@ Index: oce/inc/gp_Mat2d.lxx
    Standard_Real SinA = sin(Ang);
    Standard_Real CosA = cos(Ang);
    Mat2d00 = Mat2d11 = CosA;
-@@ -50,7 +46,6 @@
+@@ -50,7 +46,6 @@ inline void gp_Mat2d::SetRotation (const
  
  inline void gp_Mat2d::SetScale (const Standard_Real S)
  {
@@ -320,7 +320,7 @@ Index: oce/inc/gp_Mat2d.lxx
    Mat2d00 = Mat2d11 = S;
    Mat2d01 = Mat2d10 = 0.0;
  }
-@@ -66,7 +61,6 @@
+@@ -66,7 +61,6 @@ inline void gp_Mat2d::SetValue (const St
  
  inline Standard_Real gp_Mat2d::Determinant () const
  {
@@ -328,7 +328,7 @@ Index: oce/inc/gp_Mat2d.lxx
    return  Mat2d00 * Mat2d11 - Mat2d10 * Mat2d01;
  }
  
-@@ -96,8 +90,6 @@
+@@ -96,8 +90,6 @@ inline Standard_Boolean gp_Mat2d::IsSing
  
  inline void gp_Mat2d::Add (const gp_Mat2d& Other)
  {
@@ -337,7 +337,7 @@ Index: oce/inc/gp_Mat2d.lxx
    Mat2d00 += Oat2d00;
    Mat2d01 += Oat2d01;
    Mat2d10 += Oat2d10;
-@@ -107,9 +99,6 @@
+@@ -107,9 +99,6 @@ inline void gp_Mat2d::Add (const gp_Mat2
  inline gp_Mat2d gp_Mat2d::Added (const gp_Mat2d& Other) const
  {
    gp_Mat2d NewMat2d;
@@ -347,7 +347,7 @@ Index: oce/inc/gp_Mat2d.lxx
    Nat2d00 = Mat2d00 + Oat2d00;
    Nat2d01 = Mat2d01 + Oat2d01;
    Nat2d10 = Mat2d10 + Oat2d10;
-@@ -119,7 +108,6 @@
+@@ -119,7 +108,6 @@ inline gp_Mat2d gp_Mat2d::Added (const g
  
  inline void gp_Mat2d::Divide (const Standard_Real Scalar)
  {
@@ -355,7 +355,7 @@ Index: oce/inc/gp_Mat2d.lxx
    Mat2d00 /= Scalar;
    Mat2d01 /= Scalar;
    Mat2d10 /= Scalar;
-@@ -129,8 +117,6 @@
+@@ -129,8 +117,6 @@ inline void gp_Mat2d::Divide (const Stan
  inline gp_Mat2d gp_Mat2d::Divided (const Standard_Real Scalar) const
  {
    gp_Mat2d NewMat2d;
@@ -364,7 +364,7 @@ Index: oce/inc/gp_Mat2d.lxx
    Nat2d00 = Mat2d00 / Scalar;
    Nat2d01 = Mat2d01 / Scalar;
    Nat2d10 = Mat2d10 / Scalar;
-@@ -155,8 +141,6 @@
+@@ -155,8 +141,6 @@ inline gp_Mat2d gp_Mat2d::Multiplied (co
  inline void gp_Mat2d::Multiply (const gp_Mat2d& Other)
  {
    Standard_Real T00,T10;
@@ -373,7 +373,7 @@ Index: oce/inc/gp_Mat2d.lxx
    T00     = Mat2d00 * Oat2d00 + Mat2d01 * Oat2d10;
    T10     = Mat2d10 * Oat2d00 + Mat2d11 * Oat2d10;
    Mat2d01 = Mat2d00 * Oat2d01 + Mat2d01 * Oat2d11;
-@@ -168,8 +152,6 @@
+@@ -168,8 +152,6 @@ inline void gp_Mat2d::Multiply (const gp
  inline void gp_Mat2d::PreMultiply (const gp_Mat2d& Other)
  {
    Standard_Real T00,T01;
@@ -382,7 +382,7 @@ Index: oce/inc/gp_Mat2d.lxx
    T00     = Oat2d00 * Mat2d00 + Oat2d01 * Mat2d10;
    Mat2d10 = Oat2d10 * Mat2d00 + Oat2d11 * Mat2d10;
    T01     = Oat2d00 * Mat2d01 + Oat2d01 * Mat2d11;
-@@ -181,8 +163,6 @@
+@@ -181,8 +163,6 @@ inline void gp_Mat2d::PreMultiply (const
  inline gp_Mat2d gp_Mat2d::Multiplied (const Standard_Real Scalar) const
  {
    gp_Mat2d NewMat2d;
@@ -391,7 +391,7 @@ Index: oce/inc/gp_Mat2d.lxx
    Nat2d00 = Mat2d00 * Scalar;
    Nat2d01 = Mat2d01 * Scalar;
    Nat2d10 = Mat2d10 * Scalar;
-@@ -192,7 +172,6 @@
+@@ -192,7 +172,6 @@ inline gp_Mat2d gp_Mat2d::Multiplied (co
  
  inline void gp_Mat2d::Multiply (const Standard_Real Scalar)
  {
@@ -399,7 +399,7 @@ Index: oce/inc/gp_Mat2d.lxx
    Mat2d00 *= Scalar;
    Mat2d01 *= Scalar;
    Mat2d10 *= Scalar;
-@@ -208,8 +187,6 @@
+@@ -208,8 +187,6 @@ inline gp_Mat2d gp_Mat2d::Powered (const
  
  inline void gp_Mat2d::Subtract (const gp_Mat2d& Other)
  {
@@ -408,7 +408,7 @@ Index: oce/inc/gp_Mat2d.lxx
    Mat2d00 -= Oat2d00;
    Mat2d01 -= Oat2d01;
    Mat2d10 -= Oat2d10;
-@@ -219,9 +196,6 @@
+@@ -219,9 +196,6 @@ inline void gp_Mat2d::Subtract (const gp
  inline gp_Mat2d gp_Mat2d::Subtracted (const gp_Mat2d& Other) const
  {
    gp_Mat2d NewMat2d;
@@ -418,7 +418,7 @@ Index: oce/inc/gp_Mat2d.lxx
    Nat2d00 = Mat2d00 - Oat2d00;
    Nat2d01 = Mat2d01 - Oat2d01;
    Nat2d10 = Mat2d10 - Oat2d10;
-@@ -231,7 +205,6 @@
+@@ -231,7 +205,6 @@ inline gp_Mat2d gp_Mat2d::Subtracted (co
  
  inline void gp_Mat2d::Transpose ()
  {
@@ -426,7 +426,7 @@ Index: oce/inc/gp_Mat2d.lxx
    Standard_Real Temp;
    Temp     = Mat2d01;
    Mat2d01  = Mat2d10;
-@@ -241,8 +214,6 @@
+@@ -241,8 +214,6 @@ inline void gp_Mat2d::Transpose ()
  inline gp_Mat2d gp_Mat2d::Transposed () const
  {
    gp_Mat2d NewMat2d;
@@ -439,7 +439,7 @@ Index: oce/inc/gp_XY.lxx
 ===================================================================
 --- oce.orig/inc/gp_XY.lxx
 +++ oce/inc/gp_XY.lxx
-@@ -108,9 +108,8 @@
+@@ -108,9 +108,8 @@ inline void gp_XY::Multiply (const gp_XY
  
  inline void gp_XY::Multiply (const gp_Mat2d& Matrix)
  {
@@ -451,7 +451,7 @@ Index: oce/inc/gp_XY.lxx
    x                     = Xresult;
  }
  
-@@ -124,9 +123,8 @@
+@@ -124,9 +123,8 @@ inline gp_XY gp_XY::Multiplied (const gp
  
  inline gp_XY gp_XY::Multiplied (const gp_Mat2d& Matrix) const
  {
@@ -467,7 +467,7 @@ Index: oce/inc/gp_XYZ.lxx
 ===================================================================
 --- oce.orig/inc/gp_XYZ.lxx
 +++ oce/inc/gp_XYZ.lxx
-@@ -166,10 +166,9 @@
+@@ -166,10 +166,9 @@ inline void gp_XYZ::Multiply (const gp_X
  
  inline void gp_XYZ::Multiply (const gp_Mat& Matrix)
  {
@@ -481,7 +481,7 @@ Index: oce/inc/gp_XYZ.lxx
    x                     = Xresult;
    y                     = Yresult;
  }
-@@ -184,10 +183,9 @@
+@@ -184,10 +183,9 @@ inline gp_XYZ gp_XYZ::Multiplied (const
  
  inline gp_XYZ gp_XYZ::Multiplied (const gp_Mat& Matrix) const
  {
@@ -555,7 +555,7 @@ Index: oce/src/gp/gp_Mat.cxx
    }
  }
  
-@@ -58,7 +36,6 @@
+@@ -58,7 +36,6 @@ void gp_Mat::SetCols (const gp_XYZ& Col1
  		      const gp_XYZ& Col2,
  		      const gp_XYZ& Col3)
  {
@@ -563,7 +563,7 @@ Index: oce/src/gp/gp_Mat.cxx
    Mat00 = Col1.X(); Mat10 = Col1.Y(); Mat20 = Col1.Z();
    Mat01 = Col2.X(); Mat11 = Col2.Y(); Mat21 = Col2.Z();
    Mat02 = Col3.X(); Mat12 = Col3.Y(); Mat22 = Col3.Z();
-@@ -66,34 +43,32 @@
+@@ -66,34 +43,32 @@ void gp_Mat::SetCols (const gp_XYZ& Col1
  
  void gp_Mat::SetCross (const gp_XYZ& Ref)
  {
@@ -614,7 +614,7 @@ Index: oce/src/gp/gp_Mat.cxx
  }
  
  void gp_Mat::SetRotation (const gp_XYZ& Axis,
-@@ -123,15 +98,14 @@
+@@ -123,15 +98,14 @@ void gp_Mat::SetRow (const Standard_Inte
  		     const gp_XYZ& Value)
  {
    Standard_OutOfRange_Raise_if (Row < 1 || Row > 3, " ");
@@ -633,7 +633,7 @@ Index: oce/src/gp/gp_Mat.cxx
    }
  }
  
-@@ -139,90 +113,81 @@
+@@ -139,90 +113,81 @@ void gp_Mat::SetRows (const gp_XYZ& Row1
  		      const gp_XYZ& Row2,
  		      const gp_XYZ& Row3)
  {

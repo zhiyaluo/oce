@@ -204,7 +204,7 @@ Index: oce/src/BooleanOperations/BooleanOperations_ShapesDataStructure.cxx
  static
    void Message(const Standard_Integer i);
  
-@@ -887,11 +882,6 @@
+@@ -887,11 +882,6 @@ void Message(const Standard_Integer i)
  }
  //modified by NIZNHY-PKV Wed Feb  2 14:44:08 2005f
  /*
@@ -266,7 +266,7 @@ Index: oce/src/IntTools/IntTools_EdgeFace.cxx
  static
    Standard_Boolean IsCoplanar (const BRepAdaptor_Curve&  ,
  			       const BRepAdaptor_Surface& );
-@@ -1594,7 +1590,3 @@
+@@ -1594,7 +1590,3 @@ Standard_Integer AdaptiveDiscret (const
    return iDiscretNew;
  }
  
@@ -326,7 +326,7 @@ Index: oce/src/OSD/OSD_Environment.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Environment.cxx
 +++ oce/src/OSD/OSD_Environment.cxx
-@@ -217,10 +217,6 @@
+@@ -217,10 +217,6 @@ Standard_Integer OSD_Environment::Error(
  
  #include <stdio.h>
  
@@ -341,7 +341,7 @@ Index: oce/src/OSD/OSD_Process.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Process.cxx
 +++ oce/src/OSD/OSD_Process.cxx
-@@ -218,10 +218,6 @@
+@@ -218,10 +218,6 @@ Standard_Integer OSD_Process::Error()con
  #include <OSD_WNT_1.hxx>
  #include <lmcons.h> /// pour UNLEN  ( see MSDN about GetUserName() )
  
@@ -427,7 +427,7 @@ Index: oce/src/TDF/TDF_Data.cxx
 ===================================================================
 --- oce.orig/src/TDF/TDF_Data.cxx
 +++ oce/src/TDF/TDF_Data.cxx
-@@ -75,11 +75,6 @@
+@@ -75,11 +75,6 @@ if (withDelta) { \
    aDelta->AddAttributeDelta(DELTACREATION); \
  }
  
@@ -439,7 +439,7 @@ Index: oce/src/TDF/TDF_Data.cxx
  //=======================================================================
  //function : TDF_Data
  //purpose  : empty constructor
-@@ -98,10 +93,6 @@
+@@ -98,10 +93,6 @@ myAllowModification     (Standard_True)
    myRoot = new (anIncAllocator) TDF_LabelNode (this);
  }
  
@@ -454,7 +454,7 @@ Index: oce/src/TDF/TDF_Label.cxx
 ===================================================================
 --- oce.orig/src/TDF/TDF_Label.cxx
 +++ oce/src/TDF/TDF_Label.cxx
-@@ -308,11 +308,6 @@
+@@ -308,11 +308,6 @@ void TDF_Label::EntryDump(Standard_OStre
    }
  }
  
@@ -466,7 +466,7 @@ Index: oce/src/TDF/TDF_Label.cxx
  //=======================================================================
  //function : FindOrAddChild
  //purpose  : Finds or adds a label child having <aTag> as tag.
-@@ -373,10 +368,6 @@
+@@ -373,10 +368,6 @@ TDF_LabelNode* TDF_Label::FindOrAddChild
    return childLabelNode;
  }
  
@@ -481,7 +481,7 @@ Index: oce/src/TopExp/TopExp_Explorer.cxx
 ===================================================================
 --- oce.orig/src/TopExp/TopExp_Explorer.cxx
 +++ oce/src/TopExp/TopExp_Explorer.cxx
-@@ -127,11 +127,6 @@
+@@ -127,11 +127,6 @@ const TopoDS_Shape&  TopExp_Explorer::Cu
  //purpose  : 
  //=======================================================================
  
@@ -493,7 +493,7 @@ Index: oce/src/TopExp/TopExp_Explorer.cxx
  void  TopExp_Explorer::Next()
  {
    Standard_Integer NewSize;
-@@ -209,9 +204,6 @@
+@@ -209,9 +204,6 @@ void  TopExp_Explorer::Next()
    hasMore = Standard_False;
  }
  

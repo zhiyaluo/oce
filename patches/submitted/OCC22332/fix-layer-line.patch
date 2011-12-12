@@ -13,7 +13,7 @@ Index: oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
 +++ oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
-@@ -102,11 +102,8 @@
+@@ -102,11 +102,8 @@ extern PFNGLBLENDEQUATIONEXTPROC glBlend
  static CALL_DEF_LAYER ACLayer;
  
  static GLboolean layerOpen      = GL_FALSE;
@@ -25,7 +25,7 @@ Index: oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
  static int       layerFontFlag  = IsModified;
  static int       layerFontType  = 0;
  static float     layerRed       = -1.;
-@@ -395,6 +392,10 @@
+@@ -395,6 +392,10 @@ call_togl_begin_layer2d
    printf ("call_togl_begin_layer2d %d\n", ptrLayer->listIndex);
  #endif
  
@@ -36,7 +36,7 @@ Index: oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
    //abd
    glEnable(GL_TEXTURE_2D);
    GLboolean stat = glIsEnabled( GL_TEXTURE_2D );
-@@ -421,8 +422,12 @@
+@@ -421,8 +422,12 @@ call_togl_end_layer2d
    /*
    * On ferme la display-list associee au layer.
    */
@@ -50,7 +50,7 @@ Index: oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
    layerOpen = GL_FALSE;
  
    ACLayer.ptrLayer = NULL;
-@@ -992,22 +997,29 @@
+@@ -992,22 +997,29 @@ call_togl_set_line_attributes
    printf ("call_togl_set_line_attributes %d\n", ptrLayer->listIndex);
    printf ("\ttype, width %d %f\n", type, width);
  #endif

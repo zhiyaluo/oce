@@ -11,10 +11,10 @@ Subject: [PATCH] Modifications needed for correct building of oce under WOK
  src/TopOpeBRep/FILES                           |    1 -
  5 files changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/src/FSD/FSD_File.cdl b/src/FSD/FSD_File.cdl
-index 08eb1d5..e4db50c 100644
---- a/src/FSD/FSD_File.cdl
-+++ b/src/FSD/FSD_File.cdl
+Index: oce/src/FSD/FSD_File.cdl
+===================================================================
+--- oce.orig/src/FSD/FSD_File.cdl
++++ oce/src/FSD/FSD_File.cdl
 @@ -325,7 +325,7 @@ is
  
      MagicNumber(myclass)
@@ -24,10 +24,10 @@ index 08eb1d5..e4db50c 100644
      
      fields
      
-diff --git a/src/MeshVS/FILES b/src/MeshVS/FILES
-index ad727f3..2d01b41 100644
---- a/src/MeshVS/FILES
-+++ b/src/MeshVS/FILES
+Index: oce/src/MeshVS/FILES
+===================================================================
+--- oce.orig/src/MeshVS/FILES
++++ oce/src/MeshVS/FILES
 @@ -2,7 +2,6 @@ MeshVS_Buffer.hxx
  MeshVS_EntityType.hxx
  MeshVS_DisplayModeFlags.hxx
@@ -36,11 +36,11 @@ index ad727f3..2d01b41 100644
  MeshVS_TwoColors.hxx
  MeshVS_TwoColors.cxx
  MeshVS_TwoNodes.hxx
-diff --git a/src/StepFile/StepFile_CODEGEN.edl b/src/StepFile/StepFile_CODEGEN.edl
-index a47399a..9c0a47f 100644
---- a/src/StepFile/StepFile_CODEGEN.edl
-+++ b/src/StepFile/StepFile_CODEGEN.edl
-@@ -22,7 +22,7 @@ $%CODEGEN_FlexBisHome/flex -P%BaseName  -L -8 %Source
+Index: oce/src/StepFile/StepFile_CODEGEN.edl
+===================================================================
+--- oce.orig/src/StepFile/StepFile_CODEGEN.edl
++++ oce/src/StepFile/StepFile_CODEGEN.edl
+@@ -22,7 +22,7 @@ $%CODEGEN_FlexBisHome/flex -P%BaseName
  $%CODEGEN_LEX_CmdPath -P <Module>  -L -8 <LexFile>
  @end;
  
@@ -49,10 +49,10 @@ index a47399a..9c0a47f 100644
  
  @template CODEGEN_LEX_CmdLine  ( %CODEGEN_LEX_CmdPath, %Source, %BaseName, %OutputDir ) is
  $cd %OutputDir;
-diff --git a/src/TCollection/TCollection_ExtendedString.cdl b/src/TCollection/TCollection_ExtendedString.cdl
-index 60f8a97..db706c8 100644
---- a/src/TCollection/TCollection_ExtendedString.cdl
-+++ b/src/TCollection/TCollection_ExtendedString.cdl
+Index: oce/src/TCollection/TCollection_ExtendedString.cdl
+===================================================================
+--- oce.orig/src/TCollection/TCollection_ExtendedString.cdl
++++ oce/src/TCollection/TCollection_ExtendedString.cdl
 @@ -297,7 +297,7 @@ is
     ToExtString(me) returns ExtString
     ---Level: Public
@@ -62,10 +62,10 @@ index 60f8a97..db706c8 100644
     is static;
  
     Trunc (me : out ; ahowmany  : Integer)
-diff --git a/src/TopOpeBRep/FILES b/src/TopOpeBRep/FILES
-index 0eddc0d..d9c5897 100644
---- a/src/TopOpeBRep/FILES
-+++ b/src/TopOpeBRep/FILES
+Index: oce/src/TopOpeBRep/FILES
+===================================================================
+--- oce.orig/src/TopOpeBRep/FILES
++++ oce/src/TopOpeBRep/FILES
 @@ -8,7 +8,6 @@ TopOpeBRep_vprdeg.cxx
  TopOpeBRep_kpart.cxx
  TopOpeBRep_FaceEdgeFiller_DEB.cxx
@@ -74,6 +74,3 @@ index 0eddc0d..d9c5897 100644
  TopOpeBRep_ProcessSectionEdges.cxx
  TopOpeBRep_trace.cxx
  TopOpeBRep_traceBOOPNINT.cxx
--- 
-1.7.7.3
-

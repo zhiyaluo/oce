@@ -33,7 +33,7 @@ Index: oce/inc/MAT_Mat.gxx
 ===================================================================
 --- oce.orig/inc/MAT_Mat.gxx
 +++ oce/inc/MAT_Mat.gxx
-@@ -152,6 +152,8 @@
+@@ -152,6 +152,8 @@ void MAT_Mat::CreateMat(Tool& atool)
  
    if (noofarea == 0) {
      cout <<" Erreur d allocation "<<endl;
@@ -46,7 +46,7 @@ Index: oce/src/Draw/Draw.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw.cxx
 +++ oce/src/Draw/Draw.cxx
-@@ -281,6 +281,7 @@
+@@ -281,6 +281,7 @@ void Draw_Appli(Standard_Integer argc, c
        strcat(thedefault,casroot);
        strcat (thedefault,"/src/DrawResources/DrawDefault");
        ReadInitFile(thedefault);

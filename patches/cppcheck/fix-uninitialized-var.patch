@@ -11,7 +11,7 @@ Index: oce/inc/ApproxInt_Approx.gxx
 ===================================================================
 --- oce.orig/inc/ApproxInt_Approx.gxx
 +++ oce/inc/ApproxInt_Approx.gxx
-@@ -99,7 +99,7 @@
+@@ -99,7 +99,7 @@ static void  ComputeTrsf2d(const Handle(
      pfunc = &IntSurf_PntOn2S::ParametersOnS2;
    for(Standard_Integer i=1;i<=nbp;i++) { 
      const IntSurf_PntOn2S&  POn2S = theline->Point(i);

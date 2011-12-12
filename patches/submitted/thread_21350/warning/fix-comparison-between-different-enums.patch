@@ -16,7 +16,7 @@ Index: oce/src/OpenGl/OpenGl_TextureBox.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_TextureBox.cxx
 +++ oce/src/OpenGl/OpenGl_TextureBox.cxx
-@@ -509,7 +509,7 @@
+@@ -509,7 +509,7 @@ static void MyBindTextureEXT(TextureID I
    TextureDataID data;
    data = textab[ID].data;
  

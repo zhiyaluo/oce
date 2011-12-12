@@ -16,10 +16,10 @@ default settings:
  src/Standard/Standard.cxx |   36 +++++++++++++++++++++++++++++-------
  1 files changed, 29 insertions(+), 7 deletions(-)
 
-diff --git a/src/Standard/Standard.cxx b/src/Standard/Standard.cxx
-index 6d03f8a..f0dc0dd 100644
---- a/src/Standard/Standard.cxx
-+++ b/src/Standard/Standard.cxx
+Index: oce/src/Standard/Standard.cxx
+===================================================================
+--- oce.orig/src/Standard/Standard.cxx
++++ oce/src/Standard/Standard.cxx
 @@ -12,6 +12,28 @@
  #include <Standard_MMgrRaw.hxx>
  #include <Standard_MMgrTBBalloc.hxx>
@@ -49,7 +49,7 @@ index 6d03f8a..f0dc0dd 100644
  // Global reentrant flag
  static Standard_Boolean Standard_IsReentrant = Standard_False;
  
-@@ -41,13 +63,13 @@ Standard_MMgrFactory::Standard_MMgrFactory() : myFMMgr(0)
+@@ -41,13 +63,13 @@ Standard_MMgrFactory::Standard_MMgrFacto
    Standard_Boolean bClear, bMMap, bReentrant;
    Standard_Integer aCellSize, aNbPages, aThreshold, bOptAlloc;
    //
@@ -70,6 +70,3 @@ index 6d03f8a..f0dc0dd 100644
    
    if ( bOptAlloc == 1 ) { 
      myFMMgr = new Standard_MMgrOpt(bClear, bMMap, aCellSize, aNbPages,
--- 
-1.7.7.3
-

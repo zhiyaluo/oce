@@ -14,7 +14,7 @@ Index: oce/src/DNaming/DNaming_TransformationDriver.cxx
 ===================================================================
 --- oce.orig/src/DNaming/DNaming_TransformationDriver.cxx
 +++ oce/src/DNaming/DNaming_TransformationDriver.cxx
-@@ -306,6 +306,7 @@
+@@ -306,6 +306,7 @@ static void CollectShapes(const TopoDS_S
      }
      break;
    case TopAbs_VERTEX:
@@ -22,7 +22,7 @@ Index: oce/src/DNaming/DNaming_TransformationDriver.cxx
      const Handle(TNaming_NamedShape) aNS =  TNaming_Tool::NamedShape(SSh, theLab);
      if(!aNS.IsNull())
        if(SMap.Add(SSh)) {
-@@ -313,6 +314,7 @@
+@@ -313,6 +314,7 @@ static void CollectShapes(const TopoDS_S
  //	if(isPrimitive)
  //	  TagMap.Bind(SSh, aNS->Label().Tag());
        }

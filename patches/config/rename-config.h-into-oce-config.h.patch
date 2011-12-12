@@ -47,7 +47,7 @@ Index: oce/inc/Standard_values.h
 ===================================================================
 --- oce.orig/inc/Standard_values.h
 +++ oce/inc/Standard_values.h
-@@ -22,7 +22,7 @@
+@@ -22,7 +22,7 @@ Facility : CAS-CADE V1.3A
  #error "Wrong compiler options has been detected. Add /DWNT option for proper compilation!!!!!"
  #endif
  
@@ -56,7 +56,7 @@ Index: oce/inc/Standard_values.h
  
  #ifndef WNT
  #ifdef HAVE_LIMITS
-@@ -30,7 +30,7 @@
+@@ -30,7 +30,7 @@ Facility : CAS-CADE V1.3A
  #elif defined (HAVE_LIMITS_H)
  # include <limits.h>
  #else
@@ -251,7 +251,7 @@ Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx
 +++ oce/src/Draw/Draw_Window.cxx
-@@ -86,7 +86,7 @@
+@@ -86,7 +86,7 @@ defaultPrompt:
  #ifndef WNT
  
  #ifdef HAVE_CONFIG_H
@@ -598,7 +598,7 @@ Index: oce/src/OSD/OSD_Real2String.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Real2String.cxx
 +++ oce/src/OSD/OSD_Real2String.cxx
-@@ -9,7 +9,7 @@
+@@ -9,7 +9,7 @@ const static char sccsid[] = "@(#) OSD_R
  // +---------------------------------------------------------------------------+
  
  #ifdef HAVE_CONFIG_H
@@ -662,7 +662,7 @@ Index: oce/src/OpenGl/OpenGl_attri.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_attri.cxx
 +++ oce/src/OpenGl/OpenGl_attri.cxx
-@@ -99,7 +99,7 @@
+@@ -99,7 +99,7 @@ used in immediat mode context.
  */
  
  #ifdef HAVE_CONFIG_H
@@ -688,7 +688,7 @@ Index: oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
 +++ oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
-@@ -20,7 +20,7 @@
+@@ -20,7 +20,7 @@ HISTORIQUE DES MODIFICATIONS   :
  */
  
  #ifdef HAVE_CONFIG_H
@@ -701,7 +701,7 @@ Index: oce/src/OpenGl/OpenGl_togl_markercontextgroup.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_togl_markercontextgroup.cxx
 +++ oce/src/OpenGl/OpenGl_togl_markercontextgroup.cxx
-@@ -40,7 +40,7 @@
+@@ -40,7 +40,7 @@ xx-xx-xx : xxx ; Creation.
  #include <GL/glu.h>
  
  #ifdef HAVE_CONFIG_H
@@ -714,7 +714,7 @@ Index: oce/src/OpenGl/OpenGl_triedron.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_triedron.cxx
 +++ oce/src/OpenGl/OpenGl_triedron.cxx
-@@ -63,7 +63,7 @@
+@@ -63,7 +63,7 @@ from higher API */
  #endif
  
  #ifdef HAVE_CONFIG_H

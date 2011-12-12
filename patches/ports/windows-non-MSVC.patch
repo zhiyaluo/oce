@@ -331,7 +331,7 @@ Index: oce/inc/Handle_Standard_Transient.hxx
  // Disable the warning "conversion from 'unsigned int' to Standard_Transient *"
  #pragma warning (push)
  #pragma warning (disable:4312)
-@@ -228,7 +228,7 @@
+@@ -228,7 +228,7 @@ private:
    Standard_Transient *entity;
  };
  
@@ -344,7 +344,7 @@ Index: oce/inc/InterfaceGraphic_telem.hxx
 ===================================================================
 --- oce.orig/inc/InterfaceGraphic_telem.hxx
 +++ oce/inc/InterfaceGraphic_telem.hxx
-@@ -17,6 +17,10 @@
+@@ -17,6 +17,10 @@ for InterfaceGraphic_Parray.hxx definiti
  #include <InterfaceGraphic_tgl_all.hxx>
  #include <stdlib.h>
  
@@ -359,7 +359,7 @@ Index: oce/inc/NCollection_CellFilter.hxx
 ===================================================================
 --- oce.orig/inc/NCollection_CellFilter.hxx
 +++ oce/inc/NCollection_CellFilter.hxx
-@@ -223,8 +223,9 @@
+@@ -223,8 +223,9 @@ public:
      iterateInspect (Inspector::Dimension-1, aCell, 
                      aCellMin, aCellMax, theInspector);
    }
@@ -375,7 +375,7 @@ Index: oce/inc/OSD_WNT_1.hxx
 ===================================================================
 --- oce.orig/inc/OSD_WNT_1.hxx
 +++ oce/inc/OSD_WNT_1.hxx
-@@ -51,8 +51,13 @@
+@@ -51,8 +51,13 @@ enum MB_ITEMTYPE { MBT_BUTTON, MBT_ICON
  //#define LODWORD( a ) ( DWORD )(   ( ( DWORDLONG )( a ) ) & 0x00000000FFFFFFFF   )
  //#define HIDWORD( a ) ( DWORD )(   ( ( DWORDLONG )( a ) ) >> 32                  )
  
@@ -488,7 +488,7 @@ Index: oce/inc/Standard_Real.hxx
 ===================================================================
 --- oce.orig/inc/Standard_Real.hxx
 +++ oce/inc/Standard_Real.hxx
-@@ -24,11 +24,16 @@
+@@ -24,11 +24,16 @@ __Standard_API Handle_Standard_Type& Sta
  #undef PI
  #endif 
  
@@ -510,7 +510,7 @@ Index: oce/inc/Standard_math.hxx
 ===================================================================
 --- oce.orig/inc/Standard_math.hxx
 +++ oce/inc/Standard_math.hxx
-@@ -29,6 +29,10 @@
+@@ -29,6 +29,10 @@ __Standard_API double __cdecl acosh ( do
  __Standard_API double __cdecl asinh ( double );
  __Standard_API double __cdecl atanh ( double );
  
@@ -525,7 +525,7 @@ Index: oce/inc/Standard_values.h
 ===================================================================
 --- oce.orig/inc/Standard_values.h
 +++ oce/inc/Standard_values.h
-@@ -18,7 +18,7 @@
+@@ -18,7 +18,7 @@ Facility : CAS-CADE V1.3A
  
  */
  
@@ -534,7 +534,7 @@ Index: oce/inc/Standard_values.h
  #error "Wrong compiler options has been detected. Add /DWNT option for proper compilation!!!!!"
  #endif
  
-@@ -41,6 +41,10 @@
+@@ -41,6 +41,10 @@ Facility : CAS-CADE V1.3A
  # include <limits>
  #endif
  
@@ -634,7 +634,7 @@ Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx
 +++ oce/src/Draw/Draw_Window.cxx
-@@ -1255,7 +1255,9 @@
+@@ -1255,7 +1255,9 @@ prompt:
  #include <Draw_Appli.hxx>
  #include <OSD.hxx>
  
@@ -736,7 +736,7 @@ Index: oce/src/OSD/OSD.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD.cxx
 +++ oce/src/OSD/OSD.cxx
-@@ -95,10 +95,10 @@
+@@ -95,10 +95,10 @@ Standard_Boolean OSD::CStringToReal(cons
  //=======================================================================
  
  #ifdef WNT
@@ -755,7 +755,7 @@ Index: oce/src/OSD/OSD_Environment.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Environment.cxx
 +++ oce/src/OSD/OSD_Environment.cxx
-@@ -215,6 +215,8 @@
+@@ -215,6 +215,8 @@ Standard_Integer OSD_Environment::Error(
  
  #include <windows.h>
  
@@ -768,7 +768,7 @@ Index: oce/src/OSD/OSD_FileNode.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_FileNode.cxx
 +++ oce/src/OSD/OSD_FileNode.cxx
-@@ -441,6 +441,8 @@
+@@ -441,6 +441,8 @@ Standard_Integer OSD_FileNode::Error()co
  # include <tchar.h>
  #endif  // _INC_TCHAR
  
@@ -794,7 +794,7 @@ Index: oce/src/OSD/OSD_Process.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Process.cxx
 +++ oce/src/OSD/OSD_Process.cxx
-@@ -216,7 +216,7 @@
+@@ -216,7 +216,7 @@ Standard_Integer OSD_Process::Error()con
  #include <Quantity_Date.hxx>
  
  #include <OSD_WNT_1.hxx>
@@ -807,7 +807,7 @@ Index: oce/src/OSD/OSD_SharedLibrary.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_SharedLibrary.cxx
 +++ oce/src/OSD/OSD_SharedLibrary.cxx
-@@ -303,9 +303,18 @@
+@@ -303,9 +303,18 @@ OSD_Function OSD_SharedLibrary :: DlSymb
  
   OSD_Function func = ( OSD_Function )GetProcAddress (  ( HMODULE )myHandle, Name  );
  
@@ -871,7 +871,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
                             Standard_True;
  #else
                             Standard_False;
-@@ -16,6 +16,12 @@
+@@ -16,6 +16,12 @@ static Standard_Boolean fSETranslator =
  #ifdef NOUSER
  #undef NOUSER
  #endif
@@ -884,7 +884,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
  #include <windows.h>
  
  #include <OSD_Exception_ACCESS_VIOLATION.hxx>
-@@ -44,6 +50,136 @@
+@@ -44,6 +50,136 @@ static Standard_Boolean fSETranslator =
  #include <malloc.h>
  #endif
  
@@ -1021,7 +1021,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
  #include <process.h>
  #include <signal.h>
  #include <float.h>
-@@ -282,7 +418,7 @@
+@@ -282,7 +418,7 @@ static LONG CallHandler (DWORD dwExcepti
  
    case EXCEPTION_STACK_OVERFLOW:
  //      cout << "CallHandler : EXCEPTION_STACK_OVERFLOW:" << endl ;
@@ -1030,7 +1030,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
      // try recovering from stack overflow: available in MS VC++ 7.0
      if (!_resetstkoflw())
        lstrcpy (  buffer, TEXT( "Unrecoverable STACK OVERFLOW" )  );
-@@ -357,7 +493,7 @@
+@@ -357,7 +493,7 @@ static LONG CallHandler (DWORD dwExcepti
  //purpose  : Translate Structural Exceptions into C++ exceptions
  //=======================================================================
  
@@ -1039,7 +1039,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
  static void TranslateSE( unsigned int theCode, EXCEPTION_POINTERS* theExcPtr )
  {
    ptrdiff_t info1 = 0, info0 = 0;
-@@ -373,7 +509,7 @@
+@@ -373,7 +509,7 @@ static void TranslateSE( unsigned int th
  //==== SetSignal 
  //============================================================================
  
@@ -1048,7 +1048,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
  // MSV 31.08.2005
  // If we compile this file under MSVC 7.1 with the default options for 
  // exception handling (/GX or /EHsc) then the following warning is issued:
-@@ -425,7 +561,7 @@
+@@ -425,7 +561,7 @@ void OSD :: SetSignal ( const Standard_B
     SetConsoleCtrlHandler ( &_osd_ctrl_break_handler, TRUE );
   }
  
@@ -1057,7 +1057,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
   if (fSETranslator) {
     // use Structural Exception translator (one per thread)
     _set_se_translator( TranslateSE );
-@@ -550,8 +686,10 @@
+@@ -550,8 +686,10 @@ static LONG __fastcall _osd_raise ( DWOR
    case EXCEPTION_FLT_INVALID_OPERATION:
    case EXCEPTION_FLT_DENORMAL_OPERAND:
    case EXCEPTION_FLT_INEXACT_RESULT:
@@ -1068,7 +1068,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
         Standard_NumericError :: Raise ( msg );
    default:
      break;
-@@ -700,12 +838,12 @@
+@@ -700,12 +838,12 @@ void OSD::SegvHandler(const OSD_Signals
  //=======================================================================
  
  void OSD::UseSETranslator( const Standard_Boolean
@@ -1112,7 +1112,7 @@ Index: oce/src/OpenGl/OpenGl_attri.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_attri.cxx
 +++ oce/src/OpenGl/OpenGl_attri.cxx
-@@ -108,6 +108,9 @@
+@@ -108,6 +108,9 @@ used in immediat mode context.
    /* OCC22216 NOTE: linker dependency can be switched off by undefining macro. 
       Pragma comment for gl2ps.lib is defined only here. */ 
    
@@ -1126,7 +1126,7 @@ Index: oce/src/OpenGl/OpenGl_graduatedtrihedron.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_graduatedtrihedron.cxx
 +++ oce/src/OpenGl/OpenGl_graduatedtrihedron.cxx
-@@ -387,6 +387,11 @@
+@@ -387,6 +387,11 @@ static void drawText(char* text, char* f
  */
  }
  
@@ -1142,7 +1142,7 @@ Index: oce/src/OpenGl/OpenGl_polygon.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_polygon.cxx
 +++ oce/src/OpenGl/OpenGl_polygon.cxx
-@@ -78,7 +78,7 @@
+@@ -78,7 +78,7 @@ on confuse point.
  #endif // APIENTRY
  # define STATIC static
  #else
@@ -1151,7 +1151,7 @@ Index: oce/src/OpenGl/OpenGl_polygon.cxx
  #define STATIC
  typedef double GLUcoord;
  #endif  /* WNT */
-@@ -857,7 +857,7 @@
+@@ -857,7 +857,7 @@ draw_polygon_concav( tel_polygon_data d,
        xyz[0] = ptr->xyz[0];
        xyz[1] = ptr->xyz[1];
        xyz[2] = ptr->xyz[2];    
@@ -1164,7 +1164,7 @@ Index: oce/src/OpenGl/OpenGl_polygonholes.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_polygonholes.cxx
 +++ oce/src/OpenGl/OpenGl_polygonholes.cxx
-@@ -55,7 +55,7 @@
+@@ -55,7 +55,7 @@ on confuse point.
  #endif // APIENTRY
  # define STATIC static
  #else
@@ -1177,7 +1177,7 @@ Index: oce/src/OpenGl/OpenGl_togl_print.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_togl_print.cxx
 +++ oce/src/OpenGl/OpenGl_togl_print.cxx
-@@ -36,6 +36,10 @@
+@@ -36,6 +36,10 @@ HDC     printer;
  HGDIOBJ oldObj;
  #endif
  
@@ -1192,7 +1192,7 @@ Index: oce/src/OpenGl/OpenGl_togl_redraw.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_togl_redraw.cxx
 +++ oce/src/OpenGl/OpenGl_togl_redraw.cxx
-@@ -63,6 +63,10 @@
+@@ -63,6 +63,10 @@ GLboolean g_fBitmap;
  #include <InterfaceGraphic_Graphic3d.hxx>
  #include <InterfaceGraphic_Visual3d.hxx>
  
@@ -1207,7 +1207,7 @@ Index: oce/src/PlotMgt/PlotMgt.cxx
 ===================================================================
 --- oce.orig/src/PlotMgt/PlotMgt.cxx
 +++ oce/src/PlotMgt/PlotMgt.cxx
-@@ -253,7 +253,7 @@
+@@ -253,7 +253,7 @@ static Standard_Real aPaperWidths [] = {
    // Letter, Legal, Statement, Executive, Folio, Quarto
    21.59,  21.59,  13.97,  18.41,  21.59,  21.50,
    // Envelope, Monarch
@@ -1248,7 +1248,7 @@ Index: oce/src/Standard/Standard_MMgrOpt.cxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_MMgrOpt.cxx
 +++ oce/src/Standard/Standard_MMgrOpt.cxx
-@@ -846,7 +846,11 @@
+@@ -846,7 +846,11 @@ void Standard_MMgrOpt::FreeMemory (Stand
      // recover handle to the memory mapping stored just before the block
      const HANDLE * aMBlock = (const HANDLE *)aBlock;
      HANDLE hMap = *(--aMBlock);
@@ -1290,7 +1290,7 @@ Index: oce/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
 ===================================================================
 --- oce.orig/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
 +++ oce/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
-@@ -325,7 +325,11 @@
+@@ -325,7 +325,11 @@ Standard_Integer BOOPCHK(Draw_Interpreto
    if (!strcmp(a[0],"tchk")) { 
  #ifdef DEB
  //    Standard_IMPORT extern Standard_Integer TopOpeBRepTool_BOOOPE_CHECK_DEB;
@@ -1319,7 +1319,7 @@ Index: oce/src/Viewer2dTest/Viewer2dTest_ViewerCommands.cxx
 ===================================================================
 --- oce.orig/src/Viewer2dTest/Viewer2dTest_ViewerCommands.cxx
 +++ oce/src/Viewer2dTest/Viewer2dTest_ViewerCommands.cxx
-@@ -823,7 +823,7 @@
+@@ -823,7 +823,7 @@ static LRESULT WINAPI Viewer2dWindowProc
  //function : ViewerMainLoop2d
  //purpose  : Get a Event on the view and dispatch it
  //==============================================================================
@@ -1346,7 +1346,7 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
  #define OCC120
  
  //==============================================================================
-@@ -933,9 +940,7 @@
+@@ -933,9 +940,7 @@ static LRESULT WINAPI ViewerWindowProc(
  //function : ViewerMainLoop
  //purpose  : Get a Event on the view and dispatch it
  //==============================================================================
@@ -1357,7 +1357,7 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
  {
  
    //cout << "No yet implemented on WNT" << endl;
-@@ -972,22 +977,6 @@
+@@ -972,22 +977,6 @@ static int ViewerMainLoop(Standard_Integ
  
  #else
  
@@ -1471,7 +1471,7 @@ Index: oce/src/VrmlData/VrmlData_Scene.cxx
  #if defined(_MSC_VER)
  # define FMT_SZ_Q "I"
  #elif defined(__GNUC__)
-@@ -92,8 +94,12 @@
+@@ -92,8 +94,12 @@ const Handle(VrmlData_Node)& VrmlData_Sc
    if (theN.IsNull() == Standard_False)
      if (theN->IsKind (STANDARD_TYPE(VrmlData_WorldInfo)) == Standard_False) {
        myMutex.Lock();
@@ -1490,7 +1490,7 @@ Index: oce/src/VrmlData/VrmlData_ShapeConvert.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_ShapeConvert.cxx
 +++ oce/src/VrmlData/VrmlData_ShapeConvert.cxx
-@@ -285,8 +285,12 @@
+@@ -285,8 +285,12 @@ void VrmlData_ShapeConvert::Convert (con
          if (aTShapeNode.IsNull() == Standard_False) {
            const Handle(VrmlData_ShapeNode) aShapeNode =
              new VrmlData_ShapeNode (myScene, 0L);
@@ -1542,7 +1542,7 @@ Index: oce/src/WNT/EHDC.cxx
  typedef struct _fpoint {
  
                  FLOAT x;
-@@ -33,6 +43,8 @@
+@@ -33,6 +43,8 @@ static void WINAPI _XFORMApplyf  ( PFPOI
  static void WINAPI _RenderPath ( HDC, LPPOINT, PBYTE, int );
  static int  WINAPI _TextPath   ( HDC, int, int, void*, LPPOINT, PBYTE, int, PSIZE, BOOL );
  
@@ -1610,7 +1610,7 @@ Index: oce/src/WNT/WNT_DDriver.cxx
  #pragma comment( lib, "winspool.lib" )
  #pragma comment( lib, "advapi32.lib" )
  
-@@ -102,7 +109,12 @@
+@@ -102,7 +109,12 @@ static void __fastcall         _dd_fill_
  static int  __fastcall         _dd_dev_size  ( HDC, int );
  
  static int CALLBACK _dd_enum_proc (
@@ -1624,7 +1624,7 @@ Index: oce/src/WNT/WNT_DDriver.cxx
                       int, LPARAM
                      );
  
-@@ -1983,10 +1995,15 @@
+@@ -1983,10 +1995,15 @@ static int __fastcall _dd_dev_size ( HDC
  static int CALLBACK _dd_enum_proc (
                       HDC                         hDC,
                       HANDLETABLE FAR*       lpHTable,
@@ -1645,7 +1645,7 @@ Index: oce/src/WNT/WNT_IconBox.cxx
 ===================================================================
 --- oce.orig/src/WNT/WNT_IconBox.cxx
 +++ oce/src/WNT/WNT_IconBox.cxx
-@@ -30,7 +30,7 @@
+@@ -30,7 +30,7 @@ WNT_IconBox :: WNT_IconBox (
                 ) : WNT_Window (
                      aDevice, aName,
                      new WNT_WClass (
@@ -1654,7 +1654,7 @@ Index: oce/src/WNT/WNT_IconBox.cxx
                           CS_HREDRAW | CS_VREDRAW
                          ),
                      aStyle | WS_VSCROLL,
-@@ -322,8 +322,11 @@
+@@ -322,8 +322,11 @@ Standard_Boolean WNT_IconBox :: IconSize
  
   }  // end for
  
@@ -1672,7 +1672,7 @@ Index: oce/src/WNT/WNT_WClass.cxx
 ===================================================================
 --- oce.orig/src/WNT/WNT_WClass.cxx
 +++ oce/src/WNT/WNT_WClass.cxx
-@@ -47,7 +47,7 @@
+@@ -47,7 +47,7 @@ WNT_WClass::WNT_WClass (
  
    lpszName = new char[ strlen ( aClassName ) + 1 ];
    strcpy ( (Standard_PCharacter)lpszName, aClassName );
@@ -1685,7 +1685,7 @@ Index: oce/src/WNT/WNT_Window.cxx
 ===================================================================
 --- oce.orig/src/WNT/WNT_Window.cxx
 +++ oce/src/WNT/WNT_Window.cxx
-@@ -514,10 +514,10 @@
+@@ -514,10 +514,10 @@ Aspect_TypeOfResize WNT_Window :: DoResi
  
   if ( wp.showCmd != SW_SHOWMINIMIZED ) {
  
@@ -1700,7 +1700,7 @@ Index: oce/src/WNT/WNT_Window.cxx
  
    switch ( mask ) {
  
-@@ -1207,7 +1207,7 @@
+@@ -1207,7 +1207,7 @@ void WNT_Window :: doCreate (
  
   if ( wProc != &WNT_WndProc ) {
  
@@ -1713,7 +1713,7 @@ Index: oce/src/XmlMDataStd/XmlMDataStd_NamedDataDriver.cxx
 ===================================================================
 --- oce.orig/src/XmlMDataStd/XmlMDataStd_NamedDataDriver.cxx
 +++ oce/src/XmlMDataStd/XmlMDataStd_NamedDataDriver.cxx
-@@ -42,6 +42,8 @@
+@@ -42,6 +42,8 @@ IMPLEMENT_DOMSTRING (LastRealArrIndex,
  IMPLEMENT_DOMSTRING (ExtString, "string")
  IMPLEMENT_DOMSTRING (Value,     "value")
  

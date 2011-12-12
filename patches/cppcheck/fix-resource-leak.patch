@@ -11,7 +11,7 @@ Index: oce/src/DrawResources/DIFF.c
 ===================================================================
 --- oce.orig/src/DrawResources/DIFF.c
 +++ oce/src/DrawResources/DIFF.c
-@@ -17,6 +17,7 @@
+@@ -17,6 +17,7 @@ int main(int argc, char **argv) {
    FILE *fp2 = fopen(argv[2],"r");
    if(fp2 == NULL) { 
      fprintf(stderr,"\n Unable to open file2:%s \n",argv[2]);
@@ -19,7 +19,7 @@ Index: oce/src/DrawResources/DIFF.c
      return(-3);
    }
  
-@@ -38,7 +39,8 @@
+@@ -38,7 +39,8 @@ int main(int argc, char **argv) {
        }    
      }
    }

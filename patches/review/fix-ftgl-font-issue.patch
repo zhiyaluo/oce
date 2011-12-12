@@ -11,19 +11,22 @@ z buffer management related).
  src/OpenGl/OpenGl_FontMgr.cxx |   40 +++++++++++++---------------------------
  1 files changed, 13 insertions(+), 27 deletions(-)
 
-diff --git a/src/OpenGl/OpenGl_FontMgr.cxx b/src/OpenGl/OpenGl_FontMgr.cxx
-index a6e204d..96401a3 100644
---- a/src/OpenGl/OpenGl_FontMgr.cxx
-+++ b/src/OpenGl/OpenGl_FontMgr.cxx
-@@ -334,40 +334,26 @@ void OpenGl_FontMgr::render_text( const Standard_Integer id, const char* text,
+Index: oce/src/OpenGl/OpenGl_FontMgr.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_FontMgr.cxx
++++ oce/src/OpenGl/OpenGl_FontMgr.cxx
+@@ -329,40 +329,26 @@ void OpenGl_FontMgr::render_text( const
      glPushMatrix();
  
      glScalef( _XCurrentScale, _YCurrentScale, 1 );
 -    glPushAttrib( GL_ENABLE_BIT );
--
++    static GLint param;// = new GLint;
+ 
 -    GLboolean enableTexture = glIsEnabled(GL_TEXTURE_2D);
 -    GLboolean enableDepthTest = glIsEnabled(GL_DEPTH_TEST);
--
++    glGetTexEnviv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, &param);
++    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+ 
 -    if( !enableTexture )
 -      glEnable(GL_TEXTURE_2D);
 -    if ( !is2d ) {
@@ -33,15 +36,10 @@ index a6e204d..96401a3 100644
 -    else if ( enableDepthTest ) {
 -        glDisable(GL_DEPTH_TEST);
 -    }
-+    static GLint param;// = new GLint;
-+
-+    glGetTexEnviv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, &param);
-+    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
++    GLboolean enableAlpha = glIsEnabled(GL_ALPHA_TEST);
  
 -    GLint* param = new GLint;    
 -    glGetTexEnviv(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, param);
-+    GLboolean enableAlpha = glIsEnabled(GL_ALPHA_TEST);
-+
 +    if (!enableAlpha) {
 +      glAlphaFunc(GL_GEQUAL, 0.285f);
 +      glEnable(GL_ALPHA_TEST);
@@ -69,6 +67,3 @@ index a6e204d..96401a3 100644
      glMatrixMode( GL_MODELVIEW );
      glPopMatrix();
    }
--- 
-1.7.7.3
-

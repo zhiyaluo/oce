@@ -13,7 +13,7 @@ Index: oce/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
 ===================================================================
 --- oce.orig/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
 +++ oce/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
-@@ -759,7 +759,7 @@
+@@ -759,7 +759,7 @@ Standard_Integer Adaptor3d_CurveOnSurfac
    // value into myIntervals which will be equal first value.
    myIntervals = new TColStd_HArray1OfReal(1,nbpoint);
    i=0;
@@ -26,7 +26,7 @@ Index: oce/src/GeomFill/GeomFill_GuideTrihedronAC.cxx
 ===================================================================
 --- oce.orig/src/GeomFill/GeomFill_GuideTrihedronAC.cxx
 +++ oce/src/GeomFill/GeomFill_GuideTrihedronAC.cxx
-@@ -383,7 +383,7 @@
+@@ -383,7 +383,7 @@ void GeomFill_GuideTrihedronAC::SetInter
    ABiNormal.SetCoord(0.,0.,0.);
    gp_Vec T, N, B;
    
@@ -39,7 +39,7 @@ Index: oce/src/GeomFill/GeomFill_GuideTrihedronPlan.cxx
 ===================================================================
 --- oce.orig/src/GeomFill/GeomFill_GuideTrihedronPlan.cxx
 +++ oce/src/GeomFill/GeomFill_GuideTrihedronPlan.cxx
-@@ -536,7 +536,7 @@
+@@ -536,7 +536,7 @@ void GeomFill_GuideTrihedronPlan::SetInt
    ABiNormal.SetCoord(0.,0.,0.);
    gp_Vec T, N, B;
    

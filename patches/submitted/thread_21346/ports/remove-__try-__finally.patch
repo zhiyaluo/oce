@@ -21,7 +21,7 @@ Index: oce/src/OSD/OSD_File.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_File.cxx
 +++ oce/src/OSD/OSD_File.cxx
-@@ -1747,11 +1747,6 @@
+@@ -1747,11 +1747,6 @@ OSD_File OSD_File :: BuildTemporary () {
  
  //-------------------------------------------------finpri???980424
  
@@ -33,7 +33,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
  void OSD_File :: SetLock ( const OSD_LockType Lock ) {
  
-@@ -1762,12 +1757,13 @@
+@@ -1762,12 +1757,13 @@ void OSD_File :: SetLock ( const OSD_Loc
   
   ZeroMemory (  &ovlp, sizeof ( OVERLAPPED )  );
  
@@ -49,7 +49,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
    } else if ( myLock == OSD_ReadLock || myLock == OSD_ExclusiveLock ) {
  
-@@ -1776,33 +1772,27 @@
+@@ -1776,33 +1772,27 @@ void OSD_File :: SetLock ( const OSD_Loc
    } else
  
     dwFlags = 0;
@@ -91,7 +91,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
  void OSD_File :: UnLock () {
  
-@@ -1891,11 +1881,6 @@
+@@ -1891,11 +1881,6 @@ Standard_Boolean OSD_File :: IsOpen () c
  
  }  // end OSD_File :: IsOpen
  
@@ -103,7 +103,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
  PSECURITY_DESCRIPTOR __fastcall _osd_wnt_protection_to_sd (
                                   const OSD_Protection& prot, BOOL fDir, char* fName
-@@ -1926,34 +1911,46 @@
+@@ -1926,34 +1911,46 @@ PSECURITY_DESCRIPTOR __fastcall _osd_wnt
   PSECURITY_DESCRIPTOR pfSD = NULL;
   BOOL                 fDummy;
   PFILE_ACE            pFileACE;
@@ -155,7 +155,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
  retry:
    if ( fName == NULL )
-@@ -2009,7 +2006,11 @@
+@@ -2009,7 +2006,11 @@ retry:
                    ( ( GetLengthSid ( pSIDworld ) + ACE_HEADER_SIZE ) << j )
                 );
  
@@ -168,7 +168,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
    if ( dwAccessAdmin != 0 )
  
-@@ -2115,17 +2116,17 @@
+@@ -2115,17 +2116,17 @@ retry:
     }  // end for
  
    }  // end if
@@ -192,7 +192,7 @@ Index: oce/src/OSD/OSD_File.cxx
    if ( !fOK ) {
  
     if ( retVal != NULL )
-@@ -2146,21 +2147,10 @@
+@@ -2146,21 +2147,10 @@ retry:
    if ( pTkPrimaryGroup != NULL ) FreeTokenInformation ( pTkPrimaryGroup );
    if ( pfSD            != NULL ) FreeFileSecurity     ( pfSD            );
   
@@ -214,7 +214,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
  static void __fastcall _test_raise ( Standard_Integer hFile, Standard_CString str ) {
  
-@@ -2708,11 +2698,6 @@
+@@ -2708,11 +2698,6 @@ Standard_Integer __fastcall _get_file_ty
  
  }  // end _get_file_type
  
@@ -226,7 +226,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
  BOOL __fastcall _osd_wnt_sd_to_protection (
                   PSECURITY_DESCRIPTOR pSD, OSD_Protection& prot, BOOL fDir
-@@ -2733,21 +2718,29 @@
+@@ -2733,21 +2718,29 @@ BOOL __fastcall _osd_wnt_sd_to_protectio
   BOOL          retVal = FALSE;
   GET_PROT_FUNC _get_prot_func = fDir ? &_get_protection_dir : &_get_protection;
  
@@ -262,7 +262,7 @@ Index: oce/src/OSD/OSD_File.cxx
    pSIDadmin = AdminSid ();
    pSIDworld = WorldSid ();
  
-@@ -2788,23 +2781,12 @@
+@@ -2788,23 +2781,12 @@ BOOL __fastcall _osd_wnt_sd_to_protectio
  
    retVal = TRUE;
    
@@ -287,7 +287,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
  static OSD_SingleProtection __fastcall _get_protection ( DWORD mask ) {
  
-@@ -3022,11 +3004,6 @@
+@@ -3022,11 +3004,6 @@ static OSD_SingleProtection __fastcall _
  
  }  // end _get_protection_dir
  
@@ -299,7 +299,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
  BOOL __fastcall _osd_print (const Standard_PCharacter pName, Standard_CString fName ) {
  
-@@ -3034,41 +3011,49 @@
+@@ -3034,41 +3011,49 @@ BOOL __fastcall _osd_print (const Standa
   HANDLE hPrinter;
   BYTE   jobInfo[ MAX_PATH + sizeof ( DWORD ) ];
   DWORD  dwNeeded, dwCode;
@@ -358,7 +358,7 @@ Index: oce/src/OSD/OSD_File.cxx
    if ( !fOK ) {
    
     BYTE  info[ 1024 ];
-@@ -3094,12 +3079,6 @@
+@@ -3094,12 +3079,6 @@ BOOL __fastcall _osd_print (const Standa
    }  // end if
  
    if ( hPrinter != NULL ) ClosePrinter ( hPrinter );
@@ -371,7 +371,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
   if ( !fOK ) SetLastError ( dwCode );
  
-@@ -3107,11 +3086,6 @@
+@@ -3107,11 +3086,6 @@ leave: ;       // added for VisualAge
                  
  }  // end _osd_print
  
@@ -387,7 +387,7 @@ Index: oce/src/OSD/OSD_FileNode.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_FileNode.cxx
 +++ oce/src/OSD/OSD_FileNode.cxx
-@@ -970,11 +970,6 @@
+@@ -970,11 +970,6 @@ void _osd_wnt_set_error ( OSD_Error& err
  
  }  // end _set_error
  
@@ -399,7 +399,7 @@ Index: oce/src/OSD/OSD_FileNode.cxx
  
  static BOOL __fastcall _get_file_time (
                          Standard_CString fName, LPSYSTEMTIME lpSysTime, BOOL fAccess
-@@ -985,46 +980,34 @@
+@@ -985,46 +980,34 @@ static BOOL __fastcall _get_file_time (
   FILETIME   ftLastWriteTime;
   LPFILETIME lpftPtr;
   HANDLE     hFile;
@@ -460,7 +460,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_WNT.cxx
 +++ oce/src/OSD/OSD_WNT.cxx
-@@ -110,12 +110,6 @@
+@@ -110,12 +110,6 @@ void FreeSD ( PSECURITY_DESCRIPTOR pSD )
  /******************************************************************************/
  /***/
  
@@ -473,7 +473,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  LPVOID GetTokenInformationEx ( HANDLE hToken, TOKEN_INFORMATION_CLASS tic ) {
  
   DWORD  errVal;
-@@ -123,8 +117,7 @@
+@@ -123,8 +117,7 @@ LPVOID GetTokenInformationEx ( HANDLE hT
   DWORD  dwSizeNeeded = 0;
   LPVOID buffer       = NULL;
   BOOL   fOK          = FALSE;
@@ -483,7 +483,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  
    do {
  
-@@ -134,46 +127,35 @@
+@@ -134,46 +127,35 @@ LPVOID GetTokenInformationEx ( HANDLE hT
     if (  !GetTokenInformation ( hToken, tic, buffer, dwSize, &dwSizeNeeded )  ) {
  
      if (   (  errVal = GetLastError ()  ) != ERROR_INSUFFICIENT_BUFFER   )
@@ -539,7 +539,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  /***/
  /******************************************************************************/
  /* Function : FreeTokenInformation                                          */
-@@ -432,13 +414,6 @@
+@@ -432,13 +414,6 @@ PSID NullSid ( void ) {
  /******************************************************************************/
  /***/
  
@@ -553,7 +553,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  PSECURITY_DESCRIPTOR GetFileSecurityEx ( LPCTSTR fileName, SECURITY_INFORMATION si ) {
  
   DWORD                errVal;
-@@ -446,8 +421,8 @@
+@@ -446,8 +421,8 @@ PSECURITY_DESCRIPTOR GetFileSecurityEx (
   DWORD                dwSizeNeeded = 0;
   PSECURITY_DESCRIPTOR retVal = NULL;
   BOOL                 fOK    = FALSE;
@@ -564,7 +564,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  
    do {
  
-@@ -460,21 +435,24 @@
+@@ -460,21 +435,24 @@ PSECURITY_DESCRIPTOR GetFileSecurityEx (
            )
     ) {
   
@@ -595,7 +595,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
   
    if ( !fOK && retVal != NULL ) {
    
-@@ -483,22 +461,10 @@
+@@ -483,22 +461,10 @@ PSECURITY_DESCRIPTOR GetFileSecurityEx (
    
    }  /* end if */
   
@@ -618,7 +618,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  /***/
  /******************************************************************************/
  /* Function : FreeFileSecurity                                              */
-@@ -525,12 +491,6 @@
+@@ -525,12 +491,6 @@ void FreeFileSecurity ( PSECURITY_DESCRI
  /******************************************************************************/
  /***/
  
@@ -631,7 +631,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  BOOL LookupAccountSidEx ( PSID pSID, LPTSTR* name, LPTSTR* domain ) {
  
   DWORD        errVal;
-@@ -538,8 +498,7 @@
+@@ -538,8 +498,7 @@ BOOL LookupAccountSidEx ( PSID pSID, LPT
   DWORD        dwSizeDomain = 0;
   BOOL         retVal       = FALSE;
   SID_NAME_USE eUse;
@@ -641,7 +641,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  
    do {   
  
-@@ -550,21 +509,26 @@
+@@ -550,21 +509,26 @@ BOOL LookupAccountSidEx ( PSID pSID, LPT
            )
     ) {
     
@@ -674,7 +674,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  
    if ( !retVal ) {
    
-@@ -573,22 +537,10 @@
+@@ -573,22 +537,10 @@ BOOL LookupAccountSidEx ( PSID pSID, LPT
    
    }  /* end if */
   
@@ -701,7 +701,7 @@ Index: oce/src/OSD/OSD_WNT_1.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_WNT_1.cxx
 +++ oce/src/OSD/OSD_WNT_1.cxx
-@@ -269,47 +269,35 @@
+@@ -269,47 +269,35 @@ short MapY (LONG aY) {
    return (short)(aY*8) / HIWORD (baseUnits);
  }
  
@@ -759,7 +759,7 @@ Index: oce/src/OSD/OSD_WNT_1.cxx
  
  /////////////////ON_COMMAND/////////////////////////////////////
  void MsgBox_OnCommand (HWND hwnd, _TINT id, HWND hCtl, UINT codeNotify) {
-@@ -345,11 +333,6 @@
+@@ -345,11 +333,6 @@ BOOL CALLBACK MsgBoxProc (HWND hdlg,
  
  /////////////////////////////////////////////////////////////////
  
@@ -771,7 +771,7 @@ Index: oce/src/OSD/OSD_WNT_1.cxx
  
  _TINT MsgBox ( HWND hParent,
                 LPTSTR  lpText,
-@@ -370,16 +353,17 @@
+@@ -370,16 +353,17 @@ _TINT MsgBox ( HWND hParent,
    short           butCount  = 0, butMaxWidth = 0, butMaxHeight = 0;
    short           butSpace = 8, butOffset = 0;
  
@@ -792,7 +792,7 @@ Index: oce/src/OSD/OSD_WNT_1.cxx
   
      // Calculate needed size of buffer
      bufSize = 14*sizeof(WORD)  + _tcslen(lpCaption)*CHR_SIZE;
-@@ -399,7 +383,7 @@
+@@ -399,7 +383,7 @@ _TINT MsgBox ( HWND hParent,
      }
  
      pDlgTemplate = p = (PWORD) LocalAlloc (LPTR, bufSize);
@@ -801,7 +801,7 @@ Index: oce/src/OSD/OSD_WNT_1.cxx
  
      lStyle = DS_MODALFRAME | DS_SYSMODAL | WS_POPUP | WS_CAPTION;
      *p++ = LOWORD (lStyle);
-@@ -518,9 +502,13 @@
+@@ -518,9 +502,13 @@ _TINT MsgBox ( HWND hParent,
          *pItemsCount += 1;
        }
      } // Childs
@@ -817,7 +817,7 @@ Index: oce/src/OSD/OSD_WNT_1.cxx
      int res = -1;
      if ( pDlgTemplate )
        res = DialogBoxIndirect (
-@@ -535,16 +523,6 @@
+@@ -535,16 +523,6 @@ _TINT MsgBox ( HWND hParent,
      return ( res );
    }
  
@@ -838,7 +838,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_signal_WNT.cxx
 +++ oce/src/OSD/OSD_signal_WNT.cxx
-@@ -565,12 +565,6 @@
+@@ -565,12 +565,6 @@ static LONG __fastcall _osd_raise ( DWOR
  //==== _osd_debug 
  //============================================================================
  
@@ -851,7 +851,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
  LONG _osd_debug ( void ) {
  
   LONG action ;
-@@ -586,29 +580,33 @@
+@@ -586,29 +580,33 @@ LONG _osd_debug ( void ) {
    SECURITY_ATTRIBUTES sa;
    PROCESS_INFORMATION pi;
    STARTUPINFO         si;
@@ -891,7 +891,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
     wsprintf (  cmdLine, keyValue, GetCurrentProcessId (), hEvent  );
  
     ZeroMemory (  &si, sizeof ( STARTUPINFO )  );
-@@ -621,8 +619,11 @@
+@@ -621,8 +619,11 @@ LONG _osd_debug ( void ) {
             NULL, cmdLine, NULL, NULL, TRUE, CREATE_DEFAULT_ERROR_MODE,
             NULL, NULL, &si, &pi
            )
@@ -904,7 +904,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
  //   cout << "_osd_debug -> WaitForSingleObject " << endl ;
     WaitForSingleObject ( hEvent, INFINITE );
  //   cout << "_osd_debug <- WaitForSingleObject -> CloseHandle " << endl ;
-@@ -633,18 +634,13 @@
+@@ -633,18 +634,13 @@ LONG _osd_debug ( void ) {
  //   cout << "_osd_debug fDbgLoaded  " << endl ;
     fDbgLoaded = TRUE;
    
@@ -924,7 +924,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
   }  /* end if */
  
   action = fDbgLoaded ? EXCEPTION_CONTINUE_EXECUTION : EXCEPTION_EXECUTE_HANDLER;
-@@ -654,12 +650,6 @@
+@@ -654,12 +650,6 @@ LONG _osd_debug ( void ) {
  
  }  // end _osd_debug
  
@@ -941,7 +941,7 @@ Index: oce/src/OpenGl/OpenGl_txgl.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_txgl.cxx
 +++ oce/src/OpenGl/OpenGl_txgl.cxx
-@@ -698,12 +698,17 @@
+@@ -698,12 +698,17 @@ __declspec( dllexport ) int __fastcall _
      HGLRC  hglrc  = NULL;
      TStatus       retVal = TFailure;
  
@@ -961,7 +961,7 @@ Index: oce/src/OpenGl/OpenGl_txgl.cxx
        hte = _Txgl_Map.ChangeFind( ( Tint )win );
  
  #ifdef BUC60691
-@@ -726,13 +731,8 @@
+@@ -726,13 +731,8 @@ __declspec( dllexport ) int __fastcall _
  #endif
          retVal = TFailure;  
        } else retVal = TSuccess;
@@ -989,7 +989,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  //***//
  typedef struct {
  
-@@ -108,6 +109,7 @@
+@@ -108,6 +109,7 @@ HBITMAP LoadImageFromFile (
   HANDLE   hFile, hFileMap = NULL;
   HBITMAP  retVal = NULL;
   DWORD    dwProtect, dwAccess;
@@ -997,7 +997,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
   if ( WNT_osVer.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS ) {
  
-@@ -143,7 +145,7 @@
+@@ -143,7 +145,7 @@ HBITMAP LoadImageFromFile (
   _makepath ( ifl, drv, dir, fnm, ext );
  #endif
  
@@ -1006,7 +1006,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    hFile = CreateFile (
  #ifdef IMP080200
-@@ -154,22 +156,32 @@
+@@ -154,22 +156,32 @@ HBITMAP LoadImageFromFile (
             OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL
  		  );
  
@@ -1045,7 +1045,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
    if (   memcmp (  ( const void* )lpvFile, ( const void* )"BM", 2  ) == 0   )
  
     retVal = loadBMP ( gDev );
-@@ -183,10 +195,7 @@
+@@ -183,10 +195,7 @@ HBITMAP LoadImageFromFile (
    else  // assume XWD file
  
     retVal = loadXWD ( gDev );
@@ -1057,7 +1057,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    if ( lpvFile  != NULL ) {
  
-@@ -198,8 +207,6 @@
+@@ -198,8 +207,6 @@ HBITMAP LoadImageFromFile (
    if ( hFileMap != NULL                 ) CloseHandle ( hFileMap );
    if ( hFile    != INVALID_HANDLE_VALUE ) CloseHandle ( hFile    );
  
@@ -1066,7 +1066,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
   if ( hDevCtx == NULL ) ReleaseDC ( NULL, hDC );
  
   return retVal;
-@@ -215,8 +222,9 @@
+@@ -215,8 +222,9 @@ int __WNT_API SaveWindowToFile (
   HDC      hDCmem;
   HBITMAP  hBmp = NULL, hOldBmp;
   HPALETTE hOldPal;
@@ -1077,7 +1077,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    hDC = GetDC ( hWnd );
  #ifdef TEST
-@@ -234,8 +242,10 @@
+@@ -234,8 +242,10 @@ int __WNT_API SaveWindowToFile (
  
    hBmp = CreateCompatibleBitmap ( hDC, w, h );
  
@@ -1090,7 +1090,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
    hOldBmp = SelectBitmap ( hDCmem, hBmp );
  
     BitBlt ( hDCmem, 0, 0, w, h, hDC, x, y, SRCCOPY );
-@@ -243,10 +253,7 @@
+@@ -243,10 +253,7 @@ int __WNT_API SaveWindowToFile (
    SelectBitmap ( hDCmem, hOldBmp );
  
    retVal = SaveBitmapToFile ( gDev, hBmp, fName, 0, 0, w, h );
@@ -1102,7 +1102,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
  #ifdef TEST
    fWindow = FALSE;
-@@ -261,8 +268,6 @@
+@@ -261,8 +268,6 @@ int __WNT_API SaveWindowToFile (
    DeleteDC ( hDCmem );
    ReleaseDC ( hWnd, hDC );
  
@@ -1111,7 +1111,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
   return retVal;
  
  }  // end SaveWindowToFile
-@@ -336,8 +341,8 @@
+@@ -336,8 +341,8 @@ int SaveBitmapToFile (Handle(WNT_Graphic
    HBITMAP  hNewBmp = NULL;
    HPALETTE hOldPal;
    BOOL     newBmp  = FALSE, newDC = FALSE;
@@ -1122,7 +1122,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    #ifdef TEST
      if (!fWindow)
-@@ -376,20 +381,22 @@
+@@ -376,20 +381,22 @@ int SaveBitmapToFile (Handle(WNT_Graphic
        {
          SelectPalette (hDC, hOldPal, FALSE);
        }
@@ -1150,7 +1150,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
    return retVal;
  }  // end SaveBitmapToFile
  //***//
-@@ -424,7 +431,7 @@
+@@ -424,7 +431,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
   LPVOID           imageData;
   DWORD            dataSize;
  
@@ -1159,7 +1159,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    xwdHdr = ( XWDFileHeader* )lpvFile;
  
-@@ -433,7 +440,7 @@
+@@ -433,7 +440,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
    if ( xwdHdr -> file_version  != XWD_FILE_VERSION ||
         xwdHdr -> pixmap_format != ZPixmap          ||
         xwdHdr -> header_size   <  sizeof ( XWDFileHeader )
@@ -1168,7 +1168,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    xColor = ( XColor* )(  ( char* )lpvFile + xwdHdr -> header_size  );
  
-@@ -469,7 +476,7 @@
+@@ -469,7 +476,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
  
  	else
  
@@ -1177,7 +1177,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
      break;
  
-@@ -494,7 +501,7 @@
+@@ -494,7 +501,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
  
  	 else
  
@@ -1186,7 +1186,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
      break;
  
-@@ -502,7 +509,7 @@
+@@ -502,7 +509,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
  
    pBmi = ( PBITMAPINFO )MALLOC( nBytes );
  
@@ -1195,7 +1195,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    pBmi -> bmiHeader.biSize          = sizeof ( BITMAPINFOHEADER );
    pBmi -> bmiHeader.biWidth	        = xwdHdr -> pixmap_width;
-@@ -541,7 +548,7 @@
+@@ -541,7 +548,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
  
  	  pbInit = ( PBYTE )MALLOC( bitmapSize );
  
@@ -1204,7 +1204,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
  	  newMem = TRUE;
  
-@@ -561,7 +568,7 @@
+@@ -561,7 +568,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
  
       ptrDIB = ( PBYTE )MALLOC( dataSize );
  
@@ -1213,7 +1213,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
  	 CopyMemory (  ( PVOID )ptrDIB, ( PVOID )pbInit, dataSize  );
  	 FillMemory (  ( PVOID )colors, MAXCOLOR * sizeof ( WORD ), 0xFFFF );
-@@ -624,7 +631,7 @@
+@@ -624,7 +631,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
  
  	  pbInit = ( PBYTE )MALLOC( bitmapSize );
  
@@ -1222,7 +1222,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
  	  newMem = TRUE;
  
-@@ -690,7 +697,7 @@
+@@ -690,7 +697,7 @@ AllocColors_16:
  
  	  pbInit = ( PBYTE )MALLOC( bitmapSize );
  
@@ -1231,7 +1231,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
  	  newMem = TRUE;
  
-@@ -743,7 +750,7 @@
+@@ -743,7 +750,7 @@ AllocColors_16:
  
  	   default:
  
@@ -1240,7 +1240,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
        }  // end switch ( xwdHdr -> bits_per_pixel . . . )
  
-@@ -753,7 +760,7 @@
+@@ -753,7 +760,7 @@ AllocColors_16:
  
       case 24:
  
@@ -1249,7 +1249,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
       case 32:
  
-@@ -827,15 +834,13 @@
+@@ -827,15 +834,13 @@ AllocColors_16:
  
     SelectPalette ( hDC, hOldPal, FALSE );
  
@@ -1267,7 +1267,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
   return retVal;
  
  }  // end readXWD
-@@ -906,8 +911,7 @@
+@@ -906,8 +911,7 @@ static HBITMAP loadBMP (  Handle( WNT_Gr
   UINT              nColors;
   DWORD             dwWidth, dwHeight;
   BOOL              os2Flag;
@@ -1277,7 +1277,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    pBmfh = ( PBITMAPFILEHEADER )lpvFile;
    pBmih = ( PBITMAPINFOHEADER )(  ( PBYTE )lpvFile + sizeof ( BITMAPFILEHEADER )  );
-@@ -924,8 +928,10 @@
+@@ -924,8 +928,10 @@ static HBITMAP loadBMP (  Handle( WNT_Gr
  						         sizeof ( RGBQUAD ) * nColors
  					            );
  
@@ -1289,7 +1289,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
     pBmih -> biSize        = sizeof ( BITMAPINFOHEADER );
     pBmih -> biWidth       = pBmch -> bcWidth;
     pBmih -> biHeight      = pBmch -> bcHeight;
-@@ -941,12 +947,12 @@
+@@ -941,12 +947,12 @@ static HBITMAP loadBMP (  Handle( WNT_Gr
     	 (  ( PBITMAPCOREINFO )pBmch  ) -> bmciColors[ i ].rgbtGreen;
     	(  ( PBITMAPINFO )pBmih  ) -> bmiColors[ i ].rgbBlue =
     	 (  ( PBITMAPCOREINFO )pBmch  ) -> bmciColors[ i ].rgbtBlue;
@@ -1303,7 +1303,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
    } else {  // Windows DIB
  
     pRGB     = ( LPRGBQUAD )(  ( PBYTE )pBmih + pBmih -> biSize  );
-@@ -976,14 +982,8 @@
+@@ -976,14 +982,8 @@ static HBITMAP loadBMP (  Handle( WNT_Gr
  
     SelectPalette ( hDC, hOldPal, FALSE );
  
@@ -1318,7 +1318,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
    return retVal;
  
  }  // end  loadBMP
-@@ -1024,7 +1024,7 @@
+@@ -1024,7 +1024,7 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
    Suffix = Prefix = OutCode = NULL;
  #endif
  
@@ -1327,7 +1327,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
  #ifdef BUC60837
    OutCode = ( PUINT )MALLOC(  1026 * sizeof ( UINT )  );
-@@ -1036,7 +1036,7 @@
+@@ -1036,7 +1036,7 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
    Prefix  = ( PUINT )MALLOC(  4096 * sizeof ( UINT )  );
    Suffix  = ( PUINT )MALLOC(  4096 * sizeof ( UINT )  );
  
@@ -1336,7 +1336,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    byte = NEXT_BYTE;
  
-@@ -1046,13 +1046,13 @@
+@@ -1046,13 +1046,13 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
    BitMask     = nColors - 1;
    ++ptr;
  
@@ -1352,7 +1352,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    if ( hasColormap ) {
  
-@@ -1076,11 +1076,11 @@
+@@ -1076,11 +1076,11 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
  
    }  // end while
  
@@ -1366,7 +1366,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    ptr += 4;
  
-@@ -1115,7 +1115,7 @@
+@@ -1115,7 +1115,7 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
  
     }  // end while
  
@@ -1375,7 +1375,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    } while ( byte1 );
  
-@@ -1124,7 +1124,7 @@
+@@ -1124,7 +1124,7 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
  
    pData = ( PBYTE )MALLOC( dataSize );
  
@@ -1384,7 +1384,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    x = y = pass = OutCount = BitOffset = ByteOffset = 0;
  
-@@ -1179,7 +1179,7 @@
+@@ -1179,7 +1179,7 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
  #ifdef BUC60837
  					break;
  #else
@@ -1393,7 +1393,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  #endif
  	 OutCode[ OutCount++ ] = Suffix[ CurCode ];
  	 CurCode               = Prefix[ CurCode ];
-@@ -1251,9 +1251,12 @@
+@@ -1251,9 +1251,12 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
  
     SelectPalette ( hDC, hOldPal, FALSE );
  
@@ -1408,7 +1408,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    if ( pData     != NULL ) FREE( pData     );
    if ( rasterPtr != NULL ) FREE( rasterPtr );
-@@ -1262,7 +1265,6 @@
+@@ -1262,7 +1265,6 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
    if ( Prefix    != NULL ) FREE( Prefix    );
    if ( OutCode   != NULL ) FREE( OutCode   );
  

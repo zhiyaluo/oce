@@ -35,7 +35,7 @@ Index: oce/inc/AIS_InteractiveContext.lxx
 ===================================================================
 --- oce.orig/inc/AIS_InteractiveContext.lxx
 +++ oce/inc/AIS_InteractiveContext.lxx
-@@ -78,7 +78,7 @@
+@@ -78,7 +78,7 @@ inline Standard_Boolean AIS_InteractiveC
  {return myCurLocalIndex != 0;}
  
  inline Handle_AIS_LocalContext AIS_InteractiveContext::LocalContext() const
@@ -79,7 +79,7 @@ Index: oce/src/Standard/Standard_ErrorHandler.cxx
  static inline Standard_ThreadId GetThreadID()
  {
  #ifndef WNT
-@@ -40,6 +33,14 @@
+@@ -40,6 +33,14 @@ static inline Standard_ThreadId GetThrea
  #endif
  }
  

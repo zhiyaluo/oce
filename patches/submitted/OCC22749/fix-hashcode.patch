@@ -25,7 +25,7 @@ Index: oce/src/Standard/Standard_Transient.cxx
  
  //
  // The Initialization of the Standard_Transient variables
-@@ -58,7 +59,7 @@
+@@ -58,7 +59,7 @@ Standard_Boolean Standard_Transient::IsK
  //============================================================================
  Standard_Integer Standard_Transient::HashCode(const Standard_Integer Lim) const
  {

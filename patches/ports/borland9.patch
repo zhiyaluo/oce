@@ -10,10 +10,10 @@ the class name and not of its typedef.
  inc/Standard_StdAllocator.hxx |    5 +++++
  1 files changed, 5 insertions(+), 0 deletions(-)
 
-diff --git a/inc/Standard_StdAllocator.hxx b/inc/Standard_StdAllocator.hxx
-index df4d027..9a20bc8 100755
---- a/inc/Standard_StdAllocator.hxx
-+++ b/inc/Standard_StdAllocator.hxx
+Index: oce/inc/Standard_StdAllocator.hxx
+===================================================================
+--- oce.orig/inc/Standard_StdAllocator.hxx
++++ oce/inc/Standard_StdAllocator.hxx
 @@ -86,7 +86,12 @@ public:
  
      //! Destroys the object.
@@ -27,6 +27,3 @@ index df4d027..9a20bc8 100755
  };
  
  //! Implements specialization Standard_StdAllocator<void>.
--- 
-1.7.7.3
-

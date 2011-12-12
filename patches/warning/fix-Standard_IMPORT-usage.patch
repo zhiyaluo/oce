@@ -23,7 +23,7 @@ Index: oce/src/BRepAlgo/BRepAlgo_BooleanOperation.cxx
 ===================================================================
 --- oce.orig/src/BRepAlgo/BRepAlgo_BooleanOperation.cxx
 +++ oce/src/BRepAlgo/BRepAlgo_BooleanOperation.cxx
-@@ -60,11 +60,11 @@
+@@ -60,11 +60,11 @@ Standard_IMPORT Standard_Integer TopOpeB
  //modified by NIZHNY-MZV  Wed Apr 19 17:19:11 2000
  //see comments at the top of file TopOpeBRepBuild_Builder1.cxx
  //about using of this global variable
@@ -55,7 +55,7 @@ Index: oce/src/TestTopOpe/TestTopOpe.cxx
 ===================================================================
 --- oce.orig/src/TestTopOpe/TestTopOpe.cxx
 +++ oce/src/TestTopOpe/TestTopOpe.cxx
-@@ -40,9 +40,9 @@
+@@ -40,9 +40,9 @@ void  TestTopOpe::AllCommands(Draw_Inter
  }
  
  //Standard_IMPORT extern TestTopOpe_HDSDisplayer* PHDSD;
@@ -97,7 +97,7 @@ Index: oce/src/TestTopOpe/TestTopOpe_HDSCommands.cxx
 ===================================================================
 --- oce.orig/src/TestTopOpe/TestTopOpe_HDSCommands.cxx
 +++ oce/src/TestTopOpe/TestTopOpe_HDSCommands.cxx
-@@ -729,7 +729,7 @@
+@@ -729,7 +729,7 @@ static void tds_help(Draw_Interpretor& d
  }
  
  typedef Standard_Integer (*tf_SeeShape)(const Standard_Integer I,const TopoDS_Shape& S);
@@ -121,7 +121,7 @@ Index: oce/src/TopOpeBRep/TopOpeBRep_DSFiller.cxx
  
  
  #ifdef DEB
-@@ -305,8 +305,8 @@
+@@ -305,8 +305,8 @@ static
  
  } // FUN_shareNOG
  
@@ -136,7 +136,7 @@ Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
 +++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
-@@ -997,7 +997,7 @@
+@@ -997,7 +997,7 @@ void TopOpeBRepBuild_Builder1::GFillEdge
    }
  } // GFillEdgeWES
  
@@ -149,7 +149,7 @@ Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1_1.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1_1.cxx
 +++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1_1.cxx
-@@ -59,7 +59,7 @@
+@@ -59,7 +59,7 @@ static TopTools_IndexedMapOfShape proces
  static TopTools_IndexedMapOfShape theUsedVertexMap;
  static TopTools_MapOfShape theUnkStateVer;
  
@@ -162,7 +162,7 @@ Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_GridEE.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_GridEE.cxx
 +++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_GridEE.cxx
-@@ -221,13 +221,13 @@
+@@ -221,13 +221,13 @@ void debfillp2(const Standard_Integer i)
  #endif
  
  //Standard_IMPORT extern Standard_Boolean GLOBAL_faces2d;

@@ -12,7 +12,7 @@ Index: oce/src/TObj/TObj_Application.cxx
 ===================================================================
 --- oce.orig/src/TObj/TObj_Application.cxx
 +++ oce/src/TObj/TObj_Application.cxx
-@@ -126,7 +126,7 @@
+@@ -126,7 +126,7 @@ Standard_Boolean TObj_Application::LoadD
    myIsError = aStatus != CDF_RS_OK;
    if (myIsError)
    {

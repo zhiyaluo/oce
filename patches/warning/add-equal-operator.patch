@@ -19,7 +19,7 @@ Index: oce/inc/LDOM_MemManager.hxx
 ===================================================================
 --- oce.orig/inc/LDOM_MemManager.hxx
 +++ oce/inc/LDOM_MemManager.hxx
-@@ -81,6 +81,7 @@
+@@ -81,6 +81,7 @@ class LDOM_MemManager : public MMgt_TSha
  
    // ---- CLASS HashTable ----
    class HashTable {
@@ -27,7 +27,7 @@ Index: oce/inc/LDOM_MemManager.hxx
      friend class LDOM_MemManager;
      HashTable                   (/* const Standard_Integer theMask, */
                                   LDOM_MemManager&       theMemManager);
-@@ -89,6 +90,10 @@
+@@ -89,6 +90,10 @@ class LDOM_MemManager : public MMgt_TSha
                                   Standard_Integer&      theHashIndex);
      static Standard_Integer Hash(const char             * theString,
                                   const Standard_Integer theLen);
@@ -70,7 +70,7 @@ Index: oce/inc/VrmlData_ShapeConvert.hxx
 ===================================================================
 --- oce.orig/inc/VrmlData_ShapeConvert.hxx
 +++ oce/inc/VrmlData_ShapeConvert.hxx
-@@ -23,7 +23,10 @@
+@@ -23,7 +23,10 @@ class Handle_VrmlData_Coordinate;
  
  class VrmlData_ShapeConvert 
  {
@@ -99,7 +99,7 @@ Index: oce/src/LDOM/LDOM_CharReference.cxx
 ===================================================================
 --- oce.orig/src/LDOM/LDOM_CharReference.cxx
 +++ oce/src/LDOM/LDOM_CharReference.cxx
-@@ -25,6 +25,9 @@
+@@ -25,6 +25,9 @@ struct entityRef {
    const char * name;
    const int    length;
    entityRef (const char * aName, const int aLen) : name(aName), length(aLen) {}

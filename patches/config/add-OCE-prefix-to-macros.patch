@@ -108,7 +108,7 @@ Index: oce/inc/Standard_values.h
 ===================================================================
 --- oce.orig/inc/Standard_values.h
 +++ oce/inc/Standard_values.h
-@@ -25,13 +25,15 @@
+@@ -25,13 +25,15 @@ Facility : CAS-CADE V1.3A
  #include <oce-config.h>
  
  #ifndef WNT
@@ -135,7 +135,7 @@ Index: oce/src/BinLDrivers/BinLDrivers_DocumentRetrievalDriver.cxx
 ===================================================================
 --- oce.orig/src/BinLDrivers/BinLDrivers_DocumentRetrievalDriver.cxx
 +++ oce/src/BinLDrivers/BinLDrivers_DocumentRetrievalDriver.cxx
-@@ -481,7 +481,7 @@
+@@ -481,7 +481,7 @@ void BinLDrivers_DocumentRetrievalDriver
  						    Standard_IStream& IS)
  {
    if(!IS.eof()) {
@@ -148,7 +148,7 @@ Index: oce/src/Draw/Draw_BasicCommands.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_BasicCommands.cxx
 +++ oce/src/Draw/Draw_BasicCommands.cxx
-@@ -39,9 +39,9 @@
+@@ -39,9 +39,9 @@ extern Standard_Boolean Draw_Batch;
  #include <process.h>
  #include <stdio.h>
  #include <stdlib.h>

@@ -58,7 +58,7 @@ Index: oce/AUTHORS
 ===================================================================
 --- oce.orig/AUTHORS
 +++ oce/AUTHORS
-@@ -9,5 +9,7 @@
+@@ -9,5 +9,7 @@ Mark Pictor (mpictor at gmail dot com)
  Jérôme Robert (jrobert dot pro at gmail dot com)
  Fotis Sioutis (sfotis at gmail dot com)
  Hugh Sorby ()
@@ -88,8 +88,8 @@ Index: oce/CMakeLists.txt
 +SET(OCE_ABI_SOVERSION 1)
 +SET(OCE_ABI_VERSION ${OCE_ABI_SOVERSION}.1.0)
  
- # Set the minimum version of cmake required to 2.8
- CMAKE_MINIMUM_REQUIRED( VERSION 2.8 )
+ # Set the minimum version of cmake required to 2.6
+ CMAKE_MINIMUM_REQUIRED( VERSION 2.6 )
 Index: oce/NEWS
 ===================================================================
 --- oce.orig/NEWS

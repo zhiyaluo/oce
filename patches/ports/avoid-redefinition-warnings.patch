@@ -8,7 +8,7 @@ Index: oce/inc/Standard_math.hxx
 ===================================================================
 --- oce.orig/inc/Standard_math.hxx
 +++ oce/inc/Standard_math.hxx
-@@ -32,9 +32,12 @@
+@@ -32,9 +32,12 @@ __Standard_API double __cdecl atanh ( do
  #if defined(M_PI_2)
  # undef M_PI_2
  #endif

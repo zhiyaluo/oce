@@ -47,7 +47,7 @@ Index: oce/src/BinMNaming/BinMNaming_NamingDriver.cxx
 ===================================================================
 --- oce.orig/src/BinMNaming/BinMNaming_NamingDriver.cxx
 +++ oce/src/BinMNaming/BinMNaming_NamingDriver.cxx
-@@ -166,7 +166,7 @@
+@@ -166,7 +166,7 @@ Standard_Boolean BinMNaming_NamingDriver
            Standard_Integer i;
            // read array
            for(i=1; i<=aNbArgs;i++) {
@@ -56,7 +56,7 @@ Index: oce/src/BinMNaming/BinMNaming_NamingDriver.cxx
              ok = theSource >> anIndx;
              if (!ok)
                break;
-@@ -181,8 +181,8 @@
+@@ -181,8 +181,8 @@ Standard_Boolean BinMNaming_NamingDriver
              }
            }
            //patch to release the rest of items	
@@ -71,7 +71,7 @@ Index: oce/src/Image/Image_PixMap.cxx
 ===================================================================
 --- oce.orig/src/Image/Image_PixMap.cxx
 +++ oce/src/Image/Image_PixMap.cxx
-@@ -404,8 +404,8 @@
+@@ -400,8 +400,8 @@ Quantity_Color Image_PixMap::PixelColor
                                           const Standard_Integer theY) const
  {
    Standard_Integer aScanlineId = myImage->getHeight() - theY - 1;
@@ -86,7 +86,7 @@ Index: oce/src/NIS/NIS_Triangulated.cxx
 ===================================================================
 --- oce.orig/src/NIS/NIS_Triangulated.cxx
 +++ oce/src/NIS/NIS_Triangulated.cxx
-@@ -764,7 +764,7 @@
+@@ -764,7 +764,7 @@ Standard_Boolean NIS_Triangulated::Inter
  
    if ((myType & Type_Triangulation) && myIsDrawPolygons == Standard_False) {
      unsigned int iNode = 0;
@@ -95,7 +95,7 @@ Index: oce/src/NIS/NIS_Triangulated.cxx
      {
        gp_XYZ aPnt (static_cast<Standard_Real>(mypNodes[iNode+0]),
                     static_cast<Standard_Real>(mypNodes[iNode+1]), 0.);
-@@ -1065,7 +1065,7 @@
+@@ -1065,7 +1065,7 @@ Standard_Boolean NIS_Triangulated::Inter
  
    if ((myType & Type_Triangulation) && myIsDrawPolygons == Standard_False) {
      unsigned int iNode = 0;
@@ -108,7 +108,7 @@ Index: oce/src/OSD/OSD_MAllocHook.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_MAllocHook.cxx
 +++ oce/src/OSD/OSD_MAllocHook.cxx
-@@ -455,7 +455,7 @@
+@@ -455,7 +455,7 @@ void OSD_MAllocHook::CollectBySize::Rese
      myArray = new Numbers[MAX_ALLOC_SIZE];
    else
    {
@@ -117,7 +117,7 @@ Index: oce/src/OSD/OSD_MAllocHook.cxx
        myArray[i] = Numbers();
    }
    myTotalLeftSize = 0;
-@@ -478,7 +478,7 @@
+@@ -478,7 +478,7 @@ Standard_Boolean OSD_MAllocHook::Collect
            "BlockSize", "NbAlloc", "NbLeft", "NbLeftPeak",
            "AllocSize", "LeftSize", "PeakSize");
    Standard_Size aTotAlloc = 0;
@@ -130,7 +130,7 @@ Index: oce/src/OpenGl/OpenGl_TextRender.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_TextRender.cxx
 +++ oce/src/OpenGl/OpenGl_TextRender.cxx
-@@ -180,7 +180,7 @@
+@@ -180,7 +180,7 @@ OpenGl_TextRender* OpenGl_TextRender::in
  
  /*----------------------------------------------------------------------*/
  OpenGl_TextRender::FontMapNode OpenGl_TextRender::searchFontInMap( Handle(TCollection_HAsciiString)& fontName ) {
@@ -143,7 +143,7 @@ Index: oce/src/OpenGl/OpenGl_TextureBox.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_TextureBox.cxx
 +++ oce/src/OpenGl/OpenGl_TextureBox.cxx
-@@ -523,7 +523,7 @@
+@@ -523,7 +523,7 @@ static void MyBindTextureEXT(TextureID I
  GL_TEXTURE_BINDING_1D : GL_TEXTURE_BINDING_2D;
      GLint aCurrTex = -1;
      glGetIntegerv( aParamName, &aCurrTex );
@@ -152,7 +152,7 @@ Index: oce/src/OpenGl/OpenGl_TextureBox.cxx
      {
  #ifdef PRINT
        printf("MyBindTextureEXT::bind texture\n");
-@@ -540,7 +540,7 @@
+@@ -540,7 +540,7 @@ GL_TEXTURE_BINDING_1D : GL_TEXTURE_BINDI
  GL_TEXTURE_BINDING_1D : GL_TEXTURE_BINDING_2D;
      GLint aCurrTex = -1;
      glGetIntegerv( aParamName, &aCurrTex );
@@ -165,7 +165,7 @@ Index: oce/src/OpenGl/OpenGl_togl_markercontextgroup.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_togl_markercontextgroup.cxx
 +++ oce/src/OpenGl/OpenGl_togl_markercontextgroup.cxx
-@@ -116,7 +116,7 @@
+@@ -116,7 +116,7 @@ GLuint EXPORT GetListIndex( int theId )
      if( UDMS_Marker.IdList[i] == theId )
        return UDMS_Marker.DisplayIdList[i];
    }
@@ -178,7 +178,7 @@ Index: oce/src/TColStd/TColStd_MapIteratorOfPackedMapOfInteger.cxx
 ===================================================================
 --- oce.orig/src/TColStd/TColStd_MapIteratorOfPackedMapOfInteger.cxx
 +++ oce/src/TColStd/TColStd_MapIteratorOfPackedMapOfInteger.cxx
-@@ -20,7 +20,7 @@
+@@ -20,7 +20,7 @@ extern Standard_Integer TColStd_intMapNo
  TColStd_MapIteratorOfPackedMapOfInteger::TColStd_MapIteratorOfPackedMapOfInteger
                                       (const TColStd_PackedMapOfInteger& theMap)
    : TCollection_BasicMapIterator (theMap),
@@ -187,7 +187,7 @@ Index: oce/src/TColStd/TColStd_MapIteratorOfPackedMapOfInteger.cxx
  {
    if (myNode) {
      const TColStd_intMapNode * aNode =
-@@ -39,7 +39,7 @@
+@@ -39,7 +39,7 @@ void TColStd_MapIteratorOfPackedMapOfInt
                                       (const TColStd_PackedMapOfInteger& theMap)
  {
    TCollection_BasicMapIterator::Initialize (theMap);
@@ -196,7 +196,7 @@ Index: oce/src/TColStd/TColStd_MapIteratorOfPackedMapOfInteger.cxx
    if (myNode) {
      const TColStd_intMapNode * aNode =
        reinterpret_cast <const TColStd_intMapNode *>(myNode);
-@@ -55,7 +55,7 @@
+@@ -55,7 +55,7 @@ void TColStd_MapIteratorOfPackedMapOfInt
  void TColStd_MapIteratorOfPackedMapOfInteger::Reset ()
  {
    TCollection_BasicMapIterator::Reset();
@@ -209,7 +209,7 @@ Index: oce/src/TColStd/TColStd_PackedMapOfInteger.cxx
 ===================================================================
 --- oce.orig/src/TColStd/TColStd_PackedMapOfInteger.cxx
 +++ oce/src/TColStd/TColStd_PackedMapOfInteger.cxx
-@@ -178,9 +178,9 @@
+@@ -178,9 +178,9 @@ Standard_Integer TColStd_intMapNode_find
    unsigned int val = theNode->myData & theMask;
    int nZeros (0);
    if (val == 0)
@@ -221,7 +221,7 @@ Index: oce/src/TColStd/TColStd_PackedMapOfInteger.cxx
      if ((val & 0x0000ffff) == 0) {
        aMask = 0xffff0000;
        nZeros = 16;
-@@ -222,9 +222,9 @@
+@@ -222,9 +222,9 @@ Standard_Integer TColStd_intMapNode_find
    unsigned int val = theNode->myData & theMask;
    int nZeros (0);
    if (val == 0)
@@ -233,7 +233,7 @@ Index: oce/src/TColStd/TColStd_PackedMapOfInteger.cxx
      if ((val & 0xffff0000) == 0) {
        aMask = 0x0000ffff;
        nZeros = 16;
-@@ -632,7 +632,7 @@
+@@ -632,7 +632,7 @@ Standard_Boolean TColStd_PackedMapOfInte
          while (p1) {
            if (p1->IsEqual(aKeyInt)) {
              const size_t anOldPop = p1->NbValues();

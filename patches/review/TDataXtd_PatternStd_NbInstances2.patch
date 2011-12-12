@@ -7,11 +7,11 @@ Subject: [PATCH] Solves a copy-paste bug in TDataXtd_PatternStd
  src/TDataXtd/TDataXtd_PatternStd.cxx |    4 ++--
  1 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/src/TDataXtd/TDataXtd_PatternStd.cxx b/src/TDataXtd/TDataXtd_PatternStd.cxx
-index 064a826..8f8a442 100644
---- a/src/TDataXtd/TDataXtd_PatternStd.cxx
-+++ b/src/TDataXtd/TDataXtd_PatternStd.cxx
-@@ -188,8 +188,8 @@ void TDataXtd_PatternStd::NbInstances1(const Handle(TDataStd_Integer)& NbInstanc
+Index: oce/src/TDataXtd/TDataXtd_PatternStd.cxx
+===================================================================
+--- oce.orig/src/TDataXtd/TDataXtd_PatternStd.cxx
++++ oce/src/TDataXtd/TDataXtd_PatternStd.cxx
+@@ -188,8 +188,8 @@ void TDataXtd_PatternStd::NbInstances1(c
  void TDataXtd_PatternStd::NbInstances2(const Handle(TDataStd_Integer)& NbInstances2) 
  {
    // OCC2932 correction
@@ -22,6 +22,3 @@ index 064a826..8f8a442 100644
        return;
  
    Backup();
--- 
-1.7.7.3
-

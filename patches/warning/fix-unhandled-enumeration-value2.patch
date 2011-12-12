@@ -11,7 +11,7 @@ Index: oce/src/IntPatch/IntPatch_HInterTool.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_HInterTool.cxx
 +++ oce/src/IntPatch/IntPatch_HInterTool.cxx
-@@ -46,6 +46,7 @@
+@@ -46,6 +46,7 @@ Standard_Integer IntPatch_HInterTool::Nb
      case GeomAbs_Torus:
      case GeomAbs_SurfaceOfRevolution:
      case GeomAbs_SurfaceOfExtrusion: return 15;

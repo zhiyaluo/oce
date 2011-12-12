@@ -11,7 +11,7 @@ Index: oce/inc/Standard.hxx
 ===================================================================
 --- oce.orig/inc/Standard.hxx
 +++ oce/inc/Standard.hxx
-@@ -46,11 +46,11 @@
+@@ -46,11 +46,11 @@ public:
    }
    void* operator new(size_t size) 
    {

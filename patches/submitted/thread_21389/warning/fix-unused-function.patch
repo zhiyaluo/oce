@@ -58,7 +58,7 @@ Index: oce/drv/ExprIntrp/lex.ExprIntrp.c
 ===================================================================
 --- oce.orig/drv/ExprIntrp/lex.ExprIntrp.c
 +++ oce/drv/ExprIntrp/lex.ExprIntrp.c
-@@ -2080,10 +2080,6 @@
+@@ -2080,10 +2080,6 @@ extern int yywrap YY_PROTO(( void ));
  #endif
  #endif
  
@@ -69,7 +69,7 @@ Index: oce/drv/ExprIntrp/lex.ExprIntrp.c
  #ifndef yytext_ptr
  static void yy_flex_strncpy YY_PROTO(( char *, yyconst char *, int ));
  #endif
-@@ -2708,49 +2704,6 @@
+@@ -2708,49 +2704,6 @@ yy_state_type yy_current_state;
  	}
  
  
@@ -123,7 +123,7 @@ Index: oce/drv/StepFile/lex.step.c
 ===================================================================
 --- oce.orig/drv/StepFile/lex.step.c
 +++ oce/drv/StepFile/lex.step.c
-@@ -258,7 +258,6 @@
+@@ -258,7 +258,6 @@ YY_BUFFER_STATE yy_scan_string YY_PROTO(
  YY_BUFFER_STATE yy_scan_bytes YY_PROTO(( yyconst char *bytes, int len ));
  
  static void *yy_flex_alloc YY_PROTO(( yy_size_t ));
@@ -131,7 +131,7 @@ Index: oce/drv/StepFile/lex.step.c
  static void yy_flex_free YY_PROTO(( void * ));
  
  #define yy_new_buffer yy_create_buffer
-@@ -290,7 +289,6 @@
+@@ -290,7 +289,6 @@ extern char *yytext;
  static yy_state_type yy_get_previous_state YY_PROTO(( void ));
  static yy_state_type yy_try_NUL_trans YY_PROTO(( yy_state_type current_state ));
  static int yy_get_next_buffer YY_PROTO(( void ));
@@ -139,7 +139,7 @@ Index: oce/drv/StepFile/lex.step.c
  
  /* Done after the current pattern has been matched and before the
   * corresponding action - sets up yytext.
-@@ -538,10 +536,6 @@
+@@ -538,10 +536,6 @@ extern int yywrap YY_PROTO(( void ));
  #endif
  #endif
  
@@ -150,7 +150,7 @@ Index: oce/drv/StepFile/lex.step.c
  #ifndef yytext_ptr
  static void yy_flex_strncpy YY_PROTO(( char *, yyconst char *, int ));
  #endif
-@@ -1258,50 +1252,6 @@
+@@ -1258,50 +1252,6 @@ yy_state_type yy_current_state;
  	}
  
  
@@ -201,7 +201,7 @@ Index: oce/drv/StepFile/lex.step.c
  #ifdef __cplusplus
  static int yyinput()
  #else
-@@ -1690,17 +1640,6 @@
+@@ -1690,17 +1640,6 @@ static int yy_top_state()
  #define YY_EXIT_FAILURE 2
  #endif
  
@@ -219,7 +219,7 @@ Index: oce/drv/StepFile/lex.step.c
  
  
  /* Redefine yyless() so it works in section 3 code. */
-@@ -1765,24 +1704,6 @@
+@@ -1765,24 +1704,6 @@ yy_size_t size;
  	}
  
  #ifdef YY_USE_PROTOS
@@ -248,7 +248,7 @@ Index: oce/src/Draw/Draw_Main.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Main.cxx
 +++ oce/src/Draw/Draw_Main.cxx
-@@ -104,10 +104,6 @@
+@@ -104,10 +104,6 @@ Standard_IMPORT Standard_Boolean Draw_In
  
  // necessary for WNT in C21 only
  static FDraw_InitAppli theDraw_InitAppli; //pointer to the Draw_InitAppli
@@ -259,7 +259,7 @@ Index: oce/src/Draw/Draw_Main.cxx
  #endif
  
  #ifdef WNT
-@@ -135,7 +131,6 @@
+@@ -135,7 +131,6 @@ Standard_Integer _main_ (int argc, char*
    Draw_IsConsoleSubsystem = Standard_True;
    //return _WinMain_(::GetModuleHandle(NULL), NULL, GetCommandLine(), SW_SHOW, fDraw_InitAppli);
    theDraw_InitAppli = fDraw_InitAppli;
@@ -271,7 +271,7 @@ Index: oce/src/NCollection/NCollection_IncAllocator.cxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_IncAllocator.cxx
 +++ oce/src/NCollection/NCollection_IncAllocator.cxx
-@@ -69,6 +69,7 @@
+@@ -69,6 +69,7 @@ Standard_EXPORT void IncAllocator_SetDeb
   * numbering of allocators.
   */
  //=======================================================================
@@ -279,7 +279,7 @@ Index: oce/src/NCollection/NCollection_IncAllocator.cxx
  static Standard_Size CurrentID = 0;
  static Standard_Size CATCH_ID = 0;
  
-@@ -76,7 +77,6 @@
+@@ -76,7 +77,6 @@ static Standard_Size CATCH_ID = 0;
  //function : Debug_Create
  //purpose  : Store the allocator address in the internal maps
  //=======================================================================
@@ -287,7 +287,7 @@ Index: oce/src/NCollection/NCollection_IncAllocator.cxx
  static void Debug_Create(Standard_Address theAlloc)
  {
    static Standard_Mutex aMutex;
-@@ -98,7 +98,6 @@
+@@ -98,7 +98,6 @@ static void Debug_Create(Standard_Addres
  //function : Debug_Destroy
  //purpose  : Forget the allocator address from the internal maps
  //=======================================================================
@@ -295,7 +295,7 @@ Index: oce/src/NCollection/NCollection_IncAllocator.cxx
  static void Debug_Destroy(Standard_Address theAlloc)
  {
    static Standard_Mutex aMutex;
-@@ -114,7 +113,7 @@
+@@ -114,7 +113,7 @@ static void Debug_Destroy(Standard_Addre
    if (isReentrant)
      aMutex.Unlock();
  }

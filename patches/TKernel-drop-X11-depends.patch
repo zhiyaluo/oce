@@ -41,7 +41,7 @@ Index: oce/src/OSD/OSD_FontMgr.cxx
  #endif //WNT
  
  #include <NCollection_List.hxx>
-@@ -40,6 +37,14 @@
+@@ -40,6 +37,14 @@ static Standard_Character font_service_c
                                                                              {"/usr/X11/lib/X11/fs/config"}
                                                                             };
  
@@ -56,7 +56,7 @@ Index: oce/src/OSD/OSD_FontMgr.cxx
  DEFINE_LIST( StringList, NCollection_List, TCollection_HAsciiString );
  
  void find_path_with_font_dir( const TCollection_AsciiString& dir,StringList& dirs )
-@@ -107,6 +112,41 @@
+@@ -107,6 +112,41 @@ OSD_FontMgr::OSD_FontMgr() {
  }
  
  
@@ -98,7 +98,7 @@ Index: oce/src/OSD/OSD_FontMgr.cxx
  void OSD_FontMgr::InitFontDataBase() {
  
    MyListOfFonts.Clear();
-@@ -235,48 +275,12 @@
+@@ -235,48 +275,12 @@ void OSD_FontMgr::InitFontDataBase() {
  
  #ifndef WNT
    StringList dirs;

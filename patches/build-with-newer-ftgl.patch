@@ -70,7 +70,7 @@ Index: oce/src/OpenGl/OpenGl_FontMgr.cxx
  #undef TRACE
  
  #define DEFAULT_FONT_HEIGHT 16
-@@ -60,7 +59,10 @@
+@@ -60,7 +59,10 @@ OpenGl_FontMgr* OpenGl_FontMgr::instance
  void OpenGl_FontMgr::_initializeFontDB()
  {
    Handle(OSD_FontMgr) fntMgr = OSD_FontMgr::GetInstance();
@@ -82,7 +82,7 @@ Index: oce/src/OpenGl/OpenGl_FontMgr.cxx
  
      OSD_NListOfSystemFont fontList = fntMgr->GetAvalableFonts();
      if ( fontList.Size() != 0 ) {
-@@ -71,10 +73,11 @@
+@@ -71,10 +73,11 @@ void OpenGl_FontMgr::_initializeFontDB()
          if ( it.Value()->FontAspect() == OSD_FA_Regular ) {
            //this workaround for fonts with names dependent on system locale.
            //for example: "Times New Roman Fett Kursive" or "Times New Roman Gras Italiqui"
@@ -98,7 +98,7 @@ Index: oce/src/OpenGl/OpenGl_FontMgr.cxx
                info->SysFont = it.Value();
              }
              else {
-@@ -82,24 +85,25 @@
+@@ -82,24 +85,25 @@ void OpenGl_FontMgr::_initializeFontDB()
  #ifdef TRACE
                cout << "TKOpenGl::initializeFontDB() detected new font!\n"
                  << "\tFont Previous Name: " << it.Value()->FontName()->ToCString() << endl

@@ -12,7 +12,7 @@ Index: oce/inc/InterfaceGraphic_X11.hxx
 ===================================================================
 --- oce.orig/inc/InterfaceGraphic_X11.hxx
 +++ oce/inc/InterfaceGraphic_X11.hxx
-@@ -27,26 +27,6 @@
+@@ -27,26 +27,6 @@ Facility : CAS-CADE V1
  #  include <X11/Xatom.h>
  #  include <GL/glx.h>
  

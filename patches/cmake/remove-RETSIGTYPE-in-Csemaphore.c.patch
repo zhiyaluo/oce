@@ -14,7 +14,7 @@ Index: oce/src/OSD/OSD_Csemaphore.c
 ===================================================================
 --- oce.orig/src/OSD/OSD_Csemaphore.c
 +++ oce/src/OSD/OSD_Csemaphore.c
-@@ -281,7 +281,7 @@
+@@ -281,7 +281,7 @@ osd_skill_(int *pid, int *event)
  }
  
  int

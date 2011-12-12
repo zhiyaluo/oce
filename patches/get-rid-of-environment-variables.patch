@@ -32,7 +32,7 @@ Index: oce/CMakeLists.txt
 ===================================================================
 --- oce.orig/CMakeLists.txt
 +++ oce/CMakeLists.txt
-@@ -364,6 +364,7 @@
+@@ -405,6 +405,7 @@ IF(${PROJECT_NAME}_DRAW)
  		${DRAWRESOURCES_TCL_FILES}
  		src/DrawResources/DRAW.doc
  		src/DrawResources/DRAW.info
@@ -40,7 +40,7 @@ Index: oce/CMakeLists.txt
  		src/DrawResources/DrawPlugin
  		src/DrawResources/demo
  		src/DrawResources/demo.bat
-@@ -798,13 +799,6 @@
+@@ -828,13 +829,6 @@ CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_D
  INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/install_inc/oce-config.h
  		DESTINATION ${${PROJECT_NAME}_INSTALL_INCLUDE_DIR} COMPONENT Development )
  
@@ -52,8 +52,8 @@ Index: oce/CMakeLists.txt
 -ENDIF(${PROJECT_NAME}_DRAW)
 -
  # Version information
+ IF(NOT ${PROJECT_NAME}_NO_LIBRARY_VERSION)
  CONFIGURE_FILE (${CMAKE_CURRENT_SOURCE_DIR}/Version.rc.cmake
- 				${CMAKE_CURRENT_BINARY_DIR}/Version.rc)
 Index: oce/DrawDefault.cmake
 ===================================================================
 --- oce.orig/DrawDefault.cmake
@@ -100,7 +100,7 @@ Index: oce/src/Aspect/Aspect_Driver.cxx
 ===================================================================
 --- oce.orig/src/Aspect/Aspect_Driver.cxx
 +++ oce/src/Aspect/Aspect_Driver.cxx
-@@ -35,6 +35,11 @@
+@@ -35,6 +35,11 @@ Aspect_Driver::Aspect_Driver () {
    fontdir =  getenv("CSF_MDTVFontDirectory" );
    if ( !fontdir) {
      casroot  = getenv("CASROOT");
@@ -116,7 +116,7 @@ Index: oce/src/DPrsStd/DPrsStd.cxx
 ===================================================================
 --- oce.orig/src/DPrsStd/DPrsStd.cxx
 +++ oce/src/DPrsStd/DPrsStd.cxx
-@@ -60,6 +60,11 @@
+@@ -60,6 +60,11 @@ static Standard_Boolean FoundCAFPlugin (
    Standard_Boolean hasPlugin = Standard_False; 
    TCollection_AsciiString PluginName ;
    if ( !plugin ) { 
@@ -132,7 +132,7 @@ Index: oce/src/Draw/Draw.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw.cxx
 +++ oce/src/Draw/Draw.cxx
-@@ -272,6 +272,8 @@
+@@ -272,6 +272,8 @@ void Draw_Appli(Standard_Integer argc, c
      {
  #ifdef WNT
  	  ReadInitFile("ddefault");
@@ -145,7 +145,7 @@ Index: oce/src/Draw/Draw_PloadCommands.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_PloadCommands.cxx
 +++ oce/src/Draw/Draw_PloadCommands.cxx
-@@ -54,6 +54,11 @@
+@@ -54,6 +54,11 @@ static Standard_Boolean FindPluginFile (
      // now try by CASROOT
      aPluginDir = getenv("CASROOT");
  
@@ -161,7 +161,7 @@ Index: oce/src/DrawResources/DataExchangeDemo.tcl
 ===================================================================
 --- oce.orig/src/DrawResources/DataExchangeDemo.tcl
 +++ oce/src/DrawResources/DataExchangeDemo.tcl
-@@ -36,9 +36,11 @@
+@@ -36,9 +36,11 @@ if { [winfo exists .h ] } {
      destroy .h
  }
  
@@ -179,7 +179,7 @@ Index: oce/src/DrawResources/DrawDefault
 ===================================================================
 --- oce.orig/src/DrawResources/DrawDefault
 +++ oce/src/DrawResources/DrawDefault
-@@ -8,11 +8,7 @@
+@@ -8,11 +8,7 @@ set dir ""
  if { [info exists env(DRAWHOME) ] } { 
    set dir $env(DRAWHOME)  
  } else {
@@ -218,7 +218,7 @@ Index: oce/src/Graphic3d/Graphic3d_GraphicDevice.cxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_GraphicDevice.cxx
 +++ oce/src/Graphic3d/Graphic3d_GraphicDevice.cxx
-@@ -216,9 +216,13 @@
+@@ -216,9 +216,13 @@ Standard_Boolean Graphic3d_GraphicDevice
      memcpy(newGlShr, buffString.ToCString(), buffString.Length() + 1);
      glshr = newGlShr;
    } else {
@@ -236,7 +236,7 @@ Index: oce/src/Graphic3d/Graphic3d_Texture1D.cxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_Texture1D.cxx
 +++ oce/src/Graphic3d/Graphic3d_Texture1D.cxx
-@@ -32,6 +32,11 @@
+@@ -32,6 +32,11 @@ static TCollection_AsciiString GetEnvir
      Standard_Boolean HasDefinition = Standard_False ;
      if ( !envir ) { 
        casroot  = getenv("CASROOT");
@@ -252,7 +252,7 @@ Index: oce/src/Graphic3d/Graphic3d_Texture2D.cxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_Texture2D.cxx
 +++ oce/src/Graphic3d/Graphic3d_Texture2D.cxx
-@@ -28,6 +28,11 @@
+@@ -28,6 +28,11 @@ static TCollection_AsciiString GetEnvir
      Standard_Boolean HasDefinition = Standard_False ;
      if ( !envir ) { 
        casroot  = getenv("CASROOT");
@@ -268,7 +268,7 @@ Index: oce/src/Graphic3d/Graphic3d_TextureEnv.cxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_TextureEnv.cxx
 +++ oce/src/Graphic3d/Graphic3d_TextureEnv.cxx
-@@ -29,6 +29,11 @@
+@@ -29,6 +29,11 @@ static TCollection_AsciiString GetEnvir
      Standard_Boolean HasDefinition = Standard_False ;
      if ( !envir ) { 
        casroot  = getenv("CASROOT");
@@ -284,7 +284,7 @@ Index: oce/src/Resource/Resource_Manager.cxx
 ===================================================================
 --- oce.orig/src/Resource/Resource_Manager.cxx
 +++ oce/src/Resource/Resource_Manager.cxx
-@@ -57,6 +57,8 @@
+@@ -57,6 +57,8 @@ Resource_Manager::Resource_Manager(const
    Debug = (getenv("ResourceDebug") != NULL) ;
  
    TCollection_AsciiString EnvVar, CSF_ = "CSF_" ;
@@ -293,7 +293,7 @@ Index: oce/src/Resource/Resource_Manager.cxx
    TCollection_AsciiString Directory ;
    Standard_CString dir ;
  
-@@ -69,9 +71,19 @@
+@@ -69,9 +71,19 @@ Resource_Manager::Resource_Manager(const
      Load(Directory,myName,myRefMap);
    }
    else
@@ -317,7 +317,7 @@ Index: oce/src/UnitsAPI/UnitsAPI.cxx
 ===================================================================
 --- oce.orig/src/UnitsAPI/UnitsAPI.cxx
 +++ oce/src/UnitsAPI/UnitsAPI.cxx
-@@ -35,6 +35,11 @@
+@@ -35,6 +35,11 @@ void UnitsAPI::CheckLoading (const Units
      else {
        OSD_Environment CasRootEnv("CASROOT");
        TCollection_AsciiString CasRootString(CasRootEnv.Value());
@@ -329,7 +329,7 @@ Index: oce/src/UnitsAPI/UnitsAPI.cxx
        if (CasRootString.Length() > 0 )  {
  	CasRootString += "/src/UnitsAPI/Lexi_Expr.dat" ;
  	Units::LexiconFile(CasRootString.ToCString());
-@@ -49,6 +54,11 @@
+@@ -49,6 +54,11 @@ void UnitsAPI::CheckLoading (const Units
      else {
        OSD_Environment CasRootEnv("CASROOT");
        TCollection_AsciiString CasRootString(CasRootEnv.Value());
@@ -345,7 +345,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest.cxx
 +++ oce/src/ViewerTest/ViewerTest.cxx
-@@ -1600,6 +1600,11 @@
+@@ -1600,6 +1600,11 @@ static TCollection_AsciiString GetEnvir
      Standard_Boolean HasDefinition = Standard_False ;
      if ( !envir ) {
        casroot  = getenv("CASROOT");
@@ -361,7 +361,7 @@ Index: oce/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
 ===================================================================
 --- oce.orig/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
 +++ oce/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
-@@ -181,6 +181,11 @@
+@@ -181,6 +181,11 @@ Standard_Boolean XmlLDrivers_DocumentSto
    if (aResourceDir.IsEmpty()) {
      // now try by CASROOT
      aResourceDir = getenv (aCSFVariable[1]);

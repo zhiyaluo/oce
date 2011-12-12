@@ -17,7 +17,7 @@ Index: oce/inc/Dynamic_FuzzyDefinitionsDictionary.hxx
 ===================================================================
 --- oce.orig/inc/Dynamic_FuzzyDefinitionsDictionary.hxx
 +++ oce/inc/Dynamic_FuzzyDefinitionsDictionary.hxx
-@@ -104,9 +104,13 @@
+@@ -104,9 +104,13 @@ private:
  
  
  Handle_TCollection_HAsciiString thefilename;
@@ -36,7 +36,7 @@ Index: oce/inc/Dynamic_MethodDefinitionsDictionary.hxx
 ===================================================================
 --- oce.orig/inc/Dynamic_MethodDefinitionsDictionary.hxx
 +++ oce/inc/Dynamic_MethodDefinitionsDictionary.hxx
-@@ -108,9 +108,13 @@
+@@ -108,9 +108,13 @@ private:
  
  
  Handle_TCollection_HAsciiString thefilename;
@@ -55,7 +55,7 @@ Index: oce/inc/Materials_MaterialsDictionary.hxx
 ===================================================================
 --- oce.orig/inc/Materials_MaterialsDictionary.hxx
 +++ oce/inc/Materials_MaterialsDictionary.hxx
-@@ -89,9 +89,13 @@
+@@ -89,9 +89,13 @@ private:
  
  
  Handle_TCollection_HAsciiString thefilename;
@@ -74,7 +74,7 @@ Index: oce/inc/Units_Lexicon.hxx
 ===================================================================
 --- oce.orig/inc/Units_Lexicon.hxx
 +++ oce/inc/Units_Lexicon.hxx
-@@ -85,7 +85,7 @@
+@@ -85,7 +85,7 @@ private:
  
  
  Handle_TCollection_HAsciiString thefilename;
@@ -87,7 +87,7 @@ Index: oce/inc/Units_UnitsLexicon.hxx
 ===================================================================
 --- oce.orig/inc/Units_UnitsLexicon.hxx
 +++ oce/inc/Units_UnitsLexicon.hxx
-@@ -72,7 +72,7 @@
+@@ -72,7 +72,7 @@ private:
  
  
  Handle_TCollection_HAsciiString thefilename;

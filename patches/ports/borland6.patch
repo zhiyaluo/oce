@@ -20,7 +20,7 @@ Index: oce/inc/TDF_LabelNode.hxx
 ===================================================================
 --- oce.orig/inc/TDF_LabelNode.hxx
 +++ oce/inc/TDF_LabelNode.hxx
-@@ -109,11 +109,12 @@
+@@ -109,11 +109,12 @@ class TDF_LabelNode {
    void * operator new (size_t aSize,
                         const Handle(NCollection_IncAllocator)& anAlloc)
          { return anAlloc -> Allocate (aSize); }
@@ -38,7 +38,7 @@ Index: oce/inc/W32_Allocator.hxx
 ===================================================================
 --- oce.orig/inc/W32_Allocator.hxx
 +++ oce/inc/W32_Allocator.hxx
-@@ -102,7 +102,10 @@
+@@ -102,7 +102,10 @@ struct W32_Note {  // base class to repr
   PW32_Allocator myAllocator;
  
  #ifdef OCC5415

@@ -30,7 +30,7 @@ Index: oce/src/Draw/Draw.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw.cxx
 +++ oce/src/Draw/Draw.cxx
-@@ -531,7 +531,11 @@
+@@ -531,7 +531,11 @@ void Draw::Load(Draw_Interpretor& theDI,
  #endif
      aPluginLibrary +=  aPluginResource->Value(theKey.ToCString());
  #ifdef WNT
@@ -47,7 +47,7 @@ Index: oce/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
 +++ oce/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
-@@ -52,7 +52,11 @@
+@@ -52,7 +52,11 @@ void Graphic3d_WNTGraphicDevice::SetGrap
    OSD_Function new_GLGraphicDriver;
    Standard_CString TheShr = getenv("CSF_GraphicShr");
    if ( ! TheShr || ( strlen( TheShr ) == 0 ) )
@@ -64,7 +64,7 @@ Index: oce/src/Plugin/Plugin.cxx
 ===================================================================
 --- oce.orig/src/Plugin/Plugin.cxx
 +++ oce/src/Plugin/Plugin.cxx
-@@ -47,7 +47,11 @@
+@@ -47,7 +47,11 @@ Handle(Standard_Transient) Plugin::Load(
  #endif
      thePluginLibrary +=  PluginResource->Value(theResource.ToCString());
  #ifdef WNT

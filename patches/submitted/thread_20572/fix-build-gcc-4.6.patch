@@ -21,7 +21,7 @@ Index: oce/src/Visual3d/Visual3d_TransientManager.cxx
 ===================================================================
 --- oce.orig/src/Visual3d/Visual3d_TransientManager.cxx
 +++ oce/src/Visual3d/Visual3d_TransientManager.cxx
-@@ -120,11 +120,11 @@
+@@ -120,11 +120,11 @@ Aspect_CLayer2d UnderCLayer;
  
  	if (! UnderLayer.IsNull ()){
  		UnderCLayer = UnderLayer->CLayer ();
@@ -35,7 +35,7 @@ Index: oce/src/Visual3d/Visual3d_TransientManager.cxx
  	}
  
  	// Begin rendering
-@@ -188,10 +188,16 @@
+@@ -188,10 +188,16 @@ void Visual3d_TransientManager::ClearDra
  
  	// Begin rendering
  	theCView	= *(CALL_DEF_VIEW *)AView->CView ();
@@ -56,7 +56,7 @@ Index: oce/src/Visual3d/Visual3d_TransientManager.cxx
  
  	Handle(Aspect_GraphicDriver) agd = AView->GraphicDriver ();
  
-@@ -228,10 +234,16 @@
+@@ -228,10 +234,16 @@ Standard_Boolean Visual3d_TransientManag
  
  	// Begin rendering
  	theCView	= *(CALL_DEF_VIEW *)AView->CView ();

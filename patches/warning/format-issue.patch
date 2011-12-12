@@ -13,7 +13,7 @@ Index: oce/src/BOPTest/BOPTest_LowCommands.cxx
 ===================================================================
 --- oce.orig/src/BOPTest/BOPTest_LowCommands.cxx
 +++ oce/src/BOPTest/BOPTest_LowCommands.cxx
-@@ -716,19 +716,19 @@
+@@ -716,19 +716,19 @@ void PrintState (Draw_Interpretor& aDI,
    //
    switch (aState) {
    case TopAbs_IN:		
@@ -42,7 +42,7 @@ Index: oce/src/IFSelect/IFSelect_SessionPilot.cxx
 ===================================================================
 --- oce.orig/src/IFSelect/IFSelect_SessionPilot.cxx
 +++ oce/src/IFSelect/IFSelect_SessionPilot.cxx
-@@ -222,7 +222,7 @@
+@@ -222,7 +222,7 @@ static TCollection_AsciiString nulword;
  
    for (;;) {
      char ligne[100];
@@ -55,7 +55,7 @@ Index: oce/src/OpenGl/OpenGl_degmodel.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_degmodel.cxx
 +++ oce/src/OpenGl/OpenGl_degmodel.cxx
-@@ -102,7 +102,7 @@
+@@ -102,7 +102,7 @@ static TStatus DegenerateModelPrint ( TS
  
    }  /* end switch */
  

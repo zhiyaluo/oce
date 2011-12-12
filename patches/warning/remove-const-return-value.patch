@@ -19,7 +19,7 @@ Index: oce/inc/FSD_File.hxx
 ===================================================================
 --- oce.orig/inc/FSD_File.hxx
 +++ oce/inc/FSD_File.hxx
-@@ -319,7 +319,7 @@
+@@ -319,7 +319,7 @@ protected:
  private:
  
    
@@ -32,7 +32,7 @@ Index: oce/inc/TCollection_ExtendedString.hxx
 ===================================================================
 --- oce.orig/inc/TCollection_ExtendedString.hxx
 +++ oce/inc/TCollection_ExtendedString.hxx
-@@ -248,7 +248,7 @@
+@@ -248,7 +248,7 @@ friend Standard_EXPORT Standard_OStream&
  //!    aString.Token("; :,",2) returns "test" <br>
    Standard_EXPORT     TCollection_ExtendedString Token(const Standard_ExtString separators,const Standard_Integer whichone = 1) const;
    //! Returns pointer to ExtString <br>
@@ -45,7 +45,7 @@ Index: oce/src/FSD/FSD_File.cxx
 ===================================================================
 --- oce.orig/src/FSD/FSD_File.cxx
 +++ oce/src/FSD/FSD_File.cxx
-@@ -118,7 +118,7 @@
+@@ -118,7 +118,7 @@ Storage_Error FSD_File::Close()
  //purpose  : ------------------ PROTECTED
  //=======================================================================
  
@@ -58,7 +58,7 @@ Index: oce/src/TCollection/TCollection_ExtendedString.cxx
 ===================================================================
 --- oce.orig/src/TCollection/TCollection_ExtendedString.cxx
 +++ oce/src/TCollection/TCollection_ExtendedString.cxx
-@@ -959,7 +959,7 @@
+@@ -959,7 +959,7 @@ TCollection_ExtendedString TCollection_E
  // ----------------------------------------------------------------------------
  // ToExtString
  // ----------------------------------------------------------------------------

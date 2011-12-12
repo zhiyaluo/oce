@@ -1,10 +1,8 @@
-diff --git a/CMakeLists.txt b/CMakeLists.txt
-old mode 100644
-new mode 100755
-index 9e775cf..fa5791b
---- a/CMakeLists.txt
-+++ b/CMakeLists.txt
-@@ -100,12 +100,29 @@ OPTION_WITH_DEFAULT( ${PROJECT_NAME}_WITH_GL2PS "Build with GL2PS" OFF )
+Index: oce/CMakeLists.txt
+===================================================================
+--- oce.orig/CMakeLists.txt
++++ oce/CMakeLists.txt
+@@ -100,12 +100,29 @@ OPTION_WITH_DEFAULT( ${PROJECT_NAME}_WIT
  OPTION_WITH_DEFAULT( ${PROJECT_NAME}_WITH_FREEIMAGE "Build with FreeImage" OFF )
  OPTION_WITH_DEFAULT( ${PROJECT_NAME}_EXTRA_WARNINGS "Enable Maximum Warnings Level" OFF )
  MARK_AS_ADVANCED(${PROJECT_NAME}_EXTRA_WARNINGS)
@@ -90,10 +88,10 @@ index 9e775cf..fa5791b
  				ENDIF()
  		ENDIF (CMAKE_CONFIGURATION_TYPES) 
  		
-diff --git a/adm/cmake/BuildToolkit.cmake b/adm/cmake/BuildToolkit.cmake
-index 587cede..6e35953 100644
---- a/adm/cmake/BuildToolkit.cmake
-+++ b/adm/cmake/BuildToolkit.cmake
+Index: oce/adm/cmake/BuildToolkit.cmake
+===================================================================
+--- oce.orig/adm/cmake/BuildToolkit.cmake
++++ oce/adm/cmake/BuildToolkit.cmake
 @@ -139,53 +139,45 @@ ENDIF(TOOLKIT_DEPENDS)
  ###########
  SET(TOOLKIT_INSTALL_BIN_DIR ${${PROJECT_NAME}_INSTALL_BIN_DIR})

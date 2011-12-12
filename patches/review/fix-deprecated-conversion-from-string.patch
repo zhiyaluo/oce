@@ -14,7 +14,7 @@ Index: oce/src/OpenGl/OpenGl_graduatedtrihedron.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_graduatedtrihedron.cxx
 +++ oce/src/OpenGl/OpenGl_graduatedtrihedron.cxx
-@@ -451,9 +451,9 @@
+@@ -451,9 +451,9 @@ TStatus call_graduatedtrihedron_get(int
      if (index == -1)
      {
          /* Default values */
@@ -27,7 +27,7 @@ Index: oce/src/OpenGl/OpenGl_graduatedtrihedron.cxx
          data->xdrawname = 1;
          data->ydrawname = 1; 
          data->zdrawname = 1;
-@@ -1245,4 +1245,4 @@
+@@ -1245,4 +1245,4 @@ TStatus call_graduatedtrihedron_minmaxva
      ymax = yMax;
      zmax = zMax;
      return TSuccess;

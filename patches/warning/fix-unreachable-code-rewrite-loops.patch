@@ -21,7 +21,7 @@ Index: oce/src/BOP/BOP_WireEdgeClassifier.cxx
 ===================================================================
 --- oce.orig/src/BOP/BOP_WireEdgeClassifier.cxx
 +++ oce/src/BOP/BOP_WireEdgeClassifier.cxx
-@@ -256,7 +256,7 @@
+@@ -256,7 +256,7 @@ static
    IntTools_Tools::MakeFaceFromWireAndFace (aW2, theFace, aFN2);  
    
    anExp1.Init (aFN1, TopAbs_EDGE);
@@ -34,7 +34,7 @@ Index: oce/src/BRepAlgo/BRepAlgo_FaceRestrictor.cxx
 ===================================================================
 --- oce.orig/src/BRepAlgo/BRepAlgo_FaceRestrictor.cxx
 +++ oce/src/BRepAlgo/BRepAlgo_FaceRestrictor.cxx
-@@ -246,9 +246,8 @@
+@@ -246,9 +246,8 @@ static Standard_Boolean IsInside(const T
  
  //Standard_Real U,V;
    TopExp_Explorer exp;
@@ -50,7 +50,7 @@ Index: oce/src/BRepCheck/BRepCheck_Face.cxx
 ===================================================================
 --- oce.orig/src/BRepCheck/BRepCheck_Face.cxx
 +++ oce/src/BRepCheck/BRepCheck_Face.cxx
-@@ -644,9 +644,8 @@
+@@ -644,9 +644,8 @@ static Standard_Boolean IsInside(const T
  {
    // Standard_Real U,V;
    TopExp_Explorer exp;
@@ -66,7 +66,7 @@ Index: oce/src/ExprIntrp/ExprIntrp.cxx
 ===================================================================
 --- oce.orig/src/ExprIntrp/ExprIntrp.cxx
 +++ oce/src/ExprIntrp/ExprIntrp.cxx
-@@ -33,9 +33,16 @@
+@@ -33,9 +33,16 @@ Standard_Boolean ExprIntrp::Parse(const
        return Standard_True;
      }
      catch (Standard_Failure) {
@@ -87,7 +87,7 @@ Index: oce/src/FWOSDriver/FWOSDriver_Driver.cxx
 ===================================================================
 --- oce.orig/src/FWOSDriver/FWOSDriver_Driver.cxx
 +++ oce/src/FWOSDriver/FWOSDriver_Driver.cxx
-@@ -56,7 +56,7 @@
+@@ -56,7 +56,7 @@ Standard_Boolean FWOSDriver_Driver::HasR
      case OSD_RWXD:
        return Standard_True;
      default:
@@ -100,7 +100,7 @@ Index: oce/src/Graphic2d/Graphic2d_Buffer.cxx
 ===================================================================
 --- oce.orig/src/Graphic2d/Graphic2d_Buffer.cxx
 +++ oce/src/Graphic2d/Graphic2d_Buffer.cxx
-@@ -344,11 +344,9 @@
+@@ -344,11 +344,9 @@ printf(" Graphic2d_Buffer::ReLoad(%d)\n"
  
  	    // The color of the 1st primitive from the buffer is required
  	    if( theColorIndex < 0) {
@@ -118,7 +118,7 @@ Index: oce/src/MeshVS/MeshVS_MeshOwner.cxx
 ===================================================================
 --- oce.orig/src/MeshVS/MeshVS_MeshOwner.cxx
 +++ oce/src/MeshVS/MeshVS_MeshOwner.cxx
-@@ -136,21 +136,21 @@
+@@ -136,21 +136,21 @@ void MeshVS_MeshOwner::HilightWithColor
      if( !aNodes.IsNull() && aNodes->Map().Extent() == 1 )
      {
        TColStd_MapIteratorOfPackedMapOfInteger anIt( aNodes->Map() );
@@ -144,7 +144,7 @@ Index: oce/src/MeshVS/MeshVS_MeshOwner.cxx
        }
      }
  
-@@ -186,24 +186,23 @@
+@@ -186,24 +186,23 @@ Standard_Boolean MeshVS_MeshOwner::IsFor
      if( !aNodes.IsNull() && aNodes->Map().Extent() == 1 )
      {
        TColStd_MapIteratorOfPackedMapOfInteger anIt( aNodes->Map() );
@@ -176,7 +176,7 @@ Index: oce/src/TNaming/TNaming_Localizer.cxx
 ===================================================================
 --- oce.orig/src/TNaming/TNaming_Localizer.cxx
 +++ oce/src/TNaming/TNaming_Localizer.cxx
-@@ -302,9 +302,8 @@
+@@ -302,9 +302,8 @@ void TNaming_Localizer::GoBack (const To
      //----------------------------------------------------------
      TDF_Label        Father  = Lab.Father();
      TNaming_Iterator itLab(Father);
@@ -191,7 +191,7 @@ Index: oce/src/TNaming/TNaming_Name.cxx
 ===================================================================
 --- oce.orig/src/TNaming/TNaming_Name.cxx
 +++ oce/src/TNaming/TNaming_Name.cxx
-@@ -1060,7 +1060,7 @@
+@@ -1060,7 +1060,7 @@ static TopoDS_Shape FindShape(const TNam
    if(aNum < 1) return aResult;  
    TopTools_ListOfShape List;
    TNaming_DataMapIteratorOfDataMapOfShapeMapOfShape it(DM);
@@ -200,7 +200,7 @@ Index: oce/src/TNaming/TNaming_Name.cxx
      const TopoDS_Shape& aKey1 = it.Key();
      const TNaming_MapOfShape& aMap = it.Value();
  
-@@ -1078,7 +1078,6 @@
+@@ -1078,7 +1078,6 @@ static TopoDS_Shape FindShape(const TNam
        if(isCand)
  	List.Append(aS);
      }
@@ -212,7 +212,7 @@ Index: oce/src/TNaming/TNaming_Naming.cxx
 ===================================================================
 --- oce.orig/src/TNaming/TNaming_Naming.cxx
 +++ oce/src/TNaming/TNaming_Naming.cxx
-@@ -549,9 +549,8 @@
+@@ -549,9 +549,8 @@ static void FindNewShapeInFather (const
  {  
    TDF_Label         Father  = NS->Label().Father(); 
    TNaming_Iterator  itLab(Father);

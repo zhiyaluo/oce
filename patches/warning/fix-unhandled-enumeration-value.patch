@@ -33,7 +33,7 @@ Index: oce/src/Adaptor3d/Adaptor3d_HSurfaceTool.cxx
 ===================================================================
 --- oce.orig/src/Adaptor3d/Adaptor3d_HSurfaceTool.cxx
 +++ oce/src/Adaptor3d/Adaptor3d_HSurfaceTool.cxx
-@@ -17,6 +17,7 @@
+@@ -17,6 +17,7 @@ Standard_Integer Adaptor3d_HSurfaceTool:
        return (nbs < 2 ? 2 : nbs);
      }
      case GeomAbs_Torus: return 20;
@@ -41,7 +41,7 @@ Index: oce/src/Adaptor3d/Adaptor3d_HSurfaceTool.cxx
    }
    return 10;
  }
-@@ -38,6 +39,7 @@
+@@ -38,6 +39,7 @@ Standard_Integer Adaptor3d_HSurfaceTool:
      case GeomAbs_Torus:
      case GeomAbs_SurfaceOfRevolution:
      case GeomAbs_SurfaceOfExtrusion: return 15;
@@ -53,7 +53,7 @@ Index: oce/src/Aspect/Aspect_ColorScale.cxx
 ===================================================================
 --- oce.orig/src/Aspect/Aspect_ColorScale.cxx
 +++ oce/src/Aspect/Aspect_ColorScale.cxx
-@@ -506,6 +506,7 @@
+@@ -506,6 +506,7 @@ void Aspect_ColorScale::DrawScale( const
      case Aspect_TOCSP_RIGHT:
        x += colorWidth + spacer;
        break;
@@ -65,7 +65,7 @@ Index: oce/src/BRepExtrema/BRepExtrema_DistShapeShape.cxx
 ===================================================================
 --- oce.orig/src/BRepExtrema/BRepExtrema_DistShapeShape.cxx
 +++ oce/src/BRepExtrema/BRepExtrema_DistShapeShape.cxx
-@@ -455,6 +455,7 @@
+@@ -455,6 +455,7 @@ void BRepExtrema_DistShapeShape::Dump(St
          ParOnFaceS1(i,r1,r2);
          o << "parameters on the first face :  u= " << r1 << " v=" <<  r2 << endl;
          break;
@@ -73,7 +73,7 @@ Index: oce/src/BRepExtrema/BRepExtrema_DistShapeShape.cxx
      }
      switch (SupportTypeShape2(i))
      {
-@@ -466,6 +467,7 @@
+@@ -466,6 +467,7 @@ void BRepExtrema_DistShapeShape::Dump(St
          ParOnFaceS2(i,r1,r2);
          o << "parameters on the second face : u= " << r1 << " v=" <<  r2 << endl;
          break;
@@ -85,7 +85,7 @@ Index: oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
 ===================================================================
 --- oce.orig/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
 +++ oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
-@@ -529,6 +529,7 @@
+@@ -529,6 +529,7 @@ void BRepExtrema_DistanceSS::Perform(con
            Perform( V1, F2, B1, B2 );
            break;
          }
@@ -93,7 +93,7 @@ Index: oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
        }
        break;
      }
-@@ -569,6 +570,7 @@
+@@ -569,6 +570,7 @@ void BRepExtrema_DistanceSS::Perform(con
            Perform( E1, F2, B1, B2 );
            break;
          }
@@ -101,7 +101,7 @@ Index: oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
        }
        break;
      }
-@@ -601,9 +603,11 @@
+@@ -601,9 +603,11 @@ void BRepExtrema_DistanceSS::Perform(con
            Perform( F1, F2, B1, B2 );
            break;
          }
@@ -117,7 +117,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_0.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder_0.cxx
 +++ oce/src/ChFi3d/ChFi3d_Builder_0.cxx
-@@ -1749,6 +1749,7 @@
+@@ -1749,6 +1749,7 @@ TopAbs_Orientation ChFi3d_TrsfTrans(cons
    switch (T1)  {
      case IntSurf_In:  return TopAbs_FORWARD;
      case IntSurf_Out: return TopAbs_REVERSED;
@@ -129,7 +129,7 @@ Index: oce/src/DDocStd/DDocStd_ApplicationCommands.cxx
 ===================================================================
 --- oce.orig/src/DDocStd/DDocStd_ApplicationCommands.cxx
 +++ oce/src/DDocStd/DDocStd_ApplicationCommands.cxx
-@@ -193,7 +193,7 @@
+@@ -193,7 +193,7 @@ static Standard_Integer DDocStd_Open (Dr
  	di << " could not retrieve , permission denied " << "\n" ;  
  	break;
        }
@@ -138,7 +138,7 @@ Index: oce/src/DDocStd/DDocStd_ApplicationCommands.cxx
        }
        di << "DDocStd_Open : Error" << "\n";
      }	
-@@ -255,6 +255,7 @@
+@@ -255,6 +255,7 @@ static Standard_Integer DDocStd_SaveAs (
        case CDF_SS_Failure: {
  	di << " Write failure " << "\n" ;  
        }
@@ -150,7 +150,7 @@ Index: oce/src/DNaming/DNaming_TransformationDriver.cxx
 ===================================================================
 --- oce.orig/src/DNaming/DNaming_TransformationDriver.cxx
 +++ oce/src/DNaming/DNaming_TransformationDriver.cxx
-@@ -316,6 +316,7 @@
+@@ -316,6 +316,7 @@ static void CollectShapes(const TopoDS_S
        }
    }
      break;
@@ -162,7 +162,7 @@ Index: oce/src/GeomAdaptor/GeomAdaptor_Surface.cxx
 ===================================================================
 --- oce.orig/src/GeomAdaptor/GeomAdaptor_Surface.cxx
 +++ oce/src/GeomAdaptor/GeomAdaptor_Surface.cxx
-@@ -181,6 +181,7 @@
+@@ -181,6 +181,7 @@ GeomAbs_Shape GeomAdaptor_Surface::UCont
          case GeomAbs_CN : return GeomAbs_CN; 
          case GeomAbs_C2 : return GeomAbs_C1; 
          case GeomAbs_C1 : return GeomAbs_C0;
@@ -170,7 +170,7 @@ Index: oce/src/GeomAdaptor/GeomAdaptor_Surface.cxx
        }
        Standard_NoSuchObject::Raise("GeomAdaptor_Surface::UContinuity");
  	  break;
-@@ -192,6 +193,7 @@
+@@ -192,6 +193,7 @@ GeomAbs_Shape GeomAdaptor_Surface::UCont
        return GC.Continuity();
      }
  	case GeomAbs_OtherSurface: Standard_NoSuchObject::Raise("GeomAdaptor_Surface::UContinuity");
@@ -178,7 +178,7 @@ Index: oce/src/GeomAdaptor/GeomAdaptor_Surface.cxx
    }
    return GeomAbs_CN;
  }
-@@ -222,6 +224,7 @@
+@@ -222,6 +224,7 @@ GeomAbs_Shape GeomAdaptor_Surface::VCont
          case GeomAbs_CN : return GeomAbs_CN; 
          case GeomAbs_C2 : return GeomAbs_C1;
          case GeomAbs_C1 : return GeomAbs_C0;
@@ -186,7 +186,7 @@ Index: oce/src/GeomAdaptor/GeomAdaptor_Surface.cxx
        }
        Standard_NoSuchObject::Raise("GeomAdaptor_Surface::VContinuity");
        break;
-@@ -233,6 +236,7 @@
+@@ -233,6 +236,7 @@ GeomAbs_Shape GeomAdaptor_Surface::VCont
        return GC.Continuity();
      }
  	case GeomAbs_OtherSurface: Standard_NoSuchObject::Raise("GeomAdaptor_Surface::VContinuity");
@@ -194,7 +194,7 @@ Index: oce/src/GeomAdaptor/GeomAdaptor_Surface.cxx
    }
    return GeomAbs_CN;
  }
-@@ -270,10 +274,12 @@
+@@ -270,10 +274,12 @@ Standard_Integer GeomAdaptor_Surface::Nb
          case GeomAbs_C0: BaseS = GeomAbs_C1; break;
          case GeomAbs_C1: BaseS = GeomAbs_C2; break;
          case GeomAbs_C2: BaseS = GeomAbs_C3; break;
@@ -207,7 +207,7 @@ Index: oce/src/GeomAdaptor/GeomAdaptor_Surface.cxx
    }
    return 1;
  }
-@@ -311,10 +317,12 @@
+@@ -311,10 +317,12 @@ Standard_Integer GeomAdaptor_Surface::Nb
          case GeomAbs_C0: BaseS = GeomAbs_C1; break;
          case GeomAbs_C1: BaseS = GeomAbs_C2; break;
          case GeomAbs_C2: BaseS = GeomAbs_C3; break;
@@ -220,7 +220,7 @@ Index: oce/src/GeomAdaptor/GeomAdaptor_Surface.cxx
    }
    return 1;
  }
-@@ -359,11 +367,13 @@
+@@ -359,11 +367,13 @@ void GeomAdaptor_Surface::UIntervals(TCo
          case GeomAbs_C0: BaseS = GeomAbs_C1; break;
          case GeomAbs_C1: BaseS = GeomAbs_C2; break;
          case GeomAbs_C2: BaseS = GeomAbs_C3; break;
@@ -234,7 +234,7 @@ Index: oce/src/GeomAdaptor/GeomAdaptor_Surface.cxx
    }
  
    T(T.Lower()) = myUFirst;
-@@ -410,11 +420,13 @@
+@@ -410,11 +420,13 @@ void GeomAdaptor_Surface::VIntervals(TCo
          case GeomAbs_C0: BaseS = GeomAbs_C1; break;
          case GeomAbs_C1: BaseS = GeomAbs_C2; break;
          case GeomAbs_C2: BaseS = GeomAbs_C3; break;
@@ -252,7 +252,7 @@ Index: oce/src/GeomInt/GeomInt_LineConstructor.cxx
 ===================================================================
 --- oce.orig/src/GeomInt/GeomInt_LineConstructor.cxx
 +++ oce/src/GeomInt/GeomInt_LineConstructor.cxx
-@@ -244,6 +244,7 @@
+@@ -244,6 +244,7 @@ void GeomInt_LineConstructor::Perform(co
            case IntPatch_Ellipse:   Pmid = ElCLib::Value(pmid,GLine->Ellipse()); break;
            case IntPatch_Hyperbola: Pmid = ElCLib::Value(pmid,GLine->Hyperbola()); break;
            case IntPatch_Parabola:  Pmid = ElCLib::Value(pmid,GLine->Parabola()); break;
@@ -264,7 +264,7 @@ Index: oce/src/Graphic2d/Graphic2d_SetOfMarkers.cxx
 ===================================================================
 --- oce.orig/src/Graphic2d/Graphic2d_SetOfMarkers.cxx
 +++ oce/src/Graphic2d/Graphic2d_SetOfMarkers.cxx
-@@ -292,6 +292,7 @@
+@@ -292,6 +292,7 @@ Standard_Boolean Graphic2d_SetOfMarkers:
  	return Standard_True;
        break;
      }
@@ -272,7 +272,7 @@ Index: oce/src/Graphic2d/Graphic2d_SetOfMarkers.cxx
    }
  #endif
    return Standard_False;
-@@ -332,6 +333,7 @@
+@@ -332,6 +333,7 @@ Standard_Boolean Graphic2d_SetOfMarkers
  	return Standard_True;
        break;
      }
@@ -284,7 +284,7 @@ Index: oce/src/IntPatch/IntPatch_HInterTool.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_HInterTool.cxx
 +++ oce/src/IntPatch/IntPatch_HInterTool.cxx
-@@ -72,6 +72,7 @@
+@@ -72,6 +72,7 @@ Standard_Integer IntPatch_HInterTool::Nb
      //case GeomAbs_Sphere:
      //case GeomAbs_SurfaceOfRevolution:
      //case GeomAbs_SurfaceOfExtrusion: return 10;
@@ -296,7 +296,7 @@ Index: oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
 +++ oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
-@@ -359,6 +359,7 @@
+@@ -359,6 +359,7 @@ void Recadre(const Standard_Boolean ,
      case GeomAbs_Sphere:
        while(U1<(U1p-1.5*PI)) U1+=PI+PI;
        while(U1>(U1p+1.5*PI)) U1-=PI+PI;
@@ -304,7 +304,7 @@ Index: oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
    }
    switch(typeS2)
    { 
-@@ -370,6 +371,7 @@
+@@ -370,6 +371,7 @@ void Recadre(const Standard_Boolean ,
      case GeomAbs_Sphere:
        while(U2<(U2p-1.5*PI)) U2+=PI+PI;
        while(U2>(U2p+1.5*PI)) U2-=PI+PI;
@@ -316,7 +316,7 @@ Index: oce/src/IntPatch/IntPatch_Intersection.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_Intersection.cxx
 +++ oce/src/IntPatch/IntPatch_Intersection.cxx
-@@ -614,6 +614,7 @@
+@@ -614,6 +614,7 @@ static void FUN_NewFirstLast(const GeomA
  	  }
        break;
      }
@@ -328,7 +328,7 @@ Index: oce/src/IntPatch/IntPatch_Point.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_Point.cxx
 +++ oce/src/IntPatch/IntPatch_Point.cxx
-@@ -68,6 +68,7 @@
+@@ -68,6 +68,7 @@ void IntPatch_Point::ReverseTransition()
      {
  	  case IntSurf_In: TLine.SetValue(Standard_False,IntSurf_Out); break;
  	  case IntSurf_Out: TLine.SetValue(Standard_False,IntSurf_In); break;
@@ -336,7 +336,7 @@ Index: oce/src/IntPatch/IntPatch_Point.cxx
  	}
      traline1=TLine;
      IntSurf_Transition TArc;
-@@ -75,6 +76,7 @@
+@@ -75,6 +76,7 @@ void IntPatch_Point::ReverseTransition()
      {
  	  case IntSurf_In: TArc.SetValue(Standard_False,IntSurf_Out); break;
  	  case IntSurf_Out: TArc.SetValue(Standard_False,IntSurf_In); break;
@@ -344,7 +344,7 @@ Index: oce/src/IntPatch/IntPatch_Point.cxx
  	}
      tra1=TArc;
    }
-@@ -85,6 +87,7 @@
+@@ -85,6 +87,7 @@ void IntPatch_Point::ReverseTransition()
      {
  	  case IntSurf_In: TLine.SetValue(Standard_False,IntSurf_Out); break;
  	  case IntSurf_Out: TLine.SetValue(Standard_False,IntSurf_In); break;
@@ -352,7 +352,7 @@ Index: oce/src/IntPatch/IntPatch_Point.cxx
  	}
      traline2=TLine;
      IntSurf_Transition TArc;
-@@ -92,6 +95,7 @@
+@@ -92,6 +95,7 @@ void IntPatch_Point::ReverseTransition()
      {
  	  case IntSurf_In: TArc.SetValue(Standard_False,IntSurf_Out); break;
  	  case IntSurf_Out: TArc.SetValue(Standard_False,IntSurf_In); break;
@@ -364,7 +364,7 @@ Index: oce/src/IntTools/IntTools_LineConstructor.cxx
 ===================================================================
 --- oce.orig/src/IntTools/IntTools_LineConstructor.cxx
 +++ oce/src/IntTools/IntTools_LineConstructor.cxx
-@@ -323,6 +323,7 @@
+@@ -323,6 +323,7 @@ void IntTools_LineConstructor::Perform(c
            case IntPatch_Ellipse:   Pmid = ElCLib::Value(pmid,GLine->Ellipse()); break;
            case IntPatch_Hyperbola: Pmid = ElCLib::Value(pmid,GLine->Hyperbola()); break;
            case IntPatch_Parabola:  Pmid = ElCLib::Value(pmid,GLine->Parabola()); break;
@@ -376,7 +376,7 @@ Index: oce/src/TopOpeBRep/TopOpeBRep_LineInter.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRep/TopOpeBRep_LineInter.cxx
 +++ oce/src/TopOpeBRep/TopOpeBRep_LineInter.cxx
-@@ -329,6 +329,7 @@
+@@ -329,6 +329,7 @@ Standard_Boolean TopOpeBRep_LineInter::I
    {
      case TopOpeBRep_CIRCLE  :
      case TopOpeBRep_ELLIPSE : return Standard_True;
@@ -384,7 +384,7 @@ Index: oce/src/TopOpeBRep/TopOpeBRep_LineInter.cxx
    }
    return Standard_False;
  }
-@@ -394,6 +395,7 @@
+@@ -394,6 +395,7 @@ Standard_Integer TopOpeBRep_LineInter::N
    switch (myTypeLineCurve)
    {
      case TopOpeBRep_WALKING : return myILW->NbPnts();
@@ -396,7 +396,7 @@ Index: oce/src/VrmlData/VrmlData_ShapeConvert.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_ShapeConvert.cxx
 +++ oce/src/VrmlData/VrmlData_ShapeConvert.cxx
-@@ -279,6 +279,7 @@
+@@ -279,6 +279,7 @@ void VrmlData_ShapeConvert::Convert (con
              }
            }
            break;
@@ -408,7 +408,7 @@ Index: oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
 ===================================================================
 --- oce.orig/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
 +++ oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
-@@ -163,6 +163,7 @@
+@@ -163,6 +163,7 @@ static Standard_Integer loadvrml
        case VrmlData_NonPositiveSize:    aStr = "NonPositiveSize"; break;
        case VrmlData_ReadUnknownNode:    aStr = "ReadUnknownNode"; break;
        case VrmlData_NonSupportedFeature:aStr = "NonSupportedFeature"; break;

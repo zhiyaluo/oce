@@ -106,7 +106,7 @@ Index: oce/inc/InterfaceGraphic_wntio.hxx
 ===================================================================
 --- oce.orig/inc/InterfaceGraphic_wntio.hxx
 +++ oce/inc/InterfaceGraphic_wntio.hxx
-@@ -13,9 +13,9 @@
+@@ -13,9 +13,9 @@ extern "C" {
  #  endif  /* __InterfaceGraphic_DLL */
  # endif  /* __InterfaceGraphic_API */
  
@@ -123,7 +123,7 @@ Index: oce/inc/OpenGl_Extension.hxx
 ===================================================================
 --- oce.orig/inc/OpenGl_Extension.hxx
 +++ oce/inc/OpenGl_Extension.hxx
-@@ -118,15 +118,15 @@
+@@ -118,15 +118,15 @@ typedef void (APIENTRY * PFNGLBLENDEQUAT
  
  
  extern GLboolean InitExtensionGLX(Display *display);
@@ -146,7 +146,7 @@ Index: oce/inc/OpenGl_TextRender.hxx
 ===================================================================
 --- oce.orig/inc/OpenGl_TextRender.hxx
 +++ oce/inc/OpenGl_TextRender.hxx
-@@ -38,15 +38,15 @@
+@@ -38,15 +38,15 @@ private:
  
    struct FontMapNode 
    {
@@ -182,7 +182,7 @@ Index: oce/src/Aspect/Aspect_Driver.cxx
 ===================================================================
 --- oce.orig/src/Aspect/Aspect_Driver.cxx
 +++ oce/src/Aspect/Aspect_Driver.cxx
-@@ -31,7 +31,7 @@
+@@ -31,7 +31,7 @@ Aspect_Driver::Aspect_Driver () {
  
    OSD_Environment CSF_MDTVFontDirectory ;
  
@@ -195,7 +195,7 @@ Index: oce/src/DPrsStd/DPrsStd.cxx
 ===================================================================
 --- oce.orig/src/DPrsStd/DPrsStd.cxx
 +++ oce/src/DPrsStd/DPrsStd.cxx
-@@ -53,7 +53,7 @@
+@@ -53,7 +53,7 @@ static Standard_Boolean FoundCAFPlugin (
  
   // Define Environment Variable 
  
@@ -208,7 +208,7 @@ Index: oce/src/Draw/Draw.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw.cxx
 +++ oce/src/Draw/Draw.cxx
-@@ -89,15 +89,15 @@
+@@ -89,15 +89,15 @@ extern console_semaphore_value volatile
  extern char console_command[1000];
  #endif
  
@@ -231,7 +231,7 @@ Index: oce/src/Graphic3d/Graphic3d_GraphicDevice.cxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_GraphicDevice.cxx
 +++ oce/src/Graphic3d/Graphic3d_GraphicDevice.cxx
-@@ -188,7 +188,7 @@
+@@ -188,7 +188,7 @@ OSD_Function new_GLGraphicDriver =
  Standard_Boolean Graphic3d_GraphicDevice::ShrIsDefined (Standard_CString& aShr) const {
  
    char *glso, *glul, *pkno;
@@ -240,7 +240,7 @@ Index: oce/src/Graphic3d/Graphic3d_GraphicDevice.cxx
  
    casroot = getenv("CASROOT");
    glso = getenv("CSF_GraphicShr");
-@@ -212,8 +212,9 @@
+@@ -212,8 +212,9 @@ Standard_Boolean Graphic3d_GraphicDevice
  #else
      buffString = buffString + "/lib/libTKOpenGl.so";
  #endif
@@ -256,7 +256,7 @@ Index: oce/src/Graphic3d/Graphic3d_Texture1D.cxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_Texture1D.cxx
 +++ oce/src/Graphic3d/Graphic3d_Texture1D.cxx
-@@ -26,7 +26,7 @@
+@@ -26,7 +26,7 @@ static TCollection_AsciiString GetEnvir
    static Standard_Boolean IsDefined=Standard_False ;
    static TCollection_AsciiString VarName;
    if ( !IsDefined ) {
@@ -269,7 +269,7 @@ Index: oce/src/Graphic3d/Graphic3d_Texture2D.cxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_Texture2D.cxx
 +++ oce/src/Graphic3d/Graphic3d_Texture2D.cxx
-@@ -22,7 +22,7 @@
+@@ -22,7 +22,7 @@ static TCollection_AsciiString GetEnvir
    static Standard_Boolean IsDefined=Standard_False ;
    static TCollection_AsciiString VarName;
    if ( !IsDefined ) {
@@ -282,7 +282,7 @@ Index: oce/src/Graphic3d/Graphic3d_TextureEnv.cxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_TextureEnv.cxx
 +++ oce/src/Graphic3d/Graphic3d_TextureEnv.cxx
-@@ -23,7 +23,7 @@
+@@ -23,7 +23,7 @@ static TCollection_AsciiString GetEnvir
    static Standard_Boolean IsDefined=Standard_False ;
    static TCollection_AsciiString VarName;
    if ( !IsDefined ) {
@@ -295,7 +295,7 @@ Index: oce/src/InterfaceGraphic/InterfaceGraphic_cPrintf.cxx
 ===================================================================
 --- oce.orig/src/InterfaceGraphic/InterfaceGraphic_cPrintf.cxx
 +++ oce/src/InterfaceGraphic/InterfaceGraphic_cPrintf.cxx
-@@ -35,7 +35,7 @@
+@@ -35,7 +35,7 @@ public:
  
  static Init_ init;
  
@@ -304,7 +304,7 @@ Index: oce/src/InterfaceGraphic/InterfaceGraphic_cPrintf.cxx
  
    static BOOL   first = TRUE;
    static HANDLE hConsole = NULL;
-@@ -64,7 +64,7 @@
+@@ -64,7 +64,7 @@ int cPrintf ( char* fmt, ... ) {
  
  }  /* end cPrintf */
  
@@ -313,7 +313,7 @@ Index: oce/src/InterfaceGraphic/InterfaceGraphic_cPrintf.cxx
  
    static BOOL   first = TRUE;
    static HANDLE hConsole = NULL;
-@@ -93,7 +93,7 @@
+@@ -93,7 +93,7 @@ int fcPrintf ( int dummy, char* fmt, ...
  
  }  /* end fcPrintf */
  
@@ -326,7 +326,7 @@ Index: oce/src/OpenGl/OpenGl_Extension.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_Extension.cxx
 +++ oce/src/OpenGl/OpenGl_Extension.cxx
-@@ -70,7 +70,7 @@
+@@ -70,7 +70,7 @@ static GLboolean initOneDotOne = GL_FALS
  */
  
  /*----------------------------------------------------------------------*/
@@ -335,7 +335,7 @@ Index: oce/src/OpenGl/OpenGl_Extension.cxx
  {
    /*
    ** Search for extName in the extensions string.  Use of strstr()
-@@ -143,7 +143,7 @@
+@@ -143,7 +143,7 @@ extern GLboolean InitExtensionGLX(Displa
  }
  
  /*----------------------------------------------------------------------*/
@@ -344,7 +344,7 @@ Index: oce/src/OpenGl/OpenGl_Extension.cxx
  {
    GLboolean result = GL_FALSE;
  
-@@ -178,7 +178,7 @@
+@@ -178,7 +178,7 @@ extern Display *GetCurrentDisplay(void)
  }
  
  /*----------------------------------------------------------------------*/
@@ -357,7 +357,7 @@ Index: oce/src/OpenGl/OpenGl_GraphicDriver.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_GraphicDriver.cxx
 +++ oce/src/OpenGl/OpenGl_GraphicDriver.cxx
-@@ -63,10 +63,10 @@
+@@ -63,10 +63,10 @@ Standard_ShortReal OpenGl_GraphicDriver:
  
  GLboolean OpenGl_QueryExtensionGLX (const char *extName)
  {
@@ -374,7 +374,7 @@ Index: oce/src/OpenGl/OpenGl_degmodel.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_degmodel.cxx
 +++ oce/src/OpenGl/OpenGl_degmodel.cxx
-@@ -57,7 +57,7 @@
+@@ -57,7 +57,7 @@ static TStatus DegenerateModelDelete  (
  
  static TStatus DegenerateModelPrint ( TSM_ELEM_DATA data, Tint n, cmn_key* k ) {
  
@@ -387,7 +387,7 @@ Index: oce/src/OpenGl/OpenGl_tgl_util.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_tgl_util.cxx
 +++ oce/src/OpenGl/OpenGl_tgl_util.cxx
-@@ -114,7 +114,7 @@
+@@ -114,7 +114,7 @@ char *symbol, *value
  Gets an environment variable.
  */
  
@@ -400,7 +400,7 @@ Index: oce/src/OpenGl/OpenGl_togl_begin_immediat_mode.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_togl_begin_immediat_mode.cxx
 +++ oce/src/OpenGl/OpenGl_togl_begin_immediat_mode.cxx
-@@ -128,7 +128,7 @@
+@@ -128,7 +128,7 @@ drawing
  #include <OpenGl_tgl.hxx>
  #include <OpenGl_tgl_subrvis.hxx>
  
@@ -413,7 +413,7 @@ Index: oce/src/OpenGl/OpenGl_txgl.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_txgl.cxx
 +++ oce/src/OpenGl/OpenGl_txgl.cxx
-@@ -95,11 +95,11 @@
+@@ -95,11 +95,11 @@ struct HTBL_ENTRY {
  };
  
  

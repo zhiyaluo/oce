@@ -12,7 +12,7 @@ Index: oce/src/LDOM/LDOM_CharReference.cxx
 ===================================================================
 --- oce.orig/src/LDOM/LDOM_CharReference.cxx
 +++ oce/src/LDOM/LDOM_CharReference.cxx
-@@ -272,7 +272,7 @@
+@@ -272,7 +272,7 @@ int LDOM_CharReference::myTab [256] = {
    NORMAL_C,     // 059: Y
    NORMAL_C,     // 05a: Z
    NORMAL_C,     // 05b: [

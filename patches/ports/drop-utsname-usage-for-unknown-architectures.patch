@@ -22,7 +22,7 @@ Index: oce/src/OSD/OSD_Path.cxx
  static OSD_SysType whereAmI(){
  #if defined(__digital__) || defined(__FreeBSD__) || defined(SUNOS) || defined(__APPLE__) || defined(__FreeBSD_kernel__)
    return OSD_UnixBSD;
-@@ -44,13 +40,6 @@
+@@ -44,13 +40,6 @@ static OSD_SysType whereAmI(){
    return OSD_Aix;
  }
  #else

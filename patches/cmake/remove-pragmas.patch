@@ -33,7 +33,7 @@ Index: oce/src/OpenGl/OpenGl_attri.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_attri.cxx
 +++ oce/src/OpenGl/OpenGl_attri.cxx
-@@ -107,9 +107,7 @@
+@@ -107,9 +107,7 @@ used in immediat mode context.
    #include <gl2ps.h>
    /* OCC22216 NOTE: linker dependency can be switched off by undefining macro. 
       Pragma comment for gl2ps.lib is defined only here. */ 

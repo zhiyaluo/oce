@@ -38,7 +38,7 @@ Index: oce/src/OSD/OSD_FontMgr.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_FontMgr.cxx
 +++ oce/src/OSD/OSD_FontMgr.cxx
-@@ -236,7 +236,7 @@
+@@ -236,7 +236,7 @@ void OSD_FontMgr::InitFontDataBase() {
  #ifndef WNT
    StringList dirs;
    Handle(TCollection_HAsciiString) str = new TCollection_HAsciiString;
