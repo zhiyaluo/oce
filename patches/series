@@ -73,7 +73,6 @@ warning/remove-const-return-value.patch
 #  Do not report this bug to OCC, it has to be investigated
 review/TDataXtd_PatternStd_NbInstances2.patch
 
-cmake/remove-Autotools-generated-files.patch
 cmake/remove-Autotools-and-project-files.patch
 cmake/copy-CMake-files-from-5e184f9.patch
 cmake/bump-version-number.patch
