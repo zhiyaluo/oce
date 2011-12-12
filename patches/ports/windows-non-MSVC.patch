@@ -395,21 +395,14 @@ Index: oce/inc/Standard_Atomic.hxx
 ===================================================================
 --- oce.orig/inc/Standard_Atomic.hxx
 +++ oce/inc/Standard_Atomic.hxx
-@@ -24,15 +24,23 @@
- //===================================================
- // Windows NT, MSVC++ compiler
- //===================================================
--#if defined(WNT)
+@@ -18,11 +18,20 @@
  
+ #include <Standard_Macro.hxx>
+ 
+-#if (defined(_WIN32) || defined(__WIN32__))
 +#if defined(_MSC_VER) || defined(__BORLANDC__)
 +#ifdef __BORLANDC__
  extern "C" {
--long _InterlockedIncrement(long volatile* lpAddend);
--long _InterlockedDecrement(long volatile* lpAddend);
--}
--
--#pragma intrinsic (_InterlockedIncrement)
--#pragma intrinsic (_InterlockedDecrement)
 +  __declspec(dllimport) long __stdcall InterlockedIncrement ( long volatile *lpAddend);
 +  __declspec(dllimport) long __stdcall InterlockedDecrement ( long volatile *lpAddend);
 + }
@@ -417,15 +410,14 @@ Index: oce/inc/Standard_Atomic.hxx
 + #define _InterlockedDecrement InterlockedDecrement
 +#elif defined(_MSC_VER)
 + extern "C" {
-+  long _InterlockedIncrement(long volatile* lpAddend);
-+  long _InterlockedDecrement(long volatile* lpAddend);
+   long _InterlockedIncrement(long volatile* lpAddend);
+   long _InterlockedDecrement(long volatile* lpAddend);
+-}
 + }
-+# pragma intrinsic (_InterlockedIncrement)
-+# pragma intrinsic (_InterlockedDecrement)
 +#endif
+ #endif
  
- inline void Standard_Atomic_Increment (int volatile* var)
- {
+ #if defined(_MSC_VER)
 Index: oce/inc/Standard_CString.hxx
 ===================================================================
 --- oce.orig/inc/Standard_CString.hxx
@@ -575,22 +567,6 @@ Index: oce/inc/math_DoubleTab.lxx
  inline Item& math_DoubleTab::Value (const Standard_Integer RowIndex,
  				    const Standard_Integer ColIndex) const
  {
-Index: oce/src/BRepMesh/BRepMesh_CellFilter.hxx
-===================================================================
---- oce.orig/src/BRepMesh/BRepMesh_CellFilter.hxx
-+++ oce/src/BRepMesh/BRepMesh_CellFilter.hxx
-@@ -10,3 +10,11 @@
- #include <BRepMesh_CircleInspector.hxx>
- 
- typedef NCollection_CellFilter<BRepMesh_CircleInspector> BRepMesh_CellFilter;
-+
-+#ifdef __BORLANDC__
-+  // definition of global functions is needed for map
-+  Standard_Integer HashCode (const NCollection_CellFilter<BRepMesh_CircleInspector>::Cell &aCell, const Standard_Integer theUpper)
-+  { return aCell.HashCode(theUpper); }
-+  Standard_Boolean IsEqual (const NCollection_CellFilter<BRepMesh_CircleInspector>::Cell &aCell1, const NCollection_CellFilter<BRepMesh_CircleInspector>::Cell &aCell2)
-+  { return aCell1.IsEqual(aCell2); }
-+#endif
 Index: oce/src/Draw/CommandWindow.cxx
 ===================================================================
 --- oce.orig/src/Draw/CommandWindow.cxx
@@ -684,7 +660,7 @@ Index: oce/src/MeshTest/MeshTest_PluginCommands.cxx
 ===================================================================
 --- oce.orig/src/MeshTest/MeshTest_PluginCommands.cxx
 +++ oce/src/MeshTest/MeshTest_PluginCommands.cxx
-@@ -28,6 +28,8 @@
+@@ -29,6 +29,8 @@
  #include <Poly_Polygon3D.hxx>
  #include <Poly_Polygon2D.hxx>
  
@@ -1096,18 +1072,6 @@ Index: oce/src/OpenGl/OpenGl_FontMgr.cxx
  #undef TRACE
  
  #define DEFAULT_FONT_HEIGHT 16
-Index: oce/src/OpenGl/OpenGl_TextRender.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_TextRender.cxx
-+++ oce/src/OpenGl/OpenGl_TextRender.cxx
-@@ -23,7 +23,6 @@
- #include <gl2ps.h>
- #endif
- 
--
- /*-----------------------------------------------------------------------------*/
- /*
- * Prototypes variables statiques
 Index: oce/src/OpenGl/OpenGl_attri.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_attri.cxx
@@ -1126,7 +1090,7 @@ Index: oce/src/OpenGl/OpenGl_graduatedtrihedron.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_graduatedtrihedron.cxx
 +++ oce/src/OpenGl/OpenGl_graduatedtrihedron.cxx
-@@ -387,6 +387,11 @@ static void drawText(char* text, char* f
+@@ -337,6 +337,11 @@ static void drawText(const wchar_t* text
  */
  }
  
@@ -1173,21 +1137,6 @@ Index: oce/src/OpenGl/OpenGl_polygonholes.cxx
  # define STATIC
  typedef double GLUcoord;
  #endif  /* WNT */
-Index: oce/src/OpenGl/OpenGl_togl_print.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_togl_print.cxx
-+++ oce/src/OpenGl/OpenGl_togl_print.cxx
-@@ -36,6 +36,10 @@ HDC     printer;
- HGDIOBJ oldObj;
- #endif
- 
-+#ifdef __BORLANDC__
-+# define _stricmp stricmp
-+#endif
-+
- GLuint createFont( char* typeFace, int height, int weight, int italic )
- {
- #ifdef WNT
 Index: oce/src/OpenGl/OpenGl_togl_redraw.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_togl_redraw.cxx
@@ -1332,7 +1281,7 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-@@ -47,6 +47,13 @@
+@@ -49,6 +49,13 @@
  
  #endif
  
@@ -1346,7 +1295,7 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
  #define OCC120
  
  //==============================================================================
-@@ -933,9 +940,7 @@ static LRESULT WINAPI ViewerWindowProc(
+@@ -935,9 +942,7 @@ static LRESULT WINAPI ViewerWindowProc(
  //function : ViewerMainLoop
  //purpose  : Get a Event on the view and dispatch it
  //==============================================================================
@@ -1357,7 +1306,7 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
  {
  
    //cout << "No yet implemented on WNT" << endl;
-@@ -972,22 +977,6 @@ static int ViewerMainLoop(Standard_Integ
+@@ -974,22 +979,6 @@ static int ViewerMainLoop(Standard_Integ
  
  #else
  

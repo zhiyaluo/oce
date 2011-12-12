@@ -32,7 +32,7 @@ Index: oce/src/OpenGl/OpenGl_FontMgr.cxx
 -    if ( !is2d ) {
 -      if ( !enableDepthTest )
 -        glEnable(GL_DEPTH_TEST);
--    } 
+-    }
 -    else if ( enableDepthTest ) {
 -        glDisable(GL_DEPTH_TEST);
 -    }
