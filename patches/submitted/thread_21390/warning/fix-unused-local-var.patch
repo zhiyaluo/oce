@@ -1446,10 +1446,10 @@ Index: oce/inc/IntPatch_ImpImpIntersection_2.gxx
 ===================================================================
 --- oce.orig/inc/IntPatch_ImpImpIntersection_2.gxx
 +++ oce/inc/IntPatch_ImpImpIntersection_2.gxx
-@@ -587,10 +587,8 @@ void IntPatch_ImpImpIntersection::Perfor
-     Standard_Boolean Addl = Standard_False;
-     Standard_Integer v=0;
- #endif
+@@ -539,10 +539,8 @@ void IntPatch_ImpImpIntersection::Perfor
+     gp_Pnt P;
+     IntPatch_Point point;
+     Standard_Real u1,v1,u2,v2; 
 -    Standard_Integer nbv;
      if(slin.Value(i)->ArcType() == IntPatch_Circle) { 
        const Handle(IntPatch_GLine)& glin = *((Handle(IntPatch_GLine)*)&slin.Value(i));
@@ -1457,7 +1457,7 @@ Index: oce/inc/IntPatch_ImpImpIntersection_2.gxx
        if(glin->NbVertex() == 0) { 
  	gp_Circ Circ = glin->Circle();
  	P=ElCLib::Value(0.0,Circ);
-@@ -613,7 +611,6 @@ void IntPatch_ImpImpIntersection::Perfor
+@@ -565,7 +563,6 @@ void IntPatch_ImpImpIntersection::Perfor
      
      else if(slin.Value(i)->ArcType() == IntPatch_Ellipse) { 
        const Handle(IntPatch_GLine)& glin = *((Handle(IntPatch_GLine)*)&slin.Value(i));
@@ -2128,7 +2128,7 @@ Index: oce/src/BRepMesh/BRepMesh_FastDiscret.cxx
 ===================================================================
 --- oce.orig/src/BRepMesh/BRepMesh_FastDiscret.cxx
 +++ oce/src/BRepMesh/BRepMesh_FastDiscret.cxx
-@@ -250,7 +250,6 @@ void BRepMesh_FastDiscret::Add(const Top
+@@ -320,7 +320,6 @@ void BRepMesh_FastDiscret::Add(const Top
  
    gp_Pnt2d uvFirst, uvLast;
  
@@ -2140,7 +2140,7 @@ Index: oce/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
 ===================================================================
 --- oce.orig/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
 +++ oce/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
-@@ -1168,7 +1168,6 @@ Standard_Real BRepMesh_FastDiscretFace::
+@@ -1187,7 +1187,6 @@ Standard_Real BRepMesh_FastDiscretFace::
    //IMPORTANT: Constants used in calculations
    const Standard_Real MinimalArea2d = 1.e-9;
    const Standard_Real MinimalSqLength3d = 1.e-12;
@@ -2148,7 +2148,7 @@ Index: oce/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
  
    // Define the number of iterations
    Standard_Integer myNbIterations = 11;
-@@ -1194,8 +1193,6 @@ Standard_Real BRepMesh_FastDiscretFace::
+@@ -1213,8 +1212,6 @@ Standard_Real BRepMesh_FastDiscretFace::
    Standard_Boolean caninsert;
  
    Standard_Real sqdefface = theDefFace * theDefFace;
@@ -2157,7 +2157,7 @@ Index: oce/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
  
    GeomAbs_SurfaceType thetype = theCaro->GetType();
    Handle(Geom_Surface) BSpl;
-@@ -1533,7 +1530,6 @@ void BRepMesh_FastDiscretFace::AddInShap
+@@ -1552,7 +1549,6 @@ void BRepMesh_FastDiscretFace::AddInShap
        
        const BRepMesh_Edge& ve1=myStructure->GetLink(e1);
        const BRepMesh_Edge& ve2=myStructure->GetLink(e2);
@@ -2495,7 +2495,7 @@ Index: oce/src/Extrema/Extrema_GenExtPS.cxx
 ===================================================================
 --- oce.orig/src/Extrema/Extrema_GenExtPS.cxx
 +++ oce/src/Extrema/Extrema_GenExtPS.cxx
-@@ -604,7 +604,7 @@ void Extrema_GenExtPS::Perform(const gp_
+@@ -615,7 +615,7 @@ void Extrema_GenExtPS::Perform(const gp_
        Bnd_SphereUBTreeSelectorMin aSelector(mySphereArray, aSol);
        //aSelector.SetMaxDist( RealLast() );
        aSelector.DefineCheckPoint( P );
@@ -2504,7 +2504,7 @@ Index: oce/src/Extrema/Extrema_GenExtPS.cxx
        //TODO: check if no solution in binary tree
        Bnd_Sphere& aSph = aSelector.Sphere();
  
-@@ -619,7 +619,7 @@ void Extrema_GenExtPS::Perform(const gp_
+@@ -630,7 +630,7 @@ void Extrema_GenExtPS::Perform(const gp_
        Bnd_SphereUBTreeSelectorMax aSelector(mySphereArray, aSol);
        //aSelector.SetMaxDist( RealLast() );
        aSelector.DefineCheckPoint( P );
@@ -2936,17 +2936,24 @@ Index: oce/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
 +++ oce/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
-@@ -1377,8 +1377,8 @@ void IntPatch_PrmPrmIntersection::PointD
-   Standard_Real V0 = S1->FirstVParameter();
-   Standard_Real V1 = S1->LastVParameter();
- 
+@@ -2995,7 +2995,7 @@ void IntPatch_PrmPrmIntersection::PointD
+   //modified by NIZNHY-PKV Wed May 25 06:47:12 2011t
+   Standard_Integer iC15, SU1, SV1, SU2, SV2;
+   Standard_Real U0, U1, V0, V1, U, V;
 -  Standard_Real resu0,resu1,resv0,resv1;
--  resu0=U0;resu1=U1;resv1=V1;resv0=V0;
 +  Standard_Real resu0,resv0;
-+  resu0=U0;resv0=V0;
- 
-   Standard_Real  du1,du2,dv1,dv2;
-   du1 = (U1-U0)/(SU1-1);
+   Standard_Real  du1,du2,dv1,dv2, dmaxOn1, dmaxOn2;
+   Standard_Real x0,y0,z0, x1,y1,z1,d;
+   Bnd_Box Box1, Box2;
+@@ -3025,8 +3025,6 @@ void IntPatch_PrmPrmIntersection::PointD
+   V1 = S1->LastVParameter();
+   //
+   resu0=U0;
+-  resu1=U1;
+-  resv1=V1;
+   resv0=V0;
+   //
+   dmaxOn1 = 0.0;
 Index: oce/src/IntPatch/IntPatch_PrmPrmIntersection_T3Bits.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_PrmPrmIntersection_T3Bits.cxx
@@ -3132,7 +3139,7 @@ Index: oce/src/OpenGl/OpenGl_TextRender.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_TextRender.cxx
 +++ oce/src/OpenGl/OpenGl_TextRender.cxx
-@@ -300,7 +300,8 @@ void OpenGl_TextRender::RenderText ( cha
+@@ -299,7 +299,8 @@ void OpenGl_TextRender::RenderText ( con
    TsmGetAttri( 1, &keyZoom );
    zoom = keyZoom.data.ldata;
  
@@ -3189,7 +3196,7 @@ Index: oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
 +++ oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
-@@ -398,7 +398,6 @@ call_togl_begin_layer2d
+@@ -427,7 +427,6 @@ call_togl_begin_layer2d
    
    //abd
    glEnable(GL_TEXTURE_2D);
@@ -3197,26 +3204,26 @@ Index: oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
  
    glNewList (ptrLayer->listIndex, GL_COMPILE);
    layerOpen = GL_TRUE;
-@@ -604,9 +603,6 @@ call_togl_text2d ( char *s,
+@@ -632,9 +631,6 @@ call_togl_text2d ( Techar *s,
+                   float y,
                    float height )
  {
-   call_def_ptrLayer ptrLayer;
 -#ifndef WNT
 -  Tint dispWidth, dispHeight;
 -#endif
    GLdouble objx1, objy1, objz1;
  
-   ptrLayer = (call_def_ptrLayer) ACLayer.ptrLayer;
-@@ -890,9 +886,6 @@ call_togl_textsize2d
+   call_def_ptrLayer ptrLayer = (call_def_ptrLayer) ACLayer.ptrLayer;
+@@ -928,9 +924,6 @@ call_togl_textsize2d
+  float *descent
   )
  {
-   call_def_ptrLayer ptrLayer;
 -#ifndef WNT
 -  Tint dispWidth, dispHeight;
 -#endif
  
- 
-   ptrLayer = (call_def_ptrLayer) ACLayer.ptrLayer;
+   call_def_ptrLayer ptrLayer = (call_def_ptrLayer) ACLayer.ptrLayer;
+   if (!ptrLayer) return;
 Index: oce/src/OpenGl/OpenGl_togl_markercontextgroup.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_togl_markercontextgroup.cxx
@@ -3230,19 +3237,6 @@ Index: oce/src/OpenGl/OpenGl_togl_markercontextgroup.cxx
  
    for( ; i < UDMS_Marker.Quantity; i++ )
    {
-Index: oce/src/OpenGl/OpenGl_togl_print.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_togl_print.cxx
-+++ oce/src/OpenGl/OpenGl_togl_print.cxx
-@@ -112,8 +112,6 @@ call_togl_print
-   CMN_KEY_DATA data;
-   Tint swap = 1; /* swap buffers ? yes */
- 
--
--  BOOL bRet = FALSE;
-   HDC hPrnDC;
-   DOCINFO   di;
- 
 Index: oce/src/OpenGl/OpenGl_togl_setplane.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_togl_setplane.cxx
@@ -3259,7 +3253,7 @@ Index: oce/src/OpenGl/OpenGl_txgl.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_txgl.cxx
 +++ oce/src/OpenGl/OpenGl_txgl.cxx
-@@ -386,7 +386,6 @@ __declspec( dllexport ) int __fastcall _
+@@ -385,7 +385,6 @@ __declspec( dllexport ) int __fastcall _
  
      HTBL_ENTRY*           hte;
      PIXELFORMATDESCRIPTOR pfd;
@@ -3267,7 +3261,7 @@ Index: oce/src/OpenGl/OpenGl_txgl.cxx
      int                   iPixelFormat;
      char                  string[ CALL_DEF_STRING_LENGTH ];
  
-@@ -578,7 +577,6 @@ __declspec( dllexport ) int __fastcall _
+@@ -577,7 +576,6 @@ __declspec( dllexport ) int __fastcall _
      cmn_htbl_elem         rec;*/
      HTBL_ENTRY*           hte;
      PIXELFORMATDESCRIPTOR pfd;
@@ -3275,7 +3269,7 @@ Index: oce/src/OpenGl/OpenGl_txgl.cxx
      int                   iPixelFormat;
      char                  string[ CALL_DEF_STRING_LENGTH ];
  
-@@ -694,8 +692,6 @@ __declspec( dllexport ) int __fastcall _
+@@ -693,8 +691,6 @@ __declspec( dllexport ) int __fastcall _
  #else /* WNT */
  
      HTBL_ENTRY*   hte;
@@ -3284,7 +3278,7 @@ Index: oce/src/OpenGl/OpenGl_txgl.cxx
      TStatus       retVal = TFailure;
  
      bool Ret = true;
-@@ -780,8 +776,7 @@ __declspec( dllexport ) int __fastcall _
+@@ -779,8 +775,7 @@ __declspec( dllexport ) int __fastcall _
  #ifndef WNT
  
      GLXContext ctx;
@@ -3534,7 +3528,7 @@ Index: oce/src/V3d/V3d_View.cxx
 ===================================================================
 --- oce.orig/src/V3d/V3d_View.cxx
 +++ oce/src/V3d/V3d_View.cxx
-@@ -1619,7 +1619,6 @@ void V3d_View::SetZSize(const Standard_R
+@@ -1627,7 +1627,6 @@ void V3d_View::SetZSize(const Standard_R
  
    Standard_Real Front = MyViewContext.ZClippingFrontPlane() ;
    Standard_Real Back  = MyViewContext.ZClippingBackPlane() ;
@@ -3587,7 +3581,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest.cxx
 +++ oce/src/ViewerTest/ViewerTest.cxx
-@@ -3186,7 +3186,6 @@ static int VSetTransMode ( Draw_Interpre
+@@ -3237,7 +3237,6 @@ static int VSetTransMode ( Draw_Interpre
    }
  
    Standard_Boolean IsBound = GetMapOfAIS().IsBound2(shapeName);
@@ -3595,7 +3589,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
    Handle(Standard_Transient) anObj;
    if ( IsBound ) {
      anObj = GetMapOfAIS().Find2(shapeName);
-@@ -3243,7 +3242,6 @@ Standard_Integer hlrtest(Draw_Interpreto
+@@ -3294,7 +3293,6 @@ Standard_Integer hlrtest(Draw_Interpreto
    /////////////////////
    TopoDS_Shape aShape =  DBRep::Get(a[1]);
    aContext2D->EraseAll(Standard_True);
@@ -3603,7 +3597,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
    Standard_Boolean IsPoly = Standard_False;
    gp_Ax2 anAx2 = gp::XOY();
  
-@@ -3303,7 +3301,6 @@ Standard_Integer phlrtest(Draw_Interpret
+@@ -3354,7 +3352,6 @@ Standard_Integer phlrtest(Draw_Interpret
    /////////////////////
    TopoDS_Shape aShape =  DBRep::Get(a[1]);
    aContext2D->EraseAll(Standard_True);
@@ -3615,7 +3609,7 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-@@ -724,7 +724,7 @@ static LRESULT WINAPI AdvViewerWindowPro
+@@ -726,7 +726,7 @@ static LRESULT WINAPI AdvViewerWindowPro
        if( !DragFirst )
        {
          HDC hdc = GetDC( hwnd );
@@ -3725,7 +3719,7 @@ Index: oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
 ===================================================================
 --- oce.orig/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
 +++ oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
-@@ -195,7 +195,6 @@ static Standard_Integer storevrml
+@@ -196,7 +196,6 @@ static Standard_Integer storevrml
      di << "use: storevrml shape file defl type_of_conversion (0, 1, 2)"    << "\n";
    }
    else {

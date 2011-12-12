@@ -493,15 +493,15 @@ Index: oce/inc/GCPnts_TangentialDeflection.gxx
 ===================================================================
 --- oce.orig/inc/GCPnts_TangentialDeflection.gxx
 +++ oce/inc/GCPnts_TangentialDeflection.gxx
-@@ -237,7 +237,7 @@ void GCPnts_TangentialDeflection::Perfor
+@@ -236,7 +236,7 @@ void GCPnts_TangentialDeflection::Perfor
+   Standard_Integer i;       
    gp_XYZ V1, V2;
- //  gp_Pnt MiddlePoint, CurrentPoint, LastPoint, PreviousPoint;   
    gp_Pnt MiddlePoint, CurrentPoint, LastPoint;   
--  Standard_Real Coef, ACoef, FCoef, Du, Dusave, MiddleU, L1, L2;
-+  Standard_Real Coef = 0.0, ACoef = 0.0, FCoef = 0.0, Du = 0.0, Dusave = 0.0, MiddleU = 0.0, L1 = 0.0, L2 = 0.0;
+-  Standard_Real Du, Dusave, MiddleU, L1, L2;
++  Standard_Real Du, Dusave, MiddleU = 0.0, L1 = 0.0, L2 = 0.0;
  
    Standard_Real U1       = firstu;   
-   Standard_Real U2       = firstu;   
+   Standard_Real LTol     = Precision::Confusion ();  //protection longueur nulle
 Index: oce/inc/GProp_UFunction.gxx
 ===================================================================
 --- oce.orig/inc/GProp_UFunction.gxx
@@ -637,7 +637,7 @@ Index: oce/src/AIS/AIS_InteractiveContext.cxx
 ===================================================================
 --- oce.orig/src/AIS/AIS_InteractiveContext.cxx
 +++ oce/src/AIS/AIS_InteractiveContext.cxx
-@@ -655,7 +655,7 @@ void AIS_InteractiveContext::Load(const
+@@ -653,7 +653,7 @@ void AIS_InteractiveContext::Load(const
  
    if(!HasOpenedContext()) {
      if(SelMode==-1 && !AllowDecomposition){
@@ -646,7 +646,7 @@ Index: oce/src/AIS/AIS_InteractiveContext.cxx
        
        GetDefModes(anIObj,DispMode,HiMod,SelModeDef);
        Handle(AIS_GlobalStatus) STATUS= 
-@@ -887,7 +887,7 @@ Standard_Boolean AIS_InteractiveContext:
+@@ -885,7 +885,7 @@ Standard_Boolean AIS_InteractiveContext:
    
    
    if(LS->IsTemporary()){
@@ -655,7 +655,7 @@ Index: oce/src/AIS/AIS_InteractiveContext.cxx
      GetDefModes(anIObj,DM,HM,SM);
      
      SM = LS->SelectionModes().IsEmpty() ? SM : LS->SelectionModes().First();
-@@ -1082,7 +1082,7 @@ void AIS_InteractiveContext::Hilight(con
+@@ -1080,7 +1080,7 @@ void AIS_InteractiveContext::Hilight(con
        switch(STATUS->GraphicStatus()){
        case AIS_DS_Displayed:
          {
@@ -664,7 +664,7 @@ Index: oce/src/AIS/AIS_InteractiveContext.cxx
            GetDefModes(anIObj,DispMode,HiMode,SelMode);
  //        if(!STATUS->IsDModeIn(HiMode)){
  //          myMainPM->Display(anIObj,HiMode);
-@@ -1129,7 +1129,7 @@ void AIS_InteractiveContext::HilightWith
+@@ -1127,7 +1127,7 @@ void AIS_InteractiveContext::HilightWith
        switch(STATUS->GraphicStatus()){
        case AIS_DS_Displayed:
          {
@@ -673,7 +673,7 @@ Index: oce/src/AIS/AIS_InteractiveContext.cxx
            GetDefModes(anIObj,DispMode,HiMode,SelMode);
  //        if(!STATUS->IsDModeIn(HiMode)){
  //          myMainPM->Display(anIObj,HiMode);
-@@ -1175,7 +1175,7 @@ void AIS_InteractiveContext::Unhilight(c
+@@ -1173,7 +1173,7 @@ void AIS_InteractiveContext::Unhilight(c
        switch(STATUS->GraphicStatus()){
        case AIS_DS_Displayed:
          {
@@ -682,7 +682,7 @@ Index: oce/src/AIS/AIS_InteractiveContext.cxx
            GetDefModes(anIObj,DispMode,HiMode,SelMode);
            myMainPM->Unhighlight(anIObj,HiMode);
  //        if(!STATUS->IsDModeIn(HiMode))
-@@ -1330,7 +1330,7 @@ DisplayPriority(const Handle(AIS_Interac
+@@ -1328,7 +1328,7 @@ DisplayPriority(const Handle(AIS_Interac
      // const Handle(AIS_GlobalStatus) & STATUS = myObjects(anIObj);
      Handle(AIS_GlobalStatus) STATUS = myObjects(anIObj);
      // ENDCLE
@@ -691,7 +691,7 @@ Index: oce/src/AIS/AIS_InteractiveContext.cxx
      GetDefModes(anIObj,DM,HM,SM);
      switch(STATUS->GraphicStatus()){
      case AIS_DS_Displayed:
-@@ -1364,7 +1364,7 @@ void AIS_InteractiveContext::SetDisplayP
+@@ -1362,7 +1362,7 @@ void AIS_InteractiveContext::SetDisplayP
      // const Handle(AIS_GlobalStatus) & STATUS = myObjects(anIObj);
      Handle(AIS_GlobalStatus) STATUS = myObjects(anIObj);
      // ENDCLE
@@ -700,7 +700,7 @@ Index: oce/src/AIS/AIS_InteractiveContext.cxx
      GetDefModes(anIObj,DM,HM,SM);
      switch(STATUS->GraphicStatus()){
      case AIS_DS_Displayed:
-@@ -1837,7 +1837,7 @@ void AIS_InteractiveContext::SetDisplayM
+@@ -1836,7 +1836,7 @@ void AIS_InteractiveContext::SetDisplayM
  #endif
          
          myMainPM->Display(anIObj,aMode);
@@ -709,7 +709,7 @@ Index: oce/src/AIS/AIS_InteractiveContext.cxx
          GetDefModes(anIObj,DM,HM,SM);
          if(STATUS->IsHilighted()){
            myMainPM->Highlight(anIObj,HM);
-@@ -1885,7 +1885,7 @@ UnsetDisplayMode(const Handle(AIS_Intera
+@@ -1884,7 +1884,7 @@ UnsetDisplayMode(const Handle(AIS_Intera
            myMainPM->Unhighlight(anIObj,OldMode);
          myMainPM->Erase(anIObj,OldMode);
          myMainPM->Display(anIObj,myDisplayMode);
@@ -722,7 +722,7 @@ Index: oce/src/AIS/AIS_Shape.cxx
 ===================================================================
 --- oce.orig/src/AIS/AIS_Shape.cxx
 +++ oce/src/AIS/AIS_Shape.cxx
-@@ -253,8 +253,8 @@ void AIS_Shape::Compute(const Handle(Prs
+@@ -249,8 +249,8 @@ void AIS_Shape::Compute(const Handle(Prs
      {
        Standard_Real prevangle ;
        Standard_Real newangle  ; 
@@ -733,7 +733,7 @@ Index: oce/src/AIS/AIS_Shape.cxx
        
        
        if (OwnDeviationAngle(newangle,prevangle) ||
-@@ -375,7 +375,7 @@ void AIS_Shape::Compute(const Handle(Prs
+@@ -371,7 +371,7 @@ void AIS_Shape::Compute(const Handle(Prs
  
  // coefficients for calculation
  
@@ -1071,7 +1071,7 @@ Index: oce/src/BRepFill/BRepFill_CompatibleWires.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_CompatibleWires.cxx
 +++ oce/src/BRepFill/BRepFill_CompatibleWires.cxx
-@@ -1436,8 +1436,8 @@ void BRepFill_CompatibleWires::ComputeOr
+@@ -1470,8 +1470,8 @@ void BRepFill_CompatibleWires::ComputeOr
  	}
        
        Standard_Real MinSumDist = Precision::Infinite();
@@ -1175,7 +1175,7 @@ Index: oce/src/BRepMesh/BRepMesh_Classifier.cxx
 ===================================================================
 --- oce.orig/src/BRepMesh/BRepMesh_Classifier.cxx
 +++ oce/src/BRepMesh/BRepMesh_Classifier.cxx
-@@ -334,7 +334,7 @@ BRepMesh_Classifier::BRepMesh_Classifier
+@@ -553,7 +553,7 @@ BRepMesh_Classifier::BRepMesh_Classifier
  
    BRepMesh_BiPoint *BP;
    Standard_Real *Coordinates1;
@@ -1184,46 +1184,19 @@ Index: oce/src/BRepMesh/BRepMesh_Classifier.cxx
    Standard_Integer j, l = 1;
    BP = &(BiPoints.ChangeValue(1));
  
-@@ -380,7 +380,7 @@ BRepMesh_Classifier::BRepMesh_Classifier
-   Standard_Real *Coordinates2;
-   Standard_Real A1, B1, C1, A2, B2, C2, AB, BC, CA, xc, yc;
-   Standard_Real  mu1, d, mu2;
--  Standard_Integer ik, ikEnd = 0, jk, jkEnd;
-+  Standard_Integer ik, ikEnd = 0, jk, jkEnd = 0;
-   Standard_Real x11, x12, y11, y12, x21, x22, y21, y22;
-   for(i = 1; i <= nbwires; i++)
-   {
-@@ -667,7 +667,7 @@ BRepMesh_Classifier::BRepMesh_Classifier
- 
-   BRepMesh_BiPoint *BP;
-   Standard_Real *Coordinates1;
--  Standard_Real x1, y1, x2, y2, xstart, ystart;
-+  Standard_Real x1 = 0, y1 = 0, x2, y2, xstart = 0, ystart = 0;
-   Standard_Integer j, l = 1;
-   BP = &(BiPoints.ChangeValue(1));
- 
-@@ -713,7 +713,7 @@ BRepMesh_Classifier::BRepMesh_Classifier
-   Standard_Real *Coordinates2;
-   Standard_Real A1, B1, C1, A2, B2, C2, AB, BC, CA, xc, yc;
-   Standard_Real  mu1, d, mu2;
--  Standard_Integer ik, ikEnd = 0, jk, jkEnd;
-+  Standard_Integer ik, ikEnd = 0, jk, jkEnd = 0;
-   Standard_Real x11, x12, y11, y12, x21, x22, y21, y22;
-   for(i = 1; i <= nbwires; i++)
-   {
 Index: oce/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
 ===================================================================
 --- oce.orig/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
 +++ oce/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
-@@ -311,7 +311,7 @@ void BRepMesh_IncrementalMesh::Update(co
+@@ -315,7 +315,7 @@ void BRepMesh_IncrementalMesh::Update(co
    Handle(Poly_Triangulation) T, TNull;
    Handle(Poly_PolygonOnTriangulation) Poly, NullPoly;
    Standard_Boolean found = Standard_False;
 -  Standard_Real defedge;
 +  Standard_Real defedge = Precision::Confusion();
+   Standard_Real cdef = 1.;
    BRep_Builder B;
    Standard_Boolean defined = Standard_False;
-   
 Index: oce/src/BRepOffset/BRepOffset_Inter3d.cxx
 ===================================================================
 --- oce.orig/src/BRepOffset/BRepOffset_Inter3d.cxx
@@ -2072,7 +2045,7 @@ Index: oce/src/IntCurve/IntCurve_IntConicConic_1.cxx
 ===================================================================
 --- oce.orig/src/IntCurve/IntCurve_IntConicConic_1.cxx
 +++ oce/src/IntCurve/IntCurve_IntConicConic_1.cxx
-@@ -1476,7 +1476,7 @@ void IntCurve_IntConicConic::Perform(con
+@@ -1491,7 +1491,7 @@ void IntCurve_IntConicConic::Perform(con
        //--
        Standard_Integer ResHasFirstPoint=0;    
        Standard_Integer ResHasLastPoint=0;
@@ -2134,7 +2107,7 @@ Index: oce/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
 +++ oce/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
-@@ -1655,6 +1655,8 @@ void IntPatch_PrmPrmIntersection::PointD
+@@ -3304,6 +3304,8 @@ void IntPatch_PrmPrmIntersection::PointD
  	//-- dans chacun des tableaux 
  	Standard_Real Dist3[3],u3[3],v3[3];
  	Dist3[0]=Dist3[1]=Dist3[2]=RealLast();
@@ -3130,7 +3103,7 @@ Index: oce/src/ShapeAnalysis/ShapeAnalysis_CheckSmallFace.cxx
      Standard_Boolean issmall = Standard_True;
  
      for (iu = 1; iu <= nbu; iu ++) {
-@@ -405,7 +405,7 @@ static Standard_Boolean MinMaxSmall
+@@ -409,7 +409,7 @@ static Standard_Boolean MinMaxSmall
  
  //    Edge on same vertex : small one ?
      if (VA.IsSame(VB)) {
@@ -3139,7 +3112,7 @@ Index: oce/src/ShapeAnalysis/ShapeAnalysis_CheckSmallFace.cxx
        Handle(Geom_Curve) C3D;
        if (!BRep_Tool::Degenerated(E)) C3D = BRep_Tool::Curve (E,cf,cl);
        if (C3D.IsNull()) continue;  // DGNR
-@@ -563,7 +563,7 @@ static Standard_Integer IsoStat
+@@ -567,7 +567,7 @@ static Standard_Integer IsoStat
    Standard_Integer i, np = 0;
    Standard_Integer i0 = (uorv == 1 ? poles.LowerCol() : poles.LowerRow());
    Standard_Integer i1 = (uorv == 1 ? poles.UpperCol() : poles.UpperRow());
@@ -3242,7 +3215,7 @@ Index: oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
 ===================================================================
 --- oce.orig/src/ShapeFix/ShapeFix_ComposeShell.cxx
 +++ oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
-@@ -1976,7 +1976,7 @@ void ShapeFix_ComposeShell::CollectWires
+@@ -1985,7 +1985,7 @@ void ShapeFix_ComposeShell::CollectWires
    TopoDS_Vertex firstV, endV;
    TopoDS_Edge firstEdge, lastEdge;
    Standard_Real tol = 0;
@@ -3861,7 +3834,7 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-@@ -1576,7 +1576,7 @@ static int VExport(Draw_Interpretor& di,
+@@ -1578,7 +1578,7 @@ static int VExport(Draw_Interpretor& di,
  
    TCollection_AsciiString aFormat( argv[2] );
    aFormat.UpperCase();

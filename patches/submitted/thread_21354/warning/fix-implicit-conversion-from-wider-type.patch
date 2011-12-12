@@ -171,37 +171,6 @@ Index: oce/inc/Graphic3d_ArrayOfPrimitives.lxx
      unsigned char alpha = 0;
      Standard_Integer outColor ;
      outColor = red;
-Index: oce/inc/InterfaceGraphic_Visual3d.hxx
-===================================================================
---- oce.orig/inc/InterfaceGraphic_Visual3d.hxx
-+++ oce/inc/InterfaceGraphic_Visual3d.hxx
-@@ -263,13 +263,13 @@ typedef struct
-     /* Names of axes */
-     char *xname, *yname, *zname;
-     /* Draw names */
--    unsigned char xdrawname, ydrawname, zdrawname;
-+    Standard_Boolean xdrawname, ydrawname, zdrawname;
-     /* Draw values */
--    unsigned char xdrawvalues, ydrawvalues, zdrawvalues;
-+    Standard_Boolean xdrawvalues, ydrawvalues, zdrawvalues;
-     /* Draw grid */
--    unsigned char drawgrid;
-+    Standard_Boolean drawgrid;
-     /* Draw axes */
--    unsigned char drawaxes;
-+    Standard_Boolean drawaxes;
-     /* Number of splits along axes */
-     unsigned int nbx, nby, nbz;
-     /* Offset for drawing values */
-@@ -277,7 +277,7 @@ typedef struct
-     /* Offset for drawing names of axes */
-     int xaxisoffset, yaxisoffset, zaxisoffset;
-     /* Draw tickmarks */
--    unsigned char xdrawtickmarks, ydrawtickmarks, zdrawtickmarks;
-+    Standard_Boolean xdrawtickmarks, ydrawtickmarks, zdrawtickmarks;
-     /* Length of tickmarks */
-     unsigned int xtickmarklength, ytickmarklength, ztickmarklength;
-     /* Grid color */
 Index: oce/inc/LDOM_OSStream.hxx
 ===================================================================
 --- oce.orig/inc/LDOM_OSStream.hxx
@@ -852,7 +821,7 @@ Index: oce/src/Graphic3d/Graphic3d_Structure.cxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_Structure.cxx
 +++ oce/src/Graphic3d/Graphic3d_Structure.cxx
-@@ -1236,8 +1236,8 @@ void Graphic3d_Structure::SetPrimitivesA
+@@ -1256,8 +1256,8 @@ void Graphic3d_Structure::SetPrimitivesA
    Standard_Real    aPolyFactor, aPolyUnits;
    CTX->PolygonOffsets(aPolyMode, aPolyFactor, aPolyUnits);
    MyCStructure.ContextFillArea.PolygonOffsetMode   = aPolyMode;
@@ -863,7 +832,7 @@ Index: oce/src/Graphic3d/Graphic3d_Structure.cxx
    // OCC4895 SAN 22/03/04 High-level interface for controlling polygon offsets
  
    MyGraphicDriver->ContextStructure (MyCStructure);
-@@ -1290,7 +1290,7 @@ void Graphic3d_Structure::SetPrimitivesA
+@@ -1310,7 +1310,7 @@ void Graphic3d_Structure::SetPrimitivesA
    MyCStructure.ContextText.ColorSubTitle.g  = float (Gs);
    MyCStructure.ContextText.ColorSubTitle.b  = float (Bs);
    MyCStructure.ContextText.TextZoomable     = ATextZoomable;
@@ -872,7 +841,7 @@ Index: oce/src/Graphic3d/Graphic3d_Structure.cxx
    MyCStructure.ContextText.TextFontAspect   = (int)ATextFontAspect;
  
    MyCStructure.ContextText.IsDef          = 1;
-@@ -1754,9 +1754,9 @@ void Graphic3d_Structure::SetTransformPe
+@@ -1774,9 +1774,9 @@ void Graphic3d_Structure::SetTransformPe
    if (IsDeleted ()) return;
  
    MyCStructure.TransformPersistence.Flag = AFlag;
@@ -885,7 +854,7 @@ Index: oce/src/Graphic3d/Graphic3d_Structure.cxx
    //MyStructureManager->Update ();
    //Update();
    MyGraphicDriver->ContextStructure( MyCStructure );
-@@ -2161,7 +2161,7 @@ void Graphic3d_Structure::UpdateStructur
+@@ -2181,7 +2181,7 @@ void Graphic3d_Structure::UpdateStructur
    MyCStructure.ContextText.ColorSubTitle.g  = float (Gs);
    MyCStructure.ContextText.ColorSubTitle.b  = float (Bs);
    MyCStructure.ContextText.TextZoomable     = ATextZoomable;
@@ -894,7 +863,7 @@ Index: oce/src/Graphic3d/Graphic3d_Structure.cxx
    MyCStructure.ContextText.TextFontAspect   = (int)ATextFontAspect;
  
  
-@@ -2346,8 +2346,8 @@ void Graphic3d_Structure::UpdateStructur
+@@ -2366,8 +2366,8 @@ void Graphic3d_Structure::UpdateStructur
    Standard_Real    aPolyFactor, aPolyUnits;
    CTXF->PolygonOffsets(aPolyMode, aPolyFactor, aPolyUnits);
    MyCStructure.ContextFillArea.PolygonOffsetMode   = aPolyMode;
@@ -909,21 +878,21 @@ Index: oce/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
 +++ oce/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
-@@ -1494,7 +1494,7 @@ void IntPatch_PrmPrmIntersection::PointD
+@@ -3149,7 +3149,7 @@ void IntPatch_PrmPrmIntersection::PointD
      for(j=0;j<SV1;j++) { 
-       IP1[i][j]=-1;
-       const gp_Pnt& P=P1[i][j];
--      P1DS2[i][j] = CodeReject(x20,y20,z20,x21,y21,z21,P.X(),P.Y(),P.Z());
-+      P1DS2[i][j] = (char) CodeReject(x20,y20,z20,x21,y21,z21,P.X(),P.Y(),P.Z());
+       aIPD.xIP1(i, j)=-1;
+       const gp_Pnt& P=aIPD.xP1(i, j);
+-      aIPD.xP1DS2(i, j) = CodeReject(x20,y20,z20,x21,y21,z21,P.X(),P.Y(),P.Z());
++      aIPD.xP1DS2(i, j) = (char) CodeReject(x20,y20,z20,x21,y21,z21,P.X(),P.Y(),P.Z());
        int ix = (int)((P.X()-x0  + dx2 )/dx);
        if(DansGrille(ix)) { 
  	int iy = (int)((P.Y()-y0 + dy2)/dy);
-@@ -1512,7 +1512,7 @@ void IntPatch_PrmPrmIntersection::PointD
+@@ -3167,7 +3167,7 @@ void IntPatch_PrmPrmIntersection::PointD
      for(j=0;j<SV2;j++) { 
-       IP2[i][j]=-1;
-       const gp_Pnt& P=P2[i][j];
--      P2DS1[i][j] = CodeReject(x10,y10,z10,x11,y11,z11,P.X(),P.Y(),P.Z());
-+      P2DS1[i][j] = (char) CodeReject(x10,y10,z10,x11,y11,z11,P.X(),P.Y(),P.Z());
+       aIPD.xIP2(i, j)=-1;
+       const gp_Pnt& P=aIPD.xP2(i, j);
+-      aIPD.xP2DS1(i, j) = CodeReject(x10,y10,z10,x11,y11,z11,P.X(),P.Y(),P.Z());
++      aIPD.xP2DS1(i, j) = (char) CodeReject(x10,y10,z10,x11,y11,z11,P.X(),P.Y(),P.Z());
        int ix = (int)((P.X()-x0 + dx2)/dx);
        if(DansGrille(ix)) { 
  	int iy = (int)((P.Y()-y0 + dy2)/dy);
@@ -1101,7 +1070,7 @@ Index: oce/src/OpenGl/OpenGl_TextRender.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_TextRender.cxx
 +++ oce/src/OpenGl/OpenGl_TextRender.cxx
-@@ -292,7 +292,7 @@ void OpenGl_TextRender::RenderText ( cha
+@@ -291,7 +291,7 @@ void OpenGl_TextRender::RenderText ( con
    CMN_KEY keyAngle;
    keyAngle.id = TelTextAngle;//This flag responding about Angle text
    TsmGetAttri( 1, &keyAngle );
@@ -1110,7 +1079,7 @@ Index: oce/src/OpenGl/OpenGl_TextRender.cxx
  
    Tint zoom = 0;
    CMN_KEY keyZoom;
-@@ -389,7 +389,7 @@ void OpenGl_TextRender::RenderText ( cha
+@@ -404,7 +404,7 @@ void OpenGl_TextRender::RenderText ( con
      }
      else
      {
@@ -1119,7 +1088,7 @@ Index: oce/src/OpenGl/OpenGl_TextRender.cxx
      }
    }
    glGetIntegerv(GL_RENDER_MODE, &renderMode);
-@@ -402,7 +402,7 @@ void OpenGl_TextRender::RenderText ( cha
+@@ -417,7 +417,7 @@ void OpenGl_TextRender::RenderText ( con
      char *fontName = new char[strlen((char*)keyfontName.data.pdata) + 1];
      strcpy(fontName,(char*)keyfontName.data.pdata);
  
@@ -1128,15 +1097,15 @@ Index: oce/src/OpenGl/OpenGl_TextRender.cxx
      int aligment = alignmentforgl2ps( vh, vv );
      glPopMatrix();
      ExportText( str, fontName, export_h, angle, aligment, x, y, z, is2d!=0 );
-@@ -482,7 +482,7 @@ void OpenGl_TextRender::ExportText( char
-   
-   glBitmap( 1, 1, 0, 0, 0, 0, &zero );
- 
--  gl2psTextOpt( str, ps_font, height, alignment, angle);
-+  gl2psTextOpt( str, ps_font, (GLshort)height, alignment, angle);
+@@ -500,7 +500,7 @@ void OpenGl_TextRender::ExportText( cons
+   const int len = 4 * (wcslen(text) + 1); //szv: should be more than enough
+   char *astr = new char[len];
+   wcstombs(astr,text,len);
+-  gl2psTextOpt(astr, ps_font, height, alignment, angle);
++  gl2psTextOpt(astr, ps_font, (GLshort)height, alignment, angle);
+   delete[] astr;
  
  #endif
- 
 Index: oce/src/OpenGl/OpenGl_attri.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_attri.cxx
@@ -1176,7 +1145,7 @@ Index: oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
 +++ oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
-@@ -621,7 +621,7 @@ call_togl_text2d ( char *s,
+@@ -649,7 +649,7 @@ call_togl_text2d ( Techar *s,
  
    FTGLLayerFontCurrent = textRender->FindFont( FTGLLayerFontName,
                                                 FTGLLayerFontAspect,
@@ -1185,19 +1154,18 @@ Index: oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
                                                 FTGLLayerFontXScale,
                                                 FTGLLayerFontYScale );
  
-@@ -902,9 +902,9 @@ call_togl_textsize2d
- 
-   if ( FTGLLayerFontHeight != height || layerFontFlag == IsModified || FTGLLayerFontCurrent == 0 ) {
+@@ -941,8 +941,8 @@ call_togl_textsize2d
+   if ( FTGLLayerFontHeight != height || layerFontFlag == IsModified || FTGLLayerFontCurrent == 0 )
+   {
      layerFontFlag = IsNotModified;
 -    FTGLLayerFontHeight = height;  
-+    FTGLLayerFontHeight = (Tint)height;  
-     OpenGl_TextRender*  textRender =  OpenGl_TextRender::instance();
 -    FTGLLayerFontCurrent = textRender -> FindFont(FTGLLayerFontName, FTGLLayerFontAspect, FTGLLayerFontHeight);
++    FTGLLayerFontHeight = (Tint)height;  
 +    FTGLLayerFontCurrent = textRender -> FindFont(FTGLLayerFontName, FTGLLayerFontAspect, (Tfloat)FTGLLayerFontHeight);
-     textRender -> StringSize(s, &FTGLLayerFontWidth, &FTGLLayerFontAscent, &FTGLLayerFontDescent);
    }
  
-@@ -1050,7 +1050,7 @@ call_togl_set_text_attributes
+   //szv: conversion of Techar to wchar_t
+@@ -1098,7 +1098,7 @@ call_togl_set_text_attributes
      FTGLLayerFontAspect = OSD_FA_Regular;
  
      OpenGl_TextRender*  textRender =  OpenGl_TextRender::instance();
@@ -1206,33 +1174,20 @@ Index: oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
  
      layerFontType = type;
      layerFontRed = r;
-@@ -1095,7 +1095,7 @@ void call_togl_set_text_attributes( Tcha
+@@ -1143,7 +1143,7 @@ void call_togl_set_text_attributes( Tcha
      layerFontFlag = IsModified;
      FTGLLayerFontXScale = FTGLLayerFontYScale = 1.f;
      OpenGl_TextRender*  textRender =  OpenGl_TextRender::instance();
 -    FTGLLayerFontCurrent = textRender -> FindFont(FTGLLayerFontName, FTGLLayerFontAspect, FTGLLayerFontHeight);
 +    FTGLLayerFontCurrent = textRender -> FindFont(FTGLLayerFontName, FTGLLayerFontAspect, (Tfloat)FTGLLayerFontHeight);
-    
+ 
      layerFontRed = r;
      layerFontGreen = g;
-Index: oce/src/OpenGl/OpenGl_togl_print.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_togl_print.cxx
-+++ oce/src/OpenGl/OpenGl_togl_print.cxx
-@@ -278,7 +278,7 @@ call_togl_print
-     }
-     wglMakeCurrent(hDC,hGLRC);
- #else
--    pfd.cColorBits = GetDeviceCaps(hMemDC, BITSPIXEL);
-+    pfd.cColorBits = (BYTE)GetDeviceCaps(hMemDC, BITSPIXEL);
-     nIndex = ChoosePixelFormat(hMemDC, &pfd);
-     if (nIndex == 0)
-     {
 Index: oce/src/OpenGl/OpenGl_txgl.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_txgl.cxx
 +++ oce/src/OpenGl/OpenGl_txgl.cxx
-@@ -1032,11 +1032,11 @@ __declspec( dllexport ) int __fastcall _
+@@ -1031,11 +1031,11 @@ __declspec( dllexport ) int __fastcall _
  
      for (i = 0; i < sizeof(dBits) / sizeof(int); i++) {
  
@@ -1250,7 +1205,7 @@ Index: oce/src/OpenGl/OpenGl_view.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_view.cxx
 +++ oce/src/OpenGl/OpenGl_view.cxx
-@@ -1362,18 +1362,18 @@ TelClearBackground( Tint  Wsid /* Workst
+@@ -1378,18 +1378,18 @@ TelClearBackground( Tint  Wsid /* Workst
        case 3:
         corner2 = gradient->color2.rgb;
         corner4 = gradient->color1.rgb;        
@@ -1689,7 +1644,7 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-@@ -1647,7 +1647,7 @@ static int VColorScale (Draw_Interpretor
+@@ -1649,7 +1649,7 @@ static int VColorScale (Draw_Interpretor
    {
      aCS->SetPosition( X , Y );
      aCS->SetHeight( 0.95) ;

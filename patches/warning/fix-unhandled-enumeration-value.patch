@@ -129,17 +129,8 @@ Index: oce/src/DDocStd/DDocStd_ApplicationCommands.cxx
 ===================================================================
 --- oce.orig/src/DDocStd/DDocStd_ApplicationCommands.cxx
 +++ oce/src/DDocStd/DDocStd_ApplicationCommands.cxx
-@@ -193,7 +193,7 @@ static Standard_Integer DDocStd_Open (Dr
- 	di << " could not retrieve , permission denied " << "\n" ;  
- 	break;
-       }
--	
-+      default: /* Do nothing */ break;
-       }
-       di << "DDocStd_Open : Error" << "\n";
-     }	
-@@ -255,6 +255,7 @@ static Standard_Integer DDocStd_SaveAs (
-       case CDF_SS_Failure: {
+@@ -257,6 +257,7 @@ static Standard_Integer DDocStd_SaveAs (
+       case PCDM_SS_Failure: {
  	di << " Write failure " << "\n" ;  
        }
 +      default: /* Do nothing */ break;
@@ -408,7 +399,7 @@ Index: oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
 ===================================================================
 --- oce.orig/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
 +++ oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
-@@ -163,6 +163,7 @@ static Standard_Integer loadvrml
+@@ -164,6 +164,7 @@ static Standard_Integer loadvrml
        case VrmlData_NonPositiveSize:    aStr = "NonPositiveSize"; break;
        case VrmlData_ReadUnknownNode:    aStr = "ReadUnknownNode"; break;
        case VrmlData_NonSupportedFeature:aStr = "NonSupportedFeature"; break;

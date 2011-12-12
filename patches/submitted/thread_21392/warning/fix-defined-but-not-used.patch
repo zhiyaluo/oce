@@ -1305,7 +1305,7 @@ Index: oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
 +++ oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
-@@ -103,7 +103,6 @@ static CALL_DEF_LAYER ACLayer;
+@@ -104,7 +104,6 @@ static CALL_DEF_LAYER ACLayer;
  
  static GLboolean layerOpen      = GL_FALSE;
  static int       layerPoints    = 0;
@@ -1357,15 +1357,15 @@ Index: oce/src/STEPControl/STEPControl_ActorRead.cxx
    TopTools_MapOfShape aMapOfShape;
    aMapOfShape.Add(S);
    TopTools_ListOfShape aListOfShape;
-@@ -157,7 +157,6 @@ static void DumpWhatIs(const TopoDS_Shap
+@@ -163,7 +163,6 @@ static void DumpWhatIs(const TopoDS_Shap
          nbVertexes++;
      }
    }
 -  #ifdef DEB
+   cout << "//What is?// NB COMPOUNDS: " << nbCompounds << endl;
    cout << "//What is?// NB SOLIDS: " << nbSolids << endl;
    cout << "//What is?// NB SHELLS: " << nbShells << endl;
-   cout << "//What is?//    OPEN SHELLS: " << nbOpenShells << endl;
-@@ -166,8 +165,8 @@ static void DumpWhatIs(const TopoDS_Shap
+@@ -173,8 +172,8 @@ static void DumpWhatIs(const TopoDS_Shap
    cout << "//What is?// NB WIRES: " << nbWires << endl;
    cout << "//What is?// NB EDGES: " << nbEdges << endl;
    cout << "//What is?// NB VERTEXES: " << nbVertexes << endl;
@@ -1373,8 +1373,8 @@ Index: oce/src/STEPControl/STEPControl_ActorRead.cxx
  }
 +#endif
  
- // ============================================================================
- // Method  : STEPControl_ActorRead::STEPControl_ActorRead  ()    
+ namespace {
+   // Set global var to inform outer methods that current representation item is non-manifold.
 Index: oce/src/STEPControl/STEPControl_ActorWrite.cxx
 ===================================================================
 --- oce.orig/src/STEPControl/STEPControl_ActorWrite.cxx

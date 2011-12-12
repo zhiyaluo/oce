@@ -181,19 +181,6 @@ Index: oce/src/Adaptor3d/Adaptor3d_SurfaceOfLinearExtrusion.cxx
  
    }
    
-Index: oce/src/Adaptor3d/Adaptor3d_SurfaceOfRevolution.cxx
-===================================================================
---- oce.orig/src/Adaptor3d/Adaptor3d_SurfaceOfRevolution.cxx
-+++ oce/src/Adaptor3d/Adaptor3d_SurfaceOfRevolution.cxx
-@@ -597,7 +597,7 @@ GeomAbs_SurfaceType Adaptor3d_SurfaceOfR
-     }
-     
-   default:
--    return GeomAbs_SurfaceOfRevolution;
-+    break;
-   }
-   
-   // portage WNT
 Index: oce/src/BOP/BOP_CorrectTolerances.cxx
 ===================================================================
 --- oce.orig/src/BOP/BOP_CorrectTolerances.cxx
@@ -471,7 +458,7 @@ Index: oce/src/GeomFill/GeomFill.cxx
 ===================================================================
 --- oce.orig/src/GeomFill/GeomFill.cxx
 +++ oce/src/GeomFill/GeomFill.cxx
-@@ -564,7 +564,9 @@ Standard_Boolean GeomFill::GetCircle(con
+@@ -563,7 +563,9 @@ Standard_Boolean GeomFill::GetCircle(con
      }
      return Standard_True;
    }
@@ -481,7 +468,7 @@ Index: oce/src/GeomFill/GeomFill.cxx
  }
  
  Standard_Boolean GeomFill::GetCircle(const Convert_ParameterisationType  TConv, 
-@@ -746,5 +748,8 @@ Standard_Boolean GeomFill::GetCircle(con
+@@ -747,5 +749,8 @@ Standard_Boolean GeomFill::GetCircle(con
      }
      return Standard_True;
    }
@@ -706,7 +693,7 @@ Index: oce/src/OpenGl/OpenGl_GraphicDriver_9.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_GraphicDriver_9.cxx
 +++ oce/src/OpenGl/OpenGl_GraphicDriver_9.cxx
-@@ -96,9 +96,9 @@ Standard_Integer OpenGl_GraphicDriver::C
+@@ -95,9 +95,9 @@ Standard_Integer OpenGl_GraphicDriver::C
        for (i = 0; i < aGlWidth; i++){
          if (i < MyPic->Width()){
            MyColor = MyPic->PixelColor(i, j);
@@ -719,7 +706,7 @@ Index: oce/src/OpenGl/OpenGl_GraphicDriver_9.cxx
          }
          else {
            *MyData++ = (int)(0);
-@@ -243,9 +243,9 @@ void OpenGl_GraphicDriver::BackgroundIma
+@@ -242,9 +242,9 @@ void OpenGl_GraphicDriver::BackgroundIma
        for ( j = height - 1; j >= 0; j-- )
          for ( i = 0; i < width; i++ ) {
            color = image->PixelColor( i, j );
@@ -732,21 +719,6 @@ Index: oce/src/OpenGl/OpenGl_GraphicDriver_9.cxx
          }
          call_togl_create_bg_texture( (CALL_DEF_VIEW*)&MyCView, width, height, data, (int)FillStyle );
          // delete data here
-Index: oce/src/OpenGl/OpenGl_togl_print.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_togl_print.cxx
-+++ oce/src/OpenGl/OpenGl_togl_print.cxx
-@@ -57,8 +57,9 @@ GLuint createFont( char* typeFace, int h
-   oldObj = SelectObject( printer, font );
-   wglUseFontBitmaps( printer, 32, 96, base );
-   return base;
--#endif
-+#else
-   return 0;
-+#endif
- }
- 
- void deleteFont( GLuint base )
 Index: oce/src/ProjLib/ProjLib_ComputeApproxOnPolarSurface.cxx
 ===================================================================
 --- oce.orig/src/ProjLib/ProjLib_ComputeApproxOnPolarSurface.cxx

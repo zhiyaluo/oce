@@ -372,15 +372,15 @@ Index: oce/src/OpenGl/OpenGl_text.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_text.cxx
 +++ oce/src/OpenGl/OpenGl_text.cxx
-@@ -371,7 +371,7 @@ static  TStatus
- TextDelete( TSM_ELEM_DATA data, Tint n, cmn_key *k )
- {
-   if (data.pdata)
--    delete data.pdata;
-+    free(data.pdata);
+@@ -381,7 +381,7 @@ TextDelete( TSM_ELEM_DATA data, Tint n,
+   if (d)
+   {
+     delete[] d->sdata;
+-    delete d;
++    free(d);
+   }
    return TSuccess;
  }
- 
 Index: oce/src/OpenGl/OpenGl_textcol.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_textcol.cxx
