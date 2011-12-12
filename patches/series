@@ -71,7 +71,6 @@ warning/fix-Standard_IMPORT-usage.patch
 warning/fix-implicit-conversion-from-wider-type.patch
 warning/remove-const-return-value.patch
 #  Do not report this bug to OCC, it has to be investigated
-review/fix-deprecated-conversion-from-string.patch
 review/TDataXtd_PatternStd_NbInstances2.patch
 
 cmake/remove-Autotools-generated-files.patch
