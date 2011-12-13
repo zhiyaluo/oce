@@ -1,0 +1,14 @@
+Index: oce/src/BRepClass3d/BRepClass3d_SClassifier.cxx
+===================================================================
+--- oce.orig/src/BRepClass3d/BRepClass3d_SClassifier.cxx
++++ oce/src/BRepClass3d/BRepClass3d_SClassifier.cxx
+@@ -90,7 +90,8 @@ void BRepClass3d_SClassifier::PerformInf
+   myState=2; 
+   for(aSE.InitShell(); aSE.MoreShell() && nump<2;  aSE.NextShell()) { 
+     for(aSE.InitFace();	aSE.MoreFace()  && nump<2; ) {
+-      aF =*((TopoDS_Face*)&aSE.CurrentFace());
++      TopoDS_Shape aLocalShape = aSE.CurrentFace();
++      aF = TopoDS::Face(aLocalShape);
+       aSE.NextFace();
+       if(!nump) { 
+ 	nump++;
