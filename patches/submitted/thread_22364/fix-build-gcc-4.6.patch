@@ -1,3 +1,8 @@
+Fix build failures with recent g++
+
+src/BRepClass3d/BRepClass3d_SClassifier.cxx: In member function ‘void BRepClass3d_SClassifier::PerformInfinitePoint(BRepClass3d_SolidExplorer&, Standard_Real)’:
+src/BRepClass3d/BRepClass3d_SClassifier.cxx:93:44: error: taking address of temporary [-fpermissive]
+
 Index: oce/src/BRepClass3d/BRepClass3d_SClassifier.cxx
 ===================================================================
 --- oce.orig/src/BRepClass3d/BRepClass3d_SClassifier.cxx
