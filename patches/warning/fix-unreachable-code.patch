@@ -226,7 +226,7 @@ Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_OffsetWire.cxx
 +++ oce/src/BRepFill/BRepFill_OffsetWire.cxx
-@@ -1609,10 +1609,11 @@ Standard_Integer CutEdge (const TopoDS_E
+@@ -1610,10 +1610,11 @@ Standard_Integer CutEdge (const TopoDS_E
  
    if (CT2d->BasisCurve()->IsKind(STANDARD_TYPE(Geom2d_Circle)) &&
        ( Abs(f-l) >= PI) ) {
@@ -239,7 +239,7 @@ Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
      Standard_Real m = (f + l)*0.5;
  //  Modified by Sergey KHROMOV - Wed Mar  6 17:37:28 2002 Begin
      gp_Pnt        P = aC->Value(m);
-@@ -1639,6 +1640,7 @@ Standard_Integer CutEdge (const TopoDS_E
+@@ -1640,6 +1641,7 @@ Standard_Integer CutEdge (const TopoDS_E
      // Retour.
      //--------
      return 2;
@@ -340,7 +340,7 @@ Index: oce/src/DDataStd/DDataStd_DrawDriver.cxx
 ===================================================================
 --- oce.orig/src/DDataStd/DDataStd_DrawDriver.cxx
 +++ oce/src/DDataStd/DDataStd_DrawDriver.cxx
-@@ -243,16 +243,6 @@ Handle(Draw_Drawable3D) DDataStd_DrawDri
+@@ -237,16 +237,6 @@ Handle(Draw_Drawable3D) DDataStd_DrawDri
        }
        else {
  	break;
@@ -374,7 +374,7 @@ Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx
 +++ oce/src/Draw/Draw_Window.cxx
-@@ -1367,7 +1367,9 @@ LONG APIENTRY DrawWindow::DrawProc(HWND
+@@ -1362,7 +1362,9 @@ LONG APIENTRY DrawWindow::DrawProc(HWND
      else
        return LONG(DefMDIChildProc(hWnd, wMsg, wParam, lParam));
    }
@@ -481,19 +481,15 @@ Index: oce/src/GeomFill/GeomFill_LocationGuide.cxx
 ===================================================================
 --- oce.orig/src/GeomFill/GeomFill_LocationGuide.cxx
 +++ oce/src/GeomFill/GeomFill_LocationGuide.cxx
-@@ -742,9 +742,10 @@ static void InGoodPeriod(const Standard_
- #ifdef DEB
-     Standard_Real U = myFirstS + ratio*(Param-myCurve->FirstParameter());
- #else
--    myCurve->FirstParameter() ;
-+    
- #endif
-       
+@@ -733,6 +733,7 @@ static void InGoodPeriod(const Standard_
+   if (rotation) {  
+     return Standard_False;
+     
 +#if 0 // @todo Should be really dead code?
      // initialisation du germe 
      InitX(Param);      
      
-@@ -858,6 +859,7 @@ static void InGoodPeriod(const Standard_
+@@ -846,6 +847,7 @@ static void InGoodPeriod(const Standard_
  	return Standard_False;
        }
  
@@ -573,7 +569,7 @@ Index: oce/src/IntPatch/IntPatch_Polyhedron.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_Polyhedron.cxx
 +++ oce/src/IntPatch/IntPatch_Polyhedron.cxx
-@@ -516,7 +516,10 @@ Standard_Integer IntPatch_Polyhedron::Tr
+@@ -509,7 +509,10 @@ Standard_Integer IntPatch_Polyhedron::Tr
  
      return(0); //-- BUG NON CORRIGE ( a revoir le role de nbdeltaU et nbdeltaV)
  
@@ -864,8 +860,8 @@ Index: oce/src/TopOpeBRep/TopOpeBRep_ShapeIntersector2d.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRep/TopOpeBRep_ShapeIntersector2d.cxx
 +++ oce/src/TopOpeBRep/TopOpeBRep_ShapeIntersector2d.cxx
-@@ -272,7 +272,7 @@ void TopOpeBRep_ShapeIntersector2d::Find
-                         BS.Box(GS2);
+@@ -262,7 +262,7 @@ void TopOpeBRep_ShapeIntersector2d::Find
+     BS.Box(GS2);
      myFFDone = Standard_True;
      break;
 -    NextFFCouple();
@@ -1016,7 +1012,7 @@ Index: oce/src/TopOpeBRepTool/TopOpeBRepTool_mkTondgE.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepTool/TopOpeBRepTool_mkTondgE.cxx
 +++ oce/src/TopOpeBRepTool/TopOpeBRepTool_mkTondgE.cxx
-@@ -353,7 +353,9 @@ Standard_Boolean TopOpeBRepTool_mkTondgE
+@@ -350,7 +350,9 @@ Standard_Boolean TopOpeBRepTool_mkTondgE
      else         mkT = outin ? MKI2 : MKI1;
      return Standard_True;
      ////////////////////////////////////////////////
@@ -1027,7 +1023,7 @@ Index: oce/src/TopOpeBRepTool/TopOpeBRepTool_mkTondgE.cxx
      // xxri : 
      Standard_Real ddot = tgin1di.Dot(faxis);
      Standard_Boolean tgaxis = Abs(1-(Abs(ddot))) < FUN_tola(); //=true : edge is tangent to sphere's axis
-@@ -366,6 +368,7 @@ Standard_Boolean TopOpeBRepTool_mkTondgE
+@@ -363,6 +365,7 @@ Standard_Boolean TopOpeBRepTool_mkTondgE
        if (closedi)            {mkT = MKI12; return Standard_True;}// onfi || onli @190499
        xxri = tgin1di;
      }
