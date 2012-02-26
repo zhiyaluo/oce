@@ -60,6 +60,7 @@ cppcheck/fix-extra-qualification-unnecessary.patch
 cppcheck/fix-uninitialized-var.patch
 cppcheck/fix-resource-leak.patch
 cppcheck/fix-memory-leak.patch
+cppcheck/fix-redundant-assignment.patch
 warning/format-issue.patch
 warning/fix-unhandled-enumeration-value2.patch
 warning/fix-comment-format.patch
