@@ -1,0 +1,251 @@
+From 680db2cd12c9213f26d7ec2764648ee974504b1b Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Fri, 13 Jan 2012 06:21:56 +0100
+Subject: [PATCH 1/8] [cppcheck-error-fix][mismatch-allocation-deallocation]
+
+[CDM/CDM_COutMessageDriver.cxx:37]: (error) Mismatching allocation and deallocation: anAsciiString
+---
+ src/CDM/CDM_COutMessageDriver.cxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+From 5da4bc955356707fca938b1f07afb8b1c51e85d6 Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Fri, 13 Jan 2012 06:20:05 +0100
+Subject: [PATCH 2/8] [cppcheck-error-fix][mismatch-allocation-deallocation]
+
+[IGESSelect/IGESSelect_SelectFromDrawing.cxx:44]: (error) Mismatching allocation and deallocation: nums
+[IGESSelect/IGESSelect_SelectFromSingleView.cxx:31]: (error) Mismatching allocation and deallocation: nums
+---
+ src/IGESSelect/IGESSelect_SelectFromDrawing.cxx    |    2 +-
+ src/IGESSelect/IGESSelect_SelectFromSingleView.cxx |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+From 11c9b060aaee7121b02c99443e2e5160e1cca055 Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Fri, 13 Jan 2012 05:28:44 +0100
+Subject: [PATCH 3/8] [cppcheck-error-fix][mismatch-allocation-deallocation][Pawel]
+
+Original post:
+Hello,
+
+GeomFill_EvolvedSection.cxx (line 53) / GeomFill_UniformSection.cxx (line 52) should use the "delete []" operator as arrays are deleted.
+
+Pawel
+---
+ src/GeomFill/GeomFill_EvolvedSection.cxx |    2 +-
+ src/GeomFill/GeomFill_UniformSection.cxx |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+From 21887e7f7a41b76867a906d24c78dba97512f509 Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Fri, 13 Jan 2012 05:24:55 +0100
+Subject: [PATCH 4/8] [cppcheck-warning-fix][mismatch-allocation-deallocation][Pawel]
+
+Original post:
+Hello,
+
+the following variables in HLRBRep_InternalAlgo::HideSelected (lines 800-820 in OCCT 6.5.2):
+
+Standard_Integer *Val = new Standard_Integer [nf+1];
+Standard_Real *Size = new Standard_Real [nf+1];
+Standard_Integer *Index = new Standard_Integer [nf+1];
+
+are deleted (lines 918-920) the following way:
+
+delete Val;
+delete Size;
+delete Index;
+
+which I guess is wrong because the array delete operator should be used like in OCCT 6.5.1:
+
+delete [] Val;
+delete [] Size;
+delete [] Index;
+
+Pawel
+---
+ src/HLRBRep/HLRBRep_InternalAlgo.cxx |    6 +++---
+ 1 files changed, 3 insertions(+), 3 deletions(-)
+
+From b11c2697bf711583f590b0c202591602a97d43f8 Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Thu, 12 Jan 2012 22:11:56 +0100
+Subject: [PATCH 5/8] [cppcheck-error-fix][mismatch-allocation-deallocation]
+
+[Message/Message_Msg.cxx:160]: (error) Mismatching allocation and deallocation: sStringBuffer
+---
+ src/Message/Message_Msg.cxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+From c852cd6b823e52c1e46367fae8a7442d1569abc5 Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Thu, 12 Jan 2012 22:10:05 +0100
+Subject: [PATCH 6/8] [cppcheck-error-fix][mismatch-allocation-deallocation]
+
+[Message/Message_PrinterOStream.cxx:125]: (error) Mismatching allocation and deallocation: astr
+---
+ src/Message/Message_PrinterOStream.cxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+From 28c2848d131728f833c989785f9a9cf70c7d32cb Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Thu, 12 Jan 2012 21:51:42 +0100
+Subject: [PATCH 7/8] [cppcheck-error-fix][mismatch-allocation-deallocation]
+
+[OpenGl/OpenGl_subrs.cxx:149]: (error) Mismatching allocation and deallocation: col
+---
+ src/OpenGl/OpenGl_subrs.cxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+From 5a891df507e87ee7d4af48c12cbd738f8880c4f9 Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Thu, 12 Jan 2012 21:57:55 +0100
+Subject: [PATCH 8/8] [cppcheck-error-fix][mismatch-allocation-deallocation]
+
+[OpenGl/OpenGl_triedron.cxx:608]: (error) Mismatching allocation and deallocation: isPlaneActive
+[OpenGl/OpenGl_triedron.cxx:1116]: (error) Mismatching allocation and deallocation: isPlaneActive
+---
+ src/OpenGl/OpenGl_triedron.cxx |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+Index: oce/src/CDM/CDM_COutMessageDriver.cxx
+===================================================================
+--- oce.orig/src/CDM/CDM_COutMessageDriver.cxx
++++ oce/src/CDM/CDM_COutMessageDriver.cxx
+@@ -34,5 +34,5 @@ void CDM_COutMessageDriver::Write (const
+ 
+   //    Output
+   cout << anAsciiString << flush;
+-  delete anAsciiString;
++  delete [] anAsciiString;
+ }
+Index: oce/src/GeomFill/GeomFill_EvolvedSection.cxx
+===================================================================
+--- oce.orig/src/GeomFill/GeomFill_EvolvedSection.cxx
++++ oce/src/GeomFill/GeomFill_EvolvedSection.cxx
+@@ -49,7 +49,7 @@ GeomFill_EvolvedSection::GeomFill_Evolve
+     char*  name = new char[100];
+     sprintf(name,"UnifSect_%d",++NumSec);
+     DrawTrSurf::Set(name, myCurve);
+-    delete name;
++    delete [] name;
+   }
+ #endif
+ }
+Index: oce/src/GeomFill/GeomFill_UniformSection.cxx
+===================================================================
+--- oce.orig/src/GeomFill/GeomFill_UniformSection.cxx
++++ oce/src/GeomFill/GeomFill_UniformSection.cxx
+@@ -48,7 +48,7 @@ GeomFill_UniformSection::GeomFill_Unifor
+    char*  name = new char[100];
+    sprintf(name,"UnifSect_%d",++NumSec);
+    DrawTrSurf::Set(name, myCurve);
+-   delete name;
++   delete [] name;
+  }
+ #endif
+ }
+Index: oce/src/HLRBRep/HLRBRep_InternalAlgo.cxx
+===================================================================
+--- oce.orig/src/HLRBRep/HLRBRep_InternalAlgo.cxx
++++ oce/src/HLRBRep/HLRBRep_InternalAlgo.cxx
+@@ -915,9 +915,9 @@ void HLRBRep_InternalAlgo::HideSelected
+       }
+     }
+     
+-    delete Val;
+-    delete Size;
+-    delete Index;
++    delete [] Val;
++    delete [] Size;
++    delete [] Index;
+     
+ #ifdef DEB
+     if (myDebug) {
+Index: oce/src/IGESSelect/IGESSelect_SelectFromDrawing.cxx
+===================================================================
+--- oce.orig/src/IGESSelect/IGESSelect_SelectFromDrawing.cxx
++++ oce/src/IGESSelect/IGESSelect_SelectFromDrawing.cxx
+@@ -41,7 +41,7 @@
+     Standard_Integer nv = G.EntityNumber (igesent->View());
+     if (nv > 0 && nv <= nb) list.GetOneItem(igesent);
+   }
+-  delete nums;
++  delete [] nums;
+   return list;
+ }
+ 
+Index: oce/src/IGESSelect/IGESSelect_SelectFromSingleView.cxx
+===================================================================
+--- oce.orig/src/IGESSelect/IGESSelect_SelectFromSingleView.cxx
++++ oce/src/IGESSelect/IGESSelect_SelectFromSingleView.cxx
+@@ -28,7 +28,7 @@
+     Standard_Integer nv = G.EntityNumber (igesent->View());
+     if (nv > 0 && nv <= nb) list.GetOneItem(igesent);
+   }
+-  delete nums;
++  delete [] nums;
+   return list;
+ }
+ 
+Index: oce/src/Message/Message_Msg.cxx
+===================================================================
+--- oce.orig/src/Message/Message_Msg.cxx
++++ oce/src/Message/Message_Msg.cxx
+@@ -157,7 +157,7 @@ Message_Msg& Message_Msg::Arg (const Sta
+   char * sStringBuffer = new char [Max (strlen(theString)+1, 1024)];
+   sprintf (sStringBuffer, aFormat.ToCString(), theString);
+   TCollection_ExtendedString aStr ( sStringBuffer );
+-  delete sStringBuffer;
++  delete [] sStringBuffer;
+   sStringBuffer = 0;
+ 
+   // replace the format placeholder by the actual string
+Index: oce/src/Message/Message_PrinterOStream.cxx
+===================================================================
+--- oce.orig/src/Message/Message_PrinterOStream.cxx
++++ oce/src/Message/Message_PrinterOStream.cxx
+@@ -122,7 +122,7 @@ void Message_PrinterOStream::Send (const
+     char* astr = new char[theString.LengthOfCString()+1];
+     theString.ToUTF8CString (astr);
+     Send ( astr, theGravity, putEndl );
+-    delete astr;
++    delete [] astr;
+   }
+   else {
+     TCollection_AsciiString aStr ( theString, '?' );
+Index: oce/src/OpenGl/OpenGl_subrs.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_subrs.cxx
++++ oce/src/OpenGl/OpenGl_subrs.cxx
+@@ -146,7 +146,7 @@ call_subr_polyline_data( CALL_DEF_LISTPO
+ 
+ #ifdef IMP190602
+   delete[] points;
+-  delete col;
++  delete [] col;
+ #endif
+ 
+   return;
+Index: oce/src/OpenGl/OpenGl_triedron.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_triedron.cxx
++++ oce/src/OpenGl/OpenGl_triedron.cxx
+@@ -605,7 +605,7 @@ TStatus call_triedron_redraw (
+       glEnable(GL_CLIP_PLANE0 + ii);
+     }
+   } 
+-  free(isPlaneActive);
++  delete [] isPlaneActive;
+ 
+ #endif
+ 
+@@ -1108,7 +1108,7 @@ TStatus call_zbuffer_triedron_redraw (
+       glEnable(GL_CLIP_PLANE0 + i);
+     }
+   }
+-  free(isPlaneActive);
++  delete [] isPlaneActive;
+ #endif
+ 
+   if (!isWithinView) { /* restore matrix */
