@@ -58,6 +58,7 @@ warning/fix-unhandled-enumeration-value2.patch
 warning/fix-comment-format.patch
 warning/fix-comparison-between-different-enums.patch
 warning/fix-mismatch-allocation-deallocation.patch
+warning/fix-ambiguous-else.patch
 
 #  Do not submit, either needs to be reworked, or are unsuitable
 warning/fix-empty-conditional-body.patch
