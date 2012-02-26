@@ -29,6 +29,136 @@ Subject: [PATCH 9/9] In 05e221b, firstarea or lastarea may be NULL if memory
  inc/MAT_Mat.gxx |    7 ++++---
  1 files changed, 4 insertions(+), 3 deletions(-)
 
+From a2996bc0f06225fb990b784b95685c1cd75cdca9 Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Thu, 12 Jan 2012 21:44:50 +0100
+Subject: [PATCH 01/10] [cppcheck-error-fix][memory-leak]
+
+[OpenGl/OpenGl_ImageBox.cxx:329]: (error) Memory leak: abuf
+---
+ src/OpenGl/OpenGl_ImageBox.cxx |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+From 770532776a841313f10b28e70b7ccedc639cd0c5 Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Thu, 12 Jan 2012 21:46:54 +0100
+Subject: [PATCH 02/10] [cppcheck-error-fix][memory-leak]
+
+[OpenGl/OpenGl_filters.cxx:351]: (error) Memory leak: ptr
+---
+ src/OpenGl/OpenGl_filters.cxx |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+From ddbe9ff692ad6dfe7d55c5f58977eac9ad2a588c Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Thu, 12 Jan 2012 21:49:41 +0100
+Subject: [PATCH 03/10] [cppcheck-error-fix][memory-leak]
+
+[OpenGl/OpenGl_indexpolygons.cxx:271]: (error) Memory leak: data
+---
+ src/OpenGl/OpenGl_indexpolygons.cxx |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+From 807f4ef450a0c556254d14f3da08e4e5b85b8fc4 Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Thu, 12 Jan 2012 21:54:53 +0100
+Subject: [PATCH 04/10] [cppcheck-error-fix][memory-leak]
+
+[OpenGl/OpenGl_text.cxx:156]: (error) Memory leak: data
+---
+ src/OpenGl/OpenGl_text.cxx |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+From 9f60bc825fc1576a6de139abee734dbbe37b1388 Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Thu, 12 Jan 2012 22:04:27 +0100
+Subject: [PATCH 05/10] [cppcheck-error-fix][memory-leak]
+
+[OSD/OSD_FontMgr.cxx:168]: (error) Memory leak: windir_var
+[OSD/OSD_FontMgr.cxx:168]: (error) Memory leak: font_dir
+---
+ src/OSD/OSD_FontMgr.cxx |    2 ++
+ 1 files changed, 2 insertions(+), 0 deletions(-)
+
+From ba4e5c4865e0fa54eb5201515818c14aa3aecc91 Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Thu, 12 Jan 2012 22:54:03 +0100
+Subject: [PATCH 06/10] [cppcheck-error-fix][memory-leak]
+
+[Graphic2d/Graphic2d_ImageFile.cxx:403]: (error) Memory leak: pheader
+[Graphic2d/Graphic2d_ImageFile.cxx:395]: (error) Data is allocated but not initialized: pheader
+---
+ src/Graphic2d/Graphic2d_ImageFile.cxx |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+From d81f784befb6bf8683bbe425e9e29d09ec18b63b Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Fri, 13 Jan 2012 05:33:57 +0100
+Subject: [PATCH 07/10] [cppcheck-error-fix][memory-leak]
+
+[OpenGl/OpenGl_ImageBox.cxx:330]: (error) Memory leak: base
+[OpenGl/OpenGl_ImageBox.cxx:330]: (error) Memory leak: rbuf
+[OpenGl/OpenGl_ImageBox.cxx:330]: (error) Memory leak: gbuf
+[OpenGl/OpenGl_ImageBox.cxx:330]: (error) Memory leak: bbuf
+
+[math/math_FunctionRoots.cxx:254]: (error) Memory leak: ptrval
+---
+ src/OpenGl/OpenGl_ImageBox.cxx  |    4 ++++
+ src/math/math_FunctionRoots.cxx |    1 +
+ 2 files changed, 5 insertions(+), 0 deletions(-)
+
+From 33b1802a85117f0c1246881c1ef892881ebfbc6f Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Fri, 13 Jan 2012 05:41:17 +0100
+Subject: [PATCH 08/10] [cppcheck-error-fix][memory-leak]
+
+[OpenGl/OpenGl_filters.cxx:352]: (error) Memory leak: temp
+---
+ src/OpenGl/OpenGl_filters.cxx |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+From 085c0b21b74ba92ffe97271019d9d75dc1c5438b Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Fri, 13 Jan 2012 05:44:12 +0100
+Subject: [PATCH 09/10] [cppcheck-error-fix][memory-leak]
+
+[OpenGl/OpenGl_text.cxx:157]: (error) Memory leak: wstr
+---
+ src/OpenGl/OpenGl_text.cxx |    1 +
+ 1 files changed, 1 insertions(+), 0 deletions(-)
+
+From 4b94e47c392e7fdc6680bdd598a02bf5e0a476fb Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Fri, 13 Jan 2012 06:14:19 +0100
+Subject: [PATCH 10/10] [cppcheck-error-fix][memory-leak]
+
+[StepData/StepData_StepReaderData.cxx:1828]: (error) Memory leak: indm
+---
+ src/StepData/StepData_StepReaderData.cxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+From 185c23a2f01d68d56f2426cb629055f109651db5 Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Sun, 15 Jan 2012 15:43:55 +0100
+Subject: [PATCH] [cppcheck-error-fix][memory-leak]
+
+[MFT/MFT_FontManager.cxx:2287]: (error) Memory leak: pencoding
+---
+ src/MFT/MFT_FontManager.cxx |    5 ++++-
+ 1 files changed, 4 insertions(+), 1 deletions(-)
+
+From 0b844723c191f16a54e1143188a4708877472632 Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Thu, 2 Feb 2012 06:16:46 +0100
+Subject: [PATCH] Fix issue #246: add missing bracket to if clause
+
+---
+ src/OSD/OSD_FontMgr.cxx        |    2 ++
+ src/OpenGl/OpenGl_ImageBox.cxx |    2 ++
+ src/OpenGl/OpenGl_filters.cxx  |    2 ++
+ src/OpenGl/OpenGl_text.cxx     |    3 ++-
+ 4 files changed, 8 insertions(+), 1 deletions(-)
+
 Index: oce/inc/MAT_Mat.gxx
 ===================================================================
 --- oce.orig/inc/MAT_Mat.gxx
@@ -54,3 +184,136 @@ Index: oce/src/Draw/Draw.cxx
      }
    }
    else
+Index: oce/src/Graphic2d/Graphic2d_ImageFile.cxx
+===================================================================
+--- oce.orig/src/Graphic2d/Graphic2d_ImageFile.cxx
++++ oce/src/Graphic2d/Graphic2d_ImageFile.cxx
+@@ -400,6 +400,7 @@ Standard_Integer readheader     = 0;
+         if (readheader != sizeheader) {
+                 cout << "Unable to read dump file header.\n" << flush;
+                 if( !Reopen ) aFile.Close ();
++                free(pheader);
+                 return Result;
+         }
+ 
+Index: oce/src/MFT/MFT_FontManager.cxx
+===================================================================
+--- oce.orig/src/MFT/MFT_FontManager.cxx
++++ oce/src/MFT/MFT_FontManager.cxx
+@@ -2281,7 +2281,10 @@ Standard_CString pencoding;
+       if( this->IsDefinedChar(i) ) {
+         this->DrawChar(theTextManager,i);
+         pencoding = theTextManager->Encoding();
+-	if( !strcmp(anEncoding,pencoding) ) return i;
++	if( !strcmp(anEncoding,pencoding) ) {
++        delete pencoding;
++        return i;
++        }
+       }
+     }
+ 
+Index: oce/src/OSD/OSD_FontMgr.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_FontMgr.cxx
++++ oce/src/OSD/OSD_FontMgr.cxx
+@@ -125,7 +125,11 @@ void OSD_FontMgr::InitFontDataBase() {
+   Standard_Character *font_dir = new Standard_Character[ req_size + strlen("\\Fonts\\") + 1 ]  ;  
+ 
+   if( !strcpy( font_dir, windir_var ) )
++  {
++    delete [] windir_var;
++    delete [] font_dir;
+     return  ;   
++  }   
+   if( !strcat( font_dir, "\\Fonts\\" ) )
+     return ;  
+ 
+Index: oce/src/OpenGl/OpenGl_ImageBox.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_ImageBox.cxx
++++ oce/src/OpenGl/OpenGl_ImageBox.cxx
+@@ -326,7 +326,14 @@ read_texture(char *name, int *width, int
+   bbuf = (unsigned char *)malloc(image->xsize*sizeof(unsigned char));
+   abuf = (unsigned char *)malloc(image->xsize*sizeof(unsigned char));
+   if(!base || !rbuf || !gbuf || !bbuf)
++  {  
++    free(base);
++    free(rbuf);
++    free(gbuf);
++    free(bbuf);
++    free(abuf);
+     return NULL;
++  }
+   lptr = base;
+   for(y=0; y<image->ysize; y++) {
+     if(image->zsize>=4) {
+Index: oce/src/OpenGl/OpenGl_filters.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_filters.cxx
++++ oce/src/OpenGl/OpenGl_filters.cxx
+@@ -348,7 +348,11 @@ TglNamesetRemove( Tint num, Tint *set )
+   size = num, size %= LIST_GROW_SIZE, size++, size *= LIST_GROW_SIZE;
+   temp = new Tint[size];
+   if( !temp )
++  {
++    delete [] ptr;
++    delete [] temp;
+     return TFailure;
++  }
+   memcpy( temp, set, num*sizeof(Tint) );
+ 
+   /* sort new set */
+Index: oce/src/OpenGl/OpenGl_indexpolygons.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_indexpolygons.cxx
++++ oce/src/OpenGl/OpenGl_indexpolygons.cxx
+@@ -268,6 +268,7 @@ PolygonIndicesAdd( TSM_ELEM_DATA d, Tint
+   {
+     //cmn_freemem( data->vertices );
+     delete[] data->vertices;
++    delete data;
+     return TFailure;
+   }
+   //cmn_memreserve( data->bounds, data->num_bounds, 0 );
+Index: oce/src/OpenGl/OpenGl_text.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_text.cxx
++++ oce/src/OpenGl/OpenGl_text.cxx
+@@ -153,8 +153,11 @@ TextAdd( TSM_ELEM_DATA d, Tint n, cmn_ke
+ 
+   wchar_t *wstr = new wchar_t[i];
+   if( !wstr )
++  {      
++    delete data;
++    delete [] wstr;
+     return TFailure;
+-
++  }
+   data->attach_pt = *pt;
+   data->length    = i;
+   //szv: instead of memcpy
+Index: oce/src/StepData/StepData_StepReaderData.cxx
+===================================================================
+--- oce.orig/src/StepData/StepData_StepReaderData.cxx
++++ oce/src/StepData/StepData_StepReaderData.cxx
+@@ -1823,7 +1823,7 @@ void StepData_StepReaderData::SetEntityN
+       subpile->SetValue(nbsubpil,num);      // Append(num);
+     }
+   }
+-  delete [] inds; delete [] indi; delete [] indr;    //  subpile->Detroy();
++  delete [] inds; delete [] indi; delete [] indr; delete [] indm;   //  subpile->Detroy();
+   if (indx) delete [] indx;
+ }
+ 
+Index: oce/src/math/math_FunctionRoots.cxx
+===================================================================
+--- oce.orig/src/math/math_FunctionRoots.cxx
++++ oce/src/math/math_FunctionRoots.cxx
+@@ -251,6 +251,7 @@ math_FunctionRoots::math_FunctionRoots(m
+ 
+     if( Nvalid < N ) {
+       Done = Standard_False;
++      delete [] ptrval;
+       return;
+     }
+ 
