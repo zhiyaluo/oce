@@ -1,0 +1,57 @@
+From a60844d693e21f0aafae5e5b8eddd2d3c0842e0f Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Thu, 12 Jan 2012 18:10:26 +0100
+Subject: [PATCH] Bugfix: std::streamsize replacement for int in
+ std::streambuf::xsputn overload
+
+Patch contributed by Simon Floery. Message posted to oce-dev:
+"""
+I was trying OpenCascade's XML parser (LDOM*) the other day and stumbled
+across a bug that appears at least on recent Ubuntu systems (depends on how
+the platform defines std::streamsize). In src/LDOM/LDOM_OSStream.hxx,
+LDOM_SBuffer::xsputn is declared with int arguments to overload
+std::streambuf::xsputn, however std::streamsize arguments would be correct
+(cf. http://www.cplusplus.com/reference/iostream/streambuf/xsputn/).
+"""
+---
+ inc/LDOM_OSStream.hxx      |    2 +-
+ src/LDOM/LDOM_OSStream.cxx |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+From b174c39fec56e5bce8d1a90e438ef00b237132cc Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Sat, 21 Jan 2012 06:29:14 +0100
+Subject: [PATCH] Fix OSX conflict return type in LDOM_SBuffer::xsputn
+ overload
+
+---
+ inc/LDOM_OSStream.hxx      |    2 +-
+ src/LDOM/LDOM_OSStream.cxx |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+Index: oce/inc/LDOM_OSStream.hxx
+===================================================================
+--- oce.orig/inc/LDOM_OSStream.hxx
++++ oce/inc/LDOM_OSStream.hxx
+@@ -59,7 +59,7 @@ class LDOM_SBuffer : public streambuf
+     Standard_EXPORT virtual int underflow();
+     //virtual int uflow();
+ 
+-    Standard_EXPORT virtual int xsputn(const char* s, int n);
++    Standard_EXPORT virtual std::streamsize xsputn(const char* s, std::streamsize n);
+     //virtual int xsgetn(char* s, int n);
+     //virtual int sync();
+ 
+Index: oce/src/LDOM/LDOM_OSStream.cxx
+===================================================================
+--- oce.orig/src/LDOM/LDOM_OSStream.cxx
++++ oce/src/LDOM/LDOM_OSStream.cxx
+@@ -111,7 +111,7 @@ int LDOM_SBuffer::underflow()
+ //function : xsputn()
+ //purpose  : redefined virtual
+ //=======================================================================
+-int LDOM_SBuffer::xsputn(const char* aStr, int n)
++std::streamsize LDOM_SBuffer::xsputn(const char* aStr, std::streamsize n)
+ {
+   int aLen = n + 1;
+   int freeLen = myMaxBuf - myCurString->len - 1;
