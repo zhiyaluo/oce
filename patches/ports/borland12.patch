@@ -1,0 +1,48 @@
+From a6a34eaf718524d7f0bf6d231303422586eadbde Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Fri, 16 Dec 2011 15:57:14 +0200
+Subject: [PATCH] Bcc needs HashCode & IsEqual declared as global
+
+As per #188
+---
+ inc/BRepMesh_CellFilter.hxx       |    8 ++++++++
+ inc/BRepMesh_VertexCellFilter.hxx |    8 ++++++++
+ 2 files changed, 16 insertions(+), 0 deletions(-)
+
+diff --git a/inc/BRepMesh_CellFilter.hxx b/inc/BRepMesh_CellFilter.hxx
+index ab0193d..5369065 100644
+--- a/inc/BRepMesh_CellFilter.hxx
++++ b/inc/BRepMesh_CellFilter.hxx
+@@ -10,3 +10,11 @@
+ #include <BRepMesh_CircleInspector.hxx>
+ 
+ typedef NCollection_CellFilter<BRepMesh_CircleInspector> BRepMesh_CellFilter;
++
++#ifdef __BORLANDC__
++  // definition of global functions is needed for map
++  Standard_Integer HashCode (const NCollection_CellFilter<BRepMesh_CircleInspector>::Cell &aCell, const Standard_Integer theUpper)
++  { return aCell.HashCode(theUpper); }
++  Standard_Boolean IsEqual (const NCollection_CellFilter<BRepMesh_CircleInspector>::Cell &aCell1, const NCollection_CellFilter<BRepMesh_CircleInspector>::Cell &aCell2)
++  { return aCell1.IsEqual(aCell2); }
++#endif
+\ No newline at end of file
+diff --git a/inc/BRepMesh_VertexCellFilter.hxx b/inc/BRepMesh_VertexCellFilter.hxx
+index 1df57bc..e8d0680 100644
+--- a/inc/BRepMesh_VertexCellFilter.hxx
++++ b/inc/BRepMesh_VertexCellFilter.hxx
+@@ -21,4 +21,12 @@
+ 
+ typedef NCollection_CellFilter<BRepMesh_VertexInspector> BRepMesh_VertexCellFilter;
+ 
++#ifdef __BORLANDC__
++  // definition of global functions is needed for map
++  Standard_Integer HashCode (const NCollection_CellFilter<BRepMesh_VertexInspector>::Cell &aCell, const Standard_Integer theUpper)
++  { return aCell.HashCode(theUpper); }
++  Standard_Boolean IsEqual (const NCollection_CellFilter<BRepMesh_VertexInspector>::Cell &aCell1, const NCollection_CellFilter<BRepMesh_VertexInspector>::Cell &aCell2)
++  { return aCell1.IsEqual(aCell2); }
++#endif
++
+ #endif
+-- 
+1.7.9.1
+
