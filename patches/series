@@ -46,6 +46,7 @@ submitted/thread_21949/fix-mismatch-new-delete-Standard_Failure.patch
 submitted/thread_21963/bugfix-add-missing-include-BRepBlend_BlendTool.lxx.patch
 submitted/thread_22234/Standard_StdAllocator.patch
 
+new-Standard_Time-type.patch
 do-not-redefine-memmove.patch
 fix-symbol-decorators-Draw.patch
 
@@ -71,7 +72,6 @@ warning/fix-unreachable-code-rewrite-loops.patch
 warning/fix-Standard_IMPORT-usage.patch
 
 #  This patch should drop const qualifiers in return value for all methods (only for objects, not pointers and references!)
-warning/fix-implicit-conversion-from-wider-type.patch
 warning/remove-const-return-value.patch
 #  Do not report this bug to OCC, it has to be investigated
 review/TDataXtd_PatternStd_NbInstances2.patch
