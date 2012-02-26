@@ -78,6 +78,8 @@ warning/fix-unreachable-code.patch
 warning/fix-unreachable-code-rewrite-loops.patch
 warning/fix-Standard_IMPORT-usage.patch
 
+improve-exception-message.patch
+
 #  This patch should drop const qualifiers in return value for all methods (only for objects, not pointers and references!)
 warning/remove-const-return-value.patch
 #  Do not report this bug to OCC, it has to be investigated
