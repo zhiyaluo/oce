@@ -1,0 +1,1203 @@
+From 9e516481dcbaf52fcf92071e2344ab1ef28caee3 Mon Sep 17 00:00:00 2001
+From: davyw <davy.wouters@gmail.com>
+Date: Sun, 15 Jan 2012 14:06:32 +0100
+Subject: [PATCH 01/12] Fixes ambiguity errors on bcc32 compiler for
+ 'BRepLib_MakeEdge'. ('BRepLib_MakeEdge::operator
+ TopoDS_Edge()' and 'BRepLib_MakeShape::operator
+ TopoDS_Shape')
+
+---
+ src/BRepFill/BRepFill.cxx                 |    8 ++++----
+ src/BRepFill/BRepFill_CompatibleWires.cxx |   10 +++++-----
+ src/BRepFill/BRepFill_Evolved.cxx         |    8 ++++----
+ src/BRepFill/BRepFill_Filling.cxx         |    4 ++--
+ src/BRepFill/BRepFill_NSections.cxx       |    2 +-
+ src/BRepFill/BRepFill_OffsetWire.cxx      |   12 ++++++------
+ src/BRepOffset/BRepOffset_Tool.cxx        |    4 ++--
+ src/BRepTest/BRepTest_ExtremaCommands.cxx |    6 +++---
+ src/ChFi2d/ChFi2d_Builder.cxx             |    2 +-
+ src/ShapeFix/ShapeFix_Wire.cxx            |    2 +-
+ 10 files changed, 29 insertions(+), 29 deletions(-)
+
+From 7f274a38c539dbfee59250287efcc2de556d8264 Mon Sep 17 00:00:00 2001
+From: davyw <davy.wouters@gmail.com>
+Date: Sun, 15 Jan 2012 14:08:55 +0100
+Subject: [PATCH 02/12] Fixes ambiguity errors on bcc32 compiler for
+ 'BRepLib_MakeVertex'. ('BRepLib_MakeVertex::operator
+ TopoDS_Vertex()' and 'BRepLib_MakeShape::operator
+ TopoDS_Shape')
+
+---
+ src/BRepFill/BRepFill_Evolved.cxx       |    4 ++--
+ src/BRepOffset/BRepOffset_Inter2d.cxx   |    8 ++++----
+ src/BRepOffset/BRepOffset_Inter3d.cxx   |    4 ++--
+ src/BRepOffset/BRepOffset_Tool.cxx      |    2 +-
+ src/BRepTest/BRepTest_CurveCommands.cxx |    2 +-
+ src/LocOpe/LocOpe_DPrism.cxx            |   16 ++++++++--------
+ 6 files changed, 18 insertions(+), 18 deletions(-)
+
+From 4376000edfe1304231e8f2cb1fa3421486cd89c8 Mon Sep 17 00:00:00 2001
+From: davyw <davy.wouters@gmail.com>
+Date: Sun, 15 Jan 2012 14:17:20 +0100
+Subject: [PATCH 03/12] Fixes ambiguity errors on bcc32 compiler for
+ 'BRepLib_MakeFace'. ('BRepLib_MakeFace::operator
+ TopoDS_Face()' and 'BRepLib_MakeShape::operator
+ TopoDS_Shape')
+
+---
+ src/BRepFill/BRepFill_Evolved.cxx        |    4 ++--
+ src/BRepOffset/BRepOffset_MakeOffset.cxx |    4 ++--
+ src/BRepOffset/BRepOffset_Tool.cxx       |    2 +-
+ src/ChFi3d/ChFi3d_Builder_2.cxx          |    2 +-
+ 4 files changed, 6 insertions(+), 6 deletions(-)
+
+From 36d4e3f1ea97730aed17680461325e1c4e041eab Mon Sep 17 00:00:00 2001
+From: davyw <davy.wouters@gmail.com>
+Date: Sun, 15 Jan 2012 14:20:07 +0100
+Subject: [PATCH 04/12] Fixes ambiguity errors on bcc32 compiler for
+ 'BRepLib_MakeWire'. ('BRepLib_MakeWire::operator
+ TopoDS_Wire()' and 'BRepLib_MakeShape::operator
+ TopoDS_Shape')
+
+---
+ src/BRepFill/BRepFill_Evolved.cxx         |    4 ++--
+ src/BRepFill/BRepFill_Sweep.cxx           |    2 +-
+ src/BRepFill/BRepFill_TrimShellCorner.cxx |    4 ++--
+ src/BRepOffset/BRepOffset_Tool.cxx        |    4 ++--
+ 4 files changed, 7 insertions(+), 7 deletions(-)
+
+From 7d7ced99f42f124496b4984c37e08451cddbbce1 Mon Sep 17 00:00:00 2001
+From: davyw <davy.wouters@gmail.com>
+Date: Sun, 15 Jan 2012 14:21:33 +0100
+Subject: [PATCH 05/12] Fixes ambiguity errors on bcc32 compiler for
+ 'BRepBuilderAPI_MakeVertex'.
+ ('BRepBuilderAPI_MakeVertex::operator
+ TopoDS_Vertex()' and
+ 'BRepBuilderAPI_MakeShape::operator TopoDS_Shape')
+
+---
+ src/AIS/AIS_Point.cxx                         |    2 +-
+ src/BRepExtrema/BRepExtrema_DistanceSS.cxx    |    6 +++---
+ src/BRepPrimAPI/BRepPrimAPI_MakeHalfSpace.cxx |    2 +-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
+
+From 26e659304bd535645f86c12a8fd50271ccd374ea Mon Sep 17 00:00:00 2001
+From: davyw <davy.wouters@gmail.com>
+Date: Sun, 15 Jan 2012 14:22:41 +0100
+Subject: [PATCH 06/12] Fixes ambiguity errors on bcc32 compiler for
+ 'BRepBuilderAPI_MakeFace'.
+ ('BRepBuilderAPI_MakeFace::operator TopoDS_Face()'
+ and 'BRepBuilderAPI_MakeShape::operator
+ TopoDS_Shape')
+
+---
+ src/BRepMAT2d/BRepMAT2d_Explorer.cxx      |    2 +-
+ src/BRepTest/BRepTest_SurfaceCommands.cxx |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+From fb8cafeef9f0efce80b719bc4feab4b4207434e9 Mon Sep 17 00:00:00 2001
+From: davyw <davy.wouters@gmail.com>
+Date: Sun, 15 Jan 2012 14:23:52 +0100
+Subject: [PATCH 07/12] Fixes ambiguity errors on bcc32 compiler for
+ 'BRepBuilderAPI_MakeEdge'.
+ ('BRepBuilderAPI_MakeEdge::operator TopoDS_Edge()'
+ and 'BRepBuilderAPI_MakeShape::operator
+ TopoDS_Shape')
+
+---
+ src/BRepTest/BRepTest_CurveCommands.cxx |    4 ++--
+ 1 files changed, 2 insertions(+), 2 deletions(-)
+
+From 86fca752b0add3972d8fd388dedc1c849d100113 Mon Sep 17 00:00:00 2001
+From: davyw <davy.wouters@gmail.com>
+Date: Sun, 15 Jan 2012 14:29:13 +0100
+Subject: [PATCH 08/12] Fixes ambiguity errors on bcc32 compiler for
+ 'BRepPrimAPI_MakeBox'.
+ ('BRepPrimAPI_MakeBox::operator TopoDS_Shell()' and
+ 'BRepPrimAPI_MakeShape::operator TopoDS_Shape')
+ ('BRepPrimAPI_MakeBox::operator TopoDS_Solid()' and
+ 'BRepPrimAPI_MakeShape::operator TopoDS_Shape'
+
+---
+ src/VrmlData/VrmlData_Geometry.cxx                 |    2 +-
+ test/BRepAlgoAPI_test/boolean_ops.cpp              |    4 ++--
+ .../Standard_StdAllocator_test.cpp                 |    2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
+
+From abcf0096ca722486a3ced6270e39cf81c70810cf Mon Sep 17 00:00:00 2001
+From: davyw <davy.wouters@gmail.com>
+Date: Mon, 16 Jan 2012 13:42:55 +0100
+Subject: [PATCH 09/12] Resolves a possible bcc32 compiler bug.
+
+For some reason the bcc32 compiler (v6.20 and up) fails to build these
+files and generates an internal compiler error. When language exceptions
+are disabled, this issue is solved.
+---
+ src/OpenGl/OpenGl_attri.cxx      |    5 +++++
+ src/OpenGl/OpenGl_depthcue.cxx   |    5 +++++
+ src/OpenGl/OpenGl_pick.cxx       |    5 +++++
+ src/OpenGl/OpenGl_telem_util.cxx |    5 +++++
+ src/OpenGl/OpenGl_undefined.cxx  |    5 +++++
+ src/OpenGl/OpenGl_view.cxx       |    4 ++++
+ 6 files changed, 29 insertions(+), 0 deletions(-)
+
+From 911d3be1164f4cdc34c406f8a75868963ae8ff04 Mon Sep 17 00:00:00 2001
+From: davyw <davy.wouters@gmail.com>
+Date: Mon, 16 Jan 2012 18:34:07 +0100
+Subject: [PATCH 10/12] Fixed bcc32 compiler option -x- for version 6.40.
+
+From version 6.40 of bcc32 it is no longer allowed to add -x- (Disable exceptions)
+options with a pragma directive. So now this option is set as a compiler
+option through cmake.
+---
+ adm/cmake/BuildToolkit.cmake           |   18 ++++++++++++++++++
+ src/OpenGl/OpenGl_attri.cxx            |    7 ++++---
+ src/OpenGl/OpenGl_depthcue.cxx         |    5 +++--
+ src/OpenGl/OpenGl_pick.cxx             |    7 ++++---
+ src/OpenGl/OpenGl_telem_util.cxx       |    7 ++++---
+ src/OpenGl/OpenGl_undefined.cxx        |    7 ++++---
+ src/OpenGl/OpenGl_view.cxx             |    7 ++++---
+ src/ShapeFix/ShapeFix_ComposeShell.cxx |    3 ++-
+ 8 files changed, 43 insertions(+), 18 deletions(-)
+
+From a9d890c7d3e6c5b2876adfa65c281b7777fe572b Mon Sep 17 00:00:00 2001
+From: davyw <davy.wouters@gmail.com>
+Date: Mon, 16 Jan 2012 22:32:53 +0100
+Subject: [PATCH 11/12] Added additional borland support for cmake build
+ system.
+
+---
+ CMakeLists.txt               |   80 +++++++++++++++++++++++++++++++++++++++---
+ adm/cmake/BuildToolkit.cmake |   21 +++++++++++
+ 2 files changed, 96 insertions(+), 5 deletions(-)
+
+From 9c413090539903003944a095bcd13b99c0e448c2 Mon Sep 17 00:00:00 2001
+From: davyw <davy.wouters@gmail.com>
+Date: Tue, 17 Jan 2012 22:36:41 +0100
+Subject: [PATCH 12/12] Moved bcc32 specific scripts for TKService and
+ TKOpenGl to their own CMakeLists.txt.
+
+---
+ adm/cmake/BuildToolkit.cmake       |   31 -------------------------------
+ adm/cmake/TKOpenGl/CMakeLists.txt  |   15 +++++++++++++++
+ adm/cmake/TKService/CMakeLists.txt |   10 ++++++++++
+ 3 files changed, 25 insertions(+), 31 deletions(-)
+
+Index: oce/CMakeLists.txt
+===================================================================
+--- oce.orig/CMakeLists.txt
++++ oce/CMakeLists.txt
+@@ -73,6 +73,10 @@ IF(MSVC)
+ 	OPTION_WITH_DEFAULT( ${PROJECT_NAME}_USE_BUNDLE "Use OCE Windows Bundle" OFF )
+ ENDIF(MSVC)
+ 
++IF(BORLAND)
++	OPTION_WITH_DEFAULT( ${PROJECT_NAME}_INSTALL_TDS_FILES "Instal TDS files (debug informations)" ON )
++ENDIF(BORLAND)
++
+ IF(${PROJECT_NAME}_USE_BUNDLE)
+ 	OPTION_WITH_DEFAULT( ${PROJECT_NAME}_BUNDLE_AUTOINSTALL "Autoinstall bundle DLLs" ON )
+ 	MARK_AS_ADVANCED(${PROJECT_NAME}_BUNDLE_AUTOINSTALL)
+@@ -115,11 +119,11 @@ MARK_AS_ADVANCED(${PROJECT_NAME}_RPATH_F
+ # In MSVC it is not desirable to have it ON by default, since users must 
+ # compile/use the OCE debug libraries to build it's own programs in DEBUG mode.
+ # DEB should be enabled by developers only, in this case
+-IF (MSVC AND CMAKE_CONFIGURATION_TYPES)
++IF ((MSVC OR BORLAND) AND CMAKE_CONFIGURATION_TYPES)
+   SET (DEB_DEFAULT "OFF")
+ ELSE ()
+    SET (DEB_DEFAULT "ON")
+-ENDIF (MSVC AND CMAKE_CONFIGURATION_TYPES)
++ENDIF ((MSVC OR BORLAND) AND CMAKE_CONFIGURATION_TYPES)
+ 
+ OPTION_WITH_DEFAULT( ${PROJECT_NAME}_ENABLE_DEB_FLAG "Enables DEB define in debug configuration" ${DEB_DEFAULT} )
+ MARK_AS_ADVANCED(${PROJECT_NAME}_ENABLE_DEB_FLAG)
+@@ -184,7 +188,7 @@ SET_DIRECTORY_PROPERTIES(PROPERTIES COMP
+ SET_DIRECTORY_PROPERTIES(PROPERTIES COMPILE_DEFINITIONS_RELWITHDEBINFO  NDEBUG)
+ 
+ IF(${PROJECT_NAME}_ENABLE_DEB_FLAG)
+-  SET_DIRECTORY_PROPERTIES(PROPERTIES COMPILE_DEFINITIONS_DEBUG "DEB;_DEBUG")
++  SET_DIRECTORY_PROPERTIES(PROPERTIES COMPILE_DEFINITIONS_DEBUG "DEB=1;_DEBUG")
+ ELSE ()
+   SET_DIRECTORY_PROPERTIES(PROPERTIES COMPILE_DEFINITIONS_DEBUG "_DEBUG")
+ ENDIF (${PROJECT_NAME}_ENABLE_DEB_FLAG)
+@@ -635,6 +639,65 @@ IF (NOT WIN32)
+ ENDIF(NOT WIN32)
+ 
+ #######################################################
++# Check compiler version - Determine Borland compiler #
++#######################################################
++IF(BORLAND AND NOT BORLAND_VERSION)
++	IF(EXISTS ${CMAKE_CXX_COMPILER})
++		EXECUTE_PROCESS(
++			COMMAND ${CMAKE_CXX_COMPILER}  /?
++			OUTPUT_VARIABLE _output
++			ERROR_QUIET
++		)
++		
++		string(REGEX MATCH "Embarcadero C[+][+] [0-9]+.[0-9]+"
++			_borland_version "${_output}")
++			
++		if(_borland_version)
++			string(REGEX MATCHALL "[0-9]+" _borland_version_list "${_borland_version}")
++			list(GET _borland_version_list 0 _borland_major)
++			list(GET _borland_version_list 1 _borland_minor)
++		else()
++			string(REGEX MATCH "Borland C[+][+] [0-9]+].[0-9]+"
++				_borland_version "${_output}")
++			
++			if(_borland_version)
++				string(REGEX MATCHALL "[0-9]+" _borland_version_list "${_borland_version}")
++				list(GET _borland_version_list 0 _borland_major)
++				list(GET _borland_version_list 1 _borland_minor)
++			endif()
++		endif()
++			
++		# XE2 compiler?
++		if("v${_borland_major}.${_borland_minor}" STREQUAL "v6.41")
++			SET(BORLAND_VERSION "bcc32 v6.41 (RS XE2)")
++			SET(BORLAND_VERSION_RS_XE2 1)
++		# XE compiler?
++		elseif("v${_borland_major}.${_borland_minor}" STREQUAL "v6.30")
++			SET(BORLAND_VERSION "bcc32 v6.30 (RS XE)")
++			SET(BORLAND_VERSION_RS_XE 1)
++		# 2010 compiler?
++		elseif("v${_borland_major}.${_borland_minor}" STREQUAL "v6.20")
++			SET(BORLAND_VERSION "bcc32 v6.20 (RS 2010)")
++			SET(BORLAND_VERSION_RS_2010 1)
++		# TODO: 2009 compiler?
++		# TODO: 2007 compiler?
++		# 2006 compiler?
++		elseif("v${_borland_major}.${_borland_minor}" STREQUAL "v5.82")
++			SET(BORLAND_VERSION "bcc32 v5.82 (BDS 2006)")
++			SET(BORLAND_VERSION_BDS_2006 1)
++		#TODO: Older compilers?
++		else()
++			SET(BORLAND_VERSION "Unknown")
++		endif()
++		
++		UNSET(_output)
++		UNSET(_borland_version)
++		UNSET(_borland_major)
++		UNSET(_borland_minor)
++	ENDIF()
++ENDIF()
++
++#######################################################
+ # Check platforms - Define specific compilation flags #
+ #######################################################
+ IF(UNIX)
+@@ -653,6 +716,11 @@ ELSE(UNIX)
+ 		######### Windows ###########
+ 		MESSAGE(STATUS "Windows system detected")
+ 		ADD_DEFINITIONS(-DWNT -DWIN32 -D_WINDOWS -DCSFDB -DHAVE_CONFIG_H )
++		######### Borland ###########
++		IF(BORLAND)
++			MESSAGE(STATUS "Borland compiler detected: ${BORLAND_VERSION}")
++			ADD_DEFINITIONS(-DHAVE_IOS )
++		ENDIF(BORLAND)
+ 		SET(PLATFORM win)
+ 	ELSE(WIN32)
+ 		MESSAGE(STATUS "Unknown platform")
+@@ -686,9 +754,11 @@ IF(WIN32)
+ 	IF(MSVC) # The compiler used is MSVC
+ 		MESSAGE(STATUS "Found MSVC compiler: ${MSVC} ${MSVC_VERSION}")
+ 		SET(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin/)
+-	ELSE(MSVC)
++	ELSEIF (BORLAND) # The compiler used is BORLAND
++		SET(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/win${BIT}/bin/${CMAKE_BUILD_TYPE})
++	ELSE()
+ 		SET(LIBRARY_OUTPUT_PATH win${BIT}/bin/${CMAKE_BUILD_TYPE})
+-	ENDIF(MSVC)
++	ENDIF()
+ 	SET(EXECUTABLE_OUTPUT_PATH ${LIBRARY_OUTPUT_PATH})
+ ELSE(WIN32)
+ 	SET(LIBRARY_OUTPUT_PATH ${PLATFORM}/${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_BUILD_TYPE}-${BIT})
+Index: oce/adm/cmake/BuildToolkit.cmake
+===================================================================
+--- oce.orig/adm/cmake/BuildToolkit.cmake
++++ oce/adm/cmake/BuildToolkit.cmake
+@@ -181,3 +181,11 @@ IF(MSVC AND ${PROJECT_NAME}_INSTALL_PDB_
+ 		INSTALL(FILES ${LIBRARY_OUTPUT_PATH}/${TOOLKIT}${CMAKE_DEBUG_POSTFIX}.pdb DESTINATION ${TOOLKIT_INSTALL_LIB_DIR} CONFIGURATIONS Debug)
+ 	ENDIF (CMAKE_CONFIGURATION_TYPES)
+ ENDIF(MSVC AND ${PROJECT_NAME}_INSTALL_PDB_FILES )
++
++IF(BORLAND AND ${PROJECT_NAME}_INSTALL_TDS_FILES )
++	IF (CMAKE_CONFIGURATION_TYPES)
++		INSTALL(FILES ${LIBRARY_OUTPUT_PATH}/Debug/${TOOLKIT}.tds DESTINATION ${TOOLKIT_INSTALL_BIN_DIR} CONFIGURATIONS Debug)
++	ELSE (CMAKE_CONFIGURATION_TYPES)
++		INSTALL(FILES ${LIBRARY_OUTPUT_PATH}/${TOOLKIT}.tds DESTINATION ${TOOLKIT_INSTALL_BIN_DIR} CONFIGURATIONS Debug)
++	ENDIF (CMAKE_CONFIGURATION_TYPES)
++ENDIF(BORLAND AND ${PROJECT_NAME}_INSTALL_TDS_FILES )
+Index: oce/adm/cmake/TKOpenGl/CMakeLists.txt
+===================================================================
+--- oce.orig/adm/cmake/TKOpenGl/CMakeLists.txt
++++ oce/adm/cmake/TKOpenGl/CMakeLists.txt
+@@ -38,3 +38,18 @@ ENDIF()
+ 
+ INCLUDE(../BuildToolkit.cmake)
+ 
++IF(BORLAND AND BORLAND_VERSION_RS_XE2)
++	# For bcc32 compiler v6.40 and up -x- compiler option must be passed as a compiler option
++	# in stead of #pragma option -x- in code.
++	foreach(source_file ${TOOLKIT_SOURCE_FILES} )
++		if((source_file MATCHES "OpenGl_attri.cxx") OR
++		   (source_file MATCHES "OpenGl_depthcue.cxx") OR
++		   (source_file MATCHES "OpenGl_pick.cxx") OR
++		   (source_file MATCHES "OpenGl_telem_util.cxx") OR
++		   (source_file MATCHES "OpenGl_undefined.cxx") OR
++		   (source_file MATCHES "OpenGl_view.cxx"))
++			MESSAGE(STATUS "(bcc32) Disabling exceptions for ${source_file}.")
++			set_source_files_properties("${source_file}" PROPERTIES COMPILE_FLAGS "-x-")
++		endif()
++	endforeach(source_file)
++ENDIF(BORLAND AND BORLAND_VERSION_RS_XE2)
+Index: oce/adm/cmake/TKService/CMakeLists.txt
+===================================================================
+--- oce.orig/adm/cmake/TKService/CMakeLists.txt
++++ oce/adm/cmake/TKService/CMakeLists.txt
+@@ -41,3 +41,13 @@ ENDIF(FREEIMAGE_LIBRARY AND ${PROJECT_NA
+ 
+ INCLUDE(../BuildToolkit.cmake)
+ 
++IF(BORLAND)
++	# cgmobin.c, cgmochar.c and cgmotext.c need __STDC__=1 define in order to build for bcc32.
++	foreach(source_file ${TOOLKIT_SOURCE_FILES} )
++		if ((source_file MATCHES "cgmobin.c") OR
++			(source_file MATCHES "cgmochar.c") OR
++			(source_file MATCHES "cgmotext.c"))
++			set_source_files_properties("${source_file}" PROPERTIES COMPILE_DEFINITIONS "__STDC__=1")
++		endif()
++	endforeach(source_file)
++ENDIF(BORLAND)
+Index: oce/src/AIS/AIS_Point.cxx
+===================================================================
+--- oce.orig/src/AIS/AIS_Point.cxx
++++ oce/src/AIS/AIS_Point.cxx
+@@ -149,7 +149,7 @@ void AIS_Point::UnsetColor()
+ TopoDS_Vertex AIS_Point::Vertex() const
+ {
+   gp_Pnt P = myComponent->Pnt();
+-  return BRepBuilderAPI_MakeVertex(P);
++  return (TopoDS_Vertex) BRepBuilderAPI_MakeVertex(P);
+ }
+ 
+ //=======================================================================
+Index: oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
+===================================================================
+--- oce.orig/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
++++ oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
+@@ -436,7 +436,7 @@ static void PERFORM_C0(const TopoDS_Edge
+       {
+         const Standard_Real aParameter = arrInter(i);
+         const gp_Pnt aPnt = aAdaptorCurve.Value(aParameter);
+-        const TopoDS_Vertex V1 = BRepBuilderAPI_MakeVertex(aPnt);
++		const TopoDS_Vertex V1 = (const TopoDS_Vertex) BRepBuilderAPI_MakeVertex(aPnt);
+ 
+         BRepExtrema_ExtPC Ext(V1,Eother);
+         const Standard_Integer NbExtrema = Ext.IsDone()? Ext.NbExt() : 0;
+@@ -1036,7 +1036,7 @@ void BRepExtrema_DistanceSS::Perform(con
+       {
+         const Standard_Real aParameter = arrInter(i);
+         gp_Pnt aPnt = aAdaptorCurve.Value(aParameter);
+-        TopoDS_Vertex V1 = BRepBuilderAPI_MakeVertex(aPnt);
++	    TopoDS_Vertex V1 = (TopoDS_Vertex) BRepBuilderAPI_MakeVertex(aPnt);
+ 
+         BRepExtrema_ExtPF ExtPF(V1,S2);
+         const Standard_Integer NbExtrema = ExtPF.IsDone()? ExtPF.NbExt() : 0;
+@@ -1181,7 +1181,7 @@ void BRepExtrema_DistanceSS::Perform(con
+       {
+         const Standard_Real aParameter = arrInter(i);
+         gp_Pnt aPnt = aAdaptorCurve.Value(aParameter);
+-        TopoDS_Vertex V1 = BRepBuilderAPI_MakeVertex(aPnt);
++		TopoDS_Vertex V1 = (TopoDS_Vertex) BRepBuilderAPI_MakeVertex(aPnt);
+ 
+         BRepExtrema_ExtPF ExtPF(V1,S1);
+         const Standard_Integer NbExtrema = ExtPF.IsDone()? ExtPF.NbExt() : 0;
+Index: oce/src/BRepFill/BRepFill.cxx
+===================================================================
+--- oce.orig/src/BRepFill/BRepFill.cxx
++++ oce/src/BRepFill/BRepFill.cxx
+@@ -173,14 +173,14 @@ static void TrimEdge (const TopoDS_Edge&
+     for (j=1; j<=ndec; j++) {
+       // morceau d'edge  
+       m1 = (CutValues.Value(j)-t0)*(last-first)/(t1-t0)+first;
+-      TopoDS_Edge CutE = BRepLib_MakeEdge(C,V0,Vbid,m0,m1);
++      TopoDS_Edge CutE = (TopoDS_Edge) BRepLib_MakeEdge(C,V0,Vbid,m0,m1);
+       CutE.Orientation(CurrentOrient);
+       S.Append(CutE);
+       m0 = m1;
+       V0 = TopExp::LastVertex(CutE);
+       if (j==ndec) {
+ 	// dernier morceau
+-	TopoDS_Edge LastE = BRepLib_MakeEdge(C,V0,Vl,m0,last);
++	TopoDS_Edge LastE = (TopoDS_Edge) BRepLib_MakeEdge(C,V0,Vl,m0,last);
+ 	LastE.Orientation(CurrentOrient);
+ 	S.Append(LastE);
+       }
+@@ -193,14 +193,14 @@ static void TrimEdge (const TopoDS_Edge&
+     for (j=ndec; j>=1; j--) {
+       // morceau d'edge  
+       m0 = (CutValues.Value(j)-t0)*(last-first)/(t1-t0)+first;
+-      TopoDS_Edge CutE = BRepLib_MakeEdge(C,Vbid,V1,m0,m1);
++      TopoDS_Edge CutE = (TopoDS_Edge) BRepLib_MakeEdge(C,Vbid,V1,m0,m1);
+       CutE.Orientation(CurrentOrient);
+       S.Append(CutE);
+       m1 = m0;
+       V1 = TopExp::FirstVertex(CutE);
+       if (j==1) {
+ 	// dernier morceau
+-	TopoDS_Edge LastE = BRepLib_MakeEdge(C,Vf,V1,first,m1);
++	TopoDS_Edge LastE = (TopoDS_Edge) BRepLib_MakeEdge(C,Vf,V1,first,m1);
+ 	LastE.Orientation(CurrentOrient);
+ 	S.Append(LastE);
+       }
+Index: oce/src/BRepFill/BRepFill_CompatibleWires.cxx
+===================================================================
+--- oce.orig/src/BRepFill/BRepFill_CompatibleWires.cxx
++++ oce/src/BRepFill/BRepFill_CompatibleWires.cxx
+@@ -248,14 +248,14 @@ static void TrimEdge (const TopoDS_Edge&
+     for (j=1; j<=ndec; j++) {
+       // morceau d'edge  
+       m1 = (CutValues.Value(j)-t0)*(last-first)/(t1-t0)+first;
+-      TopoDS_Edge CutE = BRepLib_MakeEdge(C,V0,Vbid,m0,m1);
++      TopoDS_Edge CutE = (TopoDS_Edge) BRepLib_MakeEdge(C,V0,Vbid,m0,m1);
+       CutE.Orientation(CurrentOrient);
+       S.Append(CutE);
+       m0 = m1;
+       V0 = TopExp::LastVertex(CutE);
+       if (j==ndec) {
+ 	// dernier morceau
+-	TopoDS_Edge LastE = BRepLib_MakeEdge(C,V0,Vl,m0,last);
++	TopoDS_Edge LastE = (TopoDS_Edge) BRepLib_MakeEdge(C,V0,Vl,m0,last);
+ 	LastE.Orientation(CurrentOrient);
+ 	S.Append(LastE);
+       }
+@@ -268,14 +268,14 @@ static void TrimEdge (const TopoDS_Edge&
+     for (j=ndec; j>=1; j--) {
+       // morceau d'edge  
+       m0 = (CutValues.Value(j)-t0)*(last-first)/(t1-t0)+first;
+-      TopoDS_Edge CutE = BRepLib_MakeEdge(C,Vbid,V1,m0,m1);
++      TopoDS_Edge CutE = (TopoDS_Edge) BRepLib_MakeEdge(C,Vbid,V1,m0,m1);
+       CutE.Orientation(CurrentOrient);
+       S.Append(CutE);
+       m1 = m0;
+       V1 = TopExp::FirstVertex(CutE);
+       if (j==1) {
+ 	// dernier morceau
+-	TopoDS_Edge LastE = BRepLib_MakeEdge(C,Vf,V1,first,m1);
++	TopoDS_Edge LastE = (TopoDS_Edge) BRepLib_MakeEdge(C,Vf,V1,first,m1);
+ 	LastE.Orientation(CurrentOrient);
+ 	S.Append(LastE);
+       }
+@@ -373,7 +373,7 @@ static Standard_Boolean EdgeIntersectOnW
+   Standard_Real diag = BP1.Distance(BP2);
+   Standard_Real dernierparam = diag;
+   BRepLib_MakeEdge ME(droite,0.,dernierparam);
+-  TopoDS_Edge ECur = BRepLib_MakeEdge(droite,0.,P1.Distance(P2));
++  TopoDS_Edge ECur = (TopoDS_Edge) BRepLib_MakeEdge(droite,0.,P1.Distance(P2));
+ 
+   // calcul de l'intersection par BRepExtrema (point de distance mini)
+   BRepExtrema_DistShapeShape DSS(ME.Edge(),W);
+Index: oce/src/BRepFill/BRepFill_Evolved.cxx
+===================================================================
+--- oce.orig/src/BRepFill/BRepFill_Evolved.cxx
++++ oce/src/BRepFill/BRepFill_Evolved.cxx
+@@ -361,7 +361,7 @@ void BRepFill_Evolved::Perform(const Top
+ 			       const Standard_Boolean  Solid)
+ {
+   mySpineType = Standard_False;
+-  TopoDS_Face aFace = BRepLib_MakeFace(Spine,Standard_True);
++  TopoDS_Face aFace = (TopoDS_Face) BRepLib_MakeFace(Spine,Standard_True);
+   PrivatePerform( aFace, Profile, AxeProf, Join, Solid);
+ }
+ 
+@@ -2045,7 +2045,7 @@ void BRepFill_Evolved::AddTopAndBottom(B
+     BRepAlgo_Loop Loop;
+     // Construction des supports.
+     gp_Pln S (0.,0.,1.,- Altitud(V[i]));
+-    TopoDS_Face F = BRepLib_MakeFace(S);
++    TopoDS_Face F = (TopoDS_Face) BRepLib_MakeFace(S);
+     Loop.Init(F);
+ 
+     TopExp_Explorer     ExpSpine(mySpine,TopAbs_EDGE);
+@@ -2559,7 +2559,7 @@ static void AddDegeneratedEdge(TopoDS_Fa
+ 	  Handle(Geom2d_Line) C2d = new Geom2d_Line(PrevP,gp_Dir2d(V));
+ 	  Standard_Real f = 0, l = PrevP.Distance(P1);
+ 	  Handle(Geom2d_TrimmedCurve) CT = new Geom2d_TrimmedCurve(C2d,f,l);
+-	  TopoDS_Edge NE = BRepLib_MakeEdge(C2d,S);
++	  TopoDS_Edge NE = (TopoDS_Edge) BRepLib_MakeEdge(C2d,S);
+ 	  B.Degenerated(NE,Standard_True);
+ 	  B.Add(NE,V1.Oriented(TopAbs_FORWARD));
+ 	  B.Add(NE,V1.Oriented(TopAbs_REVERSED));
+@@ -2578,7 +2578,7 @@ static void AddDegeneratedEdge(TopoDS_Fa
+ 	Handle(Geom2d_Line) C2d = new Geom2d_Line(P2,gp_Dir2d(V));
+ 	Standard_Real f = 0, l = P2.Distance(PF);
+ 	Handle(Geom2d_TrimmedCurve) CT = new Geom2d_TrimmedCurve(C2d,f,l);
+-	TopoDS_Edge NE = BRepLib_MakeEdge(C2d,S);
++	TopoDS_Edge NE = (TopoDS_Edge) BRepLib_MakeEdge(C2d,S);
+ 	B.Degenerated(NE,Standard_True);
+ 	B.Add(NE,VF.Oriented(TopAbs_FORWARD));
+ 	B.Add(NE,VF.Oriented(TopAbs_REVERSED));
+@@ -2915,8 +2915,8 @@ static TopAbs_Orientation Relative (cons
+   }
+   Commun = Standard_True;
+ 
+-  TopoDS_Wire WW1 = BRepLib_MakeWire(E1);
+-  TopoDS_Wire WW2 = BRepLib_MakeWire(E2);
++  TopoDS_Wire WW1 = (TopoDS_Wire) BRepLib_MakeWire(E1);
++  TopoDS_Wire WW2 = (TopoDS_Wire) BRepLib_MakeWire(E2);
+   Standard_Real Tol = BRepFill_Confusion();
+   if (Side(WW1,Tol) < 4 && Side(WW2,Tol) < 4) // les deux a gauche
+     return TopAbs_FORWARD;
+@@ -3166,7 +3166,7 @@ void CutEdgeProf (const TopoDS_Edge&
+ 	
+ 	VV = BRepLib_MakeVertex( C->Value(Param));
+ 	
+-	TopoDS_Edge EE = BRepLib_MakeEdge(C,Vf,VV);
++	TopoDS_Edge EE = (TopoDS_Edge) BRepLib_MakeEdge(C,Vf,VV);
+ 	EE.Orientation(E.Orientation());
+ 	if ( EE.Orientation() == TopAbs_FORWARD)
+ 	  Cuts.Append(EE);
+@@ -3180,7 +3180,7 @@ void CutEdgeProf (const TopoDS_Edge&
+     }
+   }
+ 
+-  TopoDS_Edge EE = BRepLib_MakeEdge(C,Vf,Vl);
++  TopoDS_Edge EE = (TopoDS_Edge) BRepLib_MakeEdge(C,Vf,Vl);
+   EE.Orientation(E.Orientation());
+   if ( EE.Orientation() == TopAbs_FORWARD)
+     Cuts.Append(EE);
+@@ -3225,8 +3225,8 @@ void CutEdge (const TopoDS_Edge& E,
+     gp_Pnt2d P1 = CT2d->Value(m1);
+     gp_Pnt2d P2 = CT2d->Value(m2);
+ 
+-    TopoDS_Vertex VL1 = BRepLib_MakeVertex(gp_Pnt(P1.X(), P1.Y(), 0.));
+-    TopoDS_Vertex VL2 = BRepLib_MakeVertex(gp_Pnt(P2.X(), P2.Y(), 0.));
++    TopoDS_Vertex VL1 = (TopoDS_Vertex) BRepLib_MakeVertex(gp_Pnt(P1.X(), P1.Y(), 0.));
++    TopoDS_Vertex VL2 = (TopoDS_Vertex) BRepLib_MakeVertex(gp_Pnt(P2.X(), P2.Y(), 0.));
+     TopoDS_Shape aLocalShape1 = E.EmptyCopied();
+     TopoDS_Shape aLocalShape2 = E.EmptyCopied();
+     TopoDS_Shape aLocalShape3 = E.EmptyCopied();
+Index: oce/src/BRepFill/BRepFill_Filling.cxx
+===================================================================
+--- oce.orig/src/BRepFill/BRepFill_Filling.cxx
++++ oce/src/BRepFill/BRepFill_Filling.cxx
+@@ -520,7 +520,7 @@ void BRepFill_Filling::Build()
+ 	  Points(1) = gp_Pnt2d( U1, V1 );
+ 	  Points(2) = gp_Pnt2d( U2, V2 );
+ 	  Handle( Geom2d_BezierCurve ) Line2d = new Geom2d_BezierCurve( Points );
+-	  TopoDS_Edge E = BRepLib_MakeEdge( Line2d, CurSurface, Line2d->FirstParameter(), Line2d->LastParameter() );
++	  TopoDS_Edge E = (TopoDS_Edge) BRepLib_MakeEdge( Line2d, CurSurface, Line2d->FirstParameter(), Line2d->LastParameter() );
+ 	  Add( E, CurFace, myFreeConstraints(j).myOrder );
+ 	  PntSeq.Remove( i, i+1 );
+ 	  break;
+@@ -622,7 +622,7 @@ void BRepFill_Filling::Build()
+       Points(1) = gp_Pnt2d( U1, V1 );
+       Points(2) = gp_Pnt2d( U2, V2 );
+       Handle( Geom2d_BezierCurve ) Line2d = new Geom2d_BezierCurve( Points );
+-      TopoDS_Edge E = BRepLib_MakeEdge( Line2d, Surface, Line2d->FirstParameter(), Line2d->LastParameter() );
++      TopoDS_Edge E = (TopoDS_Edge) BRepLib_MakeEdge( Line2d, Surface, Line2d->FirstParameter(), Line2d->LastParameter() );
+       
+       B.UpdateVertex( TopExp::FirstVertex(E), dmax );
+       B.UpdateVertex( TopExp::LastVertex(E), dmax );
+Index: oce/src/BRepFill/BRepFill_NSections.cxx
+===================================================================
+--- oce.orig/src/BRepFill/BRepFill_NSections.cxx
++++ oce/src/BRepFill/BRepFill_NSections.cxx
+@@ -812,7 +812,7 @@ void BRepFill_NSections::Init(const TCol
+       = Handle(Geom_BSplineCurve)::DownCast(myLaws->Value(ii)->BSplineSurface()->VIso(V));
+     Standard_Real first = Curve ->FirstParameter(),
+     last = Curve ->LastParameter();
+-    TopoDS_Edge E = BRepLib_MakeEdge(Curve,first,last);
++    TopoDS_Edge E = (TopoDS_Edge) BRepLib_MakeEdge(Curve,first,last);
+     MW.Add(E);
+   }
+   TopAbs_Orientation Orien = TopAbs_FORWARD;
+Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
+===================================================================
+--- oce.orig/src/BRepFill/BRepFill_OffsetWire.cxx
++++ oce/src/BRepFill/BRepFill_OffsetWire.cxx
+@@ -521,7 +521,7 @@ void BRepFill_OffsetWire::Perform (const
+ 	}
+ 	else {
+ 	  //cout << " 2 points " << endl;
+-	  TopoDS_Edge newE = BRepLib_MakeEdge(Vf, Vl);
++	  TopoDS_Edge newE = (TopoDS_Edge) BRepLib_MakeEdge(Vf, Vl);
+ 	  aL.Append(newE);
+ 	}
+ 	//Update myMapSpine
+@@ -1458,7 +1458,7 @@ void BRepFill_OffsetWire::FixHoles()
+ 	      if (IsFirstF) theEdge.Reverse();
+ 	      BB.Add( Base, theEdge );
+ 	      // Creating new edge from theVertex to Vf
+-	      TopoDS_Edge NewEdge = BRepLib_MakeEdge( theVertex, Vf );
++	      TopoDS_Edge NewEdge = (TopoDS_Edge) BRepLib_MakeEdge( theVertex, Vf );
+ 	      BB.Add( Base, NewEdge );
+ 	    }
+ 	}
+@@ -1496,7 +1496,7 @@ void BRepFill_OffsetWire::FixHoles()
+ 	      if (!IsFirstL) theEdge.Reverse();
+ 	      BB.Add( Base, theEdge );
+ 	      // Creating new edge from Vl to theVertex
+-	      TopoDS_Edge NewEdge = BRepLib_MakeEdge( Vl, theVertex );
++	      TopoDS_Edge NewEdge = (TopoDS_Edge) BRepLib_MakeEdge( Vl, theVertex );
+ 	      BB.Add( Base, NewEdge );
+ 	    }
+ 	}
+@@ -1525,7 +1525,7 @@ void BRepFill_OffsetWire::FixHoles()
+ 	  else if (Dist <= MaxTol)
+ 	    {
+ 	      // Creating new edge from Vl to Vf
+-	      TopoDS_Edge NewEdge = BRepLib_MakeEdge( Vf, Vl );
++	      TopoDS_Edge NewEdge = (TopoDS_Edge) BRepLib_MakeEdge( Vf, Vl );
+ 	      BB.Add( Base, NewEdge );
+ 	      Base.Closed( Standard_True );
+ 	    }
+@@ -1799,7 +1799,7 @@ void MakeCircle (const TopoDS_Edge&
+     = new  Geom2d_Circle(Axis, Abs(Offset), Offset < 0.);
+ 
+   // Bind the edges in my Map.
+-  TopoDS_Edge OE = BRepLib_MakeEdge(Circ, RefPlane);
++  TopoDS_Edge OE = (TopoDS_Edge) BRepLib_MakeEdge(Circ, RefPlane);
+   TopTools_ListOfShape LL;
+ 
+   LL.Append(OE);
+@@ -1875,7 +1875,7 @@ void MakeOffset (const TopoDS_Edge&
+ 
+   // Bind the edges in my Map.
+   if (!G2dOC.IsNull()) {
+-    TopoDS_Edge OE = BRepLib_MakeEdge(G2dOC, RefPlane);
++    TopoDS_Edge OE = (TopoDS_Edge) BRepLib_MakeEdge(G2dOC, RefPlane);
+     OE.Orientation(E.Orientation());
+     TopTools_ListOfShape LL;
+     LL.Append(OE);
+Index: oce/src/BRepFill/BRepFill_Sweep.cxx
+===================================================================
+--- oce.orig/src/BRepFill/BRepFill_Sweep.cxx
++++ oce/src/BRepFill/BRepFill_Sweep.cxx
+@@ -474,7 +474,7 @@ static void BuildFace(const Handle(Geom_
+ 	  TE3->Tolerance( Precision::Confusion() );
+ 	  TE4->Tolerance( Precision::Confusion() );
+ 	  
+-	  TopoDS_Wire theWire = BRepLib_MakeWire( E1, E2, E3, E4 );
++	  TopoDS_Wire theWire = (TopoDS_Wire) BRepLib_MakeWire( E1, E2, E3, E4 );
+ 	  Standard_Integer NbPoints = NumberOfPoles( theWire );
+ 	  if (NbPoints <= 100) //limitation for CPU
+ 	    {
+Index: oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
+===================================================================
+--- oce.orig/src/BRepFill/BRepFill_TrimShellCorner.cxx
++++ oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
+@@ -2132,7 +2132,7 @@ static Standard_Boolean ChooseSection(co
+       if (!explo.More())
+ 	break;
+       TopoDS_Edge FirstEdge = TopoDS::Edge( explo.Current() );
+-      TopoDS_Wire NewWire = BRepLib_MakeWire( FirstEdge );
++      TopoDS_Wire NewWire = (TopoDS_Wire) BRepLib_MakeWire( FirstEdge );
+       B.Remove( OldComp, FirstEdge );
+       if (NewWire.Closed())
+ 	{
+@@ -2180,7 +2180,7 @@ static Standard_Boolean ChooseSection(co
+ 	      Standard_Real MinDeviation = RealLast();
+ 	      for (j = 1; j <= Edges.Length(); j++)
+ 		{
+-		  TopoDS_Wire aWire = BRepLib_MakeWire( NewWire, TopoDS::Edge(Edges(j)) );
++		  TopoDS_Wire aWire = (TopoDS_Wire) BRepLib_MakeWire( NewWire, TopoDS::Edge(Edges(j)) );
+ 		  gp_Pln aPlane;
+ 		  Standard_Boolean issing;
+ 		  Standard_Real Deviation = ComputeAveragePlaneAndMaxDeviation( aWire, aPlane, issing );
+Index: oce/src/BRepMAT2d/BRepMAT2d_Explorer.cxx
+===================================================================
+--- oce.orig/src/BRepMAT2d/BRepMAT2d_Explorer.cxx
++++ oce/src/BRepMAT2d/BRepMAT2d_Explorer.cxx
+@@ -71,7 +71,7 @@ void BRepMAT2d_Explorer::Perform(const T
+   TopExp_Explorer Exp (F,TopAbs_WIRE);
+ //  Modified by Sergey KHROMOV - Tue Nov 26 16:10:37 2002 Begin
+   Handle(Geom_Surface) aSurf = BRep_Tool::Surface(F);
+-  TopoDS_Face          aNewF = BRepBuilderAPI_MakeFace(aSurf, Precision::Confusion());
++  TopoDS_Face          aNewF = (TopoDS_Face) BRepBuilderAPI_MakeFace(aSurf, Precision::Confusion());
+ 
+   while (Exp.More()) {
+     Add (TopoDS::Wire (Exp.Current()),F, aNewF);
+Index: oce/src/BRepOffset/BRepOffset_Inter2d.cxx
+===================================================================
+--- oce.orig/src/BRepOffset/BRepOffset_Inter2d.cxx
++++ oce/src/BRepOffset/BRepOffset_Inter2d.cxx
+@@ -358,7 +358,7 @@ static void EdgeInter(const TopoDS_Face&
+ 	    }
+ 	  
+ 	  gp_Pnt P = ResPoints(i); //ponc1.Value();
+-	  TopoDS_Vertex aNewVertex = BRepLib_MakeVertex(P);
++	  TopoDS_Vertex aNewVertex = (TopoDS_Vertex) BRepLib_MakeVertex(P);
+ 	  B.UpdateVertex( aNewVertex, aT1, E1, Tol );
+ 	  B.UpdateVertex( aNewVertex, aT2, E2, Tol );
+ 	  gp_Pnt P1 = CE1.Value(aT1);
+@@ -439,7 +439,7 @@ static void EdgeInter(const TopoDS_Face&
+       gp_Pnt P2 = BRep_Tool::Pnt(V2[k]);
+       Standard_Real Dist = P1.Distance(P2); 
+       if (Dist < TolConf) {
+-	TopoDS_Vertex V = BRepLib_MakeVertex(P1);
++	TopoDS_Vertex V = (TopoDS_Vertex) BRepLib_MakeVertex(P1);
+ 	U1 = (j == 0) ? f[1] : l[1];
+ 	U2 = (k == 0) ? f[2] : l[2];
+ 	TopoDS_Shape aLocalShape = V.Oriented(TopAbs_INTERNAL);
+@@ -628,7 +628,7 @@ static void RefEdgeInter(const TopoDS_Fa
+ 	}
+       
+       gp_Pnt P = ResPoints(i); //ponc1.Value();
+-      TopoDS_Vertex aNewVertex = BRepLib_MakeVertex(P);
++      TopoDS_Vertex aNewVertex = (TopoDS_Vertex) BRepLib_MakeVertex(P);
+       B.UpdateVertex( aNewVertex, aT1, E1, Tol );
+       B.UpdateVertex( aNewVertex, aT2, E2, Tol );
+       gp_Pnt P1 = CE1.Value(aT1);
+@@ -708,7 +708,7 @@ static void RefEdgeInter(const TopoDS_Fa
+       gp_Pnt P2 = BRep_Tool::Pnt(V2[k]);
+       Standard_Real Dist = P1.Distance(P2); 
+       if (Dist < TolConf) {
+-	TopoDS_Vertex V = BRepLib_MakeVertex(P1);
++	TopoDS_Vertex V = (TopoDS_Vertex) BRepLib_MakeVertex(P1);
+ 	U1 = (j == 0) ? f[1] : l[1];
+ 	U2 = (k == 0) ? f[2] : l[2];
+ 	TopoDS_Shape aLocalShape = V.Oriented(TopAbs_INTERNAL);
+Index: oce/src/BRepOffset/BRepOffset_Inter3d.cxx
+===================================================================
+--- oce.orig/src/BRepOffset/BRepOffset_Inter3d.cxx
++++ oce/src/BRepOffset/BRepOffset_Inter3d.cxx
+@@ -73,8 +73,8 @@ static void ExtentEdge(const TopoDS_Face
+   BRep_Builder B;
+   B.Range(NE,f,l);
+   BRepAdaptor_Curve CE(E);
+-  TopoDS_Vertex V1 = BRepLib_MakeVertex(CE.Value(f));
+-  TopoDS_Vertex V2 = BRepLib_MakeVertex(CE.Value(l));
++  TopoDS_Vertex V1 = (TopoDS_Vertex) BRepLib_MakeVertex(CE.Value(f));
++  TopoDS_Vertex V2 = (TopoDS_Vertex) BRepLib_MakeVertex(CE.Value(l));
+   B.Add(NE,V1.Oriented(TopAbs_FORWARD));
+   B.Add(NE,V2.Oriented(TopAbs_REVERSED));
+   NE.Orientation(E.Orientation());
+Index: oce/src/BRepOffset/BRepOffset_MakeOffset.cxx
+===================================================================
+--- oce.orig/src/BRepOffset/BRepOffset_MakeOffset.cxx
++++ oce/src/BRepOffset/BRepOffset_MakeOffset.cxx
+@@ -2081,7 +2081,7 @@ void BRepOffset_MakeOffset::CorrectConic
+       {
+ 	Vfirst = -PI/2.; Vlast = p2d1.Y();
+       }
+-    TopoDS_Face NewSphericalFace = BRepLib_MakeFace(aSphSurf, Ufirst, Ulast, Vfirst, Vlast, Precision::Confusion());
++    TopoDS_Face NewSphericalFace = (TopoDS_Face) BRepLib_MakeFace(aSphSurf, Ufirst, Ulast, Vfirst, Vlast, Precision::Confusion());
+     TopoDS_Edge OldEdge;
+     for (Explo.Init(NewSphericalFace, TopAbs_EDGE); Explo.More(); Explo.Next())
+       {
+@@ -3028,7 +3028,7 @@ void BRepOffset_MakeOffset::MakeMissingW
+ 	      BB.Add(arcWire, EA2);
+ 	      BRepLib::BuildCurves3d( arcWire, myTol );
+ 	      arcWire.Closed(Standard_True);
+-	      TopoDS_Face arcFace = BRepLib_MakeFace(arcWire, Standard_True);
++	      TopoDS_Face arcFace = (TopoDS_Face) BRepLib_MakeFace(arcWire, Standard_True);
+ 	      BRepTools::Update(arcFace);
+ 	      myWalls.Append(arcFace);
+ 	      TopoDS_Shape localEA2 = EA2.Oriented(TopAbs_FORWARD);
+Index: oce/src/BRepOffset/BRepOffset_Tool.cxx
+===================================================================
+--- oce.orig/src/BRepOffset/BRepOffset_Tool.cxx
++++ oce/src/BRepOffset/BRepOffset_Tool.cxx
+@@ -375,7 +375,7 @@ static void BuildPCurves (const TopoDS_E
+     {
+       gp_Pnt fpoint = AC.Value( AC.FirstParameter() );
+       gp_Pnt lpoint = AC.Value( AC.LastParameter() );
+-      TopoDS_Face theFace = BRepLib_MakeFace( theSurf, Precision::Confusion() );
++      TopoDS_Face theFace = (TopoDS_Face) BRepLib_MakeFace( theSurf, Precision::Confusion() );
+       Standard_Real U1 = 0., U2 = 0., TolProj = 1.e-4; //1.e-5;
+       TopoDS_Edge theEdge;
+       TopExp_Explorer Explo;
+@@ -751,7 +751,7 @@ void BRepOffset_Tool::PipeInter(const To
+     for (Standard_Integer i = 1; i <= Inter.NbLines(); i++) {
+       CI = Inter.Line(i);
+       if (ToSmall(CI)) continue;
+-      TopoDS_Edge E = BRepLib_MakeEdge(CI);
++      TopoDS_Edge E = (TopoDS_Edge) BRepLib_MakeEdge(CI);
+       if (Inter.HasLineOnS1(i)) {
+ 	Handle(Geom2d_Curve) C2 = Inter.LineOnS1(i);
+ 	PutInBounds  (F1,E,C2);
+@@ -1753,7 +1753,7 @@ void BRepOffset_Tool::Inter3D(const Topo
+ 	while (!edges.IsEmpty())
+ 	  {
+ 	    TopoDS_Edge anEdge = TopoDS::Edge( edges.First() );
+-	    TopoDS_Wire aWire = BRepLib_MakeWire( anEdge ), resWire;
++	    TopoDS_Wire aWire = (TopoDS_Wire) BRepLib_MakeWire( anEdge ), resWire;
+ 	    TColStd_SequenceOfInteger Candidates;
+ 	    for (k = 1; k <= wseq.Length(); k++)
+ 	      {
+@@ -1795,7 +1795,7 @@ void BRepOffset_Tool::Inter3D(const Topo
+ 			  }
+ 		      }
+ 		  }
+-		TopoDS_Wire NewWire = BRepLib_MakeWire( resWire, TopoDS::Edge(edges(Candidates(minind))) );
++		TopoDS_Wire NewWire = (TopoDS_Wire) BRepLib_MakeWire( resWire, TopoDS::Edge(edges(Candidates(minind))) );
+ 		wseq(k) = NewWire;
+ 		edges.Remove(Candidates(minind));
+ 	      }
+@@ -2058,7 +2058,7 @@ void BRepOffset_Tool::InterOrExtent(cons
+       CI = Inter.Line(i);
+       
+       if (ToSmall(CI)) continue;
+-      TopoDS_Edge E = BRepLib_MakeEdge(CI);
++      TopoDS_Edge E = (TopoDS_Edge) BRepLib_MakeEdge(CI);
+       BuildPCurves (E,F1);
+       BuildPCurves (E,F2);
+       OrientSection (E,F1,F2,O1,O2);
+@@ -2468,7 +2468,7 @@ void BRepOffset_Tool::Inter2d (const Top
+ 	}
+ 	if (YaSol) {
+ 	  gp_Pnt        P   = S->Value(P2d.X(),P2d.Y());
+-	  TopoDS_Vertex V = BRepLib_MakeVertex(P);
++	  TopoDS_Vertex V = (TopoDS_Vertex) BRepLib_MakeVertex(P);
+ 	  V.Orientation(TopAbs_INTERNAL);
+ 	  TopoDS_Shape aLocalEdge = E1.Oriented(TopAbs_FORWARD);
+ 	  B.UpdateVertex(V,U1,TopoDS::Edge(aLocalEdge),TolConf);
+Index: oce/src/BRepPrimAPI/BRepPrimAPI_MakeHalfSpace.cxx
+===================================================================
+--- oce.orig/src/BRepPrimAPI/BRepPrimAPI_MakeHalfSpace.cxx
++++ oce/src/BRepPrimAPI/BRepPrimAPI_MakeHalfSpace.cxx
+@@ -37,7 +37,7 @@ static Standard_Real FindExtrema(const g
+ {
+   Standard_Integer intvalue=0;
+   Dist = RealLast();
+-  TopoDS_Vertex RefVertex = BRepBuilderAPI_MakeVertex(aPnt);
++  TopoDS_Vertex RefVertex = (TopoDS_Vertex) BRepBuilderAPI_MakeVertex(aPnt);
+   
+   BRepExtrema_ExtPF ext(RefVertex,aFace);
+   
+Index: oce/src/BRepTest/BRepTest_CurveCommands.cxx
+===================================================================
+--- oce.orig/src/BRepTest/BRepTest_CurveCommands.cxx
++++ oce/src/BRepTest/BRepTest_CurveCommands.cxx
+@@ -411,7 +411,7 @@ static Standard_Integer edge(Draw_Interp
+   TopoDS_Shape V1 = DBRep::Get(a[2],TopAbs_VERTEX);
+   TopoDS_Shape V2 = DBRep::Get(a[3],TopAbs_VERTEX);
+   if (V1.IsNull() || V2.IsNull()) return 1;
+-  TopoDS_Edge E = BRepBuilderAPI_MakeEdge(TopoDS::Vertex(V1),
++  TopoDS_Edge E = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(TopoDS::Vertex(V1),
+ 				   TopoDS::Vertex(V2));
+   DBRep::Set(a[1],E);
+   return 0;
+@@ -456,7 +456,7 @@ static Standard_Integer isoedge(Draw_Int
+     L = new Geom2d_Line(gp_Pnt2d(0,p),gp_Dir2d(1,0));
+   }
+ 
+-  TopoDS_Edge E = BRepBuilderAPI_MakeEdge(C,p1,p2);
++  TopoDS_Edge E = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(C,p1,p2);
+   E.Location(Loc);
+   BRep_Builder B;
+   B.UpdateEdge(E,L,TopoDS::Face(Sh),0.);
+@@ -1582,7 +1582,7 @@ Standard_Integer edgeintersector(Draw_In
+   for (;EInter.MorePoint();EInter.NextPoint()) {
+     const TopOpeBRep_Point2d& P2D = EInter.Point();
+     gp_Pnt           P    = P2D.Value();
+-    TopoDS_Vertex    V    = BRepLib_MakeVertex(P);
++    TopoDS_Vertex    V    = (TopoDS_Vertex) BRepLib_MakeVertex(P);
+     NbV ++;
+     sprintf(name,"%s_%d",a[1],NbV);
+     DBRep::Set(name,V);
+Index: oce/src/BRepTest/BRepTest_ExtremaCommands.cxx
+===================================================================
+--- oce.orig/src/BRepTest/BRepTest_ExtremaCommands.cxx
++++ oce/src/BRepTest/BRepTest_ExtremaCommands.cxx
+@@ -43,7 +43,7 @@ static Standard_Integer distance (Draw_I
+   if (!BRepExtrema_Poly::Distance(S1,S2,P1,P2,D)) return 1;
+   //cout << " distance : " << D << endl;
+   di << " distance : " << D << "\n";
+-  TopoDS_Edge E = BRepLib_MakeEdge(P1,P2);
++  TopoDS_Edge E = (TopoDS_Edge) BRepLib_MakeEdge(P1,P2);
+   DBRep::Set("distance",E);
+   return 0;
+ }
+@@ -81,7 +81,7 @@ static Standard_Integer distmini(Draw_In
+ 	     P2 = (dst.PointOnShape2(i1));
+              if (dst.Value()<=1.e-9) 
+              {
+-              TopoDS_Vertex V =BRepLib_MakeVertex(P1);
++              TopoDS_Vertex V = (TopoDS_Vertex) BRepLib_MakeVertex(P1);
+               char namev[100];
+               if (i1==1) 
+ 	      sprintf(namev, "%s" ,ns0);
+@@ -92,7 +92,7 @@ static Standard_Integer distmini(Draw_In
+               }
+              else
+ 	     {char name[100];
+-              TopoDS_Edge E = BRepLib_MakeEdge (P1, P2);
++              TopoDS_Edge E = (TopoDS_Edge) BRepLib_MakeEdge (P1, P2);
+ 	      if (i1==1)
+               {sprintf(name,"%s",ns0);}
+               else {sprintf(name,"%s%d",ns0,i1);}
+Index: oce/src/BRepTest/BRepTest_SurfaceCommands.cxx
+===================================================================
+--- oce.orig/src/BRepTest/BRepTest_SurfaceCommands.cxx
++++ oce/src/BRepTest/BRepTest_SurfaceCommands.cxx
+@@ -183,7 +183,7 @@ static Standard_Integer mkplane(Draw_Int
+     OnlyPlane =  !strcmp(a[3],"1");
+   }
+ 
+-  TopoDS_Face F = BRepBuilderAPI_MakeFace(TopoDS::Wire(S), OnlyPlane);
++  TopoDS_Face F = (TopoDS_Face) BRepBuilderAPI_MakeFace(TopoDS::Wire(S), OnlyPlane);
+ 
+   DBRep::Set(a[1],F);
+   return 0;
+Index: oce/src/ChFi2d/ChFi2d_Builder.cxx
+===================================================================
+--- oce.orig/src/ChFi2d/ChFi2d_Builder.cxx
++++ oce/src/ChFi2d/ChFi2d_Builder.cxx
+@@ -620,7 +620,7 @@ TopoDS_Edge ChFi2d_Builder::BuildNewEdge
+     makeEdge.Init(curve, NewExtr, lastVertex);  
+   else 
+     makeEdge.Init(curve, firstVertex, NewExtr);
+-  TopoDS_Edge anEdge = makeEdge;
++  TopoDS_Edge anEdge = (TopoDS_Edge) makeEdge;
+   anEdge.Orientation(E1.Orientation());
+ //  anEdge.Location(E1.Location());
+   makeEdge.Error();
+Index: oce/src/ChFi3d/ChFi3d_Builder_2.cxx
+===================================================================
+--- oce.orig/src/ChFi3d/ChFi3d_Builder_2.cxx
++++ oce/src/ChFi3d/ChFi3d_Builder_2.cxx
+@@ -997,7 +997,7 @@ static void  ChFi3d_BuildPlane (TopOpeBR
+     if  (theProp.IsNormalDefined()) {
+       P =  theProp.Value();
+       Handle(Geom_Plane) Pln  = new Geom_Plane(P, theProp.Normal());
+-      TopoDS_Face        NewF = BRepLib_MakeFace(Pln, Precision::Confusion());
++      TopoDS_Face        NewF = (TopoDS_Face) BRepLib_MakeFace(Pln, Precision::Confusion());
+       NewF.Orientation(F.Orientation());
+       pons.SetCoord(0.,0.);
+       HS->ChangeSurface().Initialize(NewF);
+Index: oce/src/LocOpe/LocOpe_DPrism.cxx
+===================================================================
+--- oce.orig/src/LocOpe/LocOpe_DPrism.cxx
++++ oce/src/LocOpe/LocOpe_DPrism.cxx
+@@ -73,12 +73,12 @@ LocOpe_DPrism::LocOpe_DPrism(const TopoD
+   Standard_Real y =  Height1*sin(Angle);
+   Standard_Real z =  Height1*cos(Angle);
+ 
+-  TopoDS_Vertex Vert2  = BRepLib_MakeVertex(gp_Pnt(0,y,z));
++  TopoDS_Vertex Vert2  = (TopoDS_Vertex) BRepLib_MakeVertex(gp_Pnt(0,y,z));
+ 
+   Standard_Real y1 =  -Height2*sin(Angle);
+   Standard_Real z1 =  -Height2*cos(Angle);
+ 
+-  TopoDS_Vertex Vert1  = BRepLib_MakeVertex(gp_Pnt(0,y1,z1));  
++  TopoDS_Vertex Vert1  = (TopoDS_Vertex) BRepLib_MakeVertex(gp_Pnt(0,y1,z1));
+ 
+   myProfile2 = BRepLib_MakeEdge(Vert1, Vert2);
+   
+@@ -92,7 +92,7 @@ LocOpe_DPrism::LocOpe_DPrism(const TopoD
+   Standard_Real Deltay = Max(Umax-Umin,Vmax-Vmin) + Abs(y);
+   Deltay*=2;
+   
+-  TopoDS_Vertex Vert3  = BRepLib_MakeVertex(gp_Pnt(0, y + Deltay, z));
++  TopoDS_Vertex Vert3  = (TopoDS_Vertex) BRepLib_MakeVertex(gp_Pnt(0, y + Deltay, z));
+   myProfile3 = BRepLib_MakeEdge(Vert2, Vert3);
+ 
+   Umax = 0.;
+@@ -104,7 +104,7 @@ LocOpe_DPrism::LocOpe_DPrism(const TopoD
+   Standard_Real Deltay1 = Max(Umax-Umin,Vmax-Vmin) + Abs(y1);
+   Deltay1*=2;
+ 
+-  TopoDS_Vertex Vert4  = BRepLib_MakeVertex(gp_Pnt(0, y1+Deltay1, z1));
++  TopoDS_Vertex Vert4  = (TopoDS_Vertex) BRepLib_MakeVertex(gp_Pnt(0, y1+Deltay1, z1));
+   myProfile1 = BRepLib_MakeEdge(Vert4, Vert1);
+ 
+   myProfile  = BRepLib_MakeWire(myProfile1,myProfile2,myProfile3);
+@@ -346,8 +346,8 @@ LocOpe_DPrism::LocOpe_DPrism(const TopoD
+   Standard_Real y =  Height*sin(Angle);
+   Standard_Real z =  Height*cos(Angle);
+ 
+-  TopoDS_Vertex Vert1  = BRepLib_MakeVertex(gp_Pnt(0, 0, 0));
+-  TopoDS_Vertex Vert2  = BRepLib_MakeVertex(gp_Pnt(0,y,z));
++  TopoDS_Vertex Vert1  = (TopoDS_Vertex) BRepLib_MakeVertex(gp_Pnt(0, 0, 0));
++  TopoDS_Vertex Vert2  = (TopoDS_Vertex) BRepLib_MakeVertex(gp_Pnt(0,y,z));
+   myProfile2 = BRepLib_MakeEdge(Vert1, Vert2);
+   
+   Standard_Real Umin,Umax,Vmin,Vmax;
+@@ -355,10 +355,10 @@ LocOpe_DPrism::LocOpe_DPrism(const TopoD
+   Standard_Real Deltay = Max(Umax-Umin,Vmax-Vmin) + Abs(y);
+   Deltay*=2;
+   
+-  TopoDS_Vertex Vert3  = BRepLib_MakeVertex(gp_Pnt(0, y + Deltay,z));
++  TopoDS_Vertex Vert3  = (TopoDS_Vertex) BRepLib_MakeVertex(gp_Pnt(0, y + Deltay,z));
+   myProfile3 = BRepLib_MakeEdge(Vert2, Vert3);
+   
+-  TopoDS_Vertex Vert4  = BRepLib_MakeVertex(gp_Pnt(0, Deltay,0));
++  TopoDS_Vertex Vert4  = (TopoDS_Vertex) BRepLib_MakeVertex(gp_Pnt(0, Deltay,0));
+   myProfile1 = BRepLib_MakeEdge(Vert4, Vert1);
+   
+   myProfile = BRepLib_MakeWire(myProfile1,myProfile2,myProfile3);
+Index: oce/src/OpenGl/OpenGl_attri.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_attri.cxx
++++ oce/src/OpenGl/OpenGl_attri.cxx
+@@ -81,6 +81,12 @@ used in immediat mode context.
+ /*#define BUC60918*/        /*GG CADPAK_V2/RINA Enable transparency using Zbuffer
+                             */
+ 
++/* Workaround for internal bcc32 compiler bug. */						
++/* Starting from bcc32 v6.40 this flag should be passed as a compiler option. */
++#if defined(__BORLANDC__) && __BORLANDC__ < 0x0640 /* bcc32 v6.40 */
++#pragma option -x-
++#endif
++	
+ /*----------------------------------------------------------------------*/
+ /*
+ * Constantes
+Index: oce/src/OpenGl/OpenGl_depthcue.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_depthcue.cxx
++++ oce/src/OpenGl/OpenGl_depthcue.cxx
+@@ -18,6 +18,12 @@ xx-xx-xx : xxx ; Creation.
+ 
+ ************************************************************************/
+ 
++/* Workaround for internal bcc32 compiler bug. */						
++/* Starting from bcc32 v6.40 this flag should be passed as a compiler option. */
++#if defined(__BORLANDC__) && __BORLANDC__ < 0x0640 /* bcc32 v6.40 */
++#pragma option -x-
++#endif
++
+ /*----------------------------------------------------------------------*/
+ /*
+ * Includes
+Index: oce/src/OpenGl/OpenGl_pick.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_pick.cxx
++++ oce/src/OpenGl/OpenGl_pick.cxx
+@@ -16,6 +16,12 @@ xx-xx-xx : xxx ; Creation.
+ 
+ ************************************************************************/
+ 
++/* Workaround for internal bcc32 compiler bug. */						
++/* Starting from bcc32 v6.40 this flag should be passed as a compiler option. */
++#if defined(__BORLANDC__) && __BORLANDC__ < 0x0640 /* bcc32 v6.40 */
++#pragma option -x-
++#endif					
++
+ /*----------------------------------------------------------------------*/
+ /*
+ * Includes
+Index: oce/src/OpenGl/OpenGl_telem_util.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_telem_util.cxx
++++ oce/src/OpenGl/OpenGl_telem_util.cxx
+@@ -53,6 +53,12 @@ when a face has confused or aligned poin
+ */
+ #define QTOCC_PATCH
+ 
++/* Workaround for internal bcc32 compiler bug. */						
++/* Starting from bcc32 v6.40 this flag should be passed as a compiler option. */
++#if defined(__BORLANDC__) && __BORLANDC__ < 0x0640 /* bcc32 v6.40 */
++#pragma option -x-
++#endif				
++
+ /*----------------------------------------------------------------------*/
+ /*
+ * Includes
+Index: oce/src/OpenGl/OpenGl_undefined.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_undefined.cxx
++++ oce/src/OpenGl/OpenGl_undefined.cxx
+@@ -25,6 +25,12 @@ Suppression call_tox_set_colormap_mappin
+ 
+ ************************************************************************/
+ 
++/* Workaround for internal bcc32 compiler bug. */						
++/* Starting from bcc32 v6.40 this flag should be passed as a compiler option. */
++#if defined(__BORLANDC__) && __BORLANDC__ < 0x0640 /* bcc32 v6.40 */
++#pragma option -x-
++#endif					
++
+ /*----------------------------------------------------------------------*/
+ /*
+ * Includes
+Index: oce/src/OpenGl/OpenGl_view.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_view.cxx
++++ oce/src/OpenGl/OpenGl_view.cxx
+@@ -64,6 +64,11 @@ from higher API */
+ if any was defined
+ */
+ 
++/* Workaround for internal bcc32 compiler bug. */						
++/* Starting from bcc32 v6.40 this flag should be passed as a compiler option. */
++#if defined(__BORLANDC__) && __BORLANDC__ < 0x0640 /* bcc32 v6.40 */
++#pragma option -x-
++#endif					
+ 
+ /*----------------------------------------------------------------------*/
+ /*
+Index: oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
+===================================================================
+--- oce.orig/src/ShapeFix/ShapeFix_ComposeShell.cxx
++++ oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
+@@ -6,7 +6,8 @@
+ //    abv  22.07.99 implementing patch indices
+ //    svv  10.01.00 porting on DEC
+ 
+-#ifdef __BORLANDC__
++/* Starting from bcc32 v6.40 this flag should be passed as a compiler option. */
++#if defined(__BORLANDC__) && __BORLANDC__ < 0x0640 /* bcc32 v6.40 */
+ #pragma option -x-
+ #endif
+ 
+Index: oce/src/ShapeFix/ShapeFix_Wire.cxx
+===================================================================
+--- oce.orig/src/ShapeFix/ShapeFix_Wire.cxx
++++ oce/src/ShapeFix/ShapeFix_Wire.cxx
+@@ -1668,7 +1668,7 @@ static Standard_Boolean TryNewPCurve (co
+ 
+   if ( ! mkedge.IsDone() ) return Standard_False;
+ 
+-  TopoDS_Edge edge = mkedge;
++  TopoDS_Edge edge = (TopoDS_Edge) mkedge;
+   BRep_Builder B;
+   B.UpdateEdge ( edge, c2d, face, 0. );
+   B.Range ( edge, face, first, last );
+Index: oce/src/VrmlData/VrmlData_Geometry.cxx
+===================================================================
+--- oce.orig/src/VrmlData/VrmlData_Geometry.cxx
++++ oce/src/VrmlData/VrmlData_Geometry.cxx
+@@ -89,7 +89,7 @@ const Handle(TopoDS_TShape)& VrmlData_Bo
+   if (myIsModified) {
+     try {
+       const TopoDS_Shell aShell =
+-        BRepPrimAPI_MakeBox (gp_Pnt (-0.5 * mySize),
++        (TopoDS_Shell) BRepPrimAPI_MakeBox (gp_Pnt (-0.5 * mySize),
+                              mySize.X(), mySize.Y(), mySize.Z());
+       SetTShape (aShell.TShape());
+       myIsModified = Standard_False;
+Index: oce/test/BRepAlgoAPI_test/boolean_ops.cpp
+===================================================================
+--- oce.orig/test/BRepAlgoAPI_test/boolean_ops.cpp
++++ oce/test/BRepAlgoAPI_test/boolean_ops.cpp
+@@ -8,10 +8,10 @@
+ TEST(BRepAlgoAPITestSuite, testCutBox)
+ {
+     // create the first shape: a cube, a corner at the origin
+-    TopoDS_Solid box1 = BRepPrimAPI_MakeBox(10.,10.,10.);
++    TopoDS_Solid box1 = (TopoDS_Solid) BRepPrimAPI_MakeBox(10.,10.,10.);
+     ASSERT_FALSE(box1.IsNull());
+     // the second shape: a smaller cube, a corner at the origin
+-    TopoDS_Solid box2 = BRepPrimAPI_MakeBox(5.,5.,5.);
++    TopoDS_Solid box2 = (TopoDS_Solid) BRepPrimAPI_MakeBox(5.,5.,5.);
+     ASSERT_FALSE(box2.IsNull());
+     // boolean cut
+     TopoDS_Shape shp_result = BRepAlgoAPI_Cut(box1,box2);
+Index: oce/test/Standard_StdAllocator_test/Standard_StdAllocator_test.cpp
+===================================================================
+--- oce.orig/test/Standard_StdAllocator_test/Standard_StdAllocator_test.cpp
++++ oce/test/Standard_StdAllocator_test/Standard_StdAllocator_test.cpp
+@@ -28,7 +28,7 @@ TEST(Standard_StdAllocatorTestSuite, tes
+ {
+     //typed allocator
+     std::list<TopoDS_Shape, Standard_StdAllocator<TopoDS_Shape> > aL;
+-    TopoDS_Solid aSolid = BRepPrimAPI_MakeBox (10., 20., 30.);
++    TopoDS_Solid aSolid = (TopoDS_Solid) BRepPrimAPI_MakeBox (10., 20., 30.);
+     aL.push_back (aSolid);
+     ASSERT_EQ(aL.size(), size_t (1));
+ 
