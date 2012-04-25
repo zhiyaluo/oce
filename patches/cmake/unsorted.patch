@@ -2,7 +2,7 @@ Index: oce/CMakeLists.txt
 ===================================================================
 --- oce.orig/CMakeLists.txt
 +++ oce/CMakeLists.txt
-@@ -100,12 +100,29 @@ OPTION_WITH_DEFAULT( ${PROJECT_NAME}_WIT
+@@ -103,12 +103,29 @@ OPTION_WITH_DEFAULT( ${PROJECT_NAME}_WIT
  OPTION_WITH_DEFAULT( ${PROJECT_NAME}_WITH_FREEIMAGE "Build with FreeImage" OFF )
  OPTION_WITH_DEFAULT( ${PROJECT_NAME}_EXTRA_WARNINGS "Enable Maximum Warnings Level" OFF )
  MARK_AS_ADVANCED(${PROJECT_NAME}_EXTRA_WARNINGS)
@@ -34,7 +34,7 @@ Index: oce/CMakeLists.txt
  
  IF(NOT MSVC)
  	OPTION_WITH_DEFAULT( ${PROJECT_NAME}_COVERAGE "Build with coverage testing" OFF )
-@@ -786,25 +803,15 @@ ENDFOREACH(RESOURCE_FILE ${INSTALL_RESOU
+@@ -789,25 +806,15 @@ ENDFOREACH(RESOURCE_FILE ${INSTALL_RESOU
  INSTALL(FILES ${INSTALL_STDRESOURCE_FILES}
  	DESTINATION ${${PROJECT_NAME}_INSTALL_DATA_DIR}/src/StdResource)
  
@@ -62,7 +62,23 @@ Index: oce/CMakeLists.txt
  
  FILE(GLOB header_files ${${PROJECT_NAME}_SOURCE_DIR}/inc/*.*)
  INSTALL(FILES ${header_files}
-@@ -937,8 +944,26 @@ IF(MSVC AND ${PROJECT_NAME}_TESTING)
+@@ -816,9 +823,12 @@ INSTALL(FILES ${header_files}
+ 
+ SET(OCE_INSTALL_DATA_DIR ${${PROJECT_NAME}_INSTALL_DATA_DIR})
+ IF (NOT MSVC) 
+-   SET(OCE_DEFAULT_CSF_GraphicShr ${${PROJECT_NAME}_INSTALL_PREFIX}/${${PROJECT_NAME}_INSTALL_LIB_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}TKOpenGl${CMAKE_SHARED_LIBRARY_SUFFIX})
+-ELSE()
+-   SET(OCE_DEFAULT_CSF_GraphicShr ${CMAKE_SHARED_LIBRARY_PREFIX}TKOpenGl)
++	SET(OCE_DEFAULT_CSF_GraphicShr ${${PROJECT_NAME}_INSTALL_PREFIX}/${${PROJECT_NAME}_INSTALL_LIB_DIR}/${CMAKE_SHARED_LIBRARY_PREFIX}TKOpenGl${CMAKE_SHARED_LIBRARY_SUFFIX})
++	IF (NOT ${PROJECT_NAME}_NO_LIBRARY_VERSION)
++		SET(OCE_DEFAULT_CSF_GraphicShr ${OCE_DEFAULT_CSF_GraphicShr}.${OCE_ABI_SOVERSION})
++	ENDIF (NOT ${PROJECT_NAME}_NO_LIBRARY_VERSION)
++ELSE(NOT MSVC)
++	SET(OCE_DEFAULT_CSF_GraphicShr ${CMAKE_SHARED_LIBRARY_PREFIX}TKOpenGl)
+ ENDIF(NOT MSVC)
+ 
+ #this is the header used to build OCE
+@@ -940,8 +950,26 @@ IF(MSVC AND ${PROJECT_NAME}_TESTING)
  				# Switch between bin and bind dirs
  				IF (${config} MATCHES "Debug")
  					ADD_CUSTOM_COMMAND(TARGET PostBuild POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${OCE_BUNDLE_ROOT_PATH}/Win${BIT}/bind/ ${LIBRARY_OUTPUT_PATH}/${config}/ VERBATIM )
@@ -89,7 +105,7 @@ Index: oce/CMakeLists.txt
  				ENDIF()
  			ENDFOREACH()
  		ELSE (CMAKE_CONFIGURATION_TYPES )
-@@ -951,8 +976,26 @@ IF(MSVC AND ${PROJECT_NAME}_TESTING)
+@@ -954,8 +982,26 @@ IF(MSVC AND ${PROJECT_NAME}_TESTING)
  
  				IF (${CMAKE_BUILD_TYPE} MATCHES "Debug")
  					ADD_CUSTOM_COMMAND(TARGET PostBuild POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${OCE_BUNDLE_ROOT_PATH}/Win${BIT}/bind/ ${LIBRARY_OUTPUT_PATH} VERBATIM )
@@ -116,6 +132,41 @@ Index: oce/CMakeLists.txt
  				ENDIF()
  		ENDIF (CMAKE_CONFIGURATION_TYPES) 
  		
+@@ -1008,7 +1054,6 @@ ENDIF(${PROJECT_NAME}_BUNDLE_AUTOINSTALL
+ # UnitTesting #
+ ###############
+ IF(${PROJECT_NAME}_TESTING)
+-	SET( ${PROJECT_NAME}_EXTRA_WARNINGS ON CACHE BOOL "Extra warnings required by testing framework" FORCE)
+ 	INCLUDE(CTest)
+ 	ENABLE_TESTING()
+ 	SUBDIRS(test)
+@@ -1035,7 +1080,9 @@ SET(CPACK_SET_DESTDIR "ON")
+ 
+ SET(CPACK_PACKAGE_VERSION_MAJOR ${OCE_VERSION_MAJOR})
+ SET(CPACK_PACKAGE_VERSION_MINOR ${OCE_VERSION_MINOR})
+-SET(CPACK_PACKAGE_VERSION_PATCH ${OCE_VERSION_PATCH})
++# bugfix release: add ${OCE_VERSION_PATCH} to the package version
++# (uncomment following line)
++#SET(CPACK_PACKAGE_VERSION_PATCH ${OCE_VERSION_PATCH})
+ SET(CPACK_PACKAGE_NAME ${PROJECT_NAME} )
+ 
+ SET(CPACK_PACKAGE_CONTACT "OCE Developers <oce-dev@googlegroups.com>")
+@@ -1104,3 +1151,15 @@ if( CPACK_GENERATOR MATCHES ".*RPM.*" )
+ endif()
+ 
+ INCLUDE(CPack)
++
++########################################################################################
++# Uninstall code                                                                       #
++# From http://www.cmake.org/Wiki/CMake_FAQ#Can_I_do_.22make_uninstall.22_with_CMake.3F #
++# ######################################################################################
++configure_file(
++    "${CMAKE_CURRENT_SOURCE_DIR}/cmake_uninstall.cmake.in"
++    "${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake"
++    IMMEDIATE @ONLY)
++
++add_custom_target(uninstall
++    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
 Index: oce/adm/cmake/BuildToolkit.cmake
 ===================================================================
 --- oce.orig/adm/cmake/BuildToolkit.cmake
@@ -209,3 +260,103 @@ Index: oce/adm/cmake/BuildToolkit.cmake
 +		INSTALL(FILES ${LIBRARY_OUTPUT_PATH}/${TOOLKIT}${CMAKE_DEBUG_POSTFIX}.pdb DESTINATION ${TOOLKIT_INSTALL_LIB_DIR} CONFIGURATIONS Debug)
 +	ENDIF (CMAKE_CONFIGURATION_TYPES)
 +ENDIF(MSVC AND ${PROJECT_NAME}_INSTALL_PDB_FILES )
+Index: oce/adm/cmake/TKMesh/CMakeLists.txt
+===================================================================
+--- oce.orig/adm/cmake/TKMesh/CMakeLists.txt
++++ oce/adm/cmake/TKMesh/CMakeLists.txt
+@@ -19,12 +19,20 @@ SET(TOOLKIT_DEPENDS
+ IF(${PROJECT_NAME}_MULTITHREAD_LIBRARY STREQUAL "TBB" AND TBB_INCLUDE_DIR AND TBB_LIBRARY)
+ 	ADD_DEFINITIONS(-DHAVE_TBB)
+ 	SET(TOOLKIT_INCLUDE_DIRECTORIES ${TBB_INCLUDE_DIR})
+-	SET(TOOLKIT_LIBS_OPTIMIZED ${TBB_LIBRARY})
+-	SET(TOOLKIT_LIBS_DEBUG ${TBB_LIBRARY_DEBUG})
++	IF(CMAKE_CONFIGURATION_TYPES OR NMAKE)
++		SET(TOOLKIT_LIBS_DEBUG ${TBB_LIBRARY_DEBUG})
++		SET(TOOLKIT_LIBS_OPTIMIZED ${TBB_LIBRARY})
++	ELSE(CMAKE_CONFIGURATION_TYPES OR NMAKE)
++		SET(TOOLKIT_LIBS ${TBB_LIBRARY})
++	ENDIF(CMAKE_CONFIGURATION_TYPES OR NMAKE)
+ ENDIF(${PROJECT_NAME}_MULTITHREAD_LIBRARY STREQUAL "TBB" AND TBB_INCLUDE_DIR AND TBB_LIBRARY)
+ IF(${PROJECT_NAME}_MULTITHREAD_LIBRARY STREQUAL "OPENMP" AND OPENMP_FOUND)
+ 	SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${OpenMP_CXX_FLAGS}")
+ ENDIF(${PROJECT_NAME}_MULTITHREAD_LIBRARY STREQUAL "OPENMP" AND OPENMP_FOUND)
+ 
++IF(${PROJECT_NAME}_DISABLE_BSPLINE_MESHER)
++	SET_SOURCE_FILES_PROPERTIES( "${${PROJECT_NAME}_SOURCE_DIR}/src/BRepMesh/BRepMesh_FastDiscretFace.cxx" PROPERTIES COMPILE_DEFINITIONS ${PROJECT_NAME}_DISABLE_BSPLINE_MESHER )
++ENDIF(${PROJECT_NAME}_DISABLE_BSPLINE_MESHER)
++
+ INCLUDE(../BuildToolkit.cmake)
+ 
+Index: oce/adm/cmake/TKernel/CMakeLists.txt
+===================================================================
+--- oce.orig/adm/cmake/TKernel/CMakeLists.txt
++++ oce/adm/cmake/TKernel/CMakeLists.txt
+@@ -1,6 +1,7 @@
+ SET(TOOLKIT TKernel)
+ 
+ SET(TOOLKIT_MODULES
++	StdFail
+ 	FSD
+ 	MMgt
+ 	OSD
+@@ -9,7 +10,6 @@ SET(TOOLKIT_MODULES
+ 	Resource
+ 	SortTools
+ 	Standard
+-	StdFail
+ 	Storage
+ 	TColStd
+ 	TCollection
+@@ -47,8 +47,12 @@ ENDIF(WIN32)
+ IF(${PROJECT_NAME}_TBB_MALLOC_SUPPORT AND TBB_INCLUDE_DIR AND TBB_MALLOC_LIBRARY)
+ 	ADD_DEFINITIONS(-DHAVE_TBB)
+ 	SET(TOOLKIT_INCLUDE_DIRECTORIES ${TBB_INCLUDE_DIR})
+-	SET(TOOLKIT_LIBS_OPTIMIZED ${TBB_MALLOC_LIBRARY})
+-	SET(TOOLKIT_LIBS_DEBUG ${TBB_MALLOC_LIBRARY_DEBUG})
++	IF(CMAKE_CONFIGURATION_TYPES OR NMAKE)
++		SET(TOOLKIT_LIBS_DEBUG ${TOOLKIT_LIBS_DEBUG} ${TBB_MALLOC_LIBRARY_DEBUG})
++		SET(TOOLKIT_LIBS_OPTIMIZED ${TOOLKIT_LIBS_OPTIMIZED} ${TBB_MALLOC_LIBRARY})
++	ELSE(CMAKE_CONFIGURATION_TYPES OR NMAKE)
++		SET(TOOLKIT_LIBS ${TOOLKIT_LIBS} ${TBB_MALLOC_LIBRARY})
++	ENDIF(CMAKE_CONFIGURATION_TYPES OR NMAKE)
+ ENDIF(${PROJECT_NAME}_TBB_MALLOC_SUPPORT AND TBB_INCLUDE_DIR AND TBB_MALLOC_LIBRARY)
+ 
+ INCLUDE(../BuildToolkit.cmake)
+Index: oce/cmake_uninstall.cmake.in
+===================================================================
+--- /dev/null
++++ oce/cmake_uninstall.cmake.in
+@@ -0,0 +1,22 @@
++if (NOT EXISTS "@CMAKE_CURRENT_BINARY_DIR@/install_manifest.txt")
++    message(FATAL_ERROR "Cannot find install manifest: \"@CMAKE_CURRENT_BINARY_DIR@/install_manifest.txt\"")
++endif(NOT EXISTS "@CMAKE_CURRENT_BINARY_DIR@/install_manifest.txt")
++
++file(READ "@CMAKE_CURRENT_BINARY_DIR@/install_manifest.txt" files)
++string(REGEX REPLACE "\n" ";" files "${files}")
++list(REVERSE files)
++foreach (file ${files})
++    message(STATUS "Uninstalling \"$ENV{DESTDIR}${file}\"")
++    if (EXISTS "$ENV{DESTDIR}${file}")
++        execute_process(
++            COMMAND ${CMAKE_COMMAND} -E remove "$ENV{DESTDIR}${file}"
++            OUTPUT_VARIABLE rm_out
++            RESULT_VARIABLE rm_retval
++        )
++        if(NOT ${rm_retval} EQUAL 0)
++            message(FATAL_ERROR "Problem when removing \"$ENV{DESTDIR}${file}\"")
++        endif (NOT ${rm_retval} EQUAL 0)
++    else (EXISTS "$ENV{DESTDIR}${file}")
++        message(STATUS "File \"$ENV{DESTDIR}${file}\" does not exist.")
++    endif (EXISTS "$ENV{DESTDIR}${file}")
++endforeach(file)
+\ No newline at end of file
+Index: oce/oce_build_config.h.cmake
+===================================================================
+--- oce.orig/oce_build_config.h.cmake
++++ oce/oce_build_config.h.cmake
+@@ -273,5 +273,3 @@
+ /* Whether OCE is build as static lib */
+ #cmakedefine OCE_BUILD_STATIC_LIB
+ 
+-/* Whether disable or not the bspline mesher */
+-#cmakedefine OCE_DISABLE_BSPLINE_MESHER

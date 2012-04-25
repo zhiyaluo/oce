@@ -159,6 +159,15 @@ Subject: [PATCH] Fix issue #246: add missing bracket to if clause
  src/OpenGl/OpenGl_text.cxx     |    3 ++-
  4 files changed, 8 insertions(+), 1 deletions(-)
 
+From dd1cc2562e54419a747b7a02e72b4492cdc2669b Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Wed, 15 Feb 2012 12:55:07 +0100
+Subject: [PATCH] Fix memory leak in OSD_FontMgr.cxx
+
+---
+ src/OSD/OSD_FontMgr.cxx |    5 ++++-
+ 1 files changed, 4 insertions(+), 1 deletions(-)
+
 Index: oce/inc/MAT_Mat.gxx
 ===================================================================
 --- oce.orig/inc/MAT_Mat.gxx
@@ -216,7 +225,7 @@ Index: oce/src/OSD/OSD_FontMgr.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_FontMgr.cxx
 +++ oce/src/OSD/OSD_FontMgr.cxx
-@@ -125,7 +125,11 @@ void OSD_FontMgr::InitFontDataBase() {
+@@ -125,10 +125,17 @@ void OSD_FontMgr::InitFontDataBase() {
    Standard_Character *font_dir = new Standard_Character[ req_size + strlen("\\Fonts\\") + 1 ]  ;  
  
    if( !strcpy( font_dir, windir_var ) )
@@ -226,8 +235,15 @@ Index: oce/src/OSD/OSD_FontMgr.cxx
      return  ;   
 +  }   
    if( !strcat( font_dir, "\\Fonts\\" ) )
++  {
++    delete [] windir_var;
++    delete [] font_dir;
      return ;  
+-
++  }
+   Handle(TCollection_HAsciiString) HFontDir = new TCollection_HAsciiString(font_dir);
  
+ #ifdef TRACE
 Index: oce/src/OpenGl/OpenGl_ImageBox.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_ImageBox.cxx
