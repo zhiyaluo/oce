@@ -9,11 +9,11 @@ declared inside standard library become members of std namespace.
  src/OSD/OSD_MAllocHook.cxx |    4 ++--
  1 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/src/OSD/OSD_MAllocHook.cxx b/src/OSD/OSD_MAllocHook.cxx
-index ef41e0d..ed49e10 100644
---- a/src/OSD/OSD_MAllocHook.cxx
-+++ b/src/OSD/OSD_MAllocHook.cxx
-@@ -291,10 +291,10 @@ Standard_Boolean OSD_MAllocHook::LogFileHandler::MakeReport
+Index: oce/src/OSD/OSD_MAllocHook.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_MAllocHook.cxx
++++ oce/src/OSD/OSD_MAllocHook.cxx
+@@ -281,10 +281,10 @@ Standard_Boolean OSD_MAllocHook::LogFile
      while (*pStr != ' ' && *pStr) pStr++;
      *pStr++ = '\0';
      while (*pStr == ' ' && *pStr) pStr++;
@@ -26,6 +26,3 @@ index ef41e0d..ed49e10 100644
      Standard_Boolean isAlloc = Standard_False;
      if (strcmp(aType, "alloc") == 0)
      {
--- 
-1.7.9.1
-

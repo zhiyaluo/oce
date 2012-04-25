@@ -7,10 +7,10 @@ Subject: [PATCH] Geom_BSplineCurve.cxx: Add explicit exception message
  src/Geom/Geom_BSplineCurve.cxx |   12 +++++++-----
  1 files changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/src/Geom/Geom_BSplineCurve.cxx b/src/Geom/Geom_BSplineCurve.cxx
-index 1f4e7a7..28f36dd 100644
---- a/src/Geom/Geom_BSplineCurve.cxx
-+++ b/src/Geom/Geom_BSplineCurve.cxx
+Index: oce/src/Geom/Geom_BSplineCurve.cxx
+===================================================================
+--- oce.orig/src/Geom/Geom_BSplineCurve.cxx
++++ oce/src/Geom/Geom_BSplineCurve.cxx
 @@ -45,20 +45,22 @@ static void CheckCurveData
   const Standard_Boolean            Periodic)
  {
@@ -39,6 +39,3 @@ index 1f4e7a7..28f36dd 100644
  }
  
  //=======================================================================
--- 
-1.7.9.1
-

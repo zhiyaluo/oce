@@ -436,7 +436,7 @@ Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_OffsetWire.cxx
 +++ oce/src/BRepFill/BRepFill_OffsetWire.cxx
-@@ -126,13 +126,13 @@ static void QuasiFleche(const Adaptor3d_
+@@ -127,13 +127,13 @@ static void QuasiFleche(const Adaptor3d_
  			TColgp_SequenceOfPnt& Points);
  
  static Standard_Boolean PerformCurve (TColStd_SequenceOfReal& Parameters,
@@ -457,7 +457,7 @@ Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
  
  static void CheckBadEdges(const TopoDS_Face& Spine, const Standard_Real Offset,
  			  const BRepMAT2d_BisectingLocus& Locus, 
-@@ -480,6 +480,7 @@ void BRepFill_OffsetWire::Perform (const
+@@ -481,6 +481,7 @@ void BRepFill_OffsetWire::Perform (const
        BRepTools_Substitution aSubst;
        TopTools_ListIteratorOfListOfShape it(BadEdges);
        TopTools_ListOfShape aL;
@@ -465,7 +465,7 @@ Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
        TColStd_SequenceOfReal Parameters;
        TColgp_SequenceOfPnt Points;
  
-@@ -495,7 +496,7 @@ void BRepFill_OffsetWire::Perform (const
+@@ -496,7 +497,7 @@ void BRepFill_OffsetWire::Perform (const
  	Handle(Geom_Curve) G3d = BRep_Tool::Curve(TopoDS::Edge(anE),f,l);
  	GeomAdaptor_Curve  AC(G3d,f,l);
  
@@ -474,7 +474,7 @@ Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
  					      AC, aDefl, f, l, Precision::Confusion(),
  					      2);
  
-@@ -2299,40 +2300,6 @@ static void CheckBadEdges(const TopoDS_F
+@@ -2296,40 +2297,6 @@ static void CheckBadEdges(const TopoDS_F
  
  
  //=======================================================================
@@ -515,7 +515,7 @@ Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
  //function : QuasiFleche
  //purpose  : 
  //=======================================================================
-@@ -2412,3 +2379,37 @@ static void QuasiFleche(const Adaptor3d_
+@@ -2409,3 +2376,37 @@ static void QuasiFleche(const Adaptor3d_
    }
  }
  			
@@ -580,7 +580,7 @@ Index: oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
  
  
  // ===========================================================================================
-@@ -1076,52 +1067,6 @@ Standard_Boolean FindCommonVertex(const
+@@ -1069,52 +1060,6 @@ Standard_Boolean FindCommonVertex(const
    return bvertexfound;
  }
  
@@ -633,7 +633,7 @@ Index: oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
  
  // ----------------------------------------------------------------------------------------------------
  // static function: GetUEdges
-@@ -2300,173 +2245,3 @@ static Standard_Boolean ChooseSection(co
+@@ -2293,173 +2238,3 @@ static Standard_Boolean ChooseSection(co
    //end of simplest case
  }
  

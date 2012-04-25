@@ -12,12 +12,12 @@ Index: oce/src/TObj/TObj_Application.cxx
 ===================================================================
 --- oce.orig/src/TObj/TObj_Application.cxx
 +++ oce/src/TObj/TObj_Application.cxx
-@@ -126,7 +126,7 @@ Standard_Boolean TObj_Application::LoadD
-   myIsError = aStatus != CDF_RS_OK;
+@@ -140,7 +140,7 @@ Standard_Boolean TObj_Application::LoadD
+   myIsError = aStatus != PCDM_RS_OK;
    if (myIsError)
    {
 -    switch (aStatus)
 +    switch ((int)aStatus)
      {
-     case CDF_RS_UnknownDocument:
+     case PCDM_RS_UnknownDocument:
        ErrorMessage (Message_Msg("TObj_Appl_RUnknownDocument") << aPath);

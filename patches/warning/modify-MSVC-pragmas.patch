@@ -243,7 +243,7 @@ Index: oce/src/IntTools/IntTools.cxx
  //=======================================================================
  //function : IntTools::GetRadius
  //purpose  : 
-@@ -364,7 +361,3 @@
+@@ -362,7 +359,3 @@
    }
    return 1;
  }
@@ -266,7 +266,7 @@ Index: oce/src/IntTools/IntTools_EdgeFace.cxx
  static
    Standard_Boolean IsCoplanar (const BRepAdaptor_Curve&  ,
  			       const BRepAdaptor_Surface& );
-@@ -1594,7 +1590,3 @@ Standard_Integer AdaptiveDiscret (const
+@@ -1584,7 +1580,3 @@ Standard_Integer AdaptiveDiscret (const
    return iDiscretNew;
  }
  
@@ -519,7 +519,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
-@@ -82,7 +82,6 @@
+@@ -100,7 +100,6 @@
  
  #ifdef _MSC_VER
  #define _CRT_SECURE_NO_DEPRECATE
@@ -531,7 +531,7 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-@@ -42,7 +42,6 @@
+@@ -44,7 +44,6 @@
  
  #ifdef _MSC_VER
  #define _CRT_SECURE_NO_DEPRECATE

@@ -32,7 +32,7 @@ Index: oce/CMakeLists.txt
 ===================================================================
 --- oce.orig/CMakeLists.txt
 +++ oce/CMakeLists.txt
-@@ -405,6 +405,7 @@ IF(${PROJECT_NAME}_DRAW)
+@@ -408,6 +408,7 @@ IF(${PROJECT_NAME}_DRAW)
  		${DRAWRESOURCES_TCL_FILES}
  		src/DrawResources/DRAW.doc
  		src/DrawResources/DRAW.info
@@ -40,7 +40,7 @@ Index: oce/CMakeLists.txt
  		src/DrawResources/DrawPlugin
  		src/DrawResources/demo
  		src/DrawResources/demo.bat
-@@ -828,13 +829,6 @@ CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_D
+@@ -831,13 +832,6 @@ CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_D
  INSTALL(FILES ${CMAKE_CURRENT_BINARY_DIR}/install_inc/oce-config.h
  		DESTINATION ${${PROJECT_NAME}_INSTALL_INCLUDE_DIR} COMPONENT Development )
  
@@ -218,7 +218,7 @@ Index: oce/src/Graphic3d/Graphic3d_GraphicDevice.cxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_GraphicDevice.cxx
 +++ oce/src/Graphic3d/Graphic3d_GraphicDevice.cxx
-@@ -216,9 +216,13 @@ Standard_Boolean Graphic3d_GraphicDevice
+@@ -214,9 +214,13 @@ Standard_Boolean Graphic3d_GraphicDevice
      memcpy(newGlShr, buffString.ToCString(), buffString.Length() + 1);
      glshr = newGlShr;
    } else {
@@ -345,7 +345,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest.cxx
 +++ oce/src/ViewerTest/ViewerTest.cxx
-@@ -1600,6 +1600,11 @@ static TCollection_AsciiString GetEnvir
+@@ -1651,6 +1651,11 @@ static TCollection_AsciiString GetEnvir
      Standard_Boolean HasDefinition = Standard_False ;
      if ( !envir ) {
        casroot  = getenv("CASROOT");

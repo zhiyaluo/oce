@@ -97,7 +97,7 @@ Index: oce/src/TestTopOpe/TestTopOpe_HDSCommands.cxx
 ===================================================================
 --- oce.orig/src/TestTopOpe/TestTopOpe_HDSCommands.cxx
 +++ oce/src/TestTopOpe/TestTopOpe_HDSCommands.cxx
-@@ -729,7 +729,7 @@ static void tds_help(Draw_Interpretor& d
+@@ -716,7 +716,7 @@ static void tds_help(Draw_Interpretor& d
  }
  
  typedef Standard_Integer (*tf_SeeShape)(const Standard_Integer I,const TopoDS_Shape& S);
@@ -121,7 +121,7 @@ Index: oce/src/TopOpeBRep/TopOpeBRep_DSFiller.cxx
  
  
  #ifdef DEB
-@@ -305,8 +305,8 @@ static
+@@ -299,8 +299,8 @@ static
  
  } // FUN_shareNOG
  
@@ -136,7 +136,7 @@ Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
 +++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
-@@ -997,7 +997,7 @@ void TopOpeBRepBuild_Builder1::GFillEdge
+@@ -995,7 +995,7 @@ void TopOpeBRepBuild_Builder1::GFillEdge
    }
  } // GFillEdgeWES
  
@@ -162,7 +162,7 @@ Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_GridEE.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_GridEE.cxx
 +++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_GridEE.cxx
-@@ -221,13 +221,13 @@ void debfillp2(const Standard_Integer i)
+@@ -220,13 +220,13 @@ void debfillp2(const Standard_Integer i)
  #endif
  
  //Standard_IMPORT extern Standard_Boolean GLOBAL_faces2d;

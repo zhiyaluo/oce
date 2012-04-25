@@ -133,7 +133,7 @@ Index: oce/src/NCollection/NCollection_IncAllocator.cxx
  IMPLEMENT_STANDARD_HANDLE  (NCollection_IncAllocator,NCollection_BaseAllocator)
  IMPLEMENT_STANDARD_RTTIEXT (NCollection_IncAllocator,NCollection_BaseAllocator)
  
-@@ -134,7 +144,7 @@ Standard_EXPORT void IncAllocator_PrintA
+@@ -147,7 +157,7 @@ Standard_EXPORT void IncAllocator_PrintA
          Standard_Size aSize = anAlloc->GetMemSize();
          aTotSize += aSize;
          nbAlloc++;

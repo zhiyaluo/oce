@@ -315,7 +315,7 @@ Index: oce/src/Bnd/Bnd_Box.cxx
 ===================================================================
 --- oce.orig/src/Bnd/Bnd_Box.cxx
 +++ oce/src/Bnd/Bnd_Box.cxx
-@@ -815,12 +815,12 @@ static Standard_Boolean IsSegmentOut(Sta
+@@ -830,12 +830,12 @@ static Standard_Boolean IsSegmentOut(Sta
    Standard_Real ysmax = Max (ys1, ys2);
  
    if (ysmax-ysmin < eps && (y1-ys1 < eps && ys1-y2 < eps) &&
@@ -336,7 +336,7 @@ Index: oce/src/ChFi2d/ChFi2d_Builder.cxx
 ===================================================================
 --- oce.orig/src/ChFi2d/ChFi2d_Builder.cxx
 +++ oce/src/ChFi2d/ChFi2d_Builder.cxx
-@@ -1095,8 +1095,8 @@ TopoDS_Edge ChFi2d_Builder::BuildFilletE
+@@ -1101,8 +1101,8 @@ TopoDS_Edge ChFi2d_Builder::BuildFilletE
      if (U1 > Vv1 && U1 > 2.*PI) {
        ElCLib::AdjustPeriodic(0.,2.*PI,Precision::Confusion(),U1,Vv1);
      } // if (U1 ... 
@@ -347,7 +347,7 @@ Index: oce/src/ChFi2d/ChFi2d_Builder.cxx
        filletEdge = BRepLib_MakeEdge(circle, refSurf,
  				    NewExtr1, NewExtr2, U1, Vv1);
      } // if (O1 == ...
-@@ -1106,8 +1106,8 @@ TopoDS_Edge ChFi2d_Builder::BuildFilletE
+@@ -1112,8 +1112,8 @@ TopoDS_Edge ChFi2d_Builder::BuildFilletE
      } // else ...
      if (!Sense) {
        TopAbs_Orientation S1 = filletEdge.Orientation();

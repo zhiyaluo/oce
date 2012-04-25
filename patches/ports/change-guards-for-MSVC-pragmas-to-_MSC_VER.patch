@@ -142,7 +142,7 @@ Index: oce/src/IntTools/IntTools.cxx
  #pragma warning ( disable : 4101 )
  #endif
  //=======================================================================
-@@ -365,6 +365,6 @@
+@@ -363,6 +363,6 @@
    return 1;
  }
  
@@ -163,7 +163,7 @@ Index: oce/src/IntTools/IntTools_EdgeFace.cxx
  #pragma warning ( disable : 4101 )
  #endif
  
-@@ -1595,6 +1595,6 @@ Standard_Integer AdaptiveDiscret (const
+@@ -1585,6 +1585,6 @@ Standard_Integer AdaptiveDiscret (const
  }
  
  
@@ -479,7 +479,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
-@@ -80,7 +80,7 @@
+@@ -98,7 +98,7 @@
  #include <strings.h>
  #endif
  
@@ -492,7 +492,7 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-@@ -40,8 +40,10 @@
+@@ -42,8 +42,10 @@
  #include <WNT_WClass.hxx>
  #include <WNT_Window.hxx>
  
@@ -637,7 +637,7 @@ Index: oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
 ===================================================================
 --- oce.orig/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
 +++ oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
-@@ -62,7 +62,7 @@
+@@ -63,7 +63,7 @@
  #include <Bnd_Box.hxx>
  
  // avoid warnings on 'extern "C"' functions returning C++ classes

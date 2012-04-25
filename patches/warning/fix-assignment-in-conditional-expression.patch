@@ -112,7 +112,7 @@ Index: oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_TrimShellCorner.cxx
 +++ oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
-@@ -907,8 +907,8 @@ Standard_Boolean SplitUEdges(const Handl
+@@ -900,8 +900,8 @@ Standard_Boolean SplitUEdges(const Handl
        for(vvit = 1; !bvertexfound && (vvit <= aVVs.Extent()); vvit++) {
  	const BOPTools_VVInterference& aVV = aVVs(vvit);
  
@@ -140,7 +140,7 @@ Index: oce/src/BRepTopAdaptor/BRepTopAdaptor_FClass2d.cxx
 ===================================================================
 --- oce.orig/src/BRepTopAdaptor/BRepTopAdaptor_FClass2d.cxx
 +++ oce/src/BRepTopAdaptor/BRepTopAdaptor_FClass2d.cxx
-@@ -411,9 +411,9 @@ TopAbs_State BRepTopAdaptor_FClass2d::Pe
+@@ -408,9 +408,9 @@ TopAbs_State BRepTopAdaptor_FClass2d::Pe
    surf->ChangeSurface().Initialize( Face, Standard_False );
    Standard_Boolean IsUPer, IsVPer;
    Standard_Real uperiod=0, vperiod=0;
@@ -152,7 +152,7 @@ Index: oce/src/BRepTopAdaptor/BRepTopAdaptor_FClass2d.cxx
      vperiod = surf->VPeriod();
    TopAbs_State Status = TopAbs_UNKNOWN;
    Standard_Boolean urecadre = Standard_False, vrecadre = Standard_False;
-@@ -547,9 +547,9 @@ TopAbs_State BRepTopAdaptor_FClass2d::Te
+@@ -544,9 +544,9 @@ TopAbs_State BRepTopAdaptor_FClass2d::Te
    surf->ChangeSurface().Initialize( Face, Standard_False );
    Standard_Boolean IsUPer, IsVPer;
    Standard_Real uperiod=0, vperiod=0;
@@ -190,7 +190,7 @@ Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx
 +++ oce/src/Draw/Draw_Window.cxx
-@@ -2003,7 +2003,7 @@ Standard_Boolean Init_Appli(HINSTANCE hI
+@@ -1996,7 +1996,7 @@ Standard_Boolean Init_Appli(HINSTANCE hI
  
      hWndFrame = NULL;
  
@@ -275,7 +275,7 @@ Index: oce/src/GeomPlate/GeomPlate_BuildPlateSurface.cxx
 ===================================================================
 --- oce.orig/src/GeomPlate/GeomPlate_BuildPlateSurface.cxx
 +++ oce/src/GeomPlate/GeomPlate_BuildPlateSurface.cxx
-@@ -1340,7 +1340,7 @@ void GeomPlate_BuildPlateSurface::Comput
+@@ -1342,7 +1342,7 @@ void GeomPlate_BuildPlateSurface::Comput
  
    Standard_Boolean CourbeJoint=Standard_False;
    
@@ -363,7 +363,7 @@ Index: oce/src/Graphic2d/Graphic2d_Paragraph.cxx
 ===================================================================
 --- oce.orig/src/Graphic2d/Graphic2d_Paragraph.cxx
 +++ oce/src/Graphic2d/Graphic2d_Paragraph.cxx
-@@ -740,7 +740,7 @@ Standard_Boolean status = Standard_False
+@@ -732,7 +732,7 @@ Standard_Boolean status = Standard_False
                static TCollection_ExtendedString hletter("Hp");
                Standard_ShortReal hwidth,hheight,hxoffset,hyoffset;
                if(( status = aDrawer->GetTextSize(hletter,hwidth,hheight,
@@ -612,7 +612,7 @@ Index: oce/src/Visual3d/Visual3d_View.cxx
          MyCView.Orientation.IsCustomMatrix = MyViewOrientation.IsCustomMatrix();
          if ( MyViewOrientation.IsCustomMatrix() ) {
            Standard_Integer i, j;
-@@ -1274,7 +1274,7 @@ Standard_Real Sx, Sy, Sz;
+@@ -1269,7 +1269,7 @@ Standard_Real Sx, Sy, Sz;
          MyCView.Orientation.ViewScaleZ                  = float (Sz);
  
          CustomIsModified =
@@ -621,7 +621,7 @@ Index: oce/src/Visual3d/Visual3d_View.cxx
          MyCView.Orientation.IsCustomMatrix = MyViewOrientation.IsCustomMatrix();
          if ( MyViewOrientation.IsCustomMatrix() ) {
            Standard_Integer i, j;
-@@ -3983,7 +3983,7 @@ void Visual3d_View :: SetComputedMode (
+@@ -3961,7 +3961,7 @@ void Visual3d_View :: SetComputedMode (
   Standard_Integer                      StructId;
   Standard_Integer                      i = MyDisplayedStructure.Extent ();
  

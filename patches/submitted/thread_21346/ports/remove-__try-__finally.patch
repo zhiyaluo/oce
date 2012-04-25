@@ -941,7 +941,7 @@ Index: oce/src/OpenGl/OpenGl_txgl.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_txgl.cxx
 +++ oce/src/OpenGl/OpenGl_txgl.cxx
-@@ -698,12 +698,17 @@ __declspec( dllexport ) int __fastcall _
+@@ -697,12 +697,17 @@ __declspec( dllexport ) int __fastcall _
      HGLRC  hglrc  = NULL;
      TStatus       retVal = TFailure;
  
@@ -961,7 +961,7 @@ Index: oce/src/OpenGl/OpenGl_txgl.cxx
        hte = _Txgl_Map.ChangeFind( ( Tint )win );
  
  #ifdef BUC60691
-@@ -726,13 +731,8 @@ __declspec( dllexport ) int __fastcall _
+@@ -725,13 +730,8 @@ __declspec( dllexport ) int __fastcall _
  #endif
          retVal = TFailure;  
        } else retVal = TSuccess;

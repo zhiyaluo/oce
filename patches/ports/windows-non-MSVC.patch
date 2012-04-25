@@ -610,7 +610,7 @@ Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx
 +++ oce/src/Draw/Draw_Window.cxx
-@@ -1255,7 +1255,9 @@ prompt:
+@@ -1248,7 +1248,9 @@ prompt:
  #include <Draw_Appli.hxx>
  #include <OSD.hxx>
  
@@ -1239,7 +1239,7 @@ Index: oce/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
 ===================================================================
 --- oce.orig/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
 +++ oce/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
-@@ -325,7 +325,11 @@ Standard_Integer BOOPCHK(Draw_Interpreto
+@@ -317,7 +317,11 @@ Standard_Integer BOOPCHK(Draw_Interpreto
    if (!strcmp(a[0],"tchk")) { 
  #ifdef DEB
  //    Standard_IMPORT extern Standard_Integer TopOpeBRepTool_BOOOPE_CHECK_DEB;

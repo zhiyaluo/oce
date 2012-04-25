@@ -188,7 +188,7 @@ Index: oce/src/FEmTool/FEmTool_Assembly.cxx
 ===================================================================
 --- oce.orig/src/FEmTool/FEmTool_Assembly.cxx
 +++ oce/src/FEmTool/FEmTool_Assembly.cxx
-@@ -533,7 +533,7 @@ void FEmTool_Assembly::AddConstraint(con
+@@ -525,7 +525,7 @@ void FEmTool_Assembly::AddConstraint(con
  	for(i = Aux1->Lower(); i <= Aux1->Upper(); i++) Coeff->SetValue(i, Aux1->Value(i));
  	for(i = Aux1->Upper() + 1; i <= Imax; i++) Coeff->SetValue(i, 0.);
  	Iter.Initialize(L);
@@ -197,7 +197,7 @@ Index: oce/src/FEmTool/FEmTool_Assembly.cxx
  	Iter.Value() = Coeff;
        }
        else if(Imin > Aux1->Upper() && Imax >= Aux2->Lower()) { 
-@@ -542,7 +542,7 @@ void FEmTool_Assembly::AddConstraint(con
+@@ -534,7 +534,7 @@ void FEmTool_Assembly::AddConstraint(con
  	for(i = Imin; i <= Aux2->Lower() - 1; i++) Coeff->SetValue(i, 0.);
  	for(i = Aux2->Lower(); i <= Aux2->Upper(); i++) Coeff->SetValue(i, Aux2->Value(i));
  	Iter.Initialize(L);
@@ -206,7 +206,7 @@ Index: oce/src/FEmTool/FEmTool_Assembly.cxx
  	Iter.Value() = Coeff;
       }
        else if(Imin > Aux1->Upper() && Imax < Aux2->Lower()) {
-@@ -550,7 +550,7 @@ void FEmTool_Assembly::AddConstraint(con
+@@ -542,7 +542,7 @@ void FEmTool_Assembly::AddConstraint(con
  	Coeff = new TColStd_HArray1OfReal(Imin,Imax);
  	Coeff->Init(0.);
  	Iter.Initialize(L);
@@ -215,7 +215,7 @@ Index: oce/src/FEmTool/FEmTool_Assembly.cxx
  	L.InsertAfter(Coeff,Iter);
        }
        else {
-@@ -560,7 +560,7 @@ void FEmTool_Assembly::AddConstraint(con
+@@ -552,7 +552,7 @@ void FEmTool_Assembly::AddConstraint(con
  	for(i = Aux1->Upper() + 1; i <= Aux2->Lower() - 1; i++) Coeff->SetValue(i, 0.);
  	for(i = Aux2->Lower(); i <= Aux2->Upper(); i++) Coeff->SetValue(i, Aux2->Value(i));
  	Iter.Initialize(L);
@@ -314,7 +314,7 @@ Index: oce/src/RWStl/RWStl.cxx
 ===================================================================
 --- oce.orig/src/RWStl/RWStl.cxx
 +++ oce/src/RWStl/RWStl.cxx
-@@ -436,7 +436,7 @@ Handle_StlMesh_Mesh RWStl::ReadAscii(con
+@@ -429,7 +429,7 @@ Handle_StlMesh_Mesh RWStl::ReadAscii (co
    rewind(file);
  
    // skip header
@@ -340,7 +340,7 @@ Index: oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
 ===================================================================
 --- oce.orig/src/ShapeFix/ShapeFix_ComposeShell.cxx
 +++ oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
-@@ -712,7 +712,7 @@ static void DistributeSplitPoints (const
+@@ -713,7 +713,7 @@ static void DistributeSplitPoints (const
      params.SetValue ( i, ( isreversed ? l : f ) );
    }
    

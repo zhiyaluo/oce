@@ -130,7 +130,7 @@ Index: oce/src/OpenGl/OpenGl_TextRender.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_TextRender.cxx
 +++ oce/src/OpenGl/OpenGl_TextRender.cxx
-@@ -180,7 +180,7 @@ OpenGl_TextRender* OpenGl_TextRender::in
+@@ -179,7 +179,7 @@ OpenGl_TextRender* OpenGl_TextRender::in
  
  /*----------------------------------------------------------------------*/
  OpenGl_TextRender::FontMapNode OpenGl_TextRender::searchFontInMap( Handle(TCollection_HAsciiString)& fontName ) {

@@ -12,17 +12,17 @@ Index: oce/src/OpenGl/OpenGl_GraphicDriver_713.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_GraphicDriver_713.cxx
 +++ oce/src/OpenGl/OpenGl_GraphicDriver_713.cxx
-@@ -39,6 +39,7 @@ Standard_Boolean OpenGl_GraphicDriver
-   if ( call_togl_isdepthtest( &MyCView ) )
-     return Standard_True;
+@@ -38,6 +38,7 @@ Standard_Boolean OpenGl_GraphicDriver
+   Graphic3d_CView MyCView = view;
+   return call_togl_isdepthtest (&MyCView) != 0;
  #endif
 +  return Standard_True;
  }
  
  void OpenGl_GraphicDriver::ReadDepths( const Graphic3d_CView& view,
-@@ -68,6 +69,7 @@ Standard_Boolean OpenGl_GraphicDriver
-   if ( call_togl_isgllight( &MyCView ) )
-     return Standard_True;
+@@ -66,6 +67,7 @@ Standard_Boolean OpenGl_GraphicDriver
+   Graphic3d_CView MyCView = view;
+   return call_togl_isgllight (&MyCView) != 0;
  #endif
 +  return Standard_True;
  }

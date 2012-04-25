@@ -4120,7 +4120,7 @@ Index: oce/src/XCAFPrs/XCAFPrs_AISObject.cxx
 ===================================================================
 --- oce.orig/src/XCAFPrs/XCAFPrs_AISObject.cxx
 +++ oce/src/XCAFPrs/XCAFPrs_AISObject.cxx
-@@ -201,10 +201,10 @@ void XCAFPrs_AISObject::AddStyledItem (c
+@@ -203,10 +203,10 @@ void XCAFPrs_AISObject::AddStyledItem (c
    }
    case 1:
      {

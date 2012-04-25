@@ -271,7 +271,7 @@ Index: oce/src/NCollection/NCollection_IncAllocator.cxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_IncAllocator.cxx
 +++ oce/src/NCollection/NCollection_IncAllocator.cxx
-@@ -69,6 +69,7 @@ Standard_EXPORT void IncAllocator_SetDeb
+@@ -82,6 +82,7 @@ Standard_EXPORT void IncAllocator_SetDeb
   * numbering of allocators.
   */
  //=======================================================================
@@ -279,7 +279,7 @@ Index: oce/src/NCollection/NCollection_IncAllocator.cxx
  static Standard_Size CurrentID = 0;
  static Standard_Size CATCH_ID = 0;
  
-@@ -76,7 +77,6 @@ static Standard_Size CATCH_ID = 0;
+@@ -89,7 +90,6 @@ static Standard_Size CATCH_ID = 0;
  //function : Debug_Create
  //purpose  : Store the allocator address in the internal maps
  //=======================================================================
@@ -287,7 +287,7 @@ Index: oce/src/NCollection/NCollection_IncAllocator.cxx
  static void Debug_Create(Standard_Address theAlloc)
  {
    static Standard_Mutex aMutex;
-@@ -98,7 +98,6 @@ static void Debug_Create(Standard_Addres
+@@ -111,7 +111,6 @@ static void Debug_Create(Standard_Addres
  //function : Debug_Destroy
  //purpose  : Forget the allocator address from the internal maps
  //=======================================================================
@@ -295,7 +295,7 @@ Index: oce/src/NCollection/NCollection_IncAllocator.cxx
  static void Debug_Destroy(Standard_Address theAlloc)
  {
    static Standard_Mutex aMutex;
-@@ -114,7 +113,7 @@ static void Debug_Destroy(Standard_Addre
+@@ -127,7 +126,7 @@ static void Debug_Destroy(Standard_Addre
    if (isReentrant)
      aMutex.Unlock();
  }

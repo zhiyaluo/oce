@@ -103,7 +103,7 @@ Index: oce/CMakeLists.txt
 ===================================================================
 --- oce.orig/CMakeLists.txt
 +++ oce/CMakeLists.txt
-@@ -942,3 +942,84 @@ IF (${PROJECT_NAME}_BUNDLE_AUTOINSTALL)
+@@ -945,3 +945,84 @@ IF (${PROJECT_NAME}_BUNDLE_AUTOINSTALL)
  ENDIF(${PROJECT_NAME}_BUNDLE_AUTOINSTALL)
  
  

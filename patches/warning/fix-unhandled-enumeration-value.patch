@@ -53,7 +53,7 @@ Index: oce/src/Aspect/Aspect_ColorScale.cxx
 ===================================================================
 --- oce.orig/src/Aspect/Aspect_ColorScale.cxx
 +++ oce/src/Aspect/Aspect_ColorScale.cxx
-@@ -506,6 +506,7 @@ void Aspect_ColorScale::DrawScale( const
+@@ -504,6 +504,7 @@ void Aspect_ColorScale::DrawScale( const
      case Aspect_TOCSP_RIGHT:
        x += colorWidth + spacer;
        break;
@@ -65,7 +65,7 @@ Index: oce/src/BRepExtrema/BRepExtrema_DistShapeShape.cxx
 ===================================================================
 --- oce.orig/src/BRepExtrema/BRepExtrema_DistShapeShape.cxx
 +++ oce/src/BRepExtrema/BRepExtrema_DistShapeShape.cxx
-@@ -455,6 +455,7 @@ void BRepExtrema_DistShapeShape::Dump(St
+@@ -456,6 +456,7 @@ void BRepExtrema_DistShapeShape::Dump(St
          ParOnFaceS1(i,r1,r2);
          o << "parameters on the first face :  u= " << r1 << " v=" <<  r2 << endl;
          break;
@@ -73,7 +73,7 @@ Index: oce/src/BRepExtrema/BRepExtrema_DistShapeShape.cxx
      }
      switch (SupportTypeShape2(i))
      {
-@@ -466,6 +467,7 @@ void BRepExtrema_DistShapeShape::Dump(St
+@@ -467,6 +468,7 @@ void BRepExtrema_DistShapeShape::Dump(St
          ParOnFaceS2(i,r1,r2);
          o << "parameters on the second face : u= " << r1 << " v=" <<  r2 << endl;
          break;

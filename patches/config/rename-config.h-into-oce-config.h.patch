@@ -21,7 +21,7 @@ Index: oce/inc/OpenGl_FontMgr.hxx
 ===================================================================
 --- oce.orig/inc/OpenGl_FontMgr.hxx
 +++ oce/inc/OpenGl_FontMgr.hxx
-@@ -7,7 +7,7 @@
+@@ -6,7 +6,7 @@
  # include <stdlib.h>
  #endif
  
@@ -251,7 +251,7 @@ Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx
 +++ oce/src/Draw/Draw_Window.cxx
-@@ -86,7 +86,7 @@ defaultPrompt:
+@@ -88,7 +88,7 @@ defaultPrompt:
  #ifndef WNT
  
  #ifdef HAVE_CONFIG_H
@@ -675,7 +675,7 @@ Index: oce/src/OpenGl/OpenGl_graduatedtrihedron.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_graduatedtrihedron.cxx
 +++ oce/src/OpenGl/OpenGl_graduatedtrihedron.cxx
-@@ -18,7 +18,7 @@
+@@ -23,7 +23,7 @@
  #include <OpenGl_TextRender.hxx>
  
  #ifdef HAVE_CONFIG_H

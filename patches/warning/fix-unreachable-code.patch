@@ -129,7 +129,7 @@ Index: oce/src/AIS/AIS_Selection.cxx
 ===================================================================
 --- oce.orig/src/AIS/AIS_Selection.cxx
 +++ oce/src/AIS/AIS_Selection.cxx
-@@ -267,8 +267,10 @@ AIS_SelectStatus AIS_Selection::Select(c
+@@ -268,8 +268,10 @@ AIS_SelectStatus AIS_Selection::Select(c
    S->myResultMap.Bind( anObject, aListIter );
    return AIS_SS_Added;
  #endif //USE_MAP
@@ -277,7 +277,7 @@ Index: oce/src/BRepTools/BRepTools_NurbsConvertModification.cxx
 ===================================================================
 --- oce.orig/src/BRepTools/BRepTools_NurbsConvertModification.cxx
 +++ oce/src/BRepTools/BRepTools_NurbsConvertModification.cxx
-@@ -551,8 +551,10 @@ Standard_Boolean BRepTools_NurbsConvertM
+@@ -553,8 +553,10 @@ Standard_Boolean BRepTools_NurbsConvertM
        return Standard_True;
      }
    }
@@ -374,7 +374,7 @@ Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx
 +++ oce/src/Draw/Draw_Window.cxx
-@@ -1362,7 +1362,9 @@ LONG APIENTRY DrawWindow::DrawProc(HWND
+@@ -1360,7 +1360,9 @@ LONG APIENTRY DrawWindow::DrawProc(HWND
      else
        return LONG(DefMDIChildProc(hWnd, wMsg, wParam, lParam));
    }
@@ -481,7 +481,7 @@ Index: oce/src/GeomFill/GeomFill_LocationGuide.cxx
 ===================================================================
 --- oce.orig/src/GeomFill/GeomFill_LocationGuide.cxx
 +++ oce/src/GeomFill/GeomFill_LocationGuide.cxx
-@@ -733,6 +733,7 @@ static void InGoodPeriod(const Standard_
+@@ -732,6 +732,7 @@ static void InGoodPeriod(const Standard_
    if (rotation) {  
      return Standard_False;
      
@@ -489,7 +489,7 @@ Index: oce/src/GeomFill/GeomFill_LocationGuide.cxx
      // initialisation du germe 
      InitX(Param);      
      
-@@ -846,6 +847,7 @@ static void InGoodPeriod(const Standard_
+@@ -845,6 +846,7 @@ static void InGoodPeriod(const Standard_
  	return Standard_False;
        }
  
@@ -629,7 +629,7 @@ Index: oce/src/IntTools/IntTools_EdgeFace.cxx
 ===================================================================
 --- oce.orig/src/IntTools/IntTools_EdgeFace.cxx
 +++ oce/src/IntTools/IntTools_EdgeFace.cxx
-@@ -902,6 +902,7 @@ static
+@@ -897,6 +897,7 @@ static
      return 0;
    }
  
@@ -637,7 +637,7 @@ Index: oce/src/IntTools/IntTools_EdgeFace.cxx
    //
    dt=al1-af1;
    if (dt<1.e-5) {
-@@ -942,6 +943,7 @@ static
+@@ -937,6 +938,7 @@ static
      }
    }
    return 0;
@@ -649,7 +649,7 @@ Index: oce/src/MAT2d/MAT2d_Circuit.cxx
 ===================================================================
 --- oce.orig/src/MAT2d/MAT2d_Circuit.cxx
 +++ oce/src/MAT2d/MAT2d_Circuit.cxx
-@@ -812,7 +812,9 @@ static Standard_Boolean IsSharpCorner (c
+@@ -809,7 +809,9 @@ static Standard_Boolean IsSharpCorner (c
    else {
      return Standard_True;
    }
@@ -719,7 +719,7 @@ Index: oce/src/ProjLib/ProjLib_ComputeApproxOnPolarSurface.cxx
 ===================================================================
 --- oce.orig/src/ProjLib/ProjLib_ComputeApproxOnPolarSurface.cxx
 +++ oce/src/ProjLib/ProjLib_ComputeApproxOnPolarSurface.cxx
-@@ -1170,11 +1170,13 @@ Handle(Adaptor2d_HCurve2d)
+@@ -1181,11 +1181,13 @@ Handle(Adaptor2d_HCurve2d)
  //  Modified by Sergey KHROMOV - Thu Apr 18 10:57:51 2002 End
      return Handle(Adaptor2d_HCurve2d)();
    }
@@ -886,7 +886,7 @@ Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
 +++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
-@@ -1768,7 +1768,10 @@ Standard_Integer TopOpeBRepBuild_Builder
+@@ -1762,7 +1762,10 @@ Standard_Integer TopOpeBRepBuild_Builder
      // Unknowm case for existing adjacents
      return 0;
    }

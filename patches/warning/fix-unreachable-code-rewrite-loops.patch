@@ -50,7 +50,7 @@ Index: oce/src/BRepCheck/BRepCheck_Face.cxx
 ===================================================================
 --- oce.orig/src/BRepCheck/BRepCheck_Face.cxx
 +++ oce/src/BRepCheck/BRepCheck_Face.cxx
-@@ -644,9 +644,8 @@ static Standard_Boolean IsInside(const T
+@@ -640,9 +640,8 @@ static Standard_Boolean IsInside(const T
  {
    // Standard_Real U,V;
    TopExp_Explorer exp;
