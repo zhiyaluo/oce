@@ -19,7 +19,7 @@ Index: oce/inc/LDOM_MemManager.hxx
 ===================================================================
 --- oce.orig/inc/LDOM_MemManager.hxx
 +++ oce/inc/LDOM_MemManager.hxx
-@@ -81,6 +81,7 @@ class LDOM_MemManager : public MMgt_TSha
+@@ -96,6 +96,7 @@ class LDOM_MemManager : public MMgt_TSha
  
    // ---- CLASS HashTable ----
    class HashTable {
@@ -27,7 +27,7 @@ Index: oce/inc/LDOM_MemManager.hxx
      friend class LDOM_MemManager;
      HashTable                   (/* const Standard_Integer theMask, */
                                   LDOM_MemManager&       theMemManager);
-@@ -89,6 +90,10 @@ class LDOM_MemManager : public MMgt_TSha
+@@ -104,6 +105,10 @@ class LDOM_MemManager : public MMgt_TSha
                                   Standard_Integer&      theHashIndex);
      static Standard_Integer Hash(const char             * theString,
                                   const Standard_Integer theLen);
@@ -42,7 +42,7 @@ Index: oce/inc/SelectMgr_CompareResults.hxx
 ===================================================================
 --- oce.orig/inc/SelectMgr_CompareResults.hxx
 +++ oce/inc/SelectMgr_CompareResults.hxx
-@@ -9,6 +9,8 @@
+@@ -24,6 +24,8 @@
  
  class SelectMgr_CompareResults: public TCollection_CompareOfInteger
  {
@@ -55,7 +55,7 @@ Index: oce/inc/VrmlData_InBuffer.hxx
 ===================================================================
 --- oce.orig/inc/VrmlData_InBuffer.hxx
 +++ oce/inc/VrmlData_InBuffer.hxx
-@@ -14,6 +14,10 @@
+@@ -29,6 +29,10 @@
   * Structure passed to the methods dealing with input stream.
   */
  struct VrmlData_InBuffer {
@@ -70,7 +70,7 @@ Index: oce/inc/VrmlData_ShapeConvert.hxx
 ===================================================================
 --- oce.orig/inc/VrmlData_ShapeConvert.hxx
 +++ oce/inc/VrmlData_ShapeConvert.hxx
-@@ -23,7 +23,10 @@ class Handle_VrmlData_Coordinate;
+@@ -38,7 +38,10 @@ class Handle_VrmlData_Coordinate;
  
  class VrmlData_ShapeConvert 
  {
@@ -86,7 +86,7 @@ Index: oce/src/Extrema/Extrema_GenExtPS.cxx
 ===================================================================
 --- oce.orig/src/Extrema/Extrema_GenExtPS.cxx
 +++ oce/src/Extrema/Extrema_GenExtPS.cxx
-@@ -27,6 +27,8 @@
+@@ -43,6 +43,8 @@
  
  class Bnd_SphereUBTreeSelector : public Extrema_UBTreeOfSphere::Selector
  {
@@ -99,7 +99,7 @@ Index: oce/src/LDOM/LDOM_CharReference.cxx
 ===================================================================
 --- oce.orig/src/LDOM/LDOM_CharReference.cxx
 +++ oce/src/LDOM/LDOM_CharReference.cxx
-@@ -25,6 +25,9 @@ struct entityRef {
+@@ -40,6 +40,9 @@ struct entityRef {
    const char * name;
    const int    length;
    entityRef (const char * aName, const int aLen) : name(aName), length(aLen) {}

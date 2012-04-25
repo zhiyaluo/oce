@@ -68,7 +68,7 @@ Index: oce/src/BRepFill/BRepFill_Evolved.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_Evolved.cxx
 +++ oce/src/BRepFill/BRepFill_Evolved.cxx
-@@ -2107,8 +2107,8 @@ void BRepFill_Evolved::AddTopAndBottom(B
+@@ -2106,8 +2106,8 @@ void BRepFill_Evolved::AddTopAndBottom(B
  	    gp_Pnt PC;
  	    gp_Vec VC;
  	    C.D1(u,PC,VC);
@@ -83,7 +83,7 @@ Index: oce/src/BRepLib/BRepLib_FindSurface.cxx
 ===================================================================
 --- oce.orig/src/BRepLib/BRepLib_FindSurface.cxx
 +++ oce/src/BRepLib/BRepLib_FindSurface.cxx
-@@ -100,7 +100,7 @@ void BRepLib_FindSurface::Init(const Top
+@@ -116,7 +116,7 @@ void BRepLib_FindSurface::Init(const Top
  
    TopoDS_Edge E = TopoDS::Edge(ex.Current());
    Standard_Real f,l,ff,ll;
@@ -92,7 +92,7 @@ Index: oce/src/BRepLib/BRepLib_FindSurface.cxx
    Handle(Geom_Surface) SS;
    TopLoc_Location L;
    Standard_Integer i = 0,j;
-@@ -119,7 +119,7 @@ void BRepLib_FindSurface::Init(const Top
+@@ -135,7 +135,7 @@ void BRepLib_FindSurface::Init(const Top
  	while (Standard_True) {
  	  j++;
  	  BRep_Tool::CurveOnSurface(TopoDS::Edge(ex.Current()),
@@ -105,7 +105,7 @@ Index: oce/src/Bisector/Bisector_BisecPC.cxx
 ===================================================================
 --- oce.orig/src/Bisector/Bisector_BisecPC.cxx
 +++ oce/src/Bisector/Bisector_BisecPC.cxx
-@@ -374,11 +374,11 @@ void Bisector_BisecPC::Values(const Stan
+@@ -390,11 +390,11 @@ void Bisector_BisecPC::Values(const Stan
    case 2 :  {curve->D3(UOnCurve,PC,Tu,Tuu,T3u);break;}
    }
    
@@ -120,10 +120,10 @@ Index: oce/src/Bisector/Bisector_BisecPC.cxx
    Standard_Real A1;
  
    if (Abs(NorPPC) > gp::Resolution() && (NorPPC*sign) < 0.) {
-@@ -390,8 +390,8 @@ void Bisector_BisecPC::Values(const Stan
-   if (N == 0) return;                                 // Fin Calcul Point;
+@@ -406,8 +406,8 @@ void Bisector_BisecPC::Values(const Stan
+   if (N == 0) return;                                 // End Calculation Point;
  
-   gp_Vec2d      Nu ( - Tuu.Y() , Tuu.X());            // derivee de la normale en U.
+   gp_Vec2d      Nu ( - Tuu.Y() , Tuu.X());            // derivative of the normal by U.
 -  Standard_Real NuPPC     = Nu .Dot(PPC);
 -  Standard_Real TuPPC     = Tu .Dot(PPC);
 +  Standard_Real NuPPC     = Nu .Dot(ppc);
@@ -131,7 +131,7 @@ Index: oce/src/Bisector/Bisector_BisecPC.cxx
    Standard_Real NorPPCE2  = NorPPC*NorPPC;
    Standard_Real A2        = TuPPC/NorPPC - 0.5*NuPPC*SquarePPC/NorPPCE2;
  
-@@ -403,8 +403,8 @@ void Bisector_BisecPC::Values(const Stan
+@@ -419,8 +419,8 @@ void Bisector_BisecPC::Values(const Stan
    gp_Vec2d Nuu ( - T3u.Y() , T3u.X());
    
    Standard_Real NorPPCE4 = NorPPCE2*NorPPCE2;
@@ -142,7 +142,7 @@ Index: oce/src/Bisector/Bisector_BisecPC.cxx
    
    Standard_Real A21 = TuuPPC/NorPPC - TuPPC*NuPPC/NorPPCE2;
    Standard_Real A22 = (0.5*NuuPPC*SquarePPC + NuPPC*TuPPC)/NorPPCE2 - 
-@@ -458,12 +458,12 @@ Standard_Real Bisector_BisecPC::Distance
+@@ -474,12 +474,12 @@ Standard_Real Bisector_BisecPC::Distance
    Standard_Real UOnCurve = LinkBisCurve(U);
    
    curve->D1(UOnCurve,PC,Tan);
@@ -162,7 +162,7 @@ Index: oce/src/Plate/Plate_LinearScalarConstraint.cxx
 ===================================================================
 --- oce.orig/src/Plate/Plate_LinearScalarConstraint.cxx
 +++ oce/src/Plate/Plate_LinearScalarConstraint.cxx
-@@ -21,26 +21,26 @@ Plate_LinearScalarConstraint::Plate_Line
+@@ -37,26 +37,26 @@ Plate_LinearScalarConstraint::Plate_Line
    myCoef->ChangeValue(1,1) = coeff;
  }
  
@@ -201,7 +201,7 @@ Index: oce/src/Plate/Plate_LinearXYZConstraint.cxx
 ===================================================================
 --- oce.orig/src/Plate/Plate_LinearXYZConstraint.cxx
 +++ oce/src/Plate/Plate_LinearXYZConstraint.cxx
-@@ -9,24 +9,24 @@
+@@ -25,24 +25,24 @@
  
  Plate_LinearXYZConstraint::Plate_LinearXYZConstraint() {}
  

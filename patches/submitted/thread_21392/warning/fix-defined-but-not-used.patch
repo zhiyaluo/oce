@@ -49,7 +49,7 @@ Index: oce/src/AIS2D/AIS2D_LocalContext.cxx
 ===================================================================
 --- oce.orig/src/AIS2D/AIS2D_LocalContext.cxx
 +++ oce/src/AIS2D/AIS2D_LocalContext.cxx
-@@ -17,11 +17,6 @@
+@@ -34,11 +34,6 @@
  #include <Graphic2d_DisplayList.hxx>
  #include <AIS2D_HSequenceOfIO.hxx>
  
@@ -65,7 +65,7 @@ Index: oce/src/BRepFeat/BRepFeat_MakeDPrism.cxx
 ===================================================================
 --- oce.orig/src/BRepFeat/BRepFeat_MakeDPrism.cxx
 +++ oce/src/BRepFeat/BRepFeat_MakeDPrism.cxx
-@@ -78,12 +78,6 @@ static void MajMap(const TopoDS_Shape&,
+@@ -95,12 +95,6 @@ static void MajMap(const TopoDS_Shape&,
  		   TopoDS_Shape&); // myLShape
  
  
@@ -78,71 +78,11 @@ Index: oce/src/BRepFeat/BRepFeat_MakeDPrism.cxx
  
  #ifdef DEB
  static void VerifGluedFaces(const TopoDS_Face& theSkface,
-@@ -1250,59 +1244,6 @@ Standard_Integer SensOfPrism(const Handl
- }
- 
- 
-- //=======================================================================
--//function : SetGluedFaces
--//purpose  : 
--//=======================================================================
--
--static void SetGluedFaces(const TopoDS_Face& theSkface,
--			  const TopoDS_Shape& theSbase,
--			  const TopoDS_Shape& thePbase,
--			  const TopTools_DataMapOfShapeListOfShape& theSlmap,
--			  LocOpe_DPrism& theDPrism,
--			  TopTools_DataMapOfShapeShape& theMap)
--{
--  TopExp_Explorer exp;
--  if (!theSkface.IsNull() && thePbase.ShapeType() == TopAbs_FACE) {
--    for (exp.Init(theSbase,TopAbs_FACE); exp.More(); exp.Next()) {
--      if (exp.Current().IsSame(theSkface)) {
--	theMap.Bind(thePbase,theSkface);
--	break;
--      }
--    }
--  }
--  else {
--    TopExp_Explorer exp2;
--    for (exp.Init(thePbase,TopAbs_FACE);exp.More();exp.Next()) {
--      const TopoDS_Face& fac = TopoDS::Face(exp.Current());
--      for (exp2.Init(theSbase,TopAbs_FACE);exp2.More();exp2.Next()) {
--	if (exp2.Current().IsSame(fac)) {
--	  theMap.Bind(fac,fac);
--	  break;
--	}
--      }
--    }
--  }
--
--  // Glissements
--  TopTools_DataMapIteratorOfDataMapOfShapeListOfShape itm(theSlmap);
--  if(!theSlmap.IsEmpty()) {
--    for (; itm.More(); itm.Next()) {
--      const TopoDS_Face& fac = TopoDS::Face(itm.Key());
--      const TopTools_ListOfShape& ledg = itm.Value();
--      for (TopTools_ListIteratorOfListOfShape it(ledg); it.More(); it.Next()) {
--	const TopTools_ListOfShape& gfac = theDPrism.Shapes(it.Value());
--	if (gfac.Extent() != 1) {
--#ifdef DEB
--	  Standard_Boolean trc = BRepFeat_GettraceFEAT();
--	  if (trc) cout << " BRepFeat_MakeDPrism : Pb SetGluedFace" << endl;
--#endif
--	}
--	theMap.Bind(gfac.First(),fac);
--      }
--    }
--  }
--}
- 
- 
- //=======================================================================
 Index: oce/src/BRepFeat/BRepFeat_MakePipe.cxx
 ===================================================================
 --- oce.orig/src/BRepFeat/BRepFeat_MakePipe.cxx
 +++ oce/src/BRepFeat/BRepFeat_MakePipe.cxx
-@@ -54,13 +54,6 @@ static void MajMap(const TopoDS_Shape&,
+@@ -70,13 +70,6 @@ static void MajMap(const TopoDS_Shape&,
  		   TopoDS_Shape&); // myLShape
  
  
@@ -156,72 +96,11 @@ Index: oce/src/BRepFeat/BRepFeat_MakePipe.cxx
  
  
  //=======================================================================
-@@ -369,60 +362,6 @@ Handle(Geom_Curve) BRepFeat_MakePipe::Ba
- }
- 
- 
--//=======================================================================
--//function : SetGluedFaces
--//purpose  : gestion des faces de collage et glissement 
--//=======================================================================
--
--static void SetGluedFaces(const TopoDS_Face& theSkface,
--			  const TopoDS_Shape& theSbase,
--			  const TopoDS_Shape& thePbase,
--			  const TopTools_DataMapOfShapeListOfShape& theSlmap,
--			  LocOpe_Pipe& thePipe,
--			  TopTools_DataMapOfShapeShape& theMap)
--{
--  TopExp_Explorer exp;
--  if (!theSkface.IsNull() && thePbase.ShapeType() == TopAbs_FACE) {
--    for (exp.Init(theSbase,TopAbs_FACE); exp.More(); exp.Next()) {
--      if (exp.Current().IsSame(theSkface)) {
--	theMap.Bind(thePbase,theSkface);
--	break;
--      }
--    }
--  }
--  else {
--    TopExp_Explorer exp2;
--    for (exp.Init(thePbase,TopAbs_FACE);exp.More();exp.Next()) {
--      const TopoDS_Face& fac = TopoDS::Face(exp.Current());
--      for (exp2.Init(theSbase,TopAbs_FACE);exp2.More();exp2.Next()) {
--	if (exp2.Current().IsSame(fac)) {
--	  theMap.Bind(fac,fac);
--	  break;
--	}
--      }
--    }
--  }
--
--  // Glissements
--  TopTools_DataMapIteratorOfDataMapOfShapeListOfShape itm(theSlmap);
--  if(!theSlmap.IsEmpty()) {
--    for (; itm.More(); itm.Next()) {
--      const TopoDS_Face& fac = TopoDS::Face(itm.Key());
--      const TopTools_ListOfShape& ledg = itm.Value();
--      TopTools_ListIteratorOfListOfShape it;
--      for (it.Initialize(ledg); it.More(); it.Next()) {
--	const TopTools_ListOfShape& gfac = thePipe.Shapes(it.Value());
--	if (gfac.Extent() != 1) {
--#ifdef DEB
--	  Standard_Boolean trc = BRepFeat_GettraceFEAT();
--	  if (trc) cout << " BRepFeat_MakeDPipe : Pb SetGluedFace" << endl;
--#endif
--	}
--	theMap.Bind(gfac.First(),fac);
--      }
--    }
--  }
--}
- 
- 
- //=======================================================================
 Index: oce/src/BRepFeat/BRepFeat_MakePrism.cxx
 ===================================================================
 --- oce.orig/src/BRepFeat/BRepFeat_MakePrism.cxx
 +++ oce/src/BRepFeat/BRepFeat_MakePrism.cxx
-@@ -79,12 +79,6 @@ static Standard_Boolean ToFuse(const Top
+@@ -95,12 +95,6 @@ static Standard_Boolean ToFuse(const Top
  			       const TopoDS_Face&);
  
  
@@ -234,71 +113,11 @@ Index: oce/src/BRepFeat/BRepFeat_MakePrism.cxx
  
  #ifdef DEB
  static void VerifGluedFaces(const TopoDS_Face& theSkface,
-@@ -1191,59 +1185,6 @@ Standard_Integer SensOfPrism(const Handl
- }
- 
- 
--//=======================================================================
--//function : SetGluedFaces
--//purpose  : gestion de faces de collage
--//=======================================================================
--
--static void SetGluedFaces(const TopoDS_Face& theSkface,
--			  const TopoDS_Shape& theSbase,
--			  const TopoDS_Shape& thePbase,
--			  const TopTools_DataMapOfShapeListOfShape& theSlmap,
--			  LocOpe_Prism& thePrism,
--			  TopTools_DataMapOfShapeShape& theMap)
--{
--  TopExp_Explorer exp;
--  if (!theSkface.IsNull() && thePbase.ShapeType() == TopAbs_FACE) {
--    for (exp.Init(theSbase,TopAbs_FACE); exp.More(); exp.Next()) {
--      if (exp.Current().IsSame(theSkface)) {
--	theMap.Bind(thePbase,theSkface);
--	break;
--      }
--    }
--  }
--  else {
--    for (exp.Init(theSbase,TopAbs_FACE); exp.More(); exp.Next()) {
--      if (exp.Current().IsSame(theSkface)) {
--	TopExp_Explorer exp2;
--	for (exp2.Init(thePbase,TopAbs_FACE);exp2.More();exp2.Next()) {
--	  theMap.Bind(exp2.Current(),theSkface);
--	}
--	break;
--      }
--    }
--  }
--
--  // Glissements
--  TopTools_DataMapIteratorOfDataMapOfShapeListOfShape itm(theSlmap);
--  if(!theSlmap.IsEmpty()) {
--    for (; itm.More(); itm.Next()) {
--      const TopoDS_Face& fac = TopoDS::Face(itm.Key());
--      const TopTools_ListOfShape& ledg = itm.Value();
--      TopTools_ListIteratorOfListOfShape it;
--      for (it.Initialize(ledg); it.More(); it.Next()) {
--	const TopTools_ListOfShape& gfac = thePrism.Shapes(it.Value());
--	if (gfac.Extent() != 1) {
--#ifdef DEB
--	  Standard_Boolean trc = BRepFeat_GettraceFEAT();
--	  if (trc)  cout << " BRepFeat_MakePrism : Pb SetGluedFace" << endl;
--#endif
--	}
--	theMap.Bind(gfac.First(),fac);
--      }
--    }
--  }
--}
- 
- 
- //=======================================================================
 Index: oce/src/BRepFeat/BRepFeat_MakeRevol.cxx
 ===================================================================
 --- oce.orig/src/BRepFeat/BRepFeat_MakeRevol.cxx
 +++ oce/src/BRepFeat/BRepFeat_MakeRevol.cxx
-@@ -75,12 +75,6 @@ static void MajMap(const TopoDS_Shape&,
+@@ -91,12 +91,6 @@ static void MajMap(const TopoDS_Shape&,
  		   TopoDS_Shape&); // myLShape
  
  
@@ -311,132 +130,11 @@ Index: oce/src/BRepFeat/BRepFeat_MakeRevol.cxx
  
  
  static void VerifGluedFaces(const TopoDS_Face& theSkface,
-@@ -840,60 +834,6 @@ Handle(Geom_Curve) BRepFeat_MakeRevol::B
- }
- 
- 
--//=======================================================================
--//function : SetGluedFaces
--//purpose  : gestion des faces de collage
--//=======================================================================
--
--static void SetGluedFaces(const TopoDS_Face& theSkface,
--			  const TopoDS_Shape& theSbase,
--			  const TopoDS_Shape& thePbase,
--			  const TopTools_DataMapOfShapeListOfShape& theSlmap,
--			  LocOpe_Revol& theRevol,
--			  TopTools_DataMapOfShapeShape& theMap)
--{
--  TopExp_Explorer exp;
--  if (!theSkface.IsNull() && thePbase.ShapeType() == TopAbs_FACE) {
--    for (exp.Init(theSbase,TopAbs_FACE); exp.More(); exp.Next()) {
--      if (exp.Current().IsSame(theSkface)) {
--	theMap.Bind(thePbase,theSkface);
--	break;
--      }
--    }
--  }
--  else {
--    TopExp_Explorer exp2;
--    for (exp.Init(thePbase,TopAbs_FACE);exp.More();exp.Next()) {
--      const TopoDS_Face& fac = TopoDS::Face(exp.Current());
--      for (exp2.Init(theSbase,TopAbs_FACE);exp2.More();exp2.Next()) {
--	if (exp2.Current().IsSame(fac)) {
--	  theMap.Bind(fac,fac);
--	  break;
--	}
--      }
--    }
--  }
--
--  // Glissements
--  TopTools_DataMapIteratorOfDataMapOfShapeListOfShape itm(theSlmap);
--  if(!theSlmap.IsEmpty()) {
--    for (; itm.More(); itm.Next()) {
--      const TopoDS_Face& fac = TopoDS::Face(itm.Key());
--      const TopTools_ListOfShape& ledg = itm.Value();
--      TopTools_ListIteratorOfListOfShape it;
--      for (it.Initialize(ledg); it.More(); it.Next()) {
--	const TopTools_ListOfShape& gfac = theRevol.Shapes(it.Value());
--	if (gfac.Extent() != 1) {
--#ifdef DEB
--	  Standard_Boolean trc = BRepFeat_GettraceFEAT();
--	  if (trc) cout << " BRepFeat_MakeRevol : Pb SetGluedFace" << endl;
--#endif
--	}
--	theMap.Bind(gfac.First(),fac);
--      }
--    }
--  }
--}
- 
- //=======================================================================
- //function : VerifGluedFaces
-Index: oce/src/BRepFill/BRepFill_CompatibleWires.cxx
-===================================================================
---- oce.orig/src/BRepFill/BRepFill_CompatibleWires.cxx
-+++ oce/src/BRepFill/BRepFill_CompatibleWires.cxx
-@@ -54,55 +54,6 @@
- #include <TColStd_SequenceOfReal.hxx>
- 
- 
--static void EdgesFromVertex (const TopoDS_Wire&   W,
--			     const TopoDS_Vertex& V, 
--			     TopoDS_Edge& E1, 
--			     TopoDS_Edge& E2)
--{
--  TopTools_IndexedDataMapOfShapeListOfShape Map;
--  TopExp::MapShapesAndAncestors(W,TopAbs_VERTEX,TopAbs_EDGE,Map);
--
--  const TopTools_ListOfShape& List = Map.FindFromKey(V);
--  TopoDS_Edge          e1   = TopoDS::Edge(List.First());
--  TopoDS_Edge          e2   = TopoDS::Edge(List. Last());
--
--  BRepTools_WireExplorer anExp;
--  Standard_Integer I1=0, I2=0, NE=0;
--
--  for(anExp.Init(W); anExp.More(); anExp.Next()) {
--    NE++;
--    const TopoDS_Edge& ECur = anExp.Current();
--    if (e1.IsSame(ECur)) {
--      I1 = NE;
--    }
--    if (e2.IsSame(ECur)) {
--      I2 = NE;
--    }
--  }
--
--  if (Abs(I2-I1)==1) {
--    // numeros consecutifs
--    if (I2==I1+1) {
--      E1 = e1;
--      E2 = e2;
--    }
--    else {
--      E1 = e2;
--      E2 = e1;
--    }
--  }
--  else {
--    // numeros non consecutifs sur un wire ferme
--    if (I1==1&&I2==NE) {
--      E1 = e2;
--      E2 = e1;
--    }
--    else {
--      E1 = e1;
--      E2 = e2;
--    }
--  }
--}
- 				      
- 
- static void SeqOfVertices (const TopoDS_Wire&   W,
 Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_OffsetWire.cxx
 +++ oce/src/BRepFill/BRepFill_OffsetWire.cxx
-@@ -127,13 +127,13 @@ static void QuasiFleche(const Adaptor3d_
+@@ -143,13 +143,13 @@ static void QuasiFleche(const Adaptor3d_
  			TColgp_SequenceOfPnt& Points);
  
  static Standard_Boolean PerformCurve (TColStd_SequenceOfReal& Parameters,
@@ -457,7 +155,7 @@ Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
  
  static void CheckBadEdges(const TopoDS_Face& Spine, const Standard_Real Offset,
  			  const BRepMAT2d_BisectingLocus& Locus, 
-@@ -481,6 +481,7 @@ void BRepFill_OffsetWire::Perform (const
+@@ -497,6 +497,7 @@ void BRepFill_OffsetWire::Perform (const
        BRepTools_Substitution aSubst;
        TopTools_ListIteratorOfListOfShape it(BadEdges);
        TopTools_ListOfShape aL;
@@ -465,7 +163,7 @@ Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
        TColStd_SequenceOfReal Parameters;
        TColgp_SequenceOfPnt Points;
  
-@@ -496,7 +497,7 @@ void BRepFill_OffsetWire::Perform (const
+@@ -512,7 +513,7 @@ void BRepFill_OffsetWire::Perform (const
  	Handle(Geom_Curve) G3d = BRep_Tool::Curve(TopoDS::Edge(anE),f,l);
  	GeomAdaptor_Curve  AC(G3d,f,l);
  
@@ -474,7 +172,7 @@ Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
  					      AC, aDefl, f, l, Precision::Confusion(),
  					      2);
  
-@@ -2296,40 +2297,6 @@ static void CheckBadEdges(const TopoDS_F
+@@ -2305,40 +2306,6 @@ static void CheckBadEdges(const TopoDS_F
  
  
  //=======================================================================
@@ -515,7 +213,7 @@ Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
  //function : QuasiFleche
  //purpose  : 
  //=======================================================================
-@@ -2409,3 +2376,37 @@ static void QuasiFleche(const Adaptor3d_
+@@ -2418,3 +2385,37 @@ static void QuasiFleche(const Adaptor3d_
    }
  }
  			
@@ -557,7 +255,7 @@ Index: oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_TrimShellCorner.cxx
 +++ oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
-@@ -69,11 +69,6 @@
+@@ -84,11 +84,6 @@
  #include <TColgp_SequenceOfPnt.hxx>
  #include <gce_MakeLin.hxx>
  
@@ -569,7 +267,7 @@ Index: oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
  
  static Standard_Boolean FindParameter(const BOPTools_PaveSet&                     thePaveSet,
  				      const BooleanOperations_KindOfInterference& theType,
-@@ -208,10 +203,6 @@ static Standard_Boolean ChooseSection(co
+@@ -223,10 +218,6 @@ static Standard_Boolean ChooseSection(co
  				      gp_Pln& resPlane,
  				      Standard_Boolean& IsSingular);
  
@@ -580,7 +278,7 @@ Index: oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
  
  
  // ===========================================================================================
-@@ -1069,52 +1060,6 @@ Standard_Boolean FindCommonVertex(const
+@@ -1084,52 +1075,6 @@ Standard_Boolean FindCommonVertex(const
    return bvertexfound;
  }
  
@@ -633,185 +331,11 @@ Index: oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
  
  // ----------------------------------------------------------------------------------------------------
  // static function: GetUEdges
-@@ -2293,173 +2238,3 @@ static Standard_Boolean ChooseSection(co
-   //end of simplest case
- }
- 
--//=======================================================================
--//function : ChoosePlane
--//purpose  : 
--//=======================================================================
--static Standard_Boolean ChoosePlane(const TopoDS_Shape& Comp,
--				    const gp_Ax2& bis,
--				    gp_Pln& resPlane,
--				    TopoDS_Compound& NewComp)
--{
--  Standard_Real TolConf = 1.e-4, TolAng = 1.e-5;
--
--  Standard_Integer N = 100;
--  Standard_Integer Eind, ind, i, j;
--  TopTools_SequenceOfShape Eseq;
--  TopExp_Explorer Explo( Comp, TopAbs_EDGE );
--  for (; Explo.More(); Explo.Next())
--    Eseq.Append( Explo.Current() );
--
--  Standard_Integer NumberOfEdges = Eseq.Length();
--  TColgp_Array2OfPnt Points( 0, NumberOfEdges*2-1, 1, N/4 );
--
--  for (Eind = 0; Eind < NumberOfEdges; Eind++)
--    {
--      TopoDS_Edge anEdge = TopoDS::Edge( Eseq(Eind+1) );
--      BRepAdaptor_Curve aCurve(anEdge);
--      GCPnts_UniformAbscissa Distribution( aCurve, N+1 );
--      for (i = 1; i <= N/4; i++)
--	{
--	  Standard_Real par = Distribution.Parameter(i);
--	  Points( Eind*2, i ) = aCurve.Value(par);
--	}
--      for (i = 3*N/4+2; i <= N+1; i++)
--	{
--	  Standard_Real par = Distribution.Parameter(i);
--	  Points( Eind*2+1, i-3*N/4-1 ) = aCurve.Value(par);
--	}
--    }
--
--  TColgp_Array1OfPnt Origins( 0, NumberOfEdges*2-1 );
--  TColgp_Array1OfDir Normals( 0, NumberOfEdges*2-1 );
--  TColStd_Array1OfBoolean IsSingular( 0, NumberOfEdges*2-1 );
--  Standard_Real MinAngle = PI/2;
--  Standard_Integer MinInd;
--  for (ind = 0; ind < NumberOfEdges*2; ind++)
--    {
--      TColgp_Array1OfPnt pnts( 1, N/4 );
--      for (i = 1; i <= N/4; i++)
--	pnts(i) = Points( ind, i );
--      gp_Ax2 Axe;
--      GeomLib::AxeOfInertia( pnts, Axe, IsSingular(ind) );
--      if (!IsSingular(ind))
--	{
--	  Origins(ind) = Axe.Location();
--	  Normals(ind) = Axe.Direction();
--	  Standard_Real Angle = bis.Angle( Axe );
--	  if (Angle > PI/2)
--	    Angle = PI - Angle;
--	  if (Angle < MinAngle)
--	    {
--	      MinAngle = Angle;
--	      MinInd = ind;
--	    }
--	}
--    }
--
--  gp_Ax2 TheAxe( Origins(MinInd), Normals(MinInd) );
--  Standard_Real MaxAngleWithPln = PI/16;
--  TColStd_SequenceOfInteger iseq;
--  TColgp_SequenceOfPnt Pseq;
--  for (ind = 0; ind < NumberOfEdges*2; ind++)
--    if (!IsSingular(ind))
--      {
--	Standard_Real Angle = Normals(ind).Angle( TheAxe.Direction() );
--	  if (Angle > PI/2)
--	    Angle = PI - Angle;
--	if (Angle <= MaxAngleWithPln)
--	  {
--	    iseq.Append(ind);
--	    for (j = 1; j <= N/4; j++)
--	      Pseq.Append( Points(ind,j) );
--	  }
--      }
--
--  TColgp_Array1OfPnt Parray( 1, Pseq.Length() );
--  for (i = 1; i <= Parray.Length(); i++)
--    Parray(i) = Pseq(i);
--  Standard_Boolean issing;
--  GeomLib::AxeOfInertia( Parray, TheAxe, issing );
--  resPlane = gp_Pln( TheAxe );
--  
--  i = 1;
--  BRep_Builder B;
--  B.MakeCompound(NewComp);
--  while (i <= iseq.Length())
--    {
--      Standard_Integer ind0 = iseq(i);
--      if (IsEven(ind0) && i < iseq.Length() && iseq(i+1) == ind0+1) //the whole edge
--	{
--	  B.Add( NewComp, Eseq(ind0/2+1) );
--	  i += 2;
--	}
--      else
--	i++;
--    }
--
--  Standard_Integer slen = Pseq.Length();
--  for (ind = 0; ind < NumberOfEdges*2; ind += 2)
--    {
--      Standard_Integer IndSing = -1, IndNotSing = -1;
--      gp_Lin aLine;
--      if (IsSingular(ind) && IsSingular(ind+1))
--	{
--	  Standard_Boolean OnPlane0 = Standard_False, OnPlane1 = Standard_False;
--	  aLine = gce_MakeLin( Points(ind, 1), Points(ind, N/4) );
--	  if (resPlane.Contains( aLine, TolConf, TolAng ))
--	    {
--	      for (j = 1; j <= N/4; j++)
--		Pseq.Append( Points(ind,j) );
--	      OnPlane0 = Standard_True;
--	    }
--	  aLine = gce_MakeLin( Points(ind+1, 1), Points(ind+1, N/4) );
--	  if (resPlane.Contains( aLine, TolConf, TolAng ))
--	    {
--	      for (j = 1; j <= N/4; j++)
--		Pseq.Append( Points(ind+1,j) );
--	      OnPlane1 = Standard_True;
--	    }
--	  if (OnPlane0 && OnPlane1)
--	    B.Add( NewComp, Eseq(ind/2+1) );
--	}
--      else if (IsSingular(ind))
--	{
--	  IndSing    = ind;
--	  IndNotSing = ind+1;
--	}
--      else if (IsSingular(ind+1))
--	{
--	  IndNotSing = ind;
--	  IndSing    = ind+1;
--	}
--      if (IndSing != -1 && IndNotSing != -1)
--	{
--	  aLine = gce_MakeLin( Points(IndSing, 1), Points(IndSing, N/4) );
--	  if (resPlane.Contains( aLine, TolConf, TolAng ))
--	    {
--	      for (j = 1; j <= N/4; j++)
--		Pseq.Append( Points(IndSing,j) );
--
--	      for (i = 1; i <= iseq.Length(); i++)
--		if (iseq(i) == IndNotSing)
--		  break;
--	      if (i <= iseq.Length())
--		B.Add( NewComp, Eseq(ind/2+1) );
--	    }
--	}
--    }
--
--  //Recompute the axe of plane
--  if (Pseq.Length() > slen)
--    {
--      TColgp_Array1OfPnt Parray2( 1, Pseq.Length() );
--      for (i = 1; i <= Parray2.Length(); i++)
--	Parray2(i) = Pseq(i);
--      GeomLib::AxeOfInertia( Parray2, TheAxe, issing );
--      resPlane = gp_Pln( TheAxe );
--    }
--
--  //Temporary
--  return Standard_True;
--}
 Index: oce/src/BRepGProp/BRepGProp_Face.cxx
 ===================================================================
 --- oce.orig/src/BRepGProp/BRepGProp_Face.cxx
 +++ oce/src/BRepGProp/BRepGProp_Face.cxx
-@@ -581,130 +581,7 @@ static void GetCurveKnots(const Standard
+@@ -600,130 +600,7 @@ static void GetCurveKnots(const Standard
    }
  }
  
@@ -942,142 +466,11 @@ Index: oce/src/BRepGProp/BRepGProp_Face.cxx
  
  //=======================================================================
  //function : GetUKnots
-Index: oce/src/DDF/DDF_BrowserCommands.cxx
-===================================================================
---- oce.orig/src/DDF/DDF_BrowserCommands.cxx
-+++ oce/src/DDF/DDF_BrowserCommands.cxx
-@@ -30,119 +30,13 @@
- #include <stdio.h>
- #endif
- 
--//=======================================================================
--//function : DFBrowse
--//purpose  : 
--//  arg 1  : DF name
--// [arg 2] : Browser name
--//=======================================================================
--
--static Standard_Integer DFBrowse (Draw_Interpretor& di, 
--				  Standard_Integer  n, 
--				  const char**            a)
--{
--  if (n<2) return 1;
--  
--  Handle(TDF_Data) DF;
--  if (!DDF::GetDF (a[1], DF)) return 1;
--
--  Handle(DDF_Browser) NewDDFBrowser = new DDF_Browser(DF);
--  char *name = new char[50];
--  if (n == 3) sprintf(name,"browser_%s",a[2]);
--  else        sprintf(name,"browser_%s",a[1]);
--
--  Draw::Set (name, NewDDFBrowser);
--  TCollection_AsciiString inst1("dftree ");
--  inst1.AssignCat(name);
--  di.Eval(inst1.ToCString());
--  return 0;
--}
--
--
--//=======================================================================
--//function : DFOpenLabel
--//purpose  : 
--//  arg 1  : Browser name
--// [arg 2] : Label name
--//=======================================================================
--
--static Standard_Integer DFOpenLabel (Draw_Interpretor& di, 
--				   Standard_Integer  n, 
--				   const char**            a)
--{
--  if (n < 2) return 1;
--  
--  Handle(DDF_Browser) browser =
--    Handle(DDF_Browser)::DownCast (Draw::Get(a[1], Standard_True)); 
--
--  TDF_Label lab;
--  if (n == 3) TDF_Tool::Label(browser->Data(),a[2],lab);
--
--  if (lab.IsNull()) {
--    TCollection_AsciiString list = browser->OpenRoot();
--    di<<list.ToCString();
--  }
--  else {
--    TCollection_AsciiString list = browser->OpenLabel(lab);
--    di<<list.ToCString();
--  }
--  return 0;
--}
--
--
--//=======================================================================
--//function : DFOpenAttributeList
--//purpose  : 
--//  arg 1  : Browser name
--//  arg 2  : Label name
--//=======================================================================
--
--static Standard_Integer DFOpenAttributeList(Draw_Interpretor& di,
--					    Standard_Integer n,
--					    const char** a)
--{
--  if (n < 3) return 1;
--  
--  Handle(DDF_Browser) browser =
--    Handle(DDF_Browser)::DownCast (Draw::Get(a[1], Standard_True)); 
--
--  TDF_Label lab;
--  TDF_Tool::Label(browser->Data(),a[2],lab);
--
--  if (lab.IsNull()) {
--    return 1;
--  }
--
--  TCollection_AsciiString list = browser->OpenAttributeList(lab);
--  di << list.ToCString();
--  return 0;
--}
--
--
--
--//=======================================================================
--//function : DFOpenAttribute
--//purpose  : 
--//  arg 1  : Browser name
--//  arg 2  : Attribute index
--//=======================================================================
--
--static Standard_Integer DFOpenAttribute (Draw_Interpretor& di, 
--					 Standard_Integer  n, 
--					 const char**      a)
--{
--  if (n < 3) return 1;
--  
--  Handle(DDF_Browser) browser =
--    Handle(DDF_Browser)::DownCast (Draw::Get(a[1], Standard_True)); 
--
--  Standard_Integer index = atoi(a[2]);
--
--  TCollection_AsciiString list = browser->OpenAttribute(index);
--
--  di<<list.ToCString();
--  return 0;
--}
-+
-+
-+
-+
-+
-+
-+
- 
- 
- // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 Index: oce/src/Extrema/Extrema_GenExtPS.cxx
 ===================================================================
 --- oce.orig/src/Extrema/Extrema_GenExtPS.cxx
 +++ oce/src/Extrema/Extrema_GenExtPS.cxx
-@@ -194,51 +194,6 @@ Processing:
+@@ -210,51 +210,6 @@ Processing:
        - update table TbSel.
  -----------------------------------------------------------------------------*/
  
@@ -1129,25 +522,11 @@ Index: oce/src/Extrema/Extrema_GenExtPS.cxx
  //----------------------------------------------------------
  Extrema_GenExtPS::Extrema_GenExtPS() 
  {
-Index: oce/src/GeomFill/GeomFill_CorrectedFrenet.cxx
-===================================================================
---- oce.orig/src/GeomFill/GeomFill_CorrectedFrenet.cxx
-+++ oce/src/GeomFill/GeomFill_CorrectedFrenet.cxx
-@@ -565,9 +565,6 @@ Standard_Real GeomFill_CorrectedFrenet::
- // Function : ... (OCC78)
- // Purpose : This family of functions produce conversion of angle utility
- //===============================================================
--static Standard_Real corrPI_2PI(Standard_Real Ang){
--  return Ang = (Ang >= 0.0? Ang: 2*PI+Ang);
--};
- static Standard_Real corr2PI_PI(Standard_Real Ang){
-   return Ang = (Ang < PI? Ang: Ang-2*PI);
- };
 Index: oce/src/HLRBRep/HLRBRep_EdgeIList.cxx
 ===================================================================
 --- oce.orig/src/HLRBRep/HLRBRep_EdgeIList.cxx
 +++ oce/src/HLRBRep/HLRBRep_EdgeIList.cxx
-@@ -36,26 +36,6 @@ AddInterference(HLRAlgo_InterferenceList
+@@ -53,26 +53,6 @@ AddInterference(HLRAlgo_InterferenceList
  //function : ProcessComplex
  //purpose  : 
  //=======================================================================
@@ -1174,40 +553,11 @@ Index: oce/src/HLRBRep/HLRBRep_EdgeIList.cxx
  void  HLRBRep_EdgeIList::
  ProcessComplex(HLRAlgo_InterferenceList& IL,
  	       const HLRBRep_EdgeInterferenceTool& T)
-Index: oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
-===================================================================
---- oce.orig/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
-+++ oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
-@@ -1381,24 +1381,6 @@ static Standard_Real AdjustUFirst(Standa
-   return u;
- }
- 
--// adjust U parameters on Quadric
--static Standard_Real AdjustUNext(Standard_Real Un,Standard_Real Up)
--{
--  Standard_Real u = Un;
--  if( Un < 0. )
--    while(u < 0.)
--      u += (2.*PI);
--  else if( Un > (2.*PI) )
--    while( u > (2.*PI) )
--      u -= (2.*PI);
--  else if(Un == 0. || fabs(Un) <= 1.e-9)
--    u = (fabs(Up) < fabs(2.*PI-Up)) ? 0. : (2.*PI);
--  else if(Un == (2.*PI) || fabs(Un-(2.*PI)) <= 1.e-9)
--    u = (fabs(Up) < fabs(2.*PI-Up)) ? 0. : (2.*PI);
--  else //( Un > 0. && Un < (2.*PI) )
--    return u;
--  return u;
--}
- 
- // collect vertices, reject equals
- static Handle(IntSurf_LineOn2S) GetVertices(const Handle(IntPatch_WLine)& WLine,
 Index: oce/src/MeshTest/MeshTest.cxx
 ===================================================================
 --- oce.orig/src/MeshTest/MeshTest.cxx
 +++ oce/src/MeshTest/MeshTest.cxx
-@@ -730,38 +730,6 @@ static Standard_Integer triangle (Draw_I
+@@ -761,38 +761,6 @@ static Standard_Integer triangle (Draw_I
  
  
  //=======================================================================
@@ -1250,7 +600,7 @@ Index: oce/src/MeshTest/MeshTest_DrawableMesh.cxx
 ===================================================================
 --- oce.orig/src/MeshTest/MeshTest_DrawableMesh.cxx
 +++ oce/src/MeshTest/MeshTest_DrawableMesh.cxx
-@@ -166,38 +166,6 @@ Handle(Draw_Drawable3D) MeshTest_Drawabl
+@@ -182,38 +182,6 @@ Handle(Draw_Drawable3D) MeshTest_Drawabl
    return  D;
  }
  
@@ -1289,62 +639,50 @@ Index: oce/src/MeshTest/MeshTest_DrawableMesh.cxx
  void MeshTest_DrawableMesh::Dump(Standard_OStream& S) const 
  {
    // Should be reimplemented
-Index: oce/src/OpenGl/OpenGl_LightBox.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_LightBox.cxx
-+++ oce/src/OpenGl/OpenGl_LightBox.cxx
-@@ -104,7 +104,6 @@ static GLfloat default_sptdir[3] = { 0.0
- static GLfloat default_sptexpo   = 0.0;
- static GLfloat default_sptcutoff = 180.0;
- 
--static GLboolean lightOn = GL_FALSE;
- 
- /*----------------------------------------------------------------------*/
- /*
-Index: oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
-+++ oce/src/OpenGl/OpenGl_togl_begin_layer_mode.cxx
-@@ -104,7 +104,6 @@ static CALL_DEF_LAYER ACLayer;
- 
- static GLboolean layerOpen      = GL_FALSE;
- static int       layerPoints    = 0;
--static Tchar    *layerFont      = NULL;
- static int       layerFontFlag  = IsModified;
- static int       layerFontType  = 0;
- static float     layerRed       = -1.;
-Index: oce/src/OpenGl/OpenGl_transform_persistence.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_transform_persistence.cxx
-+++ oce/src/OpenGl/OpenGl_transform_persistence.cxx
-@@ -44,7 +44,6 @@ typedef  struct
- 
- static  TStatus  TransformPersistenceDisplay( TSM_ELEM_DATA, Tint, cmn_key* );
- static  TStatus  TransformPersistenceAdd( TSM_ELEM_DATA, Tint, cmn_key* );
--static  TStatus  TransformPersistenceDelete( TSM_ELEM_DATA, Tint, cmn_key* );
- static  TStatus  TransformPersistencePrint( TSM_ELEM_DATA, Tint, cmn_key* );
- 
- static  TStatus  (*MtdTbl[])( TSM_ELEM_DATA, Tint, cmn_key* ) =
-@@ -92,12 +91,6 @@ TransformPersistenceDisplay( TSM_ELEM_DA
-   return TSuccess;
- }
- 
--static  TStatus
--TransformPersistenceDelete( TSM_ELEM_DATA data, Tint n, cmn_key *k )
--{
--  /*    transform_persistence_end();*/
--  return TSuccess;
--}
- 
- 
- static  TStatus
 Index: oce/src/STEPControl/STEPControl_ActorRead.cxx
 ===================================================================
 --- oce.orig/src/STEPControl/STEPControl_ActorRead.cxx
 +++ oce/src/STEPControl/STEPControl_ActorRead.cxx
-@@ -113,13 +113,13 @@
+@@ -130,13 +130,13 @@
  
  #define TRANSLOG
+ 
++#ifdef DEB
+ // ============================================================================
+ // Function: DumpWhatIs   
+ // Purpose: Use it in DEB mode to dump your shapes
+ // ============================================================================
+ 
+ static void DumpWhatIs(const TopoDS_Shape& S) {
+-
+   TopTools_MapOfShape aMapOfShape;
+   aMapOfShape.Add(S);
+   TopTools_ListOfShape aListOfShape;
+@@ -180,7 +180,6 @@ static void DumpWhatIs(const TopoDS_Shap
+         nbVertexes++;
+     }
+   }
+-  #ifdef DEB
+   cout << "//What is?// NB COMPOUNDS: " << nbCompounds << endl;
+   cout << "//What is?// NB SOLIDS: " << nbSolids << endl;
+   cout << "//What is?// NB SHELLS: " << nbShells << endl;
+@@ -190,8 +189,8 @@ static void DumpWhatIs(const TopoDS_Shap
+   cout << "//What is?// NB WIRES: " << nbWires << endl;
+   cout << "//What is?// NB EDGES: " << nbEdges << endl;
+   cout << "//What is?// NB VERTEXES: " << nbVertexes << endl;
+-  #endif
+ }
++#endif
+ 
+ namespace {
+   // Set global var to inform outer methods that current representation item is non-manifold.
+Index: oce/src/STEPControl/STEPControl_ActorWrite.cxx
+===================================================================
+--- oce.orig/src/STEPControl/STEPControl_ActorWrite.cxx
++++ oce/src/STEPControl/STEPControl_ActorWrite.cxx
+@@ -119,13 +119,13 @@
+ #include <TopTools_MapOfShape.hxx>
+ #include <TopTools_ListIteratorOfListOfShape.hxx>
  
 +#ifdef DEB
  // ============================================================================
@@ -1362,47 +700,10 @@ Index: oce/src/STEPControl/STEPControl_ActorRead.cxx
      }
    }
 -  #ifdef DEB
-   cout << "//What is?// NB COMPOUNDS: " << nbCompounds << endl;
-   cout << "//What is?// NB SOLIDS: " << nbSolids << endl;
-   cout << "//What is?// NB SHELLS: " << nbShells << endl;
-@@ -173,8 +172,8 @@ static void DumpWhatIs(const TopoDS_Shap
-   cout << "//What is?// NB WIRES: " << nbWires << endl;
-   cout << "//What is?// NB EDGES: " << nbEdges << endl;
-   cout << "//What is?// NB VERTEXES: " << nbVertexes << endl;
--  #endif
- }
-+#endif
- 
- namespace {
-   // Set global var to inform outer methods that current representation item is non-manifold.
-Index: oce/src/STEPControl/STEPControl_ActorWrite.cxx
-===================================================================
---- oce.orig/src/STEPControl/STEPControl_ActorWrite.cxx
-+++ oce/src/STEPControl/STEPControl_ActorWrite.cxx
-@@ -102,13 +102,13 @@
- #include <TopTools_MapOfShape.hxx>
- #include <TopTools_ListIteratorOfListOfShape.hxx>
- 
-+#ifdef DEB
- // ============================================================================
- // Function: DumpWhatIs   
- // Purpose: Use it in DEB mode to dump your shapes
- // ============================================================================
- 
- static void DumpWhatIs(const TopoDS_Shape& S) {
--
-   TopTools_MapOfShape aMapOfShape;
-   aMapOfShape.Add(S);
-   TopTools_ListOfShape aListOfShape;
-@@ -146,7 +146,6 @@ static void DumpWhatIs(const TopoDS_Shap
-         nbVertexes++;
-     }
-   }
--  #ifdef DEB
    cout << "//What is?// NB SOLIDS: " << nbSolids << endl;
    cout << "//What is?// NB SHELLS: " << nbShells << endl;
    cout << "//What is?//    OPEN SHELLS: " << nbOpenShells << endl;
-@@ -155,8 +154,9 @@ static void DumpWhatIs(const TopoDS_Shap
+@@ -172,8 +171,9 @@ static void DumpWhatIs(const TopoDS_Shap
    cout << "//What is?// NB WIRES: " << nbWires << endl;
    cout << "//What is?// NB EDGES: " << nbEdges << endl;
    cout << "//What is?// NB VERTEXES: " << nbVertexes << endl;
@@ -1417,7 +718,7 @@ Index: oce/src/ShapeFix/ShapeFix_Face.cxx
 ===================================================================
 --- oce.orig/src/ShapeFix/ShapeFix_Face.cxx
 +++ oce/src/ShapeFix/ShapeFix_Face.cxx
-@@ -1920,26 +1920,6 @@ Standard_Boolean ShapeFix_Face::FixLoopW
+@@ -1948,26 +1948,6 @@ Standard_Boolean ShapeFix_Face::FixLoopW
  }
  
  
@@ -1448,7 +749,7 @@ Index: oce/src/ShapeFix/ShapeFix_Solid.cxx
 ===================================================================
 --- oce.orig/src/ShapeFix/ShapeFix_Solid.cxx
 +++ oce/src/ShapeFix/ShapeFix_Solid.cxx
-@@ -97,29 +97,6 @@ ShapeFix_Solid::ShapeFix_Solid(const Top
+@@ -114,29 +114,6 @@ ShapeFix_Solid::ShapeFix_Solid(const Top
  //function : CollectSolids
  //purpose  : 
  //=======================================================================
@@ -1482,7 +783,7 @@ Index: oce/src/TNaming/TNaming_Name.cxx
 ===================================================================
 --- oce.orig/src/TNaming/TNaming_Name.cxx
 +++ oce/src/TNaming/TNaming_Name.cxx
-@@ -1053,92 +1053,6 @@ static Standard_Boolean Union (const TDF
+@@ -1069,92 +1069,6 @@ static Standard_Boolean Union (const TDF
  // function: FindShape
  //
  //=======================================================================
@@ -1579,7 +880,7 @@ Index: oce/src/Units/Units_UnitsDictionary.cxx
 ===================================================================
 --- oce.orig/src/Units/Units_UnitsDictionary.cxx
 +++ oce/src/Units/Units_UnitsDictionary.cxx
-@@ -43,10 +43,6 @@
+@@ -59,10 +59,6 @@
  #include <Units_Operators.hxx>
  #include <OSD.hxx>
  
@@ -1594,7 +895,7 @@ Index: oce/src/Viewer2dTest/Viewer2dTest_DisplayCommands.cxx
 ===================================================================
 --- oce.orig/src/Viewer2dTest/Viewer2dTest_DisplayCommands.cxx
 +++ oce/src/Viewer2dTest/Viewer2dTest_DisplayCommands.cxx
-@@ -288,42 +288,6 @@ Handle(AIS2D_InteractiveObject) Select2d
+@@ -303,42 +303,6 @@ Handle(AIS2D_InteractiveObject) Select2d
    return ret;
  }
  
@@ -1641,7 +942,7 @@ Index: oce/src/Viewer2dTest/Viewer2dTest_ViewerCommands.cxx
 ===================================================================
 --- oce.orig/src/Viewer2dTest/Viewer2dTest_ViewerCommands.cxx
 +++ oce/src/Viewer2dTest/Viewer2dTest_ViewerCommands.cxx
-@@ -100,11 +100,10 @@ static int X_ButtonPress = 0, Y_ButtonPr
+@@ -116,11 +116,10 @@ static int X_ButtonPress = 0, Y_ButtonPr
  #ifdef WNT
  static LRESULT WINAPI Viewer2dWindowProc (HWND hwnd, UINT uMsg,
                                            WPARAM wParam, LPARAM lParam);
@@ -1654,7 +955,7 @@ Index: oce/src/Viewer2dTest/Viewer2dTest_ViewerCommands.cxx
  //==============================================================================
  static Handle(MMgt_TShared)& WClass()
  {
-@@ -119,6 +118,9 @@ static Handle(MMgt_TShared)& WClass()
+@@ -135,6 +134,9 @@ static Handle(MMgt_TShared)& WClass()
    return theWClass;
  }
  
@@ -1664,7 +965,7 @@ Index: oce/src/Viewer2dTest/Viewer2dTest_ViewerCommands.cxx
  //==============================================================================
  //function : ViewerInit
  //purpose  : Create the window viewer and initialize all the global variable
-@@ -634,6 +636,7 @@ static void ProcessMotion2d()
+@@ -650,6 +652,7 @@ static void ProcessMotion2d()
    EM->MoveTo(X_Motion, Y_Motion, V);
  }
  
@@ -1672,7 +973,7 @@ Index: oce/src/Viewer2dTest/Viewer2dTest_ViewerCommands.cxx
  //==============================================================================
  //function : ProcessGridMotion2d
  //purpose  : pre-hilights grid point near mouse position
-@@ -654,6 +657,7 @@ static void ProcessGridMotion2d()
+@@ -670,6 +673,7 @@ static void ProcessGridMotion2d()
      LastIsGridActiveStatus = Standard_False;
    }
  }
@@ -1684,7 +985,7 @@ Index: oce/src/Visual3d/Visual3d_ViewMapping.cxx
 ===================================================================
 --- oce.orig/src/Visual3d/Visual3d_ViewMapping.cxx
 +++ oce/src/Visual3d/Visual3d_ViewMapping.cxx
-@@ -30,7 +30,6 @@
+@@ -45,7 +45,6 @@
  
  // Perspective
  #include <OSD_Environment.hxx>
@@ -1696,7 +997,7 @@ Index: oce/src/XmlLDrivers/XmlLDrivers_DocumentRetrievalDriver.cxx
 ===================================================================
 --- oce.orig/src/XmlLDrivers/XmlLDrivers_DocumentRetrievalDriver.cxx
 +++ oce/src/XmlLDrivers/XmlLDrivers_DocumentRetrievalDriver.cxx
-@@ -36,7 +36,6 @@
+@@ -51,7 +51,6 @@
  #define END_REF           "END_REF"
  #define REFERENCE_COUNTER "REFERENCE_COUNTER"
  

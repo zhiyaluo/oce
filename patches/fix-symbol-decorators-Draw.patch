@@ -15,7 +15,7 @@ Index: oce/inc/Draw_Viewer.hxx
 ===================================================================
 --- oce.orig/inc/Draw_Viewer.hxx
 +++ oce/inc/Draw_Viewer.hxx
-@@ -27,6 +27,8 @@
+@@ -43,6 +43,8 @@
  # else
  #  define __Draw_API /*__declspec( dllimport )*/
  # endif
@@ -28,7 +28,7 @@ Index: oce/inc/Draw_Window.hxx
 ===================================================================
 --- oce.orig/inc/Draw_Window.hxx
 +++ oce/inc/Draw_Window.hxx
-@@ -188,6 +188,8 @@ void GetNextEvent(Event&);
+@@ -204,6 +204,8 @@ void GetNextEvent(Event&);
  # else
  #  define __Draw_API __declspec( dllimport )
  # endif

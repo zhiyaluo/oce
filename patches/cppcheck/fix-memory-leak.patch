@@ -168,36 +168,11 @@ Subject: [PATCH] Fix memory leak in OSD_FontMgr.cxx
  src/OSD/OSD_FontMgr.cxx |    5 ++++-
  1 files changed, 4 insertions(+), 1 deletions(-)
 
-Index: oce/inc/MAT_Mat.gxx
-===================================================================
---- oce.orig/inc/MAT_Mat.gxx
-+++ oce/inc/MAT_Mat.gxx
-@@ -152,6 +152,8 @@ void MAT_Mat::CreateMat(Tool& atool)
- 
-   if (noofarea == 0) {
-     cout <<" Erreur d allocation "<<endl;
-+    delete [] firstarea;
-+    delete [] lastarea;
-     return;
-   }
- 
-Index: oce/src/Draw/Draw.cxx
-===================================================================
---- oce.orig/src/Draw/Draw.cxx
-+++ oce/src/Draw/Draw.cxx
-@@ -281,6 +281,7 @@ void Draw_Appli(Standard_Integer argc, c
-       strcat(thedefault,casroot);
-       strcat (thedefault,"/src/DrawResources/DrawDefault");
-       ReadInitFile(thedefault);
-+      free(thedefault);
-     }
-   }
-   else
 Index: oce/src/Graphic2d/Graphic2d_ImageFile.cxx
 ===================================================================
 --- oce.orig/src/Graphic2d/Graphic2d_ImageFile.cxx
 +++ oce/src/Graphic2d/Graphic2d_ImageFile.cxx
-@@ -400,6 +400,7 @@ Standard_Integer readheader     = 0;
+@@ -418,6 +418,7 @@ Standard_Integer readheader     = 0;
          if (readheader != sizeheader) {
                  cout << "Unable to read dump file header.\n" << flush;
                  if( !Reopen ) aFile.Close ();
@@ -221,36 +196,13 @@ Index: oce/src/MFT/MFT_FontManager.cxx
        }
      }
  
-Index: oce/src/OSD/OSD_FontMgr.cxx
-===================================================================
---- oce.orig/src/OSD/OSD_FontMgr.cxx
-+++ oce/src/OSD/OSD_FontMgr.cxx
-@@ -125,10 +125,17 @@ void OSD_FontMgr::InitFontDataBase() {
-   Standard_Character *font_dir = new Standard_Character[ req_size + strlen("\\Fonts\\") + 1 ]  ;  
- 
-   if( !strcpy( font_dir, windir_var ) )
-+  {
-+    delete [] windir_var;
-+    delete [] font_dir;
-     return  ;   
-+  }   
-   if( !strcat( font_dir, "\\Fonts\\" ) )
-+  {
-+    delete [] windir_var;
-+    delete [] font_dir;
-     return ;  
--
-+  }
-   Handle(TCollection_HAsciiString) HFontDir = new TCollection_HAsciiString(font_dir);
- 
- #ifdef TRACE
 Index: oce/src/OpenGl/OpenGl_ImageBox.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_ImageBox.cxx
 +++ oce/src/OpenGl/OpenGl_ImageBox.cxx
-@@ -326,7 +326,14 @@ read_texture(char *name, int *width, int
-   bbuf = (unsigned char *)malloc(image->xsize*sizeof(unsigned char));
-   abuf = (unsigned char *)malloc(image->xsize*sizeof(unsigned char));
+@@ -345,7 +345,14 @@ read_texture(char *name, int *width, int
+   bbuf = new unsigned char[image->xsize];
+   abuf = new unsigned char[image->xsize];
    if(!base || !rbuf || !gbuf || !bbuf)
 +  {  
 +    free(base);
@@ -263,73 +215,3 @@ Index: oce/src/OpenGl/OpenGl_ImageBox.cxx
    lptr = base;
    for(y=0; y<image->ysize; y++) {
      if(image->zsize>=4) {
-Index: oce/src/OpenGl/OpenGl_filters.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_filters.cxx
-+++ oce/src/OpenGl/OpenGl_filters.cxx
-@@ -348,7 +348,11 @@ TglNamesetRemove( Tint num, Tint *set )
-   size = num, size %= LIST_GROW_SIZE, size++, size *= LIST_GROW_SIZE;
-   temp = new Tint[size];
-   if( !temp )
-+  {
-+    delete [] ptr;
-+    delete [] temp;
-     return TFailure;
-+  }
-   memcpy( temp, set, num*sizeof(Tint) );
- 
-   /* sort new set */
-Index: oce/src/OpenGl/OpenGl_indexpolygons.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_indexpolygons.cxx
-+++ oce/src/OpenGl/OpenGl_indexpolygons.cxx
-@@ -268,6 +268,7 @@ PolygonIndicesAdd( TSM_ELEM_DATA d, Tint
-   {
-     //cmn_freemem( data->vertices );
-     delete[] data->vertices;
-+    delete data;
-     return TFailure;
-   }
-   //cmn_memreserve( data->bounds, data->num_bounds, 0 );
-Index: oce/src/OpenGl/OpenGl_text.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_text.cxx
-+++ oce/src/OpenGl/OpenGl_text.cxx
-@@ -153,8 +153,11 @@ TextAdd( TSM_ELEM_DATA d, Tint n, cmn_ke
- 
-   wchar_t *wstr = new wchar_t[i];
-   if( !wstr )
-+  {      
-+    delete data;
-+    delete [] wstr;
-     return TFailure;
--
-+  }
-   data->attach_pt = *pt;
-   data->length    = i;
-   //szv: instead of memcpy
-Index: oce/src/StepData/StepData_StepReaderData.cxx
-===================================================================
---- oce.orig/src/StepData/StepData_StepReaderData.cxx
-+++ oce/src/StepData/StepData_StepReaderData.cxx
-@@ -1823,7 +1823,7 @@ void StepData_StepReaderData::SetEntityN
-       subpile->SetValue(nbsubpil,num);      // Append(num);
-     }
-   }
--  delete [] inds; delete [] indi; delete [] indr;    //  subpile->Detroy();
-+  delete [] inds; delete [] indi; delete [] indr; delete [] indm;   //  subpile->Detroy();
-   if (indx) delete [] indx;
- }
- 
-Index: oce/src/math/math_FunctionRoots.cxx
-===================================================================
---- oce.orig/src/math/math_FunctionRoots.cxx
-+++ oce/src/math/math_FunctionRoots.cxx
-@@ -251,6 +251,7 @@ math_FunctionRoots::math_FunctionRoots(m
- 
-     if( Nvalid < N ) {
-       Done = Standard_False;
-+      delete [] ptrval;
-       return;
-     }
- 

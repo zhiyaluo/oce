@@ -40,7 +40,7 @@ Index: oce/src/NCollection/NCollection_BaseAllocator.cxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_BaseAllocator.cxx
 +++ oce/src/NCollection/NCollection_BaseAllocator.cxx
-@@ -10,6 +10,16 @@
+@@ -25,6 +25,16 @@
  #include <NCollection_List.hxx>
  #include <Standard_Mutex.hxx>
  
@@ -57,7 +57,7 @@ Index: oce/src/NCollection/NCollection_BaseAllocator.cxx
  IMPLEMENT_STANDARD_HANDLE(NCollection_BaseAllocator,MMgt_TShared)
  IMPLEMENT_STANDARD_RTTIEXT(NCollection_BaseAllocator,MMgt_TShared)
  
-@@ -257,20 +267,20 @@ void NCollection_BaseAllocator::PrintMem
+@@ -272,20 +282,20 @@ void NCollection_BaseAllocator::PrintMem
      Standard_Integer nbLeft = aInfo.nbAlloc - aInfo.nbFree;
      Standard_Size aSizeAlloc = aInfo.nbAlloc * aInfo.roundSize;
      Standard_Size aSizeLeft = nbLeft * aInfo.roundSize;
@@ -86,7 +86,7 @@ Index: oce/src/NCollection/NCollection_HeapAllocator.cxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_HeapAllocator.cxx
 +++ oce/src/NCollection/NCollection_HeapAllocator.cxx
-@@ -8,6 +8,16 @@
+@@ -23,6 +23,16 @@
  #include <Standard_OutOfMemory.hxx>
  #include <Standard_Mutex.hxx>
  
@@ -103,7 +103,7 @@ Index: oce/src/NCollection/NCollection_HeapAllocator.cxx
  IMPLEMENT_STANDARD_HANDLE (NCollection_HeapAllocator, NCollection_BaseAllocator)
  IMPLEMENT_STANDARD_RTTIEXT(NCollection_HeapAllocator, NCollection_BaseAllocator)
  
-@@ -23,7 +33,7 @@ void * NCollection_HeapAllocator::Alloca
+@@ -38,7 +48,7 @@ void * NCollection_HeapAllocator::Alloca
    void * pResult = malloc(aRoundSize);
    if (!pResult) {
      char buf[128];
@@ -116,7 +116,7 @@ Index: oce/src/NCollection/NCollection_IncAllocator.cxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_IncAllocator.cxx
 +++ oce/src/NCollection/NCollection_IncAllocator.cxx
-@@ -10,6 +10,16 @@
+@@ -25,6 +25,16 @@
  #include <Standard_OutOfMemory.hxx>
  #include <stdio.h>
  
@@ -133,7 +133,7 @@ Index: oce/src/NCollection/NCollection_IncAllocator.cxx
  IMPLEMENT_STANDARD_HANDLE  (NCollection_IncAllocator,NCollection_BaseAllocator)
  IMPLEMENT_STANDARD_RTTIEXT (NCollection_IncAllocator,NCollection_BaseAllocator)
  
-@@ -147,7 +157,7 @@ Standard_EXPORT void IncAllocator_PrintA
+@@ -162,7 +172,7 @@ Standard_EXPORT void IncAllocator_PrintA
          Standard_Size aSize = anAlloc->GetMemSize();
          aTotSize += aSize;
          nbAlloc++;
@@ -146,7 +146,7 @@ Index: oce/src/OSD/OSD_MAllocHook.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_MAllocHook.cxx
 +++ oce/src/OSD/OSD_MAllocHook.cxx
-@@ -22,6 +22,16 @@
+@@ -37,6 +37,16 @@
  
  #define MAX_STR 80
  
@@ -163,7 +163,7 @@ Index: oce/src/OSD/OSD_MAllocHook.cxx
  static OSD_MAllocHook::Callback* MypCurrentCallback = NULL;
  
  //=======================================================================
-@@ -342,7 +352,7 @@ Standard_Boolean OSD_MAllocHook::LogFile
+@@ -357,7 +367,7 @@ Standard_Boolean OSD_MAllocHook::LogFile
      Standard_Size aSizeAlloc = aInfo.nbAlloc * aInfo.size;
      Standard_Size aSizeLeft = nbLeft * aInfo.size;
      Standard_Size aSizePeak = aInfo.nbLeftPeak * aInfo.size;
@@ -172,7 +172,7 @@ Index: oce/src/OSD/OSD_MAllocHook.cxx
              aInfo.nbAlloc, nbLeft, aInfo.nbLeftPeak,
              aSizeAlloc, aSizeLeft, aSizePeak);
      if (aTotAlloc + aSizeAlloc < aTotAlloc) // overflow ?
-@@ -356,7 +366,7 @@ Standard_Boolean OSD_MAllocHook::LogFile
+@@ -371,7 +381,7 @@ Standard_Boolean OSD_MAllocHook::LogFile
          fprintf(aRepFile, "%10lu\n", *it1);
      }
    }
@@ -181,7 +181,7 @@ Index: oce/src/OSD/OSD_MAllocHook.cxx
            "", "", "", (aTotAlloc == SIZE_MAX ? '>' : ' '), aTotAlloc,
            aTotalLeftSize, aTotalPeakSize);
    fclose(aRepFile);
-@@ -375,7 +385,7 @@ void OSD_MAllocHook::LogFileHandler::All
+@@ -390,7 +400,7 @@ void OSD_MAllocHook::LogFileHandler::All
    if (myLogFile != NULL)
    {
      myMutex.Lock();
@@ -190,7 +190,7 @@ Index: oce/src/OSD/OSD_MAllocHook.cxx
      myMutex.Unlock();
      if (myBreakSize == theSize)
      {
-@@ -397,7 +407,7 @@ void OSD_MAllocHook::LogFileHandler::Fre
+@@ -412,7 +422,7 @@ void OSD_MAllocHook::LogFileHandler::Fre
    if (myLogFile != NULL)
    {
      myMutex.Lock();
@@ -199,21 +199,21 @@ Index: oce/src/OSD/OSD_MAllocHook.cxx
      myMutex.Unlock();
    }
  }
-@@ -479,7 +489,7 @@ Standard_Boolean OSD_MAllocHook::Collect
+@@ -492,7 +502,7 @@ Standard_Boolean OSD_MAllocHook::Collect
        Standard_Size aSizeAlloc = myArray[i].nbAlloc * aSize;
-       Standard_Size aSizeLeft = nbLeft * aSize;
+       ptrdiff_t     aSizeLeft = nbLeft * aSize;
        Standard_Size aSizePeak = myArray[i].nbLeftPeak * aSize;
--      fprintf(aRepFile, "%10d %10d %10d %10d %10Iu %10Iu %10Iu\n", aSize,
-+      fprintf(aRepFile, "%10d %10d %10d %10d %10"FMT_SZ_Q"u %10"FMT_SZ_Q"u %10"FMT_SZ_Q"u\n", aSize,
+-      fprintf(aRepFile, "%10d %10d %10d %10d %10Iu %10Id %10Iu\n", aSize,
++      fprintf(aRepFile, "%10d %10d %10d %10d %10"FMT_SZ_Q"u %10"FMT_SZ_Q"d %10"FMT_SZ_Q"u\n", aSize,
                myArray[i].nbAlloc, nbLeft, myArray[i].nbLeftPeak,
                aSizeAlloc, aSizeLeft, aSizePeak);
        if (aTotAlloc + aSizeAlloc < aTotAlloc) // overflow ?
-@@ -488,7 +498,7 @@ Standard_Boolean OSD_MAllocHook::Collect
+@@ -501,7 +511,7 @@ Standard_Boolean OSD_MAllocHook::Collect
          aTotAlloc += aSizeAlloc;
      }
    }
--  fprintf(aRepFile, "%10s %10s %10s %10s%c%10Iu %10Iu %10Iu\n", "Total:",
-+  fprintf(aRepFile, "%10s %10s %10s %10s%c %10"FMT_SZ_Q"u %10"FMT_SZ_Q"u %10"FMT_SZ_Q"u\n", "Total:",
+-  fprintf(aRepFile, "%10s %10s %10s %10s%c%10Iu %10Id %10Iu\n", "Total:",
++  fprintf(aRepFile, "%10s %10s %10s %10s%c%10"FMT_SZ_Q"u %10"FMT_SZ_Q"d %10"FMT_SZ_Q"u\n", "Total:",
            "", "", "", (aTotAlloc == SIZE_MAX ? '>' : ' '), aTotAlloc,
            myTotalLeftSize, myTotalPeakSize);
    fclose(aRepFile);
@@ -221,7 +221,7 @@ Index: oce/src/VrmlData/VrmlData_Scene.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_Scene.cxx
 +++ oce/src/VrmlData/VrmlData_Scene.cxx
-@@ -38,6 +38,16 @@
+@@ -53,6 +53,16 @@
  #pragma warning (disable:4996)
  #endif
  
@@ -238,7 +238,7 @@ Index: oce/src/VrmlData/VrmlData_Scene.cxx
  static void     dumpNode        (Standard_OStream&              theStream,
                                   const Handle(VrmlData_Node)&   theNode,
                                   const TCollection_AsciiString& theIndent);
-@@ -1108,7 +1118,7 @@ void dumpNode (Standard_OStream&
+@@ -1133,7 +1143,7 @@ void dumpNode (Standard_OStream&
      const Standard_Size nCoord = aNode->Coordinates()->Length();
      const Standard_Size nPoly  = aNode->Polygons (ppDummy);
      char buf[64];
@@ -247,7 +247,7 @@ Index: oce/src/VrmlData/VrmlData_Scene.cxx
      dumpNodeHeader (theStream, theIndent, buf, theNode->Name());
    } else if (theNode->IsKind(STANDARD_TYPE(VrmlData_IndexedLineSet))) {
      const Handle(VrmlData_IndexedLineSet) aNode =
-@@ -1117,7 +1127,7 @@ void dumpNode (Standard_OStream&
+@@ -1142,7 +1152,7 @@ void dumpNode (Standard_OStream&
      const Standard_Size nCoord = aNode->Coordinates()->Length();
      const Standard_Size nPoly  = aNode->Polygons (ppDummy);
      char buf[64];

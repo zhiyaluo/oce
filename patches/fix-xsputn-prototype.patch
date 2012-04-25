@@ -33,7 +33,7 @@ Index: oce/inc/LDOM_OSStream.hxx
 ===================================================================
 --- oce.orig/inc/LDOM_OSStream.hxx
 +++ oce/inc/LDOM_OSStream.hxx
-@@ -59,7 +59,7 @@ class LDOM_SBuffer : public streambuf
+@@ -71,7 +71,7 @@ class LDOM_SBuffer : public streambuf
      Standard_EXPORT virtual int underflow();
      //virtual int uflow();
  
@@ -46,7 +46,7 @@ Index: oce/src/LDOM/LDOM_OSStream.cxx
 ===================================================================
 --- oce.orig/src/LDOM/LDOM_OSStream.cxx
 +++ oce/src/LDOM/LDOM_OSStream.cxx
-@@ -111,7 +111,7 @@ int LDOM_SBuffer::underflow()
+@@ -125,7 +125,7 @@ int LDOM_SBuffer::underflow()
  //function : xsputn()
  //purpose  : redefined virtual
  //=======================================================================

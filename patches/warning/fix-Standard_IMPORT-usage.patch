@@ -23,7 +23,7 @@ Index: oce/src/BRepAlgo/BRepAlgo_BooleanOperation.cxx
 ===================================================================
 --- oce.orig/src/BRepAlgo/BRepAlgo_BooleanOperation.cxx
 +++ oce/src/BRepAlgo/BRepAlgo_BooleanOperation.cxx
-@@ -60,11 +60,11 @@ Standard_IMPORT Standard_Integer TopOpeB
+@@ -76,11 +76,11 @@ Standard_IMPORT Standard_Integer TopOpeB
  //modified by NIZHNY-MZV  Wed Apr 19 17:19:11 2000
  //see comments at the top of file TopOpeBRepBuild_Builder1.cxx
  //about using of this global variable
@@ -42,7 +42,7 @@ Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx
 +++ oce/src/Draw/Draw_Window.cxx
-@@ -23,7 +23,7 @@
+@@ -37,7 +37,7 @@
  #include <Image_PixMap.hxx>
  
  extern Draw_Interpretor theCommands;
@@ -55,7 +55,7 @@ Index: oce/src/TestTopOpe/TestTopOpe.cxx
 ===================================================================
 --- oce.orig/src/TestTopOpe/TestTopOpe.cxx
 +++ oce/src/TestTopOpe/TestTopOpe.cxx
-@@ -40,9 +40,9 @@ void  TestTopOpe::AllCommands(Draw_Inter
+@@ -56,9 +56,9 @@ void  TestTopOpe::AllCommands(Draw_Inter
  }
  
  //Standard_IMPORT extern TestTopOpe_HDSDisplayer* PHDSD;
@@ -71,7 +71,7 @@ Index: oce/src/TestTopOpe/TestTopOpe_BOOP.cxx
 ===================================================================
 --- oce.orig/src/TestTopOpe/TestTopOpe_BOOP.cxx
 +++ oce/src/TestTopOpe/TestTopOpe_BOOP.cxx
-@@ -37,7 +37,7 @@
+@@ -53,7 +53,7 @@
  Standard_IMPORT Draw_Viewer dout;
  #endif
  
@@ -84,7 +84,7 @@ Index: oce/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
 ===================================================================
 --- oce.orig/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
 +++ oce/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
-@@ -18,7 +18,7 @@
+@@ -34,7 +34,7 @@
  # include <strings.h>
  #endif
  
@@ -97,7 +97,7 @@ Index: oce/src/TestTopOpe/TestTopOpe_HDSCommands.cxx
 ===================================================================
 --- oce.orig/src/TestTopOpe/TestTopOpe_HDSCommands.cxx
 +++ oce/src/TestTopOpe/TestTopOpe_HDSCommands.cxx
-@@ -716,7 +716,7 @@ static void tds_help(Draw_Interpretor& d
+@@ -731,7 +731,7 @@ static void tds_help(Draw_Interpretor& d
  }
  
  typedef Standard_Integer (*tf_SeeShape)(const Standard_Integer I,const TopoDS_Shape& S);
@@ -110,7 +110,7 @@ Index: oce/src/TopOpeBRep/TopOpeBRep_DSFiller.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRep/TopOpeBRep_DSFiller.cxx
 +++ oce/src/TopOpeBRep/TopOpeBRep_DSFiller.cxx
-@@ -27,8 +27,8 @@
+@@ -43,8 +43,8 @@
  #include <TopOpeBRepDS_ShapeWithState.hxx>
  #include <TopTools_IndexedMapOfShape.hxx>
  
@@ -121,7 +121,7 @@ Index: oce/src/TopOpeBRep/TopOpeBRep_DSFiller.cxx
  
  
  #ifdef DEB
-@@ -299,8 +299,8 @@ static
+@@ -314,8 +314,8 @@ static
  
  } // FUN_shareNOG
  
@@ -136,7 +136,7 @@ Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
 +++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
-@@ -995,7 +995,7 @@ void TopOpeBRepBuild_Builder1::GFillEdge
+@@ -1011,7 +1011,7 @@ void TopOpeBRepBuild_Builder1::GFillEdge
    }
  } // GFillEdgeWES
  
@@ -149,7 +149,7 @@ Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1_1.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1_1.cxx
 +++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1_1.cxx
-@@ -59,7 +59,7 @@ static TopTools_IndexedMapOfShape proces
+@@ -75,7 +75,7 @@ static TopTools_IndexedMapOfShape proces
  static TopTools_IndexedMapOfShape theUsedVertexMap;
  static TopTools_MapOfShape theUnkStateVer;
  
@@ -162,7 +162,7 @@ Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_GridEE.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_GridEE.cxx
 +++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_GridEE.cxx
-@@ -220,13 +220,13 @@ void debfillp2(const Standard_Integer i)
+@@ -236,13 +236,13 @@ void debfillp2(const Standard_Integer i)
  #endif
  
  //Standard_IMPORT extern Standard_Boolean GLOBAL_faces2d;
@@ -182,7 +182,7 @@ Index: oce/src/Viewer2dTest/Viewer2dTest_ObjectCommands.cxx
 ===================================================================
 --- oce.orig/src/Viewer2dTest/Viewer2dTest_ObjectCommands.cxx
 +++ oce/src/Viewer2dTest/Viewer2dTest_ObjectCommands.cxx
-@@ -74,7 +74,7 @@
+@@ -88,7 +88,7 @@
  #include <GC_MakePlane.hxx>
  
  extern Viewer2dTest_DoubleMapOfInteractiveAndName& GetMapOfAIS2D();
@@ -195,7 +195,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
-@@ -107,7 +107,7 @@ extern ViewerTest_DoubleMapOfInteractive
+@@ -151,7 +151,7 @@ extern ViewerTest_DoubleMapOfInteractive
  extern Standard_Boolean VDisplayAISObject (const TCollection_AsciiString& theName,
                                             const Handle(AIS_InteractiveObject)& theAISObj,
                                             Standard_Boolean theReplaceIfExists = Standard_True);

@@ -58,7 +58,7 @@ Index: oce/inc/HLRBRep_Data.lxx
 ===================================================================
 --- oce.orig/inc/HLRBRep_Data.lxx
 +++ oce/inc/HLRBRep_Data.lxx
-@@ -122,6 +122,6 @@ inline HLRAlgo_Interference & HLRBRep_Da
+@@ -138,5 +138,5 @@ inline HLRAlgo_Interference & HLRBRep_Da
  
  inline Standard_Boolean 
  HLRBRep_Data::EdgeOfTheHidingFace (const Standard_Integer E,
@@ -66,12 +66,11 @@ Index: oce/inc/HLRBRep_Data.lxx
 -{ return ED.HideCount() == myHideCount-1; }
 +				   const HLRBRep_EdgeData& EData) const
 +{ return EData.HideCount() == myHideCount-1; }
- 
 Index: oce/src/HLRBRep/HLRBRep_Data.cdl
 ===================================================================
 --- oce.orig/src/HLRBRep/HLRBRep_Data.cdl
 +++ oce/src/HLRBRep/HLRBRep_Data.cdl
-@@ -215,32 +215,32 @@ is
+@@ -230,32 +230,32 @@ is
      is static;
      
      EdgeOfTheHidingFace(me; E  : Integer  from Standard;
@@ -111,7 +110,7 @@ Index: oce/src/HLRBRep/HLRBRep_Data.cdl
                              	Nbp       :     Integer  from Standard;
                              	p1,  p2   :     Real     from Standard)
      returns State from TopAbs; 
-@@ -266,7 +266,7 @@ is
+@@ -281,7 +281,7 @@ is
      is static private;
  
      Classify(me : mutable; E         :     Integer  from Standard;
@@ -124,7 +123,7 @@ Index: oce/src/HLRBRep/HLRBRep_Data.cxx
 ===================================================================
 --- oce.orig/src/HLRBRep/HLRBRep_Data.cxx
 +++ oce/src/HLRBRep/HLRBRep_Data.cxx
-@@ -1540,12 +1540,12 @@ void HLRBRep_Data::EdgeState (const Stan
+@@ -1566,12 +1566,12 @@ void HLRBRep_Data::EdgeState (const Stan
  
  Standard_Integer 
  HLRBRep_Data::HidingStartLevel (const Standard_Integer E,
@@ -139,30 +138,30 @@ Index: oce/src/HLRBRep/HLRBRep_Data.cxx
    Standard_Real sta = EC.Parameter3d(EC.FirstParameter());
    Standard_Real end = EC.Parameter3d(EC.LastParameter());
    Standard_Real tolpar = (end - sta) * 0.01;
-@@ -1571,7 +1571,7 @@ HLRBRep_Data::HidingStartLevel (const St
- #else
-   Standard_Integer level;
- #endif
--  Classify(E,ED,Standard_True,level,param);
-+  Classify(E,EData,Standard_True,level,param);
+@@ -1593,7 +1593,7 @@ HLRBRep_Data::HidingStartLevel (const St
+   }
+   param = 0.5 * (sta + end);
+   Standard_Integer level = 0;
+-  /*TopAbs_State st = */Classify(E,ED,Standard_True,level,param);
++  /*TopAbs_State st = */Classify(E,EData,Standard_True,level,param);
    Loop = Standard_True;
    It.Initialize(IL);
  
-@@ -1612,11 +1612,11 @@ HLRBRep_Data::HidingStartLevel (const St
+@@ -1634,11 +1634,11 @@ HLRBRep_Data::HidingStartLevel (const St
  //=======================================================================
  
  TopAbs_State HLRBRep_Data::Compare (const Standard_Integer E,
--				    const HLRBRep_EdgeData& ED)
-+				    const HLRBRep_EdgeData& EData)
+-                                    const HLRBRep_EdgeData& ED)
++                                    const HLRBRep_EdgeData& EData)
  {
-   Standard_Integer level;
-   Standard_Real parbid = 0;
+   Standard_Integer level = 0;
+   Standard_Real parbid = 0.;
 -  return Classify(E,ED,Standard_False,level,parbid);
 +  return Classify(E,EData,Standard_False,level,parbid);
  }
  
  //=======================================================================
-@@ -1825,7 +1825,7 @@ void HLRBRep_Data::OrientOthEdge (const
+@@ -1847,7 +1847,7 @@ void HLRBRep_Data::OrientOthEdge (const
  
  TopAbs_State 
  HLRBRep_Data::Classify (const Standard_Integer E,
@@ -171,7 +170,7 @@ Index: oce/src/HLRBRep/HLRBRep_Data.cxx
  			const Standard_Boolean LevelFlag,
  			Standard_Integer& Level,
  			const Standard_Real param)
-@@ -1838,9 +1838,9 @@ HLRBRep_Data::Classify (const Standard_I
+@@ -1860,9 +1860,9 @@ HLRBRep_Data::Classify (const Standard_I
    Level = 0;
    TopAbs_State state = TopAbs_OUT;
  //  Standard_Boolean rej = Standard_False;
@@ -183,7 +182,7 @@ Index: oce/src/HLRBRep/HLRBRep_Data.cxx
    
    if (LevelFlag) {
      sta = param;
-@@ -2127,7 +2127,7 @@ HLRBRep_Data::Classify (const Standard_I
+@@ -2149,7 +2149,7 @@ HLRBRep_Data::Classify (const Standard_I
  //=======================================================================
  
  TopAbs_State HLRBRep_Data::SimplClassify (const Standard_Integer E,
@@ -192,7 +191,7 @@ Index: oce/src/HLRBRep/HLRBRep_Data.cxx
  					  const Standard_Integer Nbp,
  					  const Standard_Real p1,
  					  const Standard_Real p2)
-@@ -2139,9 +2139,9 @@ TopAbs_State HLRBRep_Data::SimplClassify
+@@ -2161,9 +2161,9 @@ TopAbs_State HLRBRep_Data::SimplClassify
    Standard_Integer i;
    TopAbs_State state = TopAbs_IN;
  //  Standard_Boolean rej = Standard_False;
@@ -208,7 +207,7 @@ Index: oce/src/HLRBRep/HLRBRep_EdgeInterferenceTool.cxx
 ===================================================================
 --- oce.orig/src/HLRBRep/HLRBRep_EdgeInterferenceTool.cxx
 +++ oce/src/HLRBRep/HLRBRep_EdgeInterferenceTool.cxx
-@@ -26,8 +26,8 @@ void HLRBRep_EdgeInterferenceTool::LoadE
+@@ -43,8 +43,8 @@ void HLRBRep_EdgeInterferenceTool::LoadE
  {
    Standard_Real p1,p2;
    Standard_ShortReal t1,t2;

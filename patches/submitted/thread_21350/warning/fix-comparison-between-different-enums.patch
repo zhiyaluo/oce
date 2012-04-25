@@ -16,12 +16,12 @@ Index: oce/src/OpenGl/OpenGl_TextureBox.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_TextureBox.cxx
 +++ oce/src/OpenGl/OpenGl_TextureBox.cxx
-@@ -509,7 +509,7 @@ static void MyBindTextureEXT(TextureID I
-   TextureDataID data;
-   data = textab[ID].data;
- 
--  if (textab[ID].status == TEXDATA_NONE)
-+  if (textab[ID].status == TEX_NONE)
+@@ -402,7 +402,7 @@ static void MyGenTextureEXT (TextureID I
+ static void MyBindTextureEXT (TextureID ID, int Context)
+ {
+   TextureDataID data = textab(ID).data;
+-  if (texdata(data).status == TEXDATA_NONE)
++  if (texdata(data).status == TEX_NONE)
      return;
  
- #ifdef PRINT
+   GLenum aParamName = texdata(data).status == TEXDATA_1D ? 

@@ -236,7 +236,7 @@ Index: oce/src/Dynamic/Dynamic_FuzzyDefinitionsDictionary.cdl
 ===================================================================
 --- oce.orig/src/Dynamic/Dynamic_FuzzyDefinitionsDictionary.cdl
 +++ oce/src/Dynamic/Dynamic_FuzzyDefinitionsDictionary.cdl
-@@ -113,7 +113,7 @@ is
+@@ -128,7 +128,7 @@ is
  fields
  
      thefilename                   : HAsciiString               from TCollection;
@@ -249,7 +249,7 @@ Index: oce/src/Dynamic/Dynamic_FuzzyDefinitionsDictionary.cxx
 ===================================================================
 --- oce.orig/src/Dynamic/Dynamic_FuzzyDefinitionsDictionary.cxx
 +++ oce/src/Dynamic/Dynamic_FuzzyDefinitionsDictionary.cxx
-@@ -35,11 +35,6 @@
+@@ -50,11 +50,6 @@
  # include <strings.h>
  #endif
  
@@ -265,7 +265,7 @@ Index: oce/src/Dynamic/Dynamic_MethodDefinitionsDictionary.cdl
 ===================================================================
 --- oce.orig/src/Dynamic/Dynamic_MethodDefinitionsDictionary.cdl
 +++ oce/src/Dynamic/Dynamic_MethodDefinitionsDictionary.cdl
-@@ -121,7 +121,7 @@ is
+@@ -136,7 +136,7 @@ is
  fields
  
      thefilename                    : HAsciiString                from TCollection;
@@ -278,7 +278,7 @@ Index: oce/src/Dynamic/Dynamic_MethodDefinitionsDictionary.cxx
 ===================================================================
 --- oce.orig/src/Dynamic/Dynamic_MethodDefinitionsDictionary.cxx
 +++ oce/src/Dynamic/Dynamic_MethodDefinitionsDictionary.cxx
-@@ -35,10 +35,6 @@
+@@ -51,10 +51,6 @@
  #ifdef HAVE_STRINGS_H
  # include <strings.h>
  #endif
@@ -293,7 +293,7 @@ Index: oce/src/Materials/Materials_MaterialsDictionary.cdl
 ===================================================================
 --- oce.orig/src/Materials/Materials_MaterialsDictionary.cdl
 +++ oce/src/Materials/Materials_MaterialsDictionary.cdl
-@@ -70,7 +70,7 @@ is
+@@ -85,7 +85,7 @@ is
  fields
  
      thefilename          : HAsciiString from TCollection;
@@ -306,7 +306,7 @@ Index: oce/src/Materials/Materials_MaterialsDictionary.cxx
 ===================================================================
 --- oce.orig/src/Materials/Materials_MaterialsDictionary.cxx
 +++ oce/src/Materials/Materials_MaterialsDictionary.cxx
-@@ -32,9 +32,6 @@
+@@ -48,9 +48,6 @@
  #include <Quantity_Color.hxx>
  #include <TCollection_AsciiString.hxx>
  
@@ -320,16 +320,16 @@ Index: oce/src/Standard/FILES
 ===================================================================
 --- oce.orig/src/Standard/FILES
 +++ oce/src/Standard/FILES
-@@ -73,3 +73,4 @@ Standard_Atomic.hxx
- Standard_DefineException.hxx
- Standard_MMgrTBBalloc.cxx
+@@ -73,3 +73,4 @@ Standard_MMgrTBBalloc.cxx
  Standard_MMgrTBBalloc.hxx
+ Standard_Assert.hxx
+ Standard_DefineAlloc.hxx
 +Standard_Time.hxx
 Index: oce/src/Standard/Standard.cdl
 ===================================================================
 --- oce.orig/src/Standard/Standard.cdl
 +++ oce/src/Standard/Standard.cdl
-@@ -49,6 +49,7 @@ is
+@@ -66,6 +66,7 @@ is
      primitive PByte;
      primitive PCharacter;
      primitive PExtCharacter;
@@ -341,7 +341,7 @@ Index: oce/src/Units/Units_Lexicon.cdl
 ===================================================================
 --- oce.orig/src/Units/Units_Lexicon.cdl
 +++ oce/src/Units/Units_Lexicon.cdl
-@@ -90,7 +90,7 @@ is
+@@ -105,7 +105,7 @@ is
  fields
  
      thefilename         : HAsciiString from TCollection;
@@ -354,7 +354,7 @@ Index: oce/src/Units/Units_UnitsLexicon.cdl
 ===================================================================
 --- oce.orig/src/Units/Units_UnitsLexicon.cdl
 +++ oce/src/Units/Units_UnitsLexicon.cdl
-@@ -70,6 +70,6 @@ is
+@@ -85,6 +85,6 @@ is
  fields
  
      thefilename     : HAsciiString from TCollection;

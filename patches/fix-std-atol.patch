@@ -13,7 +13,7 @@ Index: oce/src/OSD/OSD_MAllocHook.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_MAllocHook.cxx
 +++ oce/src/OSD/OSD_MAllocHook.cxx
-@@ -281,10 +281,10 @@ Standard_Boolean OSD_MAllocHook::LogFile
+@@ -296,10 +296,10 @@ Standard_Boolean OSD_MAllocHook::LogFile
      while (*pStr != ' ' && *pStr) pStr++;
      *pStr++ = '\0';
      while (*pStr == ' ' && *pStr) pStr++;

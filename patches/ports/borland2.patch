@@ -94,7 +94,7 @@ Index: oce/inc/NCollection_Vector.hxx
 @@ -89,7 +89,11 @@ template <class TheItemType> class NColl
      {
        if (myData) {
-         for (size_t i=0; i < mySize; i++)
+         for (Standard_Integer i=0; i < mySize; i++)
 +#ifdef __BORLANDC__
 +          ((TheItemType *) myData)[i].~TheItemType();
 +#else
@@ -106,7 +106,7 @@ Index: oce/inc/NCollection_Vector.hxx
 @@ -107,7 +111,11 @@ template <class TheItemType> class NColl
      {
        if (myData) {
-         for (size_t i=0; i < Size(); i++)
+         for (Standard_Integer i=0; i < Size(); i++)
 +#ifdef __BORLANDC__
 +          ((TheItemType *) myData)[i].~TheItemType();
 +#else

@@ -17,7 +17,7 @@ Index: oce/src/Select3D/Select3D_SensitiveSegment.cxx
 ===================================================================
 --- oce.orig/src/Select3D/Select3D_SensitiveSegment.cxx
 +++ oce/src/Select3D/Select3D_SensitiveSegment.cxx
-@@ -200,8 +200,13 @@ void Select3D_SensitiveSegment::Dump(Sta
+@@ -203,8 +203,13 @@ void Select3D_SensitiveSegment::Dump(Sta
  
  Standard_Real Select3D_SensitiveSegment::ComputeDepth(const gp_Lin& EyeLine) const
  {

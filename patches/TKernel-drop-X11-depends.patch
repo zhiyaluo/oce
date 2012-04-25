@@ -98,7 +98,7 @@ Index: oce/src/OSD/OSD_FontMgr.cxx
  void OSD_FontMgr::InitFontDataBase() {
  
    MyListOfFonts.Clear();
-@@ -242,48 +282,12 @@ void OSD_FontMgr::InitFontDataBase() {
+@@ -235,48 +275,12 @@ void OSD_FontMgr::InitFontDataBase() {
  
  #ifndef WNT
    StringList dirs;

@@ -13,7 +13,7 @@ Index: oce/src/IGESFile/analiges.c
 ===================================================================
 --- oce.orig/src/IGESFile/analiges.c
 +++ oce/src/IGESFile/analiges.c
-@@ -35,8 +35,7 @@ static int bases[] =
+@@ -55,8 +55,7 @@ static int bases[] =
  /*      Utilitaire decodant un nombre en format fixe dans une ligne
  	Il part de "depuis" inclus (debut ligne = 0) et prend "tant" caracteres
  	Valeur lue en retour de fonction   */
@@ -23,7 +23,7 @@ Index: oce/src/IGESFile/analiges.c
  {
    int val = 0; int i;
    int depart = depuis+tant-1;
-@@ -51,8 +50,7 @@ char* ligne; int depuis, tant;
+@@ -71,8 +70,7 @@ char* ligne; int depuis, tant;
  }
  
  /*   Recopie d'une chaine de caracteres de longueur fixe (close par \0)  */
@@ -33,7 +33,7 @@ Index: oce/src/IGESFile/analiges.c
  {
    int i;
    for (i = 0; i < tant; i ++) { dans[i] = ligne[depuis+i]; }
-@@ -60,8 +58,7 @@ char *ligne; int depuis, tant; char* dan
+@@ -80,8 +78,7 @@ char *ligne; int depuis, tant; char* dan
  }
  
  /*                   Analyse section D                */
@@ -43,7 +43,7 @@ Index: oce/src/IGESFile/analiges.c
  {
    struct dirpart *curp;
    if (*Dstat == 0) {
-@@ -105,8 +102,7 @@ int *Dstat,numsec; char* ligne;
+@@ -125,8 +122,7 @@ int *Dstat,numsec; char* ligne;
  /*     Lecture section P : preanalyse
         Extraction du numero D et troncature a 64 caracteres  */
  
@@ -53,7 +53,7 @@ Index: oce/src/IGESFile/analiges.c
  {
    int dnum;
    dnum = atoi(&ligne[65]);
-@@ -134,8 +130,7 @@ static int typarg;
+@@ -154,8 +150,7 @@ static int typarg;
  /*  +  definitions des types de parametres en tete  */
  
  
@@ -67,7 +67,7 @@ Index: oce/src/IGESFile/igesread.c
 ===================================================================
 --- oce.orig/src/IGESFile/igesread.c
 +++ oce/src/IGESFile/igesread.c
-@@ -37,8 +37,7 @@ void iges_Psect(int *Pstat,int numsec,ch
+@@ -56,8 +56,7 @@ void iges_Psect(int *Pstat,int numsec,ch
  static  char sects [] = " SGDPT ";
  
  
@@ -81,7 +81,7 @@ Index: oce/src/IGESFile/structiges.c
 ===================================================================
 --- oce.orig/src/IGESFile/structiges.c
 +++ oce/src/IGESFile/structiges.c
-@@ -72,8 +72,7 @@ static struct dirpage *curpage;
+@@ -92,8 +92,7 @@ static struct dirpage *curpage;
  /*    Utilitaire : Reservation de caracteres
        Remplace suite de mini-malloc par gestion de page   */
  
@@ -91,7 +91,7 @@ Index: oce/src/IGESFile/structiges.c
  {
    int i, lnt;
    if ((lnt = onecarpage->used) > Maxcar-lentext-1) {  /* allouer nouvelle page */
-@@ -123,8 +122,7 @@ void iges_setglobal()
+@@ -143,8 +142,7 @@ void iges_setglobal()
  
  /*   Definition et Selection d'un nouveau dirpart   */
  
@@ -101,7 +101,7 @@ Index: oce/src/IGESFile/structiges.c
  {
    if (curpage->used >= Maxparts) {
      struct dirpage* newpage;
-@@ -143,8 +141,7 @@ int numsec;
+@@ -163,8 +161,7 @@ int numsec;
  
  /*   Selection du dirpart dnum, correspond a numsec en Psect   */
  
@@ -111,7 +111,7 @@ Index: oce/src/IGESFile/structiges.c
  {
    if (curp == NULL) return;
    if (dnum == curp->numpart) return;
-@@ -178,8 +175,7 @@ int numsec,dnum;
+@@ -198,8 +195,7 @@ int numsec,dnum;
  /*   (manque la gestion d'un Hollerith sur plusieurs lignes)   */
  
  /*   longval : longueur de parval, incluant le zero final   */
@@ -121,7 +121,7 @@ Index: oce/src/IGESFile/structiges.c
  {
    char *newval;
    if (curlist == NULL) return;      /*  non defini : abandon  */
-@@ -204,8 +200,7 @@ int typarg,longval; char *parval;
+@@ -224,8 +220,7 @@ int typarg,longval; char *parval;
  }
  
  /*     Complement du parametre courant (cf Hollerith sur +ieurs lignes)    */
@@ -131,7 +131,7 @@ Index: oce/src/IGESFile/structiges.c
  {
    char *newval, *oldval; int i,long0;
    if (longval <= 0) return;
-@@ -223,8 +218,7 @@ int longval; char* parval;
+@@ -243,8 +238,7 @@ int longval; char* parval;
  /*               Relecture : Initialiation              */
  /*  entites relues par suite de lirpart + {lirparam}
      lirparam initiaux : pour relire le demarrage (start section)   */
@@ -141,7 +141,7 @@ Index: oce/src/IGESFile/structiges.c
  {
    curpage  = firstpage; curnumpart = 0;
    curlist  = starts;
-@@ -234,12 +228,9 @@ int* nbpart; int* nbparam;
+@@ -254,12 +248,9 @@ int* nbpart; int* nbparam;
  }
  
  /*               Lecture d'une part : retour = n0 section, 0 si fin         */
@@ -157,7 +157,7 @@ Index: oce/src/IGESFile/structiges.c
  {
    if (curpage == NULL) return 0;
    curp = &(curpage->parts[curnumpart]);
-@@ -263,8 +254,7 @@ void iges_nextpart()
+@@ -283,8 +274,7 @@ void iges_nextpart()
  }
  
  /*               Lecture parametre + passage au suivant                   */
@@ -167,7 +167,7 @@ Index: oce/src/IGESFile/structiges.c
  {
    if (curparam == NULL) return 0;
    *typarg = curparam->typarg;
-@@ -275,8 +265,7 @@ int *typarg; char* *parval;
+@@ -295,8 +285,7 @@ int *typarg; char* *parval;
  
  /*               Fin pour ce fichier : liberer la place                  */
  /*    mode = 0 : tout; 1 : parametres; 2 : caracteres  */

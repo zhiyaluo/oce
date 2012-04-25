@@ -4949,8 +4949,8 @@ Index: oce/src/OSD/OSD_Chronometer.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Chronometer.cxx
 +++ oce/src/OSD/OSD_Chronometer.cxx
-@@ -54,6 +54,10 @@
- # include <limits.h>
+@@ -75,6 +75,10 @@
+   #include <mach/mach.h>
  #endif
  
 +#if defined(__APPLE__) && defined(__MACH__)
@@ -4959,7 +4959,7 @@ Index: oce/src/OSD/OSD_Chronometer.cxx
 +
  //=======================================================================
  //function : GetProcessCPU
- //purpose  : 
+ //purpose  :
 Index: oce/src/OSD/gettime_osx.h
 ===================================================================
 --- /dev/null

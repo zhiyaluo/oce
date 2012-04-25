@@ -118,7 +118,7 @@ Index: oce/src/BOPTools/BOPTools_PaveSet.cxx
 ===================================================================
 --- oce.orig/src/BOPTools/BOPTools_PaveSet.cxx
 +++ oce/src/BOPTools/BOPTools_PaveSet.cxx
-@@ -11,9 +11,6 @@
+@@ -26,9 +26,6 @@
  #include <BOPTools_QuickSortPave.hxx>
  #include <BOPTools_ComparePave.hxx>
  
@@ -128,7 +128,7 @@ Index: oce/src/BOPTools/BOPTools_PaveSet.cxx
  
  //=======================================================================
  // function: BOPTools_PaveSet::BOPTools_PaveSet
-@@ -74,6 +71,4 @@
+@@ -89,6 +86,4 @@
      }
    }
  }
@@ -140,7 +140,7 @@ Index: oce/src/BinDrivers/BinDrivers.cxx
 ===================================================================
 --- oce.orig/src/BinDrivers/BinDrivers.cxx
 +++ oce/src/BinDrivers/BinDrivers.cxx
-@@ -19,7 +19,7 @@
+@@ -34,7 +34,7 @@
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
  #ifdef _MSC_VER
@@ -153,7 +153,7 @@ Index: oce/src/BinLDrivers/BinLDrivers.cxx
 ===================================================================
 --- oce.orig/src/BinLDrivers/BinLDrivers.cxx
 +++ oce/src/BinLDrivers/BinLDrivers.cxx
-@@ -16,7 +16,7 @@
+@@ -31,7 +31,7 @@
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
  #ifdef _MSC_VER
@@ -166,7 +166,7 @@ Index: oce/src/BinTObjDrivers/BinTObjDrivers.cxx
 ===================================================================
 --- oce.orig/src/BinTObjDrivers/BinTObjDrivers.cxx
 +++ oce/src/BinTObjDrivers/BinTObjDrivers.cxx
-@@ -18,7 +18,7 @@
+@@ -33,7 +33,7 @@
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
  #ifdef _MSC_VER
@@ -179,7 +179,7 @@ Index: oce/src/BinXCAFDrivers/BinXCAFDrivers.cxx
 ===================================================================
 --- oce.orig/src/BinXCAFDrivers/BinXCAFDrivers.cxx
 +++ oce/src/BinXCAFDrivers/BinXCAFDrivers.cxx
-@@ -14,7 +14,7 @@
+@@ -29,7 +29,7 @@
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
  #ifdef _MSC_VER
@@ -192,7 +192,7 @@ Index: oce/src/BooleanOperations/BooleanOperations_ShapesDataStructure.cxx
 ===================================================================
 --- oce.orig/src/BooleanOperations/BooleanOperations_ShapesDataStructure.cxx
 +++ oce/src/BooleanOperations/BooleanOperations_ShapesDataStructure.cxx
-@@ -43,11 +43,6 @@
+@@ -58,11 +58,6 @@
  #include <TColStd_MapOfInteger.hxx>
  #include <BOPTColStd_Dump.hxx>
  
@@ -204,7 +204,7 @@ Index: oce/src/BooleanOperations/BooleanOperations_ShapesDataStructure.cxx
  static
    void Message(const Standard_Integer i);
  
-@@ -887,11 +882,6 @@ void Message(const Standard_Integer i)
+@@ -902,11 +897,6 @@ void Message(const Standard_Integer i)
  }
  //modified by NIZNHY-PKV Wed Feb  2 14:44:08 2005f
  /*
@@ -220,7 +220,7 @@ Index: oce/src/FWOSDriver/FWOSDriver.cxx
 ===================================================================
 --- oce.orig/src/FWOSDriver/FWOSDriver.cxx
 +++ oce/src/FWOSDriver/FWOSDriver.cxx
-@@ -11,7 +11,7 @@
+@@ -27,7 +27,7 @@
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
  #ifdef _MSC_VER
@@ -233,7 +233,7 @@ Index: oce/src/IntTools/IntTools.cxx
 ===================================================================
 --- oce.orig/src/IntTools/IntTools.cxx
 +++ oce/src/IntTools/IntTools.cxx
-@@ -23,9 +23,6 @@
+@@ -38,9 +38,6 @@
  #include <TColStd_ListIteratorOfListOfReal.hxx>
  #include <gce_ErrorType.hxx>
  
@@ -243,7 +243,7 @@ Index: oce/src/IntTools/IntTools.cxx
  //=======================================================================
  //function : IntTools::GetRadius
  //purpose  : 
-@@ -362,7 +359,3 @@
+@@ -377,7 +374,3 @@
    }
    return 1;
  }
@@ -255,7 +255,7 @@ Index: oce/src/IntTools/IntTools_EdgeFace.cxx
 ===================================================================
 --- oce.orig/src/IntTools/IntTools_EdgeFace.cxx
 +++ oce/src/IntTools/IntTools_EdgeFace.cxx
-@@ -55,10 +55,6 @@
+@@ -69,10 +69,6 @@
  #include <GeomAdaptor_HSurface.hxx>
  #include <IntCurveSurface_IntersectionPoint.hxx>
  
@@ -266,7 +266,7 @@ Index: oce/src/IntTools/IntTools_EdgeFace.cxx
  static
    Standard_Boolean IsCoplanar (const BRepAdaptor_Curve&  ,
  			       const BRepAdaptor_Surface& );
-@@ -1584,7 +1580,3 @@ Standard_Integer AdaptiveDiscret (const
+@@ -1576,7 +1572,3 @@ Standard_Integer AdaptiveDiscret (const
    return iDiscretNew;
  }
  
@@ -274,59 +274,11 @@ Index: oce/src/IntTools/IntTools_EdgeFace.cxx
 -#ifdef _MSC_VER
 -#pragma warning ( default : 4101 )
 -#endif
-Index: oce/src/LDOM/LDOM_BasicAttribute.cxx
-===================================================================
---- oce.orig/src/LDOM/LDOM_BasicAttribute.cxx
-+++ oce/src/LDOM/LDOM_BasicAttribute.cxx
-@@ -7,11 +7,6 @@
- #include <LDOM_BasicAttribute.hxx>
- #include <LDOM_MemManager.hxx>
- 
--#ifdef _MSC_VER
--// Disable the warning: "operator new unmatched by delete"
--#pragma warning (disable:4291)
--#endif
--
- //=======================================================================
- //function : LDOM_BasicAttribute
- //purpose  : 
-Index: oce/src/LDOM/LDOM_BasicElement.cxx
-===================================================================
---- oce.orig/src/LDOM/LDOM_BasicElement.cxx
-+++ oce/src/LDOM/LDOM_BasicElement.cxx
-@@ -9,11 +9,6 @@
- #include <LDOM_BasicText.hxx>
- #include <LDOM_MemManager.hxx>
- 
--#ifdef _MSC_VER
--// Disable the warning: "operator new unmatched by delete"
--#pragma warning (disable:4291)
--#endif
--
- //=======================================================================
- //function : Create
- //purpose  : construction in the Document's data pool
-Index: oce/src/LDOM/LDOM_BasicText.cxx
-===================================================================
---- oce.orig/src/LDOM/LDOM_BasicText.cxx
-+++ oce/src/LDOM/LDOM_BasicText.cxx
-@@ -8,11 +8,6 @@
- #include <LDOM_BasicText.hxx>
- #include <LDOM_MemManager.hxx>
- 
--#ifdef _MSC_VER
--// Disable the warning: "operator new unmatched by delete"
--#pragma warning (disable:4291)
--#endif
--
- //=======================================================================
- //function : LDOM_BasicText()
- //purpose  : Constructor
 Index: oce/src/OSD/OSD_Environment.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Environment.cxx
 +++ oce/src/OSD/OSD_Environment.cxx
-@@ -217,10 +217,6 @@ Standard_Integer OSD_Environment::Error(
+@@ -245,10 +245,6 @@ Standard_Integer OSD_Environment::Error(
  
  #include <stdio.h>
  
@@ -341,7 +293,7 @@ Index: oce/src/OSD/OSD_Process.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Process.cxx
 +++ oce/src/OSD/OSD_Process.cxx
-@@ -218,10 +218,6 @@ Standard_Integer OSD_Process::Error()con
+@@ -236,10 +236,6 @@ Standard_Integer OSD_Process::Error()con
  #include <OSD_WNT_1.hxx>
  #include <lmcons.h> /// pour UNLEN  ( see MSDN about GetUserName() )
  
@@ -356,7 +308,7 @@ Index: oce/src/PlotMgt/PlotMgt_TextManager.cxx
 ===================================================================
 --- oce.orig/src/PlotMgt/PlotMgt_TextManager.cxx
 +++ oce/src/PlotMgt/PlotMgt_TextManager.cxx
-@@ -6,10 +6,6 @@
+@@ -21,10 +21,6 @@
  #include <PlotMgt_TextManager.ixx>
  #include <Aspect_Units.hxx>
  
@@ -371,37 +323,22 @@ Index: oce/src/Poly/Poly_CoherentNode.cxx
 ===================================================================
 --- oce.orig/src/Poly/Poly_CoherentNode.cxx
 +++ oce/src/Poly/Poly_CoherentNode.cxx
-@@ -7,10 +7,6 @@
+@@ -22,10 +22,6 @@
  #include <Poly_CoherentNode.hxx>
  #include <Poly_CoherentTriangle.hxx>
  
 -#ifdef _MSC_VER
--#pragma warning(disable:4291 4996)
+-#pragma warning(disable:4996)
 -#endif
 -
  #include <stdio.h>
  
  //=======================================================================
-Index: oce/src/Poly/Poly_CoherentTriPtr.cxx
-===================================================================
---- oce.orig/src/Poly/Poly_CoherentTriPtr.cxx
-+++ oce/src/Poly/Poly_CoherentTriPtr.cxx
-@@ -6,10 +6,6 @@
- 
- #include <Poly_CoherentTriPtr.hxx>
- 
--#ifdef _MSC_VER
--#pragma warning(disable:4291)
--#endif
--
- //=======================================================================
- //function : Iterator::Next
- //purpose  :
 Index: oce/src/StdDrivers/StdDrivers.cxx
 ===================================================================
 --- oce.orig/src/StdDrivers/StdDrivers.cxx
 +++ oce/src/StdDrivers/StdDrivers.cxx
-@@ -17,7 +17,7 @@
+@@ -32,7 +32,7 @@
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
  #ifdef _MSC_VER
@@ -414,7 +351,7 @@ Index: oce/src/StdLDrivers/StdLDrivers.cxx
 ===================================================================
 --- oce.orig/src/StdLDrivers/StdLDrivers.cxx
 +++ oce/src/StdLDrivers/StdLDrivers.cxx
-@@ -16,7 +16,7 @@
+@@ -31,7 +31,7 @@
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
  #ifdef _MSC_VER
@@ -423,65 +360,11 @@ Index: oce/src/StdLDrivers/StdLDrivers.cxx
  #endif
  
  static Standard_GUID StdLStorageDriver     ("bd696000-5b34-11d1-b5ba-00a0c9064368");
-Index: oce/src/TDF/TDF_Data.cxx
-===================================================================
---- oce.orig/src/TDF/TDF_Data.cxx
-+++ oce/src/TDF/TDF_Data.cxx
-@@ -75,11 +75,6 @@ if (withDelta) { \
-   aDelta->AddAttributeDelta(DELTACREATION); \
- }
- 
--#ifdef _MSC_VER
--// Disable the warning: "operator new unmatched by delete"
--#pragma warning (disable:4291)
--#endif
--
- //=======================================================================
- //function : TDF_Data
- //purpose  : empty constructor
-@@ -98,10 +93,6 @@ myAllowModification     (Standard_True)
-   myRoot = new (anIncAllocator) TDF_LabelNode (this);
- }
- 
--#ifdef _MSC_VER
--#pragma warning (default:4291)
--#endif
--
- //=======================================================================
- //function : Destroy
- //purpose  : Used to implement the destructor ~.
-Index: oce/src/TDF/TDF_Label.cxx
-===================================================================
---- oce.orig/src/TDF/TDF_Label.cxx
-+++ oce/src/TDF/TDF_Label.cxx
-@@ -308,11 +308,6 @@ void TDF_Label::EntryDump(Standard_OStre
-   }
- }
- 
--#ifdef _MSC_VER
--// Disable the warning: "operator new unmatched by delete"
--#pragma warning (disable:4291)
--#endif
--
- //=======================================================================
- //function : FindOrAddChild
- //purpose  : Finds or adds a label child having <aTag> as tag.
-@@ -373,10 +368,6 @@ TDF_LabelNode* TDF_Label::FindOrAddChild
-   return childLabelNode;
- }
- 
--#ifdef _MSC_VER
--#pragma warning (default:4291)
--#endif
--
- //=======================================================================
- //function : InternalDump
- //purpose  : Private method.
 Index: oce/src/TopExp/TopExp_Explorer.cxx
 ===================================================================
 --- oce.orig/src/TopExp/TopExp_Explorer.cxx
 +++ oce/src/TopExp/TopExp_Explorer.cxx
-@@ -127,11 +127,6 @@ const TopoDS_Shape&  TopExp_Explorer::Cu
+@@ -143,11 +143,6 @@ const TopoDS_Shape&  TopExp_Explorer::Cu
  //purpose  : 
  //=======================================================================
  
@@ -493,7 +376,7 @@ Index: oce/src/TopExp/TopExp_Explorer.cxx
  void  TopExp_Explorer::Next()
  {
    Standard_Integer NewSize;
-@@ -209,9 +204,6 @@ void  TopExp_Explorer::Next()
+@@ -225,9 +220,6 @@ void  TopExp_Explorer::Next()
    hasMore = Standard_False;
  }
  
@@ -507,7 +390,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest.cxx
 +++ oce/src/ViewerTest/ViewerTest.cxx
-@@ -56,7 +56,6 @@
+@@ -71,7 +71,6 @@
  #ifdef _MSC_VER
  #define _CRT_SECURE_NO_DEPRECATE
  #pragma warning(4:4190)
@@ -519,7 +402,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
-@@ -100,7 +100,6 @@
+@@ -144,7 +144,6 @@
  
  #ifdef _MSC_VER
  #define _CRT_SECURE_NO_DEPRECATE
@@ -531,7 +414,7 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-@@ -44,7 +44,6 @@
+@@ -76,7 +76,6 @@
  
  #ifdef _MSC_VER
  #define _CRT_SECURE_NO_DEPRECATE
@@ -543,7 +426,7 @@ Index: oce/src/VrmlData/VrmlData_Geometry.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_Geometry.cxx
 +++ oce/src/VrmlData/VrmlData_Geometry.cxx
-@@ -25,7 +25,6 @@
+@@ -40,7 +40,6 @@
  
  #ifdef _MSC_VER
  #define _CRT_SECURE_NO_DEPRECATE
@@ -555,7 +438,7 @@ Index: oce/src/VrmlData/VrmlData_Group.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_Group.cxx
 +++ oce/src/VrmlData/VrmlData_Group.cxx
-@@ -16,7 +16,6 @@
+@@ -31,7 +31,6 @@
  
  #ifdef _MSC_VER
  #define _CRT_SECURE_NO_DEPRECATE
@@ -567,7 +450,7 @@ Index: oce/src/VrmlData/VrmlData_IndexedFaceSet.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_IndexedFaceSet.cxx
 +++ oce/src/VrmlData/VrmlData_IndexedFaceSet.cxx
-@@ -22,7 +22,6 @@
+@@ -37,7 +37,6 @@
  
  #ifdef _MSC_VER
  #define _CRT_SECURE_NO_DEPRECATE
@@ -579,7 +462,7 @@ Index: oce/src/VrmlData/VrmlData_IndexedLineSet.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_IndexedLineSet.cxx
 +++ oce/src/VrmlData/VrmlData_IndexedLineSet.cxx
-@@ -17,7 +17,6 @@
+@@ -32,7 +32,6 @@
  
  #ifdef _MSC_VER
  #define _CRT_SECURE_NO_DEPRECATE
@@ -591,7 +474,7 @@ Index: oce/src/VrmlData/VrmlData_Material.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_Material.cxx
 +++ oce/src/VrmlData/VrmlData_Material.cxx
-@@ -11,7 +11,6 @@
+@@ -26,7 +26,6 @@
  
  #ifdef _MSC_VER
  #define _CRT_SECURE_NO_DEPRECATE
@@ -603,7 +486,7 @@ Index: oce/src/VrmlData/VrmlData_Node.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_Node.cxx
 +++ oce/src/VrmlData/VrmlData_Node.cxx
-@@ -16,7 +16,6 @@
+@@ -31,7 +31,6 @@
  
  #ifdef _MSC_VER
  #define _CRT_SECURE_NO_DEPRECATE
@@ -615,7 +498,7 @@ Index: oce/src/VrmlData/VrmlData_Scene.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_Scene.cxx
 +++ oce/src/VrmlData/VrmlData_Scene.cxx
-@@ -35,7 +35,6 @@
+@@ -50,7 +50,6 @@
  
  #ifdef _MSC_VER
  #define _CRT_SECURE_NO_DEPRECATE
@@ -627,7 +510,7 @@ Index: oce/src/VrmlData/VrmlData_WorldInfo.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_WorldInfo.cxx
 +++ oce/src/VrmlData/VrmlData_WorldInfo.cxx
-@@ -10,7 +10,6 @@
+@@ -25,7 +25,6 @@
  
  #ifdef _MSC_VER
  #define _CRT_SECURE_NO_DEPRECATE
@@ -639,7 +522,7 @@ Index: oce/src/XCAFDrivers/XCAFDrivers.cxx
 ===================================================================
 --- oce.orig/src/XCAFDrivers/XCAFDrivers.cxx
 +++ oce/src/XCAFDrivers/XCAFDrivers.cxx
-@@ -21,7 +21,7 @@
+@@ -36,7 +36,7 @@
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
  #ifdef _MSC_VER
@@ -652,7 +535,7 @@ Index: oce/src/XmlDrivers/XmlDrivers.cxx
 ===================================================================
 --- oce.orig/src/XmlDrivers/XmlDrivers.cxx
 +++ oce/src/XmlDrivers/XmlDrivers.cxx
-@@ -25,7 +25,7 @@
+@@ -40,7 +40,7 @@
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
  #ifdef _MSC_VER
@@ -665,7 +548,7 @@ Index: oce/src/XmlLDrivers/XmlLDrivers.cxx
 ===================================================================
 --- oce.orig/src/XmlLDrivers/XmlLDrivers.cxx
 +++ oce/src/XmlLDrivers/XmlLDrivers.cxx
-@@ -20,7 +20,7 @@
+@@ -35,7 +35,7 @@
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
  #ifdef _MSC_VER
@@ -678,7 +561,7 @@ Index: oce/src/XmlTObjDrivers/XmlTObjDrivers.cxx
 ===================================================================
 --- oce.orig/src/XmlTObjDrivers/XmlTObjDrivers.cxx
 +++ oce/src/XmlTObjDrivers/XmlTObjDrivers.cxx
-@@ -19,7 +19,7 @@
+@@ -34,7 +34,7 @@
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
  #ifdef _MSC_VER
@@ -691,7 +574,7 @@ Index: oce/src/XmlXCAFDrivers/XmlXCAFDrivers.cxx
 ===================================================================
 --- oce.orig/src/XmlXCAFDrivers/XmlXCAFDrivers.cxx
 +++ oce/src/XmlXCAFDrivers/XmlXCAFDrivers.cxx
-@@ -15,7 +15,7 @@
+@@ -29,7 +29,7 @@
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
  #ifdef _MSC_VER

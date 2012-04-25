@@ -86,7 +86,7 @@ Index: oce/src/IFSelect/IFSelect_WorkSession.cxx
 ===================================================================
 --- oce.orig/src/IFSelect/IFSelect_WorkSession.cxx
 +++ oce/src/IFSelect/IFSelect_WorkSession.cxx
-@@ -2811,7 +2811,7 @@ void IFSelect_WorkSession::QueryCheckLis
+@@ -2814,7 +2814,7 @@ void IFSelect_WorkSession::QueryCheckLis
  {
    if (!IsLoaded()) return;
    Standard_Integer i,nb = themodel->NbEntities();
@@ -95,16 +95,3 @@ Index: oce/src/IFSelect/IFSelect_WorkSession.cxx
    for (chl.Start(); chl.More(); chl.Next()) {
      Standard_Integer num = chl.Number();
      const Handle(Interface_Check) ach = chl.Value();
-Index: oce/src/Visual3d/Visual3d_ViewManager.cxx
-===================================================================
---- oce.orig/src/Visual3d/Visual3d_ViewManager.cxx
-+++ oce/src/Visual3d/Visual3d_ViewManager.cxx
-@@ -919,7 +919,7 @@ Visual3d_PickDescriptor Visual3d_ViewMan
- // The marking is activated only if the data is correct
- Standard_Boolean DoPick = Standard_False;
- 
--CALL_DEF_PICK apick;
-+CALL_DEF_PICK apick; //@todo CALL_DEF_PICK should have constructor
- Standard_Integer Width, Height;
- 
- 	// Parse the list of views to find a 

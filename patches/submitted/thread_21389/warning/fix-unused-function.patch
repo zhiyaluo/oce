@@ -58,7 +58,7 @@ Index: oce/drv/ExprIntrp/lex.ExprIntrp.c
 ===================================================================
 --- oce.orig/drv/ExprIntrp/lex.ExprIntrp.c
 +++ oce/drv/ExprIntrp/lex.ExprIntrp.c
-@@ -2080,10 +2080,6 @@ extern int yywrap YY_PROTO(( void ));
+@@ -2100,10 +2100,6 @@ extern int yywrap YY_PROTO(( void ));
  #endif
  #endif
  
@@ -69,7 +69,7 @@ Index: oce/drv/ExprIntrp/lex.ExprIntrp.c
  #ifndef yytext_ptr
  static void yy_flex_strncpy YY_PROTO(( char *, yyconst char *, int ));
  #endif
-@@ -2708,49 +2704,6 @@ yy_state_type yy_current_state;
+@@ -2728,49 +2724,6 @@ yy_state_type yy_current_state;
  	}
  
  
@@ -139,7 +139,7 @@ Index: oce/drv/StepFile/lex.step.c
  
  /* Done after the current pattern has been matched and before the
   * corresponding action - sets up yytext.
-@@ -538,10 +536,6 @@ extern int yywrap YY_PROTO(( void ));
+@@ -557,10 +555,6 @@ extern int yywrap YY_PROTO(( void ));
  #endif
  #endif
  
@@ -150,7 +150,7 @@ Index: oce/drv/StepFile/lex.step.c
  #ifndef yytext_ptr
  static void yy_flex_strncpy YY_PROTO(( char *, yyconst char *, int ));
  #endif
-@@ -1258,50 +1252,6 @@ yy_state_type yy_current_state;
+@@ -1277,50 +1271,6 @@ yy_state_type yy_current_state;
  	}
  
  
@@ -201,7 +201,7 @@ Index: oce/drv/StepFile/lex.step.c
  #ifdef __cplusplus
  static int yyinput()
  #else
-@@ -1690,17 +1640,6 @@ static int yy_top_state()
+@@ -1709,17 +1659,6 @@ static int yy_top_state()
  #define YY_EXIT_FAILURE 2
  #endif
  
@@ -219,7 +219,7 @@ Index: oce/drv/StepFile/lex.step.c
  
  
  /* Redefine yyless() so it works in section 3 code. */
-@@ -1765,24 +1704,6 @@ yy_size_t size;
+@@ -1784,24 +1723,6 @@ yy_size_t size;
  	}
  
  #ifdef YY_USE_PROTOS
@@ -248,7 +248,7 @@ Index: oce/src/Draw/Draw_Main.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Main.cxx
 +++ oce/src/Draw/Draw_Main.cxx
-@@ -104,10 +104,6 @@ Standard_IMPORT Standard_Boolean Draw_In
+@@ -91,10 +91,6 @@ Standard_IMPORT Standard_Boolean Draw_In
  
  // necessary for WNT in C21 only
  static FDraw_InitAppli theDraw_InitAppli; //pointer to the Draw_InitAppli
@@ -259,19 +259,11 @@ Index: oce/src/Draw/Draw_Main.cxx
  #endif
  
  #ifdef WNT
-@@ -135,7 +131,6 @@ Standard_Integer _main_ (int argc, char*
-   Draw_IsConsoleSubsystem = Standard_True;
-   //return _WinMain_(::GetModuleHandle(NULL), NULL, GetCommandLine(), SW_SHOW, fDraw_InitAppli);
-   theDraw_InitAppli = fDraw_InitAppli;
--  Standard_Boolean CONSOLE = Standard_True;
-   //ParseCommandLine(GetCommandLine());
- 
-   // MKV 01.02.05
 Index: oce/src/NCollection/NCollection_IncAllocator.cxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_IncAllocator.cxx
 +++ oce/src/NCollection/NCollection_IncAllocator.cxx
-@@ -82,6 +82,7 @@ Standard_EXPORT void IncAllocator_SetDeb
+@@ -97,6 +97,7 @@ Standard_EXPORT void IncAllocator_SetDeb
   * numbering of allocators.
   */
  //=======================================================================
@@ -279,7 +271,7 @@ Index: oce/src/NCollection/NCollection_IncAllocator.cxx
  static Standard_Size CurrentID = 0;
  static Standard_Size CATCH_ID = 0;
  
-@@ -89,7 +90,6 @@ static Standard_Size CATCH_ID = 0;
+@@ -104,7 +105,6 @@ static Standard_Size CATCH_ID = 0;
  //function : Debug_Create
  //purpose  : Store the allocator address in the internal maps
  //=======================================================================
@@ -287,7 +279,7 @@ Index: oce/src/NCollection/NCollection_IncAllocator.cxx
  static void Debug_Create(Standard_Address theAlloc)
  {
    static Standard_Mutex aMutex;
-@@ -111,7 +111,6 @@ static void Debug_Create(Standard_Addres
+@@ -126,7 +126,6 @@ static void Debug_Create(Standard_Addres
  //function : Debug_Destroy
  //purpose  : Forget the allocator address from the internal maps
  //=======================================================================
@@ -295,7 +287,7 @@ Index: oce/src/NCollection/NCollection_IncAllocator.cxx
  static void Debug_Destroy(Standard_Address theAlloc)
  {
    static Standard_Mutex aMutex;
-@@ -127,7 +126,7 @@ static void Debug_Destroy(Standard_Addre
+@@ -142,7 +141,7 @@ static void Debug_Destroy(Standard_Addre
    if (isReentrant)
      aMutex.Unlock();
  }
@@ -308,7 +300,7 @@ Index: oce/src/Units/Units_UnitsDictionary.cxx
 ===================================================================
 --- oce.orig/src/Units/Units_UnitsDictionary.cxx
 +++ oce/src/Units/Units_UnitsDictionary.cxx
-@@ -46,16 +46,6 @@
+@@ -62,16 +62,6 @@
  #ifdef PRO13136		//Temporaire en attendant OSD::CStringToReal()
  static char DecimalPoint = '\0' ;
  

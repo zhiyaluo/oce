@@ -17,7 +17,7 @@ Index: oce/src/OSD/OSD_FileNode.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_FileNode.cxx
 +++ oce/src/OSD/OSD_FileNode.cxx
-@@ -16,7 +16,7 @@
+@@ -34,7 +34,7 @@
  
  #if!defined(TM_IN_SYS_TIME) && defined(HAVE_TIME_H)
  # include <time.h>

@@ -352,9 +352,9 @@ Index: oce/inc/InterfaceGraphic_telem.hxx
 +#include <mem.h>
 +#endif
 +
- //if SUN compiler
- #if defined(__SUNPRO_CC) && (__SUNPRO_CC <= 0x530) && ! defined(typename)
- #define IMPLEMENT_MEMORY_OPERATORS \
+ struct TEL_TEXTURE_COORD
+ {
+   float xy[2];
 Index: oce/inc/NCollection_CellFilter.hxx
 ===================================================================
 --- oce.orig/inc/NCollection_CellFilter.hxx
@@ -476,43 +476,6 @@ Index: oce/inc/Standard_Macro.hxx
  #   endif  // __Standard_DLL
  //#  else
  //#   define __Standard_API
-Index: oce/inc/Standard_Real.hxx
-===================================================================
---- oce.orig/inc/Standard_Real.hxx
-+++ oce/inc/Standard_Real.hxx
-@@ -24,11 +24,16 @@ __Standard_API Handle_Standard_Type& Sta
- #undef PI
- #endif 
- 
--#if defined(WNT) && !defined(__CYGWIN32__) && !defined(__MINGW32__)
-+#if defined(_MSC_VER)
- extern "C" __Standard_API Standard_Real PI;
- extern "C" __Standard_API Standard_Real PI180;
- extern "C" __Standard_API Standard_Real Standard_PI;
- extern "C" __Standard_API Standard_Real Standard_PI180;
-+#elif defined (__BORLANDC__)
-+__Standard_APIEXTERNC Standard_Real PI;
-+__Standard_APIEXTERNC Standard_Real PI180;
-+__Standard_APIEXTERNC Standard_Real Standard_PI;
-+__Standard_APIEXTERNC Standard_Real Standard_PI180;
- #else
- 
- extern const Standard_Real PI;
-Index: oce/inc/Standard_math.hxx
-===================================================================
---- oce.orig/inc/Standard_math.hxx
-+++ oce/inc/Standard_math.hxx
-@@ -29,6 +29,10 @@ __Standard_API double __cdecl acosh ( do
- __Standard_API double __cdecl asinh ( double );
- __Standard_API double __cdecl atanh ( double );
- 
-+#if defined(M_PI_2)
-+# undef M_PI_2
-+#endif
-+
- # define M_SQRT1_2  7.0710678118654752440E-1
- # define M_PI_2     1.57079632679489661923
- 
 Index: oce/inc/Standard_values.h
 ===================================================================
 --- oce.orig/inc/Standard_values.h
@@ -610,7 +573,7 @@ Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx
 +++ oce/src/Draw/Draw_Window.cxx
-@@ -1248,7 +1248,9 @@ prompt:
+@@ -1255,7 +1255,9 @@ prompt:
  #include <Draw_Appli.hxx>
  #include <OSD.hxx>
  
@@ -1072,24 +1035,10 @@ Index: oce/src/OpenGl/OpenGl_FontMgr.cxx
  #undef TRACE
  
  #define DEFAULT_FONT_HEIGHT 16
-Index: oce/src/OpenGl/OpenGl_attri.cxx
+Index: oce/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
 ===================================================================
---- oce.orig/src/OpenGl/OpenGl_attri.cxx
-+++ oce/src/OpenGl/OpenGl_attri.cxx
-@@ -108,6 +108,9 @@ used in immediat mode context.
-   /* OCC22216 NOTE: linker dependency can be switched off by undefining macro. 
-      Pragma comment for gl2ps.lib is defined only here. */ 
-   
-+  #ifdef __BORLANDC__
-+  #include <gl2ps.c>
-+  #endif
- #endif
- 
- #include <OpenGl_tgl_all.hxx>
-Index: oce/src/OpenGl/OpenGl_graduatedtrihedron.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_graduatedtrihedron.cxx
-+++ oce/src/OpenGl/OpenGl_graduatedtrihedron.cxx
+--- oce.orig/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
++++ oce/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
 @@ -337,6 +337,11 @@ static void drawText(const wchar_t* text
  */
  }
@@ -1102,19 +1051,10 @@ Index: oce/src/OpenGl/OpenGl_graduatedtrihedron.cxx
  static void drawArrow(float x1, float y1, float z1, 
                        float x2, float y2, float z2,
                        float xn, float yn, float zn)
-Index: oce/src/OpenGl/OpenGl_polygon.cxx
+Index: oce/src/OpenGl/OpenGl_Polygon.cxx
 ===================================================================
---- oce.orig/src/OpenGl/OpenGl_polygon.cxx
-+++ oce/src/OpenGl/OpenGl_polygon.cxx
-@@ -78,7 +78,7 @@ on confuse point.
- #endif // APIENTRY
- # define STATIC static
- #else
--# include <GL\GLU.H>
-+# include <GL/glu.h>
- #define STATIC
- typedef double GLUcoord;
- #endif  /* WNT */
+--- oce.orig/src/OpenGl/OpenGl_Polygon.cxx
++++ oce/src/OpenGl/OpenGl_Polygon.cxx
 @@ -857,7 +857,7 @@ draw_polygon_concav( tel_polygon_data d,
        xyz[0] = ptr->xyz[0];
        xyz[1] = ptr->xyz[1];
@@ -1124,34 +1064,6 @@ Index: oce/src/OpenGl/OpenGl_polygon.cxx
        gluTessVertex( tripak, xyz,(void * ) i );
  #else
        {
-Index: oce/src/OpenGl/OpenGl_polygonholes.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_polygonholes.cxx
-+++ oce/src/OpenGl/OpenGl_polygonholes.cxx
-@@ -55,7 +55,7 @@ on confuse point.
- #endif // APIENTRY
- # define STATIC static
- #else
--# include <GL\GLU.H>
-+# include <GL/glu.h>
- # define STATIC
- typedef double GLUcoord;
- #endif  /* WNT */
-Index: oce/src/OpenGl/OpenGl_togl_redraw.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_togl_redraw.cxx
-+++ oce/src/OpenGl/OpenGl_togl_redraw.cxx
-@@ -63,6 +63,10 @@ GLboolean g_fBitmap;
- #include <InterfaceGraphic_Graphic3d.hxx>
- #include <InterfaceGraphic_Visual3d.hxx>
- 
-+#if defined(__MINGW32__)
-+# include <GL/glext.h>
-+#endif
-+
- void EXPORT
- call_togl_redraw
- (
 Index: oce/src/PlotMgt/PlotMgt.cxx
 ===================================================================
 --- oce.orig/src/PlotMgt/PlotMgt.cxx
@@ -1213,10 +1125,10 @@ Index: oce/src/Standard/Standard_osd_ffi.c
 ===================================================================
 --- oce.orig/src/Standard/Standard_osd_ffi.c
 +++ oce/src/Standard/Standard_osd_ffi.c
-@@ -36,7 +36,7 @@
- *             apres l'avoir ouvert.
- *
- ************************************************************/
+@@ -96,7 +96,7 @@
+ /**
+ */ 
+ /*************************************************************/ 
 -#if defined(_MSC_VER) && !defined(WNT)
 +#if (defined(_MSC_VER) || defined(__BORLANDC__)) && !defined(WNT)
  #error "Wrong compiler options has been detected. Add /DWNT option for proper compilation!!!!!"
@@ -1239,7 +1151,7 @@ Index: oce/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
 ===================================================================
 --- oce.orig/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
 +++ oce/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
-@@ -317,7 +317,11 @@ Standard_Integer BOOPCHK(Draw_Interpreto
+@@ -325,7 +325,11 @@ Standard_Integer BOOPCHK(Draw_Interpreto
    if (!strcmp(a[0],"tchk")) { 
  #ifdef DEB
  //    Standard_IMPORT extern Standard_Integer TopOpeBRepTool_BOOOPE_CHECK_DEB;

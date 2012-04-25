@@ -13,7 +13,7 @@ Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx
 +++ oce/src/Draw/Draw_Window.cxx
-@@ -70,7 +70,7 @@ defaultPrompt:
+@@ -84,7 +84,7 @@ defaultPrompt:
        errChannel = Tcl_GetStdChannel(TCL_STDERR);
        if (code != TCL_OK) {
          if (errChannel) {
@@ -22,7 +22,7 @@ Index: oce/src/Draw/Draw_Window.cxx
            Tcl_Write(errChannel, "\n", 1);
          }
          Tcl_AddErrorInfo(Interp,
-@@ -1044,7 +1044,7 @@ Standard_Boolean Init_Appli()
+@@ -1058,7 +1058,7 @@ Standard_Boolean Init_Appli()
    mainWindow =
    Tk_MainWindow(interp) ;
    if (mainWindow == NULL) {
@@ -31,7 +31,7 @@ Index: oce/src/Draw/Draw_Window.cxx
      exit(1);
    }
    Tk_Name(mainWindow) =
-@@ -2067,7 +2067,7 @@ static DWORD WINAPI tkLoop(VOID)
+@@ -2083,7 +2083,7 @@ static DWORD WINAPI tkLoop(VOID)
        Standard_Integer res = Tk_Init (interp);
        if (res != TCL_OK)
        {
@@ -40,7 +40,7 @@ Index: oce/src/Draw/Draw_Window.cxx
        }
      }
      catch (Standard_Failure)
-@@ -2078,7 +2078,7 @@ static DWORD WINAPI tkLoop(VOID)
+@@ -2094,7 +2094,7 @@ static DWORD WINAPI tkLoop(VOID)
      mainWindow = Tk_MainWindow (interp);
      if (mainWindow == NULL)
      {

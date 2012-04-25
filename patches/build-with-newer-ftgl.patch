@@ -23,7 +23,7 @@ Index: oce/inc/OpenGl_FontMgr.hxx
 ===================================================================
 --- oce.orig/inc/OpenGl_FontMgr.hxx
 +++ oce/inc/OpenGl_FontMgr.hxx
-@@ -6,7 +6,15 @@
+@@ -23,7 +23,15 @@
  # include <stdlib.h>
  #endif
  
@@ -40,24 +40,12 @@ Index: oce/inc/OpenGl_FontMgr.hxx
  
  #include <InterfaceGraphic.hxx>
  #include <TCollection_HAsciiString.hxx>
-Index: oce/inc/OpenGl_TextRender.hxx
-===================================================================
---- oce.orig/inc/OpenGl_TextRender.hxx
-+++ oce/inc/OpenGl_TextRender.hxx
-@@ -5,7 +5,7 @@
- #include <NCollection_DataMap.hxx>
- #include <TCollection_AsciiString.hxx>
- #include <TCollection_HAsciiString.hxx>
--#include <FTFont.h>
-+#include <OpenGl_FontMgr.hxx>  // For FTFont
- 
- #define NUM_FONT_SIZES 40
- #define NUM_CHAR_FONT 1024
 Index: oce/src/OpenGl/OpenGl_FontMgr.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_FontMgr.cxx
 +++ oce/src/OpenGl/OpenGl_FontMgr.cxx
-@@ -1,10 +1,9 @@
+@@ -17,11 +17,10 @@
+ 
  #include <OpenGl_FontMgr.hxx>
  
 -#include <FTGLTextureFont.h>        
@@ -70,7 +58,7 @@ Index: oce/src/OpenGl/OpenGl_FontMgr.cxx
  #undef TRACE
  
  #define DEFAULT_FONT_HEIGHT 16
-@@ -60,7 +59,10 @@ OpenGl_FontMgr* OpenGl_FontMgr::instance
+@@ -77,7 +76,10 @@ OpenGl_FontMgr* OpenGl_FontMgr::instance
  void OpenGl_FontMgr::_initializeFontDB()
  {
    Handle(OSD_FontMgr) fntMgr = OSD_FontMgr::GetInstance();
@@ -82,7 +70,7 @@ Index: oce/src/OpenGl/OpenGl_FontMgr.cxx
  
      OSD_NListOfSystemFont fontList = fntMgr->GetAvalableFonts();
      if ( fontList.Size() != 0 ) {
-@@ -71,10 +73,11 @@ void OpenGl_FontMgr::_initializeFontDB()
+@@ -88,10 +90,11 @@ void OpenGl_FontMgr::_initializeFontDB()
          if ( it.Value()->FontAspect() == OSD_FA_Regular ) {
            //this workaround for fonts with names dependent on system locale.
            //for example: "Times New Roman Fett Kursive" or "Times New Roman Gras Italiqui"
@@ -98,7 +86,7 @@ Index: oce/src/OpenGl/OpenGl_FontMgr.cxx
                info->SysFont = it.Value();
              }
              else {
-@@ -82,24 +85,25 @@ void OpenGl_FontMgr::_initializeFontDB()
+@@ -99,24 +102,25 @@ void OpenGl_FontMgr::_initializeFontDB()
  #ifdef TRACE
                cout << "TKOpenGl::initializeFontDB() detected new font!\n"
                  << "\tFont Previous Name: " << it.Value()->FontName()->ToCString() << endl

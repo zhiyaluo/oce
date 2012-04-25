@@ -13,7 +13,7 @@ Index: oce/src/Poly/Poly_CoherentTriangulation.cxx
 ===================================================================
 --- oce.orig/src/Poly/Poly_CoherentTriangulation.cxx
 +++ oce/src/Poly/Poly_CoherentTriangulation.cxx
-@@ -575,7 +575,7 @@ void Poly_CoherentTriangulation::RemoveL
+@@ -590,7 +590,7 @@ void Poly_CoherentTriangulation::RemoveL
          else if (iNode == pTri[i]->Node(2))
            const_cast<Poly_CoherentTriangle *>(pTri[i])->mypLink[2] = 0L;
          else
@@ -22,7 +22,7 @@ Index: oce/src/Poly/Poly_CoherentTriangulation.cxx
                                  " wrong connectivity between triangles");
        }
      }
-@@ -650,7 +650,7 @@ Standard_Boolean Poly_CoherentTriangulat
+@@ -665,7 +665,7 @@ Standard_Boolean Poly_CoherentTriangulat
          else if (aTri.Node(1) == theLink.Node(1))
            pTri[1] = &aTri;
        } else

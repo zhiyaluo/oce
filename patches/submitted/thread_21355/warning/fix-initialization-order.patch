@@ -34,7 +34,7 @@ Index: oce/inc/IntPatch_Point.lxx
 ===================================================================
 --- oce.orig/inc/IntPatch_Point.lxx
 +++ oce/inc/IntPatch_Point.lxx
-@@ -5,11 +5,20 @@
+@@ -21,11 +21,20 @@
  
  
  inline IntPatch_Point::IntPatch_Point ()
@@ -64,7 +64,7 @@ Index: oce/inc/NCollection_BaseVector.hxx
 ===================================================================
 --- oce.orig/inc/NCollection_BaseVector.hxx
 +++ oce/inc/NCollection_BaseVector.hxx
-@@ -37,13 +37,11 @@ class NCollection_BaseVector
+@@ -52,13 +52,11 @@ class NCollection_BaseVector
    class MemBlock {
    protected:
      MemBlock (NCollection_BaseAllocator* theAlloc)
@@ -78,28 +78,28 @@ Index: oce/inc/NCollection_BaseVector.hxx
 -        myFirstInd(theFirstInd), myLength(0), mySize(theLength), myData(0L) {}
 +      : myFirstInd(theFirstInd), myLength(0), mySize(theLength), myAlloc(theAlloc), myData(0L) {}
      virtual void        Reinit     (const Standard_Integer,
-                                     const size_t) {}
+                                     const Standard_Integer) {}
      Standard_Integer    FirstIndex () const     { return myFirstInd; }
 Index: oce/inc/ShapeAnalysis_BoxBndTree.hxx
 ===================================================================
 --- oce.orig/inc/ShapeAnalysis_BoxBndTree.hxx
 +++ oce/inc/ShapeAnalysis_BoxBndTree.hxx
-@@ -26,8 +26,8 @@ class ShapeAnalysis_BoxBndTreeSelector
+@@ -42,8 +42,8 @@ class ShapeAnalysis_BoxBndTreeSelector
    ShapeAnalysis_BoxBndTreeSelector
      (Handle (TopTools_HArray1OfShape) theSeq,
       Standard_Boolean theShared)
--    :  mySeq(theSeq), myShared(theShared), myNb(0), myTol(1e-7), myMin3d(1e-7),
--      myStatus(ShapeExtend::EncodeStatus (ShapeExtend_OK)){}
+-    :  mySeq(theSeq), myShared(theShared), myNb(0), myTol(1e-7), myMin3d(1e-7),myArrIndices(1,2),
+-      myStatus(ShapeExtend::EncodeStatus (ShapeExtend_OK))
 +    :  mySeq(theSeq), myShared(theShared), myStatus(ShapeExtend::EncodeStatus (ShapeExtend_OK)),
-+      myNb(0), myTol(1e-7), myMin3d(1e-7){}
-   
-   void DefineBoxes (const Bnd_Box& theFBox, const Bnd_Box& theLBox)
-     { myFBox = theFBox;
++      myNb(0), myTol(1e-7), myMin3d(1e-7),myArrIndices(1,2)
+       {
+         myArrIndices.Init(0);
+       }
 Index: oce/inc/TopClass_Classifier2d.gxx
 ===================================================================
 --- oce.orig/inc/TopClass_Classifier2d.gxx
 +++ oce/inc/TopClass_Classifier2d.gxx
-@@ -23,8 +23,8 @@
+@@ -37,8 +37,8 @@
  TopClass_Classifier2d::TopClass_Classifier2d() :
         myIsSet(Standard_False),
         myFirstCompare(Standard_True),
@@ -114,7 +114,7 @@ Index: oce/src/Adaptor3d/Adaptor3d_TopolTool.cxx
 ===================================================================
 --- oce.orig/src/Adaptor3d/Adaptor3d_TopolTool.cxx
 +++ oce/src/Adaptor3d/Adaptor3d_TopolTool.cxx
-@@ -38,7 +38,7 @@ static void GetConeApexParam(const gp_Co
+@@ -55,7 +55,7 @@ static void GetConeApexParam(const gp_Co
  }
  
  
@@ -127,7 +127,7 @@ Index: oce/src/Aspect/Aspect_ColorScale.cxx
 ===================================================================
 --- oce.orig/src/Aspect/Aspect_ColorScale.cxx
 +++ oce/src/Aspect/Aspect_ColorScale.cxx
-@@ -23,19 +23,19 @@ Aspect_ColorScale::Aspect_ColorScale()
+@@ -38,19 +38,19 @@ Aspect_ColorScale::Aspect_ColorScale()
  : MMgt_TShared(),
  myMin( 0.0 ),
  myMax( 1.0 ),
@@ -158,7 +158,7 @@ Index: oce/src/Aspect/Aspect_Window.cxx
 ===================================================================
 --- oce.orig/src/Aspect/Aspect_Window.cxx
 +++ oce/src/Aspect/Aspect_Window.cxx
-@@ -34,9 +34,10 @@ Aspect_Window::Aspect_Window (const Hand
+@@ -49,9 +49,10 @@ Aspect_Window::Aspect_Window (const Hand
  : MyGraphicDevice(aGraphicDevice),
    MyBackground(),
    MyBackgroundImage(),
@@ -175,7 +175,7 @@ Index: oce/src/BinTools/BinTools_ShapeSet.cxx
 ===================================================================
 --- oce.orig/src/BinTools/BinTools_ShapeSet.cxx
 +++ oce/src/BinTools/BinTools_ShapeSet.cxx
-@@ -60,7 +60,7 @@ static Standard_OStream& operator <<(Sta
+@@ -75,7 +75,7 @@ static Standard_OStream& operator <<(Sta
  //=======================================================================
  
  BinTools_ShapeSet::BinTools_ShapeSet(const Standard_Boolean isWithTriangles)
@@ -188,7 +188,7 @@ Index: oce/src/BlendFunc/BlendFunc_CSCircular.cxx
 ===================================================================
 --- oce.orig/src/BlendFunc/BlendFunc_CSCircular.cxx
 +++ oce/src/BlendFunc/BlendFunc_CSCircular.cxx
-@@ -30,7 +30,7 @@ BlendFunc_CSCircular::BlendFunc_CSCircul
+@@ -46,7 +46,7 @@ BlendFunc_CSCircular::BlendFunc_CSCircul
                                             const Handle(Adaptor3d_HCurve)& C,
                                             const Handle(Adaptor3d_HCurve)& CGuide,
                                             const Handle(Law_Function)& L) :
@@ -201,7 +201,7 @@ Index: oce/src/IntSurf/IntSurf_Quadric.cxx
 ===================================================================
 --- oce.orig/src/IntSurf/IntSurf_Quadric.cxx
 +++ oce/src/IntSurf/IntSurf_Quadric.cxx
-@@ -8,8 +8,8 @@
+@@ -26,8 +26,8 @@
  
  
  // ============================================================
@@ -216,7 +216,7 @@ Index: oce/src/NIS/NIS_TriangulatedDrawer.cxx
 ===================================================================
 --- oce.orig/src/NIS/NIS_TriangulatedDrawer.cxx
 +++ oce/src/NIS/NIS_TriangulatedDrawer.cxx
-@@ -36,10 +36,10 @@ NIS_TriangulatedDrawer::NIS_Triangulated
+@@ -51,10 +51,10 @@ NIS_TriangulatedDrawer::NIS_Triangulated
                                  (const Quantity_Color theNormal,
                                   const Quantity_Color theHilight,
                                   const Quantity_Color theDynHilight)
@@ -234,7 +234,7 @@ Index: oce/src/OSD/OSD_SystemFont.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_SystemFont.cxx
 +++ oce/src/OSD/OSD_SystemFont.cxx
-@@ -23,8 +23,8 @@ OSD_SystemFont::OSD_SystemFont( const Ha
+@@ -38,8 +38,8 @@ OSD_SystemFont::OSD_SystemFont( const Ha
                                  const Handle(TCollection_HAsciiString)& FilePath ):
  MyFontName(FontName),
  MyFontAspect(FontAspect),
@@ -244,7 +244,7 @@ Index: oce/src/OSD/OSD_SystemFont.cxx
  MyVerification(Standard_True)
  {
  
-@@ -32,8 +32,8 @@ MyVerification(Standard_True)
+@@ -47,8 +47,8 @@ MyVerification(Standard_True)
  
  OSD_SystemFont::OSD_SystemFont( const Handle(TCollection_HAsciiString)& XLFD,
                                  const Handle(TCollection_HAsciiString)& FilePath) :
@@ -259,7 +259,7 @@ Index: oce/src/Prs2d/Prs2d_Dimension.cxx
 ===================================================================
 --- oce.orig/src/Prs2d/Prs2d_Dimension.cxx
 +++ oce/src/Prs2d/Prs2d_Dimension.cxx
-@@ -11,13 +11,13 @@ Prs2d_Dimension::Prs2d_Dimension( const
+@@ -28,13 +28,13 @@ Prs2d_Dimension::Prs2d_Dimension( const
     :  Graphic2d_Line( aGO ),
        myText( aText ),
        myTextScale( aTxtScale ),
@@ -279,7 +279,7 @@ Index: oce/src/V3d/V3d_View.cxx
 ===================================================================
 --- oce.orig/src/V3d/V3d_View.cxx
 +++ oce/src/V3d/V3d_View.cxx
-@@ -277,6 +277,7 @@ static Graphic3d_Vertex& _MyProjReferenc
+@@ -294,6 +294,7 @@ static Graphic3d_Vertex& _MyProjReferenc
  
  V3d_View::V3d_View(const Handle(V3d_Viewer)& VM, const V3d_TypeOfView Type ) :
  MyType ( Type ),
@@ -287,7 +287,7 @@ Index: oce/src/V3d/V3d_View.cxx
  MyViewer(VM.operator->()),
  MyActiveLights(),
  MyActivePlanes(),
-@@ -284,8 +285,7 @@ MyViewContext (),
+@@ -301,8 +302,7 @@ MyViewContext (),
  myActiveLightsIterator(),
  myActivePlanesIterator(),
  SwitchSetFront(Standard_False),
@@ -297,7 +297,7 @@ Index: oce/src/V3d/V3d_View.cxx
  #if defined(TRACE_POINTS)
  ,MyGridEchoStructure (new Graphic3d_Structure (VM->Viewer ())),  // S3892
  MyGridEchoGroup (new Graphic3d_Group (MyGridEchoStructure))            // S3892
-@@ -397,6 +397,7 @@ MyGridEchoGroup (new Graphic3d_Group (My
+@@ -414,6 +414,7 @@ MyGridEchoGroup (new Graphic3d_Group (My
  
  V3d_View::V3d_View(const Handle(V3d_Viewer)& VM,const Handle(V3d_View)& V, const V3d_TypeOfView Type ) :
  MyType ( Type ),
@@ -305,7 +305,7 @@ Index: oce/src/V3d/V3d_View.cxx
  MyViewer(VM.operator->()),
  MyActiveLights(),
  MyActivePlanes(),
-@@ -404,8 +405,7 @@ MyViewContext (),
+@@ -421,8 +422,7 @@ MyViewContext (),
  myActiveLightsIterator(),
  myActivePlanesIterator(),
  SwitchSetFront(Standard_False),
@@ -319,7 +319,7 @@ Index: oce/src/ViewerTest/ViewerTest_EventManager.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_EventManager.cxx
 +++ oce/src/ViewerTest/ViewerTest_EventManager.cxx
-@@ -16,8 +16,8 @@
+@@ -32,8 +32,8 @@
  ViewerTest_EventManager::ViewerTest_EventManager
          (const Handle(V3d_View)& aView,
           const Handle(AIS_InteractiveContext)& Ctx)
@@ -334,7 +334,7 @@ Index: oce/src/Voxel/Voxel_FastConverter.cxx
 ===================================================================
 --- oce.orig/src/Voxel/Voxel_FastConverter.cxx
 +++ oce/src/Voxel/Voxel_FastConverter.cxx
-@@ -32,9 +32,9 @@ Voxel_FastConverter::Voxel_FastConverter
+@@ -47,9 +47,9 @@ Voxel_FastConverter::Voxel_FastConverter
  					 const Standard_Integer nbz,
  					 const Standard_Integer nbthreads)
  :myShape(shape),myVoxels(&voxels),
@@ -346,7 +346,7 @@ Index: oce/src/Voxel/Voxel_FastConverter.cxx
   myNbTriangles(0)
  {
    Init();
-@@ -48,9 +48,9 @@ Voxel_FastConverter::Voxel_FastConverter
+@@ -63,9 +63,9 @@ Voxel_FastConverter::Voxel_FastConverter
  					 const Standard_Integer nbz,
  					 const Standard_Integer nbthreads)
  :myShape(shape),myVoxels(&voxels),
@@ -358,7 +358,7 @@ Index: oce/src/Voxel/Voxel_FastConverter.cxx
   myNbTriangles(0)
  {
    Init();
-@@ -64,9 +64,9 @@ Voxel_FastConverter::Voxel_FastConverter
+@@ -79,9 +79,9 @@ Voxel_FastConverter::Voxel_FastConverter
  					 const Standard_Integer nbz,
  					 const Standard_Integer nbthreads)
  :myShape(shape),myVoxels(&voxels),

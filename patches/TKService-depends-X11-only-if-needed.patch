@@ -18,7 +18,7 @@ Index: oce/inc/Aspect_XWD.hxx
 ===================================================================
 --- oce.orig/inc/Aspect_XWD.hxx
 +++ oce/inc/Aspect_XWD.hxx
-@@ -3,6 +3,7 @@
+@@ -20,6 +20,7 @@
  
  # ifndef WNT
  #  include <X11/XWDFile.h>
@@ -30,7 +30,7 @@ Index: oce/src/AlienImage/AlienImage_X11XWDAlienData.cxx
 ===================================================================
 --- oce.orig/src/AlienImage/AlienImage_X11XWDAlienData.cxx
 +++ oce/src/AlienImage/AlienImage_X11XWDAlienData.cxx
-@@ -11,9 +11,7 @@
+@@ -29,9 +29,7 @@
  #define TEST	//GG_140699
  //		Check file extension, must be ".xwd".
  
@@ -45,7 +45,10 @@ Index: oce/src/AlienImage/AlienImage_X11XWDFileHeader.cxx
 ===================================================================
 --- oce.orig/src/AlienImage/AlienImage_X11XWDFileHeader.cxx
 +++ oce/src/AlienImage/AlienImage_X11XWDFileHeader.cxx
-@@ -1,6 +1,4 @@
+@@ -16,9 +16,7 @@
+ // purpose or non-infringement. Please see the License for the specific terms
+ // and conditions governing the rights and limitations under the License.
+ 
 -#ifndef WNT
 -# include <X11/Xlib.h>
 -#endif  // WNT

@@ -23,7 +23,7 @@ Index: oce/CMakeLists.txt
 ===================================================================
 --- oce.orig/CMakeLists.txt
 +++ oce/CMakeLists.txt
-@@ -107,6 +107,8 @@ OPTION_WITH_DEFAULT( ${PROJECT_NAME}_TES
+@@ -104,6 +104,8 @@ OPTION_WITH_DEFAULT( ${PROJECT_NAME}_TES
  MARK_AS_ADVANCED(${PROJECT_NAME}_TESTING)
  OPTION_WITH_DEFAULT( ${PROJECT_NAME}_ADD_HEADERS "Add headers to project files" OFF )
  MARK_AS_ADVANCED(${PROJECT_NAME}_ADD_HEADERS)
@@ -47,7 +47,7 @@ Index: oce/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
 ===================================================================
 --- oce.orig/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
 +++ oce/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
-@@ -885,6 +885,7 @@ void BRepMesh_FastDiscretFace::InternalV
+@@ -866,6 +866,7 @@ void BRepMesh_FastDiscretFace::InternalV
        }
      }
    }
@@ -55,7 +55,7 @@ Index: oce/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
    else if (thetype == GeomAbs_BezierSurface || thetype == GeomAbs_BSplineSurface)
    {
      //define resolutions
-@@ -1031,6 +1032,7 @@ void BRepMesh_FastDiscretFace::InternalV
+@@ -1012,6 +1013,7 @@ void BRepMesh_FastDiscretFace::InternalV
        }
      }
    }

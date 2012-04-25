@@ -23,16 +23,3 @@ Index: oce/adm/UDLIST
  p XCAFApp
  p XCAFDoc
  p XCAFDrivers
-Index: oce/adm/UDLIST.DataExchange
-===================================================================
---- oce.orig/adm/UDLIST.DataExchange
-+++ oce/adm/UDLIST.DataExchange
-@@ -72,7 +72,7 @@ p UnitsMethods
- p Vrml
- p VrmlAPI
- p VrmlConverter
--p VrmlData
-+n VrmlData
- p XCAFApp
- p XCAFDoc
- p XCAFDrivers

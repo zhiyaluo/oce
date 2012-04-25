@@ -72,9 +72,9 @@ Index: oce/src/PlotMgt/PlotMgt_fillpolyarc.cxx
 -      (mpo_lines+i)->X2 = (-C2*Yt + fsqrt(C2*C2*Yt*Yt - C1*(C3*Yt*Yt - a*a*b*b)))/C1;
 +      (mpo_lines+i)->X1 = (-C2*Yt - sqrt(C2*C2*Yt*Yt - C1*(C3*Yt*Yt - a*a*b*b)))/C1;
 +      (mpo_lines+i)->X2 = (-C2*Yt + sqrt(C2*C2*Yt*Yt - C1*(C3*Yt*Yt - a*a*b*b)))/C1;
- //    cout << "alpha = " << alpha*180/Standard_PI << "    alpha+beta = " << (alpha+beta)*180/Standard_PI << endl << flush;
--//    cout << "" << fatan2(Yt, (mpo_lines+i)->X2)*180/Standard_PI << "     type " << (mpo_lines+i)->type << endl << flush;;
-+//    cout << "" << atan2(Yt, (mpo_lines+i)->X2)*180/Standard_PI << "     type " << (mpo_lines+i)->type << endl << flush;;
+ //    cout << "alpha = " << alpha*180/M_PI << "    alpha+beta = " << (alpha+beta)*180/M_PI << endl << flush;
+-//    cout << "" << fatan2(Yt, (mpo_lines+i)->X2)*180/M_PI << "     type " << (mpo_lines+i)->type << endl << flush;;
++//    cout << "" << atan2(Yt, (mpo_lines+i)->X2)*180/M_PI << "     type " << (mpo_lines+i)->type << endl << flush;;
  //    cout << "Xleft = " << (mpo_lines+i)->X1 << "     Xright = " << (mpo_lines+i)->X2 << endl << flush;
  //    cout << "C2*C2 - C1*(C3*Yt*Yt - a*a*b*b) = " << C2*C2 - C1*(C3*Yt*Yt - a*a*b*b) << endl << flush;
  //    cout << "C1*(C3*Yt*Yt - a*a*b*b) = " << C1*(C3*Yt*Yt - a*a*b*b) << endl << flush;

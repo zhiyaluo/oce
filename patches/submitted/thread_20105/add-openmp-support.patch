@@ -17,7 +17,7 @@ Index: oce/src/BRepMesh/BRepMesh_FastDiscret.cxx
 ===================================================================
 --- oce.orig/src/BRepMesh/BRepMesh_FastDiscret.cxx
 +++ oce/src/BRepMesh/BRepMesh_FastDiscret.cxx
-@@ -246,8 +246,10 @@ void BRepMesh_FastDiscret::Perform(const
+@@ -262,8 +262,10 @@ void BRepMesh_FastDiscret::Perform(const
      tbb::parallel_for_each (aFaces.begin(), aFaces.end(), *this);
    #else
      // alternative parallelization not yet available
@@ -34,7 +34,7 @@ Index: oce/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
 ===================================================================
 --- oce.orig/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
 +++ oce/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
-@@ -237,9 +237,10 @@ void BRepMesh_IncrementalMesh::Update(co
+@@ -263,9 +263,10 @@ void BRepMesh_IncrementalMesh::Update(co
      // mesh faces in parallel threads using TBB
      tbb::parallel_for_each (aFaces.begin(), aFaces.end(), *myMesh.operator->());
    #else
@@ -48,7 +48,7 @@ Index: oce/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
    #endif
    }
    else
-@@ -495,12 +496,7 @@ Standard_Integer BRepMesh_IncrementalMes
+@@ -521,12 +522,7 @@ Standard_Integer BRepMesh_IncrementalMes
  //=======================================================================
  Standard_Boolean BRepMesh_IncrementalMesh::IsParallelDefault()
  {

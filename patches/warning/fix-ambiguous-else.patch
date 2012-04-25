@@ -58,7 +58,7 @@ Index: oce/inc/GProp_SGProps.gxx
 ===================================================================
 --- oce.orig/inc/GProp_SGProps.gxx
 +++ oce/inc/GProp_SGProps.gxx
-@@ -94,8 +94,9 @@ static Standard_Integer FillIntervalBoun
+@@ -112,8 +112,9 @@ static Standard_Integer FillIntervalBoun
    VA(j++) = A;
    for(; i <= iEnd; i++){
      Standard_Real kn = Knots(i);
@@ -73,7 +73,7 @@ Index: oce/inc/GProp_VGProps.gxx
 ===================================================================
 --- oce.orig/inc/GProp_VGProps.gxx
 +++ oce/inc/GProp_VGProps.gxx
-@@ -63,8 +63,9 @@ static Standard_Integer FillIntervalBoun
+@@ -81,8 +81,9 @@ static Standard_Integer FillIntervalBoun
    VA(j++) = A;
    for(; i <= iEnd; i++){
      Standard_Real kn = Knots(i);
@@ -88,7 +88,7 @@ Index: oce/src/AIS/AIS_InteractiveContext_1.cxx
 ===================================================================
 --- oce.orig/src/AIS/AIS_InteractiveContext_1.cxx
 +++ oce/src/AIS/AIS_InteractiveContext_1.cxx
-@@ -191,12 +191,13 @@ AIS_StatusOfDetection AIS_InteractiveCon
+@@ -207,12 +207,13 @@ AIS_StatusOfDetection AIS_InteractiveCon
    selector->Init();
    if ( selector->More() )
    {
@@ -107,7 +107,7 @@ Index: oce/src/AIS/AIS_LocalContext.cxx
 ===================================================================
 --- oce.orig/src/AIS/AIS_LocalContext.cxx
 +++ oce/src/AIS/AIS_LocalContext.cxx
-@@ -515,7 +515,7 @@ Standard_Boolean AIS_LocalContext::Remov
+@@ -531,7 +531,7 @@ Standard_Boolean AIS_LocalContext::Remov
    const Handle(V3d_Viewer)& aViewer = myCTX->CurrentViewer();
    for(i = 1; i <= myMapOfOwner.Extent(); i++){
      const Handle(SelectMgr_EntityOwner)& anOwner = myMapOfOwner(i) ;
@@ -116,7 +116,7 @@ Index: oce/src/AIS/AIS_LocalContext.cxx
        if(anOwner->Selectable() != aSelectable)
          ownersToKeep.Add(anOwner);
        else
-@@ -526,6 +526,7 @@ Standard_Boolean AIS_LocalContext::Remov
+@@ -542,6 +542,7 @@ Standard_Boolean AIS_LocalContext::Remov
              Unhilight(anOwner, aViewer->ActiveView());
          }
        }
@@ -128,7 +128,7 @@ Index: oce/src/AIS/AIS_Selection.cxx
 ===================================================================
 --- oce.orig/src/AIS/AIS_Selection.cxx
 +++ oce/src/AIS/AIS_Selection.cxx
-@@ -231,11 +231,12 @@ AIS_SelectStatus AIS_Selection::Select(c
+@@ -248,11 +248,12 @@ AIS_SelectStatus AIS_Selection::Select(c
    if ( S->myResultMap.IsBound( anObject ) ){
      AIS_NListTransient::Iterator aListIter = S->myResultMap.Find( anObject );
  //skt-----------------------------------------------------------------
@@ -146,7 +146,7 @@ Index: oce/src/AIS2D/AIS2D_InteractiveContext.cxx
 ===================================================================
 --- oce.orig/src/AIS2D/AIS2D_InteractiveContext.cxx
 +++ oce/src/AIS2D/AIS2D_InteractiveContext.cxx
-@@ -1978,7 +1978,7 @@ AIS2D_StatusOfDetection AIS2D_Interactiv
+@@ -1981,7 +1981,7 @@ AIS2D_StatusOfDetection AIS2D_Interactiv
           
         myLastPicked = Handle(AIS2D_InteractiveObject)::DownCast( theGOi );
         ( is_main ) ? myLastinMain = myLastPicked : myLastinColl = myLastPicked;
@@ -155,7 +155,7 @@ Index: oce/src/AIS2D/AIS2D_InteractiveContext.cxx
  
           if ( AvailableToDetect(myLastPicked) ) {
               if ( myLastPicked->HighlightMode() == AIS2D_TOD_OBJECT )
-@@ -1995,6 +1995,7 @@ AIS2D_StatusOfDetection AIS2D_Interactiv
+@@ -1998,6 +1998,7 @@ AIS2D_StatusOfDetection AIS2D_Interactiv
            
           } else theStat = AIS2D_SOD_Selected;
         }
@@ -163,7 +163,7 @@ Index: oce/src/AIS2D/AIS2D_InteractiveContext.cxx
       } // end for
      
       myResetDetect= Standard_False;   
-@@ -2105,7 +2106,7 @@ AIS2D_StatusOfDetection AIS2D_Interactiv
+@@ -2108,7 +2109,7 @@ AIS2D_StatusOfDetection AIS2D_Interactiv
        Handle(Graphic2d_GraphicObject) theGOi = dList->Value(i);
      if ( theGOi->IsKind(STANDARD_TYPE(AIS2D_InteractiveObject))) { 
        theIO = Handle(AIS2D_InteractiveObject)::DownCast( theGOi );
@@ -172,7 +172,7 @@ Index: oce/src/AIS2D/AIS2D_InteractiveContext.cxx
         if ( AvailableToDetect( theIO ) ) {
          if ( theIO->HighlightMode() == AIS2D_TOD_OBJECT )
               theIO->Highlight( ind );
-@@ -2113,6 +2114,7 @@ AIS2D_StatusOfDetection AIS2D_Interactiv
+@@ -2116,6 +2117,7 @@ AIS2D_StatusOfDetection AIS2D_Interactiv
          DoDetectObject( theIO, theDrawer );
         
         } else theStat = AIS2D_SOD_Selected;
@@ -180,7 +180,7 @@ Index: oce/src/AIS2D/AIS2D_InteractiveContext.cxx
      } 
     } // end for
     theDrawer->EndDraw();
-@@ -2136,13 +2138,14 @@ AIS2D_StatusOfDetection AIS2D_Interactiv
+@@ -2139,13 +2141,14 @@ AIS2D_StatusOfDetection AIS2D_Interactiv
  
  AIS2D_StatusOfPick AIS2D_InteractiveContext::Select( const Standard_Boolean UpdateVwr ) {
  
@@ -193,14 +193,14 @@ Index: oce/src/AIS2D/AIS2D_InteractiveContext.cxx
  	  return AIS2D_SOP_OneSelected;
    }
 + }
-   
+ 
   if ( ! mySeqOfDetIO->IsEmpty() ) {
      Handle(AIS2D_InteractiveObject) theIO;
 Index: oce/src/BRepExtrema/BRepExtrema_DistShapeShape.cxx
 ===================================================================
 --- oce.orig/src/BRepExtrema/BRepExtrema_DistShapeShape.cxx
 +++ oce/src/BRepExtrema/BRepExtrema_DistShapeShape.cxx
-@@ -80,7 +80,7 @@ void BRepExtrema_DistShapeShape::Distanc
+@@ -96,7 +96,7 @@ void BRepExtrema_DistShapeShape::Distanc
        const TopoDS_Shape &S2 = Map2(j);
  
        BRepExtrema_DistanceSS  dist(S1,S2,box1,box2,myDistRef,myEps);
@@ -209,7 +209,7 @@ Index: oce/src/BRepExtrema/BRepExtrema_DistShapeShape.cxx
          if(dist.DistValue() < (myDistRef-myEps))
          {
            mySolutionsShape1.Clear();
-@@ -100,6 +100,7 @@ void BRepExtrema_DistShapeShape::Distanc
+@@ -116,6 +116,7 @@ void BRepExtrema_DistShapeShape::Distanc
            if (myDistRef > dist.DistValue())
              myDistRef=dist.DistValue();
          }
@@ -221,7 +221,7 @@ Index: oce/src/BRepFill/BRepFill_Sweep.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_Sweep.cxx
 +++ oce/src/BRepFill/BRepFill_Sweep.cxx
-@@ -2221,7 +2221,7 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
+@@ -2234,7 +2234,7 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
  	 }
         }
  
@@ -230,7 +230,7 @@ Index: oce/src/BRepFill/BRepFill_Sweep.cxx
  	if (uclose && (isec == NbLaw)) {
  	  Vertex(isec+1, 1) =  Vertex(1, 1);
  	}  
-@@ -2241,6 +2241,7 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
+@@ -2254,6 +2254,7 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
  	    VEdge(isec, 1) = NullEdge(Vertex(isec, 1)); 
  	  }
  	}
@@ -242,7 +242,7 @@ Index: oce/src/BRepTest/BRepTest_TopologyCommands.cxx
 ===================================================================
 --- oce.orig/src/BRepTest/BRepTest_TopologyCommands.cxx
 +++ oce/src/BRepTest/BRepTest_TopologyCommands.cxx
-@@ -106,12 +106,13 @@ static Standard_Integer section(Draw_Int
+@@ -122,12 +122,13 @@ static Standard_Integer section(Draw_Int
  	  else
  	    if (strcasecmp(a[4], "-no2d"))
  	      return 1;
@@ -261,7 +261,7 @@ Index: oce/src/BRepTools/BRepTools_NurbsConvertModification.cxx
 ===================================================================
 --- oce.orig/src/BRepTools/BRepTools_NurbsConvertModification.cxx
 +++ oce/src/BRepTools/BRepTools_NurbsConvertModification.cxx
-@@ -508,19 +508,21 @@ Standard_Boolean BRepTools_NurbsConvertM
+@@ -553,19 +553,21 @@ Standard_Boolean BRepTools_NurbsConvertM
        v = (Vsup - Vinf)*0.1;
        if(S->IsUPeriodic()) {
  	Standard_Real uperiod = S->UPeriod();
@@ -289,7 +289,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_6.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder_6.cxx
 +++ oce/src/ChFi3d/ChFi3d_Builder_6.cxx
-@@ -1784,7 +1784,7 @@ Standard_Boolean ChFi3d_Builder::Compute
+@@ -1802,7 +1802,7 @@ Standard_Boolean ChFi3d_Builder::Compute
        narc1 = Lin->StartPointOnFirst().NbPointOnRst();
        narc2 = Lin->StartPointOnSecond().NbPointOnRst();
  //  modified by eap Fri Feb  8 11:43:48 2002 ___BEGIN___
@@ -298,7 +298,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_6.cxx
  	if (narc1 == 0)
  	  backwContinueFailed = Lin->StartPointOnFirst().ParameterOnGuide() > Target;
  	else {
-@@ -1805,7 +1805,8 @@ Standard_Boolean ChFi3d_Builder::Compute
+@@ -1823,7 +1823,8 @@ Standard_Boolean ChFi3d_Builder::Compute
  // 	    }
  	  }
  	}
@@ -308,7 +308,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_6.cxx
  	if (narc2 == 0)
  	  backwContinueFailed = Lin->StartPointOnSecond().ParameterOnGuide() > Target;
  	else {
-@@ -1826,6 +1827,7 @@ Standard_Boolean ChFi3d_Builder::Compute
+@@ -1844,6 +1845,7 @@ Standard_Boolean ChFi3d_Builder::Compute
  //             }
            }
          }
@@ -316,7 +316,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_6.cxx
        if (backwContinueFailed) {
  	// if we leave backwContinueFailed as is, we will stop in this direction
  	// but we are to continue if there are no more faces on the side with arc
-@@ -1885,7 +1887,7 @@ Standard_Boolean ChFi3d_Builder::Compute
+@@ -1903,7 +1905,7 @@ Standard_Boolean ChFi3d_Builder::Compute
        narc1 = Lin->EndPointOnFirst().NbPointOnRst();
        narc2 = Lin->EndPointOnSecond().NbPointOnRst();
  //  modified by eap Fri Feb  8 11:44:57 2002 ___BEGIN___
@@ -325,7 +325,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_6.cxx
  	if (narc1 == 0) 
  	  forwContinueFailed = Lin->EndPointOnFirst().ParameterOnGuide() < Target;
  	else {
-@@ -1901,7 +1903,8 @@ Standard_Boolean ChFi3d_Builder::Compute
+@@ -1919,7 +1921,8 @@ Standard_Boolean ChFi3d_Builder::Compute
  // 	    }
  	  }
  	}
@@ -335,7 +335,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_6.cxx
  	if (narc2 == 0)
  	  forwContinueFailed = Lin->EndPointOnSecond().ParameterOnGuide() < Target;
  	else {
-@@ -1917,6 +1920,7 @@ Standard_Boolean ChFi3d_Builder::Compute
+@@ -1935,6 +1938,7 @@ Standard_Boolean ChFi3d_Builder::Compute
  // 	    }
  	  }
  	}
@@ -347,7 +347,7 @@ Index: oce/src/GeomPlate/GeomPlate_BuildPlateSurface.cxx
 ===================================================================
 --- oce.orig/src/GeomPlate/GeomPlate_BuildPlateSurface.cxx
 +++ oce/src/GeomPlate/GeomPlate_BuildPlateSurface.cxx
-@@ -2048,7 +2048,7 @@ Discretise(const Handle(GeomPlate_HArray
+@@ -2064,7 +2064,7 @@ Discretise(const Handle(GeomPlate_HArray
  		    // pour sortir de la boucle sans stocker le point	 
  		  }
  	      else
@@ -356,7 +356,7 @@ Index: oce/src/GeomPlate/GeomPlate_BuildPlateSurface.cxx
  		    // on a parcouru tout le tableau : Le point 
  		    // n'appartient pas a un interval point commun 
  		    if (NbPtG1G1!=0) 
-@@ -2083,6 +2083,7 @@ Discretise(const Handle(GeomPlate_HArray
+@@ -2099,6 +2099,7 @@ Discretise(const Handle(GeomPlate_HArray
  		      { myPlateCont->ChangeValue(i).Append(Inter);
  			// on ajoute le point
  		      }
@@ -368,7 +368,7 @@ Index: oce/src/Hermit/Hermit.cxx
 ===================================================================
 --- oce.orig/src/Hermit/Hermit.cxx
 +++ oce/src/Hermit/Hermit.cxx
-@@ -223,7 +223,7 @@ static void PolyTest(const TColStd_Array
+@@ -239,7 +239,7 @@ static void PolyTest(const TColStd_Array
        if ((max==0)||(max==3))                                                
  	for (i=0;i<=3;i++)
  	  Polesinit(i).SetCoord(0.0,(Polesinit(i).Y()-TolPoles*Polemax));
@@ -377,7 +377,7 @@ Index: oce/src/Hermit/Hermit.cxx
  	if ((min==0)||(min==3))                                             
  	  for (i=0;i<=3;i++)
  	    Polesinit(i).SetCoord(0.0,(Polesinit(i).Y()-(1/TolPoles)*Polemin));
-@@ -266,6 +266,7 @@ static void PolyTest(const TColStd_Array
+@@ -282,6 +282,7 @@ static void PolyTest(const TColStd_Array
  	    }
  	  }
  	}
@@ -385,7 +385,7 @@ Index: oce/src/Hermit/Hermit.cxx
      }
    }                          //end of the loop
    
-@@ -428,7 +429,7 @@ static void PolyTest(const TColStd_Array
+@@ -444,7 +445,7 @@ static void PolyTest(const TColStd_Array
        if ((max==0)||(max==3))                                                
  	for (i=0;i<=3;i++)
  	  Polesinit(i).SetCoord(0.0,(Polesinit(i).Y()-TolPoles*Polemax));
@@ -394,7 +394,7 @@ Index: oce/src/Hermit/Hermit.cxx
  	if ((min==0)||(min==3))                                             
  	  for (i=0;i<=3;i++)
  	    Polesinit(i).SetCoord(0.0,(Polesinit(i).Y()-(1/TolPoles)*Polemin));
-@@ -471,6 +472,7 @@ static void PolyTest(const TColStd_Array
+@@ -487,6 +488,7 @@ static void PolyTest(const TColStd_Array
  	    }
  	  }
  	}
@@ -406,7 +406,7 @@ Index: oce/src/IGESControl/IGESControl_IGESBoundary.cxx
 ===================================================================
 --- oce.orig/src/IGESControl/IGESControl_IGESBoundary.cxx
 +++ oce/src/IGESControl/IGESControl_IGESBoundary.cxx
-@@ -158,13 +158,14 @@ IGESControl_IGESBoundary::IGESControl_IG
+@@ -173,13 +173,14 @@ IGESControl_IGESBoundary::IGESControl_IG
    else if (( surfcurv == -3 && len3d > 0) || len2d == 0)
      GTranslate2d = Standard_False;
   
@@ -426,7 +426,7 @@ Index: oce/src/IGESDefs/IGESDefs_ToolAttributeTable.cxx
 ===================================================================
 --- oce.orig/src/IGESDefs/IGESDefs_ToolAttributeTable.cxx
 +++ oce/src/IGESDefs/IGESDefs_ToolAttributeTable.cxx
-@@ -268,10 +268,11 @@ void  IGESDefs_ToolAttributeTable::OwnCh
+@@ -281,10 +281,11 @@ void  IGESDefs_ToolAttributeTable::OwnCh
    (const Handle(IGESDefs_AttributeTable)& ent,
     const Interface_ShareTool& , Handle(Interface_Check)& ach) const 
  {
@@ -443,7 +443,7 @@ Index: oce/src/IGESToBRep/IGESToBRep_IGESBoundary.cxx
 ===================================================================
 --- oce.orig/src/IGESToBRep/IGESToBRep_IGESBoundary.cxx
 +++ oce/src/IGESToBRep/IGESToBRep_IGESBoundary.cxx
-@@ -152,11 +152,12 @@ IGESToBRep_IGESBoundary::IGESToBRep_IGES
+@@ -168,11 +168,12 @@ IGESToBRep_IGESBoundary::IGESToBRep_IGES
    else if (len2d == 0)
      GTranslate2d = Standard_False;
    
@@ -461,7 +461,7 @@ Index: oce/src/IntPatch/IntPatch_RstInt.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_RstInt.cxx
 +++ oce/src/IntPatch/IntPatch_RstInt.cxx
-@@ -795,11 +795,12 @@ void IntPatch_RstInt::PutVertexOnLine (H
+@@ -810,11 +810,12 @@ void IntPatch_RstInt::PutVertexOnLine (H
  
  		arc->D1(paramarc,p2d,d2d);
  		U1 = p2d.X(); V1 = p2d.Y();
@@ -479,7 +479,7 @@ Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
 ===================================================================
 --- oce.orig/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
 +++ oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
-@@ -3019,14 +3019,16 @@ IntPolyh_MaillageAffinage::TriangleEdgeC
+@@ -3025,14 +3025,16 @@ Standard_Integer IntPolyh_MaillageAffina
        }
        else {
  	PI=PE1+Edge*lambda;
@@ -497,39 +497,12 @@ Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
 +	}
  
        }
-       
-Index: oce/src/LocOpe/LocOpe_SplitShape.cxx
-===================================================================
---- oce.orig/src/LocOpe/LocOpe_SplitShape.cxx
-+++ oce/src/LocOpe/LocOpe_SplitShape.cxx
-@@ -1112,18 +1112,20 @@ static void ChoixUV(const TopoDS_Edge& L
-     if (surf.IsUPeriodic())
-       if ((fabs(p2d.Y() - plst.Y()) <= toll) || 
-         ((surf.IsVPeriodic())             && 
--        (fabs(fabs(p2d.Y() - plst.Y()) - surf.VPeriod()) <= toll)))
-+        (fabs(fabs(p2d.Y() - plst.Y()) - surf.VPeriod()) <= toll))) {
-         if (fabs(p2d.X() - plst.X() - surf.UPeriod()) <= toll)
-           p2d.SetX(p2d.X() - surf.UPeriod());
-         else if (fabs(plst.X() - p2d.X() - surf.UPeriod()) <= toll)
-           p2d.SetX(p2d.X() + surf.UPeriod());
-+      }
- 
-     if (surf.IsVPeriodic())
--      if (fabs(p2d.X() - plst.X()) <= toll)
-+      if (fabs(p2d.X() - plst.X()) <= toll) {
-         if (fabs(p2d.Y() - plst.Y() - surf.VPeriod()) <= toll)
-           p2d.SetY(p2d.Y() - surf.VPeriod());
-         else if (fabs(plst.Y() - p2d.Y() - surf.VPeriod()) <= toll)
-           p2d.SetY(p2d.Y() + surf.VPeriod());
-+      }
- 
-     tol = BRep_Tool::Tolerance(vtx);
-     tol = Max(surf.UResolution(tol), surf.VResolution(tol));
+         
 Index: oce/src/MeshVS/MeshVS_Mesh.cxx
 ===================================================================
 --- oce.orig/src/MeshVS/MeshVS_Mesh.cxx
 +++ oce/src/MeshVS/MeshVS_Mesh.cxx
-@@ -304,7 +304,7 @@ void MeshVS_Mesh::ComputeSelection ( con
+@@ -319,7 +319,7 @@ void MeshVS_Mesh::ComputeSelection ( con
            TColStd_MapIteratorOfPackedMapOfInteger anIterN( anAllNodesMap );
  
            for( ; anIterN.More(); anIterN.Next() )
@@ -538,7 +511,7 @@ Index: oce/src/MeshVS/MeshVS_Mesh.cxx
                if( first )
                {
                  for( Standard_Integer i=1; i<=3; i++ )
-@@ -319,6 +319,7 @@ void MeshVS_Mesh::ComputeSelection ( con
+@@ -334,6 +334,7 @@ void MeshVS_Mesh::ComputeSelection ( con
                    if( aCoords( i )>max[i-1] )
                      max[i-1] = aCoords( i );
                  }
@@ -550,7 +523,7 @@ Index: oce/src/MeshVS/MeshVS_MeshPrsBuilder.cxx
 ===================================================================
 --- oce.orig/src/MeshVS/MeshVS_MeshPrsBuilder.cxx
 +++ oce/src/MeshVS/MeshVS_MeshPrsBuilder.cxx
-@@ -848,7 +848,7 @@ void MeshVS_MeshPrsBuilder::HowManyPrimi
+@@ -863,7 +863,7 @@ void MeshVS_MeshPrsBuilder::HowManyPrimi
                                                 Standard_Integer& Vertices,
                                                 Standard_Integer& Bounds)
  {
@@ -559,7 +532,7 @@ Index: oce/src/MeshVS/MeshVS_MeshPrsBuilder.cxx
      if( AsPolygons || IsSelect )
      {
        Standard_Integer B = Topo->Upper()-Topo->Lower()+1;
-@@ -868,6 +868,7 @@ void MeshVS_MeshPrsBuilder::HowManyPrimi
+@@ -883,6 +883,7 @@ void MeshVS_MeshPrsBuilder::HowManyPrimi
        Bounds += E;
        Vertices += 2*E;
      }
@@ -571,7 +544,7 @@ Index: oce/src/NCollection/NCollection_BaseSequence.cxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_BaseSequence.cxx
 +++ oce/src/NCollection/NCollection_BaseSequence.cxx
-@@ -194,7 +194,7 @@ void NCollection_BaseSequence::PInsertAf
+@@ -209,7 +209,7 @@ void NCollection_BaseSequence::PInsertAf
  {
    if (theIndex < 0 || theIndex > mySize)
      Standard_OutOfRange::Raise();
@@ -580,7 +553,7 @@ Index: oce/src/NCollection/NCollection_BaseSequence.cxx
      if (theIndex == 0) 
        PPrepend (Other);
      else {
-@@ -211,6 +211,7 @@ void NCollection_BaseSequence::PInsertAf
+@@ -226,6 +226,7 @@ void NCollection_BaseSequence::PInsertAf
          myCurrentIndex += Other.mySize;
        Other.Nullify();
      }
@@ -592,7 +565,7 @@ Index: oce/src/NIS/NIS_InteractiveObject.cxx
 ===================================================================
 --- oce.orig/src/NIS/NIS_InteractiveObject.cxx
 +++ oce/src/NIS/NIS_InteractiveObject.cxx
-@@ -32,7 +32,7 @@ const Handle_NIS_Drawer& NIS_Interactive
+@@ -47,7 +47,7 @@ const Handle_NIS_Drawer& NIS_Interactive
                                           const Standard_Boolean    setUpdated)
  {
    NIS_InteractiveContext * aCtx = theDrawer->GetContext();
@@ -601,7 +574,7 @@ Index: oce/src/NIS/NIS_InteractiveObject.cxx
      if (aCtx == 0L)
      {
        aCtx = myDrawer->GetContext();
-@@ -44,6 +44,7 @@ const Handle_NIS_Drawer& NIS_Interactive
+@@ -59,6 +59,7 @@ const Handle_NIS_Drawer& NIS_Interactive
          (myDrawer->GetContext() != 0L && aCtx != myDrawer->GetContext(),
           "NIS_InteractiveObject::SetDrawer: different drawer context");
      }
@@ -613,7 +586,7 @@ Index: oce/src/NIS/NIS_TriangulatedDrawer.cxx
 ===================================================================
 --- oce.orig/src/NIS/NIS_TriangulatedDrawer.cxx
 +++ oce/src/NIS/NIS_TriangulatedDrawer.cxx
-@@ -271,7 +271,7 @@ void NIS_TriangulatedDrawer::Draw (const
+@@ -286,7 +286,7 @@ void NIS_TriangulatedDrawer::Draw (const
                      aType, pObject->mypLines);
    else {
      Standard_Boolean isLoop;
@@ -622,7 +595,7 @@ Index: oce/src/NIS/NIS_TriangulatedDrawer.cxx
        if (isLoop) {
  //         glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
          glDrawElements (GL_LINE_LOOP, pObject->NLineNodes(),
-@@ -281,6 +281,7 @@ void NIS_TriangulatedDrawer::Draw (const
+@@ -296,6 +296,7 @@ void NIS_TriangulatedDrawer::Draw (const
          glDrawElements (GL_LINE_STRIP, pObject->NLineNodes(),
                          aType, pObject->mypLines);
        }
@@ -630,32 +603,11 @@ Index: oce/src/NIS/NIS_TriangulatedDrawer.cxx
    }
  
  }
-Index: oce/src/OpenGl/OpenGl_ResourceCleaner.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_ResourceCleaner.cxx
-+++ oce/src/OpenGl/OpenGl_ResourceCleaner.cxx
-@@ -135,7 +135,7 @@ void OpenGl_ResourceCleaner::Cleanup()
-   GLCONTEXT aContext = GET_GL_CONTEXT();
- 
-   // if we have active context, we can delete the resources
--  if (aContext != NULL) 
-+  if (aContext != NULL) {
-     // if the context is found in shared list
-     if (mySharedContexts.Contains(aContext)) 
-     {
-@@ -155,6 +155,7 @@ void OpenGl_ResourceCleaner::Cleanup()
-         aQueue->Pop();
-       }
-     }
-+  }
- }
- 
- //=======================================================================
 Index: oce/src/ProjLib/ProjLib_ComputeApproxOnPolarSurface.cxx
 ===================================================================
 --- oce.orig/src/ProjLib/ProjLib_ComputeApproxOnPolarSurface.cxx
 +++ oce/src/ProjLib/ProjLib_ComputeApproxOnPolarSurface.cxx
-@@ -182,34 +182,38 @@ static gp_Pnt2d Function_Value(const Sta
+@@ -199,34 +199,38 @@ static gp_Pnt2d Function_Value(const Sta
    if(Surf->IsVPeriodic() || Surf->IsVClosed()) {
      vperiod = Surf->LastVParameter() - Surf->FirstVParameter();
    } 
@@ -698,70 +650,7 @@ Index: oce/src/ProjLib/ProjLib_ComputeApproxOnPolarSurface.cxx
    
    // The surface around U0 is reduced
    Standard_Real uLittle = (Usup - Uinf)/10, vLittle = (Vsup - Vinf)/10;
-@@ -740,11 +744,12 @@ Handle(Adaptor2d_HCurve2d)
- 	for ( i = 2 ; i <= NbOfPnts ; i++) { 
- 	  Sloc = S;
- 	  ElSLib::Parameters( Cylinder, Pts(i), S, T);
--	  if(Abs(Sloc - S) > PI)
-+	  if(Abs(Sloc - S) > PI) {
- 	    if(Sloc > S)
- 	      usens++;
- 	    else
- 	      usens--;
-+	  }
- 	  Pts2d(i).SetCoord(S+usens*2*PI,T);
- 	}
- 	myProjIsDone = Standard_True;
-@@ -761,11 +766,12 @@ Handle(Adaptor2d_HCurve2d)
- 	for ( i = 2 ; i <= NbOfPnts ; i++) { 
- 	  Sloc = S;
- 	  ElSLib::Parameters( Cone, Pts(i), S, T);
--	  if(Abs(Sloc - S) > PI)
-+	  if(Abs(Sloc - S) > PI) {
- 	    if(Sloc > S)
- 	      usens++;
- 	    else
- 	      usens--;
-+	  }
- 	  Pts2d(i).SetCoord(S+usens*2*PI,T);
- 	}
- 	myProjIsDone = Standard_True;
-@@ -782,11 +788,12 @@ Handle(Adaptor2d_HCurve2d)
- 	for ( i = 2 ; i <= NbOfPnts ; i++) { 
- 	  Sloc = S;Tloc = T;
- 	  ElSLib::Parameters( Sphere, Pts(i), S, T);
--	  if(1.6*PI < Abs(Sloc - S))
-+	  if(1.6*PI < Abs(Sloc - S)) {
- 	    if(Sloc > S)
- 	      usens += 2;
- 	    else
- 	      usens -= 2;
-+	  }
- 	  if(1.6*PI > Abs(Sloc - S) && Abs(Sloc - S) > 0.4*PI) {
- 	    vparit = !vparit;
- 	    if(Sloc > S)
-@@ -819,16 +826,18 @@ Handle(Adaptor2d_HCurve2d)
- 	for ( i = 2 ; i <= NbOfPnts ; i++) { 
- 	  Sloc = S; Tloc = T;
- 	  ElSLib::Parameters( Torus, Pts(i), S, T);
--	  if(Abs(Sloc - S) > PI)
-+	  if(Abs(Sloc - S) > PI) {
- 	    if(Sloc > S)
- 	      usens++;
- 	    else
- 	      usens--;
--	  if(Abs(Tloc - T) > PI)
-+	  }
-+	  if(Abs(Tloc - T) > PI) {
- 	    if(Tloc > T)
- 	      vsens++;
- 	    else
- 	      vsens--;
-+	  }
- 	  Pts2d(i).SetCoord(S+usens*2*PI,T+vsens*2*PI);
- 	}
- 	myProjIsDone = Standard_True;
-@@ -1124,7 +1133,7 @@ Handle(Adaptor2d_HCurve2d)
+@@ -1141,7 +1145,7 @@ Handle(Adaptor2d_HCurve2d)
  	      if (Dist2Min < DistTol3d * DistTol3d) {
  	      //if (Dist2Min < Tol3d * Tol3d) {
  		(ext.Point(GoodValue)).Parameter(u,v);
@@ -770,7 +659,7 @@ Index: oce/src/ProjLib/ProjLib_ComputeApproxOnPolarSurface.cxx
  		  if((U0 - u) > (2*uperiod/3)) {
  		    usens++;
  		  }
-@@ -1132,7 +1141,8 @@ Handle(Adaptor2d_HCurve2d)
+@@ -1149,7 +1153,8 @@ Handle(Adaptor2d_HCurve2d)
  		    if((u - U0) > (2*uperiod/3)) {
  		      usens--;
  		    }
@@ -780,7 +669,7 @@ Index: oce/src/ProjLib/ProjLib_ComputeApproxOnPolarSurface.cxx
  		  if((V0 - v) > (vperiod/2)) {
  		    vsens++;
  		  }
-@@ -1140,6 +1150,7 @@ Handle(Adaptor2d_HCurve2d)
+@@ -1157,6 +1162,7 @@ Handle(Adaptor2d_HCurve2d)
  		    if((v - V0) > (vperiod/2)) {
  		      vsens--;
  		    }
@@ -792,7 +681,7 @@ Index: oce/src/Resource/Resource_Manager.cxx
 ===================================================================
 --- oce.orig/src/Resource/Resource_Manager.cxx
 +++ oce/src/Resource/Resource_Manager.cxx
-@@ -203,9 +203,10 @@ static Standard_Integer GetLine(OSD_File
+@@ -221,9 +221,10 @@ static Standard_Integer GetLine(OSD_File
    do {
      aFile.ReadLine(Buffer,BufSize,Len);
      aLine += Buffer;
@@ -808,7 +697,7 @@ Index: oce/src/STEPControl/STEPControl_ActorWrite.cxx
 ===================================================================
 --- oce.orig/src/STEPControl/STEPControl_ActorWrite.cxx
 +++ oce/src/STEPControl/STEPControl_ActorWrite.cxx
-@@ -1319,12 +1319,13 @@ Handle(Transfer_Binder) STEPControl_Acto
+@@ -1337,12 +1337,13 @@ Handle(Transfer_Binder) STEPControl_Acto
      while ( !bnd.IsNull() ) {
        Handle(Transfer_SimpleBinderOfTransient) bx = 
          Handle(Transfer_SimpleBinderOfTransient)::DownCast(bnd);
@@ -827,7 +716,7 @@ Index: oce/src/SWDRAW/SWDRAW_ShapeFix.cxx
 ===================================================================
 --- oce.orig/src/SWDRAW/SWDRAW_ShapeFix.cxx
 +++ oce/src/SWDRAW/SWDRAW_ShapeFix.cxx
-@@ -239,9 +239,10 @@ static Standard_Integer stwire (Draw_Int
+@@ -265,9 +265,10 @@ static Standard_Integer stwire (Draw_Int
        if (sbwd->IsSeam(i))        di<<" SEAM_WIRE";
        if (Shape.ShapeType() == TopAbs_FACE &&
  	  sae.IsSeam(E,TopoDS::Face(Shape)))  di<<" SEAM_FACE";
@@ -843,7 +732,7 @@ Index: oce/src/SWDRAW/SWDRAW_ShapeUpgrade.cxx
 ===================================================================
 --- oce.orig/src/SWDRAW/SWDRAW_ShapeUpgrade.cxx
 +++ oce/src/SWDRAW/SWDRAW_ShapeUpgrade.cxx
-@@ -1128,21 +1128,25 @@ static Standard_Integer splitface
+@@ -1147,21 +1147,25 @@ static Standard_Integer splitface
    Standard_Real Umin, Umax, Vmin, Vmax;
    S->Bounds ( Umin, Umax, Vmin, Vmax );
    if ( Uf < Umin && ! S->IsUPeriodic() ) Uf = Umin;
@@ -877,7 +766,7 @@ Index: oce/src/SelectMgr/SelectMgr_EntityOwner.cxx
 ===================================================================
 --- oce.orig/src/SelectMgr/SelectMgr_EntityOwner.cxx
 +++ oce/src/SelectMgr/SelectMgr_EntityOwner.cxx
-@@ -72,11 +72,12 @@ void SelectMgr_EntityOwner::HilightWithC
+@@ -87,11 +87,12 @@ void SelectMgr_EntityOwner::HilightWithC
  					     const Quantity_NameOfColor aColor,
  					     const Standard_Integer aMode)
  {
@@ -895,7 +784,7 @@ Index: oce/src/SelectMgr/SelectMgr_SelectableObject.cxx
 ===================================================================
 --- oce.orig/src/SelectMgr/SelectMgr_SelectableObject.cxx
 +++ oce/src/SelectMgr/SelectMgr_SelectableObject.cxx
-@@ -167,7 +167,7 @@ void SelectMgr_SelectableObject::ResetLo
+@@ -182,7 +182,7 @@ void SelectMgr_SelectableObject::ResetLo
      for(Sel->Init();Sel->More();Sel->Next()){
        SE =  *((Handle(Select3D_SensitiveEntity)*) &(Sel->Sensitive()));
        if(!SE.IsNull()){
@@ -904,7 +793,7 @@ Index: oce/src/SelectMgr/SelectMgr_SelectableObject.cxx
            if( SE->Location()==myLocation){
              SE->ResetLocation();
              const Handle(SelectBasics_EntityOwner)& EO = SE->OwnerId();
-@@ -177,7 +177,7 @@ void SelectMgr_SelectableObject::ResetLo
+@@ -192,7 +192,7 @@ void SelectMgr_SelectableObject::ResetLo
              SE->SetLocation(iniloc*myLocation.Inverted());
              const Handle(SelectBasics_EntityOwner)& EO = SE->OwnerId();
              (*((Handle(SelectMgr_EntityOwner)*)&EO))->SetLocation(SE->Location());}
@@ -917,7 +806,7 @@ Index: oce/src/ShapeAnalysis/ShapeAnalysis_CheckSmallFace.cxx
 ===================================================================
 --- oce.orig/src/ShapeAnalysis/ShapeAnalysis_CheckSmallFace.cxx
 +++ oce/src/ShapeAnalysis/ShapeAnalysis_CheckSmallFace.cxx
-@@ -357,12 +357,13 @@ static Standard_Boolean MinMaxSmall
+@@ -374,12 +374,13 @@ static Standard_Boolean MinMaxSmall
      else return Standard_False;
    }
    //   Now, check these two edge to define a strip !
@@ -936,7 +825,7 @@ Index: oce/src/ShapeCustom/ShapeCustom_ConvertToBSpline.cxx
 ===================================================================
 --- oce.orig/src/ShapeCustom/ShapeCustom_ConvertToBSpline.cxx
 +++ oce/src/ShapeCustom/ShapeCustom_ConvertToBSpline.cxx
-@@ -44,7 +44,7 @@ Standard_Boolean ShapeCustom_ConvertToBS
+@@ -60,7 +60,7 @@ Standard_Boolean ShapeCustom_ConvertToBS
        Handle(Geom_RectangularTrimmedSurface)::DownCast ( S );
      SS = RTS->BasisSurface();
    }
@@ -945,7 +834,7 @@ Index: oce/src/ShapeCustom/ShapeCustom_ConvertToBSpline.cxx
      if(myOffsetMode)
        return Standard_True;
      else {
-@@ -53,6 +53,7 @@ Standard_Boolean ShapeCustom_ConvertToBS
+@@ -69,6 +69,7 @@ Standard_Boolean ShapeCustom_ConvertToBS
        Handle(Geom_Surface) tmp;
        return IsToConvert(basis,tmp);
      }
@@ -957,7 +846,7 @@ Index: oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
 ===================================================================
 --- oce.orig/src/ShapeFix/ShapeFix_ComposeShell.cxx
 +++ oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
-@@ -650,9 +650,10 @@ Standard_Integer ShapeFix_ComposeShell::
+@@ -666,9 +666,10 @@ Standard_Integer ShapeFix_ComposeShell::
        }
      }
      if ( j < np ) { i = 0; break; } // not tangency
@@ -973,7 +862,7 @@ Index: oce/src/ShapeFix/ShapeFix_Face.cxx
 ===================================================================
 --- oce.orig/src/ShapeFix/ShapeFix_Face.cxx
 +++ oce/src/ShapeFix/ShapeFix_Face.cxx
-@@ -1353,16 +1353,18 @@ Standard_Boolean ShapeFix_Face::FixMissi
+@@ -1379,16 +1379,18 @@ Standard_Boolean ShapeFix_Face::FixMissi
    if ( ::Precision::IsInfinite ( SUF ) || ::Precision::IsInfinite ( SUL ) ) {
      if ( ::Precision::IsInfinite ( SUF ) ) SUF = fU1;
      if ( ::Precision::IsInfinite ( SUL ) ) SUL = fU2;
@@ -994,7 +883,7 @@ Index: oce/src/ShapeFix/ShapeFix_Face.cxx
    }
      
    URange = Abs ( SUL - SUF );
-@@ -1583,9 +1585,10 @@ Standard_Boolean ShapeFix_Face::FixMissi
+@@ -1609,9 +1611,10 @@ Standard_Boolean ShapeFix_Face::FixMissi
  	vf = pos1.Y();
        }
      }
@@ -1010,7 +899,7 @@ Index: oce/src/ShapeFix/ShapeFix_Wire.cxx
 ===================================================================
 --- oce.orig/src/ShapeFix/ShapeFix_Wire.cxx
 +++ oce/src/ShapeFix/ShapeFix_Wire.cxx
-@@ -1295,9 +1295,10 @@ Standard_Boolean ShapeFix_Wire::FixShift
+@@ -1300,9 +1300,10 @@ Standard_Boolean ShapeFix_Wire::FixShift
    SVMid = 0.5*(SVF+SVL);
    if (uclosed) URange = Abs ( SUL - SUF );
    else         URange = RealLast();
@@ -1026,7 +915,7 @@ Index: oce/src/ShapeProcess/ShapeProcess_ShapeContext.cxx
 ===================================================================
 --- oce.orig/src/ShapeProcess/ShapeProcess_ShapeContext.cxx
 +++ oce/src/ShapeProcess/ShapeProcess_ShapeContext.cxx
-@@ -398,10 +398,11 @@ void ShapeProcess_ShapeContext::PrintSta
+@@ -413,10 +413,11 @@ void ShapeProcess_ShapeContext::PrintSta
      if (keyshape.ShapeType() == TopAbs_SHELL)
        if (valueshape.IsNull()) SN++;
        else SS++;
@@ -1043,7 +932,7 @@ Index: oce/src/ShapeProcessAPI/ShapeProcessAPI_ApplySequence.cxx
 ===================================================================
 --- oce.orig/src/ShapeProcessAPI/ShapeProcessAPI_ApplySequence.cxx
 +++ oce/src/ShapeProcessAPI/ShapeProcessAPI_ApplySequence.cxx
-@@ -94,13 +94,15 @@ void ShapeProcessAPI_ApplySequence::Prin
+@@ -110,13 +110,15 @@ void ShapeProcessAPI_ApplySequence::Prin
    Standard_Integer SS = 0, SN = 0, FF = 0, FS = 0, FN = 0;
    for (TopTools_DataMapIteratorOfDataMapOfShapeShape It (myContext->Map()); It.More(); It.Next()) {
      TopoDS_Shape keyshape = It.Key(), valueshape = It.Value();
@@ -1065,7 +954,7 @@ Index: oce/src/TNaming/TNaming_NamedShape.cxx
 ===================================================================
 --- oce.orig/src/TNaming/TNaming_NamedShape.cxx
 +++ oce/src/TNaming/TNaming_NamedShape.cxx
-@@ -1101,7 +1101,7 @@ static void SelectSameShape (TNaming_Nod
+@@ -1115,7 +1115,7 @@ static void SelectSameShape (TNaming_Nod
      if (Trans < 0) Valid = pdn->myAtt->IsValid(); 
      else Valid = pdn->IsValidInTrans(Trans);
  
@@ -1074,7 +963,7 @@ Index: oce/src/TNaming/TNaming_NamedShape.cxx
        if (Old) {
  	if( pdn->myOld == RS && pdn->myNew != 0L && pdn->myNew != RS) {
  	  break;
-@@ -1112,6 +1112,7 @@ static void SelectSameShape (TNaming_Nod
+@@ -1126,6 +1126,7 @@ static void SelectSameShape (TNaming_Nod
  	  break;
  	}
        }
@@ -1086,7 +975,7 @@ Index: oce/src/TopTrans/TopTrans_SurfaceTransition.cxx
 ===================================================================
 --- oce.orig/src/TopTrans/TopTrans_SurfaceTransition.cxx
 +++ oce/src/TopTrans/TopTrans_SurfaceTransition.cxx
-@@ -435,9 +435,10 @@ TopAbs_State TopTrans_SurfaceTransition:
+@@ -451,9 +451,10 @@ TopAbs_State TopTrans_SurfaceTransition:
      // we take the state before of after orientations
      before = ::FUN_getstate(myAng,myOri,AFTER,BEFORE);
      // eap Mar 25 2002 
@@ -1098,7 +987,7 @@ Index: oce/src/TopTrans/TopTrans_SurfaceTransition.cxx
    }
    return before;
  }
-@@ -451,9 +452,10 @@ TopAbs_State TopTrans_SurfaceTransition:
+@@ -467,9 +468,10 @@ TopAbs_State TopTrans_SurfaceTransition:
      // looking back in before for defined states
      after = ::FUN_getstate(myAng,myOri,BEFORE,AFTER);
      // eap Mar 25 2002 
@@ -1114,7 +1003,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest.cxx
 +++ oce/src/ViewerTest/ViewerTest.cxx
-@@ -450,13 +450,14 @@ Handle(AIS_Shape) GetAISShapeFromName(co
+@@ -471,13 +471,14 @@ Handle(AIS_Shape) GetAISShapeFromName(co
      const Handle(AIS_InteractiveObject) IO =
        Handle(AIS_InteractiveObject)::DownCast(GetMapOfAIS().Find2(name));
      if (!IO.IsNull()) {
@@ -1130,7 +1019,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
      }
      return retsh;
    }
-@@ -950,12 +951,12 @@ static int VSubInt(Draw_Interpretor& di,
+@@ -1028,12 +1029,12 @@ static int VSubInt(Draw_Interpretor& di,
      TCollection_AsciiString name = argv[2];
      if(GetMapOfAIS().IsBound2(name)){
        IO = Handle(AIS_InteractiveObject)::DownCast(GetMapOfAIS().Find2(name));
@@ -1145,85 +1034,11 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
      }
      else return 1;
    }
-@@ -1070,12 +1071,13 @@ static int VColor2 (Draw_Interpretor& di
-       while ( it.More() ) {
- 	const Handle(AIS_InteractiveObject) ashape =
-           Handle(AIS_InteractiveObject)::DownCast(it.Key1());
--        if (!ashape.IsNull())
-+        if (!ashape.IsNull()) {
-           if(HaveToSet)
-             TheAISContext()->SetColor(ashape,GetColorFromName(argv[1]),
-                                       Standard_False);
-           else
-             TheAISContext()->UnsetColor(ashape,Standard_False);
-+        }
- 	it.Next();
-       }
-       TheAISContext()->UpdateCurrentViewer();
-@@ -1176,12 +1178,13 @@ static int VTransparency  (Draw_Interpre
-       while ( it.More() ) {
- 	Handle(AIS_InteractiveObject) ashape =
-           Handle(AIS_InteractiveObject)::DownCast(it.Key1());
--        if (!ashape.IsNull())
-+        if (!ashape.IsNull()) {
-           if(HaveToSet)
-             TheAISContext()->SetTransparency(ashape,atof(argv[1]),
-                                              Standard_False);
-           else
-             TheAISContext()->UnsetTransparency(ashape,Standard_False);
-+        }
- 	it.Next();
-       }
-       TheAISContext()->UpdateCurrentViewer();
-@@ -1238,12 +1241,13 @@ static int VMaterial (Draw_Interpretor&
-     if ( ThereIsName && IsBound ) {
-       Handle(AIS_InteractiveObject) ashape =
-         Handle(AIS_InteractiveObject)::DownCast (GetMapOfAIS().Find2(name));
--      if (!ashape.IsNull())
-+      if (!ashape.IsNull()) {
-         if (HaveToSet)
-           TheAISContext()->SetMaterial (ashape,
-                                         GetMaterialFromName (argv[2]) );
-         else
-           TheAISContext()->UnsetMaterial(ashape);
-+      }
-     }
-     //=======================================================================
-     // Il n'y a pas de nom de shape
-@@ -1274,12 +1278,13 @@ static int VMaterial (Draw_Interpretor&
-       while ( it.More() ) {
- 	Handle(AIS_InteractiveObject) ashape =
-           Handle(AIS_InteractiveObject)::DownCast (it.Key1());
--	if (!ashape.IsNull())
-+	if (!ashape.IsNull()) {
-           if (HaveToSet)
- 	  TheAISContext()->SetMaterial(ashape,GetMaterialFromName(argv[1]),
-                                        Standard_False );
-           else
-             TheAISContext()->UnsetMaterial(ashape,Standard_False);
-+	}
- 	it.Next();
-       }
-       TheAISContext()->UpdateCurrentViewer();
-@@ -1374,11 +1379,12 @@ static int VWidth (Draw_Interpretor& di,
-      while ( it.More() ) {
-        Handle(AIS_InteractiveObject) ashape =
-          Handle(AIS_InteractiveObject)::DownCast (it.Key1());
--       if (!ashape.IsNull())
-+       if (!ashape.IsNull()) {
-          if (HaveToSet)
-            TheAISContext()->SetWidth(ashape,atof (argv[1]),Standard_False );
-          else
-            TheAISContext()->UnsetWidth (ashape,Standard_False);
-+       }
-        it.Next();
-      }
-      TheAISContext()->UpdateCurrentViewer();
 Index: oce/src/VrmlData/VrmlData_Geometry.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_Geometry.cxx
 +++ oce/src/VrmlData/VrmlData_Geometry.cxx
-@@ -552,7 +552,7 @@ VrmlData_ErrorStatus VrmlData_TextureCoo
+@@ -567,7 +567,7 @@ VrmlData_ErrorStatus VrmlData_TextureCoo
      // Match the name with the current word in the stream
      if (VRMLDATA_LCOMPARE (theBuffer.LinePtr, "point"))
        // Read the body of the data node (comma-separated list of duplets)
@@ -1232,15 +1047,15 @@ Index: oce/src/VrmlData/VrmlData_Geometry.cxx
          if (theBuffer.LinePtr[0] != '[')  // opening bracket
            aStatus = VrmlData_VrmlFormatError;
          else {
-@@ -582,6 +582,7 @@ VrmlData_ErrorStatus VrmlData_TextureCoo
-             break;
+@@ -595,6 +595,7 @@ VrmlData_ErrorStatus VrmlData_TextureCoo
+             }
            }
          }
 +      }
      if (OK(aStatus) && OK(aStatus, readBrace (theBuffer))) {
        myLength = vecValues.Length();
        if (myLength > 0) {
-@@ -643,7 +644,7 @@ VrmlData_ErrorStatus VrmlData_ArrayVec3d
+@@ -656,7 +657,7 @@ VrmlData_ErrorStatus VrmlData_ArrayVec3d
          theBuffer.LinePtr++;
      }
      // Read the body of the data node (list of triplets)
@@ -1249,7 +1064,7 @@ Index: oce/src/VrmlData/VrmlData_Geometry.cxx
        if (theBuffer.LinePtr[0] != '[')  // opening bracket
          aStatus = VrmlData_VrmlFormatError;
        else {
-@@ -670,6 +671,7 @@ VrmlData_ErrorStatus VrmlData_ArrayVec3d
+@@ -683,6 +684,7 @@ VrmlData_ErrorStatus VrmlData_ArrayVec3d
            }
          }
        }
@@ -1261,7 +1076,7 @@ Index: oce/src/VrmlData/VrmlData_IndexedFaceSet.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_IndexedFaceSet.cxx
 +++ oce/src/VrmlData/VrmlData_IndexedFaceSet.cxx
-@@ -51,11 +51,12 @@ VrmlData_ErrorStatus VrmlData_Faceted::r
+@@ -66,11 +66,12 @@ VrmlData_ErrorStatus VrmlData_Faceted::r
    } else if (VRMLDATA_LCOMPARE (theBuffer.LinePtr, "creaseAngle")) {
      Standard_Real anAngle;
      if (OK(aStatus, Scene().ReadReal (theBuffer, anAngle,
@@ -1279,7 +1094,7 @@ Index: oce/src/VrmlData/VrmlData_Node.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_Node.cxx
 +++ oce/src/VrmlData/VrmlData_Node.cxx
-@@ -166,11 +166,12 @@ VrmlData_ErrorStatus VrmlData_Node::Writ
+@@ -181,11 +181,12 @@ VrmlData_ErrorStatus VrmlData_Node::Writ
  VrmlData_ErrorStatus VrmlData_Node::readBrace (VrmlData_InBuffer& theBuffer)
  {
    VrmlData_ErrorStatus aStatus;
@@ -1297,7 +1112,7 @@ Index: oce/src/VrmlData/VrmlData_Scene.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_Scene.cxx
 +++ oce/src/VrmlData/VrmlData_Scene.cxx
-@@ -206,11 +206,12 @@ VrmlData_ErrorStatus VrmlData_Scene::rea
+@@ -221,11 +221,12 @@ VrmlData_ErrorStatus VrmlData_Scene::rea
      const int stat = theBuffer.Input.rdstate();
      if (stat & ios::badbit)
        aStatus = VrmlData_UnrecoverableError;
@@ -1311,16 +1126,16 @@ Index: oce/src/VrmlData/VrmlData_Scene.cxx
      theBuffer.LinePtr = &theBuffer.Line[0];
      theBuffer.IsProcessed = Standard_False;
    }
-@@ -445,7 +446,7 @@ VrmlData_ErrorStatus VrmlData_Scene::cre
+@@ -460,7 +461,7 @@ VrmlData_ErrorStatus VrmlData_Scene::cre
    TCollection_AsciiString aName;
-  
+ 
    // Read the DEF token to assign the node name
 -  if (VrmlData_Node::OK(aStatus, ReadLine(theBuffer)))
 +  if (VrmlData_Node::OK(aStatus, ReadLine(theBuffer))) {
      if (VRMLDATA_LCOMPARE(theBuffer.LinePtr, "DEF")) {
        if (VrmlData_Node::OK(aStatus, ReadWord (theBuffer, aName)))
          aStatus = ReadLine(theBuffer);
-@@ -453,6 +454,7 @@ VrmlData_ErrorStatus VrmlData_Scene::cre
+@@ -468,6 +469,7 @@ VrmlData_ErrorStatus VrmlData_Scene::cre
        theNode.Nullify();
        return aStatus;
      }
@@ -1328,7 +1143,7 @@ Index: oce/src/VrmlData/VrmlData_Scene.cxx
  
    const char * strName = aName.ToCString();
    if (aStatus == VrmlData_StatusOK) {
-@@ -502,7 +504,7 @@ VrmlData_ErrorStatus VrmlData_Scene::cre
+@@ -528,7 +530,7 @@ VrmlData_ErrorStatus VrmlData_Scene::cre
        aStatus = ReadWord (theBuffer, aTitle);
        if (isProto) {
          aStatus = ReadLine(theBuffer);
@@ -1337,7 +1152,7 @@ Index: oce/src/VrmlData/VrmlData_Scene.cxx
            if (theBuffer.LinePtr[0] != '[')
              aStatus = VrmlData_VrmlFormatError;
            else {
-@@ -526,6 +528,7 @@ VrmlData_ErrorStatus VrmlData_Scene::cre
+@@ -552,6 +554,7 @@ VrmlData_ErrorStatus VrmlData_Scene::cre
                }
              }
            }
@@ -1345,9 +1160,9 @@ Index: oce/src/VrmlData/VrmlData_Scene.cxx
        }
        if (aStatus == VrmlData_StatusOK)
          aNode = new VrmlData_UnknownNode(* this,
-@@ -544,13 +547,14 @@ VrmlData_ErrorStatus VrmlData_Scene::cre
-     aNode->myLineCount = theBuffer.LineCount;
- #endif
+@@ -567,13 +570,14 @@ VrmlData_ErrorStatus VrmlData_Scene::cre
+       if (aNode->IsKind(theType) == Standard_False)
+         aStatus = VrmlData_VrmlFormatError;
    }
 -  if (aStatus == VrmlData_StatusOK)
 +  if (aStatus == VrmlData_StatusOK) {
@@ -1361,7 +1176,7 @@ Index: oce/src/VrmlData/VrmlData_Scene.cxx
    return aStatus;
  }
  
-@@ -705,13 +709,14 @@ VrmlData_ErrorStatus VrmlData_Scene::Rea
+@@ -729,13 +733,14 @@ VrmlData_ErrorStatus VrmlData_Scene::Rea
        theBuffer.LinePtr = endptr;
      }
    }
@@ -1377,7 +1192,7 @@ Index: oce/src/VrmlData/VrmlData_Scene.cxx
    return aStatus;
  }
  
-@@ -744,11 +749,12 @@ VrmlData_ErrorStatus VrmlData_Scene::Rea
+@@ -768,11 +773,12 @@ VrmlData_ErrorStatus VrmlData_Scene::Rea
        theBuffer.LinePtr = endptr;
      }
    }
@@ -1391,7 +1206,7 @@ Index: oce/src/VrmlData/VrmlData_Scene.cxx
    return aStatus;
  }
  
-@@ -765,7 +771,7 @@ VrmlData_ErrorStatus VrmlData_Scene::Rea
+@@ -789,7 +795,7 @@ VrmlData_ErrorStatus VrmlData_Scene::Rea
  {
    VrmlData_ErrorStatus aStatus;
    theNBlocks = 0;
@@ -1400,7 +1215,7 @@ Index: oce/src/VrmlData/VrmlData_Scene.cxx
      if (theBuffer.LinePtr[0] != '[')  // opening bracket
        aStatus = VrmlData_VrmlFormatError;
      else {
-@@ -832,6 +838,7 @@ VrmlData_ErrorStatus VrmlData_Scene::Rea
+@@ -856,6 +862,7 @@ VrmlData_ErrorStatus VrmlData_Scene::Rea
          }
        }
      }
@@ -1408,7 +1223,7 @@ Index: oce/src/VrmlData/VrmlData_Scene.cxx
    return aStatus;
  }
  
-@@ -902,7 +909,7 @@ VrmlData_ErrorStatus VrmlData_Scene::Wri
+@@ -926,7 +933,7 @@ VrmlData_ErrorStatus VrmlData_Scene::Wri
                                   const char             * thePostfix) const
  {
    char buf[240];
@@ -1417,7 +1232,7 @@ Index: oce/src/VrmlData/VrmlData_Scene.cxx
      if (isApplyScale && myLinearScale > Precision::Confusion())
        sprintf (buf, "%.12g %.12g %.12g%s", theXYZ.X() / myLinearScale,
                 theXYZ.Y() / myLinearScale, theXYZ.Z() / myLinearScale,
-@@ -910,6 +917,7 @@ VrmlData_ErrorStatus VrmlData_Scene::Wri
+@@ -934,6 +941,7 @@ VrmlData_ErrorStatus VrmlData_Scene::Wri
      else
        sprintf (buf, "%.12g %.12g %.12g%s", theXYZ.X(), theXYZ.Y(), theXYZ.Z(),
                 thePostfix ? thePostfix : "");
@@ -1429,7 +1244,7 @@ Index: oce/src/XCAFDoc/XCAFDoc_ColorTool.cxx
 ===================================================================
 --- oce.orig/src/XCAFDoc/XCAFDoc_ColorTool.cxx
 +++ oce/src/XCAFDoc/XCAFDoc_ColorTool.cxx
-@@ -444,7 +444,7 @@ Standard_Boolean XCAFDoc_ColorTool::SetI
+@@ -461,7 +461,7 @@ Standard_Boolean XCAFDoc_ColorTool::SetI
      return Standard_False;
    Handle(XCAFDoc_GraphNode) aSHUO;
    // set the SHUO structure for this component if it is not exist
@@ -1438,7 +1253,7 @@ Index: oce/src/XCAFDoc/XCAFDoc_ColorTool.cxx
      if (aLabels.Length() == 1) {
        // set color directly for component as NAUO
        SetColor(aLabels.Value(1), color, type);
-@@ -452,6 +452,7 @@ Standard_Boolean XCAFDoc_ColorTool::SetI
+@@ -469,6 +469,7 @@ Standard_Boolean XCAFDoc_ColorTool::SetI
      }
      else if ( !IsCreateSHUO ||  !ShapeTool()->SetSHUO( aLabels, aSHUO ) )
        return Standard_False;
@@ -1450,7 +1265,7 @@ Index: oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
 ===================================================================
 --- oce.orig/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
 +++ oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
-@@ -580,11 +580,12 @@ static Standard_Integer hidesel
+@@ -606,11 +606,12 @@ static Standard_Integer hidesel
      {
        Handle( MeshVS_MeshEntityOwner ) anOwner =
          Handle( MeshVS_MeshEntityOwner )::DownCast( aContext->SelectedOwner() );
@@ -1464,7 +1279,7 @@ Index: oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
      }
      aContext->ClearSelected();
      aMesh->SetHiddenNodes( aHiddenNodes );
-@@ -625,11 +626,12 @@ static Standard_Integer showonly
+@@ -651,11 +652,12 @@ static Standard_Integer showonly
      {
        Handle( MeshVS_MeshEntityOwner ) anOwner =
          Handle( MeshVS_MeshEntityOwner )::DownCast( aContext->SelectedOwner() );

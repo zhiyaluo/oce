@@ -30,7 +30,7 @@ Index: oce/src/OSD/OSD_Process.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Process.cxx
 +++ oce/src/OSD/OSD_Process.cxx
-@@ -62,15 +62,19 @@ Quantity_Date  OSD_Process::SystemDate()
+@@ -80,15 +80,19 @@ Quantity_Date  OSD_Process::SystemDate()
  Quantity_Date result;
  Standard_Integer month=0,day=0,year=0,hh=0,mn=0,ss=0;
  struct tm transfert;

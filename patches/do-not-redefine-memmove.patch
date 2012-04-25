@@ -35,7 +35,7 @@ Index: oce/inc/math_DoubleTab.gxx
 ===================================================================
 --- oce.orig/inc/math_DoubleTab.gxx
 +++ oce/inc/math_DoubleTab.gxx
-@@ -2,10 +2,10 @@
+@@ -19,10 +19,10 @@
  // Lpa, le 7/02/92
  
  
@@ -51,8 +51,8 @@ Index: oce/inc/math_DoubleTab.lxx
 ===================================================================
 --- oce.orig/inc/math_DoubleTab.lxx
 +++ oce/inc/math_DoubleTab.lxx
-@@ -1,8 +1,8 @@
- // File math_DoubleTab.lxx
+@@ -18,8 +18,8 @@
+ 
  // Lpa, le 7/02/92
  
 -#include <math_Memory.hxx>
@@ -65,7 +65,7 @@ Index: oce/inc/math_Memory.hxx
 ===================================================================
 --- oce.orig/inc/math_Memory.hxx
 +++ oce/inc/math_Memory.hxx
-@@ -1,26 +1,8 @@
+@@ -19,26 +19,8 @@
  #ifndef math_Memory_HeaderFile 
  #define math_Memory_HeaderFile 
  
@@ -96,8 +96,9 @@ Index: oce/inc/math_SingleTab.gxx
 ===================================================================
 --- oce.orig/inc/math_SingleTab.gxx
 +++ oce/inc/math_SingleTab.gxx
-@@ -1,8 +1,8 @@
- //
+@@ -17,9 +17,9 @@
+ // and conditions governing the rights and limitations under the License.
+ 
  
 -#include <math_Memory.hxx>
  #include <Standard_OutOfRange.hxx>
@@ -110,7 +111,9 @@ Index: oce/inc/math_SingleTab.lxx
 ===================================================================
 --- oce.orig/inc/math_SingleTab.lxx
 +++ oce/inc/math_SingleTab.lxx
-@@ -1,5 +1,5 @@
+@@ -17,7 +17,7 @@
+ // and conditions governing the rights and limitations under the License.
+ 
  #include <Standard_OutOfRange.hxx>
 -#include <math_Memory.hxx>
 +#include <cstring>

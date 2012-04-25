@@ -36,19 +36,6 @@ Index: oce/src/MeshVS/FILES
  MeshVS_TwoColors.hxx
  MeshVS_TwoColors.cxx
  MeshVS_TwoNodes.hxx
-Index: oce/src/StepFile/StepFile_CODEGEN.edl
-===================================================================
---- oce.orig/src/StepFile/StepFile_CODEGEN.edl
-+++ oce/src/StepFile/StepFile_CODEGEN.edl
-@@ -22,7 +22,7 @@ $%CODEGEN_FlexBisHome/flex -P%BaseName
- $%CODEGEN_LEX_CmdPath -P <Module>  -L -8 <LexFile>
- @end;
- 
--@set %CODEGEN_LEX_CmdPath = "%WOKHOME%/lib/wnt/flex";
-+@set %CODEGEN_LEX_CmdPath = "flex";
- 
- @template CODEGEN_LEX_CmdLine  ( %CODEGEN_LEX_CmdPath, %Source, %BaseName, %OutputDir ) is
- $cd %OutputDir;
 Index: oce/src/TCollection/TCollection_ExtendedString.cdl
 ===================================================================
 --- oce.orig/src/TCollection/TCollection_ExtendedString.cdl

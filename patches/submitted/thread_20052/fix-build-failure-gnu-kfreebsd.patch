@@ -11,7 +11,7 @@ Index: oce/src/OSD/OSD_Path.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Path.cxx
 +++ oce/src/OSD/OSD_Path.cxx
-@@ -16,7 +16,7 @@
+@@ -34,7 +34,7 @@
  #endif
  
  static OSD_SysType whereAmI(){

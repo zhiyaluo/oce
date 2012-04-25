@@ -10,10 +10,10 @@ Subject: [PATCH] [cppcheck-warning-fix][Redundant-assignement]
  src/Quantity/Quantity_Color.cxx |    3 +--
  1 files changed, 1 insertions(+), 2 deletions(-)
 
-Index: oce/src/Quantity/Quantity_Color.cxx
-===================================================================
---- oce.orig/src/Quantity/Quantity_Color.cxx
-+++ oce/src/Quantity/Quantity_Color.cxx
+diff --git a/src/Quantity/Quantity_Color.cxx b/src/Quantity/Quantity_Color.cxx
+index 8550be5..54f6bd8 100644
+--- a/src/Quantity/Quantity_Color.cxx
++++ b/src/Quantity/Quantity_Color.cxx
 @@ -468,8 +468,7 @@ Standard_ShortReal RB = 0 ;
  switch (AName) {
  
@@ -24,3 +24,6 @@ Index: oce/src/Quantity/Quantity_Color.cxx
  	break;
  	case Quantity_NOC_MATRAGRAY :
  		RR = R1 = (float ) 0.600000; RG = R2 = (float ) 0.600000; RB = R3 = (float ) 0.600000;
+-- 
+1.7.9.1
+

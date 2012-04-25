@@ -70,7 +70,7 @@ Index: oce/inc/Extrema_GExtCC.gxx
 ===================================================================
 --- oce.orig/inc/Extrema_GExtCC.gxx
 +++ oce/inc/Extrema_GExtCC.gxx
-@@ -190,7 +190,7 @@ void Extrema_GExtCC::Perform()
+@@ -206,7 +206,7 @@ void Extrema_GExtCC::Perform()
      //analytical case - one curve is always a line
      Standard_Integer anInd1 = 0, anInd2 = 1;
      GeomAbs_CurveType aType2 = type2;
@@ -83,7 +83,7 @@ Index: oce/src/AlienImage/AlienImage_SGIRGBAlienData.cxx
 ===================================================================
 --- oce.orig/src/AlienImage/AlienImage_SGIRGBAlienData.cxx
 +++ oce/src/AlienImage/AlienImage_SGIRGBAlienData.cxx
-@@ -693,7 +693,7 @@ static int img_rle_compact(	unsigned sho
+@@ -710,7 +710,7 @@ static int img_rle_compact(	unsigned sho
  #define doexpand				\
  	while(1) {				\
  	    pixel = *iptr++;			\
@@ -96,7 +96,7 @@ Index: oce/src/BRepClass3d/BRepClass3d_Intersector3d.cxx
 ===================================================================
 --- oce.orig/src/BRepClass3d/BRepClass3d_Intersector3d.cxx
 +++ oce/src/BRepClass3d/BRepClass3d_Intersector3d.cxx
-@@ -48,9 +48,9 @@ void BRepClass3d_Intersector3d::Perform(
+@@ -63,9 +63,9 @@ void BRepClass3d_Intersector3d::Perform(
  
    Standard_Boolean IsUPer, IsVPer;
    Standard_Real uperiod=0, vperiod=0;
@@ -112,7 +112,7 @@ Index: oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_TrimShellCorner.cxx
 +++ oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
-@@ -900,8 +900,8 @@ Standard_Boolean SplitUEdges(const Handl
+@@ -915,8 +915,8 @@ Standard_Boolean SplitUEdges(const Handl
        for(vvit = 1; !bvertexfound && (vvit <= aVVs.Extent()); vvit++) {
  	const BOPTools_VVInterference& aVV = aVVs(vvit);
  
@@ -127,7 +127,7 @@ Index: oce/src/BRepTest/BRepTest_CheckCommands.cxx
 ===================================================================
 --- oce.orig/src/BRepTest/BRepTest_CheckCommands.cxx
 +++ oce/src/BRepTest/BRepTest_CheckCommands.cxx
-@@ -1430,7 +1430,7 @@ static Standard_Integer clintedge(Draw_I
+@@ -1446,7 +1446,7 @@ static Standard_Integer clintedge(Draw_I
    TopOpeBRepTool_PurgeInternalEdges mypurgealgo(S);
    Standard_Integer nbedges;
  
@@ -140,7 +140,7 @@ Index: oce/src/BRepTopAdaptor/BRepTopAdaptor_FClass2d.cxx
 ===================================================================
 --- oce.orig/src/BRepTopAdaptor/BRepTopAdaptor_FClass2d.cxx
 +++ oce/src/BRepTopAdaptor/BRepTopAdaptor_FClass2d.cxx
-@@ -408,9 +408,9 @@ TopAbs_State BRepTopAdaptor_FClass2d::Pe
+@@ -427,9 +427,9 @@ TopAbs_State BRepTopAdaptor_FClass2d::Pe
    surf->ChangeSurface().Initialize( Face, Standard_False );
    Standard_Boolean IsUPer, IsVPer;
    Standard_Real uperiod=0, vperiod=0;
@@ -152,7 +152,7 @@ Index: oce/src/BRepTopAdaptor/BRepTopAdaptor_FClass2d.cxx
      vperiod = surf->VPeriod();
    TopAbs_State Status = TopAbs_UNKNOWN;
    Standard_Boolean urecadre = Standard_False, vrecadre = Standard_False;
-@@ -544,9 +544,9 @@ TopAbs_State BRepTopAdaptor_FClass2d::Te
+@@ -563,9 +563,9 @@ TopAbs_State BRepTopAdaptor_FClass2d::Te
    surf->ChangeSurface().Initialize( Face, Standard_False );
    Standard_Boolean IsUPer, IsVPer;
    Standard_Real uperiod=0, vperiod=0;
@@ -168,7 +168,7 @@ Index: oce/src/CGM/Gestfic.cxx
 ===================================================================
 --- oce.orig/src/CGM/Gestfic.cxx
 +++ oce/src/CGM/Gestfic.cxx
-@@ -12,7 +12,7 @@ FILE* OPEN_FILE (char* f_name, int TypeC
+@@ -29,7 +29,7 @@ FILE* OPEN_FILE (char* f_name, int TypeC
    switch (TypeCgm){
      case 1:
      case 2:
@@ -177,7 +177,7 @@ Index: oce/src/CGM/Gestfic.cxx
  #ifdef WNT
          chmod (f_name, S_IREAD | S_IWRITE);
  #else
-@@ -22,7 +22,7 @@ FILE* OPEN_FILE (char* f_name, int TypeC
+@@ -39,7 +39,7 @@ FILE* OPEN_FILE (char* f_name, int TypeC
        }
        break;
      case 3:
@@ -190,7 +190,7 @@ Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx
 +++ oce/src/Draw/Draw_Window.cxx
-@@ -1996,7 +1996,7 @@ Standard_Boolean Init_Appli(HINSTANCE hI
+@@ -2011,7 +2011,7 @@ Standard_Boolean Init_Appli(HINSTANCE hI
  
      hWndFrame = NULL;
  
@@ -203,16 +203,7 @@ Index: oce/src/Draw/MainWindow.cxx
 ===================================================================
 --- oce.orig/src/Draw/MainWindow.cxx
 +++ oce/src/Draw/MainWindow.cxx
-@@ -67,7 +67,7 @@ BOOL CreateProc(HWND hWndFrame)
-   HWND hWnd;
- 
-   // Enregistre le hWnd dans la fenetre principale dans extra memory en 0
--  if (hWnd = CreateMDIClientWindow(hWndFrame))
-+  if ((hWnd = CreateMDIClientWindow(hWndFrame)) != NULL)
-     SetWindowLong(hWndFrame, CLIENTWND, (LONG)hWnd);
-   return(TRUE);
- }
-@@ -87,23 +87,23 @@ BOOL CommandProc(HWND hWndFrame, WPARAM
+@@ -103,23 +103,23 @@ BOOL CommandProc(HWND hWndFrame, WPARAM
    switch (LOWORD(wParam))
  	{
  	  case IDM_WINDOW_NEXT :
@@ -244,7 +235,7 @@ Index: oce/src/Geom2dGcc/Geom2dGcc_Lin2dTanObl.cxx
 ===================================================================
 --- oce.orig/src/Geom2dGcc/Geom2dGcc_Lin2dTanObl.cxx
 +++ oce/src/Geom2dGcc/Geom2dGcc_Lin2dTanObl.cxx
-@@ -43,7 +43,7 @@ Geom2dGcc_Lin2dTanObl::
+@@ -59,7 +59,7 @@ Geom2dGcc_Lin2dTanObl::
      gp_Circ2d c1(CCC1->Circ2d());
      GccEnt_QualifiedCirc Qc1=GccEnt_QualifiedCirc(c1,Qualified1.Qualifier());
      GccAna_Lin2dTanObl Lin(Qc1,TheLine,Angle);
@@ -253,7 +244,7 @@ Index: oce/src/Geom2dGcc/Geom2dGcc_Lin2dTanObl.cxx
        NbrSol = Lin.NbSolutions();
        for (Standard_Integer i = 1 ; i <= NbrSol ; i++) {
  	linsol(i)    = Lin.ThisSolution(i);
-@@ -107,7 +107,7 @@ Geom2dGcc_Lin2dTanObl::
+@@ -123,7 +123,7 @@ Geom2dGcc_Lin2dTanObl::
      gp_Circ2d c1(CCC1->Circ2d());
      GccEnt_QualifiedCirc Qc1=GccEnt_QualifiedCirc(c1,Qualified1.Qualifier());
      GccAna_Lin2dTanObl Lin(Qc1,TheLine,Angle);
@@ -262,7 +253,7 @@ Index: oce/src/Geom2dGcc/Geom2dGcc_Lin2dTanObl.cxx
        NbrSol = Lin.NbSolutions();
        for (Standard_Integer i = 1 ; i <= NbrSol ; i++) {
  	linsol(i)    = Lin.ThisSolution(i);
-@@ -120,7 +120,7 @@ Geom2dGcc_Lin2dTanObl::
+@@ -136,7 +136,7 @@ Geom2dGcc_Lin2dTanObl::
    else {
      Geom2dGcc_MyQCurve Qc1(C1,Qualified1.Qualifier());
      Geom2dGcc_MyL2dTanObl Lin(Qc1,TheLine,TolAng,Param1,Angle);
@@ -275,7 +266,7 @@ Index: oce/src/GeomPlate/GeomPlate_BuildPlateSurface.cxx
 ===================================================================
 --- oce.orig/src/GeomPlate/GeomPlate_BuildPlateSurface.cxx
 +++ oce/src/GeomPlate/GeomPlate_BuildPlateSurface.cxx
-@@ -1342,7 +1342,7 @@ void GeomPlate_BuildPlateSurface::Comput
+@@ -1358,7 +1358,7 @@ void GeomPlate_BuildPlateSurface::Comput
  
    Standard_Boolean CourbeJoint=Standard_False;
    
@@ -288,7 +279,7 @@ Index: oce/src/Graphic2d/Graphic2d_Drawer.cxx
 ===================================================================
 --- oce.orig/src/Graphic2d/Graphic2d_Drawer.cxx
 +++ oce/src/Graphic2d/Graphic2d_Drawer.cxx
-@@ -334,7 +334,7 @@ Standard_Boolean Graphic2d_Drawer::GetIm
+@@ -350,7 +350,7 @@ Standard_Boolean Graphic2d_Drawer::GetIm
      Standard_Integer width,height;
  
          if( myDriverIsDefined ) {
@@ -301,37 +292,6 @@ Index: oce/src/Graphic2d/Graphic2d_FramedText.cxx
 ===================================================================
 --- oce.orig/src/Graphic2d/Graphic2d_FramedText.cxx
 +++ oce/src/Graphic2d/Graphic2d_FramedText.cxx
-@@ -237,7 +237,7 @@ Standard_ShortReal wscale,hscale;
- Standard_Boolean status;
- 
-     myAdjustFlag = Adjust;
--    if(( status = TextSize(twidth,theight,xoffset,yoffset) )) {
-+    if(( status = TextSize(twidth,theight,xoffset,yoffset) ) == Standard_True ) {
-       wscale = Standard_ShortReal( aWidth/twidth );
-       if( wscale > 0. ) {
-         if( Expand || (twidth > aWidth) ) myWScale *= wscale;
-@@ -261,7 +261,7 @@ Quantity_Length twidth,theight,txoffset,
- //Standard_ShortReal wscale,hscale;
- Standard_Boolean status;
- 
--    if(( status = TextSize(twidth,theight,txoffset,tyoffset) )) {
-+    if(( status = TextSize(twidth,theight,txoffset,tyoffset) ) == Standard_True ) {
-       Standard_Integer l = myText.Length();
-       while( (l > 1) && (twidth > aWidth) ) {
-         --l;
-@@ -296,7 +296,7 @@ Standard_Boolean status = Standard_False
-       Standard_ShortReal width,height,xoffset,yoffset;
-           aDrawer->SetTextAttrib(myColorIndex,myFontIndex,
- 					mySlant,hscale,wscale,myIsUnderlined);
--          if(( status = aDrawer->GetTextSize(myText,width,height,xoffset,yoffset) )) {
-+          if(( status = aDrawer->GetTextSize(myText,width,height,xoffset,yoffset) ) == Standard_True ) {
-             Standard_ShortReal dxm,dym;
- #ifndef PERF
- 	    myResetFlag = Standard_False; 
-Index: oce/src/Graphic2d/Graphic2d_HidingText.cxx
-===================================================================
---- oce.orig/src/Graphic2d/Graphic2d_HidingText.cxx
-+++ oce/src/Graphic2d/Graphic2d_HidingText.cxx
 @@ -255,7 +255,7 @@ Standard_ShortReal wscale,hscale;
  Standard_Boolean status;
  
@@ -346,11 +306,42 @@ Index: oce/src/Graphic2d/Graphic2d_HidingText.cxx
  Standard_Boolean status;
  
 -    if(( status = TextSize(twidth,theight,txoffset,tyoffset) )) {
-+    if(( status = TextSize(twidth,theight,txoffset,tyoffset) ) == Standard_True )  {
++    if(( status = TextSize(twidth,theight,txoffset,tyoffset) ) == Standard_True ) {
        Standard_Integer l = myText.Length();
        while( (l > 1) && (twidth > aWidth) ) {
          --l;
 @@ -314,7 +314,7 @@ Standard_Boolean status = Standard_False
+       Standard_ShortReal width,height,xoffset,yoffset;
+           aDrawer->SetTextAttrib(myColorIndex,myFontIndex,
+ 					mySlant,hscale,wscale,myIsUnderlined);
+-          if(( status = aDrawer->GetTextSize(myText,width,height,xoffset,yoffset) )) {
++          if(( status = aDrawer->GetTextSize(myText,width,height,xoffset,yoffset) ) == Standard_True ) {
+             Standard_ShortReal dxm,dym;
+ #ifndef PERF
+ 	    myResetFlag = Standard_False; 
+Index: oce/src/Graphic2d/Graphic2d_HidingText.cxx
+===================================================================
+--- oce.orig/src/Graphic2d/Graphic2d_HidingText.cxx
++++ oce/src/Graphic2d/Graphic2d_HidingText.cxx
+@@ -273,7 +273,7 @@ Standard_ShortReal wscale,hscale;
+ Standard_Boolean status;
+ 
+     myAdjustFlag = Adjust;
+-    if(( status = TextSize(twidth,theight,xoffset,yoffset) )) {
++    if(( status = TextSize(twidth,theight,xoffset,yoffset) ) == Standard_True ) {
+       wscale = Standard_ShortReal( aWidth/twidth );
+       if( wscale > 0. ) {
+         if( Expand || (twidth > aWidth) ) myWScale *= wscale;
+@@ -297,7 +297,7 @@ Quantity_Length twidth,theight,txoffset,
+ //Standard_ShortReal wscale,hscale;
+ Standard_Boolean status;
+ 
+-    if(( status = TextSize(twidth,theight,txoffset,tyoffset) )) {
++    if(( status = TextSize(twidth,theight,txoffset,tyoffset) ) == Standard_True )  {
+       Standard_Integer l = myText.Length();
+       while( (l > 1) && (twidth > aWidth) ) {
+         --l;
+@@ -332,7 +332,7 @@ Standard_Boolean status = Standard_False
            Standard_ShortReal width,height,xoffset,yoffset;
            aDrawer->SetTextAttrib(myColorIndex,myFontIndex,
                                          mySlant,hscale,wscale,myIsUnderlined);
@@ -363,7 +354,7 @@ Index: oce/src/Graphic2d/Graphic2d_Paragraph.cxx
 ===================================================================
 --- oce.orig/src/Graphic2d/Graphic2d_Paragraph.cxx
 +++ oce/src/Graphic2d/Graphic2d_Paragraph.cxx
-@@ -732,7 +732,7 @@ Standard_Boolean status = Standard_False
+@@ -751,7 +751,7 @@ Standard_Boolean status = Standard_False
                static TCollection_ExtendedString hletter("Hp");
                Standard_ShortReal hwidth,hheight,hxoffset,hyoffset;
                if(( status = aDrawer->GetTextSize(hletter,hwidth,hheight,
@@ -376,7 +367,7 @@ Index: oce/src/Graphic2d/Graphic2d_Text.cxx
 ===================================================================
 --- oce.orig/src/Graphic2d/Graphic2d_Text.cxx
 +++ oce/src/Graphic2d/Graphic2d_Text.cxx
-@@ -364,7 +364,7 @@ Standard_ShortReal wscale,hscale;
+@@ -382,7 +382,7 @@ Standard_ShortReal wscale,hscale;
  Standard_Boolean status;
  
      myAdjustFlag = Adjust;
@@ -385,7 +376,7 @@ Index: oce/src/Graphic2d/Graphic2d_Text.cxx
        wscale = Standard_ShortReal(aWidth/twidth);
        if( wscale > 0. ) {
  	if( Expand || (twidth > aWidth) ) myWScale *= wscale;
-@@ -388,7 +388,7 @@ Quantity_Length twidth,theight,txoffset,
+@@ -406,7 +406,7 @@ Quantity_Length twidth,theight,txoffset,
  //Standard_ShortReal wscale,hscale;
  Standard_Boolean status;
  
@@ -394,7 +385,7 @@ Index: oce/src/Graphic2d/Graphic2d_Text.cxx
        Standard_Integer l = myText.Length();
        while( (l > 1) && (twidth > aWidth) ) {
          --l;
-@@ -420,7 +420,7 @@ Standard_Boolean status = Standard_False
+@@ -438,7 +438,7 @@ Standard_Boolean status = Standard_False
            aDrawer->SetTextAttrib(myColorIndex,myFontIndex,
  					mySlant,hscale,wscale,myIsUnderlined);
            if(( status = 
@@ -407,7 +398,7 @@ Index: oce/src/IntTools/IntTools_FClass2d.cxx
 ===================================================================
 --- oce.orig/src/IntTools/IntTools_FClass2d.cxx
 +++ oce/src/IntTools/IntTools_FClass2d.cxx
-@@ -686,9 +686,9 @@
+@@ -702,9 +702,9 @@ IntTools_FClass2d::IntTools_FClass2d()
    surf->ChangeSurface().Initialize( Face, Standard_False );
    Standard_Boolean IsUPer, IsVPer;
    Standard_Real uperiod=0, vperiod=0;
@@ -423,7 +414,7 @@ Index: oce/src/OSD/OSD.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD.cxx
 +++ oce/src/OSD/OSD.cxx
-@@ -41,12 +41,12 @@ Standard_Boolean OSD::RealToCString(cons
+@@ -59,12 +59,12 @@ Standard_Boolean OSD::RealToCString(cons
    if (sprintf(aString,"%.17e",aReal)  <= 0) //BUC60808
      return Standard_False ;
  
@@ -438,7 +429,7 @@ Index: oce/src/OSD/OSD.cxx
      if (!strcmp(p,"e+00"))
        *p = 0 ;
      for (q = p-1 ; *q == '0' ; q--) ;
-@@ -77,7 +77,7 @@ Standard_Boolean OSD::CStringToReal(cons
+@@ -95,7 +95,7 @@ Standard_Boolean OSD::CStringToReal(cons
    const char *str = aString;
    char buff[1024];  
    //if((p = strchr(aString,'.')))
@@ -451,7 +442,7 @@ Index: oce/src/OSD/OSD_Real2String.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Real2String.cxx
 +++ oce/src/OSD/OSD_Real2String.cxx
-@@ -49,7 +49,7 @@ Standard_Boolean OSD_Real2String::RealTo
+@@ -64,7 +64,7 @@ Standard_Boolean OSD_Real2String::RealTo
  
    // Suppress "e+00" and unsignificant 0's 
  
@@ -460,7 +451,7 @@ Index: oce/src/OSD/OSD_Real2String.cxx
      if (!strcmp(p,"e+00"))
        *p = 0 ;
      for (q = p-1 ; *q == '0' ; q--) ;
-@@ -91,7 +91,7 @@ Standard_Boolean OSD_Real2String::CStrin
+@@ -106,7 +106,7 @@ Standard_Boolean OSD_Real2String::CStrin
            char buff[1024]; 
  	  // replace the decimal point by the local one
            if(myReadDecimalPoint != myLocalDecimalPoint && 
@@ -473,7 +464,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_WNT.cxx
 +++ oce/src/OSD/OSD_WNT.cxx
-@@ -1128,11 +1128,11 @@ retry:
+@@ -1142,11 +1142,11 @@ retry:
  
       if ( pFD -> dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ) {
  
@@ -487,7 +478,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
                             pFullNameSrc, pFullNameDst,
                             MOVEFILE_REPLACE_EXISTING | MOVEFILE_COPY_ALLOWED
                            )
-@@ -1288,11 +1288,11 @@ BOOL CopyDirectory ( LPCTSTR dirSrc, LPC
+@@ -1302,11 +1302,11 @@ BOOL CopyDirectory ( LPCTSTR dirSrc, LPC
  
       if ( pFD -> dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ) {
  
@@ -501,24 +492,11 @@ Index: oce/src/OSD/OSD_WNT.cxx
        
         if ( _response_dir_proc != NULL ) {
        
-Index: oce/src/OpenGl/OpenGl_togl_begin_animation.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_togl_begin_animation.cxx
-+++ oce/src/OpenGl/OpenGl_togl_begin_animation.cxx
-@@ -103,7 +103,7 @@ call_togl_begin_animation
- #ifdef G003
-   g_fAnimation               = GL_TRUE;
-   g_fList                    = GL_FALSE;
--  g_fDegeneration            = aview -> IsDegenerates;
-+  g_fDegeneration            = aview->IsDegenerates != 0;
-   g_fUpdateAM                = ( aview -> IsDegenerates ==
-     aview -> IsDegeneratesPrev
-     ) ? GL_FALSE : GL_TRUE;
 Index: oce/src/PlotMgt/PlotMgt_Plotter.cxx
 ===================================================================
 --- oce.orig/src/PlotMgt/PlotMgt_Plotter.cxx
 +++ oce/src/PlotMgt/PlotMgt_Plotter.cxx
-@@ -416,7 +416,7 @@ Standard_Boolean PlotMgt_Plotter::ReadPa
+@@ -431,7 +431,7 @@ Standard_Boolean PlotMgt_Plotter::ReadPa
        STRING_TRIM(aParamDef);
        aParamDef.Prepend (TCollection_AsciiString ("."));
      }
@@ -531,7 +509,7 @@ Index: oce/src/Resource/Resource_Manager.cxx
 ===================================================================
 --- oce.orig/src/Resource/Resource_Manager.cxx
 +++ oce/src/Resource/Resource_Manager.cxx
-@@ -171,7 +171,7 @@ static Standard_Integer WhatKindOfLine(O
+@@ -189,7 +189,7 @@ static Standard_Integer WhatKindOfLine(O
    if (Debug)
      cout << "Key = '" << aToken1 << flush ;
  
@@ -540,36 +518,11 @@ Index: oce/src/Resource/Resource_Manager.cxx
      if (Line.Value(Pos) == '\\')
        switch(Line.Value(Pos+1)) {
        case '\\' :
-Index: oce/src/Standard/Standard.cxx
-===================================================================
---- oce.orig/src/Standard/Standard.cxx
-+++ oce/src/Standard/Standard.cxx
-@@ -41,13 +41,13 @@ Standard_MMgrFactory::Standard_MMgrFacto
-   Standard_Boolean bClear, bMMap, bReentrant;
-   Standard_Integer aCellSize, aNbPages, aThreshold, bOptAlloc;
-   //
--  bOptAlloc   = atoi((var = getenv("MMGT_OPT"      )) ? var : "1"    ); 
--  bClear      = atoi((var = getenv("MMGT_CLEAR"    )) ? var : "1"    );
--  bMMap       = atoi((var = getenv("MMGT_MMAP"     )) ? var : "1"    ); 
--  aCellSize   = atoi((var = getenv("MMGT_CELLSIZE" )) ? var : "200"  ); 
--  aNbPages    = atoi((var = getenv("MMGT_NBPAGES"  )) ? var : "1000" );
--  aThreshold  = atoi((var = getenv("MMGT_THRESHOLD")) ? var : "40000");
--  bReentrant  = atoi((var = getenv("MMGT_REENTRANT")) ? var : "0"    );
-+  bOptAlloc   = atoi(((var = getenv("MMGT_OPT"      )) != NULL) ? var : "1"    ); 
-+  bClear      = atoi(((var = getenv("MMGT_CLEAR"    )) != NULL) ? var : "1"    );
-+  bMMap       = atoi(((var = getenv("MMGT_MMAP"     )) != NULL) ? var : "1"    ); 
-+  aCellSize   = atoi(((var = getenv("MMGT_CELLSIZE" )) != NULL) ? var : "200"  ); 
-+  aNbPages    = atoi(((var = getenv("MMGT_NBPAGES"  )) != NULL) ? var : "1000" );
-+  aThreshold  = atoi(((var = getenv("MMGT_THRESHOLD")) != NULL) ? var : "40000");
-+  bReentrant  = atoi(((var = getenv("MMGT_REENTRANT")) != NULL) ? var : "0"    );
-   
-   if ( bOptAlloc == 1 ) { 
-     myFMMgr = new Standard_MMgrOpt(bClear, bMMap, aCellSize, aNbPages,
 Index: oce/src/Standard/Standard_MMgrOpt.cxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_MMgrOpt.cxx
 +++ oce/src/Standard/Standard_MMgrOpt.cxx
-@@ -778,7 +778,7 @@ retry:
+@@ -798,7 +798,7 @@ retry:
      HANDLE * aMBlock = NULL;
      // check for error and try allocating address space
      if ( ! hMap || GetLastError() == ERROR_ALREADY_EXISTS ||
@@ -582,7 +535,7 @@ Index: oce/src/TestTopOpe/TestTopOpe_BOOP.cxx
 ===================================================================
 --- oce.orig/src/TestTopOpe/TestTopOpe_BOOP.cxx
 +++ oce/src/TestTopOpe/TestTopOpe_BOOP.cxx
-@@ -48,11 +48,11 @@ Standard_IMPORT void PrintKRO_PREPA();
+@@ -64,11 +64,11 @@ Standard_IMPORT void PrintKRO_PREPA();
  Standard_Integer TestTopOpe_BOOP::Prepare(const char* ns1,const char* ns2)
  {
    Standard_Integer err = 0;
@@ -603,7 +556,7 @@ Index: oce/src/Visual3d/Visual3d_View.cxx
 ===================================================================
 --- oce.orig/src/Visual3d/Visual3d_View.cxx
 +++ oce/src/Visual3d/Visual3d_View.cxx
-@@ -1159,7 +1159,7 @@ Standard_Real Sx, Sy, Sz;
+@@ -1178,7 +1178,7 @@ Standard_Real Sx, Sy, Sz;
          MyCView.Orientation.ViewScaleZ                  = float (Sz);
  
          CustomIsModified =
@@ -612,7 +565,7 @@ Index: oce/src/Visual3d/Visual3d_View.cxx
          MyCView.Orientation.IsCustomMatrix = MyViewOrientation.IsCustomMatrix();
          if ( MyViewOrientation.IsCustomMatrix() ) {
            Standard_Integer i, j;
-@@ -1269,7 +1269,7 @@ Standard_Real Sx, Sy, Sz;
+@@ -1288,7 +1288,7 @@ Standard_Real Sx, Sy, Sz;
          MyCView.Orientation.ViewScaleZ                  = float (Sz);
  
          CustomIsModified =
@@ -621,7 +574,7 @@ Index: oce/src/Visual3d/Visual3d_View.cxx
          MyCView.Orientation.IsCustomMatrix = MyViewOrientation.IsCustomMatrix();
          if ( MyViewOrientation.IsCustomMatrix() ) {
            Standard_Integer i, j;
-@@ -3961,7 +3961,7 @@ void Visual3d_View :: SetComputedMode (
+@@ -3973,7 +3973,7 @@ void Visual3d_View :: SetComputedMode (
   Standard_Integer                      StructId;
   Standard_Integer                      i = MyDisplayedStructure.Extent ();
  

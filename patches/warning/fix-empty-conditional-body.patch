@@ -41,7 +41,7 @@ Index: oce/inc/LDOM_DeclareSequence.hxx
 ===================================================================
 --- oce.orig/inc/LDOM_DeclareSequence.hxx
 +++ oce/inc/LDOM_DeclareSequence.hxx
-@@ -202,7 +202,7 @@ void ClassName::InsertAt (const Standard
+@@ -217,7 +217,7 @@ void ClassName::InsertAt (const Standard
        if (anItem -> myPrev) anItem -> myPrev -> myNext = anItem;              \
        myLength++;                                                             \
        myICur++;                                                               \
@@ -54,7 +54,7 @@ Index: oce/inc/Standard_String.hxx
 ===================================================================
 --- oce.orig/inc/Standard_String.hxx
 +++ oce/inc/Standard_String.hxx
-@@ -10,8 +10,8 @@
+@@ -28,8 +28,8 @@
  
  # if OptJr
  
@@ -65,7 +65,7 @@ Index: oce/inc/Standard_String.hxx
  #define STRCPY(s1,s2,i) {for(LoopIndex=0; LoopIndex<(i); LoopIndex++)(s1)[LoopIndex] = (s2)[LoopIndex];}
  #define STRCAT(s1,i,s2,j) {for(LoopIndex=0; LoopIndex<(j); LoopIndex++) (s1)[(i)+LoopIndex] = (s2)[LoopIndex];}
  
-@@ -68,14 +68,14 @@ inline Standard_Boolean ExtStringTestOfZ
+@@ -86,14 +86,14 @@ inline Standard_Boolean ExtStringTestOfZ
   if ((ptrdiff_t(aString) & 1) == 0) { \
     LoopIndex = 0 ; \
     if ((ptrdiff_t(aString) & 3) == 0) { \
@@ -83,7 +83,7 @@ Index: oce/inc/Standard_String.hxx
     LoopIndex -= 1 ; \
   } \
   else \
-@@ -85,7 +85,7 @@ inline Standard_Boolean ExtStringTestOfZ
+@@ -103,7 +103,7 @@ inline Standard_Boolean ExtStringTestOfZ
  #define EXTSTRINGLEN( anExtString , LoopIndex ) { \
   if ((ptrdiff_t(anExtString) & 3) == 0) { \
     LoopIndex = 0 ; \
@@ -92,7 +92,7 @@ Index: oce/inc/Standard_String.hxx
     LoopIndex = ( LoopIndex << 1 ) - 2 ; \
     if ( anExtString[ LoopIndex ] != 0 ) \
       LoopIndex += 1 ; \
-@@ -878,8 +878,8 @@ inline Standard_Boolean ExtStringTestOfZ
+@@ -896,8 +896,8 @@ inline Standard_Boolean ExtStringTestOfZ
  
  #  else
  
@@ -107,7 +107,7 @@ Index: oce/src/Adaptor3d/Adaptor3d_TopolTool.cxx
 ===================================================================
 --- oce.orig/src/Adaptor3d/Adaptor3d_TopolTool.cxx
 +++ oce/src/Adaptor3d/Adaptor3d_TopolTool.cxx
-@@ -1125,7 +1125,7 @@ void Adaptor3d_TopolTool::BSplSamplePnts
+@@ -1139,7 +1139,7 @@ void Adaptor3d_TopolTool::BSplSamplePnts
      else { //myNbSamplesU == 3
        //insert in bigger segment
        i = 2;
@@ -116,7 +116,7 @@ Index: oce/src/Adaptor3d/Adaptor3d_TopolTool.cxx
        if(i < nbsu/2) j = Min(i+(nbsu-i)/2, nbsu-1);
        else j = Max(i/2, 2);
      }
-@@ -1204,7 +1204,7 @@ void Adaptor3d_TopolTool::BSplSamplePnts
+@@ -1218,7 +1218,7 @@ void Adaptor3d_TopolTool::BSplSamplePnts
      else { //myNbSamplesU == 3
        //insert in bigger segment
        i = 2;
@@ -129,7 +129,7 @@ Index: oce/src/AlienImage/AlienImage_GIFLZWDict.cxx
 ===================================================================
 --- oce.orig/src/AlienImage/AlienImage_GIFLZWDict.cxx
 +++ oce/src/AlienImage/AlienImage_GIFLZWDict.cxx
-@@ -546,7 +546,7 @@ static chist_vec __fastcall mediancut (
+@@ -560,7 +560,7 @@ static chist_vec __fastcall mediancut (
    int minr, maxr, ming, maxg, minb, maxb, v;
    int halfsum, lowersum;
  
@@ -142,7 +142,7 @@ Index: oce/src/BOP/BOP_ArgumentAnalyzer.cxx
 ===================================================================
 --- oce.orig/src/BOP/BOP_ArgumentAnalyzer.cxx
 +++ oce/src/BOP/BOP_ArgumentAnalyzer.cxx
-@@ -512,7 +512,7 @@ void BOP_ArgumentAnalyzer::TestRebuildFa
+@@ -527,7 +527,7 @@ void BOP_ArgumentAnalyzer::TestRebuildFa
  	Standard_Integer nbedgeused = 0;
  	anExpE.Init(aLF.First(), TopAbs_EDGE);
  
@@ -155,7 +155,7 @@ Index: oce/src/BOP/BOP_ShellSolid_3.cxx
 ===================================================================
 --- oce.orig/src/BOP/BOP_ShellSolid_3.cxx
 +++ oce/src/BOP/BOP_ShellSolid_3.cxx
-@@ -450,7 +450,7 @@ Standard_Boolean BOP_ShellSolid::SplitFa
+@@ -465,7 +465,7 @@ Standard_Boolean BOP_ShellSolid::SplitFa
    if(aLF.Extent() != 2) {
      for(; anItNewF.More(); anItNewF.Next()) {
        TopExp_Explorer anExp(anItNewF.Value(), TopAbs_EDGE);
@@ -168,19 +168,21 @@ Index: oce/src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx
 ===================================================================
 --- oce.orig/src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx
 +++ oce/src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx
-@@ -2807,13 +2807,13 @@ void BRepBuilderAPI_Sewing::VerticesAsse
+@@ -2930,7 +2930,7 @@ void BRepBuilderAPI_Sewing::VerticesAsse
  #ifdef DEB
        cout << "Assemble " << nbVert << " vertices on faces..." << endl;
  #endif
--      while (GlueVertices(myVertexNode,myNodeSections,myBoundFaces,myTolerance));
-+      while (GlueVertices(myVertexNode,myNodeSections,myBoundFaces,myTolerance)) {}
+-      while (GlueVertices(myVertexNode,myNodeSections,myBoundFaces,myTolerance, thePI));
++      while (GlueVertices(myVertexNode,myNodeSections,myBoundFaces,myTolerance, thePI)) {}
      }
-     if (nbVertFree) {
+     if (!aPS.More())
+       return;
+@@ -2939,7 +2939,7 @@ void BRepBuilderAPI_Sewing::VerticesAsse
  #ifdef DEB
        cout << "Assemble " << nbVertFree << " vertices on floating edges..." << endl;
  #endif
--      while (GlueVertices(myVertexNodeFree,myNodeSections,myBoundFaces,myTolerance));
-+      while (GlueVertices(myVertexNodeFree,myNodeSections,myBoundFaces,myTolerance)) {}
+-      while (GlueVertices(myVertexNodeFree,myNodeSections,myBoundFaces,myTolerance, thePI));
++      while (GlueVertices(myVertexNodeFree,myNodeSections,myBoundFaces,myTolerance, thePI)) {}
      }
    }
  }
@@ -188,7 +190,7 @@ Index: oce/src/FEmTool/FEmTool_Assembly.cxx
 ===================================================================
 --- oce.orig/src/FEmTool/FEmTool_Assembly.cxx
 +++ oce/src/FEmTool/FEmTool_Assembly.cxx
-@@ -525,7 +525,7 @@ void FEmTool_Assembly::AddConstraint(con
+@@ -544,7 +544,7 @@ void FEmTool_Assembly::AddConstraint(con
  	for(i = Aux1->Lower(); i <= Aux1->Upper(); i++) Coeff->SetValue(i, Aux1->Value(i));
  	for(i = Aux1->Upper() + 1; i <= Imax; i++) Coeff->SetValue(i, 0.);
  	Iter.Initialize(L);
@@ -197,7 +199,7 @@ Index: oce/src/FEmTool/FEmTool_Assembly.cxx
  	Iter.Value() = Coeff;
        }
        else if(Imin > Aux1->Upper() && Imax >= Aux2->Lower()) { 
-@@ -534,7 +534,7 @@ void FEmTool_Assembly::AddConstraint(con
+@@ -553,7 +553,7 @@ void FEmTool_Assembly::AddConstraint(con
  	for(i = Imin; i <= Aux2->Lower() - 1; i++) Coeff->SetValue(i, 0.);
  	for(i = Aux2->Lower(); i <= Aux2->Upper(); i++) Coeff->SetValue(i, Aux2->Value(i));
  	Iter.Initialize(L);
@@ -206,7 +208,7 @@ Index: oce/src/FEmTool/FEmTool_Assembly.cxx
  	Iter.Value() = Coeff;
       }
        else if(Imin > Aux1->Upper() && Imax < Aux2->Lower()) {
-@@ -542,7 +542,7 @@ void FEmTool_Assembly::AddConstraint(con
+@@ -561,7 +561,7 @@ void FEmTool_Assembly::AddConstraint(con
  	Coeff = new TColStd_HArray1OfReal(Imin,Imax);
  	Coeff->Init(0.);
  	Iter.Initialize(L);
@@ -215,7 +217,7 @@ Index: oce/src/FEmTool/FEmTool_Assembly.cxx
  	L.InsertAfter(Coeff,Iter);
        }
        else {
-@@ -552,7 +552,7 @@ void FEmTool_Assembly::AddConstraint(con
+@@ -571,7 +571,7 @@ void FEmTool_Assembly::AddConstraint(con
  	for(i = Aux1->Upper() + 1; i <= Aux2->Lower() - 1; i++) Coeff->SetValue(i, 0.);
  	for(i = Aux2->Lower(); i <= Aux2->Upper(); i++) Coeff->SetValue(i, Aux2->Value(i));
  	Iter.Initialize(L);
@@ -228,7 +230,7 @@ Index: oce/src/FEmTool/FEmTool_ProfileMatrix.cxx
 ===================================================================
 --- oce.orig/src/FEmTool/FEmTool_ProfileMatrix.cxx
 +++ oce/src/FEmTool/FEmTool_ProfileMatrix.cxx
-@@ -29,7 +29,7 @@
+@@ -45,7 +45,7 @@ FEmTool_ProfileMatrix::FEmTool_ProfileMa
   
    for(i = 1, k = 1; i <= FirstIndexes.Length(); i++)
      for(j = FirstIndexes(i); j <= i; j++) {
@@ -241,7 +243,7 @@ Index: oce/src/IGESDefs/IGESDefs_ToolMacroDef.cxx
 ===================================================================
 --- oce.orig/src/IGESDefs/IGESDefs_ToolMacroDef.cxx
 +++ oce/src/IGESDefs/IGESDefs_ToolMacroDef.cxx
-@@ -37,7 +37,7 @@ void  IGESDefs_ToolMacroDef::ReadOwnPara
+@@ -50,7 +50,7 @@ void  IGESDefs_ToolMacroDef::ReadOwnPara
    // Counting the no. of language statements.
    Standard_Integer nbval; // svv Jan 10 2000 : porting on DEC
    for (nbval = 0; PR.CurrentNumber() != PR.NbParams();
@@ -254,7 +256,7 @@ Index: oce/src/LDOM/LDOM_XmlWriter.cxx
 ===================================================================
 --- oce.orig/src/LDOM/LDOM_XmlWriter.cxx
 +++ oce/src/LDOM/LDOM_XmlWriter.cxx
-@@ -152,7 +152,7 @@ static LXMLCh * getEncodingName (const L
+@@ -166,7 +166,7 @@ static LXMLCh * getEncodingName (const L
      anEncoding = anUTFEncoding;
    }
    Standard_Integer aLen = 0;
@@ -267,7 +269,7 @@ Index: oce/src/MgtTopoDS/MgtTopoDS.cxx
 ===================================================================
 --- oce.orig/src/MgtTopoDS/MgtTopoDS.cxx
 +++ oce/src/MgtTopoDS/MgtTopoDS.cxx
-@@ -368,7 +368,7 @@ void MgtTopoDS::Translate1
+@@ -384,7 +384,7 @@ void MgtTopoDS::Translate1
      // count the number of <sub-shape> of the Shape's TShape
      Standard_Integer nbElem = 0;
      TopoDS_Iterator itr(S);
@@ -280,7 +282,7 @@ Index: oce/src/PlotMgt/PlotMgt_fillpolyarc.cxx
 ===================================================================
 --- oce.orig/src/PlotMgt/PlotMgt_fillpolyarc.cxx
 +++ oce/src/PlotMgt/PlotMgt_fillpolyarc.cxx
-@@ -203,7 +203,6 @@ int __InitFillArc(double X,  double Y, d
+@@ -221,7 +221,6 @@ int __InitFillArc(double X,  double Y, d
              (mpo_lines+i)->type = 5;
            else (mpo_lines+i)->type = 4;
          }
@@ -292,7 +294,7 @@ Index: oce/src/PlotMgt/PlotMgt_fillpolygon.cxx
 ===================================================================
 --- oce.orig/src/PlotMgt/PlotMgt_fillpolygon.cxx
 +++ oce/src/PlotMgt/PlotMgt_fillpolygon.cxx
-@@ -153,8 +153,6 @@ int __InitFillPolygon(double* X, double*
+@@ -169,8 +169,6 @@ int __InitFillPolygon(double* X, double*
                  || (level == Ypts[j])) k++;
              if (level == Ypts[j+1])
                if (mpo_sign(Ypts[j] - Ypts[j+1]) == mpo_next_sign(j, n)) k++;
@@ -301,7 +303,7 @@ Index: oce/src/PlotMgt/PlotMgt_fillpolygon.cxx
            }
        mpo_Xs[i] = (double *)malloc(sizeof(double)*k);
        mpo_Ys[i] = (double *)malloc(sizeof(double)*k);
-@@ -182,8 +180,6 @@ int __InitFillPolygon(double* X, double*
+@@ -198,8 +196,6 @@ int __InitFillPolygon(double* X, double*
                  {
                    mpo_Xs[i][k] = Xpts[j+1]; k++;
                  }
@@ -314,7 +316,7 @@ Index: oce/src/RWStl/RWStl.cxx
 ===================================================================
 --- oce.orig/src/RWStl/RWStl.cxx
 +++ oce/src/RWStl/RWStl.cxx
-@@ -429,7 +429,7 @@ Handle_StlMesh_Mesh RWStl::ReadAscii (co
+@@ -444,7 +444,7 @@ Handle_StlMesh_Mesh RWStl::ReadAscii (co
    rewind(file);
  
    // skip header
@@ -327,7 +329,7 @@ Index: oce/src/Resource/Resource_Manager.cxx
 ===================================================================
 --- oce.orig/src/Resource/Resource_Manager.cxx
 +++ oce/src/Resource/Resource_Manager.cxx
-@@ -165,7 +165,7 @@ static Standard_Integer WhatKindOfLine(O
+@@ -183,7 +183,7 @@ static Standard_Integer WhatKindOfLine(O
    if (!Pos2 || Pos1 == Pos2)
      return ERROR;
  
@@ -340,7 +342,7 @@ Index: oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
 ===================================================================
 --- oce.orig/src/ShapeFix/ShapeFix_ComposeShell.cxx
 +++ oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
-@@ -713,7 +713,7 @@ static void DistributeSplitPoints (const
+@@ -729,7 +729,7 @@ static void DistributeSplitPoints (const
      params.SetValue ( i, ( isreversed ? l : f ) );
    }
    
@@ -353,7 +355,7 @@ Index: oce/src/ShapeUpgrade/ShapeUpgrade_WireDivide.cxx
 ===================================================================
 --- oce.orig/src/ShapeUpgrade/ShapeUpgrade_WireDivide.cxx
 +++ oce/src/ShapeUpgrade/ShapeUpgrade_WireDivide.cxx
-@@ -212,7 +212,7 @@ static void CorrectSplitValues(const Han
+@@ -228,7 +228,7 @@ static void CorrectSplitValues(const Han
    }
    if(new2d->Value(len3d) > Last3d) {
      Standard_Integer ind; // svv #1
@@ -362,7 +364,7 @@ Index: oce/src/ShapeUpgrade/ShapeUpgrade_WireDivide.cxx
      Standard_Real lastFix = new2d->Value(ind);
      for(i = len3d; i >= ind; i--) { 
        new2d->SetValue(i,lastFix);
-@@ -237,7 +237,7 @@ static void CorrectSplitValues(const Han
+@@ -253,7 +253,7 @@ static void CorrectSplitValues(const Han
    }
    if(new3d->Value(len2d) > Last2d) {
      Standard_Integer ind; // svv #1
@@ -375,7 +377,7 @@ Index: oce/src/StepData/StepData_StepWriter.cxx
 ===================================================================
 --- oce.orig/src/StepData/StepData_StepWriter.cxx
 +++ oce/src/StepData/StepData_StepWriter.cxx
-@@ -815,13 +815,13 @@ void StepData_StepWriter::Send (const TC
+@@ -832,13 +832,13 @@ void StepData_StepWriter::Send (const TC
  	  break;
  	}
  	Standard_Integer stop = StepLong; // position of last separator
@@ -396,7 +398,7 @@ Index: oce/src/TCollection/TCollection_ExtendedString.cxx
 ===================================================================
 --- oce.orig/src/TCollection/TCollection_ExtendedString.cxx
 +++ oce/src/TCollection/TCollection_ExtendedString.cxx
-@@ -153,6 +153,8 @@ TCollection_ExtendedString::TCollection_
+@@ -168,6 +168,8 @@ TCollection_ExtendedString::TCollection_
        if(!ConvertToUnicode (astring))
  #ifdef DEB
  	cout <<"UTF8 decoding failure..." <<endl;
