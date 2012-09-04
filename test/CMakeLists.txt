@@ -57,3 +57,9 @@ ENDMACRO(ADD_OCE_TEST test_name libs)
 FILE(GLOB TEST_DIRECTORIES ./*_test gtest_sandbox)
 SUBDIRS(${TEST_DIRECTORIES})
 
+configure_file (
+  "${CMAKE_CURRENT_SOURCE_DIR}/CTestCustom.cmake"
+  "${CMAKE_CURRENT_BINARY_DIR}/CTestCustom.cmake"
+  COPYONLY
+)
+
