@@ -1,0 +1,80 @@
+From 3efeba75e26e88e33fa8d6d3ca9b35a52bd17faf Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Thu, 3 May 2012 18:46:25 +0300
+Subject: [PATCH] Fixed missing stdio.h inclusions
+
+---
+ src/IntPolyh/IntPolyh_MaillageAffinage.cxx |    2 ++
+ src/OpenGl/OpenGl_Display.cxx              |    2 ++
+ src/OpenGl/OpenGl_GraphicDriver_9.cxx      |    2 ++
+ src/OpenGl/OpenGl_Polygon.cxx              |    2 ++
+ src/QABugs/QABugs_13.cxx                   |    1 +
+ 5 files changed, 9 insertions(+)
+
+diff --git a/src/IntPolyh/IntPolyh_MaillageAffinage.cxx b/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
+index dfe19f2..6b7cb17 100644
+--- a/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
++++ b/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
+@@ -48,6 +48,8 @@
+ #include <IntPolyh_Edge.hxx>
+ #include <IntPolyh_Couple.hxx>
+ 
++#include <stdio.h>
++
+ static Standard_Real MyTolerance=10.0e-7;
+ static Standard_Real MyConfusionPrecision=10.0e-12;
+ static Standard_Real SquareMyConfusionPrecision=10.0e-24;
+diff --git a/src/OpenGl/OpenGl_Display.cxx b/src/OpenGl/OpenGl_Display.cxx
+index 5ba209f..5d8228a 100644
+--- a/src/OpenGl/OpenGl_Display.cxx
++++ b/src/OpenGl/OpenGl_Display.cxx
+@@ -28,6 +28,8 @@
+ 
+ #include <OpenGl_Light.hxx>
+ 
++#include <stdio.h>
++
+ #if (!defined(_WIN32) && !defined(__WIN32__))
+   #include <X11/Xlib.h> // XOpenDisplay()
+ #endif
+diff --git a/src/OpenGl/OpenGl_GraphicDriver_9.cxx b/src/OpenGl/OpenGl_GraphicDriver_9.cxx
+index f8b383b..7f2ac5c 100644
+--- a/src/OpenGl/OpenGl_GraphicDriver_9.cxx
++++ b/src/OpenGl/OpenGl_GraphicDriver_9.cxx
+@@ -30,6 +30,8 @@
+ #include <AlienImage_AlienImage.hxx>
+ #include <Image_Image.hxx>
+ 
++#include <stdio.h>
++
+ void OpenGl_GraphicDriver::Environment(const Graphic3d_CView& ACView)
+ {
+   const OpenGl_CView *aCView = (const OpenGl_CView *)ACView.ptrView;
+diff --git a/src/OpenGl/OpenGl_Polygon.cxx b/src/OpenGl/OpenGl_Polygon.cxx
+index c81b93b..b017163 100644
+--- a/src/OpenGl/OpenGl_Polygon.cxx
++++ b/src/OpenGl/OpenGl_Polygon.cxx
+@@ -30,6 +30,8 @@
+ 
+ #include <GL/glu.h>
+ 
++#include <stdio.h>
++
+ #if (defined(_WIN32) || defined(__WIN32__))
+   #define STATIC
+ #else
+diff --git a/src/QABugs/QABugs_13.cxx b/src/QABugs/QABugs_13.cxx
+index 39758d7..06d4e3e 100644
+--- a/src/QABugs/QABugs_13.cxx
++++ b/src/QABugs/QABugs_13.cxx
+@@ -30,6 +30,7 @@
+ #include <TopoDS_Shape.hxx>
+ 
+ #include <tcl.h>
++#include <stdio.h>
+ 
+ #include <gp_Ax2.hxx>
+ #include <gp_Circ.hxx>
+-- 
+1.7.10.4
+

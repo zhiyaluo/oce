@@ -1,0 +1,36 @@
+From 961e2a04850a8e8ae0e8c02dd09b8e9569006fde Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Mon, 28 May 2012 17:02:02 +0300
+Subject: [PATCH] OpenGl regression fix
+
+---
+ src/OpenGl/OpenGl_Window.cxx |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
+Index: oce/src/OpenGl/OpenGl_Window.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_Window.cxx
++++ oce/src/OpenGl/OpenGl_Window.cxx
+@@ -62,11 +62,11 @@ namespace
+     const int dBits[] = { 32, 24, 16 };
+ 
+     int i, j;
+-    for (i = 0; i < sizeof(dBits) / sizeof(int); i++)
++    for (i = 0; i < sizeof(dBits) / sizeof(BYTE); i++)
+     {
+       pfd0.cDepthBits = dBits[i];
+       iGood = 0;
+-      for (j = 0; j < sizeof(cBits) / sizeof(int); j++)
++      for (j = 0; j < sizeof(cBits) / sizeof(BYTE); j++)
+       {
+         pfd0.cColorBits = cBits[j];
+         iPixelFormat = ChoosePixelFormat (hDC, &pfd0);
+@@ -81,7 +81,7 @@ namespace
+             iGood = iPixelFormat;
+         }
+       }
+-      if (j < sizeof(cBits) / sizeof(int))
++      if (j < sizeof(cBits) / sizeof(BYTE))
+         break;
+     }
+ 

@@ -1,39 +1,22 @@
-From 23ca5ad4f8a3c6972e7f60b8c4a0fb04a017cb4a Mon Sep 17 00:00:00 2001
-From: Hugues Delorme <delorme.hugues@fougsys.fr>
-Date: Mon, 22 Aug 2011 18:04:31 +0200
+From c8d429663f04cb127e4c955feb9c155ca8d1f6f1 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Sat, 2 Jun 2012 15:54:13 +0200
 Subject: [PATCH] [warning-fix][comparison-between-different-enums]
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-In module TKOpenGL, fixed the two remaining GCC warnings of the form :
-  "comparison between ‘enum texStatus’ and ‘enum texDataStatus’"
-Obviously texdata[data].status is wanted instead of textab[ID].status.
-  enum texDataStatus conveys the dimensional of the texture (1D or 2D),
-  whereas enum texStatus only conveys the "allocated" information.
 ---
- src/OpenGl/OpenGl_TextureBox.cxx |    6 ++----
- 1 files changed, 2 insertions(+), 4 deletions(-)
+ src/OpenGl/OpenGl_TextureBox.cxx |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 Index: oce/src/OpenGl/OpenGl_TextureBox.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_TextureBox.cxx
 +++ oce/src/OpenGl/OpenGl_TextureBox.cxx
-@@ -519,7 +519,7 @@ static void MyBindTextureEXT(TextureID I
-   if (textab[ID].use_bind_texture[Context])
-   {
-     /* OCC11904 - make sure that the correct texture is bound before drawing */
--    GLenum aParamName = textab[ID].status == TEXDATA_1D ? 
-+    GLenum aParamName = texdata[data].status == TEXDATA_1D ?
- GL_TEXTURE_BINDING_1D : GL_TEXTURE_BINDING_2D;
-     GLint aCurrTex = -1;
-     glGetIntegerv( aParamName, &aCurrTex );
-@@ -536,7 +536,7 @@ GL_TEXTURE_BINDING_1D : GL_TEXTURE_BINDI
- #endif /* GL_EXT_texture_object */
-   {
-     /* OCC11904 - make sure that the correct texture is bound before drawing */
--    GLenum aParamName = textab[ID].status == TEXDATA_1D ? 
-+    GLenum aParamName = texdata[data].status == TEXDATA_1D ?
- GL_TEXTURE_BINDING_1D : GL_TEXTURE_BINDING_2D;
-     GLint aCurrTex = -1;
-     glGetIntegerv( aParamName, &aCurrTex );
+@@ -402,7 +402,7 @@ static void MyGenTextureEXT (TextureID I
+ static void MyBindTextureEXT (TextureID ID, int Context)
+ {
+   TextureDataID data = textab(ID).data;
+-  if (texdata(data).status == TEX_NONE)
++  if (texdata(data).status == TEXDATA_NONE)
+     return;
+ 
+   GLenum aParamName = texdata(data).status == TEXDATA_1D ? 

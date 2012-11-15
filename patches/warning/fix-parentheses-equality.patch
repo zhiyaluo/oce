@@ -1,0 +1,27 @@
+From e7a82da67ec0d5c2caea04223af5376607caeb10 Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Sun, 3 Jun 2012 16:40:17 +0200
+Subject: [PATCH] [clang-warning-fix][parentheses-equality]
+
+Equality comparison with extraneous parentheses. Fix : Remove extraneous
+parentheses to silent the warning.
+---
+ src/Geom/Geom_OffsetSurface.cxx |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/Geom/Geom_OffsetSurface.cxx b/src/Geom/Geom_OffsetSurface.cxx
+index 75c2959..f4e8e1f 100644
+--- a/src/Geom/Geom_OffsetSurface.cxx
++++ b/src/Geom/Geom_OffsetSurface.cxx
+@@ -1632,7 +1632,7 @@ void Geom_OffsetSurface::SetD0(const Standard_Real U, const Standard_Real V,
+   CSLib_NormalStatus NStatus;
+   CSLib::Normal (D1U, D1V, MagTol, NStatus, Normal);
+ 
+-  if ((NStatus == CSLib_Defined)) // akm - only in singularities && !AlongU && !AlongV) 
++  if (NStatus == CSLib_Defined) // akm - only in singularities && !AlongU && !AlongV) 
+     {
+       P.SetXYZ(P.XYZ() + offsetValue * Normal.XYZ());
+     }
+-- 
+1.7.10.4
+

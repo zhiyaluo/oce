@@ -11,29 +11,77 @@ would not be defined in any case, and result in compiler error.
  inc/Draw_Window.hxx |    2 ++
  2 files changed, 4 insertions(+), 0 deletions(-)
 
+From 2302c5e5c4c306ade8912aaab666f2ad4e2024d4 Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Sat, 19 May 2012 16:00:17 +0200
+Subject: [PATCH] [warning-fix] Preprocessor and import fixes Some annoying
+ preprocessor and import/export warning fixes
+
+---
+ Version.rc.cmake                         |    1 +
+ inc/Draw_Viewer.hxx                      |   25 ++++++++++++++-----------
+ inc/Draw_Window.hxx                      |   14 ++++++++------
+ src/TopOpeBRepDS/TopOpeBRepDS_EXPORT.cxx |    2 +-
+ 4 files changed, 24 insertions(+), 18 deletions(-)
+
 Index: oce/inc/Draw_Viewer.hxx
 ===================================================================
 --- oce.orig/inc/Draw_Viewer.hxx
 +++ oce/inc/Draw_Viewer.hxx
-@@ -43,6 +43,8 @@
+@@ -35,18 +35,23 @@
+ #include <Draw_SequenceOfDrawable3D.hxx>
+ #include <Draw_Color.hxx>
+ 
+-#ifdef WNT
+-#include <windows.h>
+-#if !defined(__Draw_API) && !defined(HAVE_NO_DLL)
+-# ifdef __Draw_DLL
+-#  define __Draw_API __declspec( dllexport )
++#if !defined(__Draw_API)
++# ifdef WNT
++#  include <windows.h>
++#  if !defined(HAVE_NO_DLL)
++#   ifdef __Draw_DLL
++#    define __Draw_API __declspec( dllexport )
++#   else
++#    define __Draw_API __declspec( dllimport )
++#   endif
++#  else
++#   define __Draw_API
++#  endif
  # else
- #  define __Draw_API /*__declspec( dllimport )*/
+-#  define __Draw_API /*__declspec( dllimport )*/
++#  define __Draw_API
  # endif
-+#else
-+# define __Draw_API  
  #endif
- #else
- #  define __Draw_API  
+-#else
+-#  define __Draw_API  
+-#endif
++
+ const Standard_Integer MAXVIEW  = 30;
+ 
+ class Draw_View;
 Index: oce/inc/Draw_Window.hxx
 ===================================================================
 --- oce.orig/inc/Draw_Window.hxx
 +++ oce/inc/Draw_Window.hxx
-@@ -204,6 +204,8 @@ void GetNextEvent(Event&);
+@@ -198,11 +198,15 @@ void GetNextEvent(Event&);
+ #define DRAWTITLE "Draw View"
+ #define MAXCOLOR  15
+ 
+-#if !defined(__Draw_API) && !defined(HAVE_NO_DLL)
+-# ifdef __Draw_DLL
+-#  define __Draw_API __declspec( dllexport )
++#if !defined(__Draw_API)
++# if !defined(HAVE_NO_DLL)
++#  ifdef __Draw_DLL
++#   define __Draw_API __declspec( dllexport )
++#  else
++#   define __Draw_API __declspec( dllimport )
++#  endif
  # else
- #  define __Draw_API __declspec( dllimport )
+-#  define __Draw_API __declspec( dllimport )
++#  define __Draw_API
  # endif
-+#else
-+# define __Draw_API
  #endif
  
- // definition de la classe Segment

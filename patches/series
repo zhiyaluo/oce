@@ -16,6 +16,8 @@ fix-xsputn-prototype.patch
 fix-raise-exception.patch
 fix-std-atol.patch
 fix-out-of-bounds-errors.patch
+add-missing-include-stdio.h.patch
+fix-build-failure-error-format.patch
 
 submitted/thread_21346/ports/remove-__try-__finally.patch
 submitted/thread_21347/warning/remove-extra-token-after-endif.patch
@@ -49,19 +51,31 @@ submitted/thread_22556/fix-elif-HAVE_SYS_TIME_H.patch
 new-Standard_Time-type.patch
 do-not-redefine-memmove.patch
 fix-symbol-decorators-Draw.patch
+drop-getGL2PSFontName.patch
+bugfix-points-swapped-in-BRepExtrema_DistanceSS.patch
+bugfix-wrong-test-due-to-missing-parens.patch
+bugfix-check-handles.patch
+bugfix-opengl-regression-fix.patch
+bugfix-unused-value.patch
 
 cppcheck/fix-extra-qualification-unnecessary.patch
-cppcheck/fix-uninitialized-var.patch
+cppcheck/fix-unused-local-var.patch
 cppcheck/fix-resource-leak.patch
 cppcheck/fix-memory-leak.patch
 cppcheck/fix-return-reference-auto.patch
 
+warning/fix-unused-local-var.patch
+warning/fix-unused-local-function.patch
 warning/format-issue.patch
 warning/fix-unhandled-enumeration-value2.patch
 warning/fix-comment-format.patch
 # See if the new OpenGL stuff needs it # warning/fix-comparison-between-different-enums.patch
 warning/fix-mismatch-allocation-deallocation.patch
 warning/fix-ambiguous-else.patch
+warning/fix-defined-but-not-used.patch
+warning/fix-signed-unsigned-mismatch.patch
+warning/fix-implicit-conversion-from-wider-type.patch
+warning/fix-parentheses-equality.patch
 
 #  Do not submit, either needs to be reworked, or are unsuitable
 warning/fix-empty-conditional-body.patch
@@ -72,6 +86,15 @@ warning/add-equal-operator.patch
 warning/fix-unreachable-code.patch
 warning/fix-unreachable-code-rewrite-loops.patch
 warning/fix-Standard_IMPORT-usage.patch
+warning/add-delete-operator.patch
+warning/fix-dynamic-class-memaccess.patch
+warning/fix-constant-logical-operand.patch
+warning/fix-uninitialized-var.patch
+warning/fix-comparison-between-different-enums.patch
+warning/fix-dangling-else.patch
+warning/remove-duplicate-checks.patch
+warning/fix-old-declarators.patch
+warning/fix-tautological-compare.patch
 
 improve-exception-message.patch
 
@@ -97,6 +120,7 @@ cmake/add-examples.patch
 
 ports/drop-utsname-usage-for-unknown-architectures.patch
 ports/fix-OSD_Process-CurrentDirectory-on-the-Hurd.patch
+ports/fix-build-on-Alpha.patch
 ports/rename-ED-variables-into-EData.patch
 ports/do-not-include-X11-bitmaps-icon.patch
 
@@ -116,9 +140,12 @@ ports/add-missing-Vfw32.lib.patch
 ports/workaround-clang-bug-remove-trampoline.patch
 ports/workaround-gcc42-bug-gpMat.patch
 ports/rename-PPC-in-cdl.patch
+ports/rename-glext.h.patch
 
+ports/do-not-undef-GL_VERSION.patch
 MMGT-default-values.patch
 warning/modify-MSVC-pragmas.patch
+warning/fix-implicit-bool-conversion.patch
 review/avoid-macro-redefinition.patch
 # TO BE REVIEWED # review/fix-ftgl-font-issue.patch
 
@@ -144,5 +171,6 @@ config/add-OCE-prefix-to-macros.patch
 
 cmake/unsorted.patch
 ports/borland11.patch
+ports/borland14.patch
 review/add-todos.patch
 

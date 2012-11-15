@@ -72,7 +72,7 @@ Index: oce/inc/Standard_Stream.hxx
 ===================================================================
 --- oce.orig/inc/Standard_Stream.hxx
 +++ oce/inc/Standard_Stream.hxx
-@@ -24,24 +24,24 @@
+@@ -38,24 +38,24 @@
  // Unix variant
  #ifndef WNT
  
@@ -108,7 +108,7 @@ Index: oce/inc/Standard_values.h
 ===================================================================
 --- oce.orig/inc/Standard_values.h
 +++ oce/inc/Standard_values.h
-@@ -25,13 +25,15 @@ Facility : CAS-CADE V1.3A
+@@ -29,13 +29,15 @@
  #include <oce-config.h>
  
  #ifndef WNT
@@ -135,7 +135,7 @@ Index: oce/src/BinLDrivers/BinLDrivers_DocumentRetrievalDriver.cxx
 ===================================================================
 --- oce.orig/src/BinLDrivers/BinLDrivers_DocumentRetrievalDriver.cxx
 +++ oce/src/BinLDrivers/BinLDrivers_DocumentRetrievalDriver.cxx
-@@ -481,7 +481,7 @@ void BinLDrivers_DocumentRetrievalDriver
+@@ -496,7 +496,7 @@ void BinLDrivers_DocumentRetrievalDriver
  						    Standard_IStream& IS)
  {
    if(!IS.eof()) {
@@ -148,7 +148,7 @@ Index: oce/src/Draw/Draw_BasicCommands.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_BasicCommands.cxx
 +++ oce/src/Draw/Draw_BasicCommands.cxx
-@@ -39,9 +39,9 @@ extern Standard_Boolean Draw_Batch;
+@@ -56,9 +56,9 @@ extern Standard_Boolean Draw_Batch;
  #include <process.h>
  #include <stdio.h>
  #include <stdlib.h>
@@ -164,7 +164,7 @@ Index: oce/src/Graphic3d/Graphic3d_Structure.pxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_Structure.pxx
 +++ oce/src/Graphic3d/Graphic3d_Structure.pxx
-@@ -6,9 +6,9 @@
+@@ -24,9 +24,9 @@
  # include <oce-config.h>
  #endif
  
@@ -180,7 +180,7 @@ Index: oce/src/OSD/OSD_Chronometer.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Chronometer.cxx
 +++ oce/src/OSD/OSD_Chronometer.cxx
-@@ -48,9 +48,9 @@
+@@ -64,9 +64,9 @@
  #   define CLK_TCK	CLOCKS_PER_SEC
  #  endif
  
@@ -192,3 +192,50 @@ Index: oce/src/OSD/OSD_Chronometer.cxx
  # include <limits.h>
  #endif
  
+Index: oce/src/QABugs/QABugs_3.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_3.cxx
++++ oce/src/QABugs/QABugs_3.cxx
+@@ -18,10 +18,10 @@
+ // and conditions governing the rights and limitations under the License.
+ 
+ 
+-#include <QABugs.hxx>
+ #ifdef HAVE_CONFIG_H
+ #include <oce-config.h>
+ #endif
++#include <QABugs.hxx>
+ #include<Draw_Interpretor.hxx>
+ #include<TopLoc_Location.hxx>
+ #include<TopoDS_Face.hxx>
+@@ -287,15 +287,15 @@ void stringerror(int state)
+ //#else
+ //#include <strstream.h>
+ //#endif
+-#ifdef HAVE_IOSTREAM
++#ifdef OCE_HAVE_IOSTREAM
+ #include <iostream>
+ #include <sstream>
+ using namespace std;
+-#elif defined (HAVE_IOSTREAM_H)
++#elif defined (OCE_HAVE_IOSTREAM_H)
+ #include <iostream.h>
+ #include <strstream.h>
+ #else
+-#error "check oce-config.h file or compilation options: either HAVE_IOSTREAM or HAVE_IOSTREAM_H should be defined"
++#error "check oce-config.h file or compilation options: either OCE_HAVE_IOSTREAM or OCE_HAVE_IOSTREAM_H should be defined"
+ #endif
+ static int UKI61075(Draw_Interpretor& /*di*/, Standard_Integer /*argc*/, const char ** /*argv*/) {
+  double da,db;
+@@ -1405,9 +1405,9 @@ static Standard_Integer BUC60856(Draw_In
+ 
+ #if ! defined(WNT)
+ //#include <fstream.h>
+-#ifdef HAVE_FSTREAM
++#ifdef OCE_HAVE_FSTREAM
+ # include <fstream>
+-#elif defined (HAVE_FSTREAM_H)
++#elif defined (OCE_HAVE_FSTREAM_H)
+ # include <fstream.h> 
+ #endif
+ //#include <Standard_Stream.hxx>

@@ -1,0 +1,53 @@
+From 55efd4d13e4a3a844d1e8f2b7b32dd5e542d4209 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Wed, 2 May 2012 12:20:01 +0200
+Subject: [PATCH] Bugfix: Points swapped in BRepExtrema_DistanceSS
+
+Fix issue #260.  Thanks to AkitaMan for the report and patch.
+Distance between edge/vertex and face/vertex was broken because
+points added into SeqSolShape1 and SeqSolShape2 were swapped.
+
+Distance between face/edge was also broken, but for a slightly
+different reason, the line
+  if (TRI_SOLUTION(SeqSolShape1,Pt1) || TRI_SOLUTION(SeqSolShape2,Pt2))
+was wrong because Pt1 is on shape 2 and Pt2 is on shape 1.  Other
+lines were right.
+
+Rewrite code so that index 1 (resp. 2) always refer to shape 1 (resp. 2).
+---
+ src/BRepExtrema/BRepExtrema_DistanceSS.cxx |   24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
+
+Index: oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
+===================================================================
+--- oce.orig/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
++++ oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
+@@ -1143,13 +1143,13 @@ void BRepExtrema_DistanceSS::Perform(con
+         {
+           if (fabs(Dstmin-sqrt(Ext.SquareDistance(i)))<myEps)
+           {
+-            Pt1=Ext.PointOnEdge(i);
+-            Pt2=Ext.PointOnFace(i);
++            Pt1=Ext.PointOnFace(i);
++            Pt2=Ext.PointOnEdge(i);
+             if (TRI_SOLUTION(SeqSolShape1,Pt1) || TRI_SOLUTION(SeqSolShape2,Pt2))
+             {
+               // Check if the parameter does not correspond to a vertex
+-              const Standard_Real t1 = Ext.ParameterOnEdge(i);
+-              if ((fabs(t1-Udeb)>=epsP)&&(fabs(t1-Ufin)>epsP))
++              const Standard_Real t2 = Ext.ParameterOnEdge(i);
++              if ((fabs(t2-Udeb)>=epsP)&&(fabs(t2-Ufin)>epsP))
+               {
+                 Ext.ParameterOnFace(i,U,V);
+                 const gp_Pnt2d PUV(U,V);
+@@ -1159,8 +1159,8 @@ void BRepExtrema_DistanceSS::Perform(con
+                   if (myDstRef > Dstmin)
+                     myDstRef=Dstmin;
+                   myModif=Standard_True;
+-                  const BRepExtrema_SolutionElem Sol2(Dstmin,Pt1,BRepExtrema_IsOnEdge,S2,t1);
+-                  const BRepExtrema_SolutionElem Sol1(Dstmin,Pt2,BRepExtrema_IsInFace,S1,U,V);
++                  const BRepExtrema_SolutionElem Sol1(Dstmin,Pt1,BRepExtrema_IsInFace,S1,U,V);
++                  const BRepExtrema_SolutionElem Sol2(Dstmin,Pt2,BRepExtrema_IsOnEdge,S2,t2);
+                   SeqSolShape1.Append(Sol1);
+                   SeqSolShape2.Append(Sol2);		  
+                 }

@@ -1,0 +1,324 @@
+From 9e93d5be35ebb90db412c092ca2fdb9958d3cf5b Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Thu, 3 May 2012 18:34:59 +0300
+Subject: [PATCH] Template needs specialization parameter for bcc32
+
+The modification is generic (not __BORLANDC__ protected) since it
+seems logical, for other platforms also.
+---
+ inc/NCollection_Array1.hxx |    2 +-
+ inc/NCollection_Array2.hxx |    2 +-
+ inc/NCollection_SList.hxx  |    8 ++++----
+ 3 files changed, 6 insertions(+), 6 deletions(-)
+
+From 4a865fb81be14d43c83dc5696620ad1ae01d23d3 Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Thu, 3 May 2012 18:38:31 +0300
+Subject: [PATCH] Fixed a template class destructor call for bcc32.
+
+---
+ inc/NCollection_SparseArray.hxx |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+From 64143c03a6e2dfc23b42efa779df58ba756939b5 Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Fri, 25 May 2012 13:45:34 +0300
+Subject: [PATCH] Modification for Builder 6 (bcc) compiler
+
+This commit defines some missing declarations for bcc 5.6.4 and
+fixes (by the side way) some internal compiler errors.
+---
+ inc/NCollection_UBTreeFiller.hxx         |    4 ++++
+ src/OSD/OSD_signal_WNT.cxx               |    4 ++++
+ src/OpenGl/OpenGl_GraduatedTrihedron.cxx |    6 +++++-
+ src/ShapeFix/ShapeFix.cxx                |    7 +++++++
+ src/ShapeFix/ShapeFix_ComposeShell.cxx   |    2 ++
+ 5 files changed, 22 insertions(+), 1 deletion(-)
+
+From a4665cb6efd3f74672d43755497f23376f5afd9c Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Thu, 3 May 2012 18:32:06 +0300
+Subject: [PATCH] HashCode & IsEqual are needed as global for bcc32
+
+---
+ inc/BRepBuilderAPI_CellFilter.hxx |    8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+Index: oce/inc/NCollection_Array1.hxx
+===================================================================
+--- oce.orig/inc/NCollection_Array1.hxx
++++ oce/inc/NCollection_Array1.hxx
+@@ -75,7 +75,7 @@ template <class TheItemType> class NColl
+     //! Constructor with initialisation
+     Iterator  (const NCollection_Array1& theArray) :
+       myCurrent (theArray.Lower()),
+-      myArray   ((NCollection_Array1 *) &theArray) {}
++      myArray   ((NCollection_Array1<TheItemType> *) &theArray) {}
+     //! Initialisation
+     void Init (const NCollection_Array1& theArray)
+     { 
+Index: oce/inc/NCollection_Array2.hxx
+===================================================================
+--- oce.orig/inc/NCollection_Array2.hxx
++++ oce/inc/NCollection_Array2.hxx
+@@ -59,7 +59,7 @@ template <class TheItemType> class NColl
+     Iterator  (const NCollection_Array2& theArray) :
+       myCurrent (0),
+       mySize    (theArray.Length()),
+-      myArray   ((NCollection_Array2 *) &theArray) {}
++      myArray   ((NCollection_Array2<TheItemType> *) &theArray) {}
+     //! Initialisation
+     void Init (const NCollection_Array2& theArray)
+     { 
+Index: oce/inc/NCollection_SList.hxx
+===================================================================
+--- oce.orig/inc/NCollection_SList.hxx
++++ oce/inc/NCollection_SList.hxx
+@@ -73,7 +73,7 @@ template <class TheItemType> class NColl
+                const NCollection_SList& theTail) :
+                  myCount(1),
+                  myValue(theItem) 
+-    { myTail = new (theTail.myAllocator) NCollection_SList(theTail); }
++    { myTail = new (theTail.myAllocator) NCollection_SList <TheItemType> (theTail); }
+     //! Tail
+     NCollection_SList& Tail (void)
+     { return (*myTail); }
+@@ -165,7 +165,7 @@ template <class TheItemType> class NColl
+     for (; anIter.More(); anIter.Next())
+     {
+       aNode = new (this->myAllocator) SListNode 
+-        (anIter.Value(), NCollection_SList(this->myAllocator));
++        (anIter.Value(), NCollection_SList <TheItemType> (this->myAllocator));
+       if (IsEmpty())
+         myNode = aNode;
+       else
+@@ -237,11 +237,11 @@ template <class TheItemType> class NColl
+ 
+   //! Construct
+   void Construct(const TheItemType& theItem)
+-  { *this = NCollection_SList (theItem, *this); }
++  { *this = NCollection_SList <TheItemType> (theItem, *this); }
+ 
+   //! Constructed
+   NCollection_SList Constructed(const TheItemType& theItem) const
+-  { return NCollection_SList (theItem, *this); }
++  { return NCollection_SList <TheItemType> (theItem, *this); }
+ 
+   //! ToTail
+   void ToTail (void)
+Index: oce/inc/NCollection_SparseArray.hxx
+===================================================================
+--- oce.orig/inc/NCollection_SparseArray.hxx
++++ oce/inc/NCollection_SparseArray.hxx
+@@ -264,7 +264,7 @@ private:
+   //! Call destructor to the item at given address
+   virtual void destroyItem (Standard_Address theAddress)
+   {
+-    ((TheItemType*)theAddress)->TheItemType::~TheItemType();
++    ((TheItemType*)theAddress)->~TheItemType();
+   }
+ 
+   //! Call assignment operator to the item
+Index: oce/inc/NCollection_UBTreeFiller.hxx
+===================================================================
+--- oce.orig/inc/NCollection_UBTreeFiller.hxx
++++ oce/inc/NCollection_UBTreeFiller.hxx
+@@ -26,6 +26,10 @@
+ #include <stdlib.h>
+ #include <stdio.h>
+ 
++#if defined(__BORLANDC__) && (__BORLANDC__ < 0x0569)
++#define rand_r(x) rand()
++#endif
++
+ /**
+  * This class is used to fill an UBTree in a random order.
+  * The quality of a tree is much better (from the point of view of
+Index: oce/src/OSD/OSD_signal_WNT.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_signal_WNT.cxx
++++ oce/src/OSD/OSD_signal_WNT.cxx
+@@ -189,6 +189,10 @@ int _resetstkoflw(void)
+ 
+ typedef void (*_se_translator_function)(unsigned int, EXCEPTION_POINTERS*);
+ 
++#ifndef _CRTIMP
++#define _CRTIMP
++#endif
++
+ _CRTIMP _se_translator_function __cdecl _set_se_translator(_se_translator_function _NewPtFunc)
+ {
+   return _NewPtFunc;
+Index: oce/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
++++ oce/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
+@@ -158,7 +158,11 @@ static void drawText(const Handle(OpenGl
+ }
+ 
+ #ifdef __BORLANDC__
+-# define sqrtf std::sqrtf
++# if (__BORLANDC__ < 0x569)
++#  define sqrtf sqrt
++# else
++#  define sqrtf std::sqrtf
++# endif
+ # define fabsf (float)fabs 
+ #endif
+ 
+Index: oce/src/ShapeFix/ShapeFix.cxx
+===================================================================
+--- oce.orig/src/ShapeFix/ShapeFix.cxx
++++ oce/src/ShapeFix/ShapeFix.cxx
+@@ -176,6 +176,9 @@ Standard_Boolean ShapeFix::SameParameter
+            continue;
+       }
+ 
++#if defined(__BORLANDC__) && (__BORLANDC__ < 0x0569)
++# define continue {} else { //bcc cannot process continue ... ???
++#endif                      //ugly hack just to bypass this stupid issue...
+       Handle(GeomAdaptor_HSurface) AS = new GeomAdaptor_HSurface ( plane );
+       for ( TopExp_Explorer ed ( face, TopAbs_EDGE ); ed.More(); ed.Next() ) {
+         TopoDS_Edge edge = TopoDS::Edge ( ed.Current() );
+@@ -212,6 +215,10 @@ Standard_Boolean ShapeFix::SameParameter
+             B.UpdateVertex ( TopoDS::Vertex ( S ), tol );
+           }
+         }
++#if defined(__BORLANDC__) && (__BORLANDC__ < 0x0569)
++# undef continue //restore internal compiler definition
++       }} //close open local scopes from 'continue'
++#endif
+       }
+ 
+       // Halt algorithm in case of user's abort
+Index: oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
+===================================================================
+--- oce.orig/src/ShapeFix/ShapeFix_ComposeShell.cxx
++++ oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
+@@ -24,6 +24,8 @@
+ 
+ /* Starting from bcc32 v6.40 this flag should be passed as a compiler option. */
+ #if defined(__BORLANDC__) && __BORLANDC__ < 0x0640 /* bcc32 v6.40 */
++#define try
++#define catch(x) if(0)
+ #pragma option -x-
+ #endif
+ 
+Index: oce/inc/BRepBuilderAPI_CellFilter.hxx
+===================================================================
+--- oce.orig/inc/BRepBuilderAPI_CellFilter.hxx
++++ oce/inc/BRepBuilderAPI_CellFilter.hxx
+@@ -36,4 +36,12 @@
+ 
+ typedef NCollection_CellFilter<BRepBuilderAPI_VertexInspector> BRepBuilderAPI_CellFilter;
+ 
++#ifdef __BORLANDC__
++  // definition of global functions is needed for map
++  Standard_Integer HashCode (const NCollection_CellFilter<BRepBuilderAPI_VertexInspector>::Cell &aCell, const Standard_Integer theUpper)
++  { return aCell.HashCode(theUpper); }
++  Standard_Boolean IsEqual (const NCollection_CellFilter<BRepBuilderAPI_VertexInspector>::Cell &aCell1, const NCollection_CellFilter<BRepBuilderAPI_VertexInspector>::Cell &aCell2)
++  { return aCell1.IsEqual(aCell2); }
++#endif
++
+ #endif
+Index: oce/src/DDF/DDF_BrowserCommands.cxx
+===================================================================
+--- oce.orig/src/DDF/DDF_BrowserCommands.cxx
++++ oce/src/DDF/DDF_BrowserCommands.cxx
+@@ -113,7 +113,7 @@ static Standard_Integer DFOpenLabel (Dra
+   TDF_Label lab;
+   if (n == 3) TDF_Tool::Label(browser->Data(),a[2],lab);
+ 
+-  TCollection_AsciiString list(lab.IsNull()? browser->OpenRoot() : browser->OpenLabel(lab));
++  TCollection_AsciiString list = lab.IsNull() ? browser->OpenRoot() : browser->OpenLabel(lab);
+   di<<list.ToCString();
+   return 0;
+ }
+Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_repvg.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS_repvg.cxx
++++ oce/src/TopOpeBRepDS/TopOpeBRepDS_repvg.cxx
+@@ -139,7 +139,7 @@ Standard_EXPORT void FDS_repvg2
+ 	  gp_Pnt2d uv; ok = FUN_tool_paronEF(E,pE,F1,uv); if (!ok) {it2.Next();continue;}
+ 	  Standard_Real factor = 0.789;
+ 	  TopOpeBRepTool_makeTransition MKT; 
+-	  TopAbs_State stb = TopAbs_State::TopAbs_UNKNOWN,sta = TopAbs_State::TopAbs_UNKNOWN; 
++	  TopAbs_State stb = TopAbs_UNKNOWN,sta = TopAbs_UNKNOWN; 
+ 	  ok = MKT.Initialize(E,pbef,paft,pE, F1,uv, factor);
+ 	  if (ok) ok = MKT.SetRest(E1,pE1);
+ 	  if (ok) ok = MKT.MkTonE(stb,sta);
+Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
+===================================================================
+--- oce.orig/src/ViewerTest/ViewerTest_ObjectCommands.cxx
++++ oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
+@@ -1785,7 +1785,7 @@ class FilledCircle : public AIS_Interact
+ {
+ public:
+     // CASCADE RTTI
+-    DEFINE_STANDARD_RTTI(FilledCircle); 
++    DEFINE_STANDARD_RTTI(FilledCircle)
+ 
+     FilledCircle(gp_Pnt theCenter, Standard_Real theRadius);
+     FilledCircle(Handle(Geom_Circle) theCircle);
+@@ -2285,7 +2285,7 @@ class MyTextClass:public AIS_Interactive
+ {
+ public:
+   // CASCADE RTTI
+-  DEFINE_STANDARD_RTTI(MyTextClass );
++  DEFINE_STANDARD_RTTI(MyTextClass )
+ 
+   MyTextClass(){};
+ 
+@@ -3171,7 +3171,7 @@ public:
+     myArray = theArray;
+   }
+ 
+-  DEFINE_STANDARD_RTTI(MyPArrayObject);
++  DEFINE_STANDARD_RTTI(MyPArrayObject)
+ 
+ private:
+ 
+@@ -3840,7 +3840,7 @@ class Triangle: public AIS_InteractiveOb
+ {
+ public: 
+   // CASCADE RTTI
+-  DEFINE_STANDARD_RTTI(FilledCircle); 
++  DEFINE_STANDARD_RTTI(FilledCircle) 
+   Triangle (const gp_Pnt& theP1, 
+             const gp_Pnt& theP2, 
+             const gp_Pnt& theP3);
+@@ -4035,7 +4035,7 @@ class SegmentObject: public AIS_Interact
+ {
+ public:
+   // CASCADE RTTI
+-  DEFINE_STANDARD_RTTI(SegmentObject); 
++  DEFINE_STANDARD_RTTI(SegmentObject) 
+   SegmentObject (const gp_Pnt& thePnt1, const gp_Pnt& thePnt2);
+ protected:
+   void Compute (const Handle(PrsMgr_PresentationManager3d)& thePresentationManager,
+Index: oce/src/ViewerTest/ViewerTest_OpenGlCommands.cxx
+===================================================================
+--- oce.orig/src/ViewerTest/ViewerTest_OpenGlCommands.cxx
++++ oce/src/ViewerTest/ViewerTest_OpenGlCommands.cxx
+@@ -62,7 +62,7 @@ class VUserDrawObj : public AIS_Interact
+ {
+ public:
+     // CASCADE RTTI
+-    DEFINE_STANDARD_RTTI(VUserDrawObj);
++    DEFINE_STANDARD_RTTI(VUserDrawObj)
+ 
+     VUserDrawObj()
+     {
+Index: oce/src/QABugs/QABugs_3.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_3.cxx
++++ oce/src/QABugs/QABugs_3.cxx
+@@ -1860,7 +1860,7 @@ static int BUC60831_1(Draw_Interpretor&
+     L.Root().AddAttribute(MDF);
+   }
+ 
+-  di<<!MDF->IsEmpty();
++  di<<(const Standard_Integer)!MDF->IsEmpty();
+   return 0;
+ }
+ 

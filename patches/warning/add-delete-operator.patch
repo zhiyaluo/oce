@@ -1,0 +1,110 @@
+From 35adfdffe7d2af552bc5c409e450b8fb62f195c8 Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Sat, 19 May 2012 15:57:29 +0200
+Subject: [PATCH] [warning-fix][missing-operators] When you define a class
+ with a placement new operator without the corresponding
+ delete one, the compiler complains. Also it complains when
+ there's a const member without an assignment operator.
+
+---
+ inc/BRepMesh_Circ.hxx               |    4 ++++
+ inc/BRepMesh_Vertex.hxx             |    4 ++++
+ inc/BinLDrivers_DocumentSection.hxx |    4 ++++
+ inc/Interface_FileParameter.hxx     |    4 ++++
+ inc/gp_XY.hxx                       |    4 ++++
+ inc/gp_XYZ.hxx                      |    4 ++++
+ 6 files changed, 24 insertions(+)
+
+diff --git a/inc/BRepMesh_Circ.hxx b/inc/BRepMesh_Circ.hxx
+index 6154848..211e101 100644
+--- a/inc/BRepMesh_Circ.hxx
++++ b/inc/BRepMesh_Circ.hxx
+@@ -40,6 +40,10 @@ public:
+   {
+     if (anAddress) Standard::Free((Standard_Address&)anAddress); 
+   }
++  void operator delete (void * , void *)
++  {
++
++  }
+ 
+   
+   Standard_EXPORT   BRepMesh_Circ();
+diff --git a/inc/BRepMesh_Vertex.hxx b/inc/BRepMesh_Vertex.hxx
+index 57eec29..b5aeec3 100644
+--- a/inc/BRepMesh_Vertex.hxx
++++ b/inc/BRepMesh_Vertex.hxx
+@@ -47,6 +47,10 @@ public:
+   {
+     if (anAddress) Standard::Free((Standard_Address&)anAddress); 
+   }
++  void operator delete (void *,void *)
++  {
++
++  }
+ 
+   
+   Standard_EXPORT   BRepMesh_Vertex();
+diff --git a/inc/BinLDrivers_DocumentSection.hxx b/inc/BinLDrivers_DocumentSection.hxx
+index 84f31e5..11bff02 100644
+--- a/inc/BinLDrivers_DocumentSection.hxx
++++ b/inc/BinLDrivers_DocumentSection.hxx
+@@ -49,6 +49,10 @@ public:
+   {
+     if (anAddress) Standard::Free((Standard_Address&)anAddress); 
+   }
++  void operator delete ( void * , void * )
++  {
++
++  }
+ 
+   //! Empty constructor <br>
+   Standard_EXPORT   BinLDrivers_DocumentSection();
+diff --git a/inc/Interface_FileParameter.hxx b/inc/Interface_FileParameter.hxx
+index b2e2a16..0838b6d 100644
+--- a/inc/Interface_FileParameter.hxx
++++ b/inc/Interface_FileParameter.hxx
+@@ -52,6 +52,10 @@ public:
+   {
+     if (anAddress) Standard::Free((Standard_Address&)anAddress); 
+   }
++  void operator delete (void *,void *)
++  {
++
++  }
+ 
+   
+   Standard_EXPORT   Interface_FileParameter();
+diff --git a/inc/gp_XY.hxx b/inc/gp_XY.hxx
+index 30c40c5..082ca09 100644
+--- a/inc/gp_XY.hxx
++++ b/inc/gp_XY.hxx
+@@ -57,6 +57,10 @@ public:
+   {
+     if (anAddress) Standard::Free((Standard_Address&)anAddress); 
+   }
++  void operator delete(void * , void *)
++  {
++
++  }
+ 
+   //! Creates XY object with zero coordinates (0,0). <br>
+       gp_XY();
+diff --git a/inc/gp_XYZ.hxx b/inc/gp_XYZ.hxx
+index a4dd6d8..e543970 100644
+--- a/inc/gp_XYZ.hxx
++++ b/inc/gp_XYZ.hxx
+@@ -57,6 +57,10 @@ public:
+   {
+     if (anAddress) Standard::Free((Standard_Address&)anAddress); 
+   }
++  void operator delete ( void * , void * )
++  {
++
++  }
+ 
+   //! Creates an XYZ object with zero co-ordinates (0,0,0) <br>
+       gp_XYZ();
+-- 
+1.7.10.4
+

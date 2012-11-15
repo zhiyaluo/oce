@@ -2,7 +2,35 @@ Index: oce/CMakeLists.txt
 ===================================================================
 --- oce.orig/CMakeLists.txt
 +++ oce/CMakeLists.txt
-@@ -103,12 +103,29 @@ OPTION_WITH_DEFAULT( ${PROJECT_NAME}_WIT
+@@ -23,14 +23,14 @@ SET(OCE_VERSION_MAJOR 0)
+ SET(OCE_VERSION_MINOR 10)
+ # OCE_VERSION_PATCH is used for bugfixes releases only
+ # (uncomment following line)
+-# SET(OCE_VERSION_PATCH 1)
++SET(OCE_VERSION_PATCH 1)
+ #  Empty for official releases, set to -dev, -rc1, etc for development releases
+ SET(OCE_VERSION_DEVEL -dev)
+ 
+ # bugfix release: add ${OCE_VERSION_PATCH} to OCE_VERSION
+ SET(OCE_VERSION ${OCE_VERSION_MAJOR}.${OCE_VERSION_MINOR}${OCE_VERSION_DEVEL})
+ 
+-SET(OCE_ABI_SOVERSION 2)
++SET(OCE_ABI_SOVERSION 4)
+ SET(OCE_ABI_VERSION ${OCE_ABI_SOVERSION}.0.0)
+ 
+ # Set the minimum version of cmake required to 2.6
+@@ -76,6 +76,10 @@ IF(MSVC)
+ 	OPTION_WITH_DEFAULT( ${PROJECT_NAME}_USE_BUNDLE "Use OCE Windows Bundle" OFF )
+ ENDIF(MSVC)
+ 
++IF(BORLAND)
++	OPTION_WITH_DEFAULT( ${PROJECT_NAME}_INSTALL_TDS_FILES "Instal TDS files (debug informations)" ON )
++ENDIF(BORLAND)
++
+ IF(${PROJECT_NAME}_USE_BUNDLE)
+ 	OPTION_WITH_DEFAULT( ${PROJECT_NAME}_BUNDLE_AUTOINSTALL "Autoinstall bundle DLLs" ON )
+ 	MARK_AS_ADVANCED(${PROJECT_NAME}_BUNDLE_AUTOINSTALL)
+@@ -103,13 +107,33 @@ OPTION_WITH_DEFAULT( ${PROJECT_NAME}_WIT
  OPTION_WITH_DEFAULT( ${PROJECT_NAME}_WITH_FREEIMAGE "Build with FreeImage" OFF )
  OPTION_WITH_DEFAULT( ${PROJECT_NAME}_EXTRA_WARNINGS "Enable Maximum Warnings Level" OFF )
  MARK_AS_ADVANCED(${PROJECT_NAME}_EXTRA_WARNINGS)
@@ -16,25 +44,220 @@ Index: oce/CMakeLists.txt
  MARK_AS_ADVANCED(${PROJECT_NAME}_ADD_HEADERS)
  OPTION_WITH_DEFAULT( ${PROJECT_NAME}_DISABLE_BSPLINE_MESHER "Disable BSpline Mesher" OFF )
  MARK_AS_ADVANCED(${PROJECT_NAME}_DISABLE_BSPLINE_MESHER)
-+OPTION_WITH_DEFAULT( ${PROJECT_NAME}_RPATH_FILTER_SYSTEM_PATHS "Filter out system paths from RPATH" ON )
-+MARK_AS_ADVANCED(${PROJECT_NAME}_RPATH_FILTER_SYSTEM_PATHS)
+ 
++IF (NOT WIN32)
++  OPTION_WITH_DEFAULT( ${PROJECT_NAME}_RPATH_FILTER_SYSTEM_PATHS "Filter out system paths from RPATH" ON )
++  MARK_AS_ADVANCED(${PROJECT_NAME}_RPATH_FILTER_SYSTEM_PATHS)
++ENDIF (NOT WIN32)
 +
 +# The default for the DEB define is ON for all the platforms , in debug mode.
 +# In MSVC it is not desirable to have it ON by default, since users must 
 +# compile/use the OCE debug libraries to build it's own programs in DEBUG mode.
 +# DEB should be enabled by developers only, in this case
-+IF (MSVC AND CMAKE_CONFIGURATION_TYPES)
++IF ((MSVC OR BORLAND) AND CMAKE_CONFIGURATION_TYPES)
 +  SET (DEB_DEFAULT "OFF")
 +ELSE ()
 +   SET (DEB_DEFAULT "ON")
-+ENDIF (MSVC AND CMAKE_CONFIGURATION_TYPES)
++ENDIF ((MSVC OR BORLAND) AND CMAKE_CONFIGURATION_TYPES)
 +
 +OPTION_WITH_DEFAULT( ${PROJECT_NAME}_ENABLE_DEB_FLAG "Enables DEB define in debug configuration" ${DEB_DEFAULT} )
 +MARK_AS_ADVANCED(${PROJECT_NAME}_ENABLE_DEB_FLAG)
- 
++
  IF(NOT MSVC)
  	OPTION_WITH_DEFAULT( ${PROJECT_NAME}_COVERAGE "Build with coverage testing" OFF )
-@@ -789,25 +806,15 @@ ENDFOREACH(RESOURCE_FILE ${INSTALL_RESOU
+ 	MARK_AS_ADVANCED(${PROJECT_NAME}_COVERAGE)
+@@ -170,7 +194,7 @@ SET_DIRECTORY_PROPERTIES(PROPERTIES COMP
+ SET_DIRECTORY_PROPERTIES(PROPERTIES COMPILE_DEFINITIONS_RELWITHDEBINFO  NDEBUG)
+ 
+ IF(${PROJECT_NAME}_ENABLE_DEB_FLAG)
+-  SET_DIRECTORY_PROPERTIES(PROPERTIES COMPILE_DEFINITIONS_DEBUG "DEB;_DEBUG")
++  SET_DIRECTORY_PROPERTIES(PROPERTIES COMPILE_DEFINITIONS_DEBUG "DEB=1;_DEBUG")
+ ELSE ()
+   SET_DIRECTORY_PROPERTIES(PROPERTIES COMPILE_DEFINITIONS_DEBUG "_DEBUG")
+ ENDIF (${PROJECT_NAME}_ENABLE_DEB_FLAG)
+@@ -372,8 +396,7 @@ IF(${PROJECT_NAME}_OCAF)
+ 		src/StdResource/Standard.us
+ 		src/StdResource/StandardLite
+ 		src/StdResource/TObj
+-		src/StdResource/XCAF
+-		src/StdResource/dftree.tcl )
++		src/StdResource/XCAF )
+ ENDIF(${PROJECT_NAME}_OCAF)
+ 
+ IF(${PROJECT_NAME}_DATAEXCHANGE)
+@@ -421,7 +444,8 @@ IF(${PROJECT_NAME}_DRAW)
+ 		src/DrawResources/tdoc
+ 		src/DrawResources/test2xl
+ 		src/DrawResources/vmdltest
+-		src/DrawResources/wing.brep )
++		src/DrawResources/wing.brep 
++		src/DrawResources/dftree.tcl )
+ ENDIF(${PROJECT_NAME}_DRAW)
+ 
+ IF (${PROJECT_NAME}_USE_BUNDLE AND ${PROJECT_NAME}_BUNDLE_ROOT_PATH)
+@@ -470,6 +494,7 @@ IF(WIN32)
+ 	SET(CSF_kernel32_LIB kernel32)
+ 	SET(CSF_SOCKETLibs_LIB ws2_32)
+ 	SET(CSF_wsock32_LIB ws2_32)
++	SET(CSF_psapi_LIB psapi)
+ ELSE(WIN32)
+ 	SET(LM "-lm")
+ 	SET(WIN32_LIBS "")
+@@ -479,6 +504,7 @@ ELSE(WIN32)
+ 	SET(CSF_kernel32_LIB "")
+ 	SET(CSF_SOCKETLibs_LIB "")
+ 	SET(CSF_wsock32_LIB "")
++	SET(CSF_psapi_LIB "")
+ ENDIF(WIN32)
+ 
+ ###################################################
+@@ -621,6 +647,65 @@ IF (NOT WIN32)
+ ENDIF(NOT WIN32)
+ 
+ #######################################################
++# Check compiler version - Determine Borland compiler #
++#######################################################
++IF(BORLAND AND NOT BORLAND_VERSION)
++	IF(EXISTS ${CMAKE_CXX_COMPILER})
++		EXECUTE_PROCESS(
++			COMMAND ${CMAKE_CXX_COMPILER}  /?
++			OUTPUT_VARIABLE _output
++			ERROR_QUIET
++		)
++		
++		string(REGEX MATCH "Embarcadero C[+][+] [0-9]+.[0-9]+"
++			_borland_version "${_output}")
++			
++		if(_borland_version)
++			string(REGEX MATCHALL "[0-9]+" _borland_version_list "${_borland_version}")
++			list(GET _borland_version_list 0 _borland_major)
++			list(GET _borland_version_list 1 _borland_minor)
++		else()
++			string(REGEX MATCH "Borland C[+][+] [0-9]+].[0-9]+"
++				_borland_version "${_output}")
++			
++			if(_borland_version)
++				string(REGEX MATCHALL "[0-9]+" _borland_version_list "${_borland_version}")
++				list(GET _borland_version_list 0 _borland_major)
++				list(GET _borland_version_list 1 _borland_minor)
++			endif()
++		endif()
++			
++		# XE2 compiler?
++		if("v${_borland_major}.${_borland_minor}" STREQUAL "v6.41")
++			SET(BORLAND_VERSION "bcc32 v6.41 (RS XE2)")
++			SET(BORLAND_VERSION_RS_XE2 1)
++		# XE compiler?
++		elseif("v${_borland_major}.${_borland_minor}" STREQUAL "v6.30")
++			SET(BORLAND_VERSION "bcc32 v6.30 (RS XE)")
++			SET(BORLAND_VERSION_RS_XE 1)
++		# 2010 compiler?
++		elseif("v${_borland_major}.${_borland_minor}" STREQUAL "v6.20")
++			SET(BORLAND_VERSION "bcc32 v6.20 (RS 2010)")
++			SET(BORLAND_VERSION_RS_2010 1)
++		# TODO: 2009 compiler?
++		# TODO: 2007 compiler?
++		# 2006 compiler?
++		elseif("v${_borland_major}.${_borland_minor}" STREQUAL "v5.82")
++			SET(BORLAND_VERSION "bcc32 v5.82 (BDS 2006)")
++			SET(BORLAND_VERSION_BDS_2006 1)
++		#TODO: Older compilers?
++		else()
++			SET(BORLAND_VERSION "Unknown")
++		endif()
++		
++		UNSET(_output)
++		UNSET(_borland_version)
++		UNSET(_borland_major)
++		UNSET(_borland_minor)
++	ENDIF()
++ENDIF()
++
++#######################################################
+ # Check platforms - Define specific compilation flags #
+ #######################################################
+ IF(UNIX)
+@@ -639,6 +724,11 @@ ELSE(UNIX)
+ 		######### Windows ###########
+ 		MESSAGE(STATUS "Windows system detected")
+ 		ADD_DEFINITIONS(-DWNT -DWIN32 -D_WINDOWS -DCSFDB -DHAVE_CONFIG_H )
++		######### Borland ###########
++		IF(BORLAND)
++			MESSAGE(STATUS "Borland compiler detected: ${BORLAND_VERSION}")
++			ADD_DEFINITIONS(-DHAVE_IOS )
++		ENDIF(BORLAND)
+ 		SET(PLATFORM win)
+ 	ELSE(WIN32)
+ 		MESSAGE(STATUS "Unknown platform")
+@@ -655,6 +745,9 @@ IF( ${PROJECT_NAME}_EXTRA_WARNINGS)
+ 	IF(CMAKE_COMPILER_IS_GNUCXX)
+ 		ADD_DEFINITIONS("-Wall -Wextra")
+ 	ENDIF(CMAKE_COMPILER_IS_GNUCXX)
++	IF(CMAKE_CXX_COMPILER MATCHES ".*clang")
++		ADD_DEFINITIONS("-Weverything")
++	ENDIF(CMAKE_CXX_COMPILER MATCHES ".*clang")
+ 	IF(BORLAND)
+ 		#TODO
+ 	ENDIF(BORLAND)
+@@ -672,9 +765,11 @@ IF(WIN32)
+ 	IF(MSVC) # The compiler used is MSVC
+ 		MESSAGE(STATUS "Found MSVC compiler: ${MSVC} ${MSVC_VERSION}")
+ 		SET(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/bin/)
+-	ELSE(MSVC)
++	ELSEIF (BORLAND) # The compiler used is BORLAND
++		SET(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/win${BIT}/bin/${CMAKE_BUILD_TYPE})
++	ELSE()
+ 		SET(LIBRARY_OUTPUT_PATH win${BIT}/bin/${CMAKE_BUILD_TYPE})
+-	ENDIF(MSVC)
++	ENDIF()
+ 	SET(EXECUTABLE_OUTPUT_PATH ${LIBRARY_OUTPUT_PATH})
+ ELSE(WIN32)
+ 	SET(LIBRARY_OUTPUT_PATH ${PLATFORM}/${CMAKE_SYSTEM_PROCESSOR}-${CMAKE_BUILD_TYPE}-${BIT})
+@@ -739,6 +834,19 @@ ELSE(MSVC)
+ 	ENDIF(NOT DEFINED ${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DIR)
+ ENDIF(MSVC)
+ 
++# RPATHS
++IF(IS_ABSOLUTE ${${PROJECT_NAME}_INSTALL_LIB_DIR})
++	SET(${PROJECT_NAME}_INSTALL_LIB_DIR_RPATH ${${PROJECT_NAME}_INSTALL_LIB_DIR})
++ELSE(IS_ABSOLUTE ${${PROJECT_NAME}_INSTALL_LIB_DIR})
++	SET(${PROJECT_NAME}_INSTALL_LIB_DIR_RPATH ${${PROJECT_NAME}_INSTALL_PREFIX}/${${PROJECT_NAME}_INSTALL_LIB_DIR})
++ENDIF(IS_ABSOLUTE ${${PROJECT_NAME}_INSTALL_LIB_DIR})
++
++IF(IS_ABSOLUTE ${${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DIR})
++	SET(${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DIR_RPATH ${${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DIR})
++ELSE(IS_ABSOLUTE ${${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DIR})
++	SET(${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DIR_RPATH ${${PROJECT_NAME}_INSTALL_PREFIX}/${${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DIR})
++ENDIF(IS_ABSOLUTE ${${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DIR})
++
+ # Includes
+ IF(NOT DEFINED ${PROJECT_NAME}_INSTALL_INCLUDE_DIR)
+ 	SET(${PROJECT_NAME}_INSTALL_INCLUDE_DIR include/${PROJECT_NAME_LOWERCASE})
+@@ -777,9 +885,22 @@ IF(NOT DEFINED ${PROJECT_NAME}_INSTALL_C
+ 		ENDIF(APPLE)
+ 	ENDIF(WIN32)
+ ENDIF(NOT DEFINED ${PROJECT_NAME}_INSTALL_CMAKE_DATA_DIR)
++
+ # This relative path is written into OCEConfig.cmake to set OCE_INCLUDE_DIRS relative to OCEConfig.cmake
+ # There is no need to prepend ${PROJECT_NAME}_INSTALL_PREFIX, CMake convention is to use slashes.
+-FILE(RELATIVE_PATH ${PROJECT_NAME}_CMAKE_DATA_TO_INCLUDE_RELATIVE_DIR "/${${PROJECT_NAME}_INSTALL_CMAKE_DATA_DIR}" "/${${PROJECT_NAME}_INSTALL_INCLUDE_DIR}")
++# The first part is required if -DOCE_INSTALL_CMAKE_DATA_DIR and -DOCE_INSTALL_INCLUDE_DIR are not both absolute paths.
++IF(IS_ABSOLUTE ${${PROJECT_NAME}_INSTALL_CMAKE_DATA_DIR})
++	SET(_${PROJECT_NAME}_INSTALL_CMAKE_DATA_DIR ${${PROJECT_NAME}_INSTALL_CMAKE_DATA_DIR})
++ELSE(IS_ABSOLUTE ${${PROJECT_NAME}_INSTALL_CMAKE_DATA_DIR})
++	SET(_${PROJECT_NAME}_INSTALL_CMAKE_DATA_DIR ${CMAKE_INSTALL_PREFIX}/${${PROJECT_NAME}_INSTALL_CMAKE_DATA_DIR})
++ENDIF(IS_ABSOLUTE ${${PROJECT_NAME}_INSTALL_CMAKE_DATA_DIR})
++IF(IS_ABSOLUTE ${${PROJECT_NAME}_INSTALL_INCLUDE_DIR})
++	SET(_${PROJECT_NAME}_INSTALL_INCLUDE_DIR ${${PROJECT_NAME}_INSTALL_INCLUDE_DIR})
++ELSE(IS_ABSOLUTE ${${PROJECT_NAME}_INSTALL_INCLUDE_DIR})
++	SET(_${PROJECT_NAME}_INSTALL_INCLUDE_DIR ${CMAKE_INSTALL_PREFIX}/${${PROJECT_NAME}_INSTALL_INCLUDE_DIR})
++ENDIF(IS_ABSOLUTE ${${PROJECT_NAME}_INSTALL_INCLUDE_DIR})
++# Now the relative path can be generated
++FILE(RELATIVE_PATH ${PROJECT_NAME}_CMAKE_DATA_TO_INCLUDE_RELATIVE_DIR "${_${PROJECT_NAME}_INSTALL_CMAKE_DATA_DIR}" "${_${PROJECT_NAME}_INSTALL_INCLUDE_DIR}")
+ 
+ FOREACH(RESOURCE_FILE ${INSTALL_RESOURCE_FILES})
+ 	GET_FILENAME_COMPONENT(RESOURCE_PATH ${RESOURCE_FILE} PATH)
+@@ -789,25 +910,14 @@ ENDFOREACH(RESOURCE_FILE ${INSTALL_RESOU
  INSTALL(FILES ${INSTALL_STDRESOURCE_FILES}
  	DESTINATION ${${PROJECT_NAME}_INSTALL_DATA_DIR}/src/StdResource)
  
@@ -46,7 +269,7 @@ Index: oce/CMakeLists.txt
  IF(WIN32)
  	SET(ENV_SCRIPTS
  		${${PROJECT_NAME}_SOURCE_DIR}/env.bat
- 		${${PROJECT_NAME}_SOURCE_DIR}/env_build.bat
+-		${${PROJECT_NAME}_SOURCE_DIR}/env_build.bat
  		${${PROJECT_NAME}_SOURCE_DIR}/msvc.bat
  	)
 -ELSE(WIN32)
@@ -62,7 +285,7 @@ Index: oce/CMakeLists.txt
  
  FILE(GLOB header_files ${${PROJECT_NAME}_SOURCE_DIR}/inc/*.*)
  INSTALL(FILES ${header_files}
-@@ -816,9 +823,12 @@ INSTALL(FILES ${header_files}
+@@ -816,9 +926,12 @@ INSTALL(FILES ${header_files}
  
  SET(OCE_INSTALL_DATA_DIR ${${PROJECT_NAME}_INSTALL_DATA_DIR})
  IF (NOT MSVC) 
@@ -78,7 +301,23 @@ Index: oce/CMakeLists.txt
  ENDIF(NOT MSVC)
  
  #this is the header used to build OCE
-@@ -940,8 +950,26 @@ IF(MSVC AND ${PROJECT_NAME}_TESTING)
+@@ -893,14 +1006,9 @@ IF(${PROJECT_NAME}_DATAEXCHANGE)
+ 	PROCESS_MODULE( "Data Exchange" "TKSTL;TKXSBase;TKSTEPBase;TKIGES;TKSTEPAttr;TKSTEP209;TKSTEP" "TKVRML;TKXCAF;TKXCAFSchema;TKXmlXCAF;TKBinXCAF;TKXDEIGES;TKXDESTEP" )
+ ENDIF(${PROJECT_NAME}_DATAEXCHANGE)
+ 
+-# Draw
+-IF(${PROJECT_NAME}_DRAW)
+-	PROCESS_MODULE( "Draw" "" "TKDraw;TKTopTest;TKViewerTest;TKXSDRAW;TKDCAF;TKXDEDRAW;TKTObjDRAW" )
+-ENDIF(${PROJECT_NAME}_DRAW)
+-
+ # DRAWEXE application
+ IF(${PROJECT_NAME}_DRAW)
+-	PROCESS_MODULE( "Draw" "" DRAWEXE )
++	PROCESS_MODULE( "Draw" "" "TKDraw;TKTopTest;TKViewerTest;TKXSDRAW;TKDCAF;TKXDEDRAW;TKTObjDRAW;TKQADraw;DRAWEXE" )
+ ENDIF(${PROJECT_NAME}_DRAW)
+ 
+ CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/ProjectConfig.cmake.in
+@@ -940,8 +1048,26 @@ IF(MSVC AND ${PROJECT_NAME}_TESTING)
  				# Switch between bin and bind dirs
  				IF (${config} MATCHES "Debug")
  					ADD_CUSTOM_COMMAND(TARGET PostBuild POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${OCE_BUNDLE_ROOT_PATH}/Win${BIT}/bind/ ${LIBRARY_OUTPUT_PATH}/${config}/ VERBATIM )
@@ -105,7 +344,7 @@ Index: oce/CMakeLists.txt
  				ENDIF()
  			ENDFOREACH()
  		ELSE (CMAKE_CONFIGURATION_TYPES )
-@@ -954,8 +982,26 @@ IF(MSVC AND ${PROJECT_NAME}_TESTING)
+@@ -954,8 +1080,26 @@ IF(MSVC AND ${PROJECT_NAME}_TESTING)
  
  				IF (${CMAKE_BUILD_TYPE} MATCHES "Debug")
  					ADD_CUSTOM_COMMAND(TARGET PostBuild POST_BUILD COMMAND ${CMAKE_COMMAND} -E copy_directory ${OCE_BUNDLE_ROOT_PATH}/Win${BIT}/bind/ ${LIBRARY_OUTPUT_PATH} VERBATIM )
@@ -132,7 +371,7 @@ Index: oce/CMakeLists.txt
  				ENDIF()
  		ENDIF (CMAKE_CONFIGURATION_TYPES) 
  		
-@@ -1008,7 +1054,6 @@ ENDIF(${PROJECT_NAME}_BUNDLE_AUTOINSTALL
+@@ -1008,7 +1152,6 @@ ENDIF(${PROJECT_NAME}_BUNDLE_AUTOINSTALL
  # UnitTesting #
  ###############
  IF(${PROJECT_NAME}_TESTING)
@@ -140,7 +379,7 @@ Index: oce/CMakeLists.txt
  	INCLUDE(CTest)
  	ENABLE_TESTING()
  	SUBDIRS(test)
-@@ -1035,7 +1080,9 @@ SET(CPACK_SET_DESTDIR "ON")
+@@ -1035,7 +1178,9 @@ SET(CPACK_SET_DESTDIR "ON")
  
  SET(CPACK_PACKAGE_VERSION_MAJOR ${OCE_VERSION_MAJOR})
  SET(CPACK_PACKAGE_VERSION_MINOR ${OCE_VERSION_MINOR})
@@ -151,7 +390,7 @@ Index: oce/CMakeLists.txt
  SET(CPACK_PACKAGE_NAME ${PROJECT_NAME} )
  
  SET(CPACK_PACKAGE_CONTACT "OCE Developers <oce-dev@googlegroups.com>")
-@@ -1104,3 +1151,15 @@ if( CPACK_GENERATOR MATCHES ".*RPM.*" )
+@@ -1104,3 +1249,15 @@ if( CPACK_GENERATOR MATCHES ".*RPM.*" )
  endif()
  
  INCLUDE(CPack)
@@ -171,7 +410,7 @@ Index: oce/adm/cmake/BuildToolkit.cmake
 ===================================================================
 --- oce.orig/adm/cmake/BuildToolkit.cmake
 +++ oce/adm/cmake/BuildToolkit.cmake
-@@ -139,53 +139,45 @@ ENDIF(TOOLKIT_DEPENDS)
+@@ -139,53 +139,53 @@ ENDIF(TOOLKIT_DEPENDS)
  ###########
  SET(TOOLKIT_INSTALL_BIN_DIR ${${PROJECT_NAME}_INSTALL_BIN_DIR})
  
@@ -183,7 +422,7 @@ Index: oce/adm/cmake/BuildToolkit.cmake
 +		SET(non_system_paths "")
 +		FOREACH(dir ${dirs})
 +			LIST(FIND CMAKE_INSTALL_RPATH "${dir}" _exists)
-+			LIST(FIND CMAKE_PLATFORM_IMPLICIT_LINK_DIRECTORIES "${dir}" _isSystem)
++			LIST(FIND CMAKE_CXX_IMPLICIT_LINK_DIRECTORIES "${dir}" _isSystem)
 +			IF("${_exists}" LESS 0 AND "${_isSystem}" LESS 0)
 +				LIST(APPEND non_system_paths "${dir}")
 +			ENDIF("${_exists}" LESS 0 AND "${_isSystem}" LESS 0)
@@ -201,14 +440,14 @@ Index: oce/adm/cmake/BuildToolkit.cmake
 -	IF(CMAKE_CONFIGURATION_TYPES OR NMAKE)
 -		SET(TOOLKIT_INSTALL_LIB_DEBUG_DIR ${${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DEBUG_DIR})
 -	ENDIF(CMAKE_CONFIGURATION_TYPES OR NMAKE)
-+	SET_TARGET_PROPERTIES_INSTALL_RPATH(${TOOLKIT} "${${PROJECT_NAME}_INSTALL_PREFIX}/${${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DIR};${${PROJECT_NAME}_INSTALL_PREFIX}/${${PROJECT_NAME}_INSTALL_LIB_DIR}")
++	SET_TARGET_PROPERTIES_INSTALL_RPATH(${TOOLKIT} "${${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DIR_RPATH};${${PROJECT_NAME}_INSTALL_LIB_DIR_RPATH}")
  ELSE(TOOLKIT_IS_PRIVATE)
  	SET(TOOLKIT_INSTALL_LIB_DIR ${${PROJECT_NAME}_INSTALL_LIB_DIR})
 -	IF(CMAKE_CONFIGURATION_TYPES OR NMAKE)
 -		SET(TOOLKIT_INSTALL_LIB_DEBUG_DIR ${${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DEBUG_DIR})
 -	ENDIF(CMAKE_CONFIGURATION_TYPES OR NMAKE)
 -	SET_TARGET_PROPERTIES(${TOOLKIT} PROPERTIES INSTALL_RPATH "${${PROJECT_NAME}_INSTALL_PREFIX}/${${PROJECT_NAME}_INSTALL_LIB_DIR}")
-+	SET_TARGET_PROPERTIES_INSTALL_RPATH(${TOOLKIT} "${${PROJECT_NAME}_INSTALL_PREFIX}/${${PROJECT_NAME}_INSTALL_LIB_DIR}")
++	SET_TARGET_PROPERTIES_INSTALL_RPATH(${TOOLKIT} "${${PROJECT_NAME}_INSTALL_LIB_DIR_RPATH}")
  ENDIF(TOOLKIT_IS_PRIVATE)
  
 -IF(WIN32 AND (CMAKE_CONFIGURATION_TYPES OR NMAKE))
@@ -260,6 +499,14 @@ Index: oce/adm/cmake/BuildToolkit.cmake
 +		INSTALL(FILES ${LIBRARY_OUTPUT_PATH}/${TOOLKIT}${CMAKE_DEBUG_POSTFIX}.pdb DESTINATION ${TOOLKIT_INSTALL_LIB_DIR} CONFIGURATIONS Debug)
 +	ENDIF (CMAKE_CONFIGURATION_TYPES)
 +ENDIF(MSVC AND ${PROJECT_NAME}_INSTALL_PDB_FILES )
++
++IF(BORLAND AND ${PROJECT_NAME}_INSTALL_TDS_FILES )
++	IF (CMAKE_CONFIGURATION_TYPES)
++		INSTALL(FILES ${LIBRARY_OUTPUT_PATH}/Debug/${TOOLKIT}.tds DESTINATION ${TOOLKIT_INSTALL_BIN_DIR} CONFIGURATIONS Debug)
++	ELSE (CMAKE_CONFIGURATION_TYPES)
++		INSTALL(FILES ${LIBRARY_OUTPUT_PATH}/${TOOLKIT}.tds DESTINATION ${TOOLKIT_INSTALL_BIN_DIR} CONFIGURATIONS Debug)
++	ENDIF (CMAKE_CONFIGURATION_TYPES)
++ENDIF(BORLAND AND ${PROJECT_NAME}_INSTALL_TDS_FILES )
 Index: oce/adm/cmake/TKMesh/CMakeLists.txt
 ===================================================================
 --- oce.orig/adm/cmake/TKMesh/CMakeLists.txt
@@ -307,6 +554,15 @@ Index: oce/adm/cmake/TKernel/CMakeLists.txt
  	Storage
  	TColStd
  	TCollection
+@@ -26,7 +26,7 @@ IF(CMAKE_THREAD_LIBS_INIT)
+ ENDIF(CMAKE_THREAD_LIBS_INIT)
+ SET(TOOLKIT_LIBS ${TOOLKIT_LIBS} ${CMAKE_DL_LIBS} ${LM})
+ IF(WIN32)
+-	SET(TOOLKIT_LIBS ${TOOLKIT_LIBS} ${CSF_SOCKETLibs_LIB} ${CSF_advapi32_LIB} ${CSF_gdi32_LIB} ${CSF_user32_LIB} ${CSF_kernel32_LIB})
++	SET(TOOLKIT_LIBS ${TOOLKIT_LIBS} ${CSF_SOCKETLibs_LIB} ${CSF_advapi32_LIB} ${CSF_gdi32_LIB} ${CSF_user32_LIB} ${CSF_kernel32_LIB} ${CSF_psapi_LIB})
+ ELSE(WIN32)
+ 	#  An implementation for Mac OS X has been added in src/OSD/gettime_osx.h
+ 	IF(NOT APPLE)
 @@ -47,8 +47,12 @@ ENDIF(WIN32)
  IF(${PROJECT_NAME}_TBB_MALLOC_SUPPORT AND TBB_INCLUDE_DIR AND TBB_MALLOC_LIBRARY)
  	ADD_DEFINITIONS(-DHAVE_TBB)
@@ -360,3 +616,173 @@ Index: oce/oce_build_config.h.cmake
  
 -/* Whether disable or not the bspline mesher */
 -#cmakedefine OCE_DISABLE_BSPLINE_MESHER
+Index: oce/adm/cmake/TKOpenGl/CMakeLists.txt
+===================================================================
+--- oce.orig/adm/cmake/TKOpenGl/CMakeLists.txt
++++ oce/adm/cmake/TKOpenGl/CMakeLists.txt
+@@ -38,3 +38,18 @@ ENDIF()
+ 
+ INCLUDE(../BuildToolkit.cmake)
+ 
++IF(BORLAND AND BORLAND_VERSION_RS_XE2)
++	# For bcc32 compiler v6.40 and up -x- compiler option must be passed as a compiler option
++	# in stead of #pragma option -x- in code.
++	foreach(source_file ${TOOLKIT_SOURCE_FILES} )
++		if((source_file MATCHES "OpenGl_attri.cxx") OR
++		   (source_file MATCHES "OpenGl_depthcue.cxx") OR
++		   (source_file MATCHES "OpenGl_pick.cxx") OR
++		   (source_file MATCHES "OpenGl_telem_util.cxx") OR
++		   (source_file MATCHES "OpenGl_undefined.cxx") OR
++		   (source_file MATCHES "OpenGl_view.cxx"))
++			MESSAGE(STATUS "(bcc32) Disabling exceptions for ${source_file}.")
++			set_source_files_properties("${source_file}" PROPERTIES COMPILE_FLAGS "-x-")
++		endif()
++	endforeach(source_file)
++ENDIF(BORLAND AND BORLAND_VERSION_RS_XE2)
+Index: oce/adm/cmake/TKService/CMakeLists.txt
+===================================================================
+--- oce.orig/adm/cmake/TKService/CMakeLists.txt
++++ oce/adm/cmake/TKService/CMakeLists.txt
+@@ -41,3 +41,13 @@ ENDIF(FREEIMAGE_LIBRARY AND ${PROJECT_NA
+ 
+ INCLUDE(../BuildToolkit.cmake)
+ 
++IF(BORLAND)
++	# cgmobin.c, cgmochar.c and cgmotext.c need __STDC__=1 define in order to build for bcc32.
++	foreach(source_file ${TOOLKIT_SOURCE_FILES} )
++		if ((source_file MATCHES "cgmobin.c") OR
++			(source_file MATCHES "cgmochar.c") OR
++			(source_file MATCHES "cgmotext.c"))
++			set_source_files_properties("${source_file}" PROPERTIES COMPILE_DEFINITIONS "__STDC__=1")
++		endif()
++	endforeach(source_file)
++ENDIF(BORLAND)
+Index: oce/Version.rc.cmake
+===================================================================
+--- oce.orig/Version.rc.cmake
++++ oce/Version.rc.cmake
+@@ -1,8 +1,22 @@
+ #include <winresrc.h>
+ 
++#cmakedefine OCE_VERSION_PATCH
++#define OCE_VERSION_PATCH_VAL @OCE_VERSION_PATCH@
++
++/* If patch is not defined at project level, here is defined to 0 */
++#ifndef OCE_VERSION_PATCH
++#undef OCE_VERSION_PATCH_VAL
++#define OCE_VERSION_PATCH_VAL 0
++#endif
++
++/* Stringify OCE_VERSION_PATCH */
++#define QU(x) #x
++#define QUH(x) QU(x)
++#define OCE_VERSION_PATCH_STR QUH(OCE_VERSION_PATCH_VAL)
++
+ VS_VERSION_INFO VERSIONINFO
+-  FILEVERSION @OCE_VERSION_MAJOR@,@OCE_VERSION_MINOR@,@OCE_VERSION_PATCH@,0
+-  PRODUCTVERSION @OCE_VERSION_MAJOR@,@OCE_VERSION_MINOR@,@OCE_VERSION_PATCH@,0
++  FILEVERSION @OCE_VERSION_MAJOR@,@OCE_VERSION_MINOR@,OCE_VERSION_PATCH_VAL,0
++  PRODUCTVERSION @OCE_VERSION_MAJOR@,@OCE_VERSION_MINOR@,OCE_VERSION_PATCH_VAL,0
+   FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+ #ifndef DEBUG
+   FILEFLAGS 0
+@@ -30,12 +44,12 @@ VS_VERSION_INFO VERSIONINFO
+       BLOCK "04090000"
+       BEGIN
+         VALUE "FileDescription", "OpenCascade Community Edition"
+-        VALUE "FileVersion", "@OCE_VERSION_MAJOR@.@OCE_VERSION_MINOR@.@OCE_VERSION_PATCH@"
++        VALUE "FileVersion", "@OCE_VERSION_MAJOR@.@OCE_VERSION_MINOR@." OCE_VERSION_PATCH_STR
+         VALUE "InternalName", "@PROJECT_NAME@"
+         VALUE "LegalCopyright", ""
+         VALUE "OriginalFilename", ""
+         VALUE "ProductName", "@PROJECT_NAME@"
+-        VALUE "ProductVersion", "@OCE_VERSION_MAJOR@.@OCE_VERSION_MINOR@.@OCE_VERSION_PATCH@"
++        VALUE "ProductVersion", "@OCE_VERSION_MAJOR@.@OCE_VERSION_MINOR@." OCE_VERSION_PATCH_STR
+       END
+     END
+     BLOCK "VarFileInfo"
+Index: oce/adm/cmake/DRAWEXE/CMakeLists.txt
+===================================================================
+--- oce.orig/adm/cmake/DRAWEXE/CMakeLists.txt
++++ oce/adm/cmake/DRAWEXE/CMakeLists.txt
+@@ -51,7 +51,7 @@ ENDIF(NOT ${PROJECT_NAME}_NO_LIBRARY_VER
+ 
+ ADD_EXECUTABLE(${TOOLKIT_APP} ${TOOLKIT_APP_SOURCE_FILES} ${TOOLKIT_RESOURCES} )
+ 
+-SET_TARGET_PROPERTIES_INSTALL_RPATH(${TOOLKIT_APP} "${${PROJECT_NAME}_INSTALL_PREFIX}/${${PROJECT_NAME}_INSTALL_LIB_DIR};${${PROJECT_NAME}_INSTALL_PREFIX}/${${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DIR}")
++SET_TARGET_PROPERTIES_INSTALL_RPATH(${TOOLKIT_APP} "${${PROJECT_NAME}_INSTALL_LIB_DIR_RPATH};${${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DIR_RPATH}")
+ 
+ IF(WIN32 AND (CMAKE_CONFIGURATION_TYPES OR NMAKE))
+ 	SET_TARGET_PROPERTIES(${TOOLKIT_APP} PROPERTIES
+Index: oce/adm/cmake/TKQADraw/CMakeLists.txt
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKQADraw/CMakeLists.txt
+@@ -0,0 +1,54 @@
++SET(TOOLKIT TKQADraw)
++
++SET(TOOLKIT_MODULES
++	DebugTools
++	QABugs
++	QADNaming
++	QADraw
++	QANCollection
++	QANewBRepNaming
++	QANewDBRepNaming
++	QANewModTopOpe
++)
++SET(TOOLKIT_DEPENDS
++	TKernel
++	TKMath
++	TKAdvTools
++	TKG2d
++	TKG3d
++	TKGeomBase
++	TKBRep
++	TKGeomAlgo
++	TKTopAlgo
++	TKPrim
++	TKShHealing
++	TKBool
++	TKFeat
++	TKOffset
++	TKSTL
++	TKXSBase
++	TKIGES
++	TKXDESTEP
++	TKCDF
++	PTKernel
++	TKLCAF
++	TKCAF
++	TKService
++	TKV3d
++	TKDraw
++	TKViewerTest
++	TKXSDRAW
++	TKDCAF
++)
++SET(TOOLKIT_INCLUDE_DIRECTORIES ${TCL_INCLUDE_PATH})
++SET(TOOLKIT_LIBS ${TCL_LIBRARY} ${CSF_gdi32_LIB} ${CSF_advapi32_LIB} ${CSF_user32_LIB})
++
++IF(NOT WIN32)
++	SET(TOOLKIT_INCLUDE_DIRECTORIES ${TOOLKIT_INCLUDE_DIRECTORIES} ${X11_X11_INCLUDE_PATH} ${TK_INCLUDE_PATH})
++	SET(TOOLKIT_LIBS ${TOOLKIT_LIBS} ${TK_LIBRARY} ${X11_X11_LIB})
++ENDIF(NOT WIN32)
++
++SET(TOOLKIT_IS_PRIVATE TRUE)
++
++INCLUDE(../BuildToolkit.cmake)
++
+Index: oce/adm/cmake/TKViewerTest/CMakeLists.txt
+===================================================================
+--- oce.orig/adm/cmake/TKViewerTest/CMakeLists.txt
++++ oce/adm/cmake/TKViewerTest/CMakeLists.txt
+@@ -32,7 +32,7 @@ SET(TOOLKIT_DEPENDS
+ IF(WIN32)
+ 	SET(TOOLKIT_LIBS ${CSF_user32_LIB} ${CSF_gdi32_LIB})
+ ELSE(WIN32)
+-	SET(TOOLKIT_INCLUDE_DIRECTORIES ${X11_X11_INCLUDE_PATH} ${TK_INCLUDE_PATH})
++	SET(TOOLKIT_INCLUDE_DIRECTORIES ${X11_X11_INCLUDE_PATH} ${TK_INCLUDE_PATH} ${OPENGL_INCLUDE_DIR})
+ 	SET(TOOLKIT_LIBS ${TK_LIBRARY} ${X11_X11_LIB})
+ ENDIF(WIN32)
+ 

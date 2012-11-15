@@ -1,0 +1,28 @@
+From 420351fbdea84f7527cc96d714bc2a1ae3673274 Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Sun, 3 Jun 2012 16:50:48 +0200
+Subject: [PATCH] [clang-warning-fix][dynamic-class-memaccess]
+
+Destination for this 'memcpy' call is a pointer to a dynamic class;
+vtable pointer will be overwritten. Fix: explicitely cast the pointer
+to silence this warning.
+---
+ inc/NCollection_Vector.hxx |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/inc/NCollection_Vector.hxx b/inc/NCollection_Vector.hxx
+index 5780dc7..bd16ea6 100644
+--- a/inc/NCollection_Vector.hxx
++++ b/inc/NCollection_Vector.hxx
+@@ -301,7 +301,7 @@ template <class TheItemType> class NCollection_Vector
+       (MemBlock *) aSelf.myAllocator->Allocate(aCapacity * sizeof(MemBlock));
+     Standard_Integer i = 0;
+     if (aSource != NULL) {
+-      memcpy (aData, aSource, aSize * sizeof(MemBlock));
++      memcpy ((void*)aData, aSource, aSize * sizeof(MemBlock));
+       i = aSize;
+     }
+     while (i < aCapacity)
+-- 
+1.7.10.4
+

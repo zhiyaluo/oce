@@ -1,0 +1,124 @@
+From d82b5a97cbabfa47bde15ab41dbeb9912cc5b5a3 Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Sat, 19 May 2012 16:13:54 +0200
+Subject: [PATCH] [warning-fix][implicit-bool-conversion] Fixes warnings like
+ implicit 'conversion' conversion from 'type1' to 'bool'
+ (performance warning)
+
+---
+ src/Draw/MainWindow.cxx                   |    2 +-
+ src/OpenGl/OpenGl_GraduatedTrihedron.cxx  |    6 +++---
+ src/OpenGl/OpenGl_GraphicDriver_Layer.cxx |    4 ++--
+ src/OpenGl/OpenGl_Text.cxx                |    2 +-
+ src/Standard/Standard.cxx                 |   12 ++++++------
+ 5 files changed, 13 insertions(+), 13 deletions(-)
+
+Index: oce/src/Draw/MainWindow.cxx
+===================================================================
+--- oce.orig/src/Draw/MainWindow.cxx
++++ oce/src/Draw/MainWindow.cxx
+@@ -83,7 +83,7 @@ BOOL CreateProc(HWND hWndFrame)
+   HWND hWnd;
+ 
+   // Save hWnd in the main window in extra memory in 0
+-  if (hWnd = CreateMDIClientWindow(hWndFrame))
++  if ((hWnd = CreateMDIClientWindow(hWndFrame)) != NULL)
+     SetWindowLong(hWndFrame, CLIENTWND, (LONG)hWnd);
+   return(TRUE);
+ }
+Index: oce/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
++++ oce/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
+@@ -243,7 +243,7 @@ OpenGl_GraduatedTrihedron::OpenGl_Gradua
+   {
+     Standard_ExtString iname = AData.xname.ToExtString();
+     wchar_t *xname = new wchar_t[len+1];
+-    len = 0; while (xname[len] = (wchar_t)(iname[len])) len++;
++    len = 0; while ((xname[len] = (wchar_t)(iname[len])) != 0) len++;
+     myXName = xname;
+   }
+   /* Y-name */
+@@ -252,7 +252,7 @@ OpenGl_GraduatedTrihedron::OpenGl_Gradua
+   {
+     Standard_ExtString iname = AData.yname.ToExtString();
+     wchar_t *yname = new wchar_t[len+1];
+-    len = 0; while (yname[len] = (wchar_t)(iname[len])) len++;
++    len = 0; while ((yname[len] = (wchar_t)(iname[len])) != 0) len++;
+     myYName = yname;
+   }
+   /* Z-name */
+@@ -261,7 +261,7 @@ OpenGl_GraduatedTrihedron::OpenGl_Gradua
+   {
+     Standard_ExtString iname = AData.zname.ToExtString();
+     wchar_t *zname = new wchar_t[len+1];
+-    len = 0; while (zname[len] = (wchar_t)(iname[len])) len++;
++    len = 0; while ((zname[len] = (wchar_t)(iname[len])) != 0 ) len++;
+     myZName = zname;
+   }
+   /* Grid color */
+Index: oce/src/OpenGl/OpenGl_GraphicDriver_Layer.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_GraphicDriver_Layer.cxx
++++ oce/src/OpenGl/OpenGl_GraphicDriver_Layer.cxx
+@@ -304,7 +304,7 @@ void OpenGl_GraphicDriver::Text (const S
+   {
+     Tint i = 0; while (aTChStr[i++]);
+     aWChStr = new wchar_t[i];
+-    i = 0; while (aWChStr[i++] = (wchar_t)(*aTChStr++));
++    i = 0; while ((aWChStr[i++] = (wchar_t)(*aTChStr++)) != 0);
+   }
+ 
+   const Aspect_TypeOfDisplayText aDispType =
+@@ -453,7 +453,7 @@ void OpenGl_GraphicDriver::TextSize (con
+   {
+     Tint i = 0; while (s[i++]);
+     s1 = new wchar_t[i];
+-    i = 0; while (s1[i++] = (wchar_t)(*s++));
++    i = 0; while ((s1[i++] = (wchar_t)(*s++)) != 0);
+   }
+ 
+   int aWidth = 0, anAscent = 0, aDescent = 0;
+Index: oce/src/OpenGl/OpenGl_Text.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_Text.cxx
++++ oce/src/OpenGl/OpenGl_Text.cxx
+@@ -42,7 +42,7 @@ OpenGl_Text::OpenGl_Text (const TCollect
+   wchar_t *wstr = new wchar_t[i];
+ 
+   //szv: instead of memcpy
+-  i = 0; while (wstr[i++] = (wchar_t)(*str++));
++  i = 0; while ((wstr[i++] = (wchar_t)(*str++)) != 0);
+   if (myString) delete[] myString;
+   myString = wstr;
+ 
+Index: oce/src/Standard/Standard.cxx
+===================================================================
+--- oce.orig/src/Standard/Standard.cxx
++++ oce/src/Standard/Standard.cxx
+@@ -82,8 +82,8 @@ Standard_MMgrFactory::Standard_MMgrFacto
+ : myFMMgr (NULL)
+ {
+   char* aVar;
+-  Standard_Integer anAllocId   = (aVar = getenv ("MMGT_OPT"      )) ?  atoi (aVar)       : MMGT_OPT_DEFAULT;
+-  Standard_Boolean toClear     = (aVar = getenv ("MMGT_CLEAR"    )) ? (atoi (aVar) != 0) : (MMGT_CLEAR_DEFAULT != 0);
++  Standard_Integer anAllocId   = ((aVar = getenv ("MMGT_OPT"      )) != NULL) ?  atoi (aVar)       : MMGT_OPT_DEFAULT;
++  Standard_Boolean toClear     = ((aVar = getenv ("MMGT_CLEAR"    )) != NULL) ? (atoi (aVar) != 0) : (MMGT_CLEAR_DEFAULT != 0);
+ 
+ 
+   // on Windows (actual for XP and 2000) activate low fragmentation heap
+@@ -109,10 +109,10 @@ Standard_MMgrFactory::Standard_MMgrFacto
+   {
+     case 1:  // OCCT optimized memory allocator
+     {
+-      Standard_Boolean bMMap       = (aVar = getenv ("MMGT_MMAP"     )) ? (atoi (aVar) != 0) : (MMGT_MMAP_DEFAULT != 0);
+-      Standard_Integer aCellSize   = (aVar = getenv ("MMGT_CELLSIZE" )) ?  atoi (aVar) : MMGT_CELLSIZE_DEFAULT;
+-      Standard_Integer aNbPages    = (aVar = getenv ("MMGT_NBPAGES"  )) ?  atoi (aVar) : MMGT_NBPAGES_DEFAULT;
+-      Standard_Integer aThreshold  = (aVar = getenv ("MMGT_THRESHOLD")) ?  atoi (aVar) : MMGT_THRESHOLD_DEFAULT;
++      Standard_Boolean bMMap       = ((aVar = getenv ("MMGT_MMAP"     )) != NULL) ? (atoi (aVar) != 0) : (MMGT_MMAP_DEFAULT != 0);
++      Standard_Integer aCellSize   = ((aVar = getenv ("MMGT_CELLSIZE" )) != NULL) ?  atoi (aVar) : MMGT_CELLSIZE_DEFAULT;
++      Standard_Integer aNbPages    = ((aVar = getenv ("MMGT_NBPAGES"  )) != NULL) ?  atoi (aVar) : MMGT_NBPAGES_DEFAULT;
++      Standard_Integer aThreshold  = ((aVar = getenv ("MMGT_THRESHOLD")) != NULL) ?  atoi (aVar) : MMGT_THRESHOLD_DEFAULT;
+       myFMMgr = new Standard_MMgrOpt (toClear, bMMap, aCellSize, aNbPages, aThreshold, Standard_IsReentrant);
+       break;
+     }

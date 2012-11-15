@@ -35,58 +35,11 @@ Index: oce/inc/Prs2d_Dimension.hxx
          Standard_Integer SymbolCode() const;
    
    Standard_EXPORT    const Handle_TColgp_HArray1OfPnt2d ArrayOfFirstArrowPnt() const;
-Index: oce/src/Aspect/Aspect.cxx
-===================================================================
---- oce.orig/src/Aspect/Aspect.cxx
-+++ oce/src/Aspect/Aspect.cxx
-@@ -100,7 +100,7 @@ Standard_PCharacter pstring;
-          estring.SetValue(i,c);
-       } else if( (c > Standard_ExtCharacter(0x0020)) && 
- 			(c <= Standard_ExtCharacter(0x007F)) ) {
--	c += Standard_ExtCharacter(0xFEE0);
-+	c += Standard_ExtCharacter(0xFEE0); // @todo Possible bug here : cast truncates constant value 
- 	estring.SetValue(i,c);
-       }
-     }
-Index: oce/src/DDF/DDF_IOStream.cxx
-===================================================================
---- oce.orig/src/DDF/DDF_IOStream.cxx
-+++ oce/src/DDF/DDF_IOStream.cxx
-@@ -296,6 +296,13 @@ void DDF_IOStream::ReadString(TCollectio
- 
-   IsEnd = Standard_False;
- 
-+  /* @todo c is used before initialized. Anyway I didn't modify the code because
-+   I don't know if ReadString should include \n in the output.
-+   If so : Swap buffer += c with the next line
-+   If not: rewrite the loop 
-+   I don't understand anyway the semantics of this function.
-+   QbProg
-+  */
-   while (!IsEnd && !DDF_IOStream::IsEnd()) {
-     buffer += c;
-     myIStream->get(c);
-@@ -321,7 +328,14 @@ void DDF_IOStream::ReadWord(TCollection_
-   }
- 
-   IsEnd = Standard_False;
--
-+  
-+  /* @todo c is used before initialized. Anyway I didn't modify the code because
-+   I don't know if ReadWord should include \n in the output.
-+   If so : Swap buffer += c with the next line
-+   If not: rewrite the loop 
-+   I don't understand anyway the semantics of this function.
-+   QbProg
-+  */
-   while (!IsEnd && !DDF_IOStream::IsEnd()) {
-     buffer += c;
-     myIStream->get(c);
 Index: oce/src/IFSelect/IFSelect_WorkSession.cxx
 ===================================================================
 --- oce.orig/src/IFSelect/IFSelect_WorkSession.cxx
 +++ oce/src/IFSelect/IFSelect_WorkSession.cxx
-@@ -2814,7 +2814,7 @@ void IFSelect_WorkSession::QueryCheckLis
+@@ -2822,7 +2822,7 @@ void IFSelect_WorkSession::QueryCheckLis
  {
    if (!IsLoaded()) return;
    Standard_Integer i,nb = themodel->NbEntities();

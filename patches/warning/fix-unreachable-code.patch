@@ -96,6 +96,18 @@ Subject: [PATCH 63/82] [warning-fix][unreachable-code] Fixes unreachable code
  src/StdSelect/StdSelect_BRepSelectionTool.cxx      |    5 +++--
  26 files changed, 58 insertions(+), 27 deletions(-)
 
+From a31a091d79aa35deb85b4046b67ca8e4df495165 Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Sat, 19 May 2012 16:14:56 +0200
+Subject: [PATCH] [warning-fix][unreachable-code] Fixes unreachable code
+ warnings
+
+---
+ src/TopOpeBRep/TopOpeBRep_FFDumper.cxx      |    5 +++--
+ src/TopOpeBRep/TopOpeBRep_traceBOOPNINT.cxx |    6 ++----
+ src/TopOpeBRepDS/TopOpeBRepDS_BuildTool.cxx |    8 ++------
+ 3 files changed, 7 insertions(+), 12 deletions(-)
+
 Index: oce/inc/GCPnts_QuasiUniformDeflection.gxx
 ===================================================================
 --- oce.orig/inc/GCPnts_QuasiUniformDeflection.gxx
@@ -226,7 +238,7 @@ Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_OffsetWire.cxx
 +++ oce/src/BRepFill/BRepFill_OffsetWire.cxx
-@@ -1619,10 +1619,11 @@ Standard_Integer CutEdge (const TopoDS_Edge& E,
+@@ -1619,10 +1619,11 @@ Standard_Integer CutEdge (const TopoDS_E
  
    if (CT2d->BasisCurve()->IsKind(STANDARD_TYPE(Geom2d_Circle)) &&
        ( Abs(f-l) >= M_PI) ) {
@@ -239,7 +251,7 @@ Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
      Standard_Real m = (f + l)*0.5;
  //  Modified by Sergey KHROMOV - Wed Mar  6 17:37:28 2002 Begin
      gp_Pnt        P = aC->Value(m);
-@@ -1649,6 +1649,7 @@ Standard_Integer CutEdge (const TopoDS_E
+@@ -1649,6 +1650,7 @@ Standard_Integer CutEdge (const TopoDS_E
      // Return.
      //--------
      return 2;
@@ -689,7 +701,7 @@ Index: oce/src/OpenGl/OpenGl_GraphicDriver_9.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_GraphicDriver_9.cxx
 +++ oce/src/OpenGl/OpenGl_GraphicDriver_9.cxx
-@@ -182,9 +182,9 @@ Standard_Integer OpenGl_GraphicDriver::C
+@@ -184,9 +184,9 @@ Standard_Integer OpenGl_GraphicDriver::C
        for (i = 0; i < aGlWidth; i++){
          if (i < MyPic->Width()){
            MyColor = MyPic->PixelColor(i, j);
@@ -1033,3 +1045,70 @@ Index: oce/src/XSControl/XSControl_Functions.cxx
  }
  
  
+Index: oce/src/TopOpeBRep/TopOpeBRep_FFDumper.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRep/TopOpeBRep_FFDumper.cxx
++++ oce/src/TopOpeBRep/TopOpeBRep_FFDumper.cxx
+@@ -258,6 +258,8 @@ void TopOpeBRep_FFDumper::DumpVP(const T
+ #ifndef DEB
+ Standard_Integer TopOpeBRep_FFDumper::ExploreIndex(const TopoDS_Shape& , const Standard_Integer ) const
+ {
++	return 0;
++}
+ #else
+ Standard_Integer TopOpeBRep_FFDumper::ExploreIndex(const TopoDS_Shape& S, const Standard_Integer ISI) const
+ {
+@@ -265,9 +267,8 @@ Standard_Integer TopOpeBRep_FFDumper::Ex
+   if (ISI == 1) r = myEM1.Find(S);
+   if (ISI == 2) r = myEM2.Find(S);
+   return r;
+-#endif
+-  return 0;
+ }
++#endif
+ 
+ //=======================================================================
+ //function : DumpDSP
+Index: oce/src/TopOpeBRep/TopOpeBRep_traceBOOPNINT.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRep/TopOpeBRep_traceBOOPNINT.cxx
++++ oce/src/TopOpeBRep/TopOpeBRep_traceBOOPNINT.cxx
+@@ -59,10 +59,8 @@ Standard_Integer BOOPNINTL::Set(const St
+     mynl++;
+     return 0;
+   }
+-  else {
+-    return 1;
+-  }
+-  return 0;
++ 
++   return 1;
+ }
+ 
+ Standard_Boolean BOOPNINTL::Get(Standard_Integer n,char**a){
+Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_BuildTool.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS_BuildTool.cxx
++++ oce/src/TopOpeBRepDS/TopOpeBRepDS_BuildTool.cxx
+@@ -165,9 +165,7 @@ static Standard_Boolean GetOrigin(const
+     o = Handle(Geom2d_Line)::DownCast(PC)->Location();
+     return Standard_True;
+   }
+-  else  {
+-    return Standard_False;
+-  }
++ 
+   return Standard_False;
+ }
+ #endif
+@@ -196,9 +194,7 @@ static Standard_Boolean GetOrigin(const
+     o = Handle(Geom_Line)::DownCast(C)->Position().Location();
+     return Standard_True;
+   }
+-  else  {
+-    return Standard_False;
+-  }
++ 
+   return Standard_False;
+ }
+ #endif

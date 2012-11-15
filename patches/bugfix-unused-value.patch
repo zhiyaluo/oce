@@ -1,0 +1,24 @@
+From 49c797f493adac587c0ad15ecde5d92e895d31eb Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Sun, 3 Jun 2012 17:27:16 +0200
+Subject: [PATCH] bugxix : unused value
+
+clang reports a unused value (Standard_False). Related line certainly
+misses a return statement.
+---
+ src/ShapeFix/ShapeFix_Face.cxx |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: oce/src/ShapeFix/ShapeFix_Face.cxx
+===================================================================
+--- oce.orig/src/ShapeFix/ShapeFix_Face.cxx
++++ oce/src/ShapeFix/ShapeFix_Face.cxx
+@@ -2266,7 +2266,7 @@ static Standard_Boolean IsPeriodicConica
+                                               Standard_Boolean& isUDecrease)
+ {
+   if ( theSurf.IsNull() )
+-    Standard_False;
++    return Standard_False;
+ 
+   ShapeAnalysis_Edge aSAE;
+   TopLoc_Location aLoc;

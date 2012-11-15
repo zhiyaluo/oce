@@ -1,0 +1,107 @@
+From 59f88dbf7f91bcb0e69792b685a7a9ff34e09e10 Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Sat, 19 May 2012 16:11:41 +0200
+Subject: [PATCH] [warning-fix] Duplicate checks removed This includes && with
+ always true vars, duplicate checks in a series cascaded
+ "if", duplicate function calls in a condition
+
+---
+ src/STEPCAFControl/STEPCAFControl_Reader.cxx |    1 -
+ src/Standard/Standard_GUID.cxx               |    6 +++---
+ src/TObj/TObj_Model.cxx                      |    2 +-
+ src/ViewerTest/ViewerTest.cxx                |    1 -
+ src/ViewerTest/ViewerTest_ViewerCommands.cxx |    6 +-----
+ 5 files changed, 5 insertions(+), 11 deletions(-)
+
+Index: oce/src/STEPCAFControl/STEPCAFControl_Reader.cxx
+===================================================================
+--- oce.orig/src/STEPCAFControl/STEPCAFControl_Reader.cxx
++++ oce/src/STEPCAFControl/STEPCAFControl_Reader.cxx
+@@ -894,7 +894,6 @@ static TDF_Label GetLabelFromPD (const H
+   S = TransferBRep::ShapeResult ( TP, binder );
+   if ( S.IsNull() ) return L;
+ 
+-  if ( S.IsNull() ) return L;
+   if ( ShapeLabelMap.IsBound ( S ) )
+     L = ShapeLabelMap.Find ( S );
+   if ( L.IsNull() )
+Index: oce/src/Standard/Standard_GUID.cxx
+===================================================================
+--- oce.orig/src/Standard/Standard_GUID.cxx
++++ oce/src/Standard/Standard_GUID.cxx
+@@ -118,7 +118,7 @@ Standard_Boolean Standard_GUID::CheckGUI
+   if (strlen(aGuid) == Standard_GUID_SIZE) {
+     Standard_Integer i;
+ 
+-    for (i = 0; i < 8 && result; i++) {
++    for (i = 0; i < 8 ; i++) {
+       if (!IsXDigit(aGuid[i])) {
+ 	return Standard_False;
+       }
+@@ -126,7 +126,7 @@ Standard_Boolean Standard_GUID::CheckGUI
+ 
+     if (aGuid[8] != '-') return Standard_False;
+ 
+-    for (i = 9; i < 13 && result; i++) {
++    for (i = 9; i < 13; i++) {
+       if (!IsXDigit(aGuid[i])) {
+ 	return Standard_False;
+       }
+@@ -134,7 +134,7 @@ Standard_Boolean Standard_GUID::CheckGUI
+ 
+     if (aGuid[13] != '-') return Standard_False;
+     
+-    for (i = 14; i < 18 && result; i++) {
++    for (i = 14; i < 18; i++) {
+       if (!IsXDigit(aGuid[i])) {
+ 	return Standard_False;
+       }
+Index: oce/src/TObj/TObj_Model.cxx
+===================================================================
+--- oce.orig/src/TObj/TObj_Model.cxx
++++ oce/src/TObj/TObj_Model.cxx
+@@ -629,7 +629,7 @@ void TObj_Model::updateBackReferences (c
+   if ( theObject.IsNull() )
+     return;
+   Handle(TObj_ObjectIterator) aChildren = theObject->GetChildren();
+-  for(;aChildren->More() && aChildren->More(); aChildren->Next())
++  for(;aChildren->More(); aChildren->Next())
+   {
+     Handle(TObj_Object) aChild = aChildren->Value();
+     updateBackReferences( aChild );
+Index: oce/src/ViewerTest/ViewerTest.cxx
+===================================================================
+--- oce.orig/src/ViewerTest/ViewerTest.cxx
++++ oce/src/ViewerTest/ViewerTest.cxx
+@@ -130,7 +130,6 @@ static Graphic3d_NameOfMaterial GetMater
+   else if ( !strcasecmp(name,"STONE" ) ) 	 mat = Graphic3d_NOM_STONE;
+   else if ( !strcasecmp(name,"CHROME" ) )	 mat = Graphic3d_NOM_CHROME;
+   else if ( !strcasecmp(name,"ALUMINIUM" ) )     mat = Graphic3d_NOM_ALUMINIUM;
+-  else if ( !strcasecmp(name,"STONE" ) )	 mat = Graphic3d_NOM_STONE;
+   else if ( !strcasecmp(name,"NEON_PHC" ) )	 mat = Graphic3d_NOM_NEON_PHC;
+   else if ( !strcasecmp(name,"NEON_GNC" ) )	 mat = Graphic3d_NOM_NEON_GNC;
+   else if ( !strcasecmp(name,"PLASTER" ) )	 mat = Graphic3d_NOM_PLASTER;
+Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
+===================================================================
+--- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
++++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
+@@ -340,10 +340,6 @@ static void ProcessKeyPress( char *buf_r
+     ViewerTest::CurrentView()->SetDegenerateModeOff();
+ #endif
+   }
+-  else if ( !strcasecmp(buf_ret, "D") ) {
+-    // Reset
+-    aView->Reset();
+-  }
+   else if ( !strcasecmp(buf_ret, "S") ) {
+     // SHADING
+     cout << "passage en mode 1 (shading pour les shapes)" << endl;
+@@ -1462,7 +1458,7 @@ static int VSetBgMode(Draw_Interpretor&
+     return 1;
+   }
+ 
+-  Aspect_FillMethod aFillType;
++  Aspect_FillMethod aFillType = Aspect_FM_NONE;
+   if (argc == 2)
+   {
+     const char* szType = argv[1];

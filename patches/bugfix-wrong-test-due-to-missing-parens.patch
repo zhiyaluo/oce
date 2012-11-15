@@ -1,0 +1,29 @@
+From d0d3998bc0e58245569bf65118076379fde0cafc Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Sun, 3 Jun 2012 17:36:07 +0200
+Subject: [PATCH] Bugfix: test does not work as expected because of missing
+ parentheses
+
+This bugfix had been reported by clang: logical-op-parentheses
+It is clear by reading comments about OffsetType and TaperedOffsetType
+methods in inc/IGESGeom_OffsetCurve.hxx that the previous behavior
+was wrong.
+---
+ src/IGESGeom/IGESGeom_ToolOffsetCurve.cxx |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+Index: oce/src/IGESGeom/IGESGeom_ToolOffsetCurve.cxx
+===================================================================
+--- oce.orig/src/IGESGeom/IGESGeom_ToolOffsetCurve.cxx
++++ oce/src/IGESGeom/IGESGeom_ToolOffsetCurve.cxx
+@@ -330,8 +330,8 @@ void IGESGeom_ToolOffsetCurve::OwnCheck(
+   if (ot == 3 && (ent->FunctionParameter() < 1 || ent->FunctionParameter() > 3))
+     ach.SendFail("Offset Function Parameter != 1-2 or 3 (rq : for X-Y or Z)");
+ */
+-  if (ot !=1 && //:l9 abv 15.01.99: CTS22023 and TEC0278: only if ot is function
+-      (ent->TaperedOffsetType() < 1) || (ent->TaperedOffsetType() > 2)) {
++  if ((ot !=1) && //:l9 abv 15.01.99: CTS22023 and TEC0278: only if ot is function
++      ((ent->TaperedOffsetType() < 1) || (ent->TaperedOffsetType() > 2))) {
+     Message_Msg Msg114("XSTEP_114");
+     ach->SendFail(Msg114);
+   }
