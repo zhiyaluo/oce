@@ -15,21 +15,6 @@ Fixes https://github.com/tpaviot/oce/issues/15
  inc/Xw_Extension.h     |    4 +---
  4 files changed, 13 insertions(+), 21 deletions(-)
 
-Index: oce/inc/OpenGl_FontMgr.hxx
-===================================================================
---- oce.orig/inc/OpenGl_FontMgr.hxx
-+++ oce/inc/OpenGl_FontMgr.hxx
-@@ -23,9 +23,7 @@
- # include <stdlib.h>
- #endif
- 
--#ifdef HAVE_CONFIG_H
--# include <config.h>
--#endif
-+#include <config.h>
- 
- #ifdef HAVE_FTGL_NEWER212
- # include <FTGL/ftgl.h>
 Index: oce/inc/Standard_Macro.hxx
 ===================================================================
 --- oce.orig/inc/Standard_Macro.hxx

@@ -154,23 +154,6 @@ Changed some of the interface types (inc files) to correct some implicit casts.
  src/PlotMgt/PlotMgt_TextManager.cxx   |   20 ++++++++++----------
  5 files changed, 18 insertions(+), 20 deletions(-)
 
-Index: oce/inc/Graphic3d_ArrayOfPrimitives.lxx
-===================================================================
---- oce.orig/inc/Graphic3d_ArrayOfPrimitives.lxx
-+++ oce/inc/Graphic3d_ArrayOfPrimitives.lxx
-@@ -98,9 +98,9 @@ inline void Graphic3d_ArrayOfPrimitives:
-   }
- 
-   if( myPrimitiveArray->vcolours ) {
--    unsigned char red   = (unsigned int)(R * 255.);
--    unsigned char green = (unsigned int)(G * 255.);
--    unsigned char blue  = (unsigned int)(B * 255.);
-+    unsigned char red   = (unsigned char)(unsigned int)(R * 255.);
-+    unsigned char green = (unsigned char)(unsigned int)(G * 255.);
-+    unsigned char blue  = (unsigned char)(unsigned int)(B * 255.);
-     unsigned char alpha = 0;
-     Standard_Integer outColor ;
-     outColor = red;
 Index: oce/inc/LDOM_OSStream.hxx
 ===================================================================
 --- oce.orig/inc/LDOM_OSStream.hxx
@@ -380,19 +363,6 @@ Index: oce/src/AlienImage/AlienImage_SunRFAlienData.cxx
  		b = scanln[n1];file.Write( ( Standard_Address ) &b, 1 ) ;
  
  	}
-Index: oce/src/BinLDrivers/BinLDrivers_DocumentRetrievalDriver.cxx
-===================================================================
---- oce.orig/src/BinLDrivers/BinLDrivers_DocumentRetrievalDriver.cxx
-+++ oce/src/BinLDrivers/BinLDrivers_DocumentRetrievalDriver.cxx
-@@ -210,7 +210,7 @@ void BinLDrivers_DocumentRetrievalDriver
-   mySections.Clear();
-   myPAtt.Init();
-   Handle(TDF_Data) aData = new TDF_Data();
--  Standard_Integer aDocumentPos = -1;
-+  std::streamoff aDocumentPos = -1;
- 
-   // 2b. Read the TOC of Sections
-   if (aFileVer >= 3) {
 Index: oce/src/BinMNaming/BinMNaming_NamedShapeDriver.cxx
 ===================================================================
 --- oce.orig/src/BinMNaming/BinMNaming_NamedShapeDriver.cxx
@@ -419,19 +389,6 @@ Index: oce/src/BinTools/BinTools_LocationSet.cxx
        if (aTypLoc == 1) {
  	IS >> T;
  	L = T;
-Index: oce/src/BinTools/BinTools_ShapeSet.cxx
-===================================================================
---- oce.orig/src/BinTools/BinTools_ShapeSet.cxx
-+++ oce/src/BinTools/BinTools_ShapeSet.cxx
-@@ -805,7 +805,7 @@ void  BinTools_ShapeSet::ReadGeometry(co
- 	    if (val > 0 && val <= 3) 
- 	      BinTools::GetReal(IS, p1); 
- 	  } else {
--	    Standard_Integer aPos = IS.tellg();
-+	    std::streamoff aPos = IS.tellg();
- 	    BinTools::GetReal(IS, p1); 	    
- 	    val = (Standard_Integer)IS.get();//case {0|1|2|3}
- #ifdef MDTV_DEB
 Index: oce/src/CGM/CGM_Driver.cxx
 ===================================================================
 --- oce.orig/src/CGM/CGM_Driver.cxx
@@ -681,98 +638,6 @@ Index: oce/src/Draw/MainWindow.cxx
    }
    return(0l);
  }
-Index: oce/src/DrawTrSurf/DrawTrSurf.cxx
-===================================================================
---- oce.orig/src/DrawTrSurf/DrawTrSurf.cxx
-+++ oce/src/DrawTrSurf/DrawTrSurf.cxx
-@@ -1769,7 +1769,7 @@ static void pntsave(const Handle(Draw_Dr
-   OS.precision(15);
- #else
-   long form = OS.setf(ios::scientific);
--  int  prec = OS.precision(15);
-+  std::streamsize prec = OS.precision(15);
- #endif
-   gp_Pnt P = N->Point();
-   if (N->Is3D()) {
-@@ -1831,7 +1831,7 @@ static void triasave(const Handle(Draw_D
-   OS.precision(15);
- #else
-   long form = OS.setf(ios::scientific);
--  int  prec = OS.precision(15);
-+  std::streamsize prec = OS.precision(15);
- #endif
-   Poly::Write(T->Triangulation(),OS);
- #if defined(HAVE_IOS) && !defined(__sgi) && !defined(IRIX)
-@@ -1872,7 +1872,7 @@ static void poly3dsave(const Handle(Draw
-   OS.precision(15);
- #else
-   long form = OS.setf(ios::scientific);
--  int  prec = OS.precision(15);
-+  std::streamsize prec = OS.precision(15);
- #endif
-   Poly::Write(T->Polygon3D(),OS);
- #if defined(HAVE_IOS) && !defined(__sgi) && !defined(IRIX)
-@@ -1912,7 +1912,7 @@ static void poly2dsave(const Handle(Draw
-   OS.precision(15);
- #else
-   long form = OS.setf(ios::scientific);
--  int  prec = OS.precision(15);
-+  std::streamsize prec = OS.precision(15);
- #endif
-   Poly::Write(T->Polygon2D(),OS);
- #if defined(HAVE_IOS) && !defined(__sgi) && !defined(IRIX)
-Index: oce/src/DrawTrSurf/DrawTrSurf_Point.cxx
-===================================================================
---- oce.orig/src/DrawTrSurf/DrawTrSurf_Point.cxx
-+++ oce/src/DrawTrSurf/DrawTrSurf_Point.cxx
-@@ -197,7 +197,7 @@ void DrawTrSurf_Point::Dump(Standard_OSt
-   S.precision(15);
- #else
-   long form = S.setf(ios::scientific);
--  int  prec = S.precision(15);
-+  std::streamsize prec = S.precision(15);
- #endif
-   if (is3D)
-     S << "Point : " << myPoint.X() << ", " << myPoint.Y() << ", " << myPoint.Z() <<endl;
-Index: oce/src/GeomTools/GeomTools_Curve2dSet.cxx
-===================================================================
---- oce.orig/src/GeomTools/GeomTools_Curve2dSet.cxx
-+++ oce/src/GeomTools/GeomTools_Curve2dSet.cxx
-@@ -502,7 +502,7 @@ void  GeomTools_Curve2dSet::Dump(Standar
- 
- void  GeomTools_Curve2dSet::Write(Standard_OStream& OS)const 
- {
--  int  prec = OS.precision(17);
-+  std::streamsize  prec = OS.precision(17);
- 
-   Standard_Integer i, nbsurf = myMap.Extent();
-   OS << "Curve2ds "<< nbsurf << "\n";
-Index: oce/src/GeomTools/GeomTools_CurveSet.cxx
-===================================================================
---- oce.orig/src/GeomTools/GeomTools_CurveSet.cxx
-+++ oce/src/GeomTools/GeomTools_CurveSet.cxx
-@@ -519,7 +519,7 @@ void  GeomTools_CurveSet::Dump(Standard_
- 
- void  GeomTools_CurveSet::Write(Standard_OStream& OS)const 
- {
--  int  prec = OS.precision(17);
-+  std::streamsize  prec = OS.precision(17);
- 
-   Standard_Integer i, nbcurve = myMap.Extent();
-   OS << "Curves "<< nbcurve << "\n";
-Index: oce/src/GeomTools/GeomTools_SurfaceSet.cxx
-===================================================================
---- oce.orig/src/GeomTools/GeomTools_SurfaceSet.cxx
-+++ oce/src/GeomTools/GeomTools_SurfaceSet.cxx
-@@ -639,7 +639,7 @@ void  GeomTools_SurfaceSet::Dump(Standar
- 
- void  GeomTools_SurfaceSet::Write(Standard_OStream& OS)const 
- {
--  int  prec = OS.precision(17);
-+  std::streamsize  prec = OS.precision(17);
- 
-   Standard_Integer i, nbsurf = myMap.Extent();
-   OS << "Surfaces "<< nbsurf << "\n";
 Index: oce/src/Graphic3d/Graphic3d_Group_8.cxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_Group_8.cxx
@@ -788,15 +653,6 @@ Index: oce/src/Graphic3d/Graphic3d_Group_8.cxx
    // OCC4895 SAN 22/03/04 High-level interface for controlling polygon offsets 
  
    int noinsert = 1;
-@@ -362,7 +362,7 @@ void Graphic3d_Group::SetGroupPrimitives
-   MyCGroup.ContextText.ColorSubTitle.g    = float (Gs);
-   MyCGroup.ContextText.ColorSubTitle.b    = float (Bs);
-   MyCGroup.ContextText.TextZoomable   = ATextZoomable;   
--  MyCGroup.ContextText.TextAngle    = ATextAngle;   
-+  MyCGroup.ContextText.TextAngle    = (float)ATextAngle;   
-   MyCGroup.ContextText.TextFontAspect   = (int)ATextFontAspect;
- 
-   MyCGroup.ContextText.IsDef      = 1;
 @@ -601,8 +601,8 @@ void Graphic3d_Group::SetPrimitivesAspec
    Standard_Real    aPolyFactor, aPolyUnits;
    CTX->PolygonOffsets(aPolyMode, aPolyFactor, aPolyUnits);
@@ -808,15 +664,6 @@ Index: oce/src/Graphic3d/Graphic3d_Group_8.cxx
    // OCC4895 SAN 22/03/04 High-level interface for controlling polygon offsets
  
    int noinsert    = 0;
-@@ -682,7 +682,7 @@ void Graphic3d_Group::SetPrimitivesAspec
-   MyCGroup.ContextText.ColorSubTitle.g    = float (Gs);
-   MyCGroup.ContextText.ColorSubTitle.b    = float (Bs);
-   MyCGroup.ContextText.TextZoomable   = ATextZoomable;  
--  MyCGroup.ContextText.TextAngle    = ATextAngle;   
-+  MyCGroup.ContextText.TextAngle    = (float)ATextAngle;   
-   MyCGroup.ContextText.TextFontAspect   = (int)ATextFontAspect;   
-   MyCGroup.ContextText.IsDef              = 1;
- 
 Index: oce/src/Graphic3d/Graphic3d_Structure.cxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_Structure.cxx
@@ -832,38 +679,7 @@ Index: oce/src/Graphic3d/Graphic3d_Structure.cxx
    // OCC4895 SAN 22/03/04 High-level interface for controlling polygon offsets
  
    MyGraphicDriver->ContextStructure (MyCStructure);
-@@ -1319,7 +1319,7 @@ void Graphic3d_Structure::SetPrimitivesA
-   MyCStructure.ContextText.ColorSubTitle.g  = float (Gs);
-   MyCStructure.ContextText.ColorSubTitle.b  = float (Bs);
-   MyCStructure.ContextText.TextZoomable     = ATextZoomable;
--  MyCStructure.ContextText.TextAngle        = ATextAngle;
-+  MyCStructure.ContextText.TextAngle        = (float)ATextAngle;
-   MyCStructure.ContextText.TextFontAspect   = (int)ATextFontAspect;
- 
-   MyCStructure.ContextText.IsDef          = 1;
-@@ -1783,9 +1783,9 @@ void Graphic3d_Structure::SetTransformPe
-   if (IsDeleted ()) return;
- 
-   MyCStructure.TransformPersistence.Flag = AFlag;
--  MyCStructure.TransformPersistence.Point.x = APoint.X();
--  MyCStructure.TransformPersistence.Point.y = APoint.Y();
--  MyCStructure.TransformPersistence.Point.z = APoint.Z();
-+  MyCStructure.TransformPersistence.Point.x = (float)APoint.X();
-+  MyCStructure.TransformPersistence.Point.y = (float)APoint.Y();
-+  MyCStructure.TransformPersistence.Point.z = (float)APoint.Z();
-   //MyStructureManager->Update ();
-   //Update();
-   MyGraphicDriver->ContextStructure( MyCStructure );
-@@ -2157,7 +2157,7 @@ void Graphic3d_Structure::UpdateStructur
-   MyCStructure.ContextText.ColorSubTitle.g  = float (Gs);
-   MyCStructure.ContextText.ColorSubTitle.b  = float (Bs);
-   MyCStructure.ContextText.TextZoomable     = ATextZoomable;
--  MyCStructure.ContextText.TextAngle        = ATextAngle;
-+  MyCStructure.ContextText.TextAngle        = (float)ATextAngle;
-   MyCStructure.ContextText.TextFontAspect   = (int)ATextFontAspect;
- 
- 
-@@ -2342,8 +2342,8 @@ void Graphic3d_Structure::UpdateStructur
+@@ -2333,8 +2333,8 @@ void Graphic3d_Structure::SetPrimitivesA
    Standard_Real    aPolyFactor, aPolyUnits;
    CTXF->PolygonOffsets(aPolyMode, aPolyFactor, aPolyUnits);
    MyCStructure.ContextFillArea.PolygonOffsetMode   = aPolyMode;
@@ -929,15 +745,6 @@ Index: oce/src/LDOM/LDOM_XmlReader.cxx
 ===================================================================
 --- oce.orig/src/LDOM/LDOM_XmlReader.cxx
 +++ oce/src/LDOM/LDOM_XmlReader.cxx
-@@ -138,7 +138,7 @@ LDOM_XmlReader::RecordType LDOM_XmlReade
- 
-       // Read the full buffer and reset start and end buffer pointers
-         myPtr    = &myBuffer[0];
--        Standard_Integer aNBytes;
-+        std::streamsize aNBytes;
-         if (myFileDes != FILE_NONVALUE)
-           aNBytes = read (myFileDes, &myBuffer[aBytesRest],
-                           XML_BUFFER_SIZE - aBytesRest);
 @@ -530,7 +530,7 @@ static Standard_Boolean isName (const ch
                                  const char  *& aNameEnd)
  {
@@ -974,19 +781,6 @@ Index: oce/src/OSD/OSD_Real2String.cdl
 +    myLocalDecimalPoint: Character from Standard;
  
  end Real2String;
-Index: oce/src/OSD/OSD_SystemFont.cxx
-===================================================================
---- oce.orig/src/OSD/OSD_SystemFont.cxx
-+++ oce/src/OSD/OSD_SystemFont.cxx
-@@ -71,7 +71,7 @@ MyFontAspect(OSD_FA_Undefined)
-       MyFaceSize = -1;
-     else
-       //TODO catch exeption
--      MyFaceSize =  str.Token( "-", 7 ).RealValue();
-+      MyFaceSize = Standard_Integer (str.Token( "-", 7 ).RealValue());
- 
-     //detect aspect
-     if ( str.Token("-", 3).IsEqual( "bold" ) )
 Index: oce/src/OSD/OSD_WNT_1.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_WNT_1.cxx
@@ -1114,18 +908,6 @@ Index: oce/src/Prs2d/Prs2d_Diameter.cxx
 ===================================================================
 --- oce.orig/src/Prs2d/Prs2d_Diameter.cxx
 +++ oce/src/Prs2d/Prs2d_Diameter.cxx
-@@ -96,9 +96,9 @@ Prs2d_Diameter::Prs2d_Diameter( const Ha
-    myAppX2 = Standard_ShortReal(X1);
-    myAppY2 = Standard_ShortReal(Y1);
-    if (myX1>=myX2) 
--     myAppX2=myAppX2+(theDist+theRad)/APPENDIXLEN;
-+     myAppX2=Standard_ShortReal(myAppX2+(theDist+theRad)/APPENDIXLEN);
-    else 
--     myAppX2=myAppX2-(theDist+theRad)/APPENDIXLEN;
-+     myAppX2=Standard_ShortReal(myAppX2-(theDist+theRad)/APPENDIXLEN);
-    
-    if ( myAppX2 < myMinX ) myMinX = myAppX2;
-    if ( myAppY2 < myMinY ) myMinY = myAppY2;
 @@ -123,14 +123,14 @@ Prs2d_Diameter::Prs2d_Diameter( const Ha
     Standard_Integer theTxtNum=aText.Length();
     Standard_Real theTxtLen=theTxtNum*myTextScale;
@@ -1385,32 +1167,6 @@ Index: oce/src/TCollection/TCollection_AsciiString.cxx
  }
  
  //------------------------------------------------------------------------
-Index: oce/src/TopTools/TopTools_LocationSet.cxx
-===================================================================
---- oce.orig/src/TopTools/TopTools_LocationSet.cxx
-+++ oce/src/TopTools/TopTools_LocationSet.cxx
-@@ -178,7 +178,7 @@ void  TopTools_LocationSet::Dump(Standar
- void  TopTools_LocationSet::Write(Standard_OStream& OS) const 
- {
-   
--  int  prec = OS.precision(15);
-+  std::streamsize  prec = OS.precision(15);
- 
-   Standard_Integer i, nbLoc = myMap.Extent();
-   OS << "Locations " << nbLoc << "\n";
-Index: oce/src/TopTools/TopTools_ShapeSet.cxx
-===================================================================
---- oce.orig/src/TopTools/TopTools_ShapeSet.cxx
-+++ oce/src/TopTools/TopTools_ShapeSet.cxx
-@@ -458,7 +458,7 @@ void  TopTools_ShapeSet::Write(Standard_
-   // on positionne LC_NUMERIC a "C" (point decimal)
-   setlocale(LC_NUMERIC, "C") ;
- 
--  int  prec = OS.precision(15);
-+  std::streamsize  prec = OS.precision(15);
- 
-   // write the copyright
-   if (myFormatNb == 2)
 Index: oce/src/V2d/V2d_CircularGraphicGrid.cxx
 ===================================================================
 --- oce.orig/src/V2d/V2d_CircularGraphicGrid.cxx
@@ -1651,30 +1407,6 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
 +	  colors[  ptrDIB[ i ]  ] = (WORD)j;
  
  	 }  // end for
- 
-Index: oce/src/WNT/WNT_PixMap.cxx
-===================================================================
---- oce.orig/src/WNT/WNT_PixMap.cxx
-+++ oce/src/WNT/WNT_PixMap.cxx
-@@ -83,7 +83,7 @@ Aspect_PixMap(aWidth, anHeight, Prefered
-   pBmi->bmiHeader.biWidth         = aWidth;
-   pBmi->bmiHeader.biHeight        = anHeight;
-   pBmi->bmiHeader.biPlanes        = 1;
--  pBmi->bmiHeader.biBitCount      = myDepth; //WIL001: was 24
-+  pBmi->bmiHeader.biBitCount      = (WORD)myDepth; //WIL001: was 24
-   pBmi->bmiHeader.biCompression   = BI_RGB;
- 
-   LPVOID ppvBits;
-@@ -102,8 +102,8 @@ Aspect_PixMap(aWidth, anHeight, Prefered
-     pfd.nSize           =  sizeof (PIXELFORMATDESCRIPTOR);
-     pfd.nVersion        =  1;
-     pfd.dwFlags         =  PFD_SUPPORT_OPENGL | PFD_DRAW_TO_BITMAP;
--    pfd.iPixelType      =  theFormat; //WIL001: was PFD_TYPE_RGBA
--    pfd.cColorBits      =  myDepth; //WIL001: was 24
-+    pfd.iPixelType      =  (BYTE)theFormat; //WIL001: was PFD_TYPE_RGBA
-+    pfd.cColorBits      =  (BYTE)myDepth; //WIL001: was 24
-     pfd.cDepthBits      =  24;//
-     pfd.iLayerType      =  PFD_MAIN_PLANE;
  
 Index: oce/src/XmlMXCAFDoc/XmlMXCAFDoc_MaterialDriver.cxx
 ===================================================================

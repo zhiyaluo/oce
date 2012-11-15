@@ -353,7 +353,7 @@ Index: oce/src/AIS/AIS_TexturedShape.cxx
 +      Standard_Real prevcoeff = 0.0;
 +      Standard_Real newcoeff = 0.0;
  
-       if (!OwnDeviationAngle (newangle, prevangle) && !OwnDeviationCoefficient (newcoeff, prevcoeff))
+       if (OwnDeviationAngle (newangle, prevangle) || OwnDeviationCoefficient (newcoeff, prevcoeff))
        {
 Index: oce/src/AdvApp2Var/AdvApp2Var_SysBase.cxx
 ===================================================================
@@ -511,37 +511,6 @@ Index: oce/src/BRepLib/BRepLib_MakeFace.cxx
  
    if (!umininf) {
      Cumin = S->UIso(UMin);
-Index: oce/src/BRepMesh/BRepMesh_Delaun.cxx
-===================================================================
---- oce.orig/src/BRepMesh/BRepMesh_Delaun.cxx
-+++ oce/src/BRepMesh/BRepMesh_Delaun.cxx
-@@ -410,11 +410,8 @@ void BRepMesh_Delaun::MeshLeftPolygonOf(
-   // Find the polygon
-   usedEdges.Add(indexEdg);
-   Standard_Integer debut, prem, pivo;
--#ifndef DEB
-   Standard_Integer ders =0, oth =0;
--#else
--  Standard_Integer ders, oth;
--#endif
-+
-   if (forwdEdg) {
-     polyg.Append(indexEdg);
-     prem=edg.FirstNode();
-@@ -1094,11 +1091,9 @@ Standard_Boolean BRepMesh_Delaun::UseEdg
-       vedge.Subtract(vertDeb.Coord());
- 
-       BRepMesh_ListOfInteger::Iterator itNeig(neigPivo);
--#ifndef DEB
-+
-       Standard_Real ang =0.;
--#else
--      Standard_Real ang;
--#endif
-+
-       Standard_Real angMin=RealLast();
-       Standard_Real angMax=RealFirst();
-       Standard_Boolean InMesh;
 Index: oce/src/BinMDF/BinMDF_TagSourceDriver.cxx
 ===================================================================
 --- oce.orig/src/BinMDF/BinMDF_TagSourceDriver.cxx
@@ -651,7 +620,7 @@ Index: oce/src/BinMNaming/BinMNaming_NamingDriver.cxx
 ===================================================================
 --- oce.orig/src/BinMNaming/BinMNaming_NamingDriver.cxx
 +++ oce/src/BinMNaming/BinMNaming_NamingDriver.cxx
-@@ -154,7 +154,7 @@ Standard_Boolean BinMNaming_NamingDriver
+@@ -156,7 +156,7 @@ Standard_Boolean BinMNaming_NamingDriver
    TNaming_Name& aName = anAtt->ChangeName();
    TCollection_ExtendedString aMsg;
  //1. NameType
@@ -660,7 +629,7 @@ Index: oce/src/BinMNaming/BinMNaming_NamingDriver.cxx
    Standard_Boolean ok = theSource >> aValue;
    Standard_Boolean aNewF = Standard_False;
    if (ok) {
-@@ -173,7 +173,7 @@ Standard_Boolean BinMNaming_NamingDriver
+@@ -175,7 +175,7 @@ Standard_Boolean BinMNaming_NamingDriver
        
  //3. Args
        Standard_Integer aNbArgs=0;
@@ -909,7 +878,7 @@ Index: oce/src/GeometryTest/GeometryTest_APICommands.cxx
 ===================================================================
 --- oce.orig/src/GeometryTest/GeometryTest_APICommands.cxx
 +++ oce/src/GeometryTest/GeometryTest_APICommands.cxx
-@@ -311,7 +311,7 @@ static Standard_Integer extrema(Draw_Int
+@@ -318,7 +318,7 @@ static Standard_Integer extrema(Draw_Int
    Standard_Boolean S1 = Standard_False;
    Standard_Boolean S2 = Standard_False;
  
@@ -1085,7 +1054,7 @@ Index: oce/src/LocOpe/LocOpe_SplitShape.cxx
 ===================================================================
 --- oce.orig/src/LocOpe/LocOpe_SplitShape.cxx
 +++ oce/src/LocOpe/LocOpe_SplitShape.cxx
-@@ -1490,7 +1490,8 @@ static TopoDS_Shape ChooseDirection(cons
+@@ -1493,7 +1493,8 @@ static TopoDS_Shape ChooseDirection(cons
    TopExp_Explorer Explo(RefDir, TopAbs_EDGE);
    TopoDS_Edge RefEdge;
    TopoDS_Vertex V1, V2;
@@ -1227,7 +1196,7 @@ Index: oce/src/ProjLib/ProjLib_ProjectedCurve.cxx
 ===================================================================
 --- oce.orig/src/ProjLib/ProjLib_ProjectedCurve.cxx
 +++ oce/src/ProjLib/ProjLib_ProjectedCurve.cxx
-@@ -711,7 +711,7 @@ void ProjLib_ProjectedCurve::Load(const
+@@ -799,7 +799,7 @@ void ProjLib_ProjectedCurve::Load(const
  	// doit etre une et une seule courbe !!!
  	// De plus, cette courbe ne doit pas etre Single point
  	Standard_Integer NbCurves = Projector.NbCurves();
@@ -1610,7 +1579,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
 ===================================================================
 --- oce.orig/src/WNT/WNT_ImageProcessor.cxx
 +++ oce/src/WNT/WNT_ImageProcessor.cxx
-@@ -124,7 +124,7 @@ HBITMAP LoadImageFromFile (
+@@ -125,7 +125,7 @@ HBITMAP LoadImageFromFile (
           Handle( WNT_GraphicDevice )& gDev, char* fileName, HDC hDevCtx
  	    ) {
  
@@ -1619,7 +1588,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
   HBITMAP  retVal = NULL;
   DWORD    dwProtect, dwAccess;
   bool Ret = true;
-@@ -429,7 +429,7 @@ void SetOutputFormat ( WNT_TypeOfImage t
+@@ -410,7 +410,7 @@ void SetOutputFormat ( WNT_TypeOfImage t
  static HBITMAP loadXWD (  Handle( WNT_GraphicDevice )& gDev  ) {
  
   UINT             i, j, k;

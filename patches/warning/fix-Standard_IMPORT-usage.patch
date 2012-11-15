@@ -38,19 +38,6 @@ Index: oce/src/BRepAlgo/BRepAlgo_BooleanOperation.cxx
  
  //=======================================================================
  //function : Delete 
-Index: oce/src/Draw/Draw_Window.cxx
-===================================================================
---- oce.orig/src/Draw/Draw_Window.cxx
-+++ oce/src/Draw/Draw_Window.cxx
-@@ -37,7 +37,7 @@
- #include <Image_PixMap.hxx>
- 
- extern Draw_Interpretor theCommands;
--Standard_IMPORT Standard_Boolean Draw_VirtualWindows;
-+extern Standard_Boolean Draw_VirtualWindows;
- static Tcl_Interp *interp;        /* Interpreter for this application. */
- 
- /*
 Index: oce/src/TestTopOpe/TestTopOpe.cxx
 ===================================================================
 --- oce.orig/src/TestTopOpe/TestTopOpe.cxx

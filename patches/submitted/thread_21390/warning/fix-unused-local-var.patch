@@ -3026,7 +3026,7 @@ Index: oce/src/AIS/AIS_LocalContext.cxx
 ===================================================================
 --- oce.orig/src/AIS/AIS_LocalContext.cxx
 +++ oce/src/AIS/AIS_LocalContext.cxx
-@@ -444,7 +444,6 @@ Standard_Boolean AIS_LocalContext::Remov
+@@ -449,7 +449,6 @@ Standard_Boolean AIS_LocalContext::Remov
    const Handle(AIS_LocalStatus)& Att = myActiveObjects(aSelectable);
    
    TColStd_ListIteratorOfListOfInteger It;
@@ -3034,7 +3034,7 @@ Index: oce/src/AIS/AIS_LocalContext.cxx
    // it is checked which were the temporary attributes 
    // and they are set to 0
  
-@@ -467,7 +466,6 @@ Standard_Boolean AIS_LocalContext::Remov
+@@ -472,7 +471,6 @@ Standard_Boolean AIS_LocalContext::Remov
        if(myMainPM->IsDisplayed(aSelectable,Att->HilightMode()))
  	myMainPM->Erase(aSelectable,Att->HilightMode());
        //	myMainPM->Clear(aSelectable,Att->HilightMode());
@@ -3372,46 +3372,11 @@ Index: oce/src/Aspect/Aspect_ColorScale.cxx
      titleHeight = TextHeight( aTitle ) + 2 * spacer;
      PaintText( aTitle, X + spacer, Y + spacer, aFgColor );
    }
-Index: oce/src/BOP/BOP_FaceBuilder.cxx
-===================================================================
---- oce.orig/src/BOP/BOP_FaceBuilder.cxx
-+++ oce/src/BOP/BOP_FaceBuilder.cxx
-@@ -844,7 +844,6 @@ void DoTopologicalVerification(TopoDS_Fa
- //=======================================================================
-   void BOP_FaceBuilder::BuildNewFaces() 
- {
--  Standard_Integer nF, nW, nE;
-   Standard_Real    aTol;
-   TopLoc_Location aLoc;
-   TopoDS_Face newFace;
-@@ -858,19 +857,19 @@ void DoTopologicalVerification(TopoDS_Fa
-   myNewFaces.Clear();
-   myNegatives.Clear();
- 
--  nF=InitFace();
-+  InitFace();
-   for (; MoreFace(); NextFace()) {
-     bValidFace=Standard_False;
-     aBB.MakeFace (newFace, aSurface, aLoc, aTol);
- 
--    nW=InitWire();
-+    InitWire();
-     for (; MoreWire(); NextWire()) {
-       if (IsOldWire()) {
- 	newWire=TopoDS::Wire(OldWire());
-       }
-       else {
- 	aBB.MakeWire(newWire);
--	nE=InitEdge();
-+	InitEdge();
- 	for (; MoreEdge(); NextEdge()) {
- 	  const TopoDS_Edge& newEdge=Edge();
- 	  aBB.Add(newWire, newEdge);
 Index: oce/src/BOP/BOP_SDFWESFiller.cxx
 ===================================================================
 --- oce.orig/src/BOP/BOP_SDFWESFiller.cxx
 +++ oce/src/BOP/BOP_SDFWESFiller.cxx
-@@ -377,7 +377,7 @@ static void TreatSDSeams (const TopoDS_E
+@@ -382,7 +382,7 @@ static
    BOPTools_PaveFiller* pPaveFiller=(BOPTools_PaveFiller*) &aPaveFiller;
    BOPTools_CommonBlockPool& aCBPool=pPaveFiller->ChangeCommonBlockPool();
    //
@@ -3420,7 +3385,7 @@ Index: oce/src/BOP/BOP_SDFWESFiller.cxx
    Standard_Real aT1, aT2, aT, aTs; /*, U, V;*/ 
    Standard_Boolean aFlag;
    TColStd_ListOfInteger aLs;
-@@ -439,7 +439,6 @@ static void TreatSDSeams (const TopoDS_E
+@@ -444,7 +444,6 @@ static
  	// aPB2
  	BOPTools_PaveBlock& aPB2=aCB.PaveBlock2(nE1);
  	nE2=aPB2.OriginalEdge();
@@ -3428,7 +3393,7 @@ Index: oce/src/BOP/BOP_SDFWESFiller.cxx
  	const TopoDS_Edge& anE2=TopoDS::Edge(aDS.GetShape(nE2));
  	//
  	const Handle(IntTools_Context)& aContext=pPaveFiller->Context();
-@@ -1299,7 +1298,7 @@ void TreatSDSeams (const TopoDS_Edge& aS
+@@ -1307,7 +1306,7 @@ void TreatSDSeams (const TopoDS_Edge& aS
  			 TopoDS_Edge& aSS)
  				      
  {
@@ -3437,7 +3402,7 @@ Index: oce/src/BOP/BOP_SDFWESFiller.cxx
    Handle(Geom2d_Curve) aC2DSeam11, aC2DSeam21, aC2DSeam22;
    gp_Pnt2d aP2D11, aP2D21, aP2D22;
  
-@@ -1313,7 +1312,6 @@ void TreatSDSeams (const TopoDS_Edge& aS
+@@ -1321,7 +1320,6 @@ void TreatSDSeams (const TopoDS_Edge& aS
    aC2DSeam22->D0(aT2, aP2D22);
  
    aD1121=aP2D11.Distance(aP2D21);
@@ -3449,16 +3414,7 @@ Index: oce/src/BOP/BOP_ShellShell.cxx
 ===================================================================
 --- oce.orig/src/BOP/BOP_ShellShell.cxx
 +++ oce/src/BOP/BOP_ShellShell.cxx
-@@ -231,7 +231,7 @@ BOP_ShellShell::BOP_ShellShell()
-   //
-   // vars
-   Standard_Boolean bIsTouchCase, bIsTouch;
--  Standard_Integer i, aNb, j, aNbj, iFF, nF1, iRank;
-+  Standard_Integer i, aNb, j, aNbj, iFF, nF1;
-   TopTools_ListOfShape aListOfNewFaces;
-   TopTools_IndexedMapOfShape anEMap;
-   TopAbs_Orientation anOriF1;
-@@ -249,7 +249,6 @@ BOP_ShellShell::BOP_ShellShell()
+@@ -249,7 +249,6 @@ void BOP_ShellShell::BuildResult()
      const TopoDS_Face& aF1=TopoDS::Face(aDS.Shape(nF1));
      
      anOriF1=aF1.Orientation();
@@ -3466,7 +3422,7 @@ Index: oce/src/BOP/BOP_ShellShell.cxx
      
      myFace=aF1;
      myFace.Orientation(TopAbs_FORWARD);
-@@ -288,8 +287,6 @@ BOP_ShellShell::BOP_ShellShell()
+@@ -347,8 +346,6 @@ void BOP_ShellShell::BuildResult()
  	BOPTools_SSInterference& aFF=aFFs(iFF);
  	bIsTouch=aFF.IsTangentFaces();
  	if (bIsTouch) {
@@ -3917,7 +3873,7 @@ Index: oce/src/BOPTools/BOPTools_Tools3D.cxx
 ===================================================================
 --- oce.orig/src/BOPTools/BOPTools_Tools3D.cxx
 +++ oce/src/BOPTools/BOPTools_Tools3D.cxx
-@@ -1132,7 +1132,6 @@ static void GetApproxNormalToFaceOnEdgeE
+@@ -1135,7 +1135,6 @@ static void GetApproxNormalToFaceOnEdgeE
        TopExp_Explorer anExp;
        Standard_Integer nbW = 0;
        for(anExp.Init(aF, TopAbs_WIRE); anExp.More(); anExp.Next()) {
@@ -4585,7 +4541,7 @@ Index: oce/src/BRepOffset/BRepOffset_MakeOffset.cxx
 ===================================================================
 --- oce.orig/src/BRepOffset/BRepOffset_MakeOffset.cxx
 +++ oce/src/BRepOffset/BRepOffset_MakeOffset.cxx
-@@ -146,9 +146,11 @@
+@@ -149,9 +149,11 @@
  static void DEBVerticesControl (const TopTools_IndexedMapOfShape& NewEdges,
  				      Handle(BRepAlgo_AsDes)      AsDes)
  {
@@ -5068,7 +5024,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_C1.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder_C1.cxx
 +++ oce/src/ChFi3d/ChFi3d_Builder_C1.cxx
-@@ -3838,10 +3838,9 @@ void ChFi3d_Builder::IntersectMoreCorner
+@@ -3861,10 +3861,9 @@ void ChFi3d_Builder::IntersectMoreCorner
      if(!CV1.IsOnArc() && !CV2.IsOnArc())
        Standard_Failure::Raise("Corner intersmore : no point on arc");
      else if(CV1.IsOnArc() && CV2.IsOnArc()){
@@ -5253,7 +5209,7 @@ Index: oce/src/Draw/Draw_VariableCommands.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_VariableCommands.cxx
 +++ oce/src/Draw/Draw_VariableCommands.cxx
-@@ -807,9 +807,10 @@ void Draw::Set(const Standard_CString Na
+@@ -848,9 +848,10 @@ void Draw::Set(const Standard_CString Na
  Handle(Draw_Drawable3D) Draw::Get(Standard_CString& name, 
  			          const Standard_Boolean )
  {
@@ -5269,7 +5225,7 @@ Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx
 +++ oce/src/Draw/Draw_Window.cxx
-@@ -765,8 +765,7 @@ Standard_Boolean Draw_Window::Save (cons
+@@ -762,8 +762,7 @@ Standard_Boolean Draw_Window::Save (cons
  
  void ProcessEvent(Draw_Window& win, XEvent& xev)
  {
@@ -5279,7 +5235,7 @@ Index: oce/src/Draw/Draw_Window.cxx
    KeySym keysym;
    XComposeStatus stat;
    char chainekey[10];
-@@ -793,17 +792,11 @@ void ProcessEvent(Draw_Window& win, XEve
+@@ -790,17 +789,11 @@ void ProcessEvent(Draw_Window& win, XEve
      break;
  
    case KeyPress :
@@ -5298,7 +5254,7 @@ Index: oce/src/Draw/Draw_Window.cxx
      break;
  
    case MotionNotify :
-@@ -1695,7 +1688,6 @@ void DrawWindow::Clear()
+@@ -1692,7 +1685,6 @@ void DrawWindow::Clear()
    HDC hDC = GetDC(win);
    HDC aWorkDC = myUseBuffer ? GetMemDC(hDC) : hDC;
  
@@ -5637,7 +5593,7 @@ Index: oce/src/Extrema/Extrema_GenExtPS.cxx
 ===================================================================
 --- oce.orig/src/Extrema/Extrema_GenExtPS.cxx
 +++ oce/src/Extrema/Extrema_GenExtPS.cxx
-@@ -628,7 +628,7 @@ void Extrema_GenExtPS::Perform(const gp_
+@@ -801,7 +801,7 @@ void Extrema_GenExtPS::Perform(const gp_
        Bnd_SphereUBTreeSelectorMin aSelector(mySphereArray, aSol);
        //aSelector.SetMaxDist( RealLast() );
        aSelector.DefineCheckPoint( P );
@@ -5646,7 +5602,7 @@ Index: oce/src/Extrema/Extrema_GenExtPS.cxx
        //TODO: check if no solution in binary tree
        Bnd_Sphere& aSph = aSelector.Sphere();
  
-@@ -643,7 +643,7 @@ void Extrema_GenExtPS::Perform(const gp_
+@@ -817,7 +817,7 @@ void Extrema_GenExtPS::Perform(const gp_
        Bnd_SphereUBTreeSelectorMax aSelector(mySphereArray, aSol);
        //aSelector.SetMaxDist( RealLast() );
        aSelector.DefineCheckPoint( P );
@@ -5654,7 +5610,7 @@ Index: oce/src/Extrema/Extrema_GenExtPS.cxx
 +      mySphereUBTree->Select( aSelector );
        //TODO: check if no solution in binary tree
        Bnd_Sphere& aSph = aSelector.Sphere();
- 
+       UV(1) = myUParams->Value(aSph.U());
 Index: oce/src/GccAna/GccAna_Circ2d3Tan_2.cxx
 ===================================================================
 --- oce.orig/src/GccAna/GccAna_Circ2d3Tan_2.cxx
@@ -6169,22 +6125,7 @@ Index: oce/src/GeometryTest/GeometryTest_APICommands.cxx
 ===================================================================
 --- oce.orig/src/GeometryTest/GeometryTest_APICommands.cxx
 +++ oce/src/GeometryTest/GeometryTest_APICommands.cxx
-@@ -488,14 +488,9 @@ void GeometryTest::APICommands(Draw_Inte
-   if (done) return;
- 
-   done = Standard_True;
--  const char* g;
--
--  g = "GEOMETRY curves and surfaces analysis";
- 
-   theCommands.Add("proj", "proj curve/surf x y z",__FILE__, proj);
- 
--  g = "GEOMETRY approximations";
--
-   theCommands.Add("appro", "appro result nbpoint [curve]",__FILE__, appro);
-   theCommands.Add("surfapp","surfapp result nbupoint nbvpoint x y z ....",
- 		  __FILE__,
-@@ -504,8 +499,6 @@ void GeometryTest::APICommands(Draw_Inte
+@@ -511,8 +511,6 @@ void GeometryTest::APICommands(Draw_Inte
         "grilapp result nbupoint nbvpoint X0 dX Y0 dY z11 z12 .. z1nu ....  ",
          __FILE__,grilapp);
  
@@ -6773,8 +6714,8 @@ Index: oce/src/IntTools/IntTools_Context.cxx
 ===================================================================
 --- oce.orig/src/IntTools/IntTools_Context.cxx
 +++ oce/src/IntTools/IntTools_Context.cxx
-@@ -447,8 +447,7 @@ IntTools_Context::~IntTools_Context()
- 							 const Standard_Real aTol) 
+@@ -527,8 +527,7 @@ Standard_Boolean IntTools_Context::IsVal
+ 						       const Standard_Real aTol) 
  {
    Standard_Boolean bFlag;
 -  Standard_Real Umin, myEpsT, U, V;
@@ -6783,8 +6724,8 @@ Index: oce/src/IntTools/IntTools_Context.cxx
  
    GeomAPI_ProjectPointOnSurf& aProjector=ProjPS(aF);
    aProjector.Perform(aP);
-@@ -497,14 +496,12 @@ IntTools_Context::~IntTools_Context()
- 							  const Standard_Real aTol) 
+@@ -577,14 +576,12 @@ Standard_Boolean IntTools_Context::IsVal
+ 							const Standard_Real aTol) 
  {
    Standard_Boolean bFlag;
 -  Standard_Real aTInterm, aFirst, aLast;
@@ -7035,7 +6976,7 @@ Index: oce/src/IntTools/IntTools_FaceFace.cxx
 ===================================================================
 --- oce.orig/src/IntTools/IntTools_FaceFace.cxx
 +++ oce/src/IntTools/IntTools_FaceFace.cxx
-@@ -437,7 +437,7 @@ void IntTools_FaceFace::SetList(IntSurf_
+@@ -453,7 +453,7 @@ void IntTools_FaceFace::SetList(IntSurf_
    void IntTools_FaceFace::Perform(const TopoDS_Face& aF1,
  				  const TopoDS_Face& aF2)
  {
@@ -7044,7 +6985,7 @@ Index: oce/src/IntTools/IntTools_FaceFace.cxx
    Standard_Integer aNbLin, aNbPnts, i, NbLinPP;
    Standard_Real TolArc, TolTang, Deflection, UVMaxStep;
    Standard_Real umin, umax, vmin, vmax;
-@@ -457,7 +457,6 @@ void IntTools_FaceFace::SetList(IntSurf_
+@@ -473,7 +473,6 @@ void IntTools_FaceFace::SetList(IntSurf_
    myIsDone = Standard_False;
    myNbrestr=0;//?
    hasCone = Standard_False;
@@ -7052,7 +6993,7 @@ Index: oce/src/IntTools/IntTools_FaceFace.cxx
    //
    myFace1=aF1;
    myFace2=aF2;
-@@ -498,7 +497,6 @@ void IntTools_FaceFace::SetList(IntSurf_
+@@ -514,7 +513,6 @@ void IntTools_FaceFace::SetList(IntSurf_
    //
    NbLinPP = 0;
    if(aType1==GeomAbs_Plane && aType2==GeomAbs_Plane){
@@ -7474,7 +7415,7 @@ Index: oce/src/OSD/OSD_MAllocHook.cxx
    }
  }
  
-@@ -527,10 +529,12 @@ void OSD_MAllocHook::CollectBySize::Allo
+@@ -528,10 +530,12 @@ void OSD_MAllocHook::CollectBySize::Allo
                     (size_t      theSize,
                      long        /*theRequestNum*/)
  {
@@ -8380,7 +8321,7 @@ Index: oce/src/TNaming/TNaming.cxx
 ===================================================================
 --- oce.orig/src/TNaming/TNaming.cxx
 +++ oce/src/TNaming/TNaming.cxx
-@@ -282,18 +282,17 @@ void TNaming::Update(const TDF_Label& L,
+@@ -285,18 +285,17 @@ void TNaming::Update(const TDF_Label& L,
    L.Root().FindAttribute(TNaming_UsedShapes::GetID(),US);
    TNaming_DataMapOfShapePtrRefShape& amap = US->Map();
  
@@ -9468,16 +9409,7 @@ Index: oce/src/Units/Units_Lexicon.cxx
 ===================================================================
 --- oce.orig/src/Units/Units_Lexicon.cxx
 +++ oce/src/Units/Units_Lexicon.cxx
-@@ -59,7 +59,7 @@ void Units_Lexicon::Creates(const Standa
-   char *Oper = oper ;
-   char *Coeff = coeff ;
- #endif
--  Standard_Integer fr,i;
-+  Standard_Integer i;
-   Standard_Real value;
-   Handle(Units_Token) token;
-   struct stat buf;
-@@ -89,19 +89,19 @@ void Units_Lexicon::Creates(const Standa
+@@ -90,19 +90,19 @@ void Units_Lexicon::Creates(const Standa
      if(len == 1) continue; //skl - ???
      for ( i = 0 ; i < 30 ; i++ ) {
        if ( i < len )
@@ -9504,19 +9436,7 @@ Index: oce/src/Units/Units_Sentence.cxx
 ===================================================================
 --- oce.orig/src/Units/Units_Sentence.cxx
 +++ oce/src/Units/Units_Sentence.cxx
-@@ -58,8 +58,9 @@ Units_Sentence::Units_Sentence(const Han
- 			       const Standard_CString astring)
- {
-   Standard_Integer index;
--  Standard_Integer i,k,l,limchain;
--  char chain[255];
-+  Standard_Integer i,limchain;
-+//  Standard_Integer k,l;
-+//  char chain[255];
-   Handle(Units_Token) token;
-   Handle(Units_Token) referencetoken;
-   
-@@ -67,10 +68,12 @@ Units_Sentence::Units_Sentence(const Han
+@@ -68,10 +68,12 @@ Units_Sentence::Units_Sentence(const Han
    Handle(Units_TokensSequence) lstlexicon=alexicon->Sequence();
    Units_NoSuchType_Raise_if(lstlexicon.IsNull(),"BAD LEXICON descriptor");
    limchain=strlen(astring);
@@ -9533,7 +9453,7 @@ Index: oce/src/V3d/V3d_View.cxx
 ===================================================================
 --- oce.orig/src/V3d/V3d_View.cxx
 +++ oce/src/V3d/V3d_View.cxx
-@@ -1267,10 +1267,6 @@ void V3d_View::SetDepth(const Standard_R
+@@ -1265,10 +1265,6 @@ void V3d_View::SetDepth(const Standard_R
    Viewer_BadValue_Raise_if( Depth <= 0. ,"V3d_View::SetDepth, bad depth");
  #endif
  
@@ -9544,7 +9464,7 @@ Index: oce/src/V3d/V3d_View.cxx
    MyViewReferencePoint = MyViewOrientation.ViewReferencePoint() ;
    MyViewReferencePlane = MyViewOrientation.ViewReferencePlane() ;
    MyProjReferencePoint = MyViewMapping.ProjectionReferencePoint() ;
-@@ -1647,7 +1643,6 @@ void V3d_View::SetZSize(const Standard_R
+@@ -1645,7 +1641,6 @@ void V3d_View::SetZSize(const Standard_R
  
    Standard_Real Front = MyViewContext.ZClippingFrontPlane() ;
    Standard_Real Back  = MyViewContext.ZClippingBackPlane() ;
@@ -9597,7 +9517,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
-@@ -2538,7 +2538,6 @@ Handle( Poly_Triangulation ) Calculation
+@@ -2540,7 +2540,6 @@ Handle( Poly_Triangulation ) Calculation
  
    int i, j;
    int jStart, jEnd, numOffset;
@@ -9605,7 +9525,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
    double x[3], n[3], deltaPhi, deltaTheta, phi, theta, radius;
    double startTheta, endTheta, startPhi, endPhi;
    int base, numPoles=0, thetaResolution, phiResolution;
-@@ -2568,9 +2567,6 @@ Handle( Poly_Triangulation ) Calculation
+@@ -2570,9 +2569,6 @@ Handle( Poly_Triangulation ) Calculation
    localStartTheta = localStartTheta + (double)(start) * deltaTheta;
    localThetaResolution = end - start;
  
@@ -9643,7 +9563,7 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-@@ -758,7 +758,7 @@ static LRESULT WINAPI AdvViewerWindowPro
+@@ -821,7 +821,7 @@ static LRESULT WINAPI AdvViewerWindowPro
        if( !DragFirst )
        {
          HDC hdc = GetDC( hwnd );

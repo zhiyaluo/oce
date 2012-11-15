@@ -58,7 +58,7 @@ Index: oce/drv/ExprIntrp/lex.ExprIntrp.c
 ===================================================================
 --- oce.orig/drv/ExprIntrp/lex.ExprIntrp.c
 +++ oce/drv/ExprIntrp/lex.ExprIntrp.c
-@@ -2100,10 +2100,6 @@ extern int yywrap YY_PROTO(( void ));
+@@ -2101,10 +2101,6 @@ extern int yywrap YY_PROTO(( void ));
  #endif
  #endif
  
@@ -69,7 +69,7 @@ Index: oce/drv/ExprIntrp/lex.ExprIntrp.c
  #ifndef yytext_ptr
  static void yy_flex_strncpy YY_PROTO(( char *, yyconst char *, int ));
  #endif
-@@ -2728,49 +2724,6 @@ yy_state_type yy_current_state;
+@@ -2731,51 +2727,6 @@ yy_state_type yy_current_state;
  	}
  
  
@@ -101,7 +101,8 @@ Index: oce/drv/ExprIntrp/lex.ExprIntrp.c
 -
 -		yy_cp += (int) (dest - source);
 -		yy_bp += (int) (dest - source);
--		yy_n_chars = yy_current_buffer->yy_buf_size;
+-		yy_current_buffer->yy_n_chars =
+-			yy_n_chars = yy_current_buffer->yy_buf_size;
 -
 -		if ( yy_cp < yy_current_buffer->yy_ch_buf + 2 )
 -			YY_FATAL_ERROR( "flex scanner push-back overflow" );
@@ -116,9 +117,10 @@ Index: oce/drv/ExprIntrp/lex.ExprIntrp.c
 -	}
 -#endif	/* ifndef YY_NO_UNPUT */
 -
- 
+-
  #ifdef __cplusplus
  static int yyinput()
+ #else
 Index: oce/drv/StepFile/lex.step.c
 ===================================================================
 --- oce.orig/drv/StepFile/lex.step.c
@@ -150,7 +152,7 @@ Index: oce/drv/StepFile/lex.step.c
  #ifndef yytext_ptr
  static void yy_flex_strncpy YY_PROTO(( char *, yyconst char *, int ));
  #endif
-@@ -1277,50 +1271,6 @@ yy_state_type yy_current_state;
+@@ -1279,51 +1273,6 @@ yy_state_type yy_current_state;
  	}
  
  
@@ -182,7 +184,8 @@ Index: oce/drv/StepFile/lex.step.c
 -
 -		yy_cp += (int) (dest - source);
 -		yy_bp += (int) (dest - source);
--		yy_n_chars = yy_current_buffer->yy_buf_size;
+-		yy_current_buffer->yy_n_chars =
+-			yy_n_chars = yy_current_buffer->yy_buf_size;
 -
 -		if ( yy_cp < yy_current_buffer->yy_ch_buf + 2 )
 -			YY_FATAL_ERROR( "flex scanner push-back overflow" );
@@ -201,7 +204,7 @@ Index: oce/drv/StepFile/lex.step.c
  #ifdef __cplusplus
  static int yyinput()
  #else
-@@ -1709,17 +1659,6 @@ static int yy_top_state()
+@@ -1719,17 +1668,6 @@ static int yy_top_state()
  #define YY_EXIT_FAILURE 2
  #endif
  
@@ -219,7 +222,7 @@ Index: oce/drv/StepFile/lex.step.c
  
  
  /* Redefine yyless() so it works in section 3 code. */
-@@ -1784,24 +1723,6 @@ yy_size_t size;
+@@ -1794,24 +1732,6 @@ yy_size_t size;
  	}
  
  #ifdef YY_USE_PROTOS

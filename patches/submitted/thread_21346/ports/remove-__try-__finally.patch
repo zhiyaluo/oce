@@ -1082,7 +1082,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    #ifdef TEST
      if (!fWindow)
-@@ -394,20 +399,22 @@ int SaveBitmapToFile (Handle(WNT_Graphic
+@@ -394,19 +399,21 @@ int SaveBitmapToFile (Handle(WNT_Graphic
        {
          SelectPalette (hDC, hOldPal, FALSE);
        }
@@ -1097,8 +1097,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
 +  }
 +  if (Ret)
 +  {
-     retVal = DumpBitmapToFile (gDev, NULL,
-                                hNewBmp, fName);
+     retVal = DumpBitmapToFile (hNewBmp, fName);
 -  }  // end __try
 -  __finally {
 +  } 

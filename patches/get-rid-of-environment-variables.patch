@@ -157,54 +157,24 @@ Index: oce/src/Draw/Draw_PloadCommands.cxx
      if ( !aPluginDir.IsEmpty() ) {
        aPluginDir +="/src/DrawResources" ;
        aToSetCSFVariable = Standard_True; //CSF variable to be set later
-Index: oce/src/DrawResources/DataExchangeDemo.tcl
-===================================================================
---- oce.orig/src/DrawResources/DataExchangeDemo.tcl
-+++ oce/src/DrawResources/DataExchangeDemo.tcl
-@@ -53,9 +53,11 @@ if { [winfo exists .h ] } {
-     destroy .h
- }
- 
--if { [info exists env(CASROOT)] } {
--    set thedir [file join $env(CASROOT) src DEResource]
-+set thedir [file join [file dirname [file dirname [info script]] DEResource]
-+if { [file isdirectory ${thedir}] } {
-     cd ${thedir}
-+} else {
-+    cd [file dirname [info script]]
- }
- 
- datadir .
 Index: oce/src/DrawResources/DrawDefault
 ===================================================================
 --- oce.orig/src/DrawResources/DrawDefault
 +++ oce/src/DrawResources/DrawDefault
-@@ -8,11 +8,7 @@ set dir ""
+@@ -8,12 +8,7 @@ set dir ""
  if { [info exists env(DRAWHOME) ] } { 
    set dir $env(DRAWHOME)  
  } else {
 -  if { [info exists env(CASROOT) ] } {
 -    set dir [file join $env(CASROOT) src DrawResources]
 -  } else {
--    puts " CASROOT is Mandatory to Run OpenCascade"
+-    puts "Warning: CASROOT is not defined, some features may not load correctly"
+-    set dir [file dirname [info script]]
 -  }
 +  set dir [file dirname [info script]]
  }
  
- # san - 02/08/2002 - In Tcl8.3 it is no longer necessary to load Tix explicitly on WNT
-Index: oce/src/DrawResources/OCAFDemo.tcl
-===================================================================
---- oce.orig/src/DrawResources/OCAFDemo.tcl
-+++ oce/src/DrawResources/OCAFDemo.tcl
-@@ -17,7 +17,7 @@
- 
- # first , Opening Document write on Unix 
- puts "First , Opening Document write on Unix "
--set Data [file join $env(CASROOT) src TCAF]
-+set Data [file join [file dirname [file dirname [info script]] TCAF]
- 
- set DocName [file join ${Data} FileUnix.std]
- if [ file exists ${DocName}  ] {
+ # load standard DRAW scripts
 Index: oce/src/DrawResources/TKTopTest.tcl
 ===================================================================
 --- oce.orig/src/DrawResources/TKTopTest.tcl

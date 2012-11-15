@@ -30,56 +30,6 @@ Subject: [PATCH 10/26] [warning-fix][initialization-order]
  src/NIS/NIS_TriangulatedDrawer.cxx |    6 +++---
  2 files changed, 5 insertions(+), 7 deletions(-)
 
-Index: oce/inc/IntPatch_Point.lxx
-===================================================================
---- oce.orig/inc/IntPatch_Point.lxx
-+++ oce/inc/IntPatch_Point.lxx
-@@ -21,11 +21,20 @@
- 
- 
- inline IntPatch_Point::IntPatch_Point ()
-- : para(0.0), tol(0.0), tgt(Standard_False), mult(Standard_False),
--   onS1(Standard_False), vtxonS1(Standard_False), prm1(0.0),
--   onS2(Standard_False), vtxonS2(Standard_False), prm2(0.0),
--   vS1(NULL), vS2(NULL),
--   arcS1(NULL), arcS2(NULL)
-+ : para(0.0),
-+   tol(0.0),
-+   tgt(Standard_False),
-+   mult(Standard_False),
-+   onS1(Standard_False),
-+   vtxonS1(Standard_False),
-+   vS1(NULL),
-+   arcS1(NULL),
-+   prm1(0.0),
-+   onS2(Standard_False),
-+   vtxonS2(Standard_False),
-+   vS2(NULL),
-+   arcS2(NULL),
-+   prm2(0.0)
- {
- }
- 
-Index: oce/inc/NCollection_BaseVector.hxx
-===================================================================
---- oce.orig/inc/NCollection_BaseVector.hxx
-+++ oce/inc/NCollection_BaseVector.hxx
-@@ -52,13 +52,11 @@ class NCollection_BaseVector
-   class MemBlock {
-   protected:
-     MemBlock (NCollection_BaseAllocator* theAlloc)
--      : myAlloc(theAlloc),
--        myFirstInd(0), myLength(0), mySize(0), myData(0L) {}
-+      : myFirstInd(0), myLength(0), mySize(0), myAlloc(theAlloc), myData(0L) {}
-     MemBlock (const Standard_Integer theFirstInd,
-               const Standard_Integer theLength,
-               NCollection_BaseAllocator* theAlloc)
--      : myAlloc(theAlloc),
--        myFirstInd(theFirstInd), myLength(0), mySize(theLength), myData(0L) {}
-+      : myFirstInd(theFirstInd), myLength(0), mySize(theLength), myAlloc(theAlloc), myData(0L) {}
-     virtual void        Reinit     (const Standard_Integer,
-                                     const Standard_Integer) {}
-     Standard_Integer    FirstIndex () const     { return myFirstInd; }
 Index: oce/inc/ShapeAnalysis_BoxBndTree.hxx
 ===================================================================
 --- oce.orig/inc/ShapeAnalysis_BoxBndTree.hxx
@@ -230,11 +180,11 @@ Index: oce/src/NIS/NIS_TriangulatedDrawer.cxx
  {
    myColor[Draw_Normal]       = theNormal;
    myColor[Draw_Top]          = theNormal;
-Index: oce/src/OSD/OSD_SystemFont.cxx
+Index: oce/src/Font/Font_SystemFont.cxx
 ===================================================================
---- oce.orig/src/OSD/OSD_SystemFont.cxx
-+++ oce/src/OSD/OSD_SystemFont.cxx
-@@ -38,8 +38,8 @@ OSD_SystemFont::OSD_SystemFont( const Ha
+--- oce.orig/src/Font/Font_SystemFont.cxx
++++ oce/src/Font/Font_SystemFont.cxx
+@@ -38,8 +38,8 @@ Font_SystemFont::Font_SystemFont( const Ha
                                  const Handle(TCollection_HAsciiString)& FilePath ):
  MyFontName(FontName),
  MyFontAspect(FontAspect),
@@ -246,11 +196,11 @@ Index: oce/src/OSD/OSD_SystemFont.cxx
  
 @@ -47,8 +47,8 @@ MyVerification(Standard_True)
  
- OSD_SystemFont::OSD_SystemFont( const Handle(TCollection_HAsciiString)& XLFD,
+ Font_SystemFont::Font_SystemFont( const Handle(TCollection_HAsciiString)& XLFD,
                                  const Handle(TCollection_HAsciiString)& FilePath) :
 -MyFilePath(FilePath),
--MyFontAspect(OSD_FA_Undefined)
-+MyFontAspect(OSD_FA_Undefined),
+-MyFontAspect(Font_FA_Undefined)
++MyFontAspect(Font_FA_Undefined),
 +MyFilePath(FilePath)
  {
    MyVerification = Standard_True;

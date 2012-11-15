@@ -231,28 +231,6 @@ Index: oce/src/OSD/OSD_Process.cxx
  
  void _osd_wnt_set_error ( OSD_Error&, OSD_WhoAmI, ... );
  
-Index: oce/src/OpenGl/OpenGl_GraphicDriver.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_GraphicDriver.cxx
-+++ oce/src/OpenGl/OpenGl_GraphicDriver.cxx
-@@ -42,7 +42,7 @@ namespace
- // classe OSD_SharedLibrary dans la methode SetGraphicDriver de la
- // classe Graphic3d_GraphicDevice
- extern "C" {
--#ifdef WNT /* disable MS VC++ warning on C-style function returning C++ object */
-+#ifdef _MSC_VER /* disable MS VC++ warning on C-style function returning C++ object */
-   #pragma warning(push)
-   #pragma warning(disable:4190)
- #endif
-@@ -51,7 +51,7 @@ extern "C" {
-     Handle(OpenGl_GraphicDriver) aOpenDriver = new OpenGl_GraphicDriver (AShrName);
-     return aOpenDriver;
-   }
--#ifdef WNT
-+#ifdef _MSC_VER
-   #pragma warning(pop)
- #endif
- }
 Index: oce/src/PS/PS_Driver.cxx
 ===================================================================
 --- oce.orig/src/PS/PS_Driver.cxx
@@ -370,7 +348,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest.cxx
 +++ oce/src/ViewerTest/ViewerTest.cxx
-@@ -68,7 +68,7 @@
+@@ -72,7 +72,7 @@
  #include <Viewer2dTest.hxx>
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
@@ -383,7 +361,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
-@@ -142,7 +142,7 @@
+@@ -144,7 +144,7 @@
  #include <strings.h>
  #endif
  
@@ -396,7 +374,7 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-@@ -74,8 +74,10 @@
+@@ -76,8 +76,10 @@
  #include <WNT_WClass.hxx>
  #include <WNT_Window.hxx>
  
@@ -528,7 +506,7 @@ Index: oce/src/XDEDRAW/XDEDRAW.cxx
 ===================================================================
 --- oce.orig/src/XDEDRAW/XDEDRAW.cxx
 +++ oce/src/XDEDRAW/XDEDRAW.cxx
-@@ -94,7 +94,7 @@
+@@ -101,7 +101,7 @@
  
  #define ZVIEW_SIZE 1000000.0
  // avoid warnings on 'extern "C"' functions returning C++ classes

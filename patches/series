@@ -9,8 +9,6 @@ submitted/thread_20052/fix-build-failure-gnu-kfreebsd.patch
 submitted/thread_20101/fix-XOpenDisplay-remote-call.patch
 submitted/thread_20105/add-openmp-support.patch
 
-warning/bugs.patch
-build-with-newer-ftgl.patch
 fix-cast-OSD_Process.patch
 fix-xsputn-prototype.patch
 fix-raise-exception.patch
@@ -41,7 +39,6 @@ submitted/thread_21389/warning/fix-unused-function.patch
 submitted/thread_21390/warning/fix-unused-local-var.patch
 submitted/thread_21392/warning/fix-defined-but-not-used.patch
 submitted/thread_21393/warning/linker-warnings.patch
-submitted/thread_21394/warning/add-placement-delete.patch
 
 # See if the new OpenGL stuff needs it # submitted/thread_21948/fix-freeimage-gl2ps-support.patch
 submitted/thread_21963/bugfix-add-missing-include-BRepBlend_BlendTool.lxx.patch
@@ -53,12 +50,7 @@ do-not-redefine-memmove.patch
 fix-symbol-decorators-Draw.patch
 drop-getGL2PSFontName.patch
 bugfix-points-swapped-in-BRepExtrema_DistanceSS.patch
-bugfix-wrong-test-due-to-missing-parens.patch
-bugfix-check-handles.patch
-bugfix-opengl-regression-fix.patch
-bugfix-unused-value.patch
 
-cppcheck/fix-extra-qualification-unnecessary.patch
 cppcheck/fix-unused-local-var.patch
 cppcheck/fix-resource-leak.patch
 cppcheck/fix-memory-leak.patch
@@ -86,7 +78,6 @@ warning/add-equal-operator.patch
 warning/fix-unreachable-code.patch
 warning/fix-unreachable-code-rewrite-loops.patch
 warning/fix-Standard_IMPORT-usage.patch
-warning/add-delete-operator.patch
 warning/fix-dynamic-class-memaccess.patch
 warning/fix-constant-logical-operand.patch
 warning/fix-uninitialized-var.patch
@@ -94,7 +85,6 @@ warning/fix-comparison-between-different-enums.patch
 warning/fix-dangling-else.patch
 warning/remove-duplicate-checks.patch
 warning/fix-old-declarators.patch
-warning/fix-tautological-compare.patch
 
 improve-exception-message.patch
 
@@ -136,7 +126,6 @@ ports/borland9.patch
 ports/borland10.patch
 ports/borland12.patch
 ports/borland13.patch
-ports/add-missing-Vfw32.lib.patch
 ports/workaround-clang-bug-remove-trampoline.patch
 ports/workaround-gcc42-bug-gpMat.patch
 ports/rename-PPC-in-cdl.patch
@@ -158,7 +147,6 @@ fix-wok-issues.patch
 
 get-rid-of-environment-variables.patch
 
-TKernel-drop-X11-depends.patch
 TKService-depends-X11-only-if-needed.patch
 static-tkopengl.patch
 debug-postfix.patch

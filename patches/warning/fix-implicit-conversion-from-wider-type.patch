@@ -90,17 +90,31 @@ Index: oce/src/OpenGl/OpenGl_Window.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_Window.cxx
 +++ oce/src/OpenGl/OpenGl_Window.cxx
-@@ -58,8 +58,8 @@ namespace
+@@ -51,8 +51,8 @@ namespace
+     aPixelFrmtTmp.iLayerType = PFD_MAIN_PLANE;
  
-     int       iPixelFormat = 0;
-     int       iGood = 0;
--    const int cBits[] = { 32, 24 };
--    const int dBits[] = { 32, 24, 16 };
-+    const BYTE cBits[] = { 32, 24 };
-+    const BYTE dBits[] = { 32, 24, 16 };
+     const int BUFF_BITS_STENCIL[] = {  8,  1     };
+-    const int BUFF_BITS_COLOR[]   = { 32, 24     };
+-    const int BUFF_BITS_DEPTH[]   = { 32, 24, 16 };
++    const BYTE BUFF_BITS_COLOR[]  = { 32, 24     };
++    const BYTE BUFF_BITS_DEPTH[]  = { 32, 24, 16 };
  
-     int i, j;
-     for (i = 0; i < sizeof(dBits) / sizeof(BYTE); i++)
+     int aGoodBits[] = { 0, 0, 0 };
+     int aPixelFrmtIdLast = 0;
+@@ -61,11 +61,11 @@ namespace
+     for (aStencilIter = 0; aStencilIter < sizeof(BUFF_BITS_STENCIL) / sizeof(int); ++aStencilIter)
+     {
+       aPixelFrmtTmp.cStencilBits = BUFF_BITS_STENCIL[aStencilIter];
+-      for (aDepthIter = 0; aDepthIter < sizeof(BUFF_BITS_DEPTH) / sizeof(int); ++aDepthIter)
++      for (aDepthIter = 0; aDepthIter < sizeof(BUFF_BITS_DEPTH) / sizeof(BYTE); ++aDepthIter)
+       {
+         aPixelFrmtTmp.cDepthBits = BUFF_BITS_DEPTH[aDepthIter];
+         aPixelFrmtIdGood = 0;
+-        for (aColorIter = 0; aColorIter < sizeof(BUFF_BITS_COLOR) / sizeof(int); ++aColorIter)
++        for (aColorIter = 0; aColorIter < sizeof(BUFF_BITS_COLOR) / sizeof(BYTE); ++aColorIter)
+         {
+           aPixelFrmtTmp.cColorBits = BUFF_BITS_COLOR[aColorIter];
+           aPixelFrmtIdLast = ChoosePixelFormat (theDevCtx, &aPixelFrmtTmp);
 Index: oce/src/PlotMgt/PlotMgt_TextManager.cxx
 ===================================================================
 --- oce.orig/src/PlotMgt/PlotMgt_TextManager.cxx
@@ -141,7 +155,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
 ===================================================================
 --- oce.orig/src/WNT/WNT_ImageProcessor.cxx
 +++ oce/src/WNT/WNT_ImageProcessor.cxx
-@@ -589,7 +589,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
+@@ -570,7 +570,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
  	 if ( ptrDIB == NULL ) goto leave;
  
  	 CopyMemory (  ( PVOID )ptrDIB, ( PVOID )pbInit, dataSize  );

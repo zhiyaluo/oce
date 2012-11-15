@@ -33,20 +33,6 @@ Index: oce/inc/HatchGen_Hatcher.lxx
  }
  
  //=======================================================================
-Index: oce/src/BOP/BOP_FaceBuilder.cxx
-===================================================================
---- oce.orig/src/BOP/BOP_FaceBuilder.cxx
-+++ oce/src/BOP/BOP_FaceBuilder.cxx
-@@ -975,8 +975,7 @@ void DoTopologicalVerification(TopoDS_Fa
-   const TopoDS_Shape& BOP_FaceBuilder::OldWire() const
- {
-   const Handle(BOP_Loop)& L = myFaceAreaBuilder.Loop();
--  const TopoDS_Shape& B = L->Shape();
--  return B;
-+  return L->Shape();
- }
- //=======================================================================
- //function : Wire
 Index: oce/src/BRepFilletAPI/BRepFilletAPI_MakeChamfer.cxx
 ===================================================================
 --- oce.orig/src/BRepFilletAPI/BRepFilletAPI_MakeChamfer.cxx

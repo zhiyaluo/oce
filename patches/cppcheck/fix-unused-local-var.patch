@@ -204,36 +204,6 @@ Index: oce/src/OpenGl/OpenGl_Trihedron.cxx
  
    /* Fotis Sioutis 2007-11-14 15:06 
    I have also seen in previous posts that the view trihedron in V3d_WIREFRAME mode 
-Index: oce/src/OpenGl/OpenGl_Window.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_Window.cxx
-+++ oce/src/OpenGl/OpenGl_Window.cxx
-@@ -126,9 +126,11 @@ OpenGl_Window::OpenGl_Window (const Hand
-   myBgColor.rgb[2] = theCWindow.Background.b;
- 
-   WINDOW aParent = (WINDOW )theCWindow.XWindow;
-+  
-+#if (!defined(_WIN32) && !defined(__WIN32__))
-+
-   DISPLAY* aDisp = (DISPLAY* )myDisplay->GetDisplay();
- 
--#if (!defined(_WIN32) && !defined(__WIN32__))
-   XWindowAttributes wattr;
-   XGetWindowAttributes (aDisp, aParent, &wattr);
-   const int scr = DefaultScreen (aDisp);
-Index: oce/src/OpenGl/OpenGl_Workspace_2.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_Workspace_2.cxx
-+++ oce/src/OpenGl/OpenGl_Workspace_2.cxx
-@@ -972,7 +972,7 @@ void OpenGl_Workspace::DisplayCallback (
-     callData.viewID = ACView.ViewId;
-     callData.gcontext = myGContext;
- 
--    int status = (*ACView.GDisplayCB)( ACView.DefWindow.XWindow, ACView.GClientData, &callData );
-+    /* int status = */ (*ACView.GDisplayCB)( ACView.DefWindow.XWindow, ACView.GClientData, &callData );
-   }
- }
- 
 Index: oce/src/StlTransfer/StlTransfer.cxx
 ===================================================================
 --- oce.orig/src/StlTransfer/StlTransfer.cxx

@@ -13,22 +13,37 @@ Date:   Tue May 17 00:47:05 2011 +0200
     - removed pragmas
     - removed NOP cmake instructions
 
-Index: oce/src/Image/Image_PixMap.cxx
+Index: oce/src/Image/Image_AlienPixMap.cxx
 ===================================================================
---- oce.orig/src/Image/Image_PixMap.cxx
-+++ oce/src/Image/Image_PixMap.cxx
-@@ -25,10 +25,7 @@
-   #include <FreeImagePlus.h>
-   #include <Image_PixMap.ixx>
-   /* OCC22216 NOTE: linker dependency can be switched off by undefining macro */ 
+--- oce.orig/src/Image/Image_AlienPixMap.cxx
++++ oce/src/Image/Image_AlienPixMap.cxx
+@@ -23,10 +23,6 @@
+ 
+ #ifdef HAVE_FREEIMAGE
+   #include <FreeImage.h>
+-
 -  #ifdef _MSC_VER
--  #pragma comment( lib, "FreeImage.lib" )
--  #pragma comment( lib, "FreeImagePlus.lib" )
+-    #pragma comment( lib, "FreeImage.lib" )
 -  #endif
-+  
- #else
-   #include <Image_PixMap.ixx>
-   #include <fstream>
+ #endif
+ 
+ #include <Image_AlienPixMap.hxx>
+Index: oce/src/OpenGl/OpenGl_FontMgr.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_FontMgr.cxx
++++ oce/src/OpenGl/OpenGl_FontMgr.cxx
+@@ -22,11 +22,6 @@
+ 
+ #include <ft2build.h>
+ 
+-#ifdef _MSC_VER
+-#pragma comment( lib, "ftgl.lib" )
+-#pragma comment( lib, "freetype.lib" )
+-#endif
+-
+ #undef TRACE
+ 
+ #define DEFAULT_FONT_HEIGHT 16
 Index: oce/src/OpenGl/OpenGl_Workspace_5.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_Workspace_5.cxx

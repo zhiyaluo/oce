@@ -34,11 +34,11 @@ But this fix is wrong, it won't work for SSH connections, for instance.
 It is much more robust to rely on DISPLAY environment variable, so we keep
 this patch.
 
-Index: oce/src/OSD/OSD_FontMgr.cxx
+Index: oce/src/Font/Font_FontMgr.cxx
 ===================================================================
---- oce.orig/src/OSD/OSD_FontMgr.cxx
-+++ oce/src/OSD/OSD_FontMgr.cxx
-@@ -241,7 +241,7 @@ void OSD_FontMgr::InitFontDataBase() {
+--- oce.orig/src/Font/Font_FontMgr.cxx
++++ oce/src/Font/Font_FontMgr.cxx
+@@ -238,7 +238,7 @@ void Font_FontMgr::InitFontDataBase() {
  #ifndef WNT
    StringList dirs;
    Handle(TCollection_HAsciiString) str = new TCollection_HAsciiString;
