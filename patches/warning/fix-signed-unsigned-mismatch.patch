@@ -38,6 +38,19 @@ Index: oce/src/Image/Image_PixMap.cxx
    {
      return Quantity_Color (0.0, 0.0, 0.0, Quantity_TOC_RGB);
    }
+Index: oce/src/OpenGl/OpenGl_Display_1.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_Display_1.cxx
++++ oce/src/OpenGl/OpenGl_Display_1.cxx
+@@ -172,7 +172,7 @@ int OpenGl_Display::FindFont (const char
+   {
+     //try to use font names mapping
+     FontMapNode newTempFont = myFontMap[0];
+-    for ( int i = 0; i < NUM_FONT_ENTRIES; ++i )
++    for ( unsigned int i = 0; i < NUM_FONT_ENTRIES; ++i )
+     {
+       if ( TCollection_AsciiString(myFontMap[i].EnumName).IsEqual( family_name->ToCString() ) )
+       {
 Index: oce/src/OpenGl/OpenGl_TextureBox.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_TextureBox.cxx
@@ -53,16 +66,3 @@ Index: oce/src/OpenGl/OpenGl_TextureBox.cxx
    if (textab(ID).contextdata(Context).number != aCurrTex)
    {
      glBindTexture (texdata(data).type, textab(ID).contextdata(Context).number);
-Index: oce/src/OpenGl/OpenGl_Display_1.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_Display_1.cxx
-+++ oce/src/OpenGl/OpenGl_Display_1.cxx
-@@ -172,7 +172,7 @@ int OpenGl_Display::FindFont (const char
-   {
-     //try to use font names mapping
-     FontMapNode newTempFont = myFontMap[0];
--    for ( int i = 0; i < NUM_FONT_ENTRIES; ++i )
-+    for ( unsigned int i = 0; i < NUM_FONT_ENTRIES; ++i )
-     {
-       if ( TCollection_AsciiString(myFontMap[i].EnumName).IsEqual( family_name->ToCString() ) )
-       {

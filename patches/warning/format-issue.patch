@@ -13,7 +13,7 @@ Index: oce/src/BOPTest/BOPTest_LowCommands.cxx
 ===================================================================
 --- oce.orig/src/BOPTest/BOPTest_LowCommands.cxx
 +++ oce/src/BOPTest/BOPTest_LowCommands.cxx
-@@ -732,19 +732,19 @@ void PrintState (Draw_Interpretor& aDI,
+@@ -727,19 +727,19 @@ void PrintState (Draw_Interpretor& aDI,
    //
    switch (aState) {
    case TopAbs_IN:		

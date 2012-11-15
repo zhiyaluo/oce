@@ -10,11 +10,11 @@ to silence this warning.
  inc/NCollection_Vector.hxx |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/inc/NCollection_Vector.hxx b/inc/NCollection_Vector.hxx
-index 5780dc7..bd16ea6 100644
---- a/inc/NCollection_Vector.hxx
-+++ b/inc/NCollection_Vector.hxx
-@@ -301,7 +301,7 @@ template <class TheItemType> class NCollection_Vector
+Index: oce/inc/NCollection_Vector.hxx
+===================================================================
+--- oce.orig/inc/NCollection_Vector.hxx
++++ oce/inc/NCollection_Vector.hxx
+@@ -293,7 +293,7 @@ template <class TheItemType> class NColl
        (MemBlock *) aSelf.myAllocator->Allocate(aCapacity * sizeof(MemBlock));
      Standard_Integer i = 0;
      if (aSource != NULL) {
@@ -23,6 +23,3 @@ index 5780dc7..bd16ea6 100644
        i = aSize;
      }
      while (i < aCapacity)
--- 
-1.7.10.4
-

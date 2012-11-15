@@ -479,7 +479,7 @@ Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
 ===================================================================
 --- oce.orig/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
 +++ oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
-@@ -3025,14 +3025,16 @@ Standard_Integer IntPolyh_MaillageAffina
+@@ -3027,14 +3027,16 @@ Standard_Integer IntPolyh_MaillageAffina
        }
        else {
  	PI=PE1+Edge*lambda;

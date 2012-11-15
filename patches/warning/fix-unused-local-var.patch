@@ -83,246 +83,6 @@ Subject: [PATCH] [clang-warning-fix][unused-variable]
  src/AdvApp2Var/AdvApp2Var_SysBase.cxx |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Index: oce/inc/ApproxInt_Approx.gxx
-===================================================================
---- oce.orig/inc/ApproxInt_Approx.gxx
-+++ oce/inc/ApproxInt_Approx.gxx
-@@ -115,7 +115,7 @@ static void  ComputeTrsf2d(const Handle(
-     pfunc = &IntSurf_PntOn2S::ParametersOnS2;
-   for(Standard_Integer i=1;i<=nbp;i++) { 
-     const IntSurf_PntOn2S&  POn2S = theline->Point(i);
--    Standard_Real  U,V;
-+    Standard_Real  U=0.0,V=0.0;
-     (POn2S.*pfunc)(U,V);
-     if(U<u0) u0=U;
-     if(U>u1) u1=U;
-Index: oce/src/BinMDF/BinMDF_TagSourceDriver.cxx
-===================================================================
---- oce.orig/src/BinMDF/BinMDF_TagSourceDriver.cxx
-+++ oce/src/BinMDF/BinMDF_TagSourceDriver.cxx
-@@ -50,7 +50,7 @@ Standard_Boolean BinMDF_TagSourceDriver:
-                                  BinObjMgt_RRelocationTable&  ) const
- {
-   Handle(TDF_TagSource) aTag = Handle(TDF_TagSource)::DownCast(theTarget);
--  Standard_Integer aValue;
-+  Standard_Integer aValue=0;
-   Standard_Boolean ok = theSource >> aValue;
-   if (ok)
-     aTag->Set(aValue);
-Index: oce/src/BinMDataStd/BinMDataStd_IntPackedMapDriver.cxx
-===================================================================
---- oce.orig/src/BinMDataStd/BinMDataStd_IntPackedMapDriver.cxx
-+++ oce/src/BinMDataStd/BinMDataStd_IntPackedMapDriver.cxx
-@@ -76,7 +76,7 @@ Standard_Boolean BinMDataStd_IntPackedMa
-   }
-   if(aSize) {
-     Handle(TColStd_HPackedMapOfInteger) aHMap = new TColStd_HPackedMapOfInteger ();
--    Standard_Integer aKey;
-+    Standard_Integer aKey=0;
-     for(Standard_Integer i = 0; i< aSize; i++) {
-       Standard_Boolean ok = Source >> aKey;
-       if (!ok) {
-Index: oce/src/BinMDataStd/BinMDataStd_IntegerDriver.cxx
-===================================================================
---- oce.orig/src/BinMDataStd/BinMDataStd_IntegerDriver.cxx
-+++ oce/src/BinMDataStd/BinMDataStd_IntegerDriver.cxx
-@@ -53,7 +53,7 @@ Standard_Boolean BinMDataStd_IntegerDriv
-                                  BinObjMgt_RRelocationTable&  ) const
- {
-   Handle(TDataStd_Integer) anAtt = Handle(TDataStd_Integer)::DownCast(theTarget);
--  Standard_Integer aValue;
-+  Standard_Integer aValue=0;
-   Standard_Boolean ok = theSource >> aValue;
-   if (ok)
-     anAtt->Set(aValue);
-Index: oce/src/BinMDataStd/BinMDataStd_RealDriver.cxx
-===================================================================
---- oce.orig/src/BinMDataStd/BinMDataStd_RealDriver.cxx
-+++ oce/src/BinMDataStd/BinMDataStd_RealDriver.cxx
-@@ -53,7 +53,7 @@ Standard_Boolean BinMDataStd_RealDriver:
-                                  BinObjMgt_RRelocationTable&  ) const
- {
-   Handle(TDataStd_Real) anAtt= Handle(TDataStd_Real)::DownCast(theTarget);
--  Standard_Real aValue;
-+  Standard_Real aValue=0.0;
-   Standard_Boolean ok = theSource >> aValue;
-   if (ok)
-     anAtt->Set(aValue);
-Index: oce/src/BinMDataXtd/BinMDataXtd_GeometryDriver.cxx
-===================================================================
---- oce.orig/src/BinMDataXtd/BinMDataXtd_GeometryDriver.cxx
-+++ oce/src/BinMDataXtd/BinMDataXtd_GeometryDriver.cxx
-@@ -52,7 +52,7 @@ Standard_Boolean BinMDataXtd_GeometryDri
-   Handle(TDataXtd_Geometry) aT = 
-     Handle(TDataXtd_Geometry)::DownCast (theTarget);
- 
--  Standard_Integer aType;
-+  Standard_Integer aType=0;
-   Standard_Boolean ok = theSource >> aType;
-   if (ok)
-     aT->SetType ((TDataXtd_GeometryEnum) aType);
-Index: oce/src/BinMFunction/BinMFunction_FunctionDriver.cxx
-===================================================================
---- oce.orig/src/BinMFunction/BinMFunction_FunctionDriver.cxx
-+++ oce/src/BinMFunction/BinMFunction_FunctionDriver.cxx
-@@ -64,7 +64,7 @@ Standard_Boolean BinMFunction_FunctionDr
-   Standard_Boolean ok = theSource >> aGUID;
-   if (ok) {
-     anAtt->SetDriverGUID(aGUID);  
--    Standard_Integer aValue;
-+    Standard_Integer aValue=0;
-     ok = theSource >> aValue;
-     if(ok)
-       anAtt->SetFailure(aValue); 
-Index: oce/src/BinMNaming/BinMNaming_NamedShapeDriver.cxx
-===================================================================
---- oce.orig/src/BinMNaming/BinMNaming_NamedShapeDriver.cxx
-+++ oce/src/BinMNaming/BinMNaming_NamedShapeDriver.cxx
-@@ -118,7 +118,7 @@ static int TranslateFrom  (const BinObjM
-                          TopoDS_Shape&                  theResult,
-                          BinTools_ShapeSet&            theShapeSet)
- {
--  Standard_Integer aShapeID, aLocID;
-+  Standard_Integer aShapeID=0, aLocID=0;
-   Standard_Character aCharOrient;
-   Standard_Boolean Ok = theSource >> aShapeID; //TShapeID;
-   if(!Ok) return 1;
-@@ -174,11 +174,11 @@ Standard_Boolean BinMNaming_NamedShapeDr
-   TDF_Label aLabel = theTarget->Label ();
-   TNaming_Builder   aBuilder   (aLabel);
-   if (aNbShapes == 0) return Standard_False;
--  Standard_Integer aVer;
-+  Standard_Integer aVer=0;
-   Standard_Boolean ok = theSource >> aVer;
-   if(!ok) return Standard_False;
-   aTAtt->SetVersion(aVer); //Version
--  Standard_Character aCharEvol;
-+  Standard_Character aCharEvol='\0';
-   ok = theSource >> aCharEvol;
-   if(!ok) return Standard_False;
-   TNaming_Evolution anEvol  = EvolutionToEnum(aCharEvol); //Evolution
-Index: oce/src/BinMNaming/BinMNaming_NamingDriver.cxx
-===================================================================
---- oce.orig/src/BinMNaming/BinMNaming_NamingDriver.cxx
-+++ oce/src/BinMNaming/BinMNaming_NamingDriver.cxx
-@@ -154,7 +154,7 @@ Standard_Boolean BinMNaming_NamingDriver
-   TNaming_Name& aName = anAtt->ChangeName();
-   TCollection_ExtendedString aMsg;
- //1. NameType
--  Standard_Character aValue;
-+  Standard_Character aValue='\0';
-   Standard_Boolean ok = theSource >> aValue;
-   Standard_Boolean aNewF = Standard_False;
-   if (ok) {
-@@ -173,7 +173,7 @@ Standard_Boolean BinMNaming_NamingDriver
-       
- //3. Args
-       Standard_Integer aNbArgs=0;
--      Standard_Integer anIndx;
-+      Standard_Integer anIndx=0;
-       Handle(TNaming_NamedShape) aNS;
-       ok = theSource >> aNbArgs;
-       if (ok) {
-Index: oce/src/BinMPrsStd/BinMPrsStd_AISPresentationDriver.cxx
-===================================================================
---- oce.orig/src/BinMPrsStd/BinMPrsStd_AISPresentationDriver.cxx
-+++ oce/src/BinMPrsStd/BinMPrsStd_AISPresentationDriver.cxx
-@@ -56,7 +56,7 @@ Standard_Boolean BinMPrsStd_AISPresentat
-                                  BinObjMgt_RRelocationTable&  ) const
- {
-   Handle(TPrsStd_AISPresentation) anAtt = Handle(TPrsStd_AISPresentation)::DownCast(theTarget);
--  Standard_Integer aValue;
-+  Standard_Integer aValue = 0;
- //Display status
-   Standard_Boolean ok = theSource >> aValue;
-   if (!ok) return ok;
-@@ -81,7 +81,7 @@ Standard_Boolean BinMPrsStd_AISPresentat
-   else anAtt->UnsetMaterial();
- 
- //Transparency
--  Standard_Real aRValue;
-+  Standard_Real aRValue = 0.0;
-   ok = theSource >> aRValue;
-   if (!ok) return ok;
-   if(aRValue != -1.)  anAtt->SetTransparency(aRValue);
-Index: oce/src/BinMPrsStd/BinMPrsStd_PositionDriver.cxx
-===================================================================
---- oce.orig/src/BinMPrsStd/BinMPrsStd_PositionDriver.cxx
-+++ oce/src/BinMPrsStd/BinMPrsStd_PositionDriver.cxx
-@@ -56,7 +56,7 @@ Standard_Boolean BinMPrsStd_PositionDriv
-                                  BinObjMgt_RRelocationTable&  ) const
- {
-   Handle(TDataXtd_Position) anAtt = Handle(TDataXtd_Position)::DownCast(theTarget);
--  Standard_Real aValue;
-+  Standard_Real aValue = 0.0;
-   Standard_Boolean ok = theSource >> aValue;
-   if (!ok) return ok;
-   gp_Pnt aPosition(0., 0., 0.);
-Index: oce/src/BinMXCAFDoc/BinMXCAFDoc_AreaDriver.cxx
-===================================================================
---- oce.orig/src/BinMXCAFDoc/BinMXCAFDoc_AreaDriver.cxx
-+++ oce/src/BinMXCAFDoc/BinMXCAFDoc_AreaDriver.cxx
-@@ -47,7 +47,7 @@ Standard_Boolean BinMXCAFDoc_AreaDriver:
- 					       BinObjMgt_RRelocationTable& ) const 
- {
-   Handle(XCAFDoc_Area) anAtt = Handle(XCAFDoc_Area)::DownCast(theTarget);
--  Standard_Real aValue;
-+  Standard_Real aValue = 0.0;
-   Standard_Boolean isOk = theSource >> aValue;
-   if(isOk)
-     anAtt->Set(aValue);
-Index: oce/src/BinMXCAFDoc/BinMXCAFDoc_CentroidDriver.cxx
-===================================================================
---- oce.orig/src/BinMXCAFDoc/BinMXCAFDoc_CentroidDriver.cxx
-+++ oce/src/BinMXCAFDoc/BinMXCAFDoc_CentroidDriver.cxx
-@@ -47,7 +47,7 @@ Standard_Boolean BinMXCAFDoc_CentroidDri
- 						   BinObjMgt_RRelocationTable& /*theRelocTable*/) const
- {
-   Handle(XCAFDoc_Centroid) anAtt = Handle(XCAFDoc_Centroid)::DownCast(theTarget);
--  Standard_Real x, y, z;
-+  Standard_Real x =0.0, y = 0.0, z=0.0;
-   Standard_Boolean isOk = theSource >> x >> y >> z;
-   if(isOk) {
-     gp_Pnt aPnt(x, y, z);
-Index: oce/src/BinMXCAFDoc/BinMXCAFDoc_ColorDriver.cxx
-===================================================================
---- oce.orig/src/BinMXCAFDoc/BinMXCAFDoc_ColorDriver.cxx
-+++ oce/src/BinMXCAFDoc/BinMXCAFDoc_ColorDriver.cxx
-@@ -46,7 +46,7 @@ Standard_Boolean BinMXCAFDoc_ColorDriver
- 						BinObjMgt_RRelocationTable& /*theRelocTable*/) const 
- {
-   Handle(XCAFDoc_Color) anAtt = Handle(XCAFDoc_Color)::DownCast(theTarget);
--  Standard_Real R, G, B;
-+  Standard_Real R=0.0, G=0.0, B=0.0;
-   Standard_Boolean isOk = theSource >> R >> G >> B;
-   if(isOk) {
-     anAtt->Set(R, G, B);
-Index: oce/src/BinMXCAFDoc/BinMXCAFDoc_VolumeDriver.cxx
-===================================================================
---- oce.orig/src/BinMXCAFDoc/BinMXCAFDoc_VolumeDriver.cxx
-+++ oce/src/BinMXCAFDoc/BinMXCAFDoc_VolumeDriver.cxx
-@@ -46,7 +46,7 @@ Standard_Boolean BinMXCAFDoc_VolumeDrive
- 						 BinObjMgt_RRelocationTable& /*theRelocTable*/) const
- {
-   Handle(XCAFDoc_Volume) anAtt = Handle(XCAFDoc_Volume)::DownCast(theTarget);
--  Standard_Real aVol;
-+  Standard_Real aVol=0.0;
-   Standard_Boolean isOk = theSource >> aVol;
-   if(isOk)
-     anAtt->Set(aVol);
-Index: oce/src/IntPatch/IntPatch_LineConstructor.cxx
-===================================================================
---- oce.orig/src/IntPatch/IntPatch_LineConstructor.cxx
-+++ oce/src/IntPatch/IntPatch_LineConstructor.cxx
-@@ -1074,7 +1074,7 @@ static void TestWLineToRLine(const IntPa
- 	// check that the middle point is on arc
- 	(WLine->Point(midInd).*piParOnS)(utst,vtst);
- 	if (midInd == ParamMinOnLine) {
--	  Standard_Real utst1,vtst1;
-+	  Standard_Real utst1=0.0,vtst1=0.0;
- 	  (WLine->Point(midInd+1).*piParOnS)(utst1,vtst1);
- 	  utst = (utst+utst1)*0.5;
- 	  vtst = (vtst+vtst1)*0.5;
 Index: oce/inc/AppParCurves_Variational_1.gxx
 ===================================================================
 --- oce.orig/inc/AppParCurves_Variational_1.gxx
@@ -341,6 +101,19 @@ Index: oce/inc/AppParCurves_Variational_1.gxx
    Standard_Real CBLONG, LNOLD;
    Standard_Integer NbrPnt = myLastPoint - myFirstPoint + 1;
    Standard_Integer NbrConstraint = myNbPassPoints + myNbTangPoints + myNbCurvPoints;
+Index: oce/inc/ApproxInt_Approx.gxx
+===================================================================
+--- oce.orig/inc/ApproxInt_Approx.gxx
++++ oce/inc/ApproxInt_Approx.gxx
+@@ -115,7 +115,7 @@ static void  ComputeTrsf2d(const Handle(
+     pfunc = &IntSurf_PntOn2S::ParametersOnS2;
+   for(Standard_Integer i=1;i<=nbp;i++) { 
+     const IntSurf_PntOn2S&  POn2S = theline->Point(i);
+-    Standard_Real  U,V;
++    Standard_Real  U=0.0,V=0.0;
+     (POn2S.*pfunc)(U,V);
+     if(U<u0) u0=U;
+     if(U>u1) u1=U;
 Index: oce/inc/Contap_ContourGen_2.gxx
 ===================================================================
 --- oce.orig/inc/Contap_ContourGen_2.gxx
@@ -582,6 +355,19 @@ Index: oce/src/AIS/AIS_TexturedShape.cxx
  
        if (!OwnDeviationAngle (newangle, prevangle) && !OwnDeviationCoefficient (newcoeff, prevcoeff))
        {
+Index: oce/src/AdvApp2Var/AdvApp2Var_SysBase.cxx
+===================================================================
+--- oce.orig/src/AdvApp2Var/AdvApp2Var_SysBase.cxx
++++ oce/src/AdvApp2Var/AdvApp2Var_SysBase.cxx
+@@ -2731,7 +2731,7 @@ int AdvApp2Var_SysBase::mcrrqst_(integer
+   static doublereal dfmt;
+   static integer ifmt, iver;
+   static char subr[7];
+-  static integer ksys , ibyte, irest, isyst, ier;
++  static integer ksys , ibyte, irest, ier;
+   static intptr_t iadfd, iadff, iaddr,lofset, loc;
+   static integer izu;
+ 
 Index: oce/src/AlienImage/AlienImage_BMPAlienData.cxx
 ===================================================================
 --- oce.orig/src/AlienImage/AlienImage_BMPAlienData.cxx
@@ -756,6 +542,220 @@ Index: oce/src/BRepMesh/BRepMesh_Delaun.cxx
        Standard_Real angMin=RealLast();
        Standard_Real angMax=RealFirst();
        Standard_Boolean InMesh;
+Index: oce/src/BinMDF/BinMDF_TagSourceDriver.cxx
+===================================================================
+--- oce.orig/src/BinMDF/BinMDF_TagSourceDriver.cxx
++++ oce/src/BinMDF/BinMDF_TagSourceDriver.cxx
+@@ -50,7 +50,7 @@ Standard_Boolean BinMDF_TagSourceDriver:
+                                  BinObjMgt_RRelocationTable&  ) const
+ {
+   Handle(TDF_TagSource) aTag = Handle(TDF_TagSource)::DownCast(theTarget);
+-  Standard_Integer aValue;
++  Standard_Integer aValue=0;
+   Standard_Boolean ok = theSource >> aValue;
+   if (ok)
+     aTag->Set(aValue);
+Index: oce/src/BinMDataStd/BinMDataStd_IntPackedMapDriver.cxx
+===================================================================
+--- oce.orig/src/BinMDataStd/BinMDataStd_IntPackedMapDriver.cxx
++++ oce/src/BinMDataStd/BinMDataStd_IntPackedMapDriver.cxx
+@@ -76,7 +76,7 @@ Standard_Boolean BinMDataStd_IntPackedMa
+   }
+   if(aSize) {
+     Handle(TColStd_HPackedMapOfInteger) aHMap = new TColStd_HPackedMapOfInteger ();
+-    Standard_Integer aKey;
++    Standard_Integer aKey=0;
+     for(Standard_Integer i = 0; i< aSize; i++) {
+       Standard_Boolean ok = Source >> aKey;
+       if (!ok) {
+Index: oce/src/BinMDataStd/BinMDataStd_IntegerDriver.cxx
+===================================================================
+--- oce.orig/src/BinMDataStd/BinMDataStd_IntegerDriver.cxx
++++ oce/src/BinMDataStd/BinMDataStd_IntegerDriver.cxx
+@@ -53,7 +53,7 @@ Standard_Boolean BinMDataStd_IntegerDriv
+                                  BinObjMgt_RRelocationTable&  ) const
+ {
+   Handle(TDataStd_Integer) anAtt = Handle(TDataStd_Integer)::DownCast(theTarget);
+-  Standard_Integer aValue;
++  Standard_Integer aValue=0;
+   Standard_Boolean ok = theSource >> aValue;
+   if (ok)
+     anAtt->Set(aValue);
+Index: oce/src/BinMDataStd/BinMDataStd_RealDriver.cxx
+===================================================================
+--- oce.orig/src/BinMDataStd/BinMDataStd_RealDriver.cxx
++++ oce/src/BinMDataStd/BinMDataStd_RealDriver.cxx
+@@ -53,7 +53,7 @@ Standard_Boolean BinMDataStd_RealDriver:
+                                  BinObjMgt_RRelocationTable&  ) const
+ {
+   Handle(TDataStd_Real) anAtt= Handle(TDataStd_Real)::DownCast(theTarget);
+-  Standard_Real aValue;
++  Standard_Real aValue=0.0;
+   Standard_Boolean ok = theSource >> aValue;
+   if (ok)
+     anAtt->Set(aValue);
+Index: oce/src/BinMDataXtd/BinMDataXtd_GeometryDriver.cxx
+===================================================================
+--- oce.orig/src/BinMDataXtd/BinMDataXtd_GeometryDriver.cxx
++++ oce/src/BinMDataXtd/BinMDataXtd_GeometryDriver.cxx
+@@ -52,7 +52,7 @@ Standard_Boolean BinMDataXtd_GeometryDri
+   Handle(TDataXtd_Geometry) aT = 
+     Handle(TDataXtd_Geometry)::DownCast (theTarget);
+ 
+-  Standard_Integer aType;
++  Standard_Integer aType=0;
+   Standard_Boolean ok = theSource >> aType;
+   if (ok)
+     aT->SetType ((TDataXtd_GeometryEnum) aType);
+Index: oce/src/BinMFunction/BinMFunction_FunctionDriver.cxx
+===================================================================
+--- oce.orig/src/BinMFunction/BinMFunction_FunctionDriver.cxx
++++ oce/src/BinMFunction/BinMFunction_FunctionDriver.cxx
+@@ -64,7 +64,7 @@ Standard_Boolean BinMFunction_FunctionDr
+   Standard_Boolean ok = theSource >> aGUID;
+   if (ok) {
+     anAtt->SetDriverGUID(aGUID);  
+-    Standard_Integer aValue;
++    Standard_Integer aValue=0;
+     ok = theSource >> aValue;
+     if(ok)
+       anAtt->SetFailure(aValue); 
+Index: oce/src/BinMNaming/BinMNaming_NamedShapeDriver.cxx
+===================================================================
+--- oce.orig/src/BinMNaming/BinMNaming_NamedShapeDriver.cxx
++++ oce/src/BinMNaming/BinMNaming_NamedShapeDriver.cxx
+@@ -118,7 +118,7 @@ static int TranslateFrom  (const BinObjM
+                          TopoDS_Shape&                  theResult,
+                          BinTools_ShapeSet&            theShapeSet)
+ {
+-  Standard_Integer aShapeID, aLocID;
++  Standard_Integer aShapeID=0, aLocID=0;
+   Standard_Character aCharOrient;
+   Standard_Boolean Ok = theSource >> aShapeID; //TShapeID;
+   if(!Ok) return 1;
+@@ -174,11 +174,11 @@ Standard_Boolean BinMNaming_NamedShapeDr
+   TDF_Label aLabel = theTarget->Label ();
+   TNaming_Builder   aBuilder   (aLabel);
+   if (aNbShapes == 0) return Standard_False;
+-  Standard_Integer aVer;
++  Standard_Integer aVer=0;
+   Standard_Boolean ok = theSource >> aVer;
+   if(!ok) return Standard_False;
+   aTAtt->SetVersion(aVer); //Version
+-  Standard_Character aCharEvol;
++  Standard_Character aCharEvol='\0';
+   ok = theSource >> aCharEvol;
+   if(!ok) return Standard_False;
+   TNaming_Evolution anEvol  = EvolutionToEnum(aCharEvol); //Evolution
+Index: oce/src/BinMNaming/BinMNaming_NamingDriver.cxx
+===================================================================
+--- oce.orig/src/BinMNaming/BinMNaming_NamingDriver.cxx
++++ oce/src/BinMNaming/BinMNaming_NamingDriver.cxx
+@@ -154,7 +154,7 @@ Standard_Boolean BinMNaming_NamingDriver
+   TNaming_Name& aName = anAtt->ChangeName();
+   TCollection_ExtendedString aMsg;
+ //1. NameType
+-  Standard_Character aValue;
++  Standard_Character aValue='\0';
+   Standard_Boolean ok = theSource >> aValue;
+   Standard_Boolean aNewF = Standard_False;
+   if (ok) {
+@@ -173,7 +173,7 @@ Standard_Boolean BinMNaming_NamingDriver
+       
+ //3. Args
+       Standard_Integer aNbArgs=0;
+-      Standard_Integer anIndx;
++      Standard_Integer anIndx=0;
+       Handle(TNaming_NamedShape) aNS;
+       ok = theSource >> aNbArgs;
+       if (ok) {
+Index: oce/src/BinMPrsStd/BinMPrsStd_AISPresentationDriver.cxx
+===================================================================
+--- oce.orig/src/BinMPrsStd/BinMPrsStd_AISPresentationDriver.cxx
++++ oce/src/BinMPrsStd/BinMPrsStd_AISPresentationDriver.cxx
+@@ -56,7 +56,7 @@ Standard_Boolean BinMPrsStd_AISPresentat
+                                  BinObjMgt_RRelocationTable&  ) const
+ {
+   Handle(TPrsStd_AISPresentation) anAtt = Handle(TPrsStd_AISPresentation)::DownCast(theTarget);
+-  Standard_Integer aValue;
++  Standard_Integer aValue = 0;
+ //Display status
+   Standard_Boolean ok = theSource >> aValue;
+   if (!ok) return ok;
+@@ -81,7 +81,7 @@ Standard_Boolean BinMPrsStd_AISPresentat
+   else anAtt->UnsetMaterial();
+ 
+ //Transparency
+-  Standard_Real aRValue;
++  Standard_Real aRValue = 0.0;
+   ok = theSource >> aRValue;
+   if (!ok) return ok;
+   if(aRValue != -1.)  anAtt->SetTransparency(aRValue);
+Index: oce/src/BinMPrsStd/BinMPrsStd_PositionDriver.cxx
+===================================================================
+--- oce.orig/src/BinMPrsStd/BinMPrsStd_PositionDriver.cxx
++++ oce/src/BinMPrsStd/BinMPrsStd_PositionDriver.cxx
+@@ -56,7 +56,7 @@ Standard_Boolean BinMPrsStd_PositionDriv
+                                  BinObjMgt_RRelocationTable&  ) const
+ {
+   Handle(TDataXtd_Position) anAtt = Handle(TDataXtd_Position)::DownCast(theTarget);
+-  Standard_Real aValue;
++  Standard_Real aValue = 0.0;
+   Standard_Boolean ok = theSource >> aValue;
+   if (!ok) return ok;
+   gp_Pnt aPosition(0., 0., 0.);
+Index: oce/src/BinMXCAFDoc/BinMXCAFDoc_AreaDriver.cxx
+===================================================================
+--- oce.orig/src/BinMXCAFDoc/BinMXCAFDoc_AreaDriver.cxx
++++ oce/src/BinMXCAFDoc/BinMXCAFDoc_AreaDriver.cxx
+@@ -47,7 +47,7 @@ Standard_Boolean BinMXCAFDoc_AreaDriver:
+ 					       BinObjMgt_RRelocationTable& ) const 
+ {
+   Handle(XCAFDoc_Area) anAtt = Handle(XCAFDoc_Area)::DownCast(theTarget);
+-  Standard_Real aValue;
++  Standard_Real aValue = 0.0;
+   Standard_Boolean isOk = theSource >> aValue;
+   if(isOk)
+     anAtt->Set(aValue);
+Index: oce/src/BinMXCAFDoc/BinMXCAFDoc_CentroidDriver.cxx
+===================================================================
+--- oce.orig/src/BinMXCAFDoc/BinMXCAFDoc_CentroidDriver.cxx
++++ oce/src/BinMXCAFDoc/BinMXCAFDoc_CentroidDriver.cxx
+@@ -47,7 +47,7 @@ Standard_Boolean BinMXCAFDoc_CentroidDri
+ 						   BinObjMgt_RRelocationTable& /*theRelocTable*/) const
+ {
+   Handle(XCAFDoc_Centroid) anAtt = Handle(XCAFDoc_Centroid)::DownCast(theTarget);
+-  Standard_Real x, y, z;
++  Standard_Real x =0.0, y = 0.0, z=0.0;
+   Standard_Boolean isOk = theSource >> x >> y >> z;
+   if(isOk) {
+     gp_Pnt aPnt(x, y, z);
+Index: oce/src/BinMXCAFDoc/BinMXCAFDoc_ColorDriver.cxx
+===================================================================
+--- oce.orig/src/BinMXCAFDoc/BinMXCAFDoc_ColorDriver.cxx
++++ oce/src/BinMXCAFDoc/BinMXCAFDoc_ColorDriver.cxx
+@@ -46,7 +46,7 @@ Standard_Boolean BinMXCAFDoc_ColorDriver
+ 						BinObjMgt_RRelocationTable& /*theRelocTable*/) const 
+ {
+   Handle(XCAFDoc_Color) anAtt = Handle(XCAFDoc_Color)::DownCast(theTarget);
+-  Standard_Real R, G, B;
++  Standard_Real R=0.0, G=0.0, B=0.0;
+   Standard_Boolean isOk = theSource >> R >> G >> B;
+   if(isOk) {
+     anAtt->Set(R, G, B);
+Index: oce/src/BinMXCAFDoc/BinMXCAFDoc_VolumeDriver.cxx
+===================================================================
+--- oce.orig/src/BinMXCAFDoc/BinMXCAFDoc_VolumeDriver.cxx
++++ oce/src/BinMXCAFDoc/BinMXCAFDoc_VolumeDriver.cxx
+@@ -46,7 +46,7 @@ Standard_Boolean BinMXCAFDoc_VolumeDrive
+ 						 BinObjMgt_RRelocationTable& /*theRelocTable*/) const
+ {
+   Handle(XCAFDoc_Volume) anAtt = Handle(XCAFDoc_Volume)::DownCast(theTarget);
+-  Standard_Real aVol;
++  Standard_Real aVol=0.0;
+   Standard_Boolean isOk = theSource >> aVol;
+   if(isOk)
+     anAtt->Set(aVol);
 Index: oce/src/ChFiDS/ChFiDS_FilSpine.cxx
 ===================================================================
 --- oce.orig/src/ChFiDS/ChFiDS_FilSpine.cxx
@@ -966,6 +966,19 @@ Index: oce/src/HLRBRep/HLRBRep_ShapeToHLR.cxx
    if(nbEdge != 0) ed = &(DS->EDataArray().ChangeValue(1));
  //  ed++;
  
+Index: oce/src/IntPatch/IntPatch_LineConstructor.cxx
+===================================================================
+--- oce.orig/src/IntPatch/IntPatch_LineConstructor.cxx
++++ oce/src/IntPatch/IntPatch_LineConstructor.cxx
+@@ -1074,7 +1074,7 @@ static void TestWLineToRLine(const IntPa
+ 	// check that the middle point is on arc
+ 	(WLine->Point(midInd).*piParOnS)(utst,vtst);
+ 	if (midInd == ParamMinOnLine) {
+-	  Standard_Real utst1,vtst1;
++	  Standard_Real utst1=0.0,vtst1=0.0;
+ 	  (WLine->Point(midInd+1).*piParOnS)(utst1,vtst1);
+ 	  utst = (utst+utst1)*0.5;
+ 	  vtst = (vtst+vtst1)*0.5;
 Index: oce/src/IntPatch/IntPatch_RstInt.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_RstInt.cxx
@@ -1615,16 +1628,3 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
   HBITMAP          retVal = NULL;
   PBITMAPINFO      pBmi   = NULL;
   PBYTE            pbInit = NULL;
-Index: oce/src/AdvApp2Var/AdvApp2Var_SysBase.cxx
-===================================================================
---- oce.orig/src/AdvApp2Var/AdvApp2Var_SysBase.cxx
-+++ oce/src/AdvApp2Var/AdvApp2Var_SysBase.cxx
-@@ -2731,7 +2731,7 @@ int AdvApp2Var_SysBase::mcrrqst_(integer
-   static doublereal dfmt;
-   static integer ifmt, iver;
-   static char subr[7];
--  static integer ksys , ibyte, irest, isyst, ier;
-+  static integer ksys , ibyte, irest, ier;
-   static intptr_t iadfd, iadff, iaddr,lofset, loc;
-   static integer izu;
- 

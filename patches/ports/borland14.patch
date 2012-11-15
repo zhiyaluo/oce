@@ -44,6 +44,23 @@ Subject: [PATCH] HashCode & IsEqual are needed as global for bcc32
  inc/BRepBuilderAPI_CellFilter.hxx |    8 ++++++++
  1 file changed, 8 insertions(+)
 
+Index: oce/inc/BRepBuilderAPI_CellFilter.hxx
+===================================================================
+--- oce.orig/inc/BRepBuilderAPI_CellFilter.hxx
++++ oce/inc/BRepBuilderAPI_CellFilter.hxx
+@@ -36,4 +36,12 @@
+ 
+ typedef NCollection_CellFilter<BRepBuilderAPI_VertexInspector> BRepBuilderAPI_CellFilter;
+ 
++#ifdef __BORLANDC__
++  // definition of global functions is needed for map
++  Standard_Integer HashCode (const NCollection_CellFilter<BRepBuilderAPI_VertexInspector>::Cell &aCell, const Standard_Integer theUpper)
++  { return aCell.HashCode(theUpper); }
++  Standard_Boolean IsEqual (const NCollection_CellFilter<BRepBuilderAPI_VertexInspector>::Cell &aCell1, const NCollection_CellFilter<BRepBuilderAPI_VertexInspector>::Cell &aCell2)
++  { return aCell1.IsEqual(aCell2); }
++#endif
++
+ #endif
 Index: oce/inc/NCollection_Array1.hxx
 ===================================================================
 --- oce.orig/inc/NCollection_Array1.hxx
@@ -134,6 +151,19 @@ Index: oce/inc/NCollection_UBTreeFiller.hxx
  /**
   * This class is used to fill an UBTree in a random order.
   * The quality of a tree is much better (from the point of view of
+Index: oce/src/DDF/DDF_BrowserCommands.cxx
+===================================================================
+--- oce.orig/src/DDF/DDF_BrowserCommands.cxx
++++ oce/src/DDF/DDF_BrowserCommands.cxx
+@@ -113,7 +113,7 @@ static Standard_Integer DFOpenLabel (Dra
+   TDF_Label lab;
+   if (n == 3) TDF_Tool::Label(browser->Data(),a[2],lab);
+ 
+-  TCollection_AsciiString list(lab.IsNull()? browser->OpenRoot() : browser->OpenLabel(lab));
++  TCollection_AsciiString list = lab.IsNull() ? browser->OpenRoot() : browser->OpenLabel(lab);
+   di<<list.ToCString();
+   return 0;
+ }
 Index: oce/src/OSD/OSD_signal_WNT.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_signal_WNT.cxx
@@ -165,6 +195,19 @@ Index: oce/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
 +# endif
  # define fabsf (float)fabs 
  #endif
+ 
+Index: oce/src/QABugs/QABugs_3.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_3.cxx
++++ oce/src/QABugs/QABugs_3.cxx
+@@ -1860,7 +1860,7 @@ static int BUC60831_1(Draw_Interpretor&
+     L.Root().AddAttribute(MDF);
+   }
+ 
+-  di<<!MDF->IsEmpty();
++  di<<(const Standard_Integer)!MDF->IsEmpty();
+   return 0;
+ }
  
 Index: oce/src/ShapeFix/ShapeFix.cxx
 ===================================================================
@@ -204,36 +247,6 @@ Index: oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
  #pragma option -x-
  #endif
  
-Index: oce/inc/BRepBuilderAPI_CellFilter.hxx
-===================================================================
---- oce.orig/inc/BRepBuilderAPI_CellFilter.hxx
-+++ oce/inc/BRepBuilderAPI_CellFilter.hxx
-@@ -36,4 +36,12 @@
- 
- typedef NCollection_CellFilter<BRepBuilderAPI_VertexInspector> BRepBuilderAPI_CellFilter;
- 
-+#ifdef __BORLANDC__
-+  // definition of global functions is needed for map
-+  Standard_Integer HashCode (const NCollection_CellFilter<BRepBuilderAPI_VertexInspector>::Cell &aCell, const Standard_Integer theUpper)
-+  { return aCell.HashCode(theUpper); }
-+  Standard_Boolean IsEqual (const NCollection_CellFilter<BRepBuilderAPI_VertexInspector>::Cell &aCell1, const NCollection_CellFilter<BRepBuilderAPI_VertexInspector>::Cell &aCell2)
-+  { return aCell1.IsEqual(aCell2); }
-+#endif
-+
- #endif
-Index: oce/src/DDF/DDF_BrowserCommands.cxx
-===================================================================
---- oce.orig/src/DDF/DDF_BrowserCommands.cxx
-+++ oce/src/DDF/DDF_BrowserCommands.cxx
-@@ -113,7 +113,7 @@ static Standard_Integer DFOpenLabel (Dra
-   TDF_Label lab;
-   if (n == 3) TDF_Tool::Label(browser->Data(),a[2],lab);
- 
--  TCollection_AsciiString list(lab.IsNull()? browser->OpenRoot() : browser->OpenLabel(lab));
-+  TCollection_AsciiString list = lab.IsNull() ? browser->OpenRoot() : browser->OpenLabel(lab);
-   di<<list.ToCString();
-   return 0;
- }
 Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_repvg.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS_repvg.cxx
@@ -309,16 +322,3 @@ Index: oce/src/ViewerTest/ViewerTest_OpenGlCommands.cxx
  
      VUserDrawObj()
      {
-Index: oce/src/QABugs/QABugs_3.cxx
-===================================================================
---- oce.orig/src/QABugs/QABugs_3.cxx
-+++ oce/src/QABugs/QABugs_3.cxx
-@@ -1860,7 +1860,7 @@ static int BUC60831_1(Draw_Interpretor&
-     L.Root().AddAttribute(MDF);
-   }
- 
--  di<<!MDF->IsEmpty();
-+  di<<(const Standard_Integer)!MDF->IsEmpty();
-   return 0;
- }
- 

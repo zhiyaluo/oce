@@ -51,7 +51,7 @@ Index: oce/src/AIS/AIS_ParallelRelation.cxx
 ===================================================================
 --- oce.orig/src/AIS/AIS_ParallelRelation.cxx
 +++ oce/src/AIS/AIS_ParallelRelation.cxx
-@@ -292,8 +292,8 @@ void AIS_ParallelRelation::ComputeTwoEdg
+@@ -308,8 +308,8 @@ void AIS_ParallelRelation::ComputeTwoEdg
      }
    else return;
  
@@ -66,7 +66,7 @@ Index: oce/src/DDataStd/DDataStd_BasicCommands.cxx
 ===================================================================
 --- oce.orig/src/DDataStd/DDataStd_BasicCommands.cxx
 +++ oce/src/DDataStd/DDataStd_BasicCommands.cxx
-@@ -1276,7 +1276,7 @@ static Standard_Integer DDataStd_SetIntP
+@@ -1291,7 +1291,7 @@ static Standard_Integer DDataStd_SetIntP
        aMap.Add (atoi(arg[j]));
        j++;
      }
@@ -75,7 +75,7 @@ Index: oce/src/DDataStd/DDataStd_BasicCommands.cxx
      anAtt->ChangeMap(aHMap);
      cout << "Map extent = " << anAtt->Extent()<<endl;
      return 0; 
-@@ -1474,7 +1474,7 @@ static Standard_Integer DDataStd_SetIntP
+@@ -1489,7 +1489,7 @@ static Standard_Integer DDataStd_SetIntP
      for(Standard_Integer i = 1; i<=aNum; i++) {
        aMap.Add (i);
      }
@@ -88,7 +88,7 @@ Index: oce/src/STEPConstruct/STEPConstruct_ValidationProps.cxx
 ===================================================================
 --- oce.orig/src/STEPConstruct/STEPConstruct_ValidationProps.cxx
 +++ oce/src/STEPConstruct/STEPConstruct_ValidationProps.cxx
-@@ -663,7 +663,7 @@ Standard_Boolean STEPConstruct_Validatio
+@@ -679,7 +679,7 @@ Standard_Boolean STEPConstruct_Validatio
    else if ( Name == "VOLUME_MEASURE" ) isArea = Standard_False; 
    else {
  #ifdef DEB
@@ -97,7 +97,7 @@ Index: oce/src/STEPConstruct/STEPConstruct_ValidationProps.cxx
  #endif
      return Standard_False;
    }
-@@ -686,7 +686,7 @@ Standard_Boolean STEPConstruct_Validatio
+@@ -702,7 +702,7 @@ Standard_Boolean STEPConstruct_Validatio
    Handle(StepGeom_CartesianPoint) P = Handle(StepGeom_CartesianPoint)::DownCast ( item );
    if ( P.IsNull() || P->NbCoordinates() != 3 ) {
  #ifdef DEB
@@ -110,7 +110,7 @@ Index: oce/src/TNaming/TNaming_UsedShapes.cxx
 ===================================================================
 --- oce.orig/src/TNaming/TNaming_UsedShapes.cxx
 +++ oce/src/TNaming/TNaming_UsedShapes.cxx
-@@ -159,8 +159,8 @@ Standard_OStream& TNaming_UsedShapes::Du
+@@ -171,8 +171,8 @@ Standard_OStream& TNaming_UsedShapes::Du
      TopAbs::Print(itr.Key().ShapeType(),anOS);
      anOS<<"  ";
      itr.Value()->Label().EntryDump(anOS);
@@ -125,7 +125,7 @@ Index: oce/src/UnitsAPI/UnitsAPI.cxx
 ===================================================================
 --- oce.orig/src/UnitsAPI/UnitsAPI.cxx
 +++ oce/src/UnitsAPI/UnitsAPI.cxx
-@@ -328,7 +328,7 @@ Standard_Real UnitsAPI::AnyToLS(const St
+@@ -346,7 +346,7 @@ Standard_Real UnitsAPI::AnyToLS(const St
      aValue = LocalSystemUnits.ConvertSIValueToUserSystem(quantity,aValue);
    }
    else

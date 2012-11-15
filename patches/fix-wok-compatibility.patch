@@ -15,7 +15,7 @@ Index: oce/src/FSD/FSD_File.cdl
 ===================================================================
 --- oce.orig/src/FSD/FSD_File.cdl
 +++ oce/src/FSD/FSD_File.cdl
-@@ -325,7 +325,7 @@ is
+@@ -340,7 +340,7 @@ is
  
      MagicNumber(myclass)
      	returns CString from Standard is private;
@@ -40,7 +40,7 @@ Index: oce/src/TCollection/TCollection_ExtendedString.cdl
 ===================================================================
 --- oce.orig/src/TCollection/TCollection_ExtendedString.cdl
 +++ oce/src/TCollection/TCollection_ExtendedString.cdl
-@@ -297,7 +297,7 @@ is
+@@ -312,7 +312,7 @@ is
     ToExtString(me) returns ExtString
     ---Level: Public
     ---Purpose: Returns pointer to ExtString

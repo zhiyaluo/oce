@@ -9,11 +9,11 @@ operation.
  src/TopOpeBRepTool/TopOpeBRepTool_makeTransition.cxx |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/src/TopOpeBRepTool/TopOpeBRepTool_makeTransition.cxx b/src/TopOpeBRepTool/TopOpeBRepTool_makeTransition.cxx
-index 977c34e..0b8d616 100644
---- a/src/TopOpeBRepTool/TopOpeBRepTool_makeTransition.cxx
-+++ b/src/TopOpeBRepTool/TopOpeBRepTool_makeTransition.cxx
-@@ -270,14 +270,14 @@ static Standard_Boolean FUN_mkT2dquad(const TopoDS_Edge& e1,const Standard_Real
+Index: oce/src/TopOpeBRepTool/TopOpeBRepTool_makeTransition.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRepTool/TopOpeBRepTool_makeTransition.cxx
++++ oce/src/TopOpeBRepTool/TopOpeBRepTool_makeTransition.cxx
+@@ -270,14 +270,14 @@ static Standard_Boolean FUN_mkT2dquad(co
    // = sta = state of point on e1 after pt / e2
  
    gp_Dir tga1,tga2;
@@ -30,6 +30,3 @@ index 977c34e..0b8d616 100644
    if (mk2) {
      Standard_Real f2,l2; FUN_tool_bounds(e2,f2,l2);
      Standard_Integer st2 = 0; gp_Dir tgnear2;
--- 
-1.7.10.4
-

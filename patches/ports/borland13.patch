@@ -9,11 +9,11 @@ even when created from within scope. (bcc32 bug)
  src/BRepMesh/BRepMesh_DiscretFactory.cxx |    5 +++++
  1 files changed, 5 insertions(+), 0 deletions(-)
 
-diff --git a/src/BRepMesh/BRepMesh_DiscretFactory.cxx b/src/BRepMesh/BRepMesh_DiscretFactory.cxx
-index 69f3402..6d4ce30 100644
---- a/src/BRepMesh/BRepMesh_DiscretFactory.cxx
-+++ b/src/BRepMesh/BRepMesh_DiscretFactory.cxx
-@@ -74,9 +74,14 @@ void BRepMesh_DiscretFactory::Clear()
+Index: oce/src/BRepMesh/BRepMesh_DiscretFactory.cxx
+===================================================================
+--- oce.orig/src/BRepMesh/BRepMesh_DiscretFactory.cxx
++++ oce/src/BRepMesh/BRepMesh_DiscretFactory.cxx
+@@ -90,9 +90,14 @@ void BRepMesh_DiscretFactory::Clear()
  //=======================================================================
  BRepMesh_DiscretFactory& BRepMesh_DiscretFactory::Get()
  {
@@ -28,6 +28,3 @@ index 69f3402..6d4ce30 100644
  }
  
  //=======================================================================
--- 
-1.7.9.1
-

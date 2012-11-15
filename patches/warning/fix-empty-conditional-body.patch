@@ -168,7 +168,7 @@ Index: oce/src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx
 ===================================================================
 --- oce.orig/src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx
 +++ oce/src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx
-@@ -2930,7 +2930,7 @@ void BRepBuilderAPI_Sewing::VerticesAsse
+@@ -2920,7 +2920,7 @@ void BRepBuilderAPI_Sewing::VerticesAsse
  #ifdef DEB
        cout << "Assemble " << nbVert << " vertices on faces..." << endl;
  #endif
@@ -177,7 +177,7 @@ Index: oce/src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx
      }
      if (!aPS.More())
        return;
-@@ -2939,7 +2939,7 @@ void BRepBuilderAPI_Sewing::VerticesAsse
+@@ -2929,7 +2929,7 @@ void BRepBuilderAPI_Sewing::VerticesAsse
  #ifdef DEB
        cout << "Assemble " << nbVertFree << " vertices on floating edges..." << endl;
  #endif

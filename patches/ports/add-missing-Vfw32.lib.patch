@@ -8,7 +8,7 @@ Index: oce/src/OpenGl/OpenGl_AVIWriter.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_AVIWriter.cxx
 +++ oce/src/OpenGl/OpenGl_AVIWriter.cxx
-@@ -6,6 +6,12 @@
+@@ -21,6 +21,12 @@
  #include <OpenGl_AVIWriter.hxx>
  
  #ifdef WNT

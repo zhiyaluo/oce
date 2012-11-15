@@ -90,6 +90,51 @@ Remove trailing whitespace in OSD_MemInfo.cxx.
  src/OSD/OSD_MemInfo.cxx |    4 ++--
  2 files changed, 8 insertions(+), 5 deletions(-)
 
+Index: oce/drv/ExprIntrp/ExprIntrp.tab.c
+===================================================================
+--- oce.orig/drv/ExprIntrp/ExprIntrp.tab.c
++++ oce/drv/ExprIntrp/ExprIntrp.tab.c
+@@ -22,6 +22,11 @@
+  by  GNU Bison version 1.25
+   */
+ 
++/* Disable warnings in this auto-generated file */
++#ifdef _MSC_VER
++#pragma warning(push,0)
++#endif
++
+ #define YYBISON 1  /* Identify Bison output.  */
+ 
+ #define yyparse ExprIntrpparse
+@@ -1248,3 +1253,7 @@ yyerrhandle:
+   goto yynewstate;
+ }
+ #line 150 "j:/kas/c40/ros/src/exprintrp/exprintrp.yacc"
++
++#ifdef _MSC_VER
++#pragma warning(pop)
++#endif
+Index: oce/drv/ExprIntrp/lex.ExprIntrp.c
+===================================================================
+--- oce.orig/drv/ExprIntrp/lex.ExprIntrp.c
++++ oce/drv/ExprIntrp/lex.ExprIntrp.c
+@@ -1,3 +1,8 @@
++/* Disable warnings in this auto-generated file */
++#ifdef _MSC_VER
++#pragma warning(push,0)
++#endif
++
+ #define yy_create_buffer ExprIntrp_create_buffer
+ #define yy_delete_buffer ExprIntrp_delete_buffer
+ #define yy_scan_buffer ExprIntrp_scan_buffer
+@@ -3221,3 +3226,7 @@ int main()
+ 	return 0;
+ 	}
+ #endif
++
++#ifdef _MSC_VER
++#pragma warning(pop)
++#endif
 Index: oce/drv/ShapeSchema/ShapeSchema.cxx
 ===================================================================
 --- oce.orig/drv/ShapeSchema/ShapeSchema.cxx
@@ -138,6 +183,53 @@ Index: oce/drv/StdSchema/StdSchema.cxx
  IMPLEMENT_STANDARD_HANDLE(StdSchema,Storage_Schema)
  IMPLEMENT_STANDARD_RTTIEXT(StdSchema,Storage_Schema)
  
+Index: oce/drv/StepFile/lex.step.c
+===================================================================
+--- oce.orig/drv/StepFile/lex.step.c
++++ oce/drv/StepFile/lex.step.c
+@@ -1,3 +1,8 @@
++/* Disable warnings in this auto-generated file */
++#ifdef _MSC_VER
++#pragma warning(push,0)
++#endif
++
+ #define yy_create_buffer step_create_buffer
+ #define yy_delete_buffer step_delete_buffer
+ #define yy_scan_buffer step_scan_buffer
+@@ -1739,3 +1744,7 @@ int main()
+ 	return 0;
+ 	}
+ #endif
++
++#ifdef _MSC_VER
++#pragma warning(pop)
++#endif
+Index: oce/drv/StepFile/step.tab.c
+===================================================================
+--- oce.orig/drv/StepFile/step.tab.c
++++ oce/drv/StepFile/step.tab.c
+@@ -34,6 +34,12 @@
+ 
+ #include "recfile.ph"		/* definitions des types d'arguments */
+ #include "recfile.pc"		/* la-dedans, tout y est */
++
++/* Disable warnings in this auto-generated file */
++#ifdef _MSC_VER
++#pragma warning(push,0)
++#endif
++
+ /*
+ #define stepparse STEPparse
+ #define steplex STEPlex
+@@ -1016,3 +1022,8 @@ yyerrhandle:
+   goto yynewstate;
+ }
+ #line 146 "/dn43/OCCT/tmp/results_15.04.2012/occt/release-sources-20120415/src/StepFile/step.yacc"
++
++
++#ifdef _MSC_VER
++#pragma warning(pop)
++#endif
 Index: oce/drv/XCAFSchema/XCAFSchema.cxx
 ===================================================================
 --- oce.orig/drv/XCAFSchema/XCAFSchema.cxx
@@ -154,6 +246,45 @@ Index: oce/drv/XCAFSchema/XCAFSchema.cxx
  IMPLEMENT_STANDARD_HANDLE(XCAFSchema,Storage_Schema)
  IMPLEMENT_STANDARD_RTTIEXT(XCAFSchema,Storage_Schema)
  
+Index: oce/inc/Standard_Atomic.hxx
+===================================================================
+--- oce.orig/inc/Standard_Atomic.hxx
++++ oce/inc/Standard_Atomic.hxx
+@@ -34,20 +34,20 @@
+ 
+ #include <Standard_Macro.hxx>
+ 
+-#if defined(_MSC_VER) || defined(__BORLANDC__)
+-#ifdef __BORLANDC__
+-extern "C" {
+-  __declspec(dllimport) long __stdcall InterlockedIncrement ( long volatile *lpAddend);
+-  __declspec(dllimport) long __stdcall InterlockedDecrement ( long volatile *lpAddend);
+- }
+- #define _InterlockedIncrement InterlockedIncrement
+- #define _InterlockedDecrement InterlockedDecrement
+-#elif defined(_MSC_VER)
+- extern "C" {
+-  long _InterlockedIncrement(long volatile* lpAddend);
+-  long _InterlockedDecrement(long volatile* lpAddend);
+- }
+-#endif
++#if (defined(_WIN32) || defined(__WIN32__))
++  #ifdef _MSC_VER
++    extern "C" {
++      long _InterlockedIncrement(long volatile* lpAddend);
++      long _InterlockedDecrement(long volatile* lpAddend);
++    }
++  #else
++    extern "C" {
++      __declspec(dllimport) long __stdcall InterlockedIncrement ( long volatile *lpAddend);
++      __declspec(dllimport) long __stdcall InterlockedDecrement ( long volatile *lpAddend);
++    }
++    #define _InterlockedIncrement InterlockedIncrement
++    #define _InterlockedDecrement InterlockedDecrement
++  #endif
+ #endif
+ 
+ #if defined(_MSC_VER)
 Index: oce/src/BOPTools/BOPTools_PaveSet.cxx
 ===================================================================
 --- oce.orig/src/BOPTools/BOPTools_PaveSet.cxx
@@ -329,6 +460,21 @@ Index: oce/src/OSD/OSD_Environment.cxx
  static void __fastcall _set_error ( OSD_Error&, DWORD );
  
  OSD_Environment :: OSD_Environment () {
+Index: oce/src/OSD/OSD_MemInfo.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_MemInfo.cxx
++++ oce/src/OSD/OSD_MemInfo.cxx
+@@ -18,6 +18,10 @@
+ // and conditions governing the rights and limitations under the License.
+ 
+ #if (defined(_WIN32) || defined(__WIN32__))
++  #if defined(__MINGW32__)
++    #define WIN32_WINNT 0x0500
++    #define WINVER 0x0500
++  #endif
+   #include <windows.h>
+   #include <winbase.h>
+   #include <process.h>
 Index: oce/src/OSD/OSD_Process.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Process.cxx
@@ -623,149 +769,3 @@ Index: oce/src/XmlXCAFDrivers/XmlXCAFDrivers.cxx
  #endif
  
  static Standard_GUID XSStorageDriver  ("f78ff496-a779-11d5-aab4-0050044b1af1");
-Index: oce/drv/ExprIntrp/ExprIntrp.tab.c
-===================================================================
---- oce.orig/drv/ExprIntrp/ExprIntrp.tab.c
-+++ oce/drv/ExprIntrp/ExprIntrp.tab.c
-@@ -22,6 +22,11 @@
-  by  GNU Bison version 1.25
-   */
- 
-+/* Disable warnings in this auto-generated file */
-+#ifdef _MSC_VER
-+#pragma warning(push,0)
-+#endif
-+
- #define YYBISON 1  /* Identify Bison output.  */
- 
- #define yyparse ExprIntrpparse
-@@ -1248,3 +1253,7 @@ yyerrhandle:
-   goto yynewstate;
- }
- #line 150 "j:/kas/c40/ros/src/exprintrp/exprintrp.yacc"
-+
-+#ifdef _MSC_VER
-+#pragma warning(pop)
-+#endif
-Index: oce/drv/ExprIntrp/lex.ExprIntrp.c
-===================================================================
---- oce.orig/drv/ExprIntrp/lex.ExprIntrp.c
-+++ oce/drv/ExprIntrp/lex.ExprIntrp.c
-@@ -1,3 +1,8 @@
-+/* Disable warnings in this auto-generated file */
-+#ifdef _MSC_VER
-+#pragma warning(push,0)
-+#endif
-+
- #define yy_create_buffer ExprIntrp_create_buffer
- #define yy_delete_buffer ExprIntrp_delete_buffer
- #define yy_scan_buffer ExprIntrp_scan_buffer
-@@ -3222,3 +3227,7 @@ int main()
- 	return 0;
- 	}
- #endif
-+
-+#ifdef _MSC_VER
-+#pragma warning(pop)
-+#endif
-Index: oce/drv/StepFile/lex.step.c
-===================================================================
---- oce.orig/drv/StepFile/lex.step.c
-+++ oce/drv/StepFile/lex.step.c
-@@ -1,3 +1,8 @@
-+/* Disable warnings in this auto-generated file */
-+#ifdef _MSC_VER
-+#pragma warning(push,0)
-+#endif
-+
- #define yy_create_buffer step_create_buffer
- #define yy_delete_buffer step_delete_buffer
- #define yy_scan_buffer step_scan_buffer
-@@ -1739,3 +1744,7 @@ int main()
- 	return 0;
- 	}
- #endif
-+
-+#ifdef _MSC_VER
-+#pragma warning(pop)
-+#endif
-Index: oce/drv/StepFile/step.tab.c
-===================================================================
---- oce.orig/drv/StepFile/step.tab.c
-+++ oce/drv/StepFile/step.tab.c
-@@ -34,6 +34,12 @@
- 
- #include "recfile.ph"		/* definitions des types d'arguments */
- #include "recfile.pc"		/* la-dedans, tout y est */
-+
-+/* Disable warnings in this auto-generated file */
-+#ifdef _MSC_VER
-+#pragma warning(push,0)
-+#endif
-+
- /*
- #define stepparse STEPparse
- #define steplex STEPlex
-@@ -1016,3 +1022,8 @@ yyerrhandle:
-   goto yynewstate;
- }
- #line 146 "/dn43/OCCT/tmp/results_15.04.2012/occt/release-sources-20120415/src/StepFile/step.yacc"
-+
-+
-+#ifdef _MSC_VER
-+#pragma warning(pop)
-+#endif
-Index: oce/inc/Standard_Atomic.hxx
-===================================================================
---- oce.orig/inc/Standard_Atomic.hxx
-+++ oce/inc/Standard_Atomic.hxx
-@@ -34,20 +34,20 @@
- 
- #include <Standard_Macro.hxx>
- 
--#if defined(_MSC_VER) || defined(__BORLANDC__)
--#ifdef __BORLANDC__
--extern "C" {
--  __declspec(dllimport) long __stdcall InterlockedIncrement ( long volatile *lpAddend);
--  __declspec(dllimport) long __stdcall InterlockedDecrement ( long volatile *lpAddend);
-- }
-- #define _InterlockedIncrement InterlockedIncrement
-- #define _InterlockedDecrement InterlockedDecrement
--#elif defined(_MSC_VER)
-- extern "C" {
--  long _InterlockedIncrement(long volatile* lpAddend);
--  long _InterlockedDecrement(long volatile* lpAddend);
-- }
--#endif
-+#if (defined(_WIN32) || defined(__WIN32__))
-+  #ifdef _MSC_VER
-+    extern "C" {
-+      long _InterlockedIncrement(long volatile* lpAddend);
-+      long _InterlockedDecrement(long volatile* lpAddend);
-+    }
-+  #else
-+    extern "C" {
-+      __declspec(dllimport) long __stdcall InterlockedIncrement ( long volatile *lpAddend);
-+      __declspec(dllimport) long __stdcall InterlockedDecrement ( long volatile *lpAddend);
-+    }
-+    #define _InterlockedIncrement InterlockedIncrement
-+    #define _InterlockedDecrement InterlockedDecrement
-+  #endif
- #endif
- 
- #if defined(_MSC_VER)
-Index: oce/src/OSD/OSD_MemInfo.cxx
-===================================================================
---- oce.orig/src/OSD/OSD_MemInfo.cxx
-+++ oce/src/OSD/OSD_MemInfo.cxx
-@@ -18,6 +18,10 @@
- // and conditions governing the rights and limitations under the License.
- 
- #if (defined(_WIN32) || defined(__WIN32__))
-+  #if defined(__MINGW32__)
-+    #define WIN32_WINNT 0x0500
-+    #define WINVER 0x0500
-+  #endif
-   #include <windows.h>
-   #include <winbase.h>
-   #include <process.h>

@@ -20,7 +20,7 @@ Index: oce/inc/W32_Allocator.hxx
 ===================================================================
 --- oce.orig/inc/W32_Allocator.hxx
 +++ oce/inc/W32_Allocator.hxx
-@@ -102,7 +102,10 @@ struct W32_Note {  // base class to repr
+@@ -117,7 +117,10 @@ struct W32_Note {  // base class to repr
   PW32_Allocator myAllocator;
  
  #ifdef OCC5415

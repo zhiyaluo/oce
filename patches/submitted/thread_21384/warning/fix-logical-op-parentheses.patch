@@ -662,7 +662,7 @@ Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
 ===================================================================
 --- oce.orig/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
 +++ oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
-@@ -2698,7 +2698,7 @@ Standard_Integer IntPolyh_MaillageAffina
+@@ -2700,7 +2700,7 @@ Standard_Integer IntPolyh_MaillageAffina
  	  &&(Abs(SP1.V1()-SP2.V1())<MyConfusionPrecision) ) NbPoints=1;
        if (NbPoints>=2) return(NbPoints);
                       //= remove
@@ -671,7 +671,7 @@ Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
  	       && (NbPoints<2) ) {
  	//there are two sides (common top PT3) that can cut the edge
  	
-@@ -2983,7 +2983,7 @@ Standard_Integer IntPolyh_MaillageAffina
+@@ -2985,7 +2985,7 @@ Standard_Integer IntPolyh_MaillageAffina
  	    &&(Abs(SP1.V1()-SP2.V1())<MyConfusionPrecision) ) NbPoints=1;
  	if (NbPoints>=2) return(NbPoints);
  	

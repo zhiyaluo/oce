@@ -35,7 +35,7 @@ Index: oce/inc/AIS_InteractiveContext.lxx
 ===================================================================
 --- oce.orig/inc/AIS_InteractiveContext.lxx
 +++ oce/inc/AIS_InteractiveContext.lxx
-@@ -78,7 +78,7 @@ inline Standard_Boolean AIS_InteractiveC
+@@ -96,7 +96,7 @@ inline Standard_Boolean AIS_InteractiveC
  {return myCurLocalIndex != 0;}
  
  inline Handle_AIS_LocalContext AIS_InteractiveContext::LocalContext() const
@@ -48,7 +48,7 @@ Index: oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
 ===================================================================
 --- oce.orig/src/ShapeFix/ShapeFix_ComposeShell.cxx
 +++ oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
-@@ -6,6 +6,10 @@
+@@ -22,6 +22,10 @@
  //    abv  22.07.99 implementing patch indices
  //    svv  10.01.00 porting on DEC
  
@@ -63,7 +63,7 @@ Index: oce/src/Standard/Standard_ErrorHandler.cxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_ErrorHandler.cxx
 +++ oce/src/Standard/Standard_ErrorHandler.cxx
-@@ -23,14 +23,7 @@
+@@ -41,14 +41,7 @@
  // request will be ignored. If the abort request do a raise during a setjmp
  // or a longjmp, there will be a "terminating SEGV" impossible to handle.
  
@@ -79,7 +79,7 @@ Index: oce/src/Standard/Standard_ErrorHandler.cxx
  static inline Standard_ThreadId GetThreadID()
  {
  #ifndef WNT
-@@ -40,6 +33,14 @@ static inline Standard_ThreadId GetThrea
+@@ -58,6 +51,14 @@ static inline Standard_ThreadId GetThrea
  #endif
  }
  

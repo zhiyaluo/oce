@@ -8,19 +8,6 @@ Fix */ within comment.
  src/V3d/V3d_View_1.cxx |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
-Index: oce/src/V3d/V3d_View_1.cxx
-===================================================================
---- oce.orig/src/V3d/V3d_View_1.cxx
-+++ oce/src/V3d/V3d_View_1.cxx
-@@ -21,7 +21,7 @@
-      ----------
-         File V3d_View_1.cxx :
- 
--
-+************************************************************************/
- /*----------------------------------------------------------------------*/
- /*
-  * Includes
 Index: oce/drv/ExprIntrp/lex.ExprIntrp.c
 ===================================================================
 --- oce.orig/drv/ExprIntrp/lex.ExprIntrp.c
@@ -482,6 +469,19 @@ Index: oce/src/Extrema/Extrema_ExtElC.cxx
    if(fabs(A5) <= aTol) {
      A5 = 0.;
    }
+Index: oce/src/V3d/V3d_View_1.cxx
+===================================================================
+--- oce.orig/src/V3d/V3d_View_1.cxx
++++ oce/src/V3d/V3d_View_1.cxx
+@@ -21,7 +21,7 @@
+      ----------
+         File V3d_View_1.cxx :
+ 
+-
++************************************************************************/
+ /*----------------------------------------------------------------------*/
+ /*
+  * Includes
 Index: oce/src/math/math_FunctionSetRoot.cxx
 ===================================================================
 --- oce.orig/src/math/math_FunctionSetRoot.cxx

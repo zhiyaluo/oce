@@ -9,11 +9,11 @@ parentheses to silent the warning.
  src/Geom/Geom_OffsetSurface.cxx |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/src/Geom/Geom_OffsetSurface.cxx b/src/Geom/Geom_OffsetSurface.cxx
-index 75c2959..f4e8e1f 100644
---- a/src/Geom/Geom_OffsetSurface.cxx
-+++ b/src/Geom/Geom_OffsetSurface.cxx
-@@ -1632,7 +1632,7 @@ void Geom_OffsetSurface::SetD0(const Standard_Real U, const Standard_Real V,
+Index: oce/src/Geom/Geom_OffsetSurface.cxx
+===================================================================
+--- oce.orig/src/Geom/Geom_OffsetSurface.cxx
++++ oce/src/Geom/Geom_OffsetSurface.cxx
+@@ -1632,7 +1632,7 @@ void Geom_OffsetSurface::SetD0(const Sta
    CSLib_NormalStatus NStatus;
    CSLib::Normal (D1U, D1V, MagTol, NStatus, Normal);
  
@@ -22,6 +22,3 @@ index 75c2959..f4e8e1f 100644
      {
        P.SetXYZ(P.XYZ() + offsetValue * Normal.XYZ());
      }
--- 
-1.7.10.4
-

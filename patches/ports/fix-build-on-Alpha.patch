@@ -9,10 +9,10 @@ tested on Debian (but with OCE 0.9.1).
  inc/MFT_FileRecord.hxx |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/inc/MFT_FileRecord.hxx b/inc/MFT_FileRecord.hxx
-index c4ef361..516b7ee 100644
---- a/inc/MFT_FileRecord.hxx
-+++ b/inc/MFT_FileRecord.hxx
+Index: oce/inc/MFT_FileRecord.hxx
+===================================================================
+--- oce.orig/inc/MFT_FileRecord.hxx
++++ oce/inc/MFT_FileRecord.hxx
 @@ -64,7 +64,7 @@
          munmap((caddr_t) mmap_addr,(size_t) mmap_size)
  #endif // sgi
@@ -22,6 +22,3 @@ index c4ef361..516b7ee 100644
  #include <sys/mman.h>
  #define MMAP(file_addr,mmap_size,fildes) \
          mmap((caddr_t) 0x1000000000,(size_t) mmap_size,PROT_READ, \
--- 
-1.7.10.4
-

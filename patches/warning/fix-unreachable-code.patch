@@ -855,6 +855,30 @@ Index: oce/src/StdPrs/StdPrs_DeflectionCurve.cxx
  }
  
  
+Index: oce/src/TopOpeBRep/TopOpeBRep_FFDumper.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRep/TopOpeBRep_FFDumper.cxx
++++ oce/src/TopOpeBRep/TopOpeBRep_FFDumper.cxx
+@@ -258,6 +258,8 @@ void TopOpeBRep_FFDumper::DumpVP(const T
+ #ifndef DEB
+ Standard_Integer TopOpeBRep_FFDumper::ExploreIndex(const TopoDS_Shape& , const Standard_Integer ) const
+ {
++	return 0;
++}
+ #else
+ Standard_Integer TopOpeBRep_FFDumper::ExploreIndex(const TopoDS_Shape& S, const Standard_Integer ISI) const
+ {
+@@ -265,9 +267,8 @@ Standard_Integer TopOpeBRep_FFDumper::Ex
+   if (ISI == 1) r = myEM1.Find(S);
+   if (ISI == 2) r = myEM2.Find(S);
+   return r;
+-#endif
+-  return 0;
+ }
++#endif
+ 
+ //=======================================================================
+ //function : DumpDSP
 Index: oce/src/TopOpeBRep/TopOpeBRep_ShapeIntersector2d.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRep/TopOpeBRep_ShapeIntersector2d.cxx
@@ -881,6 +905,23 @@ Index: oce/src/TopOpeBRep/TopOpeBRep_sort.cxx
    return (0);
  }
       
+Index: oce/src/TopOpeBRep/TopOpeBRep_traceBOOPNINT.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRep/TopOpeBRep_traceBOOPNINT.cxx
++++ oce/src/TopOpeBRep/TopOpeBRep_traceBOOPNINT.cxx
+@@ -59,10 +59,8 @@ Standard_Integer BOOPNINTL::Set(const St
+     mynl++;
+     return 0;
+   }
+-  else {
+-    return 1;
+-  }
+-  return 0;
++ 
++   return 1;
+ }
+ 
+ Standard_Boolean BOOPNINTL::Get(Standard_Integer n,char**a){
 Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
@@ -951,6 +992,32 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS.cxx
    }
    return Standard_False;
  }
+Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_BuildTool.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS_BuildTool.cxx
++++ oce/src/TopOpeBRepDS/TopOpeBRepDS_BuildTool.cxx
+@@ -165,9 +165,7 @@ static Standard_Boolean GetOrigin(const
+     o = Handle(Geom2d_Line)::DownCast(PC)->Location();
+     return Standard_True;
+   }
+-  else  {
+-    return Standard_False;
+-  }
++ 
+   return Standard_False;
+ }
+ #endif
+@@ -196,9 +194,7 @@ static Standard_Boolean GetOrigin(const
+     o = Handle(Geom_Line)::DownCast(C)->Position().Location();
+     return Standard_True;
+   }
+-  else  {
+-    return Standard_False;
+-  }
++ 
+   return Standard_False;
+ }
+ #endif
 Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_PointIterator.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS_PointIterator.cxx
@@ -1045,70 +1112,3 @@ Index: oce/src/XSControl/XSControl_Functions.cxx
  }
  
  
-Index: oce/src/TopOpeBRep/TopOpeBRep_FFDumper.cxx
-===================================================================
---- oce.orig/src/TopOpeBRep/TopOpeBRep_FFDumper.cxx
-+++ oce/src/TopOpeBRep/TopOpeBRep_FFDumper.cxx
-@@ -258,6 +258,8 @@ void TopOpeBRep_FFDumper::DumpVP(const T
- #ifndef DEB
- Standard_Integer TopOpeBRep_FFDumper::ExploreIndex(const TopoDS_Shape& , const Standard_Integer ) const
- {
-+	return 0;
-+}
- #else
- Standard_Integer TopOpeBRep_FFDumper::ExploreIndex(const TopoDS_Shape& S, const Standard_Integer ISI) const
- {
-@@ -265,9 +267,8 @@ Standard_Integer TopOpeBRep_FFDumper::Ex
-   if (ISI == 1) r = myEM1.Find(S);
-   if (ISI == 2) r = myEM2.Find(S);
-   return r;
--#endif
--  return 0;
- }
-+#endif
- 
- //=======================================================================
- //function : DumpDSP
-Index: oce/src/TopOpeBRep/TopOpeBRep_traceBOOPNINT.cxx
-===================================================================
---- oce.orig/src/TopOpeBRep/TopOpeBRep_traceBOOPNINT.cxx
-+++ oce/src/TopOpeBRep/TopOpeBRep_traceBOOPNINT.cxx
-@@ -59,10 +59,8 @@ Standard_Integer BOOPNINTL::Set(const St
-     mynl++;
-     return 0;
-   }
--  else {
--    return 1;
--  }
--  return 0;
-+ 
-+   return 1;
- }
- 
- Standard_Boolean BOOPNINTL::Get(Standard_Integer n,char**a){
-Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_BuildTool.cxx
-===================================================================
---- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS_BuildTool.cxx
-+++ oce/src/TopOpeBRepDS/TopOpeBRepDS_BuildTool.cxx
-@@ -165,9 +165,7 @@ static Standard_Boolean GetOrigin(const
-     o = Handle(Geom2d_Line)::DownCast(PC)->Location();
-     return Standard_True;
-   }
--  else  {
--    return Standard_False;
--  }
-+ 
-   return Standard_False;
- }
- #endif
-@@ -196,9 +194,7 @@ static Standard_Boolean GetOrigin(const
-     o = Handle(Geom_Line)::DownCast(C)->Position().Location();
-     return Standard_True;
-   }
--  else  {
--    return Standard_False;
--  }
-+ 
-   return Standard_False;
- }
- #endif

@@ -15,10 +15,10 @@ Subject: [PATCH] [warning-fix][missing-operators] When you define a class
  inc/gp_XYZ.hxx                      |    4 ++++
  6 files changed, 24 insertions(+)
 
-diff --git a/inc/BRepMesh_Circ.hxx b/inc/BRepMesh_Circ.hxx
-index 6154848..211e101 100644
---- a/inc/BRepMesh_Circ.hxx
-+++ b/inc/BRepMesh_Circ.hxx
+Index: oce/inc/BRepMesh_Circ.hxx
+===================================================================
+--- oce.orig/inc/BRepMesh_Circ.hxx
++++ oce/inc/BRepMesh_Circ.hxx
 @@ -40,6 +40,10 @@ public:
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
@@ -30,10 +30,10 @@ index 6154848..211e101 100644
  
    
    Standard_EXPORT   BRepMesh_Circ();
-diff --git a/inc/BRepMesh_Vertex.hxx b/inc/BRepMesh_Vertex.hxx
-index 57eec29..b5aeec3 100644
---- a/inc/BRepMesh_Vertex.hxx
-+++ b/inc/BRepMesh_Vertex.hxx
+Index: oce/inc/BRepMesh_Vertex.hxx
+===================================================================
+--- oce.orig/inc/BRepMesh_Vertex.hxx
++++ oce/inc/BRepMesh_Vertex.hxx
 @@ -47,6 +47,10 @@ public:
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
@@ -45,10 +45,10 @@ index 57eec29..b5aeec3 100644
  
    
    Standard_EXPORT   BRepMesh_Vertex();
-diff --git a/inc/BinLDrivers_DocumentSection.hxx b/inc/BinLDrivers_DocumentSection.hxx
-index 84f31e5..11bff02 100644
---- a/inc/BinLDrivers_DocumentSection.hxx
-+++ b/inc/BinLDrivers_DocumentSection.hxx
+Index: oce/inc/BinLDrivers_DocumentSection.hxx
+===================================================================
+--- oce.orig/inc/BinLDrivers_DocumentSection.hxx
++++ oce/inc/BinLDrivers_DocumentSection.hxx
 @@ -49,6 +49,10 @@ public:
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
@@ -60,10 +60,10 @@ index 84f31e5..11bff02 100644
  
    //! Empty constructor <br>
    Standard_EXPORT   BinLDrivers_DocumentSection();
-diff --git a/inc/Interface_FileParameter.hxx b/inc/Interface_FileParameter.hxx
-index b2e2a16..0838b6d 100644
---- a/inc/Interface_FileParameter.hxx
-+++ b/inc/Interface_FileParameter.hxx
+Index: oce/inc/Interface_FileParameter.hxx
+===================================================================
+--- oce.orig/inc/Interface_FileParameter.hxx
++++ oce/inc/Interface_FileParameter.hxx
 @@ -52,6 +52,10 @@ public:
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
@@ -75,10 +75,10 @@ index b2e2a16..0838b6d 100644
  
    
    Standard_EXPORT   Interface_FileParameter();
-diff --git a/inc/gp_XY.hxx b/inc/gp_XY.hxx
-index 30c40c5..082ca09 100644
---- a/inc/gp_XY.hxx
-+++ b/inc/gp_XY.hxx
+Index: oce/inc/gp_XY.hxx
+===================================================================
+--- oce.orig/inc/gp_XY.hxx
++++ oce/inc/gp_XY.hxx
 @@ -57,6 +57,10 @@ public:
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
@@ -90,10 +90,10 @@ index 30c40c5..082ca09 100644
  
    //! Creates XY object with zero coordinates (0,0). <br>
        gp_XY();
-diff --git a/inc/gp_XYZ.hxx b/inc/gp_XYZ.hxx
-index a4dd6d8..e543970 100644
---- a/inc/gp_XYZ.hxx
-+++ b/inc/gp_XYZ.hxx
+Index: oce/inc/gp_XYZ.hxx
+===================================================================
+--- oce.orig/inc/gp_XYZ.hxx
++++ oce/inc/gp_XYZ.hxx
 @@ -57,6 +57,10 @@ public:
    {
      if (anAddress) Standard::Free((Standard_Address&)anAddress); 
@@ -105,6 +105,3 @@ index a4dd6d8..e543970 100644
  
    //! Creates an XYZ object with zero co-ordinates (0,0,0) <br>
        gp_XYZ();
--- 
-1.7.10.4
-

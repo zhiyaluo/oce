@@ -19,7 +19,7 @@ Index: oce/inc/OpenGl_FontMgr.hxx
 ===================================================================
 --- oce.orig/inc/OpenGl_FontMgr.hxx
 +++ oce/inc/OpenGl_FontMgr.hxx
-@@ -7,9 +7,7 @@
+@@ -23,9 +23,7 @@
  # include <stdlib.h>
  #endif
  
@@ -34,7 +34,7 @@ Index: oce/inc/Standard_Macro.hxx
 ===================================================================
 --- oce.orig/inc/Standard_Macro.hxx
 +++ oce/inc/Standard_Macro.hxx
-@@ -7,9 +7,7 @@
+@@ -23,9 +23,7 @@
  #ifndef _Standard_Macro_HeaderFile
  # define _Standard_Macro_HeaderFile
  
@@ -43,12 +43,12 @@ Index: oce/inc/Standard_Macro.hxx
 -#endif /* HAVE_CONFIG_H */
  
  // Standard OCC macros: Handle(), STANDARD_TYPE()
- # define   Handle(ClassName)  Handle_##ClassName
+ # define   Handle(ClassName)      Handle_##ClassName
 Index: oce/inc/Standard_values.h
 ===================================================================
 --- oce.orig/inc/Standard_values.h
 +++ oce/inc/Standard_values.h
-@@ -22,11 +22,9 @@ Facility : CAS-CADE V1.3A
+@@ -26,11 +26,9 @@
  #error "Wrong compiler options has been detected. Add /DWNT option for proper compilation!!!!!"
  #endif
  
@@ -66,7 +66,7 @@ Index: oce/inc/Xw_Extension.h
 ===================================================================
 --- oce.orig/inc/Xw_Extension.h
 +++ oce/inc/Xw_Extension.h
-@@ -22,9 +22,7 @@
+@@ -42,9 +42,7 @@
  #define min(a,b) 	(a>b ? b : a)
  #endif
  

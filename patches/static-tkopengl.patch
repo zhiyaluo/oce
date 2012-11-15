@@ -60,15 +60,15 @@ Index: oce/src/Graphic3d/Graphic3d_GraphicDevice.cxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_GraphicDevice.cxx
 +++ oce/src/Graphic3d/Graphic3d_GraphicDevice.cxx
-@@ -126,6 +126,7 @@ Handle(Aspect_GraphicDriver) Graphic3d_G
+@@ -132,6 +132,7 @@ Handle(Aspect_GraphicDriver) Graphic3d_G
  
  }
  
 +#if !defined(OCE_BUILD_STATIC_LIB) && !defined(HAVE_NO_DLL)
  void Graphic3d_GraphicDevice::SetGraphicDriver () {
  
- Standard_CString TheShr;
-@@ -182,6 +183,18 @@ OSD_Function new_GLGraphicDriver =
+   TCollection_AsciiString aShr = ShrEnvString ();
+@@ -183,6 +184,18 @@ OSD_Function new_GLGraphicDriver =
  	}
  
  }
@@ -85,13 +85,13 @@ Index: oce/src/Graphic3d/Graphic3d_GraphicDevice.cxx
 +}
 +#endif
  
- #define BAD(x) (((x) == NULL) || (strlen((x)) <= 0))
- 
+ TCollection_AsciiString Graphic3d_GraphicDevice::ShrEnvString() const
+ {
 Index: oce/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
 +++ oce/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
-@@ -44,6 +44,7 @@ Handle(Aspect_GraphicDriver) Graphic3d_W
+@@ -73,6 +73,7 @@ Handle(Aspect_GraphicDriver) Graphic3d_W
  // function : SetGraphicDriver
  // purpose  :
  // =======================================================================
@@ -99,9 +99,9 @@ Index: oce/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
  void Graphic3d_WNTGraphicDevice::SetGraphicDriver() 
  {
    Standard_CString aLibPath = getenv ("CSF_GraphicShr");
-@@ -94,5 +95,17 @@ void Graphic3d_WNTGraphicDevice::SetGrap
-   }
- 
+@@ -119,5 +120,17 @@ void Graphic3d_WNTGraphicDevice::SetGrap
+   if (aTrace.Length() > 0 && aTrace.IsIntegerValue())
+     MyGraphicDriver->SetTrace (aTrace.IntegerValue());
  }
 +#else
 +

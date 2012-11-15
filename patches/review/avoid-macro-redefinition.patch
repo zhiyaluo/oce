@@ -12,7 +12,7 @@ Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_ShapeListOfShape.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_ShapeListOfShape.cxx
 +++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_ShapeListOfShape.cxx
-@@ -30,7 +30,9 @@
+@@ -46,7 +46,9 @@
  #define Msr Standard_Real
  #define Msi Standard_Integer
  #define Msb Standard_Boolean

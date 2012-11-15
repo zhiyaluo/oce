@@ -12,7 +12,7 @@ Index: oce/src/Plate/Plate_LinearScalarConstraint.cdl
 ===================================================================
 --- oce.orig/src/Plate/Plate_LinearScalarConstraint.cdl
 +++ oce/src/Plate/Plate_LinearScalarConstraint.cdl
-@@ -26,21 +26,21 @@ is
+@@ -41,21 +41,21 @@ is
      Create
           returns LinearScalarConstraint;
  
@@ -40,7 +40,7 @@ Index: oce/src/Plate/Plate_LinearScalarConstraint.cdl
             returns LinearScalarConstraint;
  
      -- Accessors :
-@@ -57,7 +57,7 @@ is
+@@ -72,7 +72,7 @@ is
      	Value: PinpointConstraint) 
      	---Purpose:  Sets   the PinPointConstraint of   index Index to
      	--          Value raise if Index is greater than the length of
@@ -53,7 +53,7 @@ Index: oce/src/Plate/Plate_LinearXYZConstraint.cdl
 ===================================================================
 --- oce.orig/src/Plate/Plate_LinearXYZConstraint.cdl
 +++ oce/src/Plate/Plate_LinearXYZConstraint.cdl
-@@ -27,18 +27,18 @@ raises
+@@ -42,18 +42,18 @@ raises
  is
      Create returns LinearXYZConstraint; 
      
@@ -77,7 +77,7 @@ Index: oce/src/Plate/Plate_LinearXYZConstraint.cdl
             returns LinearXYZConstraint;
  
       -- Accessors :
-@@ -55,7 +55,7 @@ is
+@@ -70,7 +70,7 @@ is
      	Value: PinpointConstraint) 
      	---Purpose:  Sets   the PinPointConstraint of   index Index to
      	--          Value raise if Index is greater than the length of

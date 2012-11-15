@@ -352,7 +352,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest.cxx
 +++ oce/src/ViewerTest/ViewerTest.cxx
-@@ -1693,6 +1693,11 @@ static TCollection_AsciiString GetEnvir
+@@ -1692,6 +1692,11 @@ static TCollection_AsciiString GetEnvir
      Standard_Boolean HasDefinition = Standard_False ;
      if ( !envir ) {
        casroot  = getenv("CASROOT");

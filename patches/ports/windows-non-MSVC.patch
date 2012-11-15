@@ -729,6 +729,40 @@ Index: oce/src/OSD/OSD_MAllocHook.cxx
  #if !defined __STDC_LIMIT_MACROS
  #define __STDC_LIMIT_MACROS
  #endif
+Index: oce/src/OSD/OSD_MemInfo.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_MemInfo.cxx
++++ oce/src/OSD/OSD_MemInfo.cxx
+@@ -21,8 +21,8 @@
+   #include <windows.h>
+   #include <winbase.h>
+   #include <process.h>
+-  #include <Psapi.h>
+-  #ifdef _MSC_VER
++  #include <psapi.h>
++  #if defined(_MSC_VER) || defined(__BORLANDC__)
+     #pragma comment(lib, "Psapi.lib")
+   #endif
+ #elif (defined(__APPLE__))
+@@ -34,6 +34,18 @@
+ #include <sstream>
+ #include <fstream>
+ 
++#ifdef HAVE_CONFIG_H
++# include <oce-config.h>
++#endif
++
++#ifdef HAVE_UNISTD_H
++# include <unistd.h>
++#endif
++
++#ifdef HAVE_SYS_TYPES_H
++# include <sys/types.h>
++#endif
++
+ #include <OSD_MemInfo.hxx>
+ 
+ // =======================================================================
 Index: oce/src/OSD/OSD_Process.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Process.cxx
@@ -1207,7 +1241,7 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
  #define OCC120
  
  //==============================================================================
-@@ -967,9 +974,7 @@ static LRESULT WINAPI ViewerWindowProc(
+@@ -963,9 +970,7 @@ static LRESULT WINAPI ViewerWindowProc(
  //function : ViewerMainLoop
  //purpose  : Get a Event on the view and dispatch it
  //==============================================================================
@@ -1218,7 +1252,7 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
  {
  
    //cout << "No yet implemented on WNT" << endl;
-@@ -1006,22 +1011,6 @@ static int ViewerMainLoop(Standard_Integ
+@@ -1002,22 +1007,6 @@ static int ViewerMainLoop(Standard_Integ
  
  #else
  
@@ -1596,37 +1630,3 @@ Index: oce/src/XmlMXCAFDoc/XmlMXCAFDoc_DimTolDriver.cxx
  IMPLEMENT_DOMSTRING (NameIndexString,  "name")
  IMPLEMENT_DOMSTRING (DescrIndexString, "descr")
  IMPLEMENT_DOMSTRING (FirstIndexString, "first")
-Index: oce/src/OSD/OSD_MemInfo.cxx
-===================================================================
---- oce.orig/src/OSD/OSD_MemInfo.cxx
-+++ oce/src/OSD/OSD_MemInfo.cxx
-@@ -21,8 +21,8 @@
-   #include <windows.h>
-   #include <winbase.h>
-   #include <process.h>
--  #include <Psapi.h>
--  #ifdef _MSC_VER
-+  #include <psapi.h>
-+  #if defined(_MSC_VER) || defined(__BORLANDC__)
-     #pragma comment(lib, "Psapi.lib")
-   #endif
- #elif (defined(__APPLE__))
-@@ -34,6 +34,18 @@
- #include <sstream>
- #include <fstream>
- 
-+#ifdef HAVE_CONFIG_H
-+# include <oce-config.h>
-+#endif
-+
-+#ifdef HAVE_UNISTD_H
-+# include <unistd.h>
-+#endif
-+
-+#ifdef HAVE_SYS_TYPES_H
-+# include <sys/types.h>
-+#endif
-+
- #include <OSD_MemInfo.hxx>
- 
- // =======================================================================

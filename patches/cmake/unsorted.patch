@@ -406,6 +406,50 @@ Index: oce/CMakeLists.txt
 +
 +add_custom_target(uninstall
 +    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
+Index: oce/Version.rc.cmake
+===================================================================
+--- oce.orig/Version.rc.cmake
++++ oce/Version.rc.cmake
+@@ -1,8 +1,22 @@
+ #include <winresrc.h>
+ 
++#cmakedefine OCE_VERSION_PATCH
++#define OCE_VERSION_PATCH_VAL @OCE_VERSION_PATCH@
++
++/* If patch is not defined at project level, here is defined to 0 */
++#ifndef OCE_VERSION_PATCH
++#undef OCE_VERSION_PATCH_VAL
++#define OCE_VERSION_PATCH_VAL 0
++#endif
++
++/* Stringify OCE_VERSION_PATCH */
++#define QU(x) #x
++#define QUH(x) QU(x)
++#define OCE_VERSION_PATCH_STR QUH(OCE_VERSION_PATCH_VAL)
++
+ VS_VERSION_INFO VERSIONINFO
+-  FILEVERSION @OCE_VERSION_MAJOR@,@OCE_VERSION_MINOR@,@OCE_VERSION_PATCH@,0
+-  PRODUCTVERSION @OCE_VERSION_MAJOR@,@OCE_VERSION_MINOR@,@OCE_VERSION_PATCH@,0
++  FILEVERSION @OCE_VERSION_MAJOR@,@OCE_VERSION_MINOR@,OCE_VERSION_PATCH_VAL,0
++  PRODUCTVERSION @OCE_VERSION_MAJOR@,@OCE_VERSION_MINOR@,OCE_VERSION_PATCH_VAL,0
+   FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
+ #ifndef DEBUG
+   FILEFLAGS 0
+@@ -30,12 +44,12 @@ VS_VERSION_INFO VERSIONINFO
+       BLOCK "04090000"
+       BEGIN
+         VALUE "FileDescription", "OpenCascade Community Edition"
+-        VALUE "FileVersion", "@OCE_VERSION_MAJOR@.@OCE_VERSION_MINOR@.@OCE_VERSION_PATCH@"
++        VALUE "FileVersion", "@OCE_VERSION_MAJOR@.@OCE_VERSION_MINOR@." OCE_VERSION_PATCH_STR
+         VALUE "InternalName", "@PROJECT_NAME@"
+         VALUE "LegalCopyright", ""
+         VALUE "OriginalFilename", ""
+         VALUE "ProductName", "@PROJECT_NAME@"
+-        VALUE "ProductVersion", "@OCE_VERSION_MAJOR@.@OCE_VERSION_MINOR@.@OCE_VERSION_PATCH@"
++        VALUE "ProductVersion", "@OCE_VERSION_MAJOR@.@OCE_VERSION_MINOR@." OCE_VERSION_PATCH_STR
+       END
+     END
+     BLOCK "VarFileInfo"
 Index: oce/adm/cmake/BuildToolkit.cmake
 ===================================================================
 --- oce.orig/adm/cmake/BuildToolkit.cmake
@@ -507,6 +551,19 @@ Index: oce/adm/cmake/BuildToolkit.cmake
 +		INSTALL(FILES ${LIBRARY_OUTPUT_PATH}/${TOOLKIT}.tds DESTINATION ${TOOLKIT_INSTALL_BIN_DIR} CONFIGURATIONS Debug)
 +	ENDIF (CMAKE_CONFIGURATION_TYPES)
 +ENDIF(BORLAND AND ${PROJECT_NAME}_INSTALL_TDS_FILES )
+Index: oce/adm/cmake/DRAWEXE/CMakeLists.txt
+===================================================================
+--- oce.orig/adm/cmake/DRAWEXE/CMakeLists.txt
++++ oce/adm/cmake/DRAWEXE/CMakeLists.txt
+@@ -51,7 +51,7 @@ ENDIF(NOT ${PROJECT_NAME}_NO_LIBRARY_VER
+ 
+ ADD_EXECUTABLE(${TOOLKIT_APP} ${TOOLKIT_APP_SOURCE_FILES} ${TOOLKIT_RESOURCES} )
+ 
+-SET_TARGET_PROPERTIES_INSTALL_RPATH(${TOOLKIT_APP} "${${PROJECT_NAME}_INSTALL_PREFIX}/${${PROJECT_NAME}_INSTALL_LIB_DIR};${${PROJECT_NAME}_INSTALL_PREFIX}/${${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DIR}")
++SET_TARGET_PROPERTIES_INSTALL_RPATH(${TOOLKIT_APP} "${${PROJECT_NAME}_INSTALL_LIB_DIR_RPATH};${${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DIR_RPATH}")
+ 
+ IF(WIN32 AND (CMAKE_CONFIGURATION_TYPES OR NMAKE))
+ 	SET_TARGET_PROPERTIES(${TOOLKIT_APP} PROPERTIES
 Index: oce/adm/cmake/TKMesh/CMakeLists.txt
 ===================================================================
 --- oce.orig/adm/cmake/TKMesh/CMakeLists.txt
@@ -533,6 +590,119 @@ Index: oce/adm/cmake/TKMesh/CMakeLists.txt
 +ENDIF(${PROJECT_NAME}_DISABLE_BSPLINE_MESHER)
 +
  INCLUDE(../BuildToolkit.cmake)
+ 
+Index: oce/adm/cmake/TKOpenGl/CMakeLists.txt
+===================================================================
+--- oce.orig/adm/cmake/TKOpenGl/CMakeLists.txt
++++ oce/adm/cmake/TKOpenGl/CMakeLists.txt
+@@ -38,3 +38,18 @@ ENDIF()
+ 
+ INCLUDE(../BuildToolkit.cmake)
+ 
++IF(BORLAND AND BORLAND_VERSION_RS_XE2)
++	# For bcc32 compiler v6.40 and up -x- compiler option must be passed as a compiler option
++	# in stead of #pragma option -x- in code.
++	foreach(source_file ${TOOLKIT_SOURCE_FILES} )
++		if((source_file MATCHES "OpenGl_attri.cxx") OR
++		   (source_file MATCHES "OpenGl_depthcue.cxx") OR
++		   (source_file MATCHES "OpenGl_pick.cxx") OR
++		   (source_file MATCHES "OpenGl_telem_util.cxx") OR
++		   (source_file MATCHES "OpenGl_undefined.cxx") OR
++		   (source_file MATCHES "OpenGl_view.cxx"))
++			MESSAGE(STATUS "(bcc32) Disabling exceptions for ${source_file}.")
++			set_source_files_properties("${source_file}" PROPERTIES COMPILE_FLAGS "-x-")
++		endif()
++	endforeach(source_file)
++ENDIF(BORLAND AND BORLAND_VERSION_RS_XE2)
+Index: oce/adm/cmake/TKQADraw/CMakeLists.txt
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKQADraw/CMakeLists.txt
+@@ -0,0 +1,54 @@
++SET(TOOLKIT TKQADraw)
++
++SET(TOOLKIT_MODULES
++	DebugTools
++	QABugs
++	QADNaming
++	QADraw
++	QANCollection
++	QANewBRepNaming
++	QANewDBRepNaming
++	QANewModTopOpe
++)
++SET(TOOLKIT_DEPENDS
++	TKernel
++	TKMath
++	TKAdvTools
++	TKG2d
++	TKG3d
++	TKGeomBase
++	TKBRep
++	TKGeomAlgo
++	TKTopAlgo
++	TKPrim
++	TKShHealing
++	TKBool
++	TKFeat
++	TKOffset
++	TKSTL
++	TKXSBase
++	TKIGES
++	TKXDESTEP
++	TKCDF
++	PTKernel
++	TKLCAF
++	TKCAF
++	TKService
++	TKV3d
++	TKDraw
++	TKViewerTest
++	TKXSDRAW
++	TKDCAF
++)
++SET(TOOLKIT_INCLUDE_DIRECTORIES ${TCL_INCLUDE_PATH})
++SET(TOOLKIT_LIBS ${TCL_LIBRARY} ${CSF_gdi32_LIB} ${CSF_advapi32_LIB} ${CSF_user32_LIB})
++
++IF(NOT WIN32)
++	SET(TOOLKIT_INCLUDE_DIRECTORIES ${TOOLKIT_INCLUDE_DIRECTORIES} ${X11_X11_INCLUDE_PATH} ${TK_INCLUDE_PATH})
++	SET(TOOLKIT_LIBS ${TOOLKIT_LIBS} ${TK_LIBRARY} ${X11_X11_LIB})
++ENDIF(NOT WIN32)
++
++SET(TOOLKIT_IS_PRIVATE TRUE)
++
++INCLUDE(../BuildToolkit.cmake)
++
+Index: oce/adm/cmake/TKService/CMakeLists.txt
+===================================================================
+--- oce.orig/adm/cmake/TKService/CMakeLists.txt
++++ oce/adm/cmake/TKService/CMakeLists.txt
+@@ -41,3 +41,13 @@ ENDIF(FREEIMAGE_LIBRARY AND ${PROJECT_NA
+ 
+ INCLUDE(../BuildToolkit.cmake)
+ 
++IF(BORLAND)
++	# cgmobin.c, cgmochar.c and cgmotext.c need __STDC__=1 define in order to build for bcc32.
++	foreach(source_file ${TOOLKIT_SOURCE_FILES} )
++		if ((source_file MATCHES "cgmobin.c") OR
++			(source_file MATCHES "cgmochar.c") OR
++			(source_file MATCHES "cgmotext.c"))
++			set_source_files_properties("${source_file}" PROPERTIES COMPILE_DEFINITIONS "__STDC__=1")
++		endif()
++	endforeach(source_file)
++ENDIF(BORLAND)
+Index: oce/adm/cmake/TKViewerTest/CMakeLists.txt
+===================================================================
+--- oce.orig/adm/cmake/TKViewerTest/CMakeLists.txt
++++ oce/adm/cmake/TKViewerTest/CMakeLists.txt
+@@ -32,7 +32,7 @@ SET(TOOLKIT_DEPENDS
+ IF(WIN32)
+ 	SET(TOOLKIT_LIBS ${CSF_user32_LIB} ${CSF_gdi32_LIB})
+ ELSE(WIN32)
+-	SET(TOOLKIT_INCLUDE_DIRECTORIES ${X11_X11_INCLUDE_PATH} ${TK_INCLUDE_PATH})
++	SET(TOOLKIT_INCLUDE_DIRECTORIES ${X11_X11_INCLUDE_PATH} ${TK_INCLUDE_PATH} ${OPENGL_INCLUDE_DIR})
+ 	SET(TOOLKIT_LIBS ${TK_LIBRARY} ${X11_X11_LIB})
+ ENDIF(WIN32)
  
 Index: oce/adm/cmake/TKernel/CMakeLists.txt
 ===================================================================
@@ -616,173 +786,3 @@ Index: oce/oce_build_config.h.cmake
  
 -/* Whether disable or not the bspline mesher */
 -#cmakedefine OCE_DISABLE_BSPLINE_MESHER
-Index: oce/adm/cmake/TKOpenGl/CMakeLists.txt
-===================================================================
---- oce.orig/adm/cmake/TKOpenGl/CMakeLists.txt
-+++ oce/adm/cmake/TKOpenGl/CMakeLists.txt
-@@ -38,3 +38,18 @@ ENDIF()
- 
- INCLUDE(../BuildToolkit.cmake)
- 
-+IF(BORLAND AND BORLAND_VERSION_RS_XE2)
-+	# For bcc32 compiler v6.40 and up -x- compiler option must be passed as a compiler option
-+	# in stead of #pragma option -x- in code.
-+	foreach(source_file ${TOOLKIT_SOURCE_FILES} )
-+		if((source_file MATCHES "OpenGl_attri.cxx") OR
-+		   (source_file MATCHES "OpenGl_depthcue.cxx") OR
-+		   (source_file MATCHES "OpenGl_pick.cxx") OR
-+		   (source_file MATCHES "OpenGl_telem_util.cxx") OR
-+		   (source_file MATCHES "OpenGl_undefined.cxx") OR
-+		   (source_file MATCHES "OpenGl_view.cxx"))
-+			MESSAGE(STATUS "(bcc32) Disabling exceptions for ${source_file}.")
-+			set_source_files_properties("${source_file}" PROPERTIES COMPILE_FLAGS "-x-")
-+		endif()
-+	endforeach(source_file)
-+ENDIF(BORLAND AND BORLAND_VERSION_RS_XE2)
-Index: oce/adm/cmake/TKService/CMakeLists.txt
-===================================================================
---- oce.orig/adm/cmake/TKService/CMakeLists.txt
-+++ oce/adm/cmake/TKService/CMakeLists.txt
-@@ -41,3 +41,13 @@ ENDIF(FREEIMAGE_LIBRARY AND ${PROJECT_NA
- 
- INCLUDE(../BuildToolkit.cmake)
- 
-+IF(BORLAND)
-+	# cgmobin.c, cgmochar.c and cgmotext.c need __STDC__=1 define in order to build for bcc32.
-+	foreach(source_file ${TOOLKIT_SOURCE_FILES} )
-+		if ((source_file MATCHES "cgmobin.c") OR
-+			(source_file MATCHES "cgmochar.c") OR
-+			(source_file MATCHES "cgmotext.c"))
-+			set_source_files_properties("${source_file}" PROPERTIES COMPILE_DEFINITIONS "__STDC__=1")
-+		endif()
-+	endforeach(source_file)
-+ENDIF(BORLAND)
-Index: oce/Version.rc.cmake
-===================================================================
---- oce.orig/Version.rc.cmake
-+++ oce/Version.rc.cmake
-@@ -1,8 +1,22 @@
- #include <winresrc.h>
- 
-+#cmakedefine OCE_VERSION_PATCH
-+#define OCE_VERSION_PATCH_VAL @OCE_VERSION_PATCH@
-+
-+/* If patch is not defined at project level, here is defined to 0 */
-+#ifndef OCE_VERSION_PATCH
-+#undef OCE_VERSION_PATCH_VAL
-+#define OCE_VERSION_PATCH_VAL 0
-+#endif
-+
-+/* Stringify OCE_VERSION_PATCH */
-+#define QU(x) #x
-+#define QUH(x) QU(x)
-+#define OCE_VERSION_PATCH_STR QUH(OCE_VERSION_PATCH_VAL)
-+
- VS_VERSION_INFO VERSIONINFO
--  FILEVERSION @OCE_VERSION_MAJOR@,@OCE_VERSION_MINOR@,@OCE_VERSION_PATCH@,0
--  PRODUCTVERSION @OCE_VERSION_MAJOR@,@OCE_VERSION_MINOR@,@OCE_VERSION_PATCH@,0
-+  FILEVERSION @OCE_VERSION_MAJOR@,@OCE_VERSION_MINOR@,OCE_VERSION_PATCH_VAL,0
-+  PRODUCTVERSION @OCE_VERSION_MAJOR@,@OCE_VERSION_MINOR@,OCE_VERSION_PATCH_VAL,0
-   FILEFLAGSMASK VS_FFI_FILEFLAGSMASK
- #ifndef DEBUG
-   FILEFLAGS 0
-@@ -30,12 +44,12 @@ VS_VERSION_INFO VERSIONINFO
-       BLOCK "04090000"
-       BEGIN
-         VALUE "FileDescription", "OpenCascade Community Edition"
--        VALUE "FileVersion", "@OCE_VERSION_MAJOR@.@OCE_VERSION_MINOR@.@OCE_VERSION_PATCH@"
-+        VALUE "FileVersion", "@OCE_VERSION_MAJOR@.@OCE_VERSION_MINOR@." OCE_VERSION_PATCH_STR
-         VALUE "InternalName", "@PROJECT_NAME@"
-         VALUE "LegalCopyright", ""
-         VALUE "OriginalFilename", ""
-         VALUE "ProductName", "@PROJECT_NAME@"
--        VALUE "ProductVersion", "@OCE_VERSION_MAJOR@.@OCE_VERSION_MINOR@.@OCE_VERSION_PATCH@"
-+        VALUE "ProductVersion", "@OCE_VERSION_MAJOR@.@OCE_VERSION_MINOR@." OCE_VERSION_PATCH_STR
-       END
-     END
-     BLOCK "VarFileInfo"
-Index: oce/adm/cmake/DRAWEXE/CMakeLists.txt
-===================================================================
---- oce.orig/adm/cmake/DRAWEXE/CMakeLists.txt
-+++ oce/adm/cmake/DRAWEXE/CMakeLists.txt
-@@ -51,7 +51,7 @@ ENDIF(NOT ${PROJECT_NAME}_NO_LIBRARY_VER
- 
- ADD_EXECUTABLE(${TOOLKIT_APP} ${TOOLKIT_APP_SOURCE_FILES} ${TOOLKIT_RESOURCES} )
- 
--SET_TARGET_PROPERTIES_INSTALL_RPATH(${TOOLKIT_APP} "${${PROJECT_NAME}_INSTALL_PREFIX}/${${PROJECT_NAME}_INSTALL_LIB_DIR};${${PROJECT_NAME}_INSTALL_PREFIX}/${${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DIR}")
-+SET_TARGET_PROPERTIES_INSTALL_RPATH(${TOOLKIT_APP} "${${PROJECT_NAME}_INSTALL_LIB_DIR_RPATH};${${PROJECT_NAME}_INSTALL_PACKAGE_LIB_DIR_RPATH}")
- 
- IF(WIN32 AND (CMAKE_CONFIGURATION_TYPES OR NMAKE))
- 	SET_TARGET_PROPERTIES(${TOOLKIT_APP} PROPERTIES
-Index: oce/adm/cmake/TKQADraw/CMakeLists.txt
-===================================================================
---- /dev/null
-+++ oce/adm/cmake/TKQADraw/CMakeLists.txt
-@@ -0,0 +1,54 @@
-+SET(TOOLKIT TKQADraw)
-+
-+SET(TOOLKIT_MODULES
-+	DebugTools
-+	QABugs
-+	QADNaming
-+	QADraw
-+	QANCollection
-+	QANewBRepNaming
-+	QANewDBRepNaming
-+	QANewModTopOpe
-+)
-+SET(TOOLKIT_DEPENDS
-+	TKernel
-+	TKMath
-+	TKAdvTools
-+	TKG2d
-+	TKG3d
-+	TKGeomBase
-+	TKBRep
-+	TKGeomAlgo
-+	TKTopAlgo
-+	TKPrim
-+	TKShHealing
-+	TKBool
-+	TKFeat
-+	TKOffset
-+	TKSTL
-+	TKXSBase
-+	TKIGES
-+	TKXDESTEP
-+	TKCDF
-+	PTKernel
-+	TKLCAF
-+	TKCAF
-+	TKService
-+	TKV3d
-+	TKDraw
-+	TKViewerTest
-+	TKXSDRAW
-+	TKDCAF
-+)
-+SET(TOOLKIT_INCLUDE_DIRECTORIES ${TCL_INCLUDE_PATH})
-+SET(TOOLKIT_LIBS ${TCL_LIBRARY} ${CSF_gdi32_LIB} ${CSF_advapi32_LIB} ${CSF_user32_LIB})
-+
-+IF(NOT WIN32)
-+	SET(TOOLKIT_INCLUDE_DIRECTORIES ${TOOLKIT_INCLUDE_DIRECTORIES} ${X11_X11_INCLUDE_PATH} ${TK_INCLUDE_PATH})
-+	SET(TOOLKIT_LIBS ${TOOLKIT_LIBS} ${TK_LIBRARY} ${X11_X11_LIB})
-+ENDIF(NOT WIN32)
-+
-+SET(TOOLKIT_IS_PRIVATE TRUE)
-+
-+INCLUDE(../BuildToolkit.cmake)
-+
-Index: oce/adm/cmake/TKViewerTest/CMakeLists.txt
-===================================================================
---- oce.orig/adm/cmake/TKViewerTest/CMakeLists.txt
-+++ oce/adm/cmake/TKViewerTest/CMakeLists.txt
-@@ -32,7 +32,7 @@ SET(TOOLKIT_DEPENDS
- IF(WIN32)
- 	SET(TOOLKIT_LIBS ${CSF_user32_LIB} ${CSF_gdi32_LIB})
- ELSE(WIN32)
--	SET(TOOLKIT_INCLUDE_DIRECTORIES ${X11_X11_INCLUDE_PATH} ${TK_INCLUDE_PATH})
-+	SET(TOOLKIT_INCLUDE_DIRECTORIES ${X11_X11_INCLUDE_PATH} ${TK_INCLUDE_PATH} ${OPENGL_INCLUDE_DIR})
- 	SET(TOOLKIT_LIBS ${TK_LIBRARY} ${X11_X11_LIB})
- ENDIF(WIN32)
- 

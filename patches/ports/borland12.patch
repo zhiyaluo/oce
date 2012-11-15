@@ -9,11 +9,11 @@ As per #188
  inc/BRepMesh_VertexCellFilter.hxx |    8 ++++++++
  2 files changed, 16 insertions(+), 0 deletions(-)
 
-diff --git a/inc/BRepMesh_CellFilter.hxx b/inc/BRepMesh_CellFilter.hxx
-index ab0193d..5369065 100644
---- a/inc/BRepMesh_CellFilter.hxx
-+++ b/inc/BRepMesh_CellFilter.hxx
-@@ -10,3 +10,11 @@
+Index: oce/inc/BRepMesh_CellFilter.hxx
+===================================================================
+--- oce.orig/inc/BRepMesh_CellFilter.hxx
++++ oce/inc/BRepMesh_CellFilter.hxx
+@@ -25,3 +25,11 @@
  #include <BRepMesh_CircleInspector.hxx>
  
  typedef NCollection_CellFilter<BRepMesh_CircleInspector> BRepMesh_CellFilter;
@@ -26,11 +26,11 @@ index ab0193d..5369065 100644
 +  { return aCell1.IsEqual(aCell2); }
 +#endif
 \ No newline at end of file
-diff --git a/inc/BRepMesh_VertexCellFilter.hxx b/inc/BRepMesh_VertexCellFilter.hxx
-index 1df57bc..e8d0680 100644
---- a/inc/BRepMesh_VertexCellFilter.hxx
-+++ b/inc/BRepMesh_VertexCellFilter.hxx
-@@ -21,4 +21,12 @@
+Index: oce/inc/BRepMesh_VertexCellFilter.hxx
+===================================================================
+--- oce.orig/inc/BRepMesh_VertexCellFilter.hxx
++++ oce/inc/BRepMesh_VertexCellFilter.hxx
+@@ -36,4 +36,12 @@
  
  typedef NCollection_CellFilter<BRepMesh_VertexInspector> BRepMesh_VertexCellFilter;
  
@@ -43,6 +43,3 @@ index 1df57bc..e8d0680 100644
 +#endif
 +
  #endif
--- 
-1.7.9.1
-

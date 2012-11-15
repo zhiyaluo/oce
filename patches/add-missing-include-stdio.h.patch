@@ -11,10 +11,10 @@ Subject: [PATCH] Fixed missing stdio.h inclusions
  src/QABugs/QABugs_13.cxx                   |    1 +
  5 files changed, 9 insertions(+)
 
-diff --git a/src/IntPolyh/IntPolyh_MaillageAffinage.cxx b/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
-index dfe19f2..6b7cb17 100644
---- a/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
-+++ b/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
+Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
+===================================================================
+--- oce.orig/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
++++ oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
 @@ -48,6 +48,8 @@
  #include <IntPolyh_Edge.hxx>
  #include <IntPolyh_Couple.hxx>
@@ -24,10 +24,10 @@ index dfe19f2..6b7cb17 100644
  static Standard_Real MyTolerance=10.0e-7;
  static Standard_Real MyConfusionPrecision=10.0e-12;
  static Standard_Real SquareMyConfusionPrecision=10.0e-24;
-diff --git a/src/OpenGl/OpenGl_Display.cxx b/src/OpenGl/OpenGl_Display.cxx
-index 5ba209f..5d8228a 100644
---- a/src/OpenGl/OpenGl_Display.cxx
-+++ b/src/OpenGl/OpenGl_Display.cxx
+Index: oce/src/OpenGl/OpenGl_Display.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_Display.cxx
++++ oce/src/OpenGl/OpenGl_Display.cxx
 @@ -28,6 +28,8 @@
  
  #include <OpenGl_Light.hxx>
@@ -37,10 +37,10 @@ index 5ba209f..5d8228a 100644
  #if (!defined(_WIN32) && !defined(__WIN32__))
    #include <X11/Xlib.h> // XOpenDisplay()
  #endif
-diff --git a/src/OpenGl/OpenGl_GraphicDriver_9.cxx b/src/OpenGl/OpenGl_GraphicDriver_9.cxx
-index f8b383b..7f2ac5c 100644
---- a/src/OpenGl/OpenGl_GraphicDriver_9.cxx
-+++ b/src/OpenGl/OpenGl_GraphicDriver_9.cxx
+Index: oce/src/OpenGl/OpenGl_GraphicDriver_9.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_GraphicDriver_9.cxx
++++ oce/src/OpenGl/OpenGl_GraphicDriver_9.cxx
 @@ -30,6 +30,8 @@
  #include <AlienImage_AlienImage.hxx>
  #include <Image_Image.hxx>
@@ -50,10 +50,10 @@ index f8b383b..7f2ac5c 100644
  void OpenGl_GraphicDriver::Environment(const Graphic3d_CView& ACView)
  {
    const OpenGl_CView *aCView = (const OpenGl_CView *)ACView.ptrView;
-diff --git a/src/OpenGl/OpenGl_Polygon.cxx b/src/OpenGl/OpenGl_Polygon.cxx
-index c81b93b..b017163 100644
---- a/src/OpenGl/OpenGl_Polygon.cxx
-+++ b/src/OpenGl/OpenGl_Polygon.cxx
+Index: oce/src/OpenGl/OpenGl_Polygon.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_Polygon.cxx
++++ oce/src/OpenGl/OpenGl_Polygon.cxx
 @@ -30,6 +30,8 @@
  
  #include <GL/glu.h>
@@ -63,10 +63,10 @@ index c81b93b..b017163 100644
  #if (defined(_WIN32) || defined(__WIN32__))
    #define STATIC
  #else
-diff --git a/src/QABugs/QABugs_13.cxx b/src/QABugs/QABugs_13.cxx
-index 39758d7..06d4e3e 100644
---- a/src/QABugs/QABugs_13.cxx
-+++ b/src/QABugs/QABugs_13.cxx
+Index: oce/src/QABugs/QABugs_13.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_13.cxx
++++ oce/src/QABugs/QABugs_13.cxx
 @@ -30,6 +30,7 @@
  #include <TopoDS_Shape.hxx>
  
@@ -75,6 +75,3 @@ index 39758d7..06d4e3e 100644
  
  #include <gp_Ax2.hxx>
  #include <gp_Circ.hxx>
--- 
-1.7.10.4
-

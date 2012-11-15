@@ -1031,6 +1031,19 @@ Index: oce/adm/cmake/TKPrim/Precompiled.h
 +#include "BRepSweep_Builder.hxx"
 +#include "BRepSweep_Tool.hxx"
 \ No newline at end of file
+Index: oce/adm/cmake/TKQADraw/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKQADraw/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKQADraw/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKQADraw/Precompiled.h
+@@ -0,0 +1 @@
++#pragma once
 Index: oce/adm/cmake/TKSTEP/Precompiled.cpp
 ===================================================================
 --- /dev/null
@@ -1697,16 +1710,3 @@ Index: oce/adm/cmake/TKernel/Precompiled.h
 +#include <math.h>
 +#include "Standard.hxx"
 +#include "Standard_PrimitiveTypes.hxx"
-Index: oce/adm/cmake/TKQADraw/Precompiled.cpp
-===================================================================
---- /dev/null
-+++ oce/adm/cmake/TKQADraw/Precompiled.cpp
-@@ -0,0 +1 @@
-+#include "Precompiled.h"
-\ No newline at end of file
-Index: oce/adm/cmake/TKQADraw/Precompiled.h
-===================================================================
---- /dev/null
-+++ oce/adm/cmake/TKQADraw/Precompiled.h
-@@ -0,0 +1 @@
-+#pragma once

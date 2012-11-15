@@ -34,7 +34,7 @@ Index: oce/inc/NCollection_CellFilter.hxx
 ===================================================================
 --- oce.orig/inc/NCollection_CellFilter.hxx
 +++ oce/inc/NCollection_CellFilter.hxx
-@@ -314,10 +314,20 @@ protected:
+@@ -324,10 +324,20 @@ protected:
    };
  
    // definition of global functions is needed for map
@@ -59,7 +59,7 @@ Index: oce/inc/NCollection_IndexedDataMap.hxx
 ===================================================================
 --- oce.orig/inc/NCollection_IndexedDataMap.hxx
 +++ oce/inc/NCollection_IndexedDataMap.hxx
-@@ -94,7 +94,11 @@ template <class TheKeyType, class TheIte
+@@ -110,7 +110,11 @@ template < class TheKeyType,
        myIndex(0) {}
      //! Constructor
      Iterator (const NCollection_IndexedDataMap& theMap) :
@@ -75,7 +75,7 @@ Index: oce/inc/NCollection_IndexedMap.hxx
 ===================================================================
 --- oce.orig/inc/NCollection_IndexedMap.hxx
 +++ oce/inc/NCollection_IndexedMap.hxx
-@@ -86,7 +86,11 @@ template <class TheKeyType> class NColle
+@@ -100,7 +100,11 @@ template < class TheKeyType,
        myIndex(0) {}
      //! Constructor
      Iterator (const NCollection_IndexedMap& theMap) :
@@ -91,7 +91,7 @@ Index: oce/inc/NCollection_Vector.hxx
 ===================================================================
 --- oce.orig/inc/NCollection_Vector.hxx
 +++ oce/inc/NCollection_Vector.hxx
-@@ -89,7 +89,11 @@ template <class TheItemType> class NColl
+@@ -99,7 +99,11 @@ template <class TheItemType> class NColl
      {
        if (myData) {
          for (Standard_Integer i=0; i < mySize; i++)
@@ -103,7 +103,7 @@ Index: oce/inc/NCollection_Vector.hxx
          myAlloc->Free(myData);
          myData = NULL;
        }
-@@ -107,7 +111,11 @@ template <class TheItemType> class NColl
+@@ -117,7 +121,11 @@ template <class TheItemType> class NColl
      {
        if (myData) {
          for (Standard_Integer i=0; i < Size(); i++)
