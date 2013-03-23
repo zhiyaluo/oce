@@ -1,0 +1,266 @@
+From e2c0a51c33ae84c46c5c08c7c661ed8df364ec76 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Wed, 20 Feb 2013 00:13:27 +0100
+Subject: [PATCH] [warning-fix][const-char*]
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+Replace 'char*' by 'const char*'
+
+gcc 4.7 print this warning:
+  deprecated conversion from string constant to ‘char*’
+---
+ src/QABugs/QABugs_10.cxx             |    2 +-
+ src/QABugs/QABugs_12.cxx             |    2 +-
+ src/QABugs/QABugs_13.cxx             |    2 +-
+ src/QABugs/QABugs_15.cxx             |    2 +-
+ src/QABugs/QABugs_16.cxx             |    2 +-
+ src/QABugs/QABugs_17.cxx             |    2 +-
+ src/QABugs/QABugs_18.cxx             |    2 +-
+ src/QABugs/QABugs_19.cxx             |    2 +-
+ src/QABugs/QABugs_2.cxx              |    2 +-
+ src/QABugs/QABugs_4.cxx              |    2 +-
+ src/QABugs/QABugs_5.cxx              |    2 +-
+ src/QABugs/QABugs_6.cxx              |    2 +-
+ src/QABugs/QABugs_7.cxx              |    2 +-
+ src/QABugs/QABugs_8.cxx              |    2 +-
+ src/QABugs/QABugs_9.cxx              |    2 +-
+ src/QANCollection/QANCollection1.cxx |    2 +-
+ src/QANCollection/QANCollection2.cxx |    2 +-
+ src/QANCollection/QANCollection3.cxx |    2 +-
+ 18 files changed, 18 insertions(+), 18 deletions(-)
+
+Index: oce/src/QABugs/QABugs_10.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_10.cxx
++++ oce/src/QABugs/QABugs_10.cxx
+@@ -1169,7 +1169,7 @@ static Standard_Integer OCC828 (Draw_Int
+ }
+ 
+ void QABugs::Commands_10(Draw_Interpretor& theCommands) {
+-  char *group = "QABugs";
++  const char *group = "QABugs";
+ 
+   theCommands.Add ("OCC426", "OCC426 shape1 shape2 shape3 shape4 shape5 shape6 [BRepAlgoAPI/BRepAlgo = 1/0]", __FILE__, OCC426, group);
+ 
+Index: oce/src/QABugs/QABugs_12.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_12.cxx
++++ oce/src/QABugs/QABugs_12.cxx
+@@ -126,7 +126,7 @@ static Standard_Integer OCC895 (Draw_Int
+ }
+ 
+ void QABugs::Commands_12(Draw_Interpretor& theCommands) {
+-  char *group = "QABugs";
++  const char *group = "QABugs";
+ 
+   theCommands.Add ("OCC895", "OCC895 result [angle [reverse [order]]]", __FILE__, OCC895, group);
+ 
+Index: oce/src/QABugs/QABugs_13.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_13.cxx
++++ oce/src/QABugs/QABugs_13.cxx
+@@ -1060,7 +1060,7 @@ static Standard_Integer OCC817 (Draw_Int
+ }
+ 
+ void QABugs::Commands_13(Draw_Interpretor& theCommands) {
+-  char *group = "QABugs";
++  const char *group = "QABugs";
+ 
+   theCommands.Add ("OCC332", "OCC332 [wall_thickness [dia1 [dia2 [length [major_radius]]]]]", __FILE__, OCC332bug, group);
+   //////theCommands.Add("OCC544", "OCC544 [[[[[wT [[[[d1 [[[d2 [[R [length]]]]]", __FILE__, OCC544, group);
+Index: oce/src/QABugs/QABugs_15.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_15.cxx
++++ oce/src/QABugs/QABugs_15.cxx
+@@ -69,6 +69,6 @@ static Standard_Integer BUC60720 (Draw_I
+ 
+ void QABugs::Commands_15(Draw_Interpretor& theCommands)
+ {
+-  char *group = "QABugs";
++  const char *group = "QABugs";
+   theCommands.Add("BUC60720","BUC60720 0/1",__FILE__,BUC60720,group);
+ }
+Index: oce/src/QABugs/QABugs_16.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_16.cxx
++++ oce/src/QABugs/QABugs_16.cxx
+@@ -849,7 +849,7 @@ static Standard_Integer OCC904 (Draw_Int
+ }
+ 
+ void QABugs::Commands_16(Draw_Interpretor& theCommands) {
+-  char *group = "QABugs";
++  const char *group = "QABugs";
+ 
+   theCommands.Add ("BUC60848", "BUC60848 shape", __FILE__, BUC60848, group);
+   theCommands.Add ("BUC60828", "BUC60828", __FILE__, BUC60828, group);
+Index: oce/src/QABugs/QABugs_17.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_17.cxx
++++ oce/src/QABugs/QABugs_17.cxx
+@@ -2251,7 +2251,7 @@ Standard_Integer OCC17480(Draw_Interpret
+ }
+ 
+ void QABugs::Commands_17(Draw_Interpretor& theCommands) {
+-  char *group = "QABugs";
++  const char *group = "QABugs";
+ 
+   theCommands.Add ("BUC60842", "BUC60842", __FILE__, BUC60842, group);
+   theCommands.Add ("BUC60843", "BUC60843 result_shape name_of_circle name_of_curve [ par1 [ tol ] ]", __FILE__, BUC60843, group);
+Index: oce/src/QABugs/QABugs_18.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_18.cxx
++++ oce/src/QABugs/QABugs_18.cxx
+@@ -429,7 +429,7 @@ static Standard_Integer OCC404bug (Draw_
+ }
+ 
+ void QABugs::Commands_18(Draw_Interpretor& theCommands) {
+-  char *group = "QABugs";
++  const char *group = "QABugs";
+ 
+   theCommands.Add("BUC60851", "BUC60851", __FILE__, BUC60851, group);
+   theCommands.Add("OCC216", "OCC216", __FILE__, OCC216, group);
+Index: oce/src/QABugs/QABugs_19.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_19.cxx
++++ oce/src/QABugs/QABugs_19.cxx
+@@ -71,7 +71,7 @@ static Standard_Integer OCC142 (Draw_Int
+ }
+ 
+ void QABugs::Commands_19(Draw_Interpretor& theCommands) {
+-  char *group = "QABugs";
++  const char *group = "QABugs";
+ 
+   theCommands.Add ("OCC230", "OCC230 TrimmedCurve Pnt2d Pnt2d", __FILE__, OCC230, group);
+   theCommands.Add ("OCC142", "OCC142", __FILE__, OCC142, group);
+Index: oce/src/QABugs/QABugs_2.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_2.cxx
++++ oce/src/QABugs/QABugs_2.cxx
+@@ -197,7 +197,7 @@ static Standard_Integer OCC1048 (Draw_In
+ }
+ 
+ void QABugs::Commands_2(Draw_Interpretor& theCommands) {
+-  char *group = "QABugs";
++  const char *group = "QABugs";
+ 
+   //theCommands.Add("OCC527", "OCC527 shape", __FILE__, OCC527, group);  
+   theCommands.Add("OCC527", "OCC527 shape [BRepAlgoAPI/BRepAlgo = 1/0]", __FILE__, OCC527, group);  
+Index: oce/src/QABugs/QABugs_4.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_4.cxx
++++ oce/src/QABugs/QABugs_4.cxx
+@@ -145,7 +145,7 @@ static int BUC60627(Draw_Interpretor& di
+ }
+ 
+ void QABugs::Commands_4(Draw_Interpretor& theCommands) {
+-  char *group = "QABugs";
++  const char *group = "QABugs";
+ 
+   theCommands.Add("BUC60738","BUC60738",__FILE__,BUC60738,group);
+   theCommands.Add("BUC60606","BUC60606 name",__FILE__,BUC60606,group);
+Index: oce/src/QABugs/QABugs_5.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_5.cxx
++++ oce/src/QABugs/QABugs_5.cxx
+@@ -118,7 +118,7 @@ static Standard_Integer OCC5696 (Draw_In
+ }
+ 
+ void QABugs::Commands_5(Draw_Interpretor& theCommands) {
+-  char *group = "QABugs";
++  const char *group = "QABugs";
+ 
+   theCommands.Add ("OCC6001", "OCC6001 name curve/wire surface\n\t\tintersect curve by surface", 
+                    __FILE__, OCC6001, group);
+Index: oce/src/QABugs/QABugs_6.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_6.cxx
++++ oce/src/QABugs/QABugs_6.cxx
+@@ -122,7 +122,7 @@ static Standard_Integer OCC281bug (Draw_
+ }
+ 
+ void QABugs::Commands_6(Draw_Interpretor& theCommands) {
+-  char *group = "QABugs";
++  const char *group = "QABugs";
+ 
+   theCommands.Add ("OCC281", "OCC281 x y TypeOfMarker(0-12)", __FILE__, OCC281bug, group);
+ 
+Index: oce/src/QABugs/QABugs_7.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_7.cxx
++++ oce/src/QABugs/QABugs_7.cxx
+@@ -323,7 +323,7 @@ static Standard_Integer OCC862 (Draw_Int
+ }
+ 
+ void QABugs::Commands_7(Draw_Interpretor& theCommands) {
+-  char *group = "QABugs";
++  const char *group = "QABugs";
+ 
+   theCommands.Add("OCC862", "OCC862 curve1 curve2", __FILE__, OCC862, group);  
+   return;
+Index: oce/src/QABugs/QABugs_8.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_8.cxx
++++ oce/src/QABugs/QABugs_8.cxx
+@@ -259,7 +259,7 @@ static Standard_Integer OCC1651 (Draw_In
+ }
+ 
+ void QABugs::Commands_8(Draw_Interpretor& theCommands) {
+-  char *group = "QABugs";
++  const char *group = "QABugs";
+ 
+   theCommands.Add("BUC60753", "BUC60753 mode ratio", __FILE__, BUC60753, group);
+   theCommands.Add("OCC162", "OCC162 name", __FILE__, OCC162, group);
+Index: oce/src/QABugs/QABugs_9.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_9.cxx
++++ oce/src/QABugs/QABugs_9.cxx
+@@ -149,7 +149,7 @@ static Standard_Integer OCC137_z (Draw_I
+ }
+ 
+ void QABugs::Commands_9(Draw_Interpretor& theCommands) {
+-  char *group = "QABugs";
++  const char *group = "QABugs";
+ 
+   theCommands.Add ("BUC60857", "BUC60857", __FILE__, BUC60857, group);
+   theCommands.Add("OCC137","OCC137 mode [shape]",__FILE__,OCC137,group);
+Index: oce/src/QANCollection/QANCollection1.cxx
+===================================================================
+--- oce.orig/src/QANCollection/QANCollection1.cxx
++++ oce/src/QANCollection/QANCollection1.cxx
+@@ -141,7 +141,7 @@ static Standard_Integer QANColCheckSeque
+ }
+ 
+ void QANCollection::Commands1(Draw_Interpretor& theCommands) {
+-  char *group = "QANCollection";
++  const char *group = "QANCollection";
+ 
+   // from agvCollTest/src/AgvColEXE/TestEXE.cxx
+   theCommands.Add("QANColCheckArray1",   "QANColCheckArray1 [-n]",               __FILE__, QANColCheckArray1,   group);  
+Index: oce/src/QANCollection/QANCollection2.cxx
+===================================================================
+--- oce.orig/src/QANCollection/QANCollection2.cxx
++++ oce/src/QANCollection/QANCollection2.cxx
+@@ -288,7 +288,7 @@ static Standard_Integer QANColTestSequen
+ }
+ 
+ void QANCollection::Commands2(Draw_Interpretor& theCommands) {
+-  char *group = "QANCollection";
++  const char *group = "QANCollection";
+ 
+   // from agvCollTest/src/CollectionEXE/FuncTestEXE.cxx
+   theCommands.Add("QANColTestArray1",         "QANColTestArray1",         __FILE__, QANColTestArray1,         group);  
+Index: oce/src/QANCollection/QANCollection3.cxx
+===================================================================
+--- oce.orig/src/QANCollection/QANCollection3.cxx
++++ oce/src/QANCollection/QANCollection3.cxx
+@@ -256,7 +256,7 @@ static Standard_Integer QANColCheckSpars
+ }
+ 
+ void QANCollection::Commands3(Draw_Interpretor& theCommands) {
+-  char *group = "QANCollection";
++  const char *group = "QANCollection";
+ 
+   // from agvCollTest/src/CollectionEXE/PerfTestEXE.cxx
+   theCommands.Add("QANColPerfArray1",         "QANColPerfArray1 Repeat Size",         __FILE__, QANColPerfArray1,         group);  

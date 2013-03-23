@@ -1,0 +1,36 @@
+From a82cd1e7d0de66997d3785b0c0c5f234478ba6a3 Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Sun, 17 Feb 2013 15:31:07 +0100
+Subject: [PATCH] Bugfix: [clang-warning-fix][tautological-compare]
+
+Comparison of unsigned expression < 0 is always false.
+This makes UnitsAPITestSuite.testMDTVCurrentUnits fail on Windows, but only in Release mode.
+---
+ src/Units/Units_Lexicon.cxx |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/src/Units/Units_Lexicon.cxx b/src/Units/Units_Lexicon.cxx
+index c1433b5..b0a6ea7 100644
+--- a/src/Units/Units_Lexicon.cxx
++++ b/src/Units/Units_Lexicon.cxx
+@@ -60,7 +60,7 @@ void Units_Lexicon::Creates(const Standard_CString afilename)
+   char *Oper = oper ;
+   char *Coeff = coeff ;
+ #endif
+-  Standard_Size i;
++  int i;  // Warning : don't use unsigned type here (or Standard_Size or size_t), else the while's below will cause an unsigned 0-wrap!
+   Standard_Real value;
+   Handle(Units_Token) token;
+   struct stat buf;
+@@ -86,7 +86,7 @@ void Units_Lexicon::Creates(const Standard_CString afilename)
+   //for(i=0; i<=255; i++)line[i]=0;
+ 
+   while(file.getline(line,255)) {
+-    Standard_Size len = strlen( line ) ;
++    int len = (int) strlen( line ) ;
+     if(len == 1) continue; //skl - ???
+     for ( i = 0 ; i < 30 ; i++ ) {
+       if ( i < len )
+-- 
+1.7.10.4
+

@@ -119,3 +119,24 @@ Index: oce/src/CDM/CDM_COutMessageDriver.cxx
 -  delete anAsciiString;
 +  delete [] anAsciiString;
  }
+Index: oce/src/OpenGl/OpenGl_ImageBox.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_ImageBox.cxx
++++ oce/src/OpenGl/OpenGl_ImageBox.cxx
+@@ -346,11 +346,11 @@ read_texture(char *name, int *width, int
+   abuf = new unsigned char[image->xsize];
+   if(!base || !rbuf || !gbuf || !bbuf)
+   {  
+-    free(base);
+-    free(rbuf);
+-    free(gbuf);
+-    free(bbuf);
+-    free(abuf);
++    delete [] base;
++    delete [] rbuf;
++    delete [] gbuf;
++    delete [] bbuf;
++    delete [] abuf;
+     return NULL;
+   }
+   lptr = base;

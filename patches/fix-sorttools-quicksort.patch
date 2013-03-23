@@ -1,0 +1,39 @@
+From 7ffe6db042602eb4a6e3a8df463c9d7ab7d19f90 Mon Sep 17 00:00:00 2001
+From: Massimo Del Fedele <max@veneto.com>
+Date: Fri, 30 Nov 2012 00:05:34 +0100
+Subject: [PATCH] SortTools_Quicksort : fix for out-of-bound exception
+
+---
+ inc/SortTools_QuickSort.gxx |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
+
+diff --git a/inc/SortTools_QuickSort.gxx b/inc/SortTools_QuickSort.gxx
+index 0b928d6..ef1c098 100644
+--- a/inc/SortTools_QuickSort.gxx
++++ b/inc/SortTools_QuickSort.gxx
+@@ -50,19 +50,17 @@ static void SortRecursive(Array& TheArray,
+     Exchange(TheArray(Middle), TheArray(Right - 1));
+     Front = Left + 1;
+     Back = Right - 1;
+-    if(Back != TheArray.Lower()) {
++    if(Back > Left) {
+       Back = Back - 1;
+     }
+     for(;;) {
+-      while (Comp.IsLower(TheArray(Front), Pivot)) {
++      while (Front < Right && Comp.IsLower(TheArray(Front), Pivot)) {
+ 	Front = Front + 1;
+       }
+-      while (Comp.IsLower(Pivot, TheArray(Back))) {
++      while (Back > Left && Comp.IsLower(Pivot, TheArray(Back))) {
+ 	Back = Back - 1;
+       }
+       if(Front <= Back) {
+-	if(Front == TheArray.Upper()) return;
+-	if(Back == TheArray.Lower()) return;  
+ 	Exchange(TheArray(Front), TheArray(Back));
+ 	Front = Front + 1;
+ 	Back = Back - 1;
+-- 
+1.7.10.4
+

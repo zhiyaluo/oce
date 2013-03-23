@@ -1,0 +1,29 @@
+From b144c6c19ae9c15daa51c35448d99fe0cb623c0e Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Tue, 19 Feb 2013 12:52:43 +0100
+Subject: [PATCH] [warning-fix][maybe-uninitialized]
+
+---
+ inc/Intf_InterferencePolygonPolyhedron.gxx |    2 ++
+ 1 file changed, 2 insertions(+)
+
+Index: oce/inc/Intf_InterferencePolygonPolyhedron.gxx
+===================================================================
+--- oce.orig/inc/Intf_InterferencePolygonPolyhedron.gxx
++++ oce/inc/Intf_InterferencePolygonPolyhedron.gxx
+@@ -813,6 +813,7 @@ void Intf_InterferencePolygonPolyhedron:
+     Standard_Integer sEdge=-1;
+     Standard_Integer sVertex=-1;
+     Standard_Integer tbreak=0;
++    dPiE[0] = dPiE[1] = dPiE[2] = 0.;
+     { //-- is = 0
+       gp_XYZ segT(ToolPolyh::Point(thePolyh, pTri[1]).XYZ()-
+ 		  ToolPolyh::Point(thePolyh, pTri[0]).XYZ());
+@@ -1088,6 +1089,7 @@ void Intf_InterferencePolygonPolyhedron:
+     Standard_Integer sEdge=-1;
+     Standard_Integer sVertex=-1;
+     Standard_Integer tbreak=0;
++    dPiE[0] = dPiE[1] = dPiE[2] = 0.;
+     { //-- is = 0
+       gp_XYZ segT(ToolPolyh::Point(thePolyh, pTri[1]).XYZ()-
+ 		  ToolPolyh::Point(thePolyh, pTri[0]).XYZ());

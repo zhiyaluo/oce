@@ -22,3 +22,116 @@ Index: oce/src/AdvApp2Var/AdvApp2Var_Iso.cxx
      break;
      //#endif
    }
+Index: oce/src/BSplCLib/BSplCLib_2.cxx
+===================================================================
+--- oce.orig/src/BSplCLib/BSplCLib_2.cxx
++++ oce/src/BSplCLib/BSplCLib_2.cxx
+@@ -589,14 +589,14 @@ void BSplCLib::MovePointAndTangent(const
+   conditions,
+   start_num_poles,
+   end_num_poles,
+-  index,
++  index = 0,
+   start_index,
+   end_index,
+   other_index,
+   type,
+   order ;
+   
+-  Standard_Real    new_parameter,
++  Standard_Real    new_parameter = 0.0,
+   value,
+   divide,
+   end_value,
+Index: oce/src/LDOM/LDOM_BasicElement.cxx
+===================================================================
+--- oce.orig/src/LDOM/LDOM_BasicElement.cxx
++++ oce/src/LDOM/LDOM_BasicElement.cxx
+@@ -223,7 +223,7 @@ const LDOM_BasicNode * LDOM_BasicElement
+                                    const LDOM_BasicNode           * aLastCh)
+ {
+   //  Create attribute
+-  Standard_Integer aHash;
++  Standard_Integer aHash = 0;
+   LDOM_BasicAttribute& anAttr =
+     LDOM_BasicAttribute::Create (anAttrName, aDocument, aHash);
+   anAttr.myValue = anAttrValue;
+@@ -453,7 +453,7 @@ void LDOM_BasicElement::ReplaceElement
+ loop_attr:
+   LDOM_BasicNode * aLastAttr = (LDOM_BasicNode *) aLastChild;
+   for (; aBNode != NULL; aBNode = aBNode -> GetSibling()) {
+-    Standard_Integer aHash;
++    Standard_Integer aHash = 0;
+     if (aBNode -> isNull()) continue;
+     const LDOM_BasicAttribute * aBNodeAtt= (const LDOM_BasicAttribute *) aBNode;
+     LDOM_BasicAttribute * aNewAtt =
+Index: oce/src/DebugTools/Perf.cxx
+===================================================================
+--- oce.orig/src/DebugTools/Perf.cxx
++++ oce/src/DebugTools/Perf.cxx
+@@ -187,7 +187,7 @@ int perf_stop_meter (const char * const
+   t_TimeCounter* ptc = find_meter (MeterName);
+ 
+   if (ptc && ptc->start_time) {
+-    PERF_TIME utime;
++    PERF_TIME utime = 0;
+     PICK_TIME (utime)
+     ptc->cumul_time += utime - ptc->start_time;
+     ptc->start_time = 0;
+@@ -210,7 +210,7 @@ int perf_stop_imeter (const int iMeter)
+     t_TimeCounter * const ptc = &MeterTable[iMeter-1];
+ 
+     if (ptc->start_time) {
+-      PERF_TIME utime;
++      PERF_TIME utime = 0;
+       PICK_TIME (utime)
+       ptc->cumul_time += utime - ptc->start_time;
+       ptc->start_time = 0;
+Index: oce/src/AlienImage/AlienImage_BMPAlienData.cxx
+===================================================================
+--- oce.orig/src/AlienImage/AlienImage_BMPAlienData.cxx
++++ oce/src/AlienImage/AlienImage_BMPAlienData.cxx
+@@ -89,7 +89,7 @@ Standard_Boolean AlienImage_BMPAlienData
+   int   isInsideOut, hasMask, nBitCount;
+   int   iCompression, isOS2Format, hasColormap;
+   int   nBytes, iDataSize;
+-  char  bmpSign[2];
++  char  bmpSign[2] = {'\0' , '\0'};
+   AlienImage_BMPHeader bmfh; // Standard BMP file header
+   BITMAPINFOHEADER bmih = {}; // Windows BMP header
+   BITMAPCOREHEADER bmch = {}; // OS/2 BMP header
+Index: oce/src/Xw/Xw_ColorMap.cxx
+===================================================================
+--- oce.orig/src/Xw/Xw_ColorMap.cxx
++++ oce/src/Xw/Xw_ColorMap.cxx
+@@ -307,7 +307,7 @@ int MaxColor,BasePixel,MaxUserColor,MaxD
+ Standard_Integer Xw_ColorMap::MaxOverlayColors( ) const {
+ Aspect_Handle *VisualInfo ;
+ Xw_TypeOfVisual VisualClass ;
+-int MaxColor,BasePixel,MaxUserColor,MaxDefineColor,FirstFreeColorIndex,visualid ;
++int MaxColor,BasePixel,MaxUserColor = 0,MaxDefineColor,FirstFreeColorIndex,visualid ;
+ 
+ 	status = XW_ERROR;
+ 	if( MyExtendedOverlayColorMap ) {
+Index: oce/src/OSD/OSD_PerfMeter.c
+===================================================================
+--- oce.orig/src/OSD/OSD_PerfMeter.c
++++ oce/src/OSD/OSD_PerfMeter.c
+@@ -182,7 +182,7 @@ int perf_stop_meter (const char * const
+ 
+   if (ic >= 0 && MeterTable[ic].start_time) {
+     t_TimeCounter * const ptc = &MeterTable[ic];
+-    PERF_TIME utime;
++    PERF_TIME utime = 0;
+     PICK_TIME (utime)
+     ptc->cumul_time += utime - ptc->start_time;
+     ptc->start_time = 0;
+@@ -203,7 +203,7 @@ int perf_stop_imeter (const int iMeter)
+   if (iMeter >= 0 && iMeter < nb_meters) {
+     t_TimeCounter * const ptc = &MeterTable[iMeter];
+     if (ptc->start_time) {
+-      PERF_TIME utime;
++      PERF_TIME utime = 0;
+       PICK_TIME (utime)
+       ptc->cumul_time += utime - ptc->start_time;
+       ptc->start_time = 0;

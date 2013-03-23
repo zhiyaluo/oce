@@ -1,0 +1,39 @@
+From f72bc9966db4d161a9f3b97d4d43bec1967e6839 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Tue, 19 Feb 2013 10:41:48 +0100
+Subject: [PATCH] [clang-warning-fix][unused-value]
+
+---
+ inc/OpenGl_telem_util.hxx         |    2 +-
+ src/AdvApp2Var/AdvApp2Var_Iso.cxx |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/inc/OpenGl_telem_util.hxx b/inc/OpenGl_telem_util.hxx
+index 2125b59..b9d0b84 100644
+--- a/inc/OpenGl_telem_util.hxx
++++ b/inc/OpenGl_telem_util.hxx
+@@ -87,7 +87,7 @@ xx-xx-xx : xxx ; Creation.
+ /* normalize */
+ #define  vecnrmd(a,d)    ( d = (Tfloat)vecmag(a), \
+   ( d > 1e-10 ? (a[0] /= d, a[1] /= d, a[2] /= d, d) : (Tfloat)0. ) )
+-#define  vecnrm(a)       { Tfloat d; vecnrmd(a,d); }
++#define  vecnrm(a)       { Tfloat d; (void) vecnrmd(a,d); }
+ 
+ /* angle between two vectors */
+ #define  vecang(a,b,d)   { d = (Tfloat)(vecmag(a)*vecmag(b)); \
+diff --git a/src/AdvApp2Var/AdvApp2Var_Iso.cxx b/src/AdvApp2Var/AdvApp2Var_Iso.cxx
+index 9b7e555..614ac0a 100644
+--- a/src/AdvApp2Var/AdvApp2Var_Iso.cxx
++++ b/src/AdvApp2Var/AdvApp2Var_Iso.cxx
+@@ -246,7 +246,7 @@ void AdvApp2Var_Iso::MakeApprox(const AdvApp2Var_Context& Conditions,
+   //#ifdef DEB
+   //Standard_Real *ERRMOY =
+   //#endif
+-    (Standard_Real *) &HERRMOY->ChangeArray2()
++    (void) &HERRMOY->ChangeArray2()
+                                 (HERRMOY ->LowerRow(),HERRMOY ->LowerCol());
+   Standard_Real *EMYAPP = new Standard_Real[NBSESP];
+ //
+-- 
+1.7.10.4
+

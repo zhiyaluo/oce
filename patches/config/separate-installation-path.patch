@@ -1,0 +1,269 @@
+From 74145efe1a07e61de9ab6a14720e7cd8d92a1f3f Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Fri, 14 Dec 2012 08:12:48 +0100
+Subject: [PATCH 1/2] Move installation path definitions into a separate
+ header file
+
+This is to recompile only few files when installation paths are changed;
+currently all files are recompiled.
+
+Fix issue #324.
+---
+ CMakeLists.txt                                     |    5 ++++
+ oce_build_config.h.cmake                           |   17 ------------
+ oce_build_paths.h.cmake                            |   27 ++++++++++++++++++++
+ src/Aspect/Aspect_Driver.cxx                       |    2 ++
+ src/DPrsStd/DPrsStd.cxx                            |    2 ++
+ src/Draw/Draw.cxx                                  |    2 ++
+ src/Draw/Draw_PloadCommands.cxx                    |    2 ++
+ src/Graphic3d/Graphic3d_GraphicDevice.cxx          |    2 ++
+ src/Graphic3d/Graphic3d_Texture1D.cxx              |    2 ++
+ src/Graphic3d/Graphic3d_Texture2D.cxx              |    2 ++
+ src/Graphic3d/Graphic3d_TextureEnv.cxx             |    2 ++
+ src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx       |    2 ++
+ src/Plugin/Plugin.cxx                              |    2 ++
+ src/Resource/Resource_Manager.cxx                  |    2 ++
+ src/UnitsAPI/UnitsAPI.cxx                          |    2 ++
+ src/ViewerTest/ViewerTest.cxx                      |    3 +++
+ .../XmlLDrivers_DocumentStorageDriver.cxx          |    2 ++
+ 17 files changed, 61 insertions(+), 17 deletions(-)
+ create mode 100644 oce_build_paths.h.cmake
+
+From 9e17cd4a8ebfeed47de4dd677df31254690ab685 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Tue, 18 Dec 2012 07:39:59 +0100
+Subject: [PATCH 2/2] Protect oce-paths.h inclusion
+
+This may be needed when compiling with WOK.
+---
+ CMakeLists.txt                                        |    1 +
+ src/Aspect/Aspect_Driver.cxx                          |    4 +++-
+ src/DPrsStd/DPrsStd.cxx                               |    4 +++-
+ src/Draw/Draw.cxx                                     |    4 +++-
+ src/Draw/Draw_PloadCommands.cxx                       |    4 +++-
+ src/Graphic3d/Graphic3d_GraphicDevice.cxx             |    4 +++-
+ src/Graphic3d/Graphic3d_Texture1D.cxx                 |    4 +++-
+ src/Graphic3d/Graphic3d_Texture2D.cxx                 |    4 +++-
+ src/Graphic3d/Graphic3d_TextureEnv.cxx                |    4 +++-
+ src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx          |    4 +++-
+ src/Plugin/Plugin.cxx                                 |    4 +++-
+ src/Resource/Resource_Manager.cxx                     |    4 +++-
+ src/UnitsAPI/UnitsAPI.cxx                             |    4 +++-
+ src/ViewerTest/ViewerTest.cxx                         |    4 +++-
+ src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx |    4 +++-
+ 15 files changed, 43 insertions(+), 14 deletions(-)
+
+diff --git a/src/Aspect/Aspect_Driver.cxx b/src/Aspect/Aspect_Driver.cxx
+index c3128d9..ded101e 100644
+--- a/src/Aspect/Aspect_Driver.cxx
++++ b/src/Aspect/Aspect_Driver.cxx
+@@ -43,6 +43,10 @@
+ #include <Aspect_Driver.ixx>
+ #include <OSD_Environment.hxx>
+ 
++#ifdef HAVE_OCE_PATHS_H
++# include "oce-paths.h"
++#endif
++
+ static Standard_Boolean dirMFTisDefined = Standard_False;
+ 
+ Aspect_Driver::Aspect_Driver () {
+diff --git a/src/DPrsStd/DPrsStd.cxx b/src/DPrsStd/DPrsStd.cxx
+index cbabd71..89cc26f 100644
+--- a/src/DPrsStd/DPrsStd.cxx
++++ b/src/DPrsStd/DPrsStd.cxx
+@@ -37,6 +37,10 @@
+ #include <OSD_Directory.hxx>
+ #include <OSD_File.hxx>
+ 
++#ifdef HAVE_OCE_PATHS_H
++# include "oce-paths.h"
++#endif
++
+ // avoid warnings on 'extern "C"' functions returning C++ classes
+ #ifdef _MSC_VER
+ #pragma warning(4:4190)
+diff --git a/src/Draw/Draw.cxx b/src/Draw/Draw.cxx
+index 7d22678..ff02df6 100644
+--- a/src/Draw/Draw.cxx
++++ b/src/Draw/Draw.cxx
+@@ -70,6 +70,10 @@
+ 
+ #include <stdio.h>
+ 
++#ifdef HAVE_OCE_PATHS_H
++# include "oce-paths.h"
++#endif
++
+ extern Standard_Boolean Draw_ParseFailed;
+ 
+ Standard_EXPORT Draw_Viewer dout;
+diff --git a/src/Draw/Draw_PloadCommands.cxx b/src/Draw/Draw_PloadCommands.cxx
+index 51d7e5a..ed59cb2 100644
+--- a/src/Draw/Draw_PloadCommands.cxx
++++ b/src/Draw/Draw_PloadCommands.cxx
+@@ -28,6 +28,10 @@
+ #include <Draw_MapOfAsciiString.hxx>
+ #include <Draw.hxx>
+ 
++#ifdef HAVE_OCE_PATHS_H
++# include "oce-paths.h"
++#endif
++
+ static Handle(Resource_Manager) myResources;
+ 
+ //=======================================================================
+diff --git a/src/Graphic3d/Graphic3d_GraphicDevice.cxx b/src/Graphic3d/Graphic3d_GraphicDevice.cxx
+index 5ad532d..5765515 100644
+--- a/src/Graphic3d/Graphic3d_GraphicDevice.cxx
++++ b/src/Graphic3d/Graphic3d_GraphicDevice.cxx
+@@ -50,6 +50,10 @@
+ 
+ #include <Xw_Cextern.hxx>
+ 
++#ifdef HAVE_OCE_PATHS_H
++# include "oce-paths.h"
++#endif
++
+ //-Static data definitions
+ 
+ static char LocalMessag[80] ;
+diff --git a/src/Graphic3d/Graphic3d_Texture1D.cxx b/src/Graphic3d/Graphic3d_Texture1D.cxx
+index 1c121a9..d2ab303 100644
+--- a/src/Graphic3d/Graphic3d_Texture1D.cxx
++++ b/src/Graphic3d/Graphic3d_Texture1D.cxx
+@@ -31,6 +31,10 @@
+ #include <OSD_File.hxx>
+ #include <OSD_Path.hxx>
+ 
++#ifdef HAVE_OCE_PATHS_H
++# include "oce-paths.h"
++#endif
++
+ static const char *NameOfTexture_to_FileName[] = 
+ {
+   "1d_elevation.rgb"
+diff --git a/src/Graphic3d/Graphic3d_Texture2D.cxx b/src/Graphic3d/Graphic3d_Texture2D.cxx
+index 6dfb74b..3d39724 100644
+--- a/src/Graphic3d/Graphic3d_Texture2D.cxx
++++ b/src/Graphic3d/Graphic3d_Texture2D.cxx
+@@ -33,6 +33,10 @@
+ #include <OSD_File.hxx>
+ #include <OSD_Path.hxx>
+ 
++#ifdef HAVE_OCE_PATHS_H
++# include "oce-paths.h"
++#endif
++
+ static TCollection_AsciiString GetEnvir ( ) {
+ 
+   static Standard_Boolean IsDefined=Standard_False ;
+diff --git a/src/Graphic3d/Graphic3d_TextureEnv.cxx b/src/Graphic3d/Graphic3d_TextureEnv.cxx
+index 5be4ba7..2943e41 100644
+--- a/src/Graphic3d/Graphic3d_TextureEnv.cxx
++++ b/src/Graphic3d/Graphic3d_TextureEnv.cxx
+@@ -34,6 +34,10 @@
+ 
+ #include <stdlib.h>
+ 
++#ifdef HAVE_OCE_PATHS_H
++# include "oce-paths.h"
++#endif
++
+ static TCollection_AsciiString GetEnvir ( ) {
+ 
+   static Standard_Boolean IsDefined=Standard_False ;
+diff --git a/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx b/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
+index 71edcfa..dadc0b7 100644
+--- a/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
++++ b/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
+@@ -26,6 +26,10 @@
+ #include <OSD_Environment.hxx>
+ #include <TCollection_AsciiString.hxx>
+ 
++#ifdef HAVE_OCE_PATHS_H
++# include "oce-paths.h"
++#endif
++
+ // =======================================================================
+ // function : Graphic3d_WNTGraphicDevice
+ // purpose  :
+diff --git a/src/Plugin/Plugin.cxx b/src/Plugin/Plugin.cxx
+index 7de5020..cd68fc6 100644
+--- a/src/Plugin/Plugin.cxx
++++ b/src/Plugin/Plugin.cxx
+@@ -28,6 +28,10 @@
+ 
+ #include <TCollection_AsciiString.hxx>
+ 
++#ifdef HAVE_OCE_PATHS_H
++# include "oce-paths.h"
++#endif
++
+ static Standard_Character tc[1000];
+ static Standard_PCharacter thePluginId = tc;
+ 
+diff --git a/src/Resource/Resource_Manager.cxx b/src/Resource/Resource_Manager.cxx
+index ff6e061..7748b9a 100644
+--- a/src/Resource/Resource_Manager.cxx
++++ b/src/Resource/Resource_Manager.cxx
+@@ -34,6 +34,10 @@
+ 
+ #include <errno.h>
+ 
++#ifdef HAVE_OCE_PATHS_H
++# include "oce-paths.h"
++#endif
++
+ #define END      0
+ #define EMPTY    1
+ #define COMMENT  2
+diff --git a/src/UnitsAPI/UnitsAPI.cxx b/src/UnitsAPI/UnitsAPI.cxx
+index 446f620..ecf19b2 100644
+--- a/src/UnitsAPI/UnitsAPI.cxx
++++ b/src/UnitsAPI/UnitsAPI.cxx
+@@ -26,6 +26,10 @@
+ #include <Standard_NoSuchObject.hxx>
+ #include <OSD_Environment.hxx>
+ 
++#ifdef HAVE_OCE_PATHS_H
++# include "oce-paths.h"
++#endif
++
+ static Handle(Resource_Manager) CurrentUnits,SICurrentUnits,MDTVCurrentUnits;
+ static Units_UnitsSystem LocalSystemUnits,SILocalSystemUnits,MDTVLocalSystemUnits;
+ static TCollection_AsciiString rstring;
+diff --git a/src/ViewerTest/ViewerTest.cxx b/src/ViewerTest/ViewerTest.cxx
+index 7d82a4a..0339ebd 100644
+--- a/src/ViewerTest/ViewerTest.cxx
++++ b/src/ViewerTest/ViewerTest.cxx
+@@ -79,6 +79,11 @@
+ 
+ #include <NIS_InteractiveContext.hxx>
+ #include <NIS_Triangulated.hxx>
++
++#ifdef HAVE_OCE_PATHS_H
++# include "oce-paths.h"
++#endif
++
+ extern int ViewerMainLoop(Standard_Integer argc, const char** argv);
+ 
+ //=======================================================================
+diff --git a/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx b/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
+index 5d96047..6e78a4c 100644
+--- a/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
++++ b/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
+@@ -49,6 +49,10 @@
+ #include <OSD_File.hxx>
+ #include <OSD_Environment.hxx>
+ 
++#ifdef HAVE_OCE_PATHS_H
++# include "oce-paths.h"
++#endif
++
+ #define STORAGE_VERSION      "STORAGE_VERSION: "
+ #define REFERENCE_COUNTER    "REFERENCE_COUNTER: "
+ #define MODIFICATION_COUNTER "MODIFICATION_COUNTER: "
+-- 
+1.7.10.4
+

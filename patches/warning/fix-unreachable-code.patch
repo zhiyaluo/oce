@@ -386,7 +386,7 @@ Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx
 +++ oce/src/Draw/Draw_Window.cxx
-@@ -1374,7 +1374,9 @@ LONG APIENTRY DrawWindow::DrawProc(HWND
+@@ -1371,7 +1371,9 @@ LONG APIENTRY DrawWindow::DrawProc(HWND
      else
        return LONG(DefMDIChildProc(hWnd, wMsg, wParam, lParam));
    }
@@ -493,7 +493,7 @@ Index: oce/src/GeomFill/GeomFill_LocationGuide.cxx
 ===================================================================
 --- oce.orig/src/GeomFill/GeomFill_LocationGuide.cxx
 +++ oce/src/GeomFill/GeomFill_LocationGuide.cxx
-@@ -743,6 +743,7 @@ static void InGoodPeriod(const Standard_
+@@ -748,6 +748,7 @@ static void InGoodPeriod(const Standard_
    if (rotation) {  
      return Standard_False;
      
@@ -501,7 +501,7 @@ Index: oce/src/GeomFill/GeomFill_LocationGuide.cxx
      // initialisation du germe 
      InitX(Param);      
      
-@@ -856,6 +857,7 @@ static void InGoodPeriod(const Standard_
+@@ -861,6 +862,7 @@ static void InGoodPeriod(const Standard_
  	return Standard_False;
        }
  
@@ -577,22 +577,6 @@ Index: oce/src/IntPatch/IntPatch_LineConstructor.cxx
  }
  
  
-Index: oce/src/IntPatch/IntPatch_Polyhedron.cxx
-===================================================================
---- oce.orig/src/IntPatch/IntPatch_Polyhedron.cxx
-+++ oce/src/IntPatch/IntPatch_Polyhedron.cxx
-@@ -528,7 +528,10 @@ Standard_Integer IntPatch_Polyhedron::Tr
- 
-     return(0); //-- BUG NON CORRIGE ( a revoir le role de nbdeltaU et nbdeltaV)
- 
--    return(TriConnex(TempTri,Pivot,TempOtherP,TriCon,OtherP));
-+	// @todo what does mean the above line ? should this really removed?
-+#if 0 // added by warning-fix
-+	return(TriConnex(TempTri,Pivot,TempOtherP,TriCon,OtherP));
-+#endif
-   }
-   return TriCon;
- }
 Index: oce/src/IntSurf/IntSurf_Quadric.cxx
 ===================================================================
 --- oce.orig/src/IntSurf/IntSurf_Quadric.cxx
@@ -641,7 +625,7 @@ Index: oce/src/IntTools/IntTools_EdgeFace.cxx
 ===================================================================
 --- oce.orig/src/IntTools/IntTools_EdgeFace.cxx
 +++ oce/src/IntTools/IntTools_EdgeFace.cxx
-@@ -895,6 +895,7 @@ void IntTools_EdgeFace::CheckData()
+@@ -885,6 +885,7 @@ void IntTools_EdgeFace::CheckData()
      return 0;
    }
  
@@ -649,7 +633,7 @@ Index: oce/src/IntTools/IntTools_EdgeFace.cxx
    //
    dt=al1-af1;
    if (dt<1.e-5) {
-@@ -935,6 +936,7 @@ void IntTools_EdgeFace::CheckData()
+@@ -925,6 +926,7 @@ void IntTools_EdgeFace::CheckData()
      }
    }
    return 0;

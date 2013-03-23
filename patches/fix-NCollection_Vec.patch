@@ -1,0 +1,72 @@
+From 54fcbd82af8af55f31010a96a70fd10dc938f50d Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Sun, 3 Mar 2013 22:14:15 +0100
+Subject: [PATCH] Fix cpp syntax errors in inc/NCollection_Vec[234].hxx, and
+ add missing #include
+
+These header files are unused for now, this is why these errors did
+not pop up earlier.
+---
+ inc/NCollection_Vec2.hxx |    6 ++++--
+ inc/NCollection_Vec3.hxx |   12 ++++++------
+ inc/NCollection_Vec4.hxx |    1 +
+ 3 files changed, 11 insertions(+), 8 deletions(-)
+
+diff --git a/inc/NCollection_Vec2.hxx b/inc/NCollection_Vec2.hxx
+index 36814cb..e7ab484 100644
+--- a/inc/NCollection_Vec2.hxx
++++ b/inc/NCollection_Vec2.hxx
+@@ -19,11 +19,13 @@
+ #ifndef _NCollection_Vec2_H__
+ #define _NCollection_Vec2_H__
+ 
++#include <cmath>
++
+ //! Auxiliary macros to define couple of similar access components as vector methods.
+ //! @return 2 components by their names in specified order
+ #define NCOLLECTION_VEC_COMPONENTS_2D(theX, theY) \
+-  const NCollection_Vec2<Element_t> theX##theY##() const { return NCollection_Vec2<Element_t>(theX##(), theY##()); } \
+-  const NCollection_Vec2<Element_t> theY##theX##() const { return NCollection_Vec2<Element_t>(theY##(), theX##()); }
++  const NCollection_Vec2<Element_t> theX##theY() const { return NCollection_Vec2<Element_t>(theX(), theY()); } \
++  const NCollection_Vec2<Element_t> theY##theX() const { return NCollection_Vec2<Element_t>(theY(), theX()); }
+ 
+ //! Defines the 2D-vector template.
+ //! The main target for this class - to handle raw low-level arrays (from/to graphic driver etc.).
+diff --git a/inc/NCollection_Vec3.hxx b/inc/NCollection_Vec3.hxx
+index 33fbdae..1e5bd82 100644
+--- a/inc/NCollection_Vec3.hxx
++++ b/inc/NCollection_Vec3.hxx
+@@ -25,12 +25,12 @@
+ 
+ //! Auxiliary macros to define couple of similar access components as vector methods
+ #define NCOLLECTION_VEC_COMPONENTS_3D(theX, theY, theZ) \
+-  const NCollection_Vec3<Element_t> theX##theY##theZ##() const { return NCollection_Vec3<Element_t>(theX##(), theY##(), theZ##()); } \
+-  const NCollection_Vec3<Element_t> theX##theZ##theY##() const { return NCollection_Vec3<Element_t>(theX##(), theZ##(), theY##()); } \
+-  const NCollection_Vec3<Element_t> theY##theX##theZ##() const { return NCollection_Vec3<Element_t>(theY##(), theX##(), theZ##()); } \
+-  const NCollection_Vec3<Element_t> theY##theZ##theX##() const { return NCollection_Vec3<Element_t>(theY##(), theZ##(), theX##()); } \
+-  const NCollection_Vec3<Element_t> theZ##theY##theX##() const { return NCollection_Vec3<Element_t>(theZ##(), theY##(), theX##()); } \
+-  const NCollection_Vec3<Element_t> theZ##theX##theY##() const { return NCollection_Vec3<Element_t>(theZ##(), theX##(), theY##()); }
++  const NCollection_Vec3<Element_t> theX##theY##theZ() const { return NCollection_Vec3<Element_t>(theX(), theY(), theZ()); } \
++  const NCollection_Vec3<Element_t> theX##theZ##theY() const { return NCollection_Vec3<Element_t>(theX(), theZ(), theY()); } \
++  const NCollection_Vec3<Element_t> theY##theX##theZ() const { return NCollection_Vec3<Element_t>(theY(), theX(), theZ()); } \
++  const NCollection_Vec3<Element_t> theY##theZ##theX() const { return NCollection_Vec3<Element_t>(theY(), theZ(), theX()); } \
++  const NCollection_Vec3<Element_t> theZ##theY##theX() const { return NCollection_Vec3<Element_t>(theZ(), theY(), theX()); } \
++  const NCollection_Vec3<Element_t> theZ##theX##theY() const { return NCollection_Vec3<Element_t>(theZ(), theX(), theY()); }
+ 
+ //! Generic 3-components vector.
+ //! To be used as RGB color pixel or XYZ 3D-point.
+diff --git a/inc/NCollection_Vec4.hxx b/inc/NCollection_Vec4.hxx
+index d72e93f..c0cb1bb 100644
+--- a/inc/NCollection_Vec4.hxx
++++ b/inc/NCollection_Vec4.hxx
+@@ -19,6 +19,7 @@
+ #ifndef _NCollection_Vec4_H__
+ #define _NCollection_Vec4_H__
+ 
++#include <cstring>
+ #include <NCollection_Vec3.hxx>
+ 
+ //! Generic 4-components vector.
+-- 
+1.7.10.4
+

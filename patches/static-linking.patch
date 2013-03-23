@@ -1,0 +1,121 @@
+From 3c13af4273f031d08d5ebb8883067362e3f6dcff Mon Sep 17 00:00:00 2001
+From: Massimo Del Fedele <max@veneto.com>
+Date: Tue, 20 Nov 2012 17:26:05 +0100
+Subject: [PATCH] Fixed linker errors in static build
+
+---
+ inc/InterfaceGraphic_WNT.hxx                    |   11 +++--------
+ inc/Standard_Atomic.hxx                         |    4 ++--
+ src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx    |    6 ++++++
+ src/InterfaceGraphic/InterfaceGraphic_Palette.c |    4 +++-
+ src/Standard/Standard_symlink.c                 |    3 ++-
+ 5 files changed, 16 insertions(+), 12 deletions(-)
+
+diff --git a/inc/InterfaceGraphic_WNT.hxx b/inc/InterfaceGraphic_WNT.hxx
+index 3b6f03e..8bf2cc6 100644
+--- a/inc/InterfaceGraphic_WNT.hxx
++++ b/inc/InterfaceGraphic_WNT.hxx
+@@ -43,6 +43,8 @@
+ #define WDF_NOERASEBKGRND 0x00000001
+ #define WDF_FOREIGN       0x00000002
+ 
++# include <Standard_Macro.hxx>
++
+ typedef struct window_data {
+ 
+   void*    WNT_Window_Ptr;   // pointer to WNT_Window
+@@ -76,15 +78,8 @@ typedef struct font_data {
+ 
+ } FONT_DATA;
+ 
+-#ifdef __cplusplus
+-extern "C" {
+-#endif  /* __cplusplus */
+-
+-  __declspec( dllimport ) long InterfaceGraphic_RealizePalette ( HDC, HPALETTE, BOOL, BOOL );
++Standard_IMPORTC long InterfaceGraphic_RealizePalette ( HDC, HPALETTE, BOOL, BOOL );
+ 
+-#ifdef __cplusplus
+-}
+-#endif  /* __cplusplus */
+ #endif //WNT
+ 
+ #endif  /* __INTERFACE_GRAPHIC_WNT_HXX */
+diff --git a/inc/Standard_Atomic.hxx b/inc/Standard_Atomic.hxx
+index 29a71cc..df2ed87 100644
+--- a/inc/Standard_Atomic.hxx
++++ b/inc/Standard_Atomic.hxx
+@@ -42,8 +42,8 @@
+     }
+   #else
+     extern "C" {
+-      __declspec(dllimport) long __stdcall InterlockedIncrement ( long volatile *lpAddend);
+-      __declspec(dllimport) long __stdcall InterlockedDecrement ( long volatile *lpAddend);
++      Standard_IMPORT long __stdcall InterlockedIncrement ( long volatile *lpAddend);
++      Standard_IMPORT long __stdcall InterlockedDecrement ( long volatile *lpAddend);
+     }
+     #define _InterlockedIncrement InterlockedIncrement
+     #define _InterlockedDecrement InterlockedDecrement
+diff --git a/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx b/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
+index 2ee9998..71edcfa 100644
+--- a/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
++++ b/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
+@@ -135,6 +135,12 @@ void Graphic3d_WNTGraphicDevice::SetGraphicDriver ()
+ {
+      MyGraphicDriver = MetaGraphicDriverFactory("");
+ }
++
++void Graphic3d_WNTGraphicDevice::SetGraphicDriver (const Standard_CString theGraphicLib)
++{
++     MyGraphicDriver = MetaGraphicDriverFactory("");
++}
++
+ #endif
+ 
+ #endif  // WNT
+diff --git a/src/InterfaceGraphic/InterfaceGraphic_Palette.c b/src/InterfaceGraphic/InterfaceGraphic_Palette.c
+index e3612b6..2c2f594 100644
+--- a/src/InterfaceGraphic/InterfaceGraphic_Palette.c
++++ b/src/InterfaceGraphic/InterfaceGraphic_Palette.c
+@@ -40,6 +40,8 @@ int _a_horreur_du_vide_a_la_compilation;
+ #define BLACK RGB(   0,   0,   0 )
+ #define WHITE RGB( 255, 255, 255 )
+ 
++#include <Standard_Macro.hxx>
++
+ static int s_sysPalIdx[ NB_STATIC_COLORS ] = {
+ 
+             COLOR_SCROLLBAR, 
+@@ -105,7 +107,7 @@ static COLORREF s_sysPalBW[ NB_STATIC_COLORS ] = {
+ static BOOL     s_sysUse;
+ static COLORREF s_sysPal[ NB_STATIC_COLORS ];
+ 
+-__declspec( dllexport ) long InterfaceGraphic_RealizePalette ( HDC hdc, HPALETTE hPal, BOOL fBkg, BOOL fUseStatic ) {
++Standard_EXPORTEXTERN long InterfaceGraphic_RealizePalette ( HDC hdc, HPALETTE hPal, BOOL fBkg, BOOL fUseStatic ) {
+ 
+  int i;
+  long retVal = 0;
+diff --git a/src/Standard/Standard_symlink.c b/src/Standard/Standard_symlink.c
+index 0e0970b..b7fe6d1 100644
+--- a/src/Standard/Standard_symlink.c
++++ b/src/Standard/Standard_symlink.c
+@@ -30,6 +30,7 @@
+ #define STRICT
+ #include <windows.h>
+ #include <tchar.h>
++#include "Standard_Macro.hxx"
+ 
+ #ifdef __cplusplus
+ extern "C" int symlink ( const _TCHAR*, const _TCHAR* );
+@@ -37,7 +38,7 @@ extern "C" int symlink ( const _TCHAR*, const _TCHAR* );
+ /***/
+ /******************************* symlink **************************************/
+ /***/
+-__declspec( dllexport ) int symlink ( const _TCHAR* name1, const _TCHAR* name2 ) {
++Standard_EXPORT int symlink ( const _TCHAR* name1, const _TCHAR* name2 ) {
+ 
+  return CopyFile ( name1, name2, FALSE ) == TRUE ? 0 : -1;
+ 
+-- 
+1.7.10.4
+

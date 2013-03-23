@@ -1,0 +1,26 @@
+From db42e3133efe22f71d73770ea76bb4a349bd99e2 Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Wed, 16 May 2012 21:01:21 +0200
+Subject: [PATCH] Fixes a duplicate check in the condition. Probably a
+ copy-paste bug.
+
+---
+ src/GccAna/GccAna_Circ2d3Tan_8.cxx |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/GccAna/GccAna_Circ2d3Tan_8.cxx b/src/GccAna/GccAna_Circ2d3Tan_8.cxx
+index 99eaa7a..e354615 100644
+--- a/src/GccAna/GccAna_Circ2d3Tan_8.cxx
++++ b/src/GccAna/GccAna_Circ2d3Tan_8.cxx
+@@ -135,7 +135,7 @@ GccAna_Circ2d3Tan::
+ 	     Radius = dist1;
+ 	   }
+ 	   if (ok) {
+-	     if (Abs(dist2-Radius)<=Tol && Abs(dist2-Radius)<=Tol) { 
++	     if (Abs(dist1-Radius)<=Tol && Abs(dist2-Radius)<=Tol) { 
+ 	       nbsol3 = 1;
+ 	     }
+ 	     else { ok = Standard_False; }
+-- 
+1.7.10.4
+

@@ -1,6 +1,9 @@
 remove-duplicate-headers.patch
 
 submitted/OCC22327/fix-build-tcl-8.6.patch
+upstream/OCC23603-boolean-two-edges.patch
+upstream/OCC23436-fix-BRepOffsetAPI_ThruSections-crash.patch
+
 # See if the new OpenGL stuff needs it # submitted/OCC22332/fix-layer-line.patch
 # May have been fixed upstream         # submitted/OCC22749/fix-hashcode.patch
 
@@ -16,6 +19,11 @@ fix-std-atol.patch
 fix-out-of-bounds-errors.patch
 add-missing-include-stdio.h.patch
 fix-build-failure-error-format.patch
+fix-NCollection_Vec.patch
+fix-sorttools-quicksort.patch
+fix-bug-Draw-MainWindow.cxx
+fix-duplicate-check.patch
+fix-duplicate-loop-variable.patch
 
 submitted/thread_21346/ports/remove-__try-__finally.patch
 submitted/thread_21347/warning/remove-extra-token-after-endif.patch
@@ -81,10 +89,18 @@ warning/fix-Standard_IMPORT-usage.patch
 warning/fix-dynamic-class-memaccess.patch
 warning/fix-constant-logical-operand.patch
 warning/fix-uninitialized-var.patch
+warning/fix-maybe-uninitialized.patch
 warning/fix-comparison-between-different-enums.patch
 warning/fix-dangling-else.patch
 warning/remove-duplicate-checks.patch
 warning/fix-old-declarators.patch
+warning/fix-initialization-order.patch
+warning/deprecated-conversion-string.patch
+warning/missing-braces-around-initializer.patch
+warning/fix-tautological-compare.patch
+warning/fix-unused-value.patch
+warning/fix-logical-op-parentheses.patch
+warning/fix-narrowing.patch
 
 improve-exception-message.patch
 
@@ -130,13 +146,21 @@ ports/workaround-clang-bug-remove-trampoline.patch
 ports/workaround-gcc42-bug-gpMat.patch
 ports/rename-PPC-in-cdl.patch
 ports/rename-glext.h.patch
+ports/mingw64-intptr_t-fixes.patch
+ports/mm_malloc.patch
 
 ports/do-not-undef-GL_VERSION.patch
 MMGT-default-values.patch
 warning/modify-MSVC-pragmas.patch
+
+ports/cocoa.patch
+
 warning/fix-implicit-bool-conversion.patch
 review/avoid-macro-redefinition.patch
 # TO BE REVIEWED # review/fix-ftgl-font-issue.patch
+
+improve-boolean.patch
+speedup-GeomLib-NormEstim.patch
 
 fix-older-tcl.patch
 undef-Convex.patch
@@ -149,6 +173,7 @@ get-rid-of-environment-variables.patch
 
 TKService-depends-X11-only-if-needed.patch
 static-tkopengl.patch
+static-linking.patch
 debug-postfix.patch
 disable-bspline-mesher.patch
 fix-wok-compatibility.patch
@@ -156,9 +181,11 @@ fix-wok-compatibility.patch
 config/unconditionnally-include-config.h.patch
 config/rename-config.h-into-oce-config.h.patch
 config/add-OCE-prefix-to-macros.patch
+config/separate-installation-path.patch
 
 cmake/unsorted.patch
 ports/borland11.patch
 ports/borland14.patch
+ports/borland15.patch
 review/add-todos.patch
 

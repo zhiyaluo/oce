@@ -1,0 +1,4834 @@
+From 5aac4753d17d53630fe6451f6c3348405be08ea6 Mon Sep 17 00:00:00 2001
+From: pkv <pkv@opencascade.com>
+Date: Tue, 13 Nov 2012 10:49:13 +0400
+Subject: [PATCH 01/14] [OCCT] 0023548: Boolean operation between two faces
+ fails
+
+  Cherry-picked from
+    http://git.dev.opencascade.org/gitweb/?p=occt.git;a=commit;h=d642ddf
+---
+ inc/IntPolyh_Array.hxx                        |  233 +++++++++++++++++++++++++
+ inc/IntPolyh_ArrayOfCouples.hxx               |  108 +++---------
+ inc/IntPolyh_ArrayOfEdges.hxx                 |  116 +++---------
+ inc/IntPolyh_ArrayOfPoints.hxx                |  117 +++----------
+ inc/IntPolyh_ArrayOfSectionLines.hxx          |  114 +++---------
+ inc/IntPolyh_ArrayOfStartPoints.hxx           |  109 +++---------
+ inc/IntPolyh_ArrayOfTangentZones.hxx          |  114 +++---------
+ inc/IntPolyh_ArrayOfTriangles.hxx             |  117 +++----------
+ src/IntPolyh/FILES                            |   10 +-
+ src/IntPolyh/IntPolyh.cdl                     |   26 ++-
+ src/IntPolyh/IntPolyh_ArrayOfCouples.cdl      |   73 --------
+ src/IntPolyh/IntPolyh_ArrayOfCouples.cxx      |  104 -----------
+ src/IntPolyh/IntPolyh_ArrayOfEdges.cdl        |   88 ----------
+ src/IntPolyh/IntPolyh_ArrayOfEdges.cxx        |  113 ------------
+ src/IntPolyh/IntPolyh_ArrayOfPoints.cdl       |   84 ---------
+ src/IntPolyh/IntPolyh_ArrayOfPoints.cxx       |  119 -------------
+ src/IntPolyh/IntPolyh_ArrayOfSectionLines.cdl |   80 ---------
+ src/IntPolyh/IntPolyh_ArrayOfSectionLines.cxx |  101 -----------
+ src/IntPolyh/IntPolyh_ArrayOfStartPoints.cdl  |   74 --------
+ src/IntPolyh/IntPolyh_ArrayOfStartPoints.cxx  |   93 ----------
+ src/IntPolyh/IntPolyh_ArrayOfTangentZones.cdl |   81 ---------
+ src/IntPolyh/IntPolyh_ArrayOfTangentZones.cxx |  108 ------------
+ src/IntPolyh/IntPolyh_ArrayOfTriangles.cdl    |   90 ----------
+ src/IntPolyh/IntPolyh_ArrayOfTriangles.cxx    |  120 -------------
+ src/IntPolyh/IntPolyh_Intersection.cxx        |   21 +--
+ src/IntPolyh/IntPolyh_Intersection_1.cxx      |   23 +--
+ src/IntPolyh/IntPolyh_MaillageAffinage.cxx    |   80 ++++-----
+ src/IntPolyh/IntPolyh_Triangle.cxx            |   30 ++--
+ 28 files changed, 498 insertions(+), 2048 deletions(-)
+ create mode 100644 inc/IntPolyh_Array.hxx
+ delete mode 100644 src/IntPolyh/IntPolyh_ArrayOfCouples.cdl
+ delete mode 100644 src/IntPolyh/IntPolyh_ArrayOfCouples.cxx
+ delete mode 100644 src/IntPolyh/IntPolyh_ArrayOfEdges.cdl
+ delete mode 100644 src/IntPolyh/IntPolyh_ArrayOfEdges.cxx
+ delete mode 100644 src/IntPolyh/IntPolyh_ArrayOfPoints.cdl
+ delete mode 100644 src/IntPolyh/IntPolyh_ArrayOfPoints.cxx
+ delete mode 100644 src/IntPolyh/IntPolyh_ArrayOfSectionLines.cdl
+ delete mode 100644 src/IntPolyh/IntPolyh_ArrayOfSectionLines.cxx
+ delete mode 100644 src/IntPolyh/IntPolyh_ArrayOfStartPoints.cdl
+ delete mode 100644 src/IntPolyh/IntPolyh_ArrayOfStartPoints.cxx
+ delete mode 100644 src/IntPolyh/IntPolyh_ArrayOfTangentZones.cdl
+ delete mode 100644 src/IntPolyh/IntPolyh_ArrayOfTangentZones.cxx
+ delete mode 100644 src/IntPolyh/IntPolyh_ArrayOfTriangles.cdl
+ delete mode 100644 src/IntPolyh/IntPolyh_ArrayOfTriangles.cxx
+
+From 80d535651b29b45ba68273295dedcfa699e00f89 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Fri, 1 Feb 2013 18:02:43 +0100
+Subject: [PATCH 02/14] Adapt header files after previous commit
+
+---
+ inc/IntPolyh_Intersection.hxx     |    4 +++-
+ inc/IntPolyh_MaillageAffinage.hxx |   13 ++++++-------
+ inc/IntPolyh_Triangle.hxx         |   16 ++++++++++++----
+ 3 files changed, 21 insertions(+), 12 deletions(-)
+
+From 5a3a017e05f621dfce08988bd5fb12546465d174 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Fri, 1 Feb 2013 18:10:33 +0100
+Subject: [PATCH 03/14] Remove TStartPoints, this member is never used
+
+---
+ drv/IntPolyh/IntPolyh_MaillageAffinage.jxx |    3 ---
+ inc/IntPolyh_MaillageAffinage.hxx          |    5 -----
+ src/IntPolyh/IntPolyh_MaillageAffinage.cdl |    1 -
+ src/IntPolyh/IntPolyh_MaillageAffinage.cxx |    8 +-------
+ 4 files changed, 1 insertion(+), 16 deletions(-)
+
+From 49dd7a9c1d24e1aec946be47932b3393fd65c074 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Fri, 1 Feb 2013 18:24:21 +0100
+Subject: [PATCH 04/14] Lazy initialization of TPoints/TEdges/TTriangles
+ collections
+
+Patch suggested by Roman Lygin, see
+  http://opencascade.blogspot.fr/2008/12/why-are-boolean-operations-so-sloooooow.html
+---
+ src/IntPolyh/IntPolyh_MaillageAffinage.cxx |   39 ++++++++++++----------------
+ 1 file changed, 17 insertions(+), 22 deletions(-)
+
+From c97ef5a3672a99910475babf761da4e0ba0fe3ec Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Mon, 4 Feb 2013 02:08:27 +0100
+Subject: [PATCH 05/14] Use a map also for inserted shapes
+
+GetIndex() method becomes very slow if there are many new shapes.
+---
+ inc/BooleanOperations_ShapesDataStructure.hxx               |    1 +
+ src/BOP/BOP_SolidSolid_1.cxx                                |   11 +----------
+ .../BooleanOperations_ShapesDataStructure.cxx               |    9 ++++++++-
+ 3 files changed, 10 insertions(+), 11 deletions(-)
+
+From e3977b6bada026417e79d77530c0c9b8e5f44747 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Mon, 4 Feb 2013 02:09:51 +0100
+Subject: [PATCH 06/14] Optimize ComputeStateByInsidePoints
+
+Pass aFFIndicesMap instead of aFFMap as argument in order to avoid
+the for-loop on i.
+---
+ inc/BOP_SolidSolid.hxx       |    4 ++--
+ src/BOP/BOP_SolidSolid_1.cxx |   19 +++++--------------
+ 2 files changed, 7 insertions(+), 16 deletions(-)
+
+From cfe298ec4867af678de81464874b75b75c1b6837 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Wed, 6 Feb 2013 23:10:01 +0100
+Subject: [PATCH 07/14] Add a new method BOP_SolidSolid::DoEdgesAdjacentFaces
+
+This method computes the list of adjacent faces of all edges.
+It was previously computed by GetAttachedFaces, which iterated over all faces.
+---
+ inc/BOP_SolidSolid.hxx       |    3 +-
+ src/BOP/BOP_SolidSolid.cxx   |    5 +-
+ src/BOP/BOP_SolidSolid_1.cxx |  121 ++++++++++++++++++------------------------
+ 3 files changed, 57 insertions(+), 72 deletions(-)
+
+From 21bd302e140bb42f4ab890dcc5fe76e76dd3e917 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Thu, 7 Feb 2013 19:57:04 +0100
+Subject: [PATCH 08/14] With large models, exchange calls to
+ ComputeStateByInsidePoints() and
+ ComputeStateForAnalyticalSurfaces()
+
+The former loops over all shapes, and becomes thus slow with large models.  On
+the other hand, the latter is inherently slower, but does notdepend on shape complexity.
+---
+ src/BOP/BOP_SolidSolid_1.cxx |   14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
+
+From 49542844d6498bc58f0f8a81aa451fc5cbae05b7 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Fri, 8 Feb 2013 06:43:23 +0100
+Subject: [PATCH 09/14] The current implementation of
+ BOP_WireEdgeSet::IsClosed() is broken
+
+It always return Standard_False, so speed it up ;-)
+---
+ src/BOP/BOP_WireEdgeSet.cxx |   27 +++++----------------------
+ 1 file changed, 5 insertions(+), 22 deletions(-)
+
+From 7b19650b2902305709c5124823bd4b81331353f7 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Fri, 1 Feb 2013 10:41:27 +0100
+Subject: [PATCH 10/14] Optimize for loops
+
+---
+ src/IntPolyh/IntPolyh_MaillageAffinage.cxx |   40 +++++++++++++++-------------
+ 1 file changed, 21 insertions(+), 19 deletions(-)
+
+From e03e4bdd2d01a689289ac7a6cc85fb7cba1e400e Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Sun, 10 Feb 2013 14:01:23 +0100
+Subject: [PATCH 11/14] Perform computations outside of the for-loop
+
+---
+ src/BOP/BOP_CorrectTolerances.cxx |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+From 43dc1da14922674a547fca19bd433954962b56f0 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Sun, 10 Feb 2013 14:01:58 +0100
+Subject: [PATCH 12/14] In BOP_BuilderTools::DoMap, avoid resizing aFFMap at
+ each iteration
+
+---
+ src/BOP/BOP_BuilderTools.cxx |    1 +
+ 1 file changed, 1 insertion(+)
+
+From 464f0e00a6cb206bd12d6bd7662c0bdd8c78170b Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Sun, 10 Feb 2013 15:38:36 +0100
+Subject: [PATCH 13/14] Pass aFFIndicesMap as argument of
+ BOP_ShellSolid::SplitFace in order to not compute
+ this map again
+
+---
+ inc/BOP_ShellSolid.hxx       |    2 +-
+ src/BOP/BOP_ShellSolid_3.cxx |   27 ++++++---------------------
+ src/BOP/BOP_SolidSolid_1.cxx |    2 +-
+ 3 files changed, 8 insertions(+), 23 deletions(-)
+
+From 8b7f6ae079efbb9eb9954f440fc4aef3e3eac35a Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Sun, 10 Feb 2013 19:18:43 +0100
+Subject: [PATCH 14/14] Improve BOP_FaceBuilder::PerformAreas by precomputing
+ the set of edges for each face
+
+Unfortunately, this requires adding TopTools_DataMapOfShapeMapOfShape data structure.
+---
+ ...DataMapIteratorOfDataMapOfShapeMapOfShape_0.cxx |   43 ++++++++
+ ...ols_DataMapNodeOfDataMapOfShapeMapOfShape_0.cxx |   60 ++++++++++
+ .../TopTools_DataMapOfShapeMapOfShape_0.cxx        |   46 ++++++++
+ ...Tools_DataMapNodeOfDataMapOfShapeMapOfShape.hxx |   27 +++++
+ ...s_DataMapIteratorOfDataMapOfShapeMapOfShape.hxx |   75 +++++++++++++
+ ...Tools_DataMapNodeOfDataMapOfShapeMapOfShape.hxx |  105 ++++++++++++++++++
+ inc/TopTools_DataMapOfShapeMapOfShape.hxx          |  115 ++++++++++++++++++++
+ src/BOP/BOP_FaceBuilder.cxx                        |   26 ++++-
+ 8 files changed, 492 insertions(+), 5 deletions(-)
+ create mode 100644 drv/TopTools/TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape_0.cxx
+ create mode 100644 drv/TopTools/TopTools_DataMapNodeOfDataMapOfShapeMapOfShape_0.cxx
+ create mode 100644 drv/TopTools/TopTools_DataMapOfShapeMapOfShape_0.cxx
+ create mode 100644 inc/Handle_TopTools_DataMapNodeOfDataMapOfShapeMapOfShape.hxx
+ create mode 100644 inc/TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape.hxx
+ create mode 100644 inc/TopTools_DataMapNodeOfDataMapOfShapeMapOfShape.hxx
+ create mode 100644 inc/TopTools_DataMapOfShapeMapOfShape.hxx
+
+From c18d50a62145c2a8c607d148f9b48be075cca4d3 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Sun, 3 Mar 2013 21:09:19 +0100
+Subject: [PATCH] Define class TColStd_DataMapOfIntegerListOfInteger
+
+Commit 4597e04 changed signature of TakeOnSplit.
+A new argument of class TColStd_DataMapOfIntegerListOfInteger was
+introduced, but this class was not defined.
+It compiled fine because source files include it directly, but
+this class must be defined.
+---
+ inc/BOP_SolidSolid.hxx |    1 +
+ 1 file changed, 1 insertion(+)
+
+Index: oce/drv/IntPolyh/IntPolyh_MaillageAffinage.jxx
+===================================================================
+--- oce.orig/drv/IntPolyh/IntPolyh_MaillageAffinage.jxx
++++ oce/drv/IntPolyh/IntPolyh_MaillageAffinage.jxx
+@@ -34,9 +34,6 @@
+ #ifndef _IntPolyh_ArrayOfTriangles_HeaderFile
+ #include <IntPolyh_ArrayOfTriangles.hxx>
+ #endif
+-#ifndef _IntPolyh_ArrayOfStartPoints_HeaderFile
+-#include <IntPolyh_ArrayOfStartPoints.hxx>
+-#endif
+ #ifndef _IntPolyh_ArrayOfCouples_HeaderFile
+ #include <IntPolyh_ArrayOfCouples.hxx>
+ #endif
+Index: oce/drv/TopTools/TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape_0.cxx
+===================================================================
+--- /dev/null
++++ oce/drv/TopTools/TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape_0.cxx
+@@ -0,0 +1,43 @@
++// This file is generated by WOK (CPPExt).
++// Please do not edit this file; modify original file instead.
++// The copyright and license terms as defined for the original file apply to 
++// this header file considered to be the "object code" form of the original source.
++
++#include <TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape.hxx>
++
++#ifndef _Standard_NoSuchObject_HeaderFile
++#include <Standard_NoSuchObject.hxx>
++#endif
++#ifndef _TopoDS_Shape_HeaderFile
++#include <TopoDS_Shape.hxx>
++#endif
++#ifndef _TopTools_MapOfShape_HeaderFile
++#include <TopTools_MapOfShape.hxx>
++#endif
++#ifndef _TopTools_ShapeMapHasher_HeaderFile
++#include <TopTools_ShapeMapHasher.hxx>
++#endif
++#ifndef _TopTools_DataMapOfShapeMapOfShape_HeaderFile
++#include <TopTools_DataMapOfShapeMapOfShape.hxx>
++#endif
++#ifndef _TopTools_DataMapNodeOfDataMapOfShapeMapOfShape_HeaderFile
++#include <TopTools_DataMapNodeOfDataMapOfShapeMapOfShape.hxx>
++#endif
++ 
++
++#define TheKey TopoDS_Shape
++#define TheKey_hxx <TopoDS_Shape.hxx>
++#define TheItem TopTools_MapOfShape
++#define TheItem_hxx <TopTools_MapOfShape.hxx>
++#define Hasher TopTools_ShapeMapHasher
++#define Hasher_hxx <TopTools_ShapeMapHasher.hxx>
++#define TCollection_DataMapNode TopTools_DataMapNodeOfDataMapOfShapeMapOfShape
++#define TCollection_DataMapNode_hxx <TopTools_DataMapNodeOfDataMapOfShapeMapOfShape.hxx>
++#define TCollection_DataMapIterator TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape
++#define TCollection_DataMapIterator_hxx <TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape.hxx>
++#define Handle_TCollection_DataMapNode Handle_TopTools_DataMapNodeOfDataMapOfShapeMapOfShape
++#define TCollection_DataMapNode_Type_() TopTools_DataMapNodeOfDataMapOfShapeMapOfShape_Type_()
++#define TCollection_DataMap TopTools_DataMapOfShapeMapOfShape
++#define TCollection_DataMap_hxx <TopTools_DataMapOfShapeMapOfShape.hxx>
++#include <TCollection_DataMapIterator.gxx>
++
+Index: oce/drv/TopTools/TopTools_DataMapNodeOfDataMapOfShapeMapOfShape_0.cxx
+===================================================================
+--- /dev/null
++++ oce/drv/TopTools/TopTools_DataMapNodeOfDataMapOfShapeMapOfShape_0.cxx
+@@ -0,0 +1,60 @@
++// This file is generated by WOK (CPPExt).
++// Please do not edit this file; modify original file instead.
++// The copyright and license terms as defined for the original file apply to 
++// this header file considered to be the "object code" form of the original source.
++
++#include <TopTools_DataMapNodeOfDataMapOfShapeMapOfShape.hxx>
++
++#ifndef _Standard_Type_HeaderFile
++#include <Standard_Type.hxx>
++#endif
++
++#ifndef _TopoDS_Shape_HeaderFile
++#include <TopoDS_Shape.hxx>
++#endif
++#ifndef _TopTools_MapOfShape_HeaderFile
++#include <TopTools_MapOfShape.hxx>
++#endif
++#ifndef _TopTools_ShapeMapHasher_HeaderFile
++#include <TopTools_ShapeMapHasher.hxx>
++#endif
++#ifndef _TopTools_DataMapOfShapeMapOfShape_HeaderFile
++#include <TopTools_DataMapOfShapeMapOfShape.hxx>
++#endif
++#ifndef _TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape_HeaderFile
++#include <TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape.hxx>
++#endif
++
++ 
++
++
++IMPLEMENT_STANDARD_TYPE(TopTools_DataMapNodeOfDataMapOfShapeMapOfShape)
++IMPLEMENT_STANDARD_SUPERTYPE_ARRAY()
++  STANDARD_TYPE(TCollection_MapNode),
++  STANDARD_TYPE(MMgt_TShared),
++  STANDARD_TYPE(Standard_Transient),
++
++IMPLEMENT_STANDARD_SUPERTYPE_ARRAY_END()
++IMPLEMENT_STANDARD_TYPE_END(TopTools_DataMapNodeOfDataMapOfShapeMapOfShape)
++
++
++IMPLEMENT_DOWNCAST(TopTools_DataMapNodeOfDataMapOfShapeMapOfShape,Standard_Transient)
++IMPLEMENT_STANDARD_RTTI(TopTools_DataMapNodeOfDataMapOfShapeMapOfShape)
++
++
++#define TheKey TopoDS_Shape
++#define TheKey_hxx <TopoDS_Shape.hxx>
++#define TheItem TopTools_MapOfShape
++#define TheItem_hxx <TopTools_MapOfShape.hxx>
++#define Hasher TopTools_ShapeMapHasher
++#define Hasher_hxx <TopTools_ShapeMapHasher.hxx>
++#define TCollection_DataMapNode TopTools_DataMapNodeOfDataMapOfShapeMapOfShape
++#define TCollection_DataMapNode_hxx <TopTools_DataMapNodeOfDataMapOfShapeMapOfShape.hxx>
++#define TCollection_DataMapIterator TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape
++#define TCollection_DataMapIterator_hxx <TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape.hxx>
++#define Handle_TCollection_DataMapNode Handle_TopTools_DataMapNodeOfDataMapOfShapeMapOfShape
++#define TCollection_DataMapNode_Type_() TopTools_DataMapNodeOfDataMapOfShapeMapOfShape_Type_()
++#define TCollection_DataMap TopTools_DataMapOfShapeMapOfShape
++#define TCollection_DataMap_hxx <TopTools_DataMapOfShapeMapOfShape.hxx>
++#include <TCollection_DataMapNode.gxx>
++
+Index: oce/drv/TopTools/TopTools_DataMapOfShapeMapOfShape_0.cxx
+===================================================================
+--- /dev/null
++++ oce/drv/TopTools/TopTools_DataMapOfShapeMapOfShape_0.cxx
+@@ -0,0 +1,46 @@
++// This file is generated by WOK (CPPExt).
++// Please do not edit this file; modify original file instead.
++// The copyright and license terms as defined for the original file apply to 
++// this header file considered to be the "object code" form of the original source.
++
++#include <TopTools_DataMapOfShapeMapOfShape.hxx>
++
++#ifndef _Standard_DomainError_HeaderFile
++#include <Standard_DomainError.hxx>
++#endif
++#ifndef _Standard_NoSuchObject_HeaderFile
++#include <Standard_NoSuchObject.hxx>
++#endif
++#ifndef _TopoDS_Shape_HeaderFile
++#include <TopoDS_Shape.hxx>
++#endif
++#ifndef _TopTools_MapOfShape_HeaderFile
++#include <TopTools_MapOfShape.hxx>
++#endif
++#ifndef _TopTools_ShapeMapHasher_HeaderFile
++#include <TopTools_ShapeMapHasher.hxx>
++#endif
++#ifndef _TopTools_DataMapNodeOfDataMapOfShapeMapOfShape_HeaderFile
++#include <TopTools_DataMapNodeOfDataMapOfShapeMapOfShape.hxx>
++#endif
++#ifndef _TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape_HeaderFile
++#include <TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape.hxx>
++#endif
++ 
++
++#define TheKey TopoDS_Shape
++#define TheKey_hxx <TopoDS_Shape.hxx>
++#define TheItem TopTools_MapOfShape
++#define TheItem_hxx <TopTools_MapOfShape.hxx>
++#define Hasher TopTools_ShapeMapHasher
++#define Hasher_hxx <TopTools_ShapeMapHasher.hxx>
++#define TCollection_DataMapNode TopTools_DataMapNodeOfDataMapOfShapeMapOfShape
++#define TCollection_DataMapNode_hxx <TopTools_DataMapNodeOfDataMapOfShapeMapOfShape.hxx>
++#define TCollection_DataMapIterator TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape
++#define TCollection_DataMapIterator_hxx <TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape.hxx>
++#define Handle_TCollection_DataMapNode Handle_TopTools_DataMapNodeOfDataMapOfShapeMapOfShape
++#define TCollection_DataMapNode_Type_() TopTools_DataMapNodeOfDataMapOfShapeMapOfShape_Type_()
++#define TCollection_DataMap TopTools_DataMapOfShapeMapOfShape
++#define TCollection_DataMap_hxx <TopTools_DataMapOfShapeMapOfShape.hxx>
++#include <TCollection_DataMap.gxx>
++
+Index: oce/inc/BOP_ShellSolid.hxx
+===================================================================
+--- oce.orig/inc/BOP_ShellSolid.hxx
++++ oce/inc/BOP_ShellSolid.hxx
+@@ -105,7 +105,7 @@ Standard_EXPORT virtual ~BOP_ShellSolid(
+ //! agorithm <br>
+   Standard_EXPORT     Standard_Boolean CheckArgTypes() const;
+   
+-  Standard_EXPORT     Standard_Boolean SplitFace(const Standard_Integer theFaceIndex,TopTools_DataMapOfShapeInteger& theMapOfEdgeIndex,TopTools_ListOfShape& theListOfFace) const;
++  Standard_EXPORT     Standard_Boolean SplitFace(const Standard_Integer theFaceIndex,const TColStd_IndexedMapOfInteger& aFFIndicesMap,TopTools_DataMapOfShapeInteger& theMapOfEdgeIndex,TopTools_ListOfShape& theListOfFace) const;
+   
+   Standard_EXPORT   virtual  void SetHistoryCollector(const Handle(BOP_HistoryCollector)& theHistory) ;
+ 
+Index: oce/inc/BOP_SolidSolid.hxx
+===================================================================
+--- oce.orig/inc/BOP_SolidSolid.hxx
++++ oce/inc/BOP_SolidSolid.hxx
+@@ -37,7 +37,8 @@ class TopTools_ListOfShape;
+ class BOP_ShellFaceSet;
+ class TopoDS_Shape;
+ class TopTools_DataMapOfShapeInteger;
+-class BOPTColStd_IndexedDataMapOfIntegerIndexedMapOfInteger;
++class TColStd_DataMapOfIntegerListOfInteger;
++class TColStd_IndexedMapOfInteger;
+ 
+ 
+ 
+@@ -87,10 +88,11 @@ private:
+   
+   Standard_EXPORT     Standard_Boolean PropagateFaceStateByEdges(const TopoDS_Shape& theFace,const TopTools_DataMapOfShapeInteger& theMapOfEdgeIndex,TopAbs_State& theState) ;
+   
+-  Standard_EXPORT     Standard_Boolean ComputeStateByInsidePoints(const Standard_Integer theFaceIndex,const Standard_Integer theBaseFaceIndex,const Standard_Integer theFaceRank,const BOPTColStd_IndexedDataMapOfIntegerIndexedMapOfInteger& theFFMap,TopAbs_State& theState) ;
++  Standard_EXPORT     Standard_Boolean ComputeStateByInsidePoints(const Standard_Integer theFaceIndex,const Standard_Integer theBaseFaceIndex,const Standard_Integer theFaceRank,const TColStd_IndexedMapOfInteger& theFFMap,TopAbs_State& theState) ;
+   
+-  Standard_EXPORT     Standard_Boolean TakeOnSplit(const Standard_Integer theFaceIndex,const Standard_Integer theBaseFaceIndex) const;
++  Standard_EXPORT     Standard_Boolean TakeOnSplit(const Standard_Integer theFaceIndex,const Standard_Integer theBaseFaceIndex, const TColStd_DataMapOfIntegerListOfInteger &aMapOfEdgeFaces) const;
+ 
++  Standard_EXPORT     void DoEdgesAdjacentFaces(TColStd_DataMapOfIntegerListOfInteger &aMapOfEdgeFaces) const;
+ 
+ 
+ 
+Index: oce/inc/BooleanOperations_ShapesDataStructure.hxx
+===================================================================
+--- oce.orig/inc/BooleanOperations_ShapesDataStructure.hxx
++++ oce/inc/BooleanOperations_ShapesDataStructure.hxx
+@@ -166,6 +166,7 @@ TopoDS_Shape myObject;
+ TopoDS_Shape myTool;
+ BooleanOperations_IndexedDataMapOfShapeInteger myShapeIndexMapObj;
+ BooleanOperations_IndexedDataMapOfShapeInteger myShapeIndexMapTool;
++BooleanOperations_IndexedDataMapOfShapeInteger myShapeIndexMapInserted;
+ BOPTColStd_CArray1OfInteger myRefEdges;
+ Standard_Integer myNbEdges;
+ 
+Index: oce/inc/Handle_TopTools_DataMapNodeOfDataMapOfShapeMapOfShape.hxx
+===================================================================
+--- /dev/null
++++ oce/inc/Handle_TopTools_DataMapNodeOfDataMapOfShapeMapOfShape.hxx
+@@ -0,0 +1,27 @@
++// This file is generated by WOK (CPPExt).
++// Please do not edit this file; modify original file instead.
++// The copyright and license terms as defined for the original file apply to 
++// this header file considered to be the "object code" form of the original source.
++
++#ifndef _Handle_TopTools_DataMapNodeOfDataMapOfShapeMapOfShape_HeaderFile
++#define _Handle_TopTools_DataMapNodeOfDataMapOfShapeMapOfShape_HeaderFile
++
++#ifndef _Standard_HeaderFile
++#include <Standard.hxx>
++#endif
++#ifndef _Standard_DefineHandle_HeaderFile
++#include <Standard_DefineHandle.hxx>
++#endif
++
++#ifndef _Handle_TCollection_MapNode_HeaderFile
++#include <Handle_TCollection_MapNode.hxx>
++#endif
++
++class Standard_Transient;
++class Handle(Standard_Type);
++class Handle(TCollection_MapNode);
++class TopTools_DataMapNodeOfDataMapOfShapeMapOfShape;
++
++DEFINE_STANDARD_HANDLE(TopTools_DataMapNodeOfDataMapOfShapeMapOfShape,TCollection_MapNode)
++
++#endif
+Index: oce/inc/IntPolyh_Array.hxx
+===================================================================
+--- /dev/null
++++ oce/inc/IntPolyh_Array.hxx
+@@ -0,0 +1,233 @@
++// Created on: 2012-11-13
++// Created by: Peter KURNEV
++// Copyright (c) 2012 OPEN CASCADE SAS
++//
++// The content of this file is subject to the Open CASCADE Technology Public
++// License Version 6.5 (the "License"). You may not use the content of this file
++// except in compliance with the License. Please obtain a copy of the License
++// at http://www.opencascade.org and read it completely before using this file.
++//
++// The Initial Developer of the Original Code is Open CASCADE S.A.S., having its
++// main offices at: 1, place des Freres Montgolfier, 78280 Guyancourt, France.
++//
++// The Original Code and all software distributed under the License is
++// distributed on an "AS IS" basis, without warranty of any kind, and the
++// Initial Developer hereby disclaims all such warranties, including without
++// limitation, any warranties of merchantability, fitness for a particular
++// purpose or non-infringement. Please see the License for the specific terms
++// and conditions governing the rights and limitations under the License.
++
++#ifndef IntPolyh_Array_HeaderFile
++#define IntPolyh_Array_HeaderFile
++
++#include <NCollection_Vector.hxx>
++#include <stdio.h>
++
++/**
++* Class IntPolyh_Array (dynamic array of objects)
++*
++*   1. The Array is dynamic array of objects.
++*
++*   2. The Array uses NCollection_Vector to store objects
++*
++*   3. The Array can be created:
++*      3.1.  with initial length Nb=0. 
++*            In this case Array should be initiated by invoke 
++*            the method Init(Nb).
++*      3.2.  with initial length Nb>0.
++*            In this case Array is initiated automatically.
++* 
++*      The memory is allocated to store myNbAllocated oblects.
++*
++*   4. The number of items that are stored in the Array (myNbItems)
++*      can be increased by calling the method:  IncrementNbItems().
++*      The objects are stored in already allocated memory if it is 
++*      possible.
++*      Otherwise the new chunk of memory is allocated to store the 
++*      objects.
++*      The size of chunk <aIncrement> can be defined during the creation
++*      of the Array.
++*      
++*   5. The start index of the Array is 0, The end index of the Array 
++*      can be obtained by the method  NbItems();
++
++*   6. The contents of the element with index "i" can be queried or 
++*      modified by the methods:  Value(i), ChangeValue(i), operator[](i)
++*/
++
++//=======================================================================
++// class : IntPolyh_Array
++//
++//=======================================================================
++template <class Type> class IntPolyh_Array {
++ public:
++  typedef NCollection_Vector <Type> IntPolyh_VectorOfType;
++  
++  /**
++   * Constructor.
++   * @param aIncrement
++   *   size of memory (in terms of Items) to expand the array
++   */
++  IntPolyh_Array(const Standard_Integer aIncrement=256) {
++    myNbAllocated=0;
++    myNbItems=0;
++    myIncrement=aIncrement;
++  }
++  
++  /**
++   * Constructor.
++   * @param aN
++   *   size of memory (in terms of Items) to allocate
++   * @param aIncrement
++   *   size of memory (in terms of Items) to expand the array
++   */
++  IntPolyh_Array(const Standard_Integer aN,
++		 const Standard_Integer aIncrement=256) {
++    myNbItems=0;
++    myIncrement=aIncrement;
++    Init(aN);
++  }
++  
++  /**
++   * Assignment operator
++   * @param
++   *   aOther - the array to copy from 
++   * @return
++   *   the array
++   */
++  IntPolyh_Array& operator =(const IntPolyh_Array& aOther) {
++    return Copy(aOther);
++  }
++
++  /**
++   * Copy 
++   * @param
++   *   aOther - the array to copy from
++   * @return
++   *   the array 
++   */
++  IntPolyh_Array& Copy(const IntPolyh_Array& aOther) {
++    myVectorOfType.Clear();
++    Init(aOther.myNbAllocated);
++    myVectorOfType=aOther.myVectorOfType;
++    myNbItems=aOther.myNbItems; 
++    //
++    return *this;
++  }
++
++  /**
++   * Init - allocate memory for <aN> items  
++   * @param
++   *   aN - the number of items to allocate the memory
++   */
++  void Init(const Standard_Integer aN) {
++    Type aSL;
++    //
++    myVectorOfType.SetValue(aN, aSL);
++    myNbAllocated=aN;
++  }
++
++  /**
++   * IncrementNbItems - increment the number of stored items 
++   */
++  void IncrementNbItems() {
++    myNbItems++; 
++    if (myNbItems>=myNbAllocated) {
++      Standard_Integer aN;
++      //
++      aN=myNbAllocated+myIncrement;
++      Init(aN);
++    }
++  } 
++
++  /**
++   * GetN - returns the number of 'allocated' items  
++   * @return
++   *   the number of 'allocated' items 
++   */
++  Standard_Integer GetN() const { 
++    return myNbAllocated; 
++  }
++
++  /**
++   * NbItems - returns the number of stored items  
++   * @return
++   *   the number of stored items 
++   */
++  Standard_Integer NbItems() const { 
++    return myNbItems; 
++  }
++  
++
++  /**
++   * set the number of stored items  
++   * @param aNb
++   *   the number of stored items 
++   */
++  void SetNbItems(const Standard_Integer aNb){ 
++    myNbItems=aNb; 
++  } 
++
++  /**
++   * query the const value
++   * @param aIndex
++   *   index 
++   * @return
++   *   the const item
++   */
++  const Type& Value(const Standard_Integer aIndex) const {
++    return myVectorOfType.Value(aIndex);
++  }
++
++  /**
++   * query the const value
++   * @param aIndex
++   *   index 
++   * @return
++   *   the const item
++   */
++  const Type& operator [](const Standard_Integer aIndex) const {
++    return Value(aIndex);
++  }
++
++   /**
++   * query the value
++   * @param aIndex
++   *   index 
++   * @return
++   *   the item
++   */
++  Type& ChangeValue(const Standard_Integer aIndex)  {
++    return myVectorOfType.ChangeValue(aIndex);
++  }
++  
++  /**
++   * query the value
++   * @param aIndex
++   *   index 
++   * @return
++   *   the item
++   */
++  Type& operator [](const Standard_Integer aIndex)  {
++    return ChangeValue(aIndex);
++  }
++
++  /**
++   * dump the contents
++   */
++  void Dump() const   { 
++    printf("\n ArrayOfSectionLines 0-> %d",myNbItems-1);
++    for(Standard_Integer i=0;i<myNbItems;i++) { 
++      (*this)[i].Dump();
++    }
++    printf("\n");
++  }
++
++ protected:
++  Standard_Integer myNbAllocated;
++  Standard_Integer myNbItems;
++  Standard_Integer myIncrement;
++  IntPolyh_VectorOfType myVectorOfType;
++};
++
++#endif
+Index: oce/inc/IntPolyh_ArrayOfCouples.hxx
+===================================================================
+--- oce.orig/inc/IntPolyh_ArrayOfCouples.hxx
++++ oce/inc/IntPolyh_ArrayOfCouples.hxx
+@@ -1,95 +1,35 @@
+-// This file is generated by WOK (CPPExt).
+-// Please do not edit this file; modify original file instead.
+-// The copyright and license terms as defined for the original file apply to 
+-// this header file considered to be the "object code" form of the original source.
++// Created on: 2012-11-13
++// Created by: Peter KURNEV
++// Copyright (c) 2012 OPEN CASCADE SAS
++//
++// The content of this file is subject to the Open CASCADE Technology Public
++// License Version 6.5 (the "License"). You may not use the content of this file
++// except in compliance with the License. Please obtain a copy of the License
++// at http://www.opencascade.org and read it completely before using this file.
++//
++// The Initial Developer of the Original Code is Open CASCADE S.A.S., having its
++// main offices at: 1, place des Freres Montgolfier, 78280 Guyancourt, France.
++//
++// The Original Code and all software distributed under the License is
++// distributed on an "AS IS" basis, without warranty of any kind, and the
++// Initial Developer hereby disclaims all such warranties, including without
++// limitation, any warranties of merchantability, fitness for a particular
++// purpose or non-infringement. Please see the License for the specific terms
++// and conditions governing the rights and limitations under the License.
+ 
+-#ifndef _IntPolyh_ArrayOfCouples_HeaderFile
+-#define _IntPolyh_ArrayOfCouples_HeaderFile
++#ifndef IntPolyh_ArrayOfCouples_HeaderFile
++#define IntPolyh_ArrayOfCouples_HeaderFile
+ 
+ #ifndef _Standard_HeaderFile
+ #include <Standard.hxx>
+ #endif
+-#ifndef _Standard_DefineAlloc_HeaderFile
+-#include <Standard_DefineAlloc.hxx>
+-#endif
+ #ifndef _Standard_Macro_HeaderFile
+ #include <Standard_Macro.hxx>
+ #endif
+ 
+-#ifndef _Standard_Integer_HeaderFile
+-#include <Standard_Integer.hxx>
+-#endif
+-#ifndef _Standard_Address_HeaderFile
+-#include <Standard_Address.hxx>
+-#endif
+-class IntPolyh_Couple;
+-
+-
+-
+-class IntPolyh_ArrayOfCouples  {
+-public:
+-
+-  DEFINE_STANDARD_ALLOC
+-
+-  
+-  Standard_EXPORT   IntPolyh_ArrayOfCouples();
+-  
+-  Standard_EXPORT   IntPolyh_ArrayOfCouples(const Standard_Integer nn);
+-  
+-  Standard_EXPORT     void Init(const Standard_Integer nn) ;
+-  
+-  Standard_EXPORT     Standard_Integer NbCouples() const;
+-  
+-  Standard_EXPORT     void SetNbCouples(const Standard_Integer fint) ;
+-  
+-  Standard_EXPORT     void IncNbCouples() ;
+-  
+-  Standard_EXPORT    const IntPolyh_Couple& Value(const Standard_Integer nn) const;
+-   const IntPolyh_Couple& operator [](const Standard_Integer nn) const
+-{
+-  return Value(nn);
+-}
+-  
+-  Standard_EXPORT     IntPolyh_Couple& ChangeValue(const Standard_Integer nn) ;
+-    IntPolyh_Couple& operator [](const Standard_Integer nn) 
+-{
+-  return ChangeValue(nn);
+-}
+-  
+-  Standard_EXPORT     void Destroy() ;
+-~IntPolyh_ArrayOfCouples()
+-{
+-  Destroy();
+-}
+-  
+-  Standard_EXPORT     void Dump() const;
+-
+-
+-
+-
+-
+-protected:
+-
+-
+-
+-
+-
+-private:
+-
+-
+-
+-Standard_Integer n;
+-Standard_Integer eoa;
+-Standard_Address ptr;
+-
+-
+-};
+-
+-
+-
+-
+-
+-// other Inline functions and methods (like "C++: function call" methods)
++#include <IntPolyh_Array.hxx>
++#include <IntPolyh_Couple.hxx>
+ 
++typedef IntPolyh_Array <IntPolyh_Couple> IntPolyh_ArrayOfCouples;
+ 
+ #endif
+Index: oce/inc/IntPolyh_ArrayOfEdges.hxx
+===================================================================
+--- oce.orig/inc/IntPolyh_ArrayOfEdges.hxx
++++ oce/inc/IntPolyh_ArrayOfEdges.hxx
+@@ -1,103 +1,35 @@
+-// This file is generated by WOK (CPPExt).
+-// Please do not edit this file; modify original file instead.
+-// The copyright and license terms as defined for the original file apply to 
+-// this header file considered to be the "object code" form of the original source.
++// Created on: 2012-11-13
++// Created by: Peter KURNEV
++// Copyright (c) 2012 OPEN CASCADE SAS
++//
++// The content of this file is subject to the Open CASCADE Technology Public
++// License Version 6.5 (the "License"). You may not use the content of this file
++// except in compliance with the License. Please obtain a copy of the License
++// at http://www.opencascade.org and read it completely before using this file.
++//
++// The Initial Developer of the Original Code is Open CASCADE S.A.S., having its
++// main offices at: 1, place des Freres Montgolfier, 78280 Guyancourt, France.
++//
++// The Original Code and all software distributed under the License is
++// distributed on an "AS IS" basis, without warranty of any kind, and the
++// Initial Developer hereby disclaims all such warranties, including without
++// limitation, any warranties of merchantability, fitness for a particular
++// purpose or non-infringement. Please see the License for the specific terms
++// and conditions governing the rights and limitations under the License.
+ 
+-#ifndef _IntPolyh_ArrayOfEdges_HeaderFile
+-#define _IntPolyh_ArrayOfEdges_HeaderFile
++#ifndef IntPolyh_ArrayOfEdges_HeaderFile
++#define IntPolyh_ArrayOfEdges_HeaderFile
+ 
+ #ifndef _Standard_HeaderFile
+ #include <Standard.hxx>
+ #endif
+-#ifndef _Standard_DefineAlloc_HeaderFile
+-#include <Standard_DefineAlloc.hxx>
+-#endif
+ #ifndef _Standard_Macro_HeaderFile
+ #include <Standard_Macro.hxx>
+ #endif
+ 
+-#ifndef _Standard_Integer_HeaderFile
+-#include <Standard_Integer.hxx>
+-#endif
+-#ifndef _Standard_Address_HeaderFile
+-#include <Standard_Address.hxx>
+-#endif
+-class IntPolyh_Edge;
+-
+-
+-
+-class IntPolyh_ArrayOfEdges  {
+-public:
+-
+-  DEFINE_STANDARD_ALLOC
+-
+-  
+-  Standard_EXPORT   IntPolyh_ArrayOfEdges();
+-  
+-  Standard_EXPORT   IntPolyh_ArrayOfEdges(const Standard_Integer nn);
+-  
+-  Standard_EXPORT     void Init(const Standard_Integer nn) ;
+-  
+-  Standard_EXPORT    const Standard_Integer GetN() const;
+-  
+-  Standard_EXPORT    const Standard_Integer NbEdges() const;
+-  
+-  Standard_EXPORT     void SetNbEdges(const Standard_Integer endaof) ;
+-  
+-  Standard_EXPORT     void IncNbEdges() ;
+-  
+-  Standard_EXPORT    const IntPolyh_Edge& Value(const Standard_Integer nn) const;
+-   const IntPolyh_Edge& operator [](const Standard_Integer nn) const
+-{
+-  return Value(nn);
+-}
+-  
+-  Standard_EXPORT     IntPolyh_Edge& ChangeValue(const Standard_Integer nn) ;
+-    IntPolyh_Edge& operator [](const Standard_Integer nn) 
+-{
+-  return ChangeValue(nn);
+-}
+-  
+-  Standard_EXPORT     IntPolyh_ArrayOfEdges& Copy(const IntPolyh_ArrayOfEdges& Other) ;
+-    IntPolyh_ArrayOfEdges& operator =(const IntPolyh_ArrayOfEdges& Other) 
+-{
+-  return Copy(Other);
+-}
+-  
+-  Standard_EXPORT     void Destroy() ;
+-~IntPolyh_ArrayOfEdges()
+-{
+-  Destroy();
+-}
+-  
+-  Standard_EXPORT     void Dump() const;
+-
+-
+-
+-
+-
+-protected:
+-
+-
+-
+-
+-
+-private:
+-
+-
+-
+-Standard_Integer n;
+-Standard_Integer finte;
+-Standard_Address ptr;
+-
+-
+-};
+-
+-
+-
+-
+-
+-// other Inline functions and methods (like "C++: function call" methods)
++#include <IntPolyh_Array.hxx>
++#include <IntPolyh_Edge.hxx>
+ 
++typedef IntPolyh_Array <IntPolyh_Edge> IntPolyh_ArrayOfEdges;
+ 
+ #endif
+Index: oce/inc/IntPolyh_ArrayOfPoints.hxx
+===================================================================
+--- oce.orig/inc/IntPolyh_ArrayOfPoints.hxx
++++ oce/inc/IntPolyh_ArrayOfPoints.hxx
+@@ -1,103 +1,36 @@
+-// This file is generated by WOK (CPPExt).
+-// Please do not edit this file; modify original file instead.
+-// The copyright and license terms as defined for the original file apply to 
+-// this header file considered to be the "object code" form of the original source.
++// Created on: 2012-11-13
++// Created by: Peter KURNEV
++// Copyright (c) 2012 OPEN CASCADE SAS
++//
++// The content of this file is subject to the Open CASCADE Technology Public
++// License Version 6.5 (the "License"). You may not use the content of this file
++// except in compliance with the License. Please obtain a copy of the License
++// at http://www.opencascade.org and read it completely before using this file.
++//
++// The Initial Developer of the Original Code is Open CASCADE S.A.S., having its
++// main offices at: 1, place des Freres Montgolfier, 78280 Guyancourt, France.
++//
++// The Original Code and all software distributed under the License is
++// distributed on an "AS IS" basis, without warranty of any kind, and the
++// Initial Developer hereby disclaims all such warranties, including without
++// limitation, any warranties of merchantability, fitness for a particular
++// purpose or non-infringement. Please see the License for the specific terms
++// and conditions governing the rights and limitations under the License.
+ 
+-#ifndef _IntPolyh_ArrayOfPoints_HeaderFile
+-#define _IntPolyh_ArrayOfPoints_HeaderFile
++
++#ifndef IntPolyh_ArrayOfPoints_HeaderFile
++#define IntPolyh_ArrayOfPoints_HeaderFile
+ 
+ #ifndef _Standard_HeaderFile
+ #include <Standard.hxx>
+ #endif
+-#ifndef _Standard_DefineAlloc_HeaderFile
+-#include <Standard_DefineAlloc.hxx>
+-#endif
+ #ifndef _Standard_Macro_HeaderFile
+ #include <Standard_Macro.hxx>
+ #endif
+ 
+-#ifndef _Standard_Integer_HeaderFile
+-#include <Standard_Integer.hxx>
+-#endif
+-#ifndef _Standard_Address_HeaderFile
+-#include <Standard_Address.hxx>
+-#endif
+-class IntPolyh_Point;
+-
+-
+-
+-class IntPolyh_ArrayOfPoints  {
+-public:
+-
+-  DEFINE_STANDARD_ALLOC
+-
+-  
+-  Standard_EXPORT   IntPolyh_ArrayOfPoints();
+-  
+-  Standard_EXPORT   IntPolyh_ArrayOfPoints(const Standard_Integer nn);
+-  
+-  Standard_EXPORT     void Init(const Standard_Integer nn) ;
+-  
+-  Standard_EXPORT    const IntPolyh_Point& Value(const Standard_Integer nn) const;
+-   const IntPolyh_Point& operator [](const Standard_Integer nn) const
+-{
+-  return Value(nn);
+-}
+-  
+-  Standard_EXPORT     IntPolyh_Point& ChangeValue(const Standard_Integer nn) ;
+-    IntPolyh_Point& operator [](const Standard_Integer nn) 
+-{
+-  return ChangeValue(nn);
+-}
+-  
+-  Standard_EXPORT     IntPolyh_ArrayOfPoints& Copy(const IntPolyh_ArrayOfPoints& Other) ;
+-    IntPolyh_ArrayOfPoints& operator =(const IntPolyh_ArrayOfPoints& Other) 
+-{
+-  return Copy(Other);
+-}
+-  
+-  Standard_EXPORT     Standard_Integer GetN() const;
+-  
+-  Standard_EXPORT     Standard_Integer NbPoints() const;
+-  
+-  Standard_EXPORT     void IncNbPoints() ;
+-  
+-  Standard_EXPORT     void SetNbPoints(const Standard_Integer END) ;
+-  
+-  Standard_EXPORT     void Destroy() ;
+-~IntPolyh_ArrayOfPoints()
+-{
+-  Destroy();
+-}
+-  
+-  Standard_EXPORT     void Dump() const;
+-
+-
+-
+-
+-
+-protected:
+-
+-
+-
+-
+-
+-private:
+-
+-
+-
+-Standard_Integer n;
+-Standard_Integer fintp;
+-Standard_Address ptr;
+-
+-
+-};
+-
+-
+-
+-
+-
+-// other Inline functions and methods (like "C++: function call" methods)
++#include <IntPolyh_Array.hxx>
++#include <IntPolyh_Point.hxx>
+ 
++typedef IntPolyh_Array <IntPolyh_Point> IntPolyh_ArrayOfPoints;
+ 
+ #endif
+Index: oce/inc/IntPolyh_ArrayOfSectionLines.hxx
+===================================================================
+--- oce.orig/inc/IntPolyh_ArrayOfSectionLines.hxx
++++ oce/inc/IntPolyh_ArrayOfSectionLines.hxx
+@@ -1,101 +1,35 @@
+-// This file is generated by WOK (CPPExt).
+-// Please do not edit this file; modify original file instead.
+-// The copyright and license terms as defined for the original file apply to 
+-// this header file considered to be the "object code" form of the original source.
++// Created on: 2012-11-13
++// Created by: Peter KURNEV
++// Copyright (c) 2012 OPEN CASCADE SAS
++//
++// The content of this file is subject to the Open CASCADE Technology Public
++// License Version 6.5 (the "License"). You may not use the content of this file
++// except in compliance with the License. Please obtain a copy of the License
++// at http://www.opencascade.org and read it completely before using this file.
++//
++// The Initial Developer of the Original Code is Open CASCADE S.A.S., having its
++// main offices at: 1, place des Freres Montgolfier, 78280 Guyancourt, France.
++//
++// The Original Code and all software distributed under the License is
++// distributed on an "AS IS" basis, without warranty of any kind, and the
++// Initial Developer hereby disclaims all such warranties, including without
++// limitation, any warranties of merchantability, fitness for a particular
++// purpose or non-infringement. Please see the License for the specific terms
++// and conditions governing the rights and limitations under the License.
+ 
+-#ifndef _IntPolyh_ArrayOfSectionLines_HeaderFile
+-#define _IntPolyh_ArrayOfSectionLines_HeaderFile
++#ifndef IntPolyh_ArrayOfSectionLines_HeaderFile
++#define IntPolyh_ArrayOfSectionLines_HeaderFile
+ 
+ #ifndef _Standard_HeaderFile
+ #include <Standard.hxx>
+ #endif
+-#ifndef _Standard_DefineAlloc_HeaderFile
+-#include <Standard_DefineAlloc.hxx>
+-#endif
+ #ifndef _Standard_Macro_HeaderFile
+ #include <Standard_Macro.hxx>
+ #endif
+ 
+-#ifndef _Standard_Integer_HeaderFile
+-#include <Standard_Integer.hxx>
+-#endif
+-#ifndef _Standard_Address_HeaderFile
+-#include <Standard_Address.hxx>
+-#endif
+-class IntPolyh_SectionLine;
+-
+-
+-
+-class IntPolyh_ArrayOfSectionLines  {
+-public:
+-
+-  DEFINE_STANDARD_ALLOC
+-
+-  
+-  Standard_EXPORT   IntPolyh_ArrayOfSectionLines();
+-  
+-  Standard_EXPORT   IntPolyh_ArrayOfSectionLines(const Standard_Integer nn);
+-  
+-  Standard_EXPORT     void Init(const Standard_Integer nn) ;
+-  
+-  Standard_EXPORT    const IntPolyh_SectionLine& Value(const Standard_Integer nn) const;
+-   const IntPolyh_SectionLine& operator [](const Standard_Integer nn) const
+-{
+-  return Value(nn);
+-}
+-  
+-  Standard_EXPORT     IntPolyh_SectionLine& ChangeValue(const Standard_Integer nn) ;
+-    IntPolyh_SectionLine& operator [](const Standard_Integer nn) 
+-{
+-  return ChangeValue(nn);
+-}
+-  
+-  Standard_EXPORT     IntPolyh_ArrayOfSectionLines& Copy(const IntPolyh_ArrayOfSectionLines& Other) ;
+-    IntPolyh_ArrayOfSectionLines& operator =(const IntPolyh_ArrayOfSectionLines& Other) 
+-{
+-  return Copy(Other);
+-}
+-  
+-  Standard_EXPORT     Standard_Integer GetN() const;
+-  
+-  Standard_EXPORT     Standard_Integer NbSectionLines() const;
+-  
+-  Standard_EXPORT     void IncrementNbSectionLines() ;
+-  
+-  Standard_EXPORT     void Destroy() ;
+-~IntPolyh_ArrayOfSectionLines()
+-{
+-  Destroy();
+-}
+-  
+-  Standard_EXPORT     void Dump() const;
+-
+-
+-
+-
+-
+-protected:
+-
+-
+-
+-
+-
+-private:
+-
+-
+-
+-Standard_Integer n;
+-Standard_Integer nbsectionlines;
+-Standard_Address ptr;
+-
+-
+-};
+-
+-
+-
+-
+-
+-// other Inline functions and methods (like "C++: function call" methods)
++#include <IntPolyh_Array.hxx>
++#include <IntPolyh_SectionLine.hxx>
+ 
++typedef IntPolyh_Array <IntPolyh_SectionLine> IntPolyh_ArrayOfSectionLines;
+ 
+ #endif
+Index: oce/inc/IntPolyh_ArrayOfStartPoints.hxx
+===================================================================
+--- oce.orig/inc/IntPolyh_ArrayOfStartPoints.hxx
++++ oce/inc/IntPolyh_ArrayOfStartPoints.hxx
+@@ -1,96 +1,35 @@
+-// This file is generated by WOK (CPPExt).
+-// Please do not edit this file; modify original file instead.
+-// The copyright and license terms as defined for the original file apply to 
+-// this header file considered to be the "object code" form of the original source.
++// Created on: 2012-11-13
++// Created by: Peter KURNEV
++// Copyright (c) 2012 OPEN CASCADE SAS
++//
++// The content of this file is subject to the Open CASCADE Technology Public
++// License Version 6.5 (the "License"). You may not use the content of this file
++// except in compliance with the License. Please obtain a copy of the License
++// at http://www.opencascade.org and read it completely before using this file.
++//
++// The Initial Developer of the Original Code is Open CASCADE S.A.S., having its
++// main offices at: 1, place des Freres Montgolfier, 78280 Guyancourt, France.
++//
++// The Original Code and all software distributed under the License is
++// distributed on an "AS IS" basis, without warranty of any kind, and the
++// Initial Developer hereby disclaims all such warranties, including without
++// limitation, any warranties of merchantability, fitness for a particular
++// purpose or non-infringement. Please see the License for the specific terms
++// and conditions governing the rights and limitations under the License.
+ 
+-#ifndef _IntPolyh_ArrayOfStartPoints_HeaderFile
+-#define _IntPolyh_ArrayOfStartPoints_HeaderFile
++#ifndef IntPolyh_ArrayOfStartPoints_HeaderFile
++#define IntPolyh_ArrayOfStartPoints_HeaderFile
+ 
+ #ifndef _Standard_HeaderFile
+ #include <Standard.hxx>
+ #endif
+-#ifndef _Standard_DefineAlloc_HeaderFile
+-#include <Standard_DefineAlloc.hxx>
+-#endif
+ #ifndef _Standard_Macro_HeaderFile
+ #include <Standard_Macro.hxx>
+ #endif
+ 
+-#ifndef _Standard_Integer_HeaderFile
+-#include <Standard_Integer.hxx>
+-#endif
+-#ifndef _Standard_Address_HeaderFile
+-#include <Standard_Address.hxx>
+-#endif
+-class IntPolyh_StartPoint;
+-
+-
+-
+-class IntPolyh_ArrayOfStartPoints  {
+-public:
+-
+-  DEFINE_STANDARD_ALLOC
+-
+-  
+-  Standard_EXPORT   IntPolyh_ArrayOfStartPoints();
+-  
+-  Standard_EXPORT   IntPolyh_ArrayOfStartPoints(const Standard_Integer nn);
+-  
+-  Standard_EXPORT     void Init(const Standard_Integer nn) ;
+-  
+-  Standard_EXPORT    const IntPolyh_StartPoint& Value(const Standard_Integer nn) const;
+-   const IntPolyh_StartPoint& operator [](const Standard_Integer nn) const
+-{
+-  return Value(nn);
+-}
+-  
+-  Standard_EXPORT     IntPolyh_StartPoint& ChangeValue(const Standard_Integer nn) ;
+-    IntPolyh_StartPoint& operator [](const Standard_Integer nn) 
+-{
+-  return ChangeValue(nn);
+-}
+-  
+-  Standard_EXPORT     IntPolyh_ArrayOfStartPoints& Copy(const IntPolyh_ArrayOfStartPoints& Other) ;
+-    IntPolyh_ArrayOfStartPoints& operator =(const IntPolyh_ArrayOfStartPoints& Other) 
+-{
+-  return Copy(Other);
+-}
+-  
+-  Standard_EXPORT     Standard_Integer NbPoints() const;
+-  
+-  Standard_EXPORT     void Destroy() ;
+-~IntPolyh_ArrayOfStartPoints()
+-{
+-  Destroy();
+-}
+-  
+-  Standard_EXPORT     void Dump() const;
+-
+-
+-
+-
+-
+-protected:
+-
+-
+-
+-
+-
+-private:
+-
+-
+-
+-Standard_Integer n;
+-Standard_Address ptr;
+-
+-
+-};
+-
+-
+-
+-
+-
+-// other Inline functions and methods (like "C++: function call" methods)
++#include <IntPolyh_Array.hxx>
++#include <IntPolyh_StartPoint.hxx>
+ 
++typedef IntPolyh_Array <IntPolyh_StartPoint> IntPolyh_ArrayOfStartPoints;
+ 
+ #endif
+Index: oce/inc/IntPolyh_ArrayOfTangentZones.hxx
+===================================================================
+--- oce.orig/inc/IntPolyh_ArrayOfTangentZones.hxx
++++ oce/inc/IntPolyh_ArrayOfTangentZones.hxx
+@@ -1,101 +1,35 @@
+-// This file is generated by WOK (CPPExt).
+-// Please do not edit this file; modify original file instead.
+-// The copyright and license terms as defined for the original file apply to 
+-// this header file considered to be the "object code" form of the original source.
++// Created on: 2012-11-13
++// Created by: Peter KURNEV
++// Copyright (c) 2012 OPEN CASCADE SAS
++//
++// The content of this file is subject to the Open CASCADE Technology Public
++// License Version 6.5 (the "License"). You may not use the content of this file
++// except in compliance with the License. Please obtain a copy of the License
++// at http://www.opencascade.org and read it completely before using this file.
++//
++// The Initial Developer of the Original Code is Open CASCADE S.A.S., having its
++// main offices at: 1, place des Freres Montgolfier, 78280 Guyancourt, France.
++//
++// The Original Code and all software distributed under the License is
++// distributed on an "AS IS" basis, without warranty of any kind, and the
++// Initial Developer hereby disclaims all such warranties, including without
++// limitation, any warranties of merchantability, fitness for a particular
++// purpose or non-infringement. Please see the License for the specific terms
++// and conditions governing the rights and limitations under the License.
+ 
+-#ifndef _IntPolyh_ArrayOfTangentZones_HeaderFile
+-#define _IntPolyh_ArrayOfTangentZones_HeaderFile
++#ifndef IntPolyh_ArrayOfTangentZones_HeaderFile
++#define IntPolyh_ArrayOfTangentZones_HeaderFile
+ 
+ #ifndef _Standard_HeaderFile
+ #include <Standard.hxx>
+ #endif
+-#ifndef _Standard_DefineAlloc_HeaderFile
+-#include <Standard_DefineAlloc.hxx>
+-#endif
+ #ifndef _Standard_Macro_HeaderFile
+ #include <Standard_Macro.hxx>
+ #endif
+ 
+-#ifndef _Standard_Integer_HeaderFile
+-#include <Standard_Integer.hxx>
+-#endif
+-#ifndef _Standard_Address_HeaderFile
+-#include <Standard_Address.hxx>
+-#endif
+-class IntPolyh_StartPoint;
+-
+-
+-
+-class IntPolyh_ArrayOfTangentZones  {
+-public:
+-
+-  DEFINE_STANDARD_ALLOC
+-
+-  
+-  Standard_EXPORT   IntPolyh_ArrayOfTangentZones();
+-  
+-  Standard_EXPORT   IntPolyh_ArrayOfTangentZones(const Standard_Integer nn);
+-  
+-  Standard_EXPORT     void Init(const Standard_Integer nn) ;
+-  
+-  Standard_EXPORT    const IntPolyh_StartPoint& Value(const Standard_Integer nn) const;
+-   const IntPolyh_StartPoint& operator [](const Standard_Integer nn) const
+-{
+-  return Value(nn);
+-}
+-  
+-  Standard_EXPORT     IntPolyh_StartPoint& ChangeValue(const Standard_Integer nn) ;
+-    IntPolyh_StartPoint& operator [](const Standard_Integer nn) 
+-{
+-  return ChangeValue(nn);
+-}
+-  
+-  Standard_EXPORT     IntPolyh_ArrayOfTangentZones& Copy(const IntPolyh_ArrayOfTangentZones& Other) ;
+-    IntPolyh_ArrayOfTangentZones& operator =(const IntPolyh_ArrayOfTangentZones& Other) 
+-{
+-  return Copy(Other);
+-}
+-  
+-  Standard_EXPORT     Standard_Integer GetN() const;
+-  
+-  Standard_EXPORT     Standard_Integer NbTangentZones() const;
+-  
+-  Standard_EXPORT     void IncrementNbTangentZones() ;
+-  
+-  Standard_EXPORT     void Destroy() ;
+-~IntPolyh_ArrayOfTangentZones()
+-{
+-  Destroy();
+-}
+-  
+-  Standard_EXPORT     void Dump() const;
+-
+-
+-
+-
+-
+-protected:
+-
+-
+-
+-
+-
+-private:
+-
+-
+-
+-Standard_Integer n;
+-Standard_Integer nbtangentzones;
+-Standard_Address ptr;
+-
+-
+-};
+-
+-
+-
+-
+-
+-// other Inline functions and methods (like "C++: function call" methods)
++#include <IntPolyh_Array.hxx>
++#include <IntPolyh_StartPoint.hxx>
+ 
++typedef IntPolyh_Array <IntPolyh_StartPoint> IntPolyh_ArrayOfTangentZones;
+ 
+ #endif
+Index: oce/inc/IntPolyh_ArrayOfTriangles.hxx
+===================================================================
+--- oce.orig/inc/IntPolyh_ArrayOfTriangles.hxx
++++ oce/inc/IntPolyh_ArrayOfTriangles.hxx
+@@ -1,105 +1,36 @@
+-// This file is generated by WOK (CPPExt).
+-// Please do not edit this file; modify original file instead.
+-// The copyright and license terms as defined for the original file apply to 
+-// this header file considered to be the "object code" form of the original source.
++// Created on: 2012-11-13
++// Created by: Peter KURNEV
++// Copyright (c) 2012 OPEN CASCADE SAS
++//
++// The content of this file is subject to the Open CASCADE Technology Public
++// License Version 6.5 (the "License"). You may not use the content of this file
++// except in compliance with the License. Please obtain a copy of the License
++// at http://www.opencascade.org and read it completely before using this file.
++//
++// The Initial Developer of the Original Code is Open CASCADE S.A.S., having its
++// main offices at: 1, place des Freres Montgolfier, 78280 Guyancourt, France.
++//
++// The Original Code and all software distributed under the License is
++// distributed on an "AS IS" basis, without warranty of any kind, and the
++// Initial Developer hereby disclaims all such warranties, including without
++// limitation, any warranties of merchantability, fitness for a particular
++// purpose or non-infringement. Please see the License for the specific terms
++// and conditions governing the rights and limitations under the License.
+ 
+-#ifndef _IntPolyh_ArrayOfTriangles_HeaderFile
+-#define _IntPolyh_ArrayOfTriangles_HeaderFile
++#ifndef IntPolyh_ArrayOfTriangles_HeaderFile
++#define IntPolyh_ArrayOfTriangles_HeaderFile
+ 
+ #ifndef _Standard_HeaderFile
+ #include <Standard.hxx>
+ #endif
+-#ifndef _Standard_DefineAlloc_HeaderFile
+-#include <Standard_DefineAlloc.hxx>
+-#endif
+ #ifndef _Standard_Macro_HeaderFile
+ #include <Standard_Macro.hxx>
+ #endif
+ 
+-#ifndef _Standard_Integer_HeaderFile
+-#include <Standard_Integer.hxx>
+-#endif
+-#ifndef _Standard_Address_HeaderFile
+-#include <Standard_Address.hxx>
+-#endif
++#include <IntPolyh_Array.hxx>
++//#include <IntPolyh_Triangle.hxx>
+ class IntPolyh_Triangle;
+ 
+-
+-
+-class IntPolyh_ArrayOfTriangles  {
+-public:
+-
+-  DEFINE_STANDARD_ALLOC
+-
+-  
+-  Standard_EXPORT   IntPolyh_ArrayOfTriangles();
+-  
+-  Standard_EXPORT   IntPolyh_ArrayOfTriangles(const Standard_Integer nn);
+-  
+-  Standard_EXPORT     void Init(const Standard_Integer nn) ;
+-  
+-  Standard_EXPORT    const Standard_Integer GetN() const;
+-  
+-  Standard_EXPORT    const Standard_Integer NbTriangles() const;
+-  
+-  Standard_EXPORT     void SetNbTriangles(const Standard_Integer endaot) ;
+-  
+-  Standard_EXPORT     void IncNbTriangles() ;
+-  
+-  Standard_EXPORT    const IntPolyh_Triangle& Value(const Standard_Integer nn) const;
+-   const IntPolyh_Triangle& operator [](const Standard_Integer nn) const
+-{
+-  return Value(nn);
+-}
+-  
+-  Standard_EXPORT     IntPolyh_Triangle& ChangeValue(const Standard_Integer nn) ;
+-    IntPolyh_Triangle& operator [](const Standard_Integer nn) 
+-{
+-  return ChangeValue(nn);
+-}
+-  
+-  Standard_EXPORT     IntPolyh_ArrayOfTriangles& Copy(const IntPolyh_ArrayOfTriangles& Other) ;
+-    IntPolyh_ArrayOfTriangles& operator =(const IntPolyh_ArrayOfTriangles& Other) 
+-{
+-  return Copy(Other);
+-}
+-  
+-  Standard_EXPORT     void Destroy() ;
+-~IntPolyh_ArrayOfTriangles()
+-{
+-  Destroy();
+-}
+-  
+-  Standard_EXPORT     void Dump() const;
+-  
+-  Standard_EXPORT     void DumpFleches() const;
+-
+-
+-
+-
+-
+-protected:
+-
+-
+-
+-
+-
+-private:
+-
+-
+-
+-Standard_Integer n;
+-Standard_Integer fintt;
+-Standard_Address ptr;
+-
+-
+-};
+-
+-
+-
+-
+-
+-// other Inline functions and methods (like "C++: function call" methods)
+-
++typedef IntPolyh_Array <IntPolyh_Triangle> IntPolyh_ArrayOfTriangles;
+ 
+ #endif
+Index: oce/inc/IntPolyh_Intersection.hxx
+===================================================================
+--- oce.orig/inc/IntPolyh_Intersection.hxx
++++ oce/inc/IntPolyh_Intersection.hxx
+@@ -22,6 +22,9 @@
+ #ifndef _Standard_Integer_HeaderFile
+ #include <Standard_Integer.hxx>
+ #endif
++#ifndef _IntPolyh_ArrayOfCouples_HeaderFile
++#include <IntPolyh_ArrayOfCouples.hxx>
++#endif
+ #ifndef _IntPolyh_ArrayOfSectionLines_HeaderFile
+ #include <IntPolyh_ArrayOfSectionLines.hxx>
+ #endif
+@@ -39,7 +42,6 @@
+ #endif
+ class Adaptor3d_HSurface;
+ class TColStd_Array1OfReal;
+-class IntPolyh_ArrayOfCouples;
+ 
+ 
+ 
+Index: oce/inc/IntPolyh_MaillageAffinage.hxx
+===================================================================
+--- oce.orig/inc/IntPolyh_MaillageAffinage.hxx
++++ oce/inc/IntPolyh_MaillageAffinage.hxx
+@@ -40,8 +40,11 @@
+ #ifndef _IntPolyh_ArrayOfCouples_HeaderFile
+ #include <IntPolyh_ArrayOfCouples.hxx>
+ #endif
+-#ifndef _IntPolyh_ArrayOfStartPoints_HeaderFile
+-#include <IntPolyh_ArrayOfStartPoints.hxx>
++#ifndef _IntPolyh_ArrayOfSectionLines_HeaderFile
++#include <IntPolyh_ArrayOfSectionLines.hxx>
++#endif
++#ifndef _IntPolyh_ArrayOfTangentZones_HeaderFile
++#include <IntPolyh_ArrayOfTangentZones.hxx>
+ #endif
+ #ifndef _Standard_Boolean_HeaderFile
+ #include <Standard_Boolean.hxx>
+@@ -52,14 +55,7 @@ class Bnd_Box;
+ class IntPolyh_Point;
+ class IntPolyh_StartPoint;
+ class IntPolyh_Triangle;
+-class IntPolyh_ArrayOfSectionLines;
+-class IntPolyh_ArrayOfTangentZones;
+ class IntPolyh_SectionLine;
+-class IntPolyh_ArrayOfPoints;
+-class IntPolyh_ArrayOfEdges;
+-class IntPolyh_ArrayOfTriangles;
+-class IntPolyh_ArrayOfStartPoints;
+-class IntPolyh_ArrayOfCouples;
+ 
+ 
+ 
+@@ -172,7 +168,6 @@ public:
+   
+   Standard_EXPORT     void GetBoxDraw(const Standard_Integer SurfID) const;
+   
+-  Standard_EXPORT    const IntPolyh_ArrayOfStartPoints& GetArrayOfSP() const;
+   //! This method returns array of couples of contact triangles. <br>
+   Standard_EXPORT     IntPolyh_ArrayOfCouples& GetArrayOfCouples() ;
+   
+@@ -215,7 +210,6 @@ IntPolyh_ArrayOfEdges TEdges2;
+ IntPolyh_ArrayOfTriangles TTriangles1;
+ IntPolyh_ArrayOfTriangles TTriangles2;
+ IntPolyh_ArrayOfCouples TTrianglesContacts;
+-IntPolyh_ArrayOfStartPoints TStartPoints;
+ Standard_Boolean myEnlargeZone;
+ 
+ 
+Index: oce/inc/IntPolyh_Triangle.hxx
+===================================================================
+--- oce.orig/inc/IntPolyh_Triangle.hxx
++++ oce/inc/IntPolyh_Triangle.hxx
+@@ -25,13 +25,21 @@
+ #ifndef _Handle_Adaptor3d_HSurface_HeaderFile
+ #include <Handle_Adaptor3d_HSurface.hxx>
+ #endif
++#ifndef _IntPolyh_ArrayOfCouples_HeaderFile
++#include <IntPolyh_ArrayOfCouples.hxx>
++#endif
++#ifndef _IntPolyh_ArrayOfEdges_HeaderFile
++#include <IntPolyh_ArrayOfEdges.hxx>
++#endif
++#ifndef _IntPolyh_ArrayOfPoints_HeaderFile
++#include <IntPolyh_ArrayOfPoints.hxx>
++#endif
++#ifndef _IntPolyh_ArrayOfTriangles_HeaderFile
++#include <IntPolyh_ArrayOfTriangles.hxx>
++#endif
+ class Adaptor3d_HSurface;
+-class IntPolyh_ArrayOfPoints;
+-class IntPolyh_ArrayOfTriangles;
+-class IntPolyh_ArrayOfEdges;
+ class Bnd_Box;
+ class IntPolyh_StartPoint;
+-class IntPolyh_ArrayOfCouples;
+ 
+ 
+ 
+Index: oce/inc/TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape.hxx
+===================================================================
+--- /dev/null
++++ oce/inc/TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape.hxx
+@@ -0,0 +1,75 @@
++// This file is generated by WOK (CPPExt).
++// Please do not edit this file; modify original file instead.
++// The copyright and license terms as defined for the original file apply to 
++// this header file considered to be the "object code" form of the original source.
++
++#ifndef _TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape_HeaderFile
++#define _TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape_HeaderFile
++
++#ifndef _Standard_HeaderFile
++#include <Standard.hxx>
++#endif
++#ifndef _Standard_DefineAlloc_HeaderFile
++#include <Standard_DefineAlloc.hxx>
++#endif
++#ifndef _Standard_Macro_HeaderFile
++#include <Standard_Macro.hxx>
++#endif
++
++#ifndef _TCollection_BasicMapIterator_HeaderFile
++#include <TCollection_BasicMapIterator.hxx>
++#endif
++#ifndef _Handle_TopTools_DataMapNodeOfDataMapOfShapeMapOfShape_HeaderFile
++#include <Handle_TopTools_DataMapNodeOfDataMapOfShapeMapOfShape.hxx>
++#endif
++class Standard_NoSuchObject;
++class TopoDS_Shape;
++class TopTools_MapOfShape;
++class TopTools_ShapeMapHasher;
++class TopTools_DataMapOfShapeMapOfShape;
++class TopTools_DataMapNodeOfDataMapOfShapeMapOfShape;
++
++
++
++class TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape  : public TCollection_BasicMapIterator {
++public:
++
++  DEFINE_STANDARD_ALLOC
++
++  
++  Standard_EXPORT   TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape();
++  
++  Standard_EXPORT   TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape(const TopTools_DataMapOfShapeMapOfShape& aMap);
++  
++  Standard_EXPORT     void Initialize(const TopTools_DataMapOfShapeMapOfShape& aMap) ;
++  
++  Standard_EXPORT    const TopoDS_Shape& Key() const;
++  
++  Standard_EXPORT    const TopTools_MapOfShape& Value() const;
++
++
++
++
++
++protected:
++
++
++
++
++
++private:
++
++
++
++
++
++};
++
++
++
++
++
++// other Inline functions and methods (like "C++: function call" methods)
++
++
++#endif
+Index: oce/inc/TopTools_DataMapNodeOfDataMapOfShapeMapOfShape.hxx
+===================================================================
+--- /dev/null
++++ oce/inc/TopTools_DataMapNodeOfDataMapOfShapeMapOfShape.hxx
+@@ -0,0 +1,105 @@
++// This file is generated by WOK (CPPExt).
++// Please do not edit this file; modify original file instead.
++// The copyright and license terms as defined for the original file apply to 
++// this header file considered to be the "object code" form of the original source.
++
++#ifndef _TopTools_DataMapNodeOfDataMapOfShapeMapOfShape_HeaderFile
++#define _TopTools_DataMapNodeOfDataMapOfShapeMapOfShape_HeaderFile
++
++#ifndef _Standard_HeaderFile
++#include <Standard.hxx>
++#endif
++#ifndef _Standard_DefineHandle_HeaderFile
++#include <Standard_DefineHandle.hxx>
++#endif
++#ifndef _Handle_TopTools_DataMapNodeOfDataMapOfShapeMapOfShape_HeaderFile
++#include <Handle_TopTools_DataMapNodeOfDataMapOfShapeMapOfShape.hxx>
++#endif
++
++#ifndef _TopoDS_Shape_HeaderFile
++#include <TopoDS_Shape.hxx>
++#endif
++#ifndef _TopTools_MapOfShape_HeaderFile
++#include <TopTools_MapOfShape.hxx>
++#endif
++#ifndef _TCollection_MapNode_HeaderFile
++#include <TCollection_MapNode.hxx>
++#endif
++#ifndef _TCollection_MapNodePtr_HeaderFile
++#include <TCollection_MapNodePtr.hxx>
++#endif
++class TopoDS_Shape;
++class TopTools_MapOfShape;
++class TopTools_ShapeMapHasher;
++class TopTools_DataMapOfShapeMapOfShape;
++class TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape;
++
++
++
++class TopTools_DataMapNodeOfDataMapOfShapeMapOfShape : public TCollection_MapNode {
++
++public:
++
++  
++      TopTools_DataMapNodeOfDataMapOfShapeMapOfShape(const TopoDS_Shape& K,const TopTools_MapOfShape& I,const TCollection_MapNodePtr& n);
++  
++        TopoDS_Shape& Key() const;
++  
++        TopTools_MapOfShape& Value() const;
++
++
++
++
++  DEFINE_STANDARD_RTTI(TopTools_DataMapNodeOfDataMapOfShapeMapOfShape)
++
++protected:
++
++
++
++
++private: 
++
++
++TopoDS_Shape myKey;
++TopTools_MapOfShape myValue;
++
++
++};
++
++#define TheKey TopoDS_Shape
++#define TheKey_hxx <TopoDS_Shape.hxx>
++#define TheItem TopTools_MapOfShape
++#define TheItem_hxx <TopTools_MapOfShape.hxx>
++#define Hasher TopTools_ShapeMapHasher
++#define Hasher_hxx <TopTools_ShapeMapHasher.hxx>
++#define TCollection_DataMapNode TopTools_DataMapNodeOfDataMapOfShapeMapOfShape
++#define TCollection_DataMapNode_hxx <TopTools_DataMapNodeOfDataMapOfShapeMapOfShape.hxx>
++#define TCollection_DataMapIterator TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape
++#define TCollection_DataMapIterator_hxx <TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape.hxx>
++#define Handle_TCollection_DataMapNode Handle_TopTools_DataMapNodeOfDataMapOfShapeMapOfShape
++#define TCollection_DataMapNode_Type_() TopTools_DataMapNodeOfDataMapOfShapeMapOfShape_Type_()
++#define TCollection_DataMap TopTools_DataMapOfShapeMapOfShape
++#define TCollection_DataMap_hxx <TopTools_DataMapOfShapeMapOfShape.hxx>
++
++#include <TCollection_DataMapNode.lxx>
++
++#undef TheKey
++#undef TheKey_hxx
++#undef TheItem
++#undef TheItem_hxx
++#undef Hasher
++#undef Hasher_hxx
++#undef TCollection_DataMapNode
++#undef TCollection_DataMapNode_hxx
++#undef TCollection_DataMapIterator
++#undef TCollection_DataMapIterator_hxx
++#undef Handle_TCollection_DataMapNode
++#undef TCollection_DataMapNode_Type_
++#undef TCollection_DataMap
++#undef TCollection_DataMap_hxx
++
++
++// other Inline functions and methods (like "C++: function call" methods)
++
++
++#endif
+Index: oce/inc/TopTools_DataMapOfShapeMapOfShape.hxx
+===================================================================
+--- /dev/null
++++ oce/inc/TopTools_DataMapOfShapeMapOfShape.hxx
+@@ -0,0 +1,115 @@
++// This file is generated by WOK (CPPExt).
++// Please do not edit this file; modify original file instead.
++// The copyright and license terms as defined for the original file apply to 
++// this header file considered to be the "object code" form of the original source.
++
++#ifndef _TopTools_DataMapOfShapeMapOfShape_HeaderFile
++#define _TopTools_DataMapOfShapeMapOfShape_HeaderFile
++
++#ifndef _Standard_HeaderFile
++#include <Standard.hxx>
++#endif
++#ifndef _Standard_DefineAlloc_HeaderFile
++#include <Standard_DefineAlloc.hxx>
++#endif
++#ifndef _Standard_Macro_HeaderFile
++#include <Standard_Macro.hxx>
++#endif
++
++#ifndef _TCollection_BasicMap_HeaderFile
++#include <TCollection_BasicMap.hxx>
++#endif
++#ifndef _Handle_TopTools_DataMapNodeOfDataMapOfShapeMapOfShape_HeaderFile
++#include <Handle_TopTools_DataMapNodeOfDataMapOfShapeMapOfShape.hxx>
++#endif
++#ifndef _Standard_Integer_HeaderFile
++#include <Standard_Integer.hxx>
++#endif
++#ifndef _Standard_Boolean_HeaderFile
++#include <Standard_Boolean.hxx>
++#endif
++#ifndef _Standard_Address_HeaderFile
++#include <Standard_Address.hxx>
++#endif
++class Standard_DomainError;
++class Standard_NoSuchObject;
++class TopoDS_Shape;
++class TopTools_MapOfShape;
++class TopTools_ShapeMapHasher;
++class TopTools_DataMapNodeOfDataMapOfShapeMapOfShape;
++class TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape;
++
++
++
++class TopTools_DataMapOfShapeMapOfShape  : public TCollection_BasicMap {
++public:
++
++  DEFINE_STANDARD_ALLOC
++
++  
++  Standard_EXPORT   TopTools_DataMapOfShapeMapOfShape(const Standard_Integer NbBuckets = 1);
++  
++  Standard_EXPORT     TopTools_DataMapOfShapeMapOfShape& Assign(const TopTools_DataMapOfShapeMapOfShape& Other) ;
++    TopTools_DataMapOfShapeMapOfShape& operator =(const TopTools_DataMapOfShapeMapOfShape& Other) 
++{
++  return Assign(Other);
++}
++  
++  Standard_EXPORT     void ReSize(const Standard_Integer NbBuckets) ;
++  
++  Standard_EXPORT     void Clear() ;
++~TopTools_DataMapOfShapeMapOfShape()
++{
++  Clear();
++}
++  
++  Standard_EXPORT     Standard_Boolean Bind(const TopoDS_Shape& K,const TopTools_MapOfShape& I) ;
++  
++  Standard_EXPORT     Standard_Boolean IsBound(const TopoDS_Shape& K) const;
++  
++  Standard_EXPORT     Standard_Boolean UnBind(const TopoDS_Shape& K) ;
++  
++  Standard_EXPORT    const TopTools_MapOfShape& Find(const TopoDS_Shape& K) const;
++   const TopTools_MapOfShape& operator()(const TopoDS_Shape& K) const
++{
++  return Find(K);
++}
++  
++  Standard_EXPORT     TopTools_MapOfShape& ChangeFind(const TopoDS_Shape& K) ;
++    TopTools_MapOfShape& operator()(const TopoDS_Shape& K) 
++{
++  return ChangeFind(K);
++}
++  
++  Standard_EXPORT     Standard_Address Find1(const TopoDS_Shape& K) const;
++  
++  Standard_EXPORT     Standard_Address ChangeFind1(const TopoDS_Shape& K) ;
++
++
++
++
++
++protected:
++
++
++
++
++
++private:
++
++  
++  Standard_EXPORT   TopTools_DataMapOfShapeMapOfShape(const TopTools_DataMapOfShapeMapOfShape& Other);
++
++
++
++
++};
++
++
++
++
++
++// other Inline functions and methods (like "C++: function call" methods)
++
++
++#endif
+Index: oce/src/BOP/BOP_BuilderTools.cxx
+===================================================================
+--- oce.orig/src/BOP/BOP_BuilderTools.cxx
++++ oce/src/BOP/BOP_BuilderTools.cxx
+@@ -298,6 +298,7 @@ BooleanOperations_StateOfShape
+   TColStd_IndexedMapOfInteger aFFIndices;
+ 
+   aNb=aFFs.Extent();
++  aFFMap.ReSize(aNb);
+   for (i=1; i<=aNb; i++) {
+     BOPTools_SSInterference& aFF=aFFs(i);
+     // Faces
+Index: oce/src/BOP/BOP_CorrectTolerances.cxx
+===================================================================
+--- oce.orig/src/BOP/BOP_CorrectTolerances.cxx
++++ oce/src/BOP/BOP_CorrectTolerances.cxx
+@@ -534,7 +534,8 @@ void CheckEdge (const TopoDS_Edge& Ed, c
+     dd=0.1*Tol;
+     Tol*=Tol;
+ 
+-    const TopLoc_Location& Eloc = E.Location();
++    const TopLoc_Location& Vinvloc = aVertex.Location().Inverted();
++    const TopLoc_Location& VinvEloc = Vinvloc * E.Location();
+     BRep_ListIteratorOfListOfPointRepresentation itpr;
+     
+     Handle(BRep_TEdge)& TE = *((Handle(BRep_TEdge)*)&E.TShape());
+@@ -542,7 +543,7 @@ void CheckEdge (const TopoDS_Edge& Ed, c
+     while (itcr.More()) {
+       const Handle(BRep_CurveRepresentation)& cr = itcr.Value();
+       const TopLoc_Location& loc = cr->Location();
+-      TopLoc_Location L = (Eloc * loc).Predivided(aVertex.Location());
++      TopLoc_Location L = VinvEloc * loc;
+       
+       if (cr->IsCurve3D()) {
+ 	const Handle(Geom_Curve)& C = cr->Curve3D();
+Index: oce/src/BOP/BOP_FaceBuilder.cxx
+===================================================================
+--- oce.orig/src/BOP/BOP_FaceBuilder.cxx
++++ oce/src/BOP/BOP_FaceBuilder.cxx
+@@ -45,6 +45,8 @@
+ #include <TopTools_DataMapOfShapeShape.hxx>
+ #include <TopTools_DataMapOfShapeListOfShape.hxx>
+ #include <TopTools_DataMapIteratorOfDataMapOfShapeListOfShape.hxx>
++#include <TopTools_MapOfShape.hxx>
++#include <TopTools_DataMapOfShapeMapOfShape.hxx>
+ 
+ #include <TopoDS.hxx>
+ #include <TopoDS_Face.hxx>
+@@ -81,6 +83,7 @@ static
+ static
+   Standard_Boolean IsInside(const TopoDS_Shape& theHole,
+ 			    const TopoDS_Shape& theF2,
++			    const TopTools_MapOfShape& aME2,
+ 			    const Handle(IntTools_Context)& theContext);
+ static 
+   void DoTopologicalVerification(TopoDS_Face& F);
+@@ -528,6 +531,19 @@ void BOP_FaceBuilder::PerformAreas(BOP_W
+   }
+   //
+   // 2. Find outer growth shell that is most close to each hole shell
++  Standard_Integer numberOfNewFaces = aNewFaces.Extent();
++  TopTools_DataMapOfShapeMapOfShape aMFFx(numberOfNewFaces);
++  aIt1.Initialize(aNewFaces);
++  for (Standard_Integer i = 0; aIt1.More(); aIt1.Next(), ++i) {
++    const TopoDS_Shape& aF=aIt1.Value();
++    TopTools_MapOfShape aMFE;
++    TopExp_Explorer Ex(aF, TopAbs_EDGE);
++    while (Ex.More()) {
++      aMFE.Add(Ex.Current());
++      Ex.Next();
++    }
++    aMFFx.Bind(aF, aMFE);
++  }
+   aIt2.Initialize(aHoleWires);
+   for (; aIt2.More(); aIt2.Next()) {
+     const TopoDS_Shape& aHole = aIt2.Value();
+@@ -536,13 +552,13 @@ void BOP_FaceBuilder::PerformAreas(BOP_W
+     for ( ; aIt1.More(); aIt1.Next()) {
+       const TopoDS_Shape& aF=aIt1.Value();
+       //
+-      if (!IsInside(aHole, aF, myContext)){
++      if (!IsInside(aHole, aF, aMFFx.Find(aF), myContext)){
+         continue;
+       }
+       //
+       if ( aInOutMap.IsBound (aHole)){
+         const TopoDS_Shape& aF2=aInOutMap(aHole);
+-        if (IsInside(aF, aF2, myContext)) {
++        if (IsInside(aF, aF2, aMFFx.Find(aF2), myContext)) {
+           aInOutMap.UnBind(aHole);
+           aInOutMap.Bind (aHole, aF);
+         }
+@@ -566,6 +582,8 @@ void BOP_FaceBuilder::PerformAreas(BOP_W
+       }
+     }
+   }// for (; aIt2.More(); aIt2.Next())
++  aIt1.Initialize(aNewFaces);
++  aMFFx.Clear();
+   //
+   // 3. Add aHoles to Faces
+   aItMSH.Initialize(aMSH);
+@@ -668,6 +686,7 @@ Standard_Boolean IsHole(const TopoDS_Sha
+ //=======================================================================
+ Standard_Boolean IsInside(const TopoDS_Shape& theHole,
+                           const TopoDS_Shape& theF2,
++                          const TopTools_MapOfShape& aME2,
+                           const Handle(IntTools_Context)& theContext)
+ {
+   Standard_Boolean bRet;
+@@ -675,15 +694,12 @@ Standard_Boolean IsInside(const TopoDS_S
+   
+   TopAbs_State aState;
+   TopExp_Explorer aExp;
+-  TopTools_IndexedMapOfShape aME2;
+   gp_Pnt2d aP2D;
+   //
+   bRet=Standard_False;
+   aState=TopAbs_UNKNOWN;
+   const TopoDS_Face& aF2=TopoDS::Face(theF2);
+   //
+-  TopExp::MapShapes(aF2, TopAbs_EDGE, aME2);
+-  //
+   aExp.Init(theHole, TopAbs_EDGE);
+   if (aExp.More()) {
+     const TopoDS_Edge& aE = TopoDS::Edge(aExp.Current());
+Index: oce/src/BOP/BOP_ShellSolid_3.cxx
+===================================================================
+--- oce.orig/src/BOP/BOP_ShellSolid_3.cxx
++++ oce/src/BOP/BOP_ShellSolid_3.cxx
+@@ -77,6 +77,7 @@
+ //  purpose:
+ // =====================================================================================================================
+ Standard_Boolean BOP_ShellSolid::SplitFace(const Standard_Integer theFaceIndex,
++					   const TColStd_IndexedMapOfInteger& aFFIndicesMap,
+ 					   TopTools_DataMapOfShapeInteger& theMapOfEdgeIndex,
+ 					   TopTools_ListOfShape& theListOfFace) const
+ {
+@@ -100,12 +101,11 @@ Standard_Boolean BOP_ShellSolid::SplitFa
+ 
+ 
+   Standard_Integer i = 0;
++  Standard_Integer aNbj = aFFIndicesMap.Extent();
+ 
+-  for(i = 1; i <= aFFs.Length(); i++) {
+-    BOPTools_SSInterference& aFF = aFFs(i);
+-
+-    if((aFF.Index1() != theFaceIndex) && (aFF.Index2() != theFaceIndex))
+-      continue;
++  for(i = 1; i <= aNbj; i++) {
++    Standard_Integer iFF = aFFIndicesMap(i);
++    BOPTools_SSInterference& aFF = aFFs(iFF);
+ 
+     BOPTools_SequenceOfCurves& aSC = aFF.Curves();
+     Standard_Integer aNbCurves = aSC.Length();
+@@ -234,26 +234,12 @@ Standard_Boolean BOP_ShellSolid::SplitFa
+     }
+   }
+ 
+-  BOPTColStd_IndexedDataMapOfIntegerIndexedMapOfInteger aFFMap;
+-  BOP_BuilderTools::DoMap(aFFs, aFFMap);
+-
+-  Standard_Integer aNb = aFFMap.Extent();
+-
+-  for (i = 1; i <= aNb; i++) {
+-    Standard_Integer nF1 = aFFMap.FindKey(i);
+-
+-    if(nF1 != theFaceIndex)
+-      continue;
+-
+-    const TColStd_IndexedMapOfInteger& aFFIndicesMap=aFFMap.FindFromIndex(i);
+-    Standard_Integer aNbj = aFFIndicesMap.Extent();
+     Standard_Integer j = 0;
+-
+     for (j = 1; j <= aNbj; j++) {
+       Standard_Integer iFF = aFFIndicesMap(j);
+       BOPTools_SSInterference& aFF = aFFs(iFF);
+       //
+-      Standard_Integer nF2 = aFF.OppositeIndex(nF1);
++      Standard_Integer nF2 = aFF.OppositeIndex(theFaceIndex);
+ 
+       if(nF2 <= 0)
+ 	continue;
+@@ -301,7 +287,6 @@ Standard_Boolean BOP_ShellSolid::SplitFa
+ 	}
+       }
+     }
+-  }
+ 
+   // process internal edges
+   BOP_WireEdgeSet aFilteredWES (aFace);
+Index: oce/src/BOP/BOP_SolidSolid.cxx
+===================================================================
+--- oce.orig/src/BOP/BOP_SolidSolid.cxx
++++ oce/src/BOP/BOP_SolidSolid.cxx
+@@ -305,6 +305,9 @@ static Standard_Boolean LocalIsKeepTwice
+   BOPTColStd_IndexedDataMapOfIntegerIndexedMapOfInteger aFFMap;
+   BOP_BuilderTools::DoMap(aFFs, aFFMap);
+   //
++  TColStd_DataMapOfIntegerListOfInteger aMapOfEdgeFaces;
++  DoEdgesAdjacentFaces(aMapOfEdgeFaces);
++  //
+   aNb=aFFMap.Extent();
+   for (i=1; i<=aNb; i++) {
+     // 
+@@ -337,7 +340,7 @@ static Standard_Boolean LocalIsKeepTwice
+ 	}
+ 	else {
+ 	   if(iRank == 1) {
+-	     bAddFace = TakeOnSplit(nFSpl, nF1);
++	     bAddFace = TakeOnSplit(nFSpl, nF1, aMapOfEdgeFaces);
+ 	  }
+ 	}
+ 
+Index: oce/src/BOP/BOP_SolidSolid_1.cxx
+===================================================================
+--- oce.orig/src/BOP/BOP_SolidSolid_1.cxx
++++ oce/src/BOP/BOP_SolidSolid_1.cxx
+@@ -69,14 +69,9 @@ Standard_Integer GetIndex(const TopoDS_S
+ 			  const BooleanOperations_ShapesDataStructure& theDS);
+ 
+ static
+-void GetAttachedFaces(const Standard_Integer   theEdgeIndex,
+-		      const Standard_Integer   theFaceIndex,
+-		      const BOPTools_DSFiller&        theDSFiller,
+-		      TColStd_ListOfInteger&   theListOfFaces);
+-
+-static
+ void GetStatesOfAdjacentFaces(const TColStd_ListOfInteger& theListOfFacesToCheck,
+ 			      const BOPTools_DSFiller&     theDSFiller,
++			      const TColStd_DataMapOfIntegerListOfInteger& theMapOfEdgeFaces,
+ 			      TColStd_MapOfInteger&        theMapOfUsedIndices,
+ 			      Standard_Boolean&            bFoundINOUT,
+ 			      Standard_Boolean&            bFoundININ,
+@@ -119,6 +114,7 @@ void BOP_SolidSolid::PrepareFaceSplits()
+     // 
+ 
+     nF1 = aFFMap.FindKey(i);
++    const TColStd_IndexedMapOfInteger& aFFIndicesMap=aFFMap.FindFromIndex(i);
+     TopoDS_Face aF1 = TopoDS::Face(aDS.Shape(nF1));
+     
+     iRank   = aDS.Rank(nF1);
+@@ -126,7 +122,7 @@ void BOP_SolidSolid::PrepareFaceSplits()
+     TopTools_DataMapOfShapeInteger aMapOfEdgeIndex;
+     TopTools_ListOfShape aListOfSplits;
+ 
+-    if(SplitFace(nF1, aMapOfEdgeIndex, aListOfSplits)) {
++    if(SplitFace(nF1, aFFIndicesMap, aMapOfEdgeIndex, aListOfSplits)) {
+ 
+       DoInternalVertices(nF1, aListOfSplits);
+ 
+@@ -161,10 +157,11 @@ void BOP_SolidSolid::PrepareFaceSplits()
+ 	  }
+ 	}
+ 
+-	if(!bFoundFaceState) {
+-	  // 
+-	  if(ComputeStateByInsidePoints(aNewFaceIndex, nF1, iRank, aFFMap, aState)) {
+-
++	// If there are more than 100 shapes, call ComputeStateForAnalyticalSurfaces first
++	Standard_Boolean bInsidePointsFirst = aNb < 100;
++	for (int step = 0; !bFoundFaceState && step < 2; ++step) {
++	  if((step==0) == bInsidePointsFirst) {
++	  if(ComputeStateByInsidePoints(aNewFaceIndex, nF1, iRank, aFFIndicesMap, aState)) {
+ 	    if(aState != TopAbs_ON) {
+ 	      BooleanOperations_StateOfShape aConvertedState = BOPTools_StateFiller::ConvertState(aState);
+ 
+@@ -172,10 +169,8 @@ void BOP_SolidSolid::PrepareFaceSplits()
+ 	    }
+ 	    bFoundFaceState = Standard_True;
+ 	  }
+-	}
+-
+-	if(!bFoundFaceState) {
+-
++	  } else {
++	  //
+ 	  if(ComputeStateForAnalyticalSurfaces(aNewFaceIndex, nF1, aFFMap, *myDSFiller, aState)) {
+ 	    if(aState != TopAbs_ON) {
+ 	      BooleanOperations_StateOfShape aConvertedState = BOPTools_StateFiller::ConvertState(aState);
+@@ -184,6 +179,7 @@ void BOP_SolidSolid::PrepareFaceSplits()
+ 	      bFoundFaceState = Standard_True;
+ 	    }
+ 	  }
++	  }
+ 	}
+       }
+     }
+@@ -268,7 +264,7 @@ Standard_Boolean BOP_SolidSolid::Propaga
+ Standard_Boolean BOP_SolidSolid::ComputeStateByInsidePoints(const Standard_Integer theFaceIndex,
+ 							    const Standard_Integer theBaseFaceIndex,
+ 							    const Standard_Integer theFaceRank,
+-							    const BOPTColStd_IndexedDataMapOfIntegerIndexedMapOfInteger& theFFMap,
++							    const TColStd_IndexedMapOfInteger& aFFIndicesMap,
+ 							    TopAbs_State& theState) 
+ 
+ {
+@@ -289,17 +285,8 @@ Standard_Boolean BOP_SolidSolid::Compute
+   TopoDS_Face aFace = TopoDS::Face(aS);
+   //
+   //
+-  Standard_Integer i = 0, j = 0, aNb = 0;
+-  aNb = theFFMap.Extent();
++  Standard_Integer j = 0;
+ 
+-  for (i=1; i<=aNb; i++) {
+-    // 
+-    Standard_Integer nF1 = theFFMap.FindKey(i);
+-
+-    if(nF1 != theBaseFaceIndex)
+-      continue;
+-
+-    const TColStd_IndexedMapOfInteger& aFFIndicesMap=theFFMap.FindFromIndex(i);
+     Standard_Integer aNbj = aFFIndicesMap.Extent();
+ 
+     for (j=1; j<=aNbj; j++) {
+@@ -308,7 +295,7 @@ Standard_Boolean BOP_SolidSolid::Compute
+       Standard_Boolean bIsTouchCase = aFF.IsTangentFaces();
+ 
+       if (bIsTouchCase) {
+-	Standard_Integer nF2 = aFF.OppositeIndex(nF1);
++	Standard_Integer nF2 = aFF.OppositeIndex(theBaseFaceIndex);
+ 	const TopoDS_Face& aF2 = TopoDS::Face(aDS.Shape(nF2));
+ 
+ 	if(BOPTools_Tools3D::CheckSameDomainFaceInside(aFace, aF2, pPaveFiller->Context())) {
+@@ -317,7 +304,6 @@ Standard_Boolean BOP_SolidSolid::Compute
+ 	}
+       }
+     }
+-  }
+   const TopoDS_Shape& aTool = (theFaceRank == 1) ? aDS.Tool() : aDS.Object();
+   TopoDS_Solid aRefSolid;
+ 
+@@ -348,7 +334,8 @@ Standard_Boolean BOP_SolidSolid::Compute
+ //  purpose:
+ // =====================================================================================================================
+ Standard_Boolean BOP_SolidSolid::TakeOnSplit(const Standard_Integer theFaceIndex,
+-					     const Standard_Integer theBaseFaceIndex) const
++					     const Standard_Integer theBaseFaceIndex,
++                         const TColStd_DataMapOfIntegerListOfInteger &aMapOfEdgeFaces) const
+ {
+   Standard_Boolean bTake = Standard_False;
+ 
+@@ -360,7 +347,7 @@ Standard_Boolean BOP_SolidSolid::TakeOnS
+   TColStd_ListOfInteger aListOfFacesToCheck;
+   aListOfFacesToCheck.Append(theFaceIndex);
+ 
+-  GetStatesOfAdjacentFaces(aListOfFacesToCheck, *myDSFiller, aMapOfUsedIndices, binout, binin, boutout);
++  GetStatesOfAdjacentFaces(aListOfFacesToCheck, *myDSFiller, aMapOfEdgeFaces, aMapOfUsedIndices, binout, binin, boutout);
+   
+   switch(myOperation) {
+   case BOP_FUSE: {
+@@ -394,86 +381,63 @@ Standard_Boolean BOP_SolidSolid::TakeOnS
+   return bTake;
+ }
+ 
+-// ------------------------------------------------------------------------------------
+-// static function: GetIndex
+-// purpose:
+-// ------------------------------------------------------------------------------------
+-Standard_Integer GetIndex(const TopoDS_Shape& theShape, 
+-			  const BooleanOperations_ShapesDataStructure& theDS)
++void BOP_SolidSolid::DoEdgesAdjacentFaces(TColStd_DataMapOfIntegerListOfInteger &aMapOfEdgeFaces) const
+ {
+-  Standard_Integer anIndex = 0, i = 0;
++  const BooleanOperations_ShapesDataStructure& aDS = myDSFiller->DS();
++  const TColStd_DataMapOfIntegerListOfInteger& aMap = myDSFiller->SplitFacePool();
++  Standard_Integer i;
+ 
+-  anIndex = theDS.ShapeIndex(theShape, 1);
+-  anIndex = (anIndex == 0) ? theDS.ShapeIndex(theShape, 2) : anIndex;
++  for(i = 1; i <= aDS.NumberOfInsertedShapes(); i++) {
++    if(aDS.GetShapeType(i) != TopAbs_FACE)
++      continue;
+ 
+-  if(anIndex == 0) {
++    TColStd_ListOfInteger aListOfFaceIndex;
+ 
+-    for (i = theDS.NumberOfSourceShapes() + 1; i <= theDS.NumberOfInsertedShapes(); i++) {
+-      if(theShape.IsSame(theDS.Shape(i))) {
+-	anIndex = i;
+-	break;
++    if(!aMap.IsBound(i)) {
++      aListOfFaceIndex.Append(i);
++    }
++    else {
++      TColStd_ListIteratorOfListOfInteger anIttmp(aMap.Find(i));
++      for(; anIttmp.More(); anIttmp.Next()) {
++        aListOfFaceIndex.Append(anIttmp.Value());
++      }
++    }
++    TColStd_ListIteratorOfListOfInteger anIt(aListOfFaceIndex);
++    
++    for(; anIt.More(); anIt.Next()) {
++      const Standard_Integer nF = anIt.Value();
++      if(nF <= 0)
++        continue;
++      const TopoDS_Shape& aFace = aDS.Shape(nF);
++      TopExp_Explorer anExpE(aFace, TopAbs_EDGE);
++
++      for(; anExpE.More(); anExpE.Next()) {
++        const TopoDS_Shape& anEdge = anExpE.Current();
++        Standard_Integer nE = GetIndex(anEdge, aDS);
++        if(!aMapOfEdgeFaces.IsBound(nE)) {
++          TColStd_ListOfInteger thelist;
++          aMapOfEdgeFaces.Bind(nE, thelist);
++        }
++        aMapOfEdgeFaces.ChangeFind(nE).Append(nF);
+       }
+     }
+   }
+-
+-  return anIndex;
+ }
+ 
+ // ------------------------------------------------------------------------------------
+-// static function: GetAttachedFaces
++// static function: GetIndex
+ // purpose:
+ // ------------------------------------------------------------------------------------
+-void GetAttachedFaces(const Standard_Integer   theEdgeIndex,
+-		      const Standard_Integer   theFaceIndex,
+-		      const BOPTools_DSFiller&        theDSFiller,
+-		      TColStd_ListOfInteger&   theListOfFaces)
++Standard_Integer GetIndex(const TopoDS_Shape& theShape, 
++			  const BooleanOperations_ShapesDataStructure& theDS)
+ {
+-  theListOfFaces.Clear();
+-  const BooleanOperations_ShapesDataStructure& aDS = theDSFiller.DS();
+-  const TColStd_DataMapOfIntegerListOfInteger& aMap = theDSFiller.SplitFacePool();
+-
+-  Standard_Integer i = 0;
+-
+-  for(i = 1; i <= aDS.NumberOfInsertedShapes(); i++) {
+-
+-    if(aDS.GetShapeType(i) == TopAbs_FACE) {
+-      TColStd_ListOfInteger aListOfFaceIndex;
+-
+-      if(!aMap.IsBound(i)) {
+-	if(theFaceIndex == i)
+-	  continue;
+-	aListOfFaceIndex.Append(i);
+-      }
+-      else {
+-	TColStd_ListIteratorOfListOfInteger anIttmp(aMap.Find(i));
++  Standard_Integer anIndex = 0, i = 0;
+ 
+-	for(; anIttmp.More(); anIttmp.Next()) {
+-	  if(theFaceIndex == anIttmp.Value())
+-	    continue;
+-	  aListOfFaceIndex.Append(anIttmp.Value());
+-	}
+-      }
++  anIndex = theDS.ShapeIndex(theShape, 1);
++  anIndex = (anIndex == 0) ? theDS.ShapeIndex(theShape, 2) : anIndex;
++  anIndex = (anIndex == 0) ? theDS.ShapeIndex(theShape, 3) : anIndex;
+ 
+-      TColStd_ListIteratorOfListOfInteger anIt(aListOfFaceIndex);
+-      
+-      for(; anIt.More(); anIt.Next()) {
+-	if(anIt.Value() <= 0)
+-	  continue;
+-	const TopoDS_Shape& aFace = aDS.Shape(anIt.Value());
+-	TopExp_Explorer anExpE(aFace, TopAbs_EDGE);
+-
+-	for(; anExpE.More(); anExpE.Next()) {
+-	  const TopoDS_Shape& anEdge = anExpE.Current();
+-	  Standard_Integer nE = GetIndex(anEdge, aDS);
+-
+-	  if(theEdgeIndex == nE) {
+-	    theListOfFaces.Append(anIt.Value());
+-	    break;
+-	  }
+-	}
+-      }
+-    }
+-  }  
++  return anIndex;
+ }
+ 
+ // ------------------------------------------------------------------------------------
+@@ -482,6 +446,7 @@ void GetAttachedFaces(const Standard_Int
+ // ------------------------------------------------------------------------------------
+ void GetStatesOfAdjacentFaces(const TColStd_ListOfInteger& theListOfFacesToCheck,
+ 			      const BOPTools_DSFiller&     theDSFiller,
++			      const TColStd_DataMapOfIntegerListOfInteger& aMapOfEdgeFaces,
+ 			      TColStd_MapOfInteger&        theMapOfUsedIndices,
+ 			      Standard_Boolean&            bFoundINOUT,
+ 			      Standard_Boolean&            bFoundININ,
+@@ -515,10 +480,8 @@ void GetStatesOfAdjacentFaces(const TCol
+       if(theMapOfUsedIndices.Contains(nE))
+ 	continue;
+       theMapOfUsedIndices.Add(nE);
+-      TColStd_ListOfInteger aListOfFaces, aListOfIN, aListOfOUT;
+-      GetAttachedFaces(nE, nF, theDSFiller, aListOfFaces);
+-    
+-      TColStd_ListIteratorOfListOfInteger anIt(aListOfFaces);
++      TColStd_ListOfInteger aListOfIN, aListOfOUT;
++      TColStd_ListIteratorOfListOfInteger anIt(aMapOfEdgeFaces.Find(nE));
+ 
+       for(; anIt.More(); anIt.Next()) {
+ 	if(theMapOfUsedIndices.Contains(anIt.Value()))
+@@ -541,7 +504,7 @@ void GetStatesOfAdjacentFaces(const TCol
+   }
+ 
+   if(!aLisOfON.IsEmpty() && (theMapOfUsedIndices.Extent() <= aDS.NumberOfInsertedShapes())) {
+-    GetStatesOfAdjacentFaces(aLisOfON, theDSFiller, theMapOfUsedIndices, bFoundINOUT, bFoundININ, bFoundOUTOUT);
++    GetStatesOfAdjacentFaces(aLisOfON, theDSFiller, aMapOfEdgeFaces, theMapOfUsedIndices, bFoundINOUT, bFoundININ, bFoundOUTOUT);
+   }
+ }
+ 
+Index: oce/src/BOP/BOP_WireEdgeSet.cxx
+===================================================================
+--- oce.orig/src/BOP/BOP_WireEdgeSet.cxx
++++ oce/src/BOP/BOP_WireEdgeSet.cxx
+@@ -380,13 +380,8 @@ static void GetOrientationVOnE(const Top
+   Standard_Integer BOP_WireEdgeSet::NbClosingShapes(const TopTools_ListOfShape & L) const
+ {
+   Standard_Integer n = 0;
+-  TopTools_ListIteratorOfListOfShape it(L);
+-  for ( ; it.More(); it.Next()) {
+-    const TopoDS_Shape& S = it.Value();
+-    if ( IsClosed(S) ) {
+-      n++;
+-    }
+-  }
++  // OCCT implementation is buggy, IsClosed always return Standard_False, so
++  // do not compute anything
+   return n;
+ }
+ 
+@@ -429,21 +424,9 @@ static void GetOrientationVOnE(const Top
+ //=======================================================================
+   Standard_Boolean BOP_WireEdgeSet::IsClosed(const TopoDS_Shape& E) const
+ {
+-  const TopoDS_Edge& EE = TopoDS::Edge(E);
+-  Standard_Boolean closed = BRep_Tool::IsClosed(EE,myFace);
+-
+-  // modified by NIZHNY-MKK  Wed May 12 15:44:10 2004.BEGIN
+-  if(closed) {
+-    TopoDS_Edge aE1, aE2;
+-    BOPTools_Tools3D::GetSeam (myFace, aE1, aE2);
+-
+-    if(aE1.IsNull() || aE2.IsNull()) {
+-      closed = Standard_False;
+-    }
+-  }
+-  // modified by NIZHNY-MKK  Wed May 12 15:44:14 2004.END
+-
+-  return closed;
++  // OCCT implementation is buggy, it always return Standard_False, so
++  // do not compute anything
++  return Standard_False;
+ }
+ 
+ //=======================================================================
+Index: oce/src/BooleanOperations/BooleanOperations_ShapesDataStructure.cxx
+===================================================================
+--- oce.orig/src/BooleanOperations/BooleanOperations_ShapesDataStructure.cxx
++++ oce/src/BooleanOperations/BooleanOperations_ShapesDataStructure.cxx
+@@ -194,8 +194,10 @@ const static Standard_Integer AddedValue
+ {
+   if (iRank == 1)
+     return myShapeIndexMapObj;
+-  else 
++  else if (iRank == 2)
+     return myShapeIndexMapTool;
++  else
++    return myShapeIndexMapInserted;
+ }
+ //===========================================================================
+ //function : ShapeIndex
+@@ -338,6 +340,11 @@ void BooleanOperations_ShapesDataStructu
+ 
+   myListOfShapeAndInterferences[myNumberOfInsertedShapes].myState = BooleanOperations_UNKNOWN;
+   myNumberOfInsertedShapes++;
++
++  // Insert new shapes into myShapeIndexMapInserted
++  if (myNumberOfInsertedShapes > myNumberOfShapesOfTheObject+myNumberOfShapesOfTheTool) {
++    myShapeIndexMapInserted.Add(S, myNumberOfInsertedShapes);
++  }
+ }
+ 
+ //===========================================================================
+Index: oce/src/IntPolyh/FILES
+===================================================================
+--- oce.orig/src/IntPolyh/FILES
++++ oce/src/IntPolyh/FILES
+@@ -1,3 +1,9 @@
+ IntPolyh_Intersection_1.cxx
+-
+-
++IntPolyh_Array.hxx
++IntPolyh_ArrayOfSectionLines.hxx
++IntPolyh_ArrayOfCouples.hxx
++IntPolyh_ArrayOfEdges.hxx
++IntPolyh_ArrayOfPoints.hxx
++IntPolyh_ArrayOfStartPoints.hxx
++IntPolyh_ArrayOfTangentZones.hxx
++IntPolyh_ArrayOfTriangles.hxx
+Index: oce/src/IntPolyh/IntPolyh.cdl
+===================================================================
+--- oce.orig/src/IntPolyh/IntPolyh.cdl
++++ oce/src/IntPolyh/IntPolyh.cdl
+@@ -62,7 +62,14 @@ uses
+     Adaptor3d
+  
+ is 
+-
++    imported ArrayOfSectionLines from IntPolyh; 
++    imported ArrayOfCouples from IntPolyh; 
++    imported ArrayOfEdges from IntPolyh; 
++    imported ArrayOfPoints from IntPolyh; 
++    imported ArrayOfStartPoints from IntPolyh; 
++    imported ArrayOfTangentZones from IntPolyh; 
++    imported ArrayOfTriangles from IntPolyh; 
++    
+     class Intersection;
+ 	---Purpose:  the main   algorithm.  Algorythm   outputs are --
+ 	--            lines  and  points like   discribe   in the last
+@@ -77,41 +84,28 @@ is
+     class Couple;
+ 	---Purpose: couple of triangles
+ 
+-    class ArrayOfCouples;	
+ 
+     class Point;
+-    
+-    class ArrayOfPoints;
+-    
+     class StartPoint;
+-    
+-    class ArrayOfStartPoints;
+-    
+     class SeqOfStartPoints instantiates Sequence from TCollection
+         (StartPoint from IntPolyh);
+ 
+     class Edge;
+-    
+-    class ArrayOfEdges;
++     
+ 
+     class Triangle;
+     
+-    class ArrayOfTriangles;
+    
+     class MaillageAffinage;
+     	---Purpose: Provide the algorythms used in the package
+ 
+     class SectionLine;
+     
+-    class ArrayOfSectionLines;
+     
+ --    class TangentZone; For the moment we use the StartPoint Class
+     
+-    class ArrayOfTangentZones;
+-
+-    -- Modified by skv - Thu Sep 25 18:04:05 2003 OCC567 End
+     pointer PMaillageAffinage to MaillageAffinage from IntPolyh;
+-    -- Modified by skv - Thu Sep 25 18:04:07 2003 OCC567 Begin
++    
+ end;
+ 
+ 
+Index: oce/src/IntPolyh/IntPolyh_ArrayOfCouples.cdl
+===================================================================
+--- oce.orig/src/IntPolyh/IntPolyh_ArrayOfCouples.cdl
++++ /dev/null
+@@ -1,73 +0,0 @@
+--- Created on: 1999-04-08
+--- Created by: Fabrice SERVANT
+--- Copyright (c) 1999 Matra Datavision
+--- Copyright (c) 1999-2012 OPEN CASCADE SAS
+---
+--- The content of this file is subject to the Open CASCADE Technology Public
+--- License Version 6.5 (the "License"). You may not use the content of this file
+--- except in compliance with the License. Please obtain a copy of the License
+--- at http://www.opencascade.org and read it completely before using this file.
+---
+--- The Initial Developer of the Original Code is Open CASCADE S.A.S., having its
+--- main offices at: 1, place des Freres Montgolfier, 78280 Guyancourt, France.
+---
+--- The Original Code and all software distributed under the License is
+--- distributed on an "AS IS" basis, without warranty of any kind, and the
+--- Initial Developer hereby disclaims all such warranties, including without
+--- limitation, any warranties of merchantability, fitness for a particular
+--- purpose or non-infringement. Please see the License for the specific terms
+--- and conditions governing the rights and limitations under the License.
+-
+-
+-
+-class ArrayOfCouples from IntPolyh
+-
+-uses
+-    
+-    Couple from IntPolyh
+-
+-is
+-
+-    Create;
+-    
+-    Create(nn: Integer from Standard); 
+-    
+-    Init(me: in out; nn: Integer from Standard) 
+-    is static;
+-    
+-    NbCouples(me)
+-    returns Integer from Standard
+-    is static;
+-    
+-    SetNbCouples(me: in out; fint: Integer from Standard)
+-    is static;
+-    
+-    IncNbCouples(me: in out)
+-    is static;
+-    
+-    Value(me; nn: Integer from Standard)
+-    	---C++: alias operator [] 
+-    	---C++: return const &      
+-    returns Couple from IntPolyh
+-    is static;
+-    
+-    ChangeValue(me: in out;  nn: Integer from Standard)
+-    	---C++: alias operator [] 
+-    	---C++: return &
+-    returns Couple from IntPolyh 
+-    is static;
+-    
+-    Destroy(me: in out)
+-  	 ---C++: alias ~
+-    is static;
+-
+-    Dump(me) 
+-    is static;
+-    
+-	
+-fields
+-
+-    n,eoa : Integer from Standard;
+-    ptr :Address from Standard;
+-    
+-end ArrayOfCouples from IntPolyh;
+Index: oce/src/IntPolyh/IntPolyh_ArrayOfCouples.cxx
+===================================================================
+--- oce.orig/src/IntPolyh/IntPolyh_ArrayOfCouples.cxx
++++ /dev/null
+@@ -1,104 +0,0 @@
+-// Created on: 1999-04-08
+-// Created by: Fabrice SERVANT
+-// Copyright (c) 1999-1999 Matra Datavision
+-// Copyright (c) 1999-2012 OPEN CASCADE SAS
+-//
+-// The content of this file is subject to the Open CASCADE Technology Public
+-// License Version 6.5 (the "License"). You may not use the content of this file
+-// except in compliance with the License. Please obtain a copy of the License
+-// at http://www.opencascade.org and read it completely before using this file.
+-//
+-// The Initial Developer of the Original Code is Open CASCADE S.A.S., having its
+-// main offices at: 1, place des Freres Montgolfier, 78280 Guyancourt, France.
+-//
+-// The Original Code and all software distributed under the License is
+-// distributed on an "AS IS" basis, without warranty of any kind, and the
+-// Initial Developer hereby disclaims all such warranties, including without
+-// limitation, any warranties of merchantability, fitness for a particular
+-// purpose or non-infringement. Please see the License for the specific terms
+-// and conditions governing the rights and limitations under the License.
+-
+-
+-
+-#include <IntPolyh_ArrayOfCouples.ixx>
+-#include <stdio.h>
+-
+-#include <Standard_Stream.hxx>
+-
+-IntPolyh_ArrayOfCouples::IntPolyh_ArrayOfCouples() : n(0),eoa(0),ptr(0){
+-}
+-
+-IntPolyh_ArrayOfCouples::IntPolyh_ArrayOfCouples(const Standard_Integer N) :  n(N),eoa(0){ 
+-  Init(N);
+-}
+-
+-void IntPolyh_ArrayOfCouples::Init(const Standard_Integer N) { 
+-  Destroy();
+-  ptr = (void *) (new IntPolyh_Couple [N]);
+-  n=N;
+-}
+-
+-Standard_Integer IntPolyh_ArrayOfCouples::NbCouples() const { 
+-  return(eoa); 
+-}
+-
+-void IntPolyh_ArrayOfCouples::SetNbCouples(const Standard_Integer fint) {
+-  eoa=fint;
+-}
+-
+-void IntPolyh_ArrayOfCouples::IncNbCouples() {
+-  eoa++;
+-}
+-
+-# ifdef DEB
+-  #define BORNES 1
+-# endif
+-
+-const IntPolyh_Couple& IntPolyh_ArrayOfCouples::Value(const Standard_Integer Index) const { 
+-  IntPolyh_Couple* ptrCouple = (IntPolyh_Couple*) ptr; 
+-#if BORNES
+-  if(Index<0 || Index>=n) { 
+-    cerr<<" Erreur4 "<<endl; 
+-    printf("Value() from IntPolyh_ArrayOfCouples : value out of array\n");
+-  }
+-#endif
+-  return(ptrCouple[Index]); 
+-}
+-
+-IntPolyh_Couple& IntPolyh_ArrayOfCouples::ChangeValue(const Standard_Integer Index) { 
+-  IntPolyh_Couple* ptrCouple = (IntPolyh_Couple*) ptr; 
+-#if BORNES
+-  if(Index<0 || Index>=n) { 
+-    cerr<<" Erreur4"<<endl;
+-    printf("ChangeValue() from IntPolyh_ArrayOfCouples : value out of array\n");
+-  }
+-#endif
+-  return(ptrCouple[Index]);
+-}
+-
+-void IntPolyh_ArrayOfCouples::Destroy() { 
+-  if(n) { 
+-    if(ptr) { 
+-      IntPolyh_Couple* ptrCouple = (IntPolyh_Couple*) ptr; 
+-      delete [] ptrCouple;
+-      ptrCouple=0;
+-      ptr=0;
+-      n=0;
+-    }
+-  }
+-}
+-
+-void IntPolyh_ArrayOfCouples::Dump() const{ 
+-  printf("\n ArrayOfCouples 0-> %d",n-1);
+-    for(Standard_Integer i=0;i<n;i++) { 
+-      (*this)[i].Dump(i);
+-    }
+-    printf("\n");
+-}
+-
+-
+-
+-
+-
+-
+-
+Index: oce/src/IntPolyh/IntPolyh_ArrayOfEdges.cdl
+===================================================================
+--- oce.orig/src/IntPolyh/IntPolyh_ArrayOfEdges.cdl
++++ /dev/null
+@@ -1,88 +0,0 @@
+--- Created on: 1999-03-09
+--- Created by: Fabrice SERVANT
+--- Copyright (c) 1999 Matra Datavision
+--- Copyright (c) 1999-2012 OPEN CASCADE SAS
+---
+--- The content of this file is subject to the Open CASCADE Technology Public
+--- License Version 6.5 (the "License"). You may not use the content of this file
+--- except in compliance with the License. Please obtain a copy of the License
+--- at http://www.opencascade.org and read it completely before using this file.
+---
+--- The Initial Developer of the Original Code is Open CASCADE S.A.S., having its
+--- main offices at: 1, place des Freres Montgolfier, 78280 Guyancourt, France.
+---
+--- The Original Code and all software distributed under the License is
+--- distributed on an "AS IS" basis, without warranty of any kind, and the
+--- Initial Developer hereby disclaims all such warranties, including without
+--- limitation, any warranties of merchantability, fitness for a particular
+--- purpose or non-infringement. Please see the License for the specific terms
+--- and conditions governing the rights and limitations under the License.
+-
+-
+-class ArrayOfEdges from IntPolyh
+-
+-uses
+-    
+-    Edge from IntPolyh
+-
+-is
+-
+-
+-    Create;
+-    
+-    Create(nn : Integer from Standard) ; 
+-    
+-    Init(me: in out; nn: Integer from Standard) 
+-    is static;
+-
+-    GetN(me)
+-    returns Integer from Standard
+-    ---C++: return const
+-    is static;
+-
+-    NbEdges(me)
+-    returns Integer from Standard
+-    ---C++: return const
+-    is static;
+-
+-    SetNbEdges(me: in out; endaof: Integer from Standard)
+-    is static;
+-
+-    IncNbEdges(me: in out)
+-    is static;
+-
+-    Value(me; nn: Integer from Standard)
+-    	---C++: alias operator [] 
+-    	---C++: return const &      
+-    returns Edge from IntPolyh
+-    is static;
+-    
+-    ChangeValue(me: in out;  nn: Integer from Standard)
+-    	---C++: alias operator [] 
+-    	---C++: return &
+-    returns Edge from IntPolyh 
+-    is static;
+-    
+-    Copy(me: in out; Other : ArrayOfEdges from IntPolyh)
+-    	---C++: alias operator =
+-    	---C++: return &
+-    returns ArrayOfEdges from IntPolyh
+-    is static;
+-    
+-    Destroy(me:in out)
+-    	---C++: alias ~
+-    is static;
+-    
+-    Dump(me) 
+-    is static;
+-
+-     	
+-fields
+-
+-    n,finte : Integer from Standard;
+-    ptr : Address from Standard;
+-    
+-end ArrayOfEdges from IntPolyh;
+-
+-
+-
+Index: oce/src/IntPolyh/IntPolyh_ArrayOfEdges.cxx
+===================================================================
+--- oce.orig/src/IntPolyh/IntPolyh_ArrayOfEdges.cxx
++++ /dev/null
+@@ -1,113 +0,0 @@
+-// Created on: 1999-03-08
+-// Created by: Fabrice SERVANT
+-// Copyright (c) 1999-1999 Matra Datavision
+-// Copyright (c) 1999-2012 OPEN CASCADE SAS
+-//
+-// The content of this file is subject to the Open CASCADE Technology Public
+-// License Version 6.5 (the "License"). You may not use the content of this file
+-// except in compliance with the License. Please obtain a copy of the License
+-// at http://www.opencascade.org and read it completely before using this file.
+-//
+-// The Initial Developer of the Original Code is Open CASCADE S.A.S., having its
+-// main offices at: 1, place des Freres Montgolfier, 78280 Guyancourt, France.
+-//
+-// The Original Code and all software distributed under the License is
+-// distributed on an "AS IS" basis, without warranty of any kind, and the
+-// Initial Developer hereby disclaims all such warranties, including without
+-// limitation, any warranties of merchantability, fitness for a particular
+-// purpose or non-infringement. Please see the License for the specific terms
+-// and conditions governing the rights and limitations under the License.
+-
+-
+-
+-#include <IntPolyh_ArrayOfEdges.ixx>
+-#include <stdio.h>
+-#include <Standard_Stream.hxx>
+-
+-IntPolyh_ArrayOfEdges::IntPolyh_ArrayOfEdges() : n(0),finte(0),ptr(0) { }
+-
+-IntPolyh_ArrayOfEdges::IntPolyh_ArrayOfEdges(const Standard_Integer N) :  n(N),finte(0) { 
+-  Init(N);
+-}
+-
+-void IntPolyh_ArrayOfEdges::Init(const Standard_Integer N) { 
+-  Destroy();
+-  n=N;
+-  ptr = (void*) (new IntPolyh_Edge [n]);
+-}
+-
+-const Standard_Integer IntPolyh_ArrayOfEdges::GetN() const { 
+-  return(n); 
+-}
+-const Standard_Integer IntPolyh_ArrayOfEdges::NbEdges() const { 
+-  return(finte); 
+-}
+-
+-void IntPolyh_ArrayOfEdges::SetNbEdges(const Standard_Integer endaoe) {
+-  finte = endaoe;
+-}
+-
+-void IntPolyh_ArrayOfEdges::IncNbEdges(){
+-  finte++;
+-}
+-
+-# ifdef DEB
+-  #define BORNES 1
+-# endif
+-
+-const IntPolyh_Edge& IntPolyh_ArrayOfEdges::Value(const Standard_Integer Index) const { 
+-  IntPolyh_Edge* ptredge = (IntPolyh_Edge*) ptr; 
+-#if BORNES
+-  if(Index<0 || Index>=n) { 
+-    cerr<<" Erreur2 value"<<endl;  
+-    printf("Value() from IntPolyh_ArrayOfEdges : ERROR value outside of the array\n");
+-  } 
+-#endif
+-  return(ptredge[Index]); 
+-}
+-
+-IntPolyh_Edge& IntPolyh_ArrayOfEdges::ChangeValue(const Standard_Integer Index) { 
+-  IntPolyh_Edge* ptredge = (IntPolyh_Edge*) ptr; 
+-#if BORNES
+-  if(Index<0 || Index>=n) { 
+-    cerr<<" Erreur2 chgVal"<<endl; 
+-    printf("ChangeValue() from IntPolyh_ArrayOfEdges : ERROR value outside of the array\n");
+-  }
+-#endif
+-  return(ptredge[Index]); 
+-}
+-
+-void IntPolyh_ArrayOfEdges::Destroy() { 
+-  if(n) { 
+-    if(ptr) { 
+-      IntPolyh_Edge* ptredge = (IntPolyh_Edge*) ptr; 
+-      delete [] ptredge;
+-      ptredge=0;
+-      ptr=0;
+-      n=0;
+-    }
+-  }
+-}
+-  
+-IntPolyh_ArrayOfEdges & IntPolyh_ArrayOfEdges::Copy(const IntPolyh_ArrayOfEdges& Other) { 
+-  if(ptr==Other.ptr) return(*this);
+-    Destroy();
+-  n=Other.n;
+-  ptr = (void*) (new IntPolyh_Edge[n]);
+-  for(Standard_Integer i=0;i<n;i++) { 
+-    (*this)[i]=Other[i];
+-  }
+-  return(*this);
+-}
+-
+-void IntPolyh_ArrayOfEdges::Dump() const{ 
+-  printf("\n ArrayOfEdges 0-> %d",n-1);
+-    for(Standard_Integer i=0;i<n;i++) { 
+-      (*this)[i].Dump(i);
+-    }
+-    printf("\n");
+-}
+-
+-
+-
+-
+Index: oce/src/IntPolyh/IntPolyh_ArrayOfPoints.cdl
+===================================================================
+--- oce.orig/src/IntPolyh/IntPolyh_ArrayOfPoints.cdl
++++ /dev/null
+@@ -1,84 +0,0 @@
+--- Created on: 1999-03-08
+--- Created by: Fabrice SERVANT
+--- Copyright (c) 1999 Matra Datavision
+--- Copyright (c) 1999-2012 OPEN CASCADE SAS
+---
+--- The content of this file is subject to the Open CASCADE Technology Public
+--- License Version 6.5 (the "License"). You may not use the content of this file
+--- except in compliance with the License. Please obtain a copy of the License
+--- at http://www.opencascade.org and read it completely before using this file.
+---
+--- The Initial Developer of the Original Code is Open CASCADE S.A.S., having its
+--- main offices at: 1, place des Freres Montgolfier, 78280 Guyancourt, France.
+---
+--- The Original Code and all software distributed under the License is
+--- distributed on an "AS IS" basis, without warranty of any kind, and the
+--- Initial Developer hereby disclaims all such warranties, including without
+--- limitation, any warranties of merchantability, fitness for a particular
+--- purpose or non-infringement. Please see the License for the specific terms
+--- and conditions governing the rights and limitations under the License.
+-
+-
+-
+-class ArrayOfPoints from IntPolyh
+-
+-uses
+-    
+-    Point from IntPolyh
+-
+-
+-is
+-
+-
+-    Create;
+-    
+-    Create(nn : Integer from Standard) ; 
+-    
+-    Init(me: in out; nn: Integer from Standard) 
+-    is static;
+-
+-    Value(me; nn: Integer from Standard)
+-    	---C++: alias operator [] 
+-    	---C++: return const &
+-    returns Point from IntPolyh    
+-    is static;
+-    
+-    ChangeValue(me: in out;  nn: Integer from Standard)
+-    	---C++: alias operator [] 
+-    	---C++: return &
+-    returns Point from IntPolyh    
+-    is static;
+-    
+-    Copy(me: in out; Other : ArrayOfPoints from IntPolyh)
+-    	---C++: alias operator =
+-    	---C++: return &
+-    returns ArrayOfPoints from IntPolyh
+-    is static;
+-    
+-    GetN(me)
+-    returns Integer from Standard
+-    is static;
+-    
+-    NbPoints(me)
+-    returns Integer from Standard
+-    is static;
+-
+-    IncNbPoints(me: in out)
+-    is static;
+-    
+-    SetNbPoints(me: in out; END: Integer from Standard)
+-    is static;
+-    
+-    Destroy(me: in out)
+-    	---C++: alias ~
+-    is static;
+-    
+-    Dump(me) 
+-    is static;
+-     	
+-fields
+-
+-    n,fintp : Integer from Standard;
+-    ptr :Address from Standard;
+-    
+-end ArrayOfPoints from IntPolyh;
+Index: oce/src/IntPolyh/IntPolyh_ArrayOfPoints.cxx
+===================================================================
+--- oce.orig/src/IntPolyh/IntPolyh_ArrayOfPoints.cxx
++++ /dev/null
+@@ -1,119 +0,0 @@
+-// Created on: 1999-03-08
+-// Created by: Fabrice SERVANT
+-// Copyright (c) 1999-1999 Matra Datavision
+-// Copyright (c) 1999-2012 OPEN CASCADE SAS
+-//
+-// The content of this file is subject to the Open CASCADE Technology Public
+-// License Version 6.5 (the "License"). You may not use the content of this file
+-// except in compliance with the License. Please obtain a copy of the License
+-// at http://www.opencascade.org and read it completely before using this file.
+-//
+-// The Initial Developer of the Original Code is Open CASCADE S.A.S., having its
+-// main offices at: 1, place des Freres Montgolfier, 78280 Guyancourt, France.
+-//
+-// The Original Code and all software distributed under the License is
+-// distributed on an "AS IS" basis, without warranty of any kind, and the
+-// Initial Developer hereby disclaims all such warranties, including without
+-// limitation, any warranties of merchantability, fitness for a particular
+-// purpose or non-infringement. Please see the License for the specific terms
+-// and conditions governing the rights and limitations under the License.
+-
+-
+-
+-#include <IntPolyh_ArrayOfPoints.ixx>
+-
+-#include <stdio.h>
+-
+-
+-IntPolyh_ArrayOfPoints::IntPolyh_ArrayOfPoints() : n(0),fintp(0),ptr(0) { }
+-
+-IntPolyh_ArrayOfPoints::IntPolyh_ArrayOfPoints(const Standard_Integer N): fintp(0){ 
+-  Init(N);
+-}
+-
+-void IntPolyh_ArrayOfPoints::Init(const Standard_Integer N) { 
+-  Destroy();
+-  ptr = (void*) (new IntPolyh_Point [N]);
+-  n = N;
+-}
+-
+-Standard_Integer IntPolyh_ArrayOfPoints::GetN() const { 
+-    return(n); 
+-}
+-
+-Standard_Integer IntPolyh_ArrayOfPoints::NbPoints() const { 
+-    return(fintp); 
+-}
+-
+-void IntPolyh_ArrayOfPoints::IncNbPoints() {
+-  fintp++;
+-}
+-
+-void IntPolyh_ArrayOfPoints::SetNbPoints(const Standard_Integer endaop) {
+-  fintp = endaop;
+-}
+-
+-# ifdef DEB
+-  #define BORNES 1
+-# endif
+-
+-const IntPolyh_Point& IntPolyh_ArrayOfPoints::Value(const Standard_Integer Index) const { 
+-  IntPolyh_Point *ptrpoint = (IntPolyh_Point *)ptr;
+-#if BORNES
+-  if(Index<0 || Index>=n) { 
+-    cerr<<" Erreur1 "<<endl; 
+-    printf("Value() from IntPolyh_ArrayOfPoints : ERROR value outside of the array\n");
+-  } 
+-#endif
+-  return(ptrpoint[Index]); 
+-}
+-
+-IntPolyh_Point& IntPolyh_ArrayOfPoints::ChangeValue(const Standard_Integer Index) { 
+-  IntPolyh_Point *ptrpoint = (IntPolyh_Point *)ptr;
+-#if BORNES
+-    if(Index<0 || Index>=n) { 
+-      cerr<<" Erreur1 "<<endl; 
+-      printf("ChangeValue() from IntPolyh_ArrayOfPoints : ERROR value outside of the array\n");
+-    } 
+-#endif
+-    return(ptrpoint[Index]); 
+-}
+-  
+-void IntPolyh_ArrayOfPoints::Destroy() { 
+-  if(n) { 
+-    if(ptr) { 
+-      IntPolyh_Point *ptrpoint = (IntPolyh_Point *)ptr;
+-      delete [] ptrpoint;
+-      ptrpoint=0;
+-      ptr=0;
+-      n=0;
+-      }
+-  }
+-}
+-  
+-IntPolyh_ArrayOfPoints & IntPolyh_ArrayOfPoints::Copy(const IntPolyh_ArrayOfPoints& Other) { 
+-  if(ptr==Other.ptr) return(*this);
+-  Destroy();
+-  n=Other.n;
+-  ptr = (void *) (new IntPolyh_Point[n]);
+-  for(Standard_Integer i=0;i<=n;i++) { 
+-    (*this)[i]=Other[i];
+-  }
+-  return(*this);
+-}
+-
+-void IntPolyh_ArrayOfPoints::Dump() const{ 
+-  printf("\n ArrayOfPoints 0-> %d\n",fintp-1);
+-  printf("size %d, room left%d", n, n-fintp);
+-  for(Standard_Integer i=0;i<fintp;i++) { 
+-    (*this)[i].Dump(i);
+-  }
+-  printf("\n");
+-}
+-
+-
+-
+-
+-
+-
+-
+Index: oce/src/IntPolyh/IntPolyh_ArrayOfSectionLines.cdl
+===================================================================
+--- oce.orig/src/IntPolyh/IntPolyh_ArrayOfSectionLines.cdl
++++ /dev/null
+@@ -1,80 +0,0 @@
+--- Created on: 1999-04-06
+--- Created by: Fabrice SERVANT
+--- Copyright (c) 1999 Matra Datavision
+--- Copyright (c) 1999-2012 OPEN CASCADE SAS
+---
+--- The content of this file is subject to the Open CASCADE Technology Public
+--- License Version 6.5 (the "License"). You may not use the content of this file
+--- except in compliance with the License. Please obtain a copy of the License
+--- at http://www.opencascade.org and read it completely before using this file.
+---
+--- The Initial Developer of the Original Code is Open CASCADE S.A.S., having its
+--- main offices at: 1, place des Freres Montgolfier, 78280 Guyancourt, France.
+---
+--- The Original Code and all software distributed under the License is
+--- distributed on an "AS IS" basis, without warranty of any kind, and the
+--- Initial Developer hereby disclaims all such warranties, including without
+--- limitation, any warranties of merchantability, fitness for a particular
+--- purpose or non-infringement. Please see the License for the specific terms
+--- and conditions governing the rights and limitations under the License.
+-
+-
+-
+-class ArrayOfSectionLines from IntPolyh
+-
+-uses
+-    
+-    SectionLine from IntPolyh
+-
+-is
+-
+-
+-    Create;
+-    
+-    Create(nn : Integer from Standard) ; 
+-    
+-    Init(me: in out; nn: Integer from Standard) 
+-    is static;
+-
+-    Value(me; nn: Integer from Standard)
+-    	---C++: alias operator [] 
+-    	---C++: return const &
+-    returns SectionLine from IntPolyh    
+-    is static;
+-    
+-    ChangeValue(me: in out;  nn: Integer from Standard)
+-    	---C++: alias operator [] 
+-    	---C++: return &
+-    returns SectionLine from IntPolyh    
+-    is static;
+-    
+-    Copy(me: in out; Other : ArrayOfSectionLines from IntPolyh)
+-    	---C++: alias operator =
+-    	---C++: return &
+-    returns ArrayOfSectionLines from IntPolyh
+-    is static;
+-    
+-    GetN(me)
+-    returns Integer from Standard
+-    is static;
+-    
+-    NbSectionLines(me)
+-    returns Integer from Standard
+-    is static;
+-    
+-    IncrementNbSectionLines(me: in out)
+-    is static;
+-    
+-    Destroy(me: in out)
+-    	---C++: alias ~
+-    is static;
+-    
+-    Dump(me) 
+-    is static;
+-     	
+-fields
+-
+-    n,nbsectionlines : Integer from Standard;
+-    ptr : Address from Standard;
+-    
+-end ArrayOfSectionLines from IntPolyh;
+Index: oce/src/IntPolyh/IntPolyh_ArrayOfSectionLines.cxx
+===================================================================
+--- oce.orig/src/IntPolyh/IntPolyh_ArrayOfSectionLines.cxx
++++ /dev/null
+@@ -1,101 +0,0 @@
+-// Created on: 1999-04-06
+-// Created by: Fabrice SERVANT
+-// Copyright (c) 1999-1999 Matra Datavision
+-// Copyright (c) 1999-2012 OPEN CASCADE SAS
+-//
+-// The content of this file is subject to the Open CASCADE Technology Public
+-// License Version 6.5 (the "License"). You may not use the content of this file
+-// except in compliance with the License. Please obtain a copy of the License
+-// at http://www.opencascade.org and read it completely before using this file.
+-//
+-// The Initial Developer of the Original Code is Open CASCADE S.A.S., having its
+-// main offices at: 1, place des Freres Montgolfier, 78280 Guyancourt, France.
+-//
+-// The Original Code and all software distributed under the License is
+-// distributed on an "AS IS" basis, without warranty of any kind, and the
+-// Initial Developer hereby disclaims all such warranties, including without
+-// limitation, any warranties of merchantability, fitness for a particular
+-// purpose or non-infringement. Please see the License for the specific terms
+-// and conditions governing the rights and limitations under the License.
+-
+-
+-
+-#include <IntPolyh_StartPoint.ixx>
+-#include <IntPolyh_ArrayOfSectionLines.ixx>
+-#include <stdio.h>
+-
+-
+-IntPolyh_ArrayOfSectionLines::IntPolyh_ArrayOfSectionLines() : n(0),nbsectionlines(0),ptr(0) { }
+-
+-IntPolyh_ArrayOfSectionLines::IntPolyh_ArrayOfSectionLines(const Standard_Integer N) : nbsectionlines(0){ 
+-  Init(N);
+-}
+-
+-void IntPolyh_ArrayOfSectionLines::Init(const Standard_Integer N) { 
+-  Destroy();
+-  ptr = (void*) (new IntPolyh_SectionLine [N]);
+-  n=N;
+-}
+-
+-Standard_Integer IntPolyh_ArrayOfSectionLines::GetN() const { 
+-  return(n); 
+-}
+-
+-Standard_Integer IntPolyh_ArrayOfSectionLines::NbSectionLines() const { 
+-  return(nbsectionlines); 
+-}
+-
+-void IntPolyh_ArrayOfSectionLines::IncrementNbSectionLines() { 
+-  nbsectionlines++; 
+-}
+-
+-#define BORNES1
+-const IntPolyh_SectionLine& IntPolyh_ArrayOfSectionLines::Value(const Standard_Integer Index) const { 
+-  IntPolyh_SectionLine *ptrstpoint = (IntPolyh_SectionLine *)ptr;
+-#if BORNES
+-  if(Index<0 || Index>=n) { cerr<<" Erreur1 "<<endl; cout<<"1dd";} 
+-#endif
+-  return(ptrstpoint[Index]); 
+-}
+-
+-IntPolyh_SectionLine& IntPolyh_ArrayOfSectionLines::ChangeValue(const Standard_Integer Index) { 
+-  IntPolyh_SectionLine *ptrstpoint = (IntPolyh_SectionLine *)ptr;
+-#if BORNES
+-    if(Index<0 || Index>=n) { cerr<<" Erreur1 "<<endl; cout<<"1dd"; } 
+-#endif
+-    return(ptrstpoint[Index]); 
+-}
+-  
+-void IntPolyh_ArrayOfSectionLines::Destroy() { 
+-  if(n) { 
+-    if(ptr) { 
+-      IntPolyh_SectionLine *ptrsectionline = (IntPolyh_SectionLine *)ptr;
+-      for(Standard_Integer i=0; i<n; i++)
+-	ptrsectionline[i].Destroy();
+-      delete [] ptrsectionline;
+-      ptrsectionline=0;
+-      ptr=0;
+-      n=0;
+-    }
+-  }
+-}
+-  
+-IntPolyh_ArrayOfSectionLines & IntPolyh_ArrayOfSectionLines::Copy(const IntPolyh_ArrayOfSectionLines& Other) { 
+-  if(ptr==Other.ptr) return(*this);
+-  Destroy();
+-  n=Other.n;
+-  ptr = (void *) (new IntPolyh_SectionLine[n]);
+-  for(Standard_Integer i=0;i<=n;i++) { 
+-    (*this)[i]=Other[i];
+-  }
+-  return(*this);
+-}
+-
+-void IntPolyh_ArrayOfSectionLines::Dump() const{ 
+-  printf("\n ArrayOfSectionLines 0-> %d",nbsectionlines-1);
+-  for(Standard_Integer i=0;i<nbsectionlines;i++) { 
+-    (*this)[i].Dump();
+-  }
+-  printf("\n");
+-}
+-
+Index: oce/src/IntPolyh/IntPolyh_ArrayOfStartPoints.cdl
+===================================================================
+--- oce.orig/src/IntPolyh/IntPolyh_ArrayOfStartPoints.cdl
++++ /dev/null
+@@ -1,74 +0,0 @@
+--- Created on: 1999-04-06
+--- Created by: Fabrice SERVANT
+--- Copyright (c) 1999 Matra Datavision
+--- Copyright (c) 1999-2012 OPEN CASCADE SAS
+---
+--- The content of this file is subject to the Open CASCADE Technology Public
+--- License Version 6.5 (the "License"). You may not use the content of this file
+--- except in compliance with the License. Please obtain a copy of the License
+--- at http://www.opencascade.org and read it completely before using this file.
+---
+--- The Initial Developer of the Original Code is Open CASCADE S.A.S., having its
+--- main offices at: 1, place des Freres Montgolfier, 78280 Guyancourt, France.
+---
+--- The Original Code and all software distributed under the License is
+--- distributed on an "AS IS" basis, without warranty of any kind, and the
+--- Initial Developer hereby disclaims all such warranties, including without
+--- limitation, any warranties of merchantability, fitness for a particular
+--- purpose or non-infringement. Please see the License for the specific terms
+--- and conditions governing the rights and limitations under the License.
+-
+-
+-
+-class ArrayOfStartPoints from IntPolyh
+-
+-uses
+-    
+-    StartPoint from IntPolyh
+-
+-
+-is
+-
+-
+-    Create;
+-    
+-    Create(nn : Integer from Standard) ; 
+-    
+-    Init(me: in out; nn: Integer from Standard) 
+-    is static;
+-
+-    Value(me; nn: Integer from Standard)
+-    	---C++: alias operator [] 
+-    	---C++: return const &
+-    returns StartPoint from IntPolyh    
+-    is static;
+-    
+-    ChangeValue(me: in out;  nn: Integer from Standard)
+-    	---C++: alias operator [] 
+-    	---C++: return &
+-    returns StartPoint from IntPolyh    
+-    is static;
+-    
+-    Copy(me: in out; Other : ArrayOfStartPoints from IntPolyh)
+-    	---C++: alias operator =
+-    	---C++: return &
+-    returns ArrayOfStartPoints from IntPolyh
+-    is static;
+-    
+-    NbPoints(me)
+-    returns Integer from Standard
+-    is static;
+-    
+-    Destroy(me: in out)
+-    	---C++: alias ~
+-    is static;
+-    
+-    Dump(me) 
+-    is static;
+-     	
+-fields
+-
+-    n : Integer from Standard;
+-    ptr :Address from Standard;
+-    
+-end ArrayOfStartPoints from IntPolyh;
+Index: oce/src/IntPolyh/IntPolyh_ArrayOfStartPoints.cxx
+===================================================================
+--- oce.orig/src/IntPolyh/IntPolyh_ArrayOfStartPoints.cxx
++++ /dev/null
+@@ -1,93 +0,0 @@
+-// Created on: 1999-04-06
+-// Created by: Fabrice SERVANT
+-// Copyright (c) 1999-1999 Matra Datavision
+-// Copyright (c) 1999-2012 OPEN CASCADE SAS
+-//
+-// The content of this file is subject to the Open CASCADE Technology Public
+-// License Version 6.5 (the "License"). You may not use the content of this file
+-// except in compliance with the License. Please obtain a copy of the License
+-// at http://www.opencascade.org and read it completely before using this file.
+-//
+-// The Initial Developer of the Original Code is Open CASCADE S.A.S., having its
+-// main offices at: 1, place des Freres Montgolfier, 78280 Guyancourt, France.
+-//
+-// The Original Code and all software distributed under the License is
+-// distributed on an "AS IS" basis, without warranty of any kind, and the
+-// Initial Developer hereby disclaims all such warranties, including without
+-// limitation, any warranties of merchantability, fitness for a particular
+-// purpose or non-infringement. Please see the License for the specific terms
+-// and conditions governing the rights and limitations under the License.
+-
+-
+-
+-#include <IntPolyh_StartPoint.ixx>
+-#include <IntPolyh_ArrayOfStartPoints.ixx>
+-#include <stdio.h>
+-
+-
+-
+-IntPolyh_ArrayOfStartPoints::IntPolyh_ArrayOfStartPoints() : n(0),ptr(0) { }
+-
+-IntPolyh_ArrayOfStartPoints::IntPolyh_ArrayOfStartPoints(const Standard_Integer N){ 
+-  Init(N);
+-}
+-
+-void IntPolyh_ArrayOfStartPoints::Init(const Standard_Integer N) { 
+-  Destroy();
+-  ptr = (void*) (new IntPolyh_StartPoint [N]);
+-  n=N;
+-}
+-
+-Standard_Integer IntPolyh_ArrayOfStartPoints::NbPoints() const { 
+-    return(n); 
+-}
+-
+-
+-#define BORNES1
+-const IntPolyh_StartPoint& IntPolyh_ArrayOfStartPoints::Value(const Standard_Integer Index) const { 
+-  IntPolyh_StartPoint *ptrstpoint = (IntPolyh_StartPoint *)ptr;
+-#if BORNES
+-  if(Index<0 || Index>=n) { cerr<<" Erreur1 "<<endl; cout<<"1dd";} 
+-#endif
+-  return(ptrstpoint[Index]); 
+-}
+-
+-IntPolyh_StartPoint& IntPolyh_ArrayOfStartPoints::ChangeValue(const Standard_Integer Index) { 
+-  IntPolyh_StartPoint *ptrstpoint = (IntPolyh_StartPoint *)ptr;
+-#if BORNES
+-    if(Index<0 || Index>=n) { cerr<<" Erreur1 "<<endl; cout<<"1dd"; } 
+-#endif
+-    return(ptrstpoint[Index]); 
+-}
+-  
+-void IntPolyh_ArrayOfStartPoints::Destroy() { 
+-  if(n) { 
+-    if(ptr) { 
+-      IntPolyh_StartPoint *ptrstpoint = (IntPolyh_StartPoint *)ptr;
+-      delete [] ptrstpoint;
+-      ptrstpoint=0;
+-      ptr=0;
+-      n=0;
+-      }
+-  }
+-}
+-  
+-IntPolyh_ArrayOfStartPoints & IntPolyh_ArrayOfStartPoints::Copy(const IntPolyh_ArrayOfStartPoints& Other) { 
+-  if(ptr==Other.ptr) return(*this);
+-  Destroy();
+-  n=Other.NbPoints();
+-  ptr = (void *) (new IntPolyh_StartPoint[n]);
+-  for(Standard_Integer i=0;i<=n;i++) { 
+-    (*this)[i]=Other[i];
+-  }
+-  return(*this);
+-}
+-
+-void IntPolyh_ArrayOfStartPoints::Dump() const{ 
+-  printf("\n ArrayOfStartPoints 0-> %d",n-1);
+-  for(Standard_Integer i=0;i<n;i++) { 
+-    (*this)[i].Dump(i);
+-  }
+-  printf("\n");
+-}
+-
+Index: oce/src/IntPolyh/IntPolyh_ArrayOfTangentZones.cdl
+===================================================================
+--- oce.orig/src/IntPolyh/IntPolyh_ArrayOfTangentZones.cdl
++++ /dev/null
+@@ -1,81 +0,0 @@
+--- Created on: 1999-04-06
+--- Created by: Fabrice SERVANT
+--- Copyright (c) 1999 Matra Datavision
+--- Copyright (c) 1999-2012 OPEN CASCADE SAS
+---
+--- The content of this file is subject to the Open CASCADE Technology Public
+--- License Version 6.5 (the "License"). You may not use the content of this file
+--- except in compliance with the License. Please obtain a copy of the License
+--- at http://www.opencascade.org and read it completely before using this file.
+---
+--- The Initial Developer of the Original Code is Open CASCADE S.A.S., having its
+--- main offices at: 1, place des Freres Montgolfier, 78280 Guyancourt, France.
+---
+--- The Original Code and all software distributed under the License is
+--- distributed on an "AS IS" basis, without warranty of any kind, and the
+--- Initial Developer hereby disclaims all such warranties, including without
+--- limitation, any warranties of merchantability, fitness for a particular
+--- purpose or non-infringement. Please see the License for the specific terms
+--- and conditions governing the rights and limitations under the License.
+-
+-
+-
+-class ArrayOfTangentZones from IntPolyh
+-
+-uses
+-    
+-    StartPoint from IntPolyh
+-
+-is
+-
+-
+-    Create;
+-    
+-    Create(nn : Integer from Standard) ; 
+-    
+-    Init(me: in out; nn: Integer from Standard) 
+-    is static;
+-
+-    Value(me; nn: Integer from Standard)
+-    	---C++: alias operator [] 
+-    	---C++: return const &
+-    returns StartPoint from IntPolyh    
+-    is static;
+-    
+-    ChangeValue(me: in out;  nn: Integer from Standard)
+-    	---C++: alias operator [] 
+-    	---C++: return &
+-    returns StartPoint from IntPolyh    
+-    is static;
+-    
+-    Copy(me: in out; Other : ArrayOfTangentZones from IntPolyh)
+-    	---C++: alias operator =
+-    	---C++: return &
+-    returns ArrayOfTangentZones from IntPolyh
+-    is static;
+-    
+-    GetN(me)
+-    returns Integer from Standard
+-    is static;
+-    
+-    NbTangentZones(me)
+-    returns Integer from Standard
+-    is static;
+-    
+-    IncrementNbTangentZones(me: in out)
+-    is static;
+-    
+-    Destroy(me: in out)
+-    	---C++: alias ~
+-    is static;
+-    
+-    Dump(me) 
+-    is static;
+-     	
+-fields
+-
+-    n,nbtangentzones : Integer from Standard;
+-    ptr : Address from Standard;
+-    
+-end ArrayOfTangentZones from IntPolyh;
+-
+Index: oce/src/IntPolyh/IntPolyh_ArrayOfTangentZones.cxx
+===================================================================
+--- oce.orig/src/IntPolyh/IntPolyh_ArrayOfTangentZones.cxx
++++ /dev/null
+@@ -1,108 +0,0 @@
+-// Created on: 1999-04-06
+-// Created by: Fabrice SERVANT
+-// Copyright (c) 1999-1999 Matra Datavision
+-// Copyright (c) 1999-2012 OPEN CASCADE SAS
+-//
+-// The content of this file is subject to the Open CASCADE Technology Public
+-// License Version 6.5 (the "License"). You may not use the content of this file
+-// except in compliance with the License. Please obtain a copy of the License
+-// at http://www.opencascade.org and read it completely before using this file.
+-//
+-// The Initial Developer of the Original Code is Open CASCADE S.A.S., having its
+-// main offices at: 1, place des Freres Montgolfier, 78280 Guyancourt, France.
+-//
+-// The Original Code and all software distributed under the License is
+-// distributed on an "AS IS" basis, without warranty of any kind, and the
+-// Initial Developer hereby disclaims all such warranties, including without
+-// limitation, any warranties of merchantability, fitness for a particular
+-// purpose or non-infringement. Please see the License for the specific terms
+-// and conditions governing the rights and limitations under the License.
+-
+-
+-
+-#include <IntPolyh_StartPoint.ixx>
+-#include <IntPolyh_ArrayOfTangentZones.ixx>
+-#include <stdio.h>
+-
+-IntPolyh_ArrayOfTangentZones::IntPolyh_ArrayOfTangentZones() : n(0),nbtangentzones(0),ptr(0) { }
+-
+-IntPolyh_ArrayOfTangentZones::IntPolyh_ArrayOfTangentZones(const Standard_Integer N) : nbtangentzones(0){ 
+-  Init(N);
+-}
+-
+-void IntPolyh_ArrayOfTangentZones::Init(const Standard_Integer N) { 
+-  Destroy();
+-  ptr = (void*) (new IntPolyh_StartPoint [N]);
+-  n=N;
+-}
+-
+-Standard_Integer IntPolyh_ArrayOfTangentZones::GetN() const { 
+-  return(n); 
+-}
+-
+-Standard_Integer IntPolyh_ArrayOfTangentZones::NbTangentZones() const { 
+-  return(nbtangentzones); 
+-}
+-
+-void IntPolyh_ArrayOfTangentZones::IncrementNbTangentZones() { 
+-  nbtangentzones++; 
+-}
+-
+-# ifdef DEB
+-  # define BORNES1
+-# endif
+-const IntPolyh_StartPoint& IntPolyh_ArrayOfTangentZones::Value(const Standard_Integer Index) const { 
+-  IntPolyh_StartPoint *ptrstpoint = (IntPolyh_StartPoint *)ptr;
+-#if BORNES
+-  if(Index<0 || Index>=n) { 
+-    cerr<<" Erreur1 "<<endl;
+-    printf("Value() from IntPolyh_ArrayOfTangentZones :ERROR value out of array\n");
+-  } 
+-#endif
+-  return(ptrstpoint[Index]); 
+-}
+-
+-IntPolyh_StartPoint& IntPolyh_ArrayOfTangentZones::ChangeValue(const Standard_Integer Index) { 
+-  IntPolyh_StartPoint *ptrstpoint = (IntPolyh_StartPoint *)ptr;
+-#if BORNES
+-    if(Index<0 || Index>=n) { 
+-      cerr<<" Erreur1 "<<endl; 
+-      printf("Value() from IntPolyh_ArrayOfTangentZones :ERROR value out of array\n");
+-    } 
+-#endif
+-    return(ptrstpoint[Index]); 
+-}
+-  
+-void IntPolyh_ArrayOfTangentZones::Destroy() { 
+-  if(n) { 
+-    if(ptr) { 
+-      IntPolyh_StartPoint *ptrstpoint = (IntPolyh_StartPoint *)ptr;
+-      delete [] ptrstpoint;
+-      ptrstpoint=0;
+-      ptr=0;
+-      n=0;
+-      }
+-  }
+-}
+-  
+-IntPolyh_ArrayOfTangentZones & IntPolyh_ArrayOfTangentZones::Copy(const IntPolyh_ArrayOfTangentZones& Other) { 
+-  if(ptr==Other.ptr) return(*this);
+-  Destroy();
+-  n=Other.n;
+-  ptr = (void *) (new IntPolyh_StartPoint[n]);
+-  for(Standard_Integer i=0;i<=n;i++) { 
+-    (*this)[i]=Other[i];
+-  }
+-  return(*this);
+-}
+-
+-void IntPolyh_ArrayOfTangentZones::Dump() const{ 
+-  printf("\n ArrayOfTangentZones 0-> %d",nbtangentzones-1);
+-  for(Standard_Integer i=0;i<nbtangentzones;i++) { 
+-    (*this)[i].Dump(i);
+-  }
+-  printf("\n");
+-}
+-
+-
+-
+Index: oce/src/IntPolyh/IntPolyh_ArrayOfTriangles.cdl
+===================================================================
+--- oce.orig/src/IntPolyh/IntPolyh_ArrayOfTriangles.cdl
++++ /dev/null
+@@ -1,90 +0,0 @@
+--- Created on: 1999-03-08
+--- Created by: Fabrice SERVANT
+--- Copyright (c) 1999 Matra Datavision
+--- Copyright (c) 1999-2012 OPEN CASCADE SAS
+---
+--- The content of this file is subject to the Open CASCADE Technology Public
+--- License Version 6.5 (the "License"). You may not use the content of this file
+--- except in compliance with the License. Please obtain a copy of the License
+--- at http://www.opencascade.org and read it completely before using this file.
+---
+--- The Initial Developer of the Original Code is Open CASCADE S.A.S., having its
+--- main offices at: 1, place des Freres Montgolfier, 78280 Guyancourt, France.
+---
+--- The Original Code and all software distributed under the License is
+--- distributed on an "AS IS" basis, without warranty of any kind, and the
+--- Initial Developer hereby disclaims all such warranties, including without
+--- limitation, any warranties of merchantability, fitness for a particular
+--- purpose or non-infringement. Please see the License for the specific terms
+--- and conditions governing the rights and limitations under the License.
+-
+-
+-
+-class ArrayOfTriangles from IntPolyh
+-
+-uses
+-    
+-    Triangle from IntPolyh
+-
+-
+-is
+-
+-
+-    Create;
+-    
+-    Create(nn : Integer from Standard) ; 
+-    
+-    Init(me: in out; nn: Integer from Standard) 
+-    is static;
+-
+-    GetN(me)
+-    returns Integer from Standard
+-    ---C++: return const
+-    is static;
+-    
+-    NbTriangles(me)
+-    returns Integer from Standard
+-    ---C++: return const
+-    is static;
+-    
+-    SetNbTriangles(me : in out; endaot: Integer from Standard)
+-    is static;
+-    
+-    IncNbTriangles(me: in out)
+-    is static;
+-    
+-    Value(me; nn: Integer from Standard)
+-    	---C++: alias operator [] 
+-    	---C++: return const &      
+-    returns Triangle from IntPolyh
+-    is static;
+-    
+-    ChangeValue(me: in out;  nn: Integer from Standard)
+-    	---C++: alias operator [] 
+-    	---C++: return &
+-    returns Triangle from IntPolyh 
+-    is static;
+-    
+-    Copy(me: in out; Other : ArrayOfTriangles from IntPolyh)
+-    	---C++: alias operator =
+-    	---C++: return &
+-    returns ArrayOfTriangles from IntPolyh
+-    is static;
+-    
+-    Destroy(me:in out)
+-    	---C++: alias ~
+-    is static;
+-    
+-    Dump(me) 
+-    is static;
+-    
+-    DumpFleches(me) 
+-    is static;
+-
+-     	
+-fields
+-
+-    n, fintt : Integer from Standard;
+-    ptr      : Address from Standard;
+-    
+-end ArrayOfTriangles from IntPolyh;
+Index: oce/src/IntPolyh/IntPolyh_ArrayOfTriangles.cxx
+===================================================================
+--- oce.orig/src/IntPolyh/IntPolyh_ArrayOfTriangles.cxx
++++ /dev/null
+@@ -1,120 +0,0 @@
+-// Created on: 1999-03-08
+-// Created by: Fabrice SERVANT
+-// Copyright (c) 1999-1999 Matra Datavision
+-// Copyright (c) 1999-2012 OPEN CASCADE SAS
+-//
+-// The content of this file is subject to the Open CASCADE Technology Public
+-// License Version 6.5 (the "License"). You may not use the content of this file
+-// except in compliance with the License. Please obtain a copy of the License
+-// at http://www.opencascade.org and read it completely before using this file.
+-//
+-// The Initial Developer of the Original Code is Open CASCADE S.A.S., having its
+-// main offices at: 1, place des Freres Montgolfier, 78280 Guyancourt, France.
+-//
+-// The Original Code and all software distributed under the License is
+-// distributed on an "AS IS" basis, without warranty of any kind, and the
+-// Initial Developer hereby disclaims all such warranties, including without
+-// limitation, any warranties of merchantability, fitness for a particular
+-// purpose or non-infringement. Please see the License for the specific terms
+-// and conditions governing the rights and limitations under the License.
+-
+-
+-
+-#include <IntPolyh_ArrayOfTriangles.ixx> 
+-#include <stdio.h>
+-#include <Standard_Stream.hxx>
+-
+-IntPolyh_ArrayOfTriangles::IntPolyh_ArrayOfTriangles() : n(0),fintt(0),ptr(0) { }
+-
+-IntPolyh_ArrayOfTriangles::IntPolyh_ArrayOfTriangles(const Standard_Integer N): fintt(0) { 
+-  Init(N);
+-}
+-
+-void IntPolyh_ArrayOfTriangles::Init(const Standard_Integer N) { 
+-  Destroy();
+-  ptr = (void*) (new IntPolyh_Triangle [N]);
+-  n=N;
+-}
+-
+-const Standard_Integer IntPolyh_ArrayOfTriangles::GetN() const { 
+-  return(n); 
+-}
+-
+-const Standard_Integer IntPolyh_ArrayOfTriangles::NbTriangles() const { 
+-  return(fintt); 
+-}
+-
+-void IntPolyh_ArrayOfTriangles::SetNbTriangles(const Standard_Integer endaot) { 
+-  fintt=endaot; 
+-}
+-
+-void IntPolyh_ArrayOfTriangles::IncNbTriangles() { 
+-  fintt++; 
+-}
+-
+-# ifdef DEB
+-  # define BORNES 1
+-# endif
+-const IntPolyh_Triangle& IntPolyh_ArrayOfTriangles::Value(const Standard_Integer Index) const { 
+-IntPolyh_Triangle* ptrtriangle = (IntPolyh_Triangle*)ptr;
+-#if BORNES
+-  if(Index<0 || Index>=n) { 
+-    cerr<<" Erreur31 "<<endl; 
+-    printf("Value() from IntPolyh_ArrayOfTriangles.cxx : ERROR value out of array\n");
+-  }
+-#endif
+-  return(ptrtriangle[Index]); 
+-}
+-
+-IntPolyh_Triangle& IntPolyh_ArrayOfTriangles::ChangeValue(const Standard_Integer Index) { 
+-  IntPolyh_Triangle* ptrtriangle = (IntPolyh_Triangle*)ptr;
+-#if BORNES
+-  if(Index<0 || Index>=n) { 
+-    cerr<<" Erreur32 "<<endl; 
+-    printf("ChangeValue() from IntPolyh_ArrayOfTriangles.cxx : ERROR value out of array\n");
+-  }
+-#endif
+-  return(ptrtriangle[Index]); 
+-}
+-
+-  
+-IntPolyh_ArrayOfTriangles & IntPolyh_ArrayOfTriangles::Copy(const IntPolyh_ArrayOfTriangles& Other) { 
+-  if(ptr==Other.ptr) return(*this);
+-  Destroy();
+-  n=Other.n;
+-  ptr = (void *)(new IntPolyh_Triangle[n]);
+-  for(Standard_Integer i=0;i<n;i++) { 
+-    (*this)[i]=Other[i];
+-  }
+-  return(*this);
+-}
+-    
+-void IntPolyh_ArrayOfTriangles::Destroy(){ 
+-  if(n) { 
+-    if(ptr) {
+-      IntPolyh_Triangle* ptrtriangle = (IntPolyh_Triangle*)ptr;
+-      delete [] ptrtriangle;
+-      ptrtriangle=0;
+-      ptr=0;
+-      n=0;
+-    }
+-  }
+-}
+-
+-
+-void IntPolyh_ArrayOfTriangles::Dump() const{ 
+-  printf("\n ArrayOfTriangles 0-> %d",n-1);
+-  for(Standard_Integer i=0;i<n;i++) { 
+-    ((*this)[i]).Dump(i);
+-  }
+-  printf("\n");
+-}
+-
+-void IntPolyh_ArrayOfTriangles::DumpFleches() const{
+-  printf("\n ArrayOfTriangles 0-> %d",n-1);
+-  for(Standard_Integer i=0;i<n;i++) { 
+-    ((*this)[i]).DumpFleche(i);
+-  }
+-  printf("\n");
+-}
+-
+Index: oce/src/IntPolyh/IntPolyh_Intersection.cxx
+===================================================================
+--- oce.orig/src/IntPolyh/IntPolyh_Intersection.cxx
++++ oce/src/IntPolyh/IntPolyh_Intersection.cxx
+@@ -27,6 +27,7 @@
+ #include <IntPolyh_StartPoint.hxx>
+ #include <IntPolyh_MaillageAffinage.hxx>
+ #include <IntPolyh_Couple.hxx>
++#include <IntPolyh_Triangle.hxx>
+ 
+ #ifdef DEB
+   # define MYDEBUG DEB 
+@@ -164,8 +165,8 @@ void IntPolyh_Intersection::Perform() {
+   } // start from advanced
+ 
+   // accept result
+-  nbsectionlines = TSectionLines.NbSectionLines();
+-  nbtangentzones = TTangentZones.NbTangentZones();
++  nbsectionlines = TSectionLines.NbItems();
++  nbtangentzones = TTangentZones.NbItems();
+ 
+   // clean up
+   if(aPMaillageStd) delete aPMaillageStd;
+@@ -293,8 +294,8 @@ Standard_Boolean IntPolyh_Intersection::
+ 
+   // if too many intersections, consider surfaces parallel (eap)
+   if(FinTTC > 200 &&
+-     (FinTTC >= theMaillageS->GetArrayOfTriangles(1).NbTriangles() ||
+-      FinTTC >= theMaillageS->GetArrayOfTriangles(2).NbTriangles()) ) {
++     (FinTTC >= theMaillageS->GetArrayOfTriangles(1).NbItems() ||
++      FinTTC >= theMaillageS->GetArrayOfTriangles(2).NbItems()) ) {
+     return Standard_False;
+   }
+ 
+@@ -390,7 +391,7 @@ void IntPolyh_Intersection::MergeCouples
+   anArrays[3] = &anArrayRR;
+ 
+   for (i = 0; i < 4; i++)
+-    aNbCouples[i] = anArrays[i]->NbCouples();
++    aNbCouples[i] = anArrays[i]->NbItems();
+ 
+   Standard_Boolean isChanged = Standard_True;
+ 
+@@ -444,7 +445,7 @@ Standard_Boolean IntPolyh_Intersection::
+ 						   Standard_Integer&           NbCouples)
+ {
+   Standard_Boolean isdone = PerformMaillage(MaillageS);
+-  NbCouples = (isdone) ? (MaillageS->GetArrayOfCouples().NbCouples()) : 0;
++  NbCouples = (isdone) ? (MaillageS->GetArrayOfCouples().NbItems()) : 0;
+   return isdone;
+ }
+ 
+@@ -464,10 +465,10 @@ Standard_Boolean IntPolyh_Intersection::
+     isdone = Standard_False; 
+ 
+   if(isdone) {
+-    NbCouples = MaillageFF->GetArrayOfCouples().NbCouples() +
+-      MaillageFR->GetArrayOfCouples().NbCouples() +
+-	MaillageRF->GetArrayOfCouples().NbCouples() +
+-	  MaillageRR->GetArrayOfCouples().NbCouples();
++    NbCouples = MaillageFF->GetArrayOfCouples().NbItems() +
++      MaillageFR->GetArrayOfCouples().NbItems() +
++	MaillageRF->GetArrayOfCouples().NbItems() +
++	  MaillageRR->GetArrayOfCouples().NbItems();
+ 
+     if(NbCouples > 0)
+       MergeCouples(MaillageFF->GetArrayOfCouples(),MaillageFR->GetArrayOfCouples(),
+Index: oce/src/IntPolyh/IntPolyh_Intersection_1.cxx
+===================================================================
+--- oce.orig/src/IntPolyh/IntPolyh_Intersection_1.cxx
++++ oce/src/IntPolyh/IntPolyh_Intersection_1.cxx
+@@ -24,6 +24,7 @@
+ #include <IntPolyh_MaillageAffinage.hxx>
+ #include <IntPolyh_ArrayOfCouples.hxx>
+ #include <IntPolyh_Couple.hxx>
++#include <IntPolyh_Triangle.hxx>
+ 
+ Standard_Integer MYPRINT1   = 0;
+ 
+@@ -147,8 +148,8 @@ void IntPolyh_Intersection::Perform(cons
+   } // start from advanced
+ 
+   // accept result
+-  nbsectionlines = TSectionLines.NbSectionLines();
+-  nbtangentzones = TTangentZones.NbTangentZones();
++  nbsectionlines = TSectionLines.NbItems();
++  nbtangentzones = TTangentZones.NbItems();
+ 
+   // clean up
+   if(aPMaillageStd) delete aPMaillageStd;
+@@ -218,8 +219,8 @@ Standard_Boolean IntPolyh_Intersection::
+       Standard_Real cosa = Abs(Couples[i].AngleValue());
+       if(cosa > eps) ++npara;
+     }
+-    if(npara >= theMaillageS->GetArrayOfTriangles(1).NbTriangles() ||
+-       npara >= theMaillageS->GetArrayOfTriangles(2).NbTriangles() ) {
++    if(npara >= theMaillageS->GetArrayOfTriangles(1).NbItems() ||
++       npara >= theMaillageS->GetArrayOfTriangles(2).NbItems() ) {
+       return Standard_False;
+     }
+   }
+@@ -297,8 +298,8 @@ Standard_Boolean IntPolyh_Intersection::
+       Standard_Real cosa = Abs(Couples[i].AngleValue());
+       if(cosa > eps) ++npara;
+     }
+-    if(npara >= theMaillageS->GetArrayOfTriangles(1).NbTriangles() ||
+-       npara >= theMaillageS->GetArrayOfTriangles(2).NbTriangles() ) {
++    if(npara >= theMaillageS->GetArrayOfTriangles(1).NbItems() ||
++       npara >= theMaillageS->GetArrayOfTriangles(2).NbItems() ) {
+       return Standard_False;
+     }
+   }
+@@ -339,10 +340,10 @@ Standard_Boolean IntPolyh_Intersection::
+     isdone = Standard_False; 
+ 
+   if(isdone) {
+-    NbCouples = MaillageFF->GetArrayOfCouples().NbCouples() +
+-      MaillageFR->GetArrayOfCouples().NbCouples() +
+-	MaillageRF->GetArrayOfCouples().NbCouples() +
+-	  MaillageRR->GetArrayOfCouples().NbCouples();
++    NbCouples = MaillageFF->GetArrayOfCouples().NbItems() +
++      MaillageFR->GetArrayOfCouples().NbItems() +
++	MaillageRF->GetArrayOfCouples().NbItems() +
++	  MaillageRR->GetArrayOfCouples().NbItems();
+ 
+     if(NbCouples > 0)
+       MergeCouples(MaillageFF->GetArrayOfCouples(),MaillageFR->GetArrayOfCouples(),
+@@ -364,6 +365,6 @@ Standard_Boolean IntPolyh_Intersection::
+ {
+   Standard_Boolean isdone = PerformMaillage(Upars1, Vpars1, Upars2, Vpars2, 
+ 					    MaillageS);
+-  NbCouples = (isdone) ? (MaillageS->GetArrayOfCouples().NbCouples()) : 0;
++  NbCouples = (isdone) ? (MaillageS->GetArrayOfCouples().NbItems()) : 0;
+   return isdone;
+ }
+Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cdl
+===================================================================
+--- oce.orig/src/IntPolyh/IntPolyh_MaillageAffinage.cdl
++++ oce/src/IntPolyh/IntPolyh_MaillageAffinage.cdl
+@@ -302,7 +302,6 @@ fields
+     TTriangles1        : ArrayOfTriangles   from IntPolyh;
+     TTriangles2        : ArrayOfTriangles   from IntPolyh;
+     TTrianglesContacts : ArrayOfCouples     from IntPolyh;
+-    TStartPoints       : ArrayOfStartPoints from IntPolyh;
+     
+     myEnlargeZone    : Boolean from Standard;
+ 
+Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
+===================================================================
+--- oce.orig/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
++++ oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
+@@ -166,15 +166,6 @@ IntPolyh_MaillageAffinage::IntPolyh_Mail
+   FlecheMoy2(0.0), 
+   myEnlargeZone(Standard_False) 
+ { 
+-   TPoints1.Init(10000);
+-   TEdges1.Init(30000);
+-   TTriangles1.Init(20000);
+-   
+-   TPoints2.Init(10000);
+-   TEdges2.Init(30000);
+-   TTriangles2.Init(20000);
+-  
+-   TStartPoints.Init(10000);
+ }
+ //=======================================================================
+ //function : IntPolyh_MaillageAffinage
+@@ -203,16 +194,7 @@ IntPolyh_MaillageAffinage::IntPolyh_Mail
+   FlecheMoy2(0.0), 
+   myEnlargeZone(Standard_False)
+ { 
+-   TPoints1.Init(10000);
+-   TEdges1.Init(30000);
+-   TTriangles1.Init(20000);
+-
+-   TPoints2.Init(10000);
+-   TEdges2.Init(30000);
+-   TTriangles2.Init(20000);
+-   
+-   TStartPoints.Init(10000);
+- }
++}
+ //=======================================================================
+ //function : FillArrayOfPnt
+ //purpose  : Compute points on one surface and fill an array of points
+@@ -262,6 +244,7 @@ void IntPolyh_MaillageAffinage::FillArra
+   itV=(v1-v0)/Standard_Real(NbSamplesV-1);
+   PtrBox = (SurfID==1) ? (&MyBox1) : (&MyBox2);
+ 
++  TPoints.Init(NbSamplesU * NbSamplesV);
+   for(BoucleU=0; BoucleU<NbSamplesU; BoucleU++){
+      U = (BoucleU == (NbSamplesU - 1)) ? u1 : u0+BoucleU*itU;
+     for(BoucleV=0; BoucleV<NbSamplesV; BoucleV++){
+@@ -273,7 +256,6 @@ void IntPolyh_MaillageAffinage::FillArra
+       PtrBox->Add(PtXYZ);
+     }
+   }
+-  TPoints.SetNbPoints(iCnt);
+   //
+   IntCurveSurface_ThePolyhedronOfHInter polyhedron(MaSurface,
+ 						   NbSamplesU,
+@@ -341,6 +323,7 @@ void IntPolyh_MaillageAffinage::FillArra
+   Bnd_Box *PtrBox = (SurfID==1) ? (&MyBox1) : (&MyBox2);
+   Standard_Real resol = gp::Resolution();
+ 
++  TPoints.Init(NbSamplesU * NbSamplesV);
+   for(Standard_Integer BoucleU=0; BoucleU<NbSamplesU; BoucleU++){
+     Standard_Real U = (BoucleU == (NbSamplesU - 1)) ? u1 : u0+BoucleU*itU;
+     for(Standard_Integer BoucleV=0; BoucleV<NbSamplesV; BoucleV++){
+@@ -370,7 +353,6 @@ void IntPolyh_MaillageAffinage::FillArra
+       PtrBox->Add(PtXYZ);
+     }
+   }
+-  TPoints.SetNbPoints(CpteurTabPnt);
+ 
+   Tol*=1.2;
+ 
+@@ -411,6 +393,7 @@ void IntPolyh_MaillageAffinage::FillArra
+   }
+   //modified by NIZNHY-PKV Fri Jan 20 09:49:00 2012t
+   //
++  TPoints.Init(aNbU * aNbV);
+   iCnt=0;
+   for(i=1; i<=aNbU; ++i){
+     //modified by NIZNHY-PKV Fri Jan 20 13:59:15 2012f
+@@ -435,8 +418,6 @@ void IntPolyh_MaillageAffinage::FillArra
+     }
+   }
+   //
+-  TPoints.SetNbPoints(iCnt);
+-  //
+   IntCurveSurface_ThePolyhedronOfHInter polyhedron(aS, Upars, Vpars);
+   //
+   aTol=polyhedron.DeflectionOverEstimation();
+@@ -493,6 +474,7 @@ void IntPolyh_MaillageAffinage::FillArra
+   }
+   //modified by NIZNHY-PKV Fri Jan 20 09:49:00 2012t
+   //
++  TPoints.Init(aNbU * aNbV);
+   iCnt=0;
+   for(i=1; i<=aNbU; ++i){
+     //modified by NIZNHY-PKV Fri Jan 20 13:59:15 2012f
+@@ -532,8 +514,6 @@ void IntPolyh_MaillageAffinage::FillArra
+     }
+   }
+   //
+-  TPoints.SetNbPoints(iCnt);
+-  //
+   Tol*=1.2;
+   //
+   Standard_Real a1,a2,a3,b1,b2,b3;
+@@ -614,7 +594,7 @@ void IntPolyh_MaillageAffinage::CommonBo
+   ZMin-=Z; ZMax+=Z;
+ 
+   //Marking of points included in the common
+-  const Standard_Integer FinTP1 = TPoints1.NbPoints();
++  const Standard_Integer FinTP1 = TPoints1.NbItems();
+ //  for(Standard_Integer i=0; i<FinTP1; i++) {
+   Standard_Integer i ;
+   for( i=0; i<FinTP1; i++) {
+@@ -648,7 +628,7 @@ void IntPolyh_MaillageAffinage::CommonBo
+     Pt1.SetPartOfCommon(r);
+   }
+ 
+-  const Standard_Integer FinTP2 = TPoints2.NbPoints();
++  const Standard_Integer FinTP2 = TPoints2.NbItems();
+   for(Standard_Integer ii=0; ii<FinTP2; ii++) {
+     IntPolyh_Point & Pt2 = TPoints2[ii];
+     Standard_Integer rr;
+@@ -694,6 +674,17 @@ void IntPolyh_MaillageAffinage::FillArra
+   Standard_Integer NbSamplesU=(SurfID==1)? NbSamplesU1:NbSamplesU2;
+   Standard_Integer NbSamplesV=(SurfID==1)? NbSamplesV1:NbSamplesV2;
+ 
++  // number of edges: 3 + 3* (NbSamplesV-2) + 3 * (NbSamplesU-2) +
++  //    3 * (NbSamplesU-2) * (NbSamplesV-2) + (NbSamplesV-1) + (NbSamplesU-1)
++  //  = 3 * NbSamplesU * NbSamplesV - 2 * NbSamplesU - 2 * NbSamplesV + 1
++  //  = 3 * (NbSamplesU-1) * (NbSamplesV-1) + NbSamplesU + NbSamplesV - 2
++  Standard_Integer numberOfEdges = 3*(NbSamplesU-1)*(NbSamplesV-1) + (NbSamplesU-1) + (NbSamplesV-1);
++  // Corner cases
++  if (NbSamplesU <= 1 && NbSamplesV <= 1) numberOfEdges = 3;
++  else if (NbSamplesU <= 1) numberOfEdges = 4 * (NbSamplesV-1);
++  else if (NbSamplesV <= 1) numberOfEdges = 4 * (NbSamplesU-1);
++  TEdges.Init(numberOfEdges);
++
+   Standard_Integer CpteurTabEdges=0;
+ 
+   //maillage u0 v0
+@@ -808,7 +799,6 @@ void IntPolyh_MaillageAffinage::FillArra
+     TEdges[CpteurTabEdges].SetSecondTriangle(BoucleMeshV*2*(NbSamplesV-1)+(NbSamplesV-2)*2);
+     CpteurTabEdges++;
+   }
+-  TEdges.SetNbEdges(CpteurTabEdges);
+ 
+ }
+ 
+@@ -830,6 +820,8 @@ void IntPolyh_MaillageAffinage::FillArra
+   Standard_Integer NbSamplesU=(SurfID==1)? NbSamplesU1:NbSamplesU2;
+   Standard_Integer NbSamplesV=(SurfID==1)? NbSamplesV1:NbSamplesV2;
+ 
++  // number of triangles: 2 * (NbSamplesU-1) * (NbSamplesV-1)
++  TTriangles.Init(2 * (NbSamplesU-1) * (NbSamplesV-1));
+   
+   //To provide recursion, I associate a point with two triangles  
+   for(Standard_Integer BoucleMeshU=0; BoucleMeshU<NbSamplesU-1; BoucleMeshU++){
+@@ -867,8 +859,7 @@ void IntPolyh_MaillageAffinage::FillArra
+     }
+     PntInit++;//Pass the last point of the column
+   }
+-  TTriangles.SetNbTriangles(CpteurTabTriangles);
+-  const Standard_Integer FinTT = TTriangles.NbTriangles();
++  const Standard_Integer FinTT = TTriangles.NbItems();
+   if (FinTT==0) {
+   }
+ }
+@@ -879,8 +870,8 @@ void IntPolyh_MaillageAffinage::FillArra
+ //=======================================================================
+ void IntPolyh_MaillageAffinage::LinkEdges2Triangles() 
+ {
+-  const Standard_Integer FinTT1 = TTriangles1.NbTriangles();
+-  const Standard_Integer FinTT2 = TTriangles2.NbTriangles();
++  const Standard_Integer FinTT1 = TTriangles1.NbItems();
++  const Standard_Integer FinTT2 = TTriangles2.NbItems();
+ 
+   for(Standard_Integer uiui1=0; uiui1<FinTT1; uiui1++) {
+     IntPolyh_Triangle & MyTriangle1=TTriangles1[uiui1];
+@@ -906,13 +897,13 @@ void IntPolyh_MaillageAffinage::LinkEdge
+ //=======================================================================
+ void IntPolyh_MaillageAffinage::CommonPartRefinement() 
+ {
+-  Standard_Integer FinInit1 = TTriangles1.NbTriangles();
++  Standard_Integer FinInit1 = TTriangles1.NbItems();
+   for(Standard_Integer i=0; i<FinInit1; i++) {
+     if(TTriangles1[i].IndiceIntersectionPossible()!=0) 
+       TTriangles1[i].MiddleRefinement(i,MaSurface1,TPoints1,TTriangles1,TEdges1);
+   }
+ 
+-  Standard_Integer FinInit2=TTriangles2.NbTriangles();
++  Standard_Integer FinInit2=TTriangles2.NbItems();
+   for(Standard_Integer ii=0; ii<FinInit2; ii++) {
+     if(TTriangles2[ii].IndiceIntersectionPossible()!=0) 
+       TTriangles2[ii].MiddleRefinement(ii,MaSurface2,TPoints2,TTriangles2,TEdges2); 
+@@ -926,7 +917,7 @@ void IntPolyh_MaillageAffinage::CommonPa
+ void IntPolyh_MaillageAffinage::LocalSurfaceRefinement(const Standard_Integer SurfID) {
+ //refine locally, but systematically the chosen surface
+   if (SurfID==1) {
+-    const Standard_Integer FinInit1 = TTriangles1.NbTriangles();
++    const Standard_Integer FinInit1 = TTriangles1.NbItems();
+     for(Standard_Integer i=0; i<FinInit1; i++) {
+       if(TTriangles1[i].IndiceIntersectionPossible()!=0)
+ 	TTriangles1[i].MiddleRefinement(i,MaSurface1,TPoints1,TTriangles1,TEdges1);
+@@ -934,7 +925,7 @@ void IntPolyh_MaillageAffinage::LocalSur
+   }
+   //
+   if (SurfID==2) {
+-    const Standard_Integer FinInit2 = TTriangles2.NbTriangles();
++    const Standard_Integer FinInit2 = TTriangles2.NbItems();
+     for(Standard_Integer ii=0; ii<FinInit2; ii++) {
+       if(TTriangles2[ii].IndiceIntersectionPossible()!=0) 
+ 	TTriangles2[ii].MiddleRefinement(ii,MaSurface2,TPoints2,TTriangles2,TEdges2); 
+@@ -964,7 +955,7 @@ void IntPolyh_MaillageAffinage::ComputeD
+   FlecheMax=-RealLast();
+   FlecheMin=RealLast();
+   FlecheMoy=0.0;
+-  const Standard_Integer FinTT = TTriangles.NbTriangles();
++  const Standard_Integer FinTT = TTriangles.NbItems();
+   
+   for(CpteurTabFleche=0; CpteurTabFleche<FinTT; CpteurTabFleche++) {
+     IntPolyh_Triangle &Triangle = TTriangles[CpteurTabFleche];
+@@ -992,8 +983,8 @@ void IntPolyh_MaillageAffinage::ComputeD
+ //=======================================================================
+ void IntPolyh_MaillageAffinage::TrianglesDeflectionsRefinementBSB() 
+ {
+-  const Standard_Integer FinTT1 = TTriangles1.NbTriangles();
+-  const Standard_Integer FinTT2 = TTriangles2.NbTriangles();
++  const Standard_Integer FinTT1 = TTriangles1.NbItems();
++  const Standard_Integer FinTT2 = TTriangles2.NbItems();
+   
+   ComputeDeflections(1);
+   // To estimate a surface in general it can be interesting 
+@@ -3220,28 +3211,30 @@ Standard_Integer IntPolyh_MaillageAffina
+   Standard_Integer CpteurTab=0;
+   Standard_Integer CpteurTabSP=0;
+   Standard_Real CoupleAngle=-2.0;
+-  const Standard_Integer FinTT1 = TTriangles1.NbTriangles();
+-  const Standard_Integer FinTT2 = TTriangles2.NbTriangles();
++  const Standard_Integer FinTT1 = TTriangles1.NbItems();
++  const Standard_Integer FinTT2 = TTriangles2.NbItems();
+ 
+   for(Standard_Integer i_S1=0; i_S1<FinTT1; i_S1++) {
++    IntPolyh_Triangle &Triangle1 =  TTriangles1[i_S1];
++    if (!((Triangle1.IndiceIntersectionPossible() != 0) && (Triangle1.GetFleche() >= 0.0)))
++      continue;
+     for(Standard_Integer i_S2=0; i_S2<FinTT2; i_S2++){
+-      if ( (TTriangles1[i_S1].IndiceIntersectionPossible() != 0)
+-	  &&(TTriangles1[i_S1].GetFleche() >= 0.0)
+-	  && (TTriangles2[i_S2].IndiceIntersectionPossible() != 0)
+-	  && (TTriangles2[i_S2].GetFleche() >= 0.0) ) {
++      IntPolyh_Triangle &Triangle2 =  TTriangles2[i_S2];
++      if ((Triangle2.IndiceIntersectionPossible() != 0)
++       && (Triangle2.GetFleche() >= 0.0) ) {
+ 	IntPolyh_StartPoint SP1, SP2;
+ 	//If a triangle is dead or not in BSB, comparison is not possible
+-    	if (TriContact(TPoints1[TTriangles1[i_S1].FirstPoint()],
+-		       TPoints1[TTriangles1[i_S1].SecondPoint()],
+-		       TPoints1[TTriangles1[i_S1].ThirdPoint()],
+-		       TPoints2[TTriangles2[i_S2].FirstPoint()],
+-		       TPoints2[TTriangles2[i_S2].SecondPoint()],
+-		       TPoints2[TTriangles2[i_S2].ThirdPoint()],
++	if (TriContact(TPoints1[Triangle1.FirstPoint()],
++		       TPoints1[Triangle1.SecondPoint()],
++		       TPoints1[Triangle1.ThirdPoint()],
++		       TPoints2[Triangle2.FirstPoint()],
++		       TPoints2[Triangle2.SecondPoint()],
++		       TPoints2[Triangle2.ThirdPoint()],
+ 		       CoupleAngle)){
+ 
+ 
+-	  TTriangles1[i_S1].SetIndiceIntersection(1);//The triangle is cut by another
+-	  TTriangles2[i_S2].SetIndiceIntersection(1);
++	  Triangle1.SetIndiceIntersection(1);//The triangle is cut by another
++	  Triangle2.SetIndiceIntersection(1);
+ 	  
+ 	  Standard_Integer NbPoints;
+ 	  NbPoints=StartingPointsResearch(i_S1,i_S2,SP1, SP2);
+@@ -3252,7 +3245,6 @@ Standard_Integer IntPolyh_MaillageAffina
+ 
+ 	  if ( (NbPoints>0)&&(NbPoints<3) ) {
+ 	    SP1.SetCoupleValue(i_S1,i_S2);
+-	    TStartPoints[CpteurTabSP]=SP1;
+ 	    CpteurTabSP++;
+ 
+ 
+@@ -3260,7 +3252,6 @@ Standard_Integer IntPolyh_MaillageAffina
+ 
+ 	  if(NbPoints==2) { 	  
+ 	    SP2.SetCoupleValue(i_S1,i_S2);
+-	    TStartPoints[CpteurTabSP]=SP2;
+ 	    CpteurTabSP++;
+ 
+ 
+@@ -3287,8 +3278,8 @@ Standard_Integer IntPolyh_MaillageAffina
+ {
+   Standard_Integer CpteurTab=0;
+ 
+-  const Standard_Integer FinTT1 = TTriangles1.NbTriangles();
+-  const Standard_Integer FinTT2 = TTriangles2.NbTriangles();
++  const Standard_Integer FinTT1 = TTriangles1.NbItems();
++  const Standard_Integer FinTT2 = TTriangles2.NbItems();
+ 
+   Standard_Integer TTClimit = 200;
+   Standard_Integer NbTTC = FinTT1 * FinTT2 / 10;
+@@ -3300,16 +3291,16 @@ Standard_Integer IntPolyh_MaillageAffina
+ 
+   Standard_Real CoupleAngle=-2.0;
+   for(Standard_Integer i_S1=0; i_S1<FinTT1; i_S1++) {
++    IntPolyh_Triangle &Triangle1 =  TTriangles1[i_S1];
++    if (!((Triangle1.IndiceIntersectionPossible() != 0) && (Triangle1.GetFleche() >= 0.0)))
++      continue;
+     for(Standard_Integer i_S2=0; i_S2<FinTT2; i_S2++){
+-      if ( (TTriangles1[i_S1].IndiceIntersectionPossible() != 0)
+-	  &&(TTriangles1[i_S1].GetFleche() >= 0.0)
+-	  && (TTriangles2[i_S2].IndiceIntersectionPossible() != 0)
+-	  && (TTriangles2[i_S2].GetFleche() >= 0.0) ) {
++      IntPolyh_Triangle &Triangle2 = TTriangles2[i_S2];
++      if ( (Triangle2.IndiceIntersectionPossible() != 0)
++        && (Triangle2.GetFleche() >= 0.0) ) {
+ 	//If a triangle is dead or not in BSB, comparison is not possible
+-	IntPolyh_Triangle &Triangle1 =  TTriangles1[i_S1];
+-	IntPolyh_Triangle &Triangle2 =  TTriangles2[i_S2];
+ 
+-    	if (TriContact(TPoints1[Triangle1.FirstPoint()],
++	if (TriContact(TPoints1[Triangle1.FirstPoint()],
+ 		       TPoints1[Triangle1.SecondPoint()],
+ 		       TPoints1[Triangle1.ThirdPoint()],
+ 		       TPoints2[Triangle2.FirstPoint()],
+@@ -3319,7 +3310,7 @@ Standard_Integer IntPolyh_MaillageAffina
+ 
+ 	  if (CpteurTab >= NbTTC)
+ 	    {
+-	      TTrianglesContacts.SetNbCouples(CpteurTab);
++	      TTrianglesContacts.SetNbItems(CpteurTab);
+ 
+ 	      return(CpteurTab);
+ 	    }
+@@ -3334,7 +3325,7 @@ Standard_Integer IntPolyh_MaillageAffina
+       }
+     }
+   }
+-  TTrianglesContacts.SetNbCouples(CpteurTab);
++  TTrianglesContacts.SetNbItems(CpteurTab);
+ 
+   return(CpteurTab);
+ }
+@@ -3346,7 +3337,7 @@ Standard_Integer IntPolyh_MaillageAffina
+ //=======================================================================
+ void IntPolyh_MaillageAffinage::StartPointsCalcul() const
+ {
+-  const Standard_Integer FinTTC = TTrianglesContacts.NbCouples();
++  const Standard_Integer FinTTC = TTrianglesContacts.NbItems();
+ //   printf("StartPointsCalcul() from IntPolyh_MaillageAffinage.cxx : StartPoints:\n");
+   for(Standard_Integer ii=0; ii<FinTTC; ii++) {
+     IntPolyh_StartPoint SP1,SP2;
+@@ -3368,7 +3359,7 @@ Standard_Integer CheckCoupleAndGetAngle(
+ 					IntPolyh_ArrayOfCouples &TTrianglesContacts) 
+ {
+   Standard_Integer Test=0;
+-  const Standard_Integer FinTTC = TTrianglesContacts.NbCouples();
++  const Standard_Integer FinTTC = TTrianglesContacts.NbItems();
+   for (Standard_Integer oioi=0; oioi<FinTTC; oioi++) {
+     IntPolyh_Couple TestCouple = TTrianglesContacts[oioi];
+     if ( (TestCouple.FirstValue()==T1)&&(TestCouple.AnalyseFlagValue()!=1) ) {
+@@ -3402,7 +3393,7 @@ Standard_Integer CheckCoupleAndGetAngle2
+   Standard_Integer Test1=0;
+   Standard_Integer Test2=0;
+   Standard_Integer Test3=0;
+-  const Standard_Integer FinTTC = TTrianglesContacts.NbCouples();
++  const Standard_Integer FinTTC = TTrianglesContacts.NbItems();
+   for (Standard_Integer oioi=0; oioi<FinTTC; oioi++) {
+     IntPolyh_Couple TestCouple = TTrianglesContacts[oioi];
+     if( (Test1==0)||(Test2==0)||(Test3==0) ) {
+@@ -3446,7 +3437,7 @@ Standard_Integer CheckNextStartPoint(Int
+   if( (SP.E1()==-1)||(SP.E2()==-1) ) {
+     //The tops of triangle are analyzed
+     //It is checked if they are not in the array TTangentZones
+-    Standard_Integer FinTTZ=TTangentZones.NbTangentZones();
++    Standard_Integer FinTTZ=TTangentZones.NbItems();
+     for(Standard_Integer uiui=0; uiui<FinTTZ; uiui++) {
+       IntPolyh_StartPoint TestSP=TTangentZones[uiui];
+       if ( (Abs(SP.U1()-TestSP.U1())<MyConfusionPrecision)
+@@ -3461,7 +3452,7 @@ Standard_Integer CheckNextStartPoint(Int
+     if (Test) {//the top does not belong to the list of TangentZones
+       SP.SetChainList(-1);
+       TTangentZones[FinTTZ]=SP;
+-      TTangentZones.IncrementNbTangentZones();
++      TTangentZones.IncrementNbItems();
+       Test=0;//the examined point is a top
+     }
+   }
+@@ -3490,7 +3481,7 @@ Standard_Integer IntPolyh_MaillageAffina
+    IntPolyh_ArrayOfTangentZones& TTangentZones) 
+ {
+ //Loop on the array of couples filled in the function COMPARE()
+-  const Standard_Integer FinTTC = TTrianglesContacts.NbCouples();
++  const Standard_Integer FinTTC = TTrianglesContacts.NbItems();
+ 
+ //Array of tops of triangles
+   for(Standard_Integer IndexA=0; IndexA<FinTTC; IndexA++) {
+@@ -3498,14 +3489,14 @@ Standard_Integer IntPolyh_MaillageAffina
+     //It is checked if the couple of triangles has not been already examined.
+     if(TTrianglesContacts[IndexA].AnalyseFlagValue()!=1) {
+ 
+-      Standard_Integer SectionLineIndex=TSectionLines.NbSectionLines();
++      Standard_Integer SectionLineIndex=TSectionLines.NbItems();
+       // fill last section line if still empty (eap)
+       if (SectionLineIndex > 0
+ 	  &&
+ 	  TSectionLines[SectionLineIndex-1].NbStartPoints() == 0)
+ 	SectionLineIndex -= 1;
+       else
+-	TSectionLines.IncrementNbSectionLines();
++	TSectionLines.IncrementNbItems();
+ 
+       IntPolyh_SectionLine &  MySectionLine=TSectionLines[SectionLineIndex];
+       if (MySectionLine.GetN() == 0) // eap
+@@ -3563,8 +3554,8 @@ Standard_Integer IntPolyh_MaillageAffina
+ 	      }
+ 	      else {
+ 		if(NbPoints11>1) {//The point is input in the array TTangentZones
+-		  TTangentZones[TTangentZones.NbTangentZones()]=SP11;//default list number = -1
+-		  TTangentZones.IncrementNbTangentZones();
++		  TTangentZones[TTangentZones.NbItems()]=SP11;//default list number = -1
++		  TTangentZones.IncrementNbItems();
+ 		}
+ 		else {
+ 
+@@ -3610,8 +3601,8 @@ Standard_Integer IntPolyh_MaillageAffina
+ 		
+ 		else {
+ 		  if(NbPoints12>1) {//The points are input in the array TTangentZones
+-		    TTangentZones[TTangentZones.NbTangentZones()]=SP12;//default list number = -1
+-		    TTangentZones.IncrementNbTangentZones();
++		    TTangentZones[TTangentZones.NbItems()]=SP12;//default list number = -1
++		    TTangentZones.IncrementNbItems();
+ 		  }
+ 		  else {
+ 
+@@ -4022,19 +4013,19 @@ static TopoDS_Shape TriangleShape(const
+ 				  const IntPolyh_ArrayOfPoints &    TPoints)
+ {
+   TopoDS_Face aFace;
+-  if (TPoints.NbPoints() < 1 || TTriangles.NbTriangles() < 1) return aFace;
++  if (TPoints.NbItems() < 1 || TTriangles.NbItems() < 1) return aFace;
+   
+   Handle(Poly_Triangulation) aPTriangulation =
+-    new Poly_Triangulation(TPoints.NbPoints(),TTriangles.NbTriangles(),Standard_False);
++    new Poly_Triangulation(TPoints.NbItems(),TTriangles.NbItems(),Standard_False);
+   TColgp_Array1OfPnt &       aPNodes         = aPTriangulation->ChangeNodes();
+   Poly_Array1OfTriangle &    aPTrialgles     = aPTriangulation->ChangeTriangles();
+  
+   Standard_Integer i;
+-  for (i=0; i<TPoints.NbPoints(); i++) {
++  for (i=0; i<TPoints.NbItems(); i++) {
+     const IntPolyh_Point& P = TPoints[i];
+     aPNodes(i+1).SetCoord(P.X(), P.Y(), P.Z());
+   }
+-  for (i=0; i<TTriangles.NbTriangles(); i++) {
++  for (i=0; i<TTriangles.NbItems(); i++) {
+     const IntPolyh_Triangle& T = TTriangles[i];
+     aPTrialgles(i+1).Set(T.FirstPoint()+1, T.SecondPoint()+1, T.ThirdPoint()+1);
+   }
+Index: oce/src/IntPolyh/IntPolyh_Triangle.cxx
+===================================================================
+--- oce.orig/src/IntPolyh/IntPolyh_Triangle.cxx
++++ oce/src/IntPolyh/IntPolyh_Triangle.cxx
+@@ -548,12 +548,12 @@ void NewTriangle(const Standard_Integer
+ 		 IntPolyh_ArrayOfTriangles &TTriangles,
+ 		 const Handle(Adaptor3d_HSurface)& MySurface,
+ 		 IntPolyh_ArrayOfPoints &TPoints) {
+-  const Standard_Integer FinTT = TTriangles.NbTriangles();
++  const Standard_Integer FinTT = TTriangles.NbItems();
+   TTriangles[FinTT].SetFirstPoint(P1);
+   TTriangles[FinTT].SetSecondPoint(P2);
+   TTriangles[FinTT].SetThirdPoint(P3);
+   TTriangles[FinTT].TriangleDeflection(MySurface, TPoints);
+-  TTriangles.IncNbTriangles();
++  TTriangles.IncrementNbItems();
+ }
+ 
+ //=======================================================================
+@@ -567,13 +567,13 @@ void NewEdge(const Standard_Integer P1,
+ 	     IntPolyh_ArrayOfEdges & TEdges)
+ {
+ 
+-  const Standard_Integer FinTE = TEdges.NbEdges();
++  const Standard_Integer FinTE = TEdges.NbItems();
+ 
+   TEdges[FinTE].SetFirstPoint(P1);
+   TEdges[FinTE].SetSecondPoint(P2);
+   TEdges[FinTE].SetFirstTriangle(T1);
+   TEdges[FinTE].SetSecondTriangle(T2);
+-  TEdges.IncNbEdges();
++  TEdges.IncrementNbItems();
+ }
+ 
+ //=======================================================================
+@@ -603,8 +603,8 @@ void IntPolyh_Triangle::MiddleRefinement
+ 					 IntPolyh_ArrayOfTriangles &TTriangles,
+ 					 IntPolyh_ArrayOfEdges & TEdges) {
+ 
+-  Standard_Integer FinTE = TEdges.NbEdges();
+-  Standard_Integer FinTT = TTriangles.NbTriangles();
++  Standard_Integer FinTE = TEdges.NbItems();
++  Standard_Integer FinTT = TTriangles.NbItems();
+   
+   ///Raffinage de la maille et de ses voisines par le milieu du plus grand des cotes
+ 
+@@ -624,7 +624,7 @@ void IntPolyh_Triangle::MiddleRefinement
+   Standard_Real L31 = P3.SquareDistance(P1);
+ 
+   if ((L12>L23) && (L12>L31)) {
+-    const Standard_Integer FinTP = TPoints.NbPoints();
++    const Standard_Integer FinTP = TPoints.NbItems();
+     (TPoints[FinTP]).Middle( MySurface,P1, P2);
+     
+     ///les nouveaux triangles
+@@ -712,7 +712,7 @@ void IntPolyh_Triangle::MiddleRefinement
+   }
+   
+   else if ((L23>L31) && (L23>L12)){
+-    const Standard_Integer FinTP = TPoints.NbPoints();
++    const Standard_Integer FinTP = TPoints.NbItems();
+     (TPoints[FinTP]).Middle(MySurface, P2,P3);
+ 
+     ///les nouveaux triangles
+@@ -798,7 +798,7 @@ void IntPolyh_Triangle::MiddleRefinement
+     }
+   }
+     else {
+-    const Standard_Integer FinTP = TPoints.NbPoints();
++    const Standard_Integer FinTP = TPoints.NbItems();
+     (TPoints[FinTP]).Middle(MySurface, P3,P1);
+ 
+     Standard_Integer T1,T2,T3,T4;
+@@ -888,7 +888,7 @@ void IntPolyh_Triangle::MiddleRefinement
+   Fleche=-1.0;
+   IP=0;
+ 
+-  TPoints.IncNbPoints();
++  TPoints.IncrementNbItems();
+ }
+ 
+ //=======================================================================
+@@ -902,7 +902,7 @@ void IntPolyh_Triangle::MultipleMiddleRe
+ 						 IntPolyh_ArrayOfTriangles &TTriangles,
+ 						 IntPolyh_ArrayOfEdges & TEdges) {
+ 
+-  const Standard_Integer FinTTInit = TTriangles.NbTriangles();
++  const Standard_Integer FinTTInit = TTriangles.NbItems();
+ 
+   //On sait qu'il faut affiner au moins une fois
+   TTriangles[NumTri].MiddleRefinement(NumTri,MySurface,TPoints,
+@@ -974,16 +974,16 @@ void IntPolyh_Triangle::MultipleMiddleRe
+ 						  IntPolyh_ArrayOfTriangles &TTriangles,
+ 						  IntPolyh_ArrayOfEdges & TEdges) {
+ 
+-  const Standard_Integer FinTTInit = TTriangles.NbTriangles();
++  const Standard_Integer FinTTInit = TTriangles.NbItems();
+   Standard_Integer CritereArret=FinTTInit+250;
+ 
+   //On sait qu'il faut affiner une fois au moins
+   MiddleRefinement(NumTri,MySurface,TPoints,
+ 		   TTriangles,TEdges);
+ 
+-  Standard_Integer FinTT = TTriangles.NbTriangles();// FinTT n'est pas une constante, elle augmente avec l'affinage
++  Standard_Integer FinTT = TTriangles.NbItems();// FinTT n'est pas une constante, elle augmente avec l'affinage
+ 
+-  for(Standard_Integer iii=FinTTInit; iii<(FinTT=TTriangles.NbTriangles()); iii++) {
++  for(Standard_Integer iii=FinTTInit; iii<(FinTT=TTriangles.NbItems()); iii++) {
+     IntPolyh_Triangle& TriangleCourant = TTriangles[iii];
+     if(TriangleCourant.CompareBoxTriangle(b,TPoints)==0)
+       //On n'affine pas le triangle
+@@ -1003,7 +1003,7 @@ void IntPolyh_Triangle::MultipleMiddleRe
+ //=======================================================================
+ void IntPolyh_Triangle::SetEdgeandOrientation(const Standard_Integer EdgeIndex,
+ 					      const IntPolyh_ArrayOfEdges &TEdges) {
+-  const Standard_Integer FinTE = TEdges.NbEdges();
++  const Standard_Integer FinTE = TEdges.NbItems();
+ 
+   Standard_Integer PE1 =0,PE2 =0;
+ 

@@ -141,7 +141,7 @@ Index: oce/src/DNaming/DNaming_TransformationDriver.cxx
 ===================================================================
 --- oce.orig/src/DNaming/DNaming_TransformationDriver.cxx
 +++ oce/src/DNaming/DNaming_TransformationDriver.cxx
-@@ -331,6 +331,7 @@ static void CollectShapes(const TopoDS_S
+@@ -330,6 +330,7 @@ static void CollectShapes(const TopoDS_S
        }
    }
      break;
@@ -367,7 +367,7 @@ Index: oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
 ===================================================================
 --- oce.orig/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
 +++ oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
-@@ -190,6 +190,7 @@ static Standard_Integer loadvrml
+@@ -189,6 +189,7 @@ static Standard_Integer loadvrml
        case VrmlData_NonPositiveSize:    aStr = "NonPositiveSize"; break;
        case VrmlData_ReadUnknownNode:    aStr = "ReadUnknownNode"; break;
        case VrmlData_NonSupportedFeature:aStr = "NonSupportedFeature"; break;
@@ -375,3 +375,23 @@ Index: oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
        }
        if (aStr) {
          di << " ++ VRML Error: " << aStr << " in line "
+Index: oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
+===================================================================
+--- oce.orig/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
++++ oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
+@@ -375,6 +375,7 @@ void Recadre(const Standard_Boolean ,
+     case GeomAbs_Sphere:
+       while(U1<(U1p-1.5*M_PI)) U1+=M_PI+M_PI;
+       while(U1>(U1p+1.5*M_PI)) U1-=M_PI+M_PI;
++	default: /* Do nothing */ break;
+   }
+   switch(typeS2)
+   { 
+@@ -386,6 +387,7 @@ void Recadre(const Standard_Boolean ,
+     case GeomAbs_Sphere:
+       while(U2<(U2p-1.5*M_PI)) U2+=M_PI+M_PI;
+       while(U2>(U2p+1.5*M_PI)) U2-=M_PI+M_PI;
++	default: /* Do nothing */ break;
+   }
+   pt.SetParameters(U1,V1,U2,V2);
+ }

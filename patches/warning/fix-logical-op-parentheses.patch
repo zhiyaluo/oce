@@ -1,0 +1,38 @@
+From a2db37168aa07f4a10b4577d1ca227c5600e7ba2 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Tue, 19 Feb 2013 11:25:50 +0100
+Subject: [PATCH] [clang-warning-fix][logical-op-parentheses]
+
+---
+ src/BRepOffsetAPI/BRepOffsetAPI_MiddlePath.cxx |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/src/BRepOffsetAPI/BRepOffsetAPI_MiddlePath.cxx b/src/BRepOffsetAPI/BRepOffsetAPI_MiddlePath.cxx
+index e9bcb40..224870c 100644
+--- a/src/BRepOffsetAPI/BRepOffsetAPI_MiddlePath.cxx
++++ b/src/BRepOffsetAPI/BRepOffsetAPI_MiddlePath.cxx
+@@ -547,8 +547,8 @@ void BRepOffsetAPI_MiddlePath::Build()
+       {
+         anEdge = TopoDS::Edge(itl.Value());
+         TopExp::Vertices(anEdge, V1, V2);
+-        if ((V1.IsSame(PrevVertex) && V2.IsSame(CurVertex) ||
+-             V1.IsSame(CurVertex) && V2.IsSame(PrevVertex)) &&
++        if (((V1.IsSame(PrevVertex) && V2.IsSame(CurVertex)) ||
++             (V1.IsSame(CurVertex) && V2.IsSame(PrevVertex))) &&
+             !anEdge.IsSame(E1))
+         {
+           ProperEdge = anEdge;
+@@ -864,8 +864,8 @@ void BRepOffsetAPI_MiddlePath::Build()
+           }
+           gp_Dir aDir1 = gp_Vec(aCirc.Location(), Pnt1);
+           gp_Dir aDir2 = gp_Vec(aCirc.Location(), Pnt2);
+-          if (!(aDir1.IsEqual(theDir1, AngTol) && aDir2.IsEqual(theDir2, AngTol) ||
+-                aDir1.IsEqual(theDir2, AngTol) && aDir2.IsEqual(theDir1, AngTol)))
++          if (!((aDir1.IsEqual(theDir1, AngTol) && aDir2.IsEqual(theDir2, AngTol)) ||
++                (aDir1.IsEqual(theDir2, AngTol) && aDir2.IsEqual(theDir1, AngTol))))
+           {
+             SimilarArcs = Standard_False;
+             break;
+-- 
+1.7.10.4
+

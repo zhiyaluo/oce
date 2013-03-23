@@ -180,6 +180,14 @@ Index: oce/src/Graphic2d/Graphic2d_ImageFile.cxx
                  return Result;
          }
  
+@@ -438,6 +439,7 @@ Path.SystemName (aFileName);
+ cout << "Graphic2d_Image_File::Values('" << aFileName << "'," << 
+                 aWidth << "," << aHeight << "," << aDepth << ")" << endl;
+ #endif
++        free(pheader);
+         return Result;
+ 
+ }
 Index: oce/src/MFT/MFT_FontManager.cxx
 ===================================================================
 --- oce.orig/src/MFT/MFT_FontManager.cxx
@@ -215,3 +223,32 @@ Index: oce/src/OpenGl/OpenGl_ImageBox.cxx
    lptr = base;
    for(y=0; y<image->ysize; y++) {
      if(image->zsize>=4) {
+Index: oce/src/Xw/Xw_open_image.cxx
+===================================================================
+--- oce.orig/src/Xw/Xw_open_image.cxx
++++ oce/src/Xw/Xw_open_image.cxx
+@@ -97,6 +97,7 @@ char *cdata ;
+     if( !(cdata = (char*) Xw_calloc(width*height,pad)) ) {
+ 	/*ERROR*XImage Allocation failed*/
+ 	Xw_set_error(60,"Xw_open_image",0) ;
++    Xw_free(cdata);
+         return (NULL) ;
+     }
+ 
+Index: oce/src/AlienImage/AlienImage_GIFLZWDict.cxx
+===================================================================
+--- oce.orig/src/AlienImage/AlienImage_GIFLZWDict.cxx
++++ oce/src/AlienImage/AlienImage_GIFLZWDict.cxx
+@@ -778,8 +778,10 @@ static chash_table __fastcall ppm_comput
+         
+     chl = ( chist_list )MALLOC(  sizeof( struct chist_list_item )  );
+ 
+-    if ( chl == NULL ) return ( chash_table )NULL;
+-        
++    if ( chl == NULL ) {
++      ppm_freechash ( cht );
++      return ( chash_table )NULL;
++    }    
+     chl -> ch.color = *pP;
+     chl -> ch.value = 1;
+     chl -> next     = cht[ hash ];

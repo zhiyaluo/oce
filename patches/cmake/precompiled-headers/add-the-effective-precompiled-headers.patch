@@ -273,6 +273,21 @@ Subject: [PATCH 13/82] Removed useless code from TKernel/Precompiled.h
  adm/cmake/TKernel/Precompiled.h |   17 -----------------
  1 files changed, 0 insertions(+), 17 deletions(-)
 
+From 6ebd6d7fb3168eea68f5b33ac677fea7365552f2 Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Mon, 26 Nov 2012 21:56:05 +0100
+Subject: [PATCH] Fixed precompiled include capitalization
+
+---
+ adm/cmake/TKBRep/Precompiled.h     |    4 ++--
+ adm/cmake/TKBool/Precompiled.h     |    2 +-
+ adm/cmake/TKG3d/Precompiled.h      |    2 +-
+ adm/cmake/TKGeomAlgo/Precompiled.h |    2 +-
+ adm/cmake/TKHLR/Precompiled.h      |   10 +++++-----
+ adm/cmake/TKPShape/Precompiled.h   |    2 +-
+ adm/cmake/TKV3d/Precompiled.h      |    2 +-
+ 7 files changed, 12 insertions(+), 12 deletions(-)
+
 Index: oce/adm/cmake/FWOSPlugin/Precompiled.cpp
 ===================================================================
 --- /dev/null
@@ -365,8 +380,8 @@ Index: oce/adm/cmake/TKBRep/Precompiled.h
 +#include "TopoDS.hxx"
 +#include "BRepTools.hxx"
 +#include "BRep_Builder.hxx"
-+#include "BRep_Polygon3d.hxx"
-+#include "BRep_Curve3d.hxx"
++#include "BRep_Polygon3D.hxx"
++#include "BRep_Curve3D.hxx"
 +#include "BRep_GCurve.hxx"
 +#include "BRep_Tool.hxx"
 +#include "TopoDS_Face.hxx"
@@ -509,7 +524,7 @@ Index: oce/adm/cmake/TKBool/Precompiled.h
 +#include "BRepFill_Filling.hxx"
 +#include "BRepFill_Generator.hxx"
 +#include "BRepFill_Draft.hxx"
-+#include "TopOpeBrep.hxx"
++#include "TopOpeBRep.hxx"
 +#include "TopOpeBRepBuild_Builder.hxx"
 +#include "TopOpeBRepDS.hxx"
 +#include "TopOpeBRepTool.hxx"
@@ -684,7 +699,7 @@ Index: oce/adm/cmake/TKG3d/Precompiled.h
 +#include "Geom_Curve.hxx"
 +#include "Geom_Surface.hxx"
 +#include "Geom_Conic.hxx"
-+#include "ELcLib.hxx"
++#include "ElCLib.hxx"
 +#include "GeomLProp.hxx"
 +#include "Adaptor3d_Curve.hxx"
 +#include "Adaptor3d_Surface.hxx"
@@ -710,7 +725,7 @@ Index: oce/adm/cmake/TKGeomAlgo/Precompiled.h
 +#include "../TKGeomBase/Precompiled.h"
 +#include "../TKG2d/Precompiled.h"
 +#include "../TKG3d/Precompiled.h"
-+#include "../TKBrep/Precompiled.h"
++#include "../TKBRep/Precompiled.h"
 +#include "../TKGeomAlgo/Precompiled.h"
 +
 +#include "Geom2dGcc.hxx"
@@ -772,12 +787,12 @@ Index: oce/adm/cmake/TKHLR/Precompiled.h
 +
 +#include "HLRAlgo.hxx"
 +#include "HLRAlgo_PolyAlgo.hxx"
-+#include "HLRBrep.hxx"
++#include "HLRBRep.hxx"
 +#undef TRACE
-+#include "HLRBrep_Algo.hxx"
-+#include "HLRBrep_Intersector.hxx"
-+#include "HLRBrep_Surface.hxx"
-+#include "HLRBrep_SurfaceTool.hxx"
++#include "HLRBRep_Algo.hxx"
++#include "HLRBRep_Intersector.hxx"
++#include "HLRBRep_Surface.hxx"
++#include "HLRBRep_SurfaceTool.hxx"
 \ No newline at end of file
 Index: oce/adm/cmake/TKIGES/Precompiled.cpp
 ===================================================================
@@ -1008,7 +1023,7 @@ Index: oce/adm/cmake/TKPShape/Precompiled.h
 +
 +#include "../TKG2d/Precompiled.h"
 +#include "../TKG3d/Precompiled.h"
-+#include "../TKBrep/Precompiled.h"
++#include "../TKBRep/Precompiled.h"
 +#include "../PTKernel/Precompiled.h"
 Index: oce/adm/cmake/TKPrim/Precompiled.cpp
 ===================================================================
@@ -1394,7 +1409,7 @@ Index: oce/adm/cmake/TKV3d/Precompiled.h
 +
 +#include "AIS.hxx"
 +#include "Graphic2d_View.hxx"
-+#include "V3D.hxx"
++#include "V3d.hxx"
 +#include "DsgPrs.hxx"
 +#include "PrsMgr_Prs.hxx"
 +#include "Prs3d.hxx"

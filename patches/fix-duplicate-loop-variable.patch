@@ -1,0 +1,26 @@
+From 4a18b8a32606859d6579dfb790c97a4d5deed405 Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Sun, 25 Nov 2012 13:02:38 +0100
+Subject: [PATCH] The "k" variable was already used in an external loop. This
+ fix uses a local variable instead.
+
+---
+ src/GccAna/GccAna_Circ2d3Tan_2.cxx |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/GccAna/GccAna_Circ2d3Tan_2.cxx b/src/GccAna/GccAna_Circ2d3Tan_2.cxx
+index 8bbbb88..e6fcf55 100644
+--- a/src/GccAna/GccAna_Circ2d3Tan_2.cxx
++++ b/src/GccAna/GccAna_Circ2d3Tan_2.cxx
+@@ -205,7 +205,7 @@ pararg3(1,8)
+ 		 }
+ 	       }
+ 	       if (ok) {
+-		 for (k = 1 ; k <= nbsol3 ; k++) {
++		 for (Standard_Integer k = 1 ; k <= nbsol3 ; k++) {
+ 		   NbrSol++;
+ 		   cirsol(NbrSol) = gp_Circ2d(gp_Ax2d(Center,dirx),Radius(k));
+ //                 ==========================================================
+-- 
+1.7.10.4
+

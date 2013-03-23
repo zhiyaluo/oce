@@ -22,3 +22,16 @@ Index: oce/src/Geom/Geom_OffsetSurface.cxx
      {
        P.SetXYZ(P.XYZ() + offsetValue * Normal.XYZ());
      }
+Index: oce/src/Xw/Xw_set_double_buffer.cxx
+===================================================================
+--- oce.orig/src/Xw/Xw_set_double_buffer.cxx
++++ oce/src/Xw/Xw_set_double_buffer.cxx
+@@ -64,7 +64,7 @@ char svalue[4] ;
+         }
+     }
+ 
+-    if( (SetDoubleBuffer == 'Y') ) { 
++    if( SetDoubleBuffer == 'Y' ) { 
+ 	state = XW_ENABLE ;
+     } else if( SetDoubleBuffer == 'N' ) {
+ 	state = XW_DISABLE ;

@@ -1,0 +1,65 @@
+From 51e8674f907f40f9e019fc5d9cfdce2cca8c5aef Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Sat, 15 Dec 2012 20:40:28 +0100
+Subject: [PATCH] Fix memory aligned allocation
+
+The _mm_malloc function is defined by GCC only for
+x86 and amd64 architectures.  See build failures on
+ https://buildd.debian.org/status/package.php?p=oce&suite=experimental&ver=0.11-1
+
+Call _mm_malloc if mm_malloc.h header is found, otherwise call
+posix_memalign if this function was found, otherwise call malloc.
+---
+ CMakeLists.txt             |    2 ++
+ src/Image/Image_PixMap.cxx |   14 +++++++-------
+ 2 files changed, 9 insertions(+), 7 deletions(-)
+
+diff --git a/src/Image/Image_PixMap.cxx b/src/Image/Image_PixMap.cxx
+index 8101d7e..a5d4738 100644
+--- a/src/Image/Image_PixMap.cxx
++++ b/src/Image/Image_PixMap.cxx
+@@ -21,10 +21,10 @@
+ 
+ #ifdef _MSC_VER
+   //
+-#elif (defined(__GNUC__) && __GNUC__ >= 4 && __GNUC_MINOR__ >= 1)
++#elif defined(HAVE_MM_MALLOC_H)
+   #include <mm_malloc.h>
+ #else
+-  extern "C" int posix_memalign (void** thePtr, size_t theAlign, size_t theBytesCount);
++  #include <stdlib.h>
+ #endif
+ 
+ template<typename TypePtr>
+@@ -33,15 +33,17 @@ inline TypePtr MemAllocAligned (const Standard_Size& theBytesCount,
+ {
+ #if defined(_MSC_VER)
+   return (TypePtr )_aligned_malloc (theBytesCount, theAlign);
+-#elif (defined(__GNUC__) && __GNUC__ >= 4 && __GNUC_MINOR__ >= 1)
++#elif defined(HAVE_MM_MALLOC_H)
+   return (TypePtr )     _mm_malloc (theBytesCount, theAlign);
+-#else
++#elif defined(HAVE_POSIX_MEMALIGN)
+   void* aPtr;
+   if (posix_memalign (&aPtr, theAlign, theBytesCount))
+   {
+     aPtr = NULL;
+   }
+   return (TypePtr )aPtr;
++#else
++  return (TypePtr ) malloc (theBytesCount);
+ #endif
+ }
+ 
+@@ -51,7 +51,7 @@ inline void MemFreeAligned (void* thePtrAligned)
+ {
+ #if defined(_MSC_VER)
+   _aligned_free (thePtrAligned);
+-#elif (defined(__GNUC__) && __GNUC__ >= 4 && __GNUC_MINOR__ >= 1)
++#elif defined(HAVE_MM_MALLOC_H)
+   _mm_free (thePtrAligned);
+ #else
+   free (thePtrAligned);
+-- 
+1.7.10.4
+

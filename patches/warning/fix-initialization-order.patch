@@ -1,0 +1,124 @@
+From 90753b9e4f8210fe6ec0492abd69d8c16db5d4e1 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Tue, 19 Feb 2013 21:30:57 +0100
+Subject: [PATCH] [warning-fix][initialization-order]
+
+---
+ src/OpenGl/OpenGl_PrinterContext.cxx             |    6 ++++--
+ src/OpenGl/OpenGl_Workspace.cxx                  |    9 +++++----
+ src/QANewModTopOpe/QANewModTopOpe_Glue.cxx       |    4 ++--
+ src/QANewModTopOpe/QANewModTopOpe_Limitation.cxx |    6 +++---
+ src/ViewerTest/ViewerTest_ViewerCommands.cxx     |   11 ++++++-----
+ 5 files changed, 20 insertions(+), 16 deletions(-)
+
+Index: oce/src/OpenGl/OpenGl_PrinterContext.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_PrinterContext.cxx
++++ oce/src/OpenGl/OpenGl_PrinterContext.cxx
+@@ -29,8 +29,10 @@ GLCONTEXT             OpenGl_PrinterCont
+ //=======================================================================
+ 
+ OpenGl_PrinterContext::OpenGl_PrinterContext (GLCONTEXT theCtx) :
+-  myCtx (theCtx), myProjTransform (0, 3, 0, 3), myLayerViewportX (0),
+-  myLayerViewportY (0), myScaleX (1.0f), myScaleY (1.0f)
++  myProjTransform (0, 3, 0, 3),
++  myScaleX (1.0f), myScaleY (1.0f),
++  myLayerViewportX (0), myLayerViewportY (0),
++  myCtx (theCtx)
+ {
+   // assign global instance to the current object
+   if (myCtx != NULL)
+Index: oce/src/OpenGl/OpenGl_Workspace.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_Workspace.cxx
++++ oce/src/OpenGl/OpenGl_Workspace.cxx
+@@ -66,6 +66,11 @@ OpenGl_Workspace::OpenGl_Workspace (cons
+                                     Aspect_RenderingContext       theGContext,
+                                     const Handle(OpenGl_Context)& theShareCtx)
+ : OpenGl_Window (theDisplay, theCWindow, theGContext, theShareCtx),
++  NamedStatus (0),
++  DegenerateModel (0),
++  SkipRatio (0.F),
++  HighlightColor (&myDefaultHighlightColor),
++  //
+   myTransientList (0),
+   myIsTransientOpen (Standard_False),
+   myRetainMode (Standard_False),
+@@ -75,10 +80,6 @@ OpenGl_Workspace::OpenGl_Workspace (cons
+   myUseGLLight (Standard_True),
+   myBackBufferRestored (Standard_False),
+   //
+-  NamedStatus (0),
+-  DegenerateModel (0),
+-  SkipRatio (0.F),
+-  HighlightColor (&myDefaultHighlightColor),
+   AspectLine_set (&myDefaultAspectLine),
+   AspectLine_applied (NULL),
+   AspectFace_set (&myDefaultAspectFace),
+Index: oce/src/QANewModTopOpe/QANewModTopOpe_Glue.cxx
+===================================================================
+--- oce.orig/src/QANewModTopOpe/QANewModTopOpe_Glue.cxx
++++ oce/src/QANewModTopOpe/QANewModTopOpe_Glue.cxx
+@@ -98,8 +98,8 @@ QANewModTopOpe_Glue::QANewModTopOpe_Glue
+ 			       const Standard_Boolean theAllowCutting,
+ 			       const Standard_Boolean thePerformNow)
+ : BRepAlgoAPI_BooleanOperation (theS1,theS2, BOP_FUSE),
+-  myAllowCutting (theAllowCutting),
+-  myCompleted (Standard_False)
++  myCompleted (Standard_False),
++  myAllowCutting (theAllowCutting)
+ {
+   NotDone();
+   myGenerated.Clear();
+Index: oce/src/QANewModTopOpe/QANewModTopOpe_Limitation.cxx
+===================================================================
+--- oce.orig/src/QANewModTopOpe/QANewModTopOpe_Limitation.cxx
++++ oce/src/QANewModTopOpe/QANewModTopOpe_Limitation.cxx
+@@ -55,11 +55,11 @@ QANewModTopOpe_Limitation::QANewModTopOp
+ 					   const TopoDS_Shape& theCutTool,
+ 					   const QANewModTopOpe_ModeOfLimitation theMode) : 
+        myObjectToCut(theObjectToCut),
++       myCut(NULL),
++       myCommon(NULL),
+        myFwdIsDone(Standard_False),
+        myRevIsDone(Standard_False),
+-       myMode(theMode),
+-       myCut(NULL),
+-       myCommon(NULL)
++       myMode(theMode)
+ {
+ 
+   TopExp_Explorer anExp;
+Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
+===================================================================
+--- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
++++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
+@@ -2362,13 +2362,13 @@ V3d_TextItem::V3d_TextItem (const TColle
+                             const Aspect_TypeOfDisplayText& theTypeOfDisplay,
+                             const Handle(Visual3d_Layer)& theLayer)
+  : myX1 (theX1), myY1 (theY1),
+-   myText (theText),
+    myHeight (theHeight),
+-   myLayer (theLayer),
++   myText (theText),
++   myFontName (theFontName),
+    myColor (theColor),
+    mySubtitleColor (theSubtitleColor),
+    myType (theTypeOfDisplay),
+-   myFontName (theFontName)
++   myLayer (theLayer)
+ {
+   if (!myLayer.IsNull ())
+     myLayer->AddLayerItem (this);
+@@ -2426,8 +2426,9 @@ V3d_LineItem::V3d_LineItem(Standard_Real
+                            Aspect_TypeOfLine theType,
+                            Standard_Real theWidth,
+                            Standard_Real theTransp) :
+-  myX1(X1), myY1(Y1), myX2(X2), myY2(Y2), myLayerMgr(theLayerMgr),
+-  myType(theType), myWidth(theWidth), myTransparency(theTransp)
++  myX1(X1), myY1(Y1), myX2(X2), myY2(Y2),
++  myWidth(theWidth), myTransparency(theTransp),
++  myType(theType), myLayerMgr(theLayerMgr)
+ {
+   if (myLayerMgr && !myLayerMgr->Overlay().IsNull())
+     myLayerMgr->Overlay()->AddLayerItem (this);
