@@ -8,10 +8,10 @@ Subject: [PATCH] [clang-warning-fix][unused-value]
  src/AdvApp2Var/AdvApp2Var_Iso.cxx |    2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/inc/OpenGl_telem_util.hxx b/inc/OpenGl_telem_util.hxx
-index 2125b59..b9d0b84 100644
---- a/inc/OpenGl_telem_util.hxx
-+++ b/inc/OpenGl_telem_util.hxx
+Index: oce/inc/OpenGl_telem_util.hxx
+===================================================================
+--- oce.orig/inc/OpenGl_telem_util.hxx
++++ oce/inc/OpenGl_telem_util.hxx
 @@ -87,7 +87,7 @@ xx-xx-xx : xxx ; Creation.
  /* normalize */
  #define  vecnrmd(a,d)    ( d = (Tfloat)vecmag(a), \
@@ -21,11 +21,11 @@ index 2125b59..b9d0b84 100644
  
  /* angle between two vectors */
  #define  vecang(a,b,d)   { d = (Tfloat)(vecmag(a)*vecmag(b)); \
-diff --git a/src/AdvApp2Var/AdvApp2Var_Iso.cxx b/src/AdvApp2Var/AdvApp2Var_Iso.cxx
-index 9b7e555..614ac0a 100644
---- a/src/AdvApp2Var/AdvApp2Var_Iso.cxx
-+++ b/src/AdvApp2Var/AdvApp2Var_Iso.cxx
-@@ -246,7 +246,7 @@ void AdvApp2Var_Iso::MakeApprox(const AdvApp2Var_Context& Conditions,
+Index: oce/src/AdvApp2Var/AdvApp2Var_Iso.cxx
+===================================================================
+--- oce.orig/src/AdvApp2Var/AdvApp2Var_Iso.cxx
++++ oce/src/AdvApp2Var/AdvApp2Var_Iso.cxx
+@@ -246,7 +246,7 @@ void AdvApp2Var_Iso::MakeApprox(const Ad
    //#ifdef DEB
    //Standard_Real *ERRMOY =
    //#endif
@@ -34,6 +34,3 @@ index 9b7e555..614ac0a 100644
                                  (HERRMOY ->LowerRow(),HERRMOY ->LowerCol());
    Standard_Real *EMYAPP = new Standard_Real[NBSESP];
  //
--- 
-1.7.10.4
-

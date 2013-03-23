@@ -53,10 +53,10 @@ This may be needed when compiling with WOK.
  src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx |    4 +++-
  15 files changed, 43 insertions(+), 14 deletions(-)
 
-diff --git a/src/Aspect/Aspect_Driver.cxx b/src/Aspect/Aspect_Driver.cxx
-index c3128d9..ded101e 100644
---- a/src/Aspect/Aspect_Driver.cxx
-+++ b/src/Aspect/Aspect_Driver.cxx
+Index: oce/src/Aspect/Aspect_Driver.cxx
+===================================================================
+--- oce.orig/src/Aspect/Aspect_Driver.cxx
++++ oce/src/Aspect/Aspect_Driver.cxx
 @@ -43,6 +43,10 @@
  #include <Aspect_Driver.ixx>
  #include <OSD_Environment.hxx>
@@ -68,10 +68,10 @@ index c3128d9..ded101e 100644
  static Standard_Boolean dirMFTisDefined = Standard_False;
  
  Aspect_Driver::Aspect_Driver () {
-diff --git a/src/DPrsStd/DPrsStd.cxx b/src/DPrsStd/DPrsStd.cxx
-index cbabd71..89cc26f 100644
---- a/src/DPrsStd/DPrsStd.cxx
-+++ b/src/DPrsStd/DPrsStd.cxx
+Index: oce/src/DPrsStd/DPrsStd.cxx
+===================================================================
+--- oce.orig/src/DPrsStd/DPrsStd.cxx
++++ oce/src/DPrsStd/DPrsStd.cxx
 @@ -37,6 +37,10 @@
  #include <OSD_Directory.hxx>
  #include <OSD_File.hxx>
@@ -83,10 +83,10 @@ index cbabd71..89cc26f 100644
  // avoid warnings on 'extern "C"' functions returning C++ classes
  #ifdef _MSC_VER
  #pragma warning(4:4190)
-diff --git a/src/Draw/Draw.cxx b/src/Draw/Draw.cxx
-index 7d22678..ff02df6 100644
---- a/src/Draw/Draw.cxx
-+++ b/src/Draw/Draw.cxx
+Index: oce/src/Draw/Draw.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw.cxx
++++ oce/src/Draw/Draw.cxx
 @@ -70,6 +70,10 @@
  
  #include <stdio.h>
@@ -98,10 +98,10 @@ index 7d22678..ff02df6 100644
  extern Standard_Boolean Draw_ParseFailed;
  
  Standard_EXPORT Draw_Viewer dout;
-diff --git a/src/Draw/Draw_PloadCommands.cxx b/src/Draw/Draw_PloadCommands.cxx
-index 51d7e5a..ed59cb2 100644
---- a/src/Draw/Draw_PloadCommands.cxx
-+++ b/src/Draw/Draw_PloadCommands.cxx
+Index: oce/src/Draw/Draw_PloadCommands.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw_PloadCommands.cxx
++++ oce/src/Draw/Draw_PloadCommands.cxx
 @@ -28,6 +28,10 @@
  #include <Draw_MapOfAsciiString.hxx>
  #include <Draw.hxx>
@@ -113,10 +113,10 @@ index 51d7e5a..ed59cb2 100644
  static Handle(Resource_Manager) myResources;
  
  //=======================================================================
-diff --git a/src/Graphic3d/Graphic3d_GraphicDevice.cxx b/src/Graphic3d/Graphic3d_GraphicDevice.cxx
-index 5ad532d..5765515 100644
---- a/src/Graphic3d/Graphic3d_GraphicDevice.cxx
-+++ b/src/Graphic3d/Graphic3d_GraphicDevice.cxx
+Index: oce/src/Graphic3d/Graphic3d_GraphicDevice.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d_GraphicDevice.cxx
++++ oce/src/Graphic3d/Graphic3d_GraphicDevice.cxx
 @@ -50,6 +50,10 @@
  
  #include <Xw_Cextern.hxx>
@@ -128,10 +128,10 @@ index 5ad532d..5765515 100644
  //-Static data definitions
  
  static char LocalMessag[80] ;
-diff --git a/src/Graphic3d/Graphic3d_Texture1D.cxx b/src/Graphic3d/Graphic3d_Texture1D.cxx
-index 1c121a9..d2ab303 100644
---- a/src/Graphic3d/Graphic3d_Texture1D.cxx
-+++ b/src/Graphic3d/Graphic3d_Texture1D.cxx
+Index: oce/src/Graphic3d/Graphic3d_Texture1D.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d_Texture1D.cxx
++++ oce/src/Graphic3d/Graphic3d_Texture1D.cxx
 @@ -31,6 +31,10 @@
  #include <OSD_File.hxx>
  #include <OSD_Path.hxx>
@@ -143,10 +143,10 @@ index 1c121a9..d2ab303 100644
  static const char *NameOfTexture_to_FileName[] = 
  {
    "1d_elevation.rgb"
-diff --git a/src/Graphic3d/Graphic3d_Texture2D.cxx b/src/Graphic3d/Graphic3d_Texture2D.cxx
-index 6dfb74b..3d39724 100644
---- a/src/Graphic3d/Graphic3d_Texture2D.cxx
-+++ b/src/Graphic3d/Graphic3d_Texture2D.cxx
+Index: oce/src/Graphic3d/Graphic3d_Texture2D.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d_Texture2D.cxx
++++ oce/src/Graphic3d/Graphic3d_Texture2D.cxx
 @@ -33,6 +33,10 @@
  #include <OSD_File.hxx>
  #include <OSD_Path.hxx>
@@ -158,10 +158,10 @@ index 6dfb74b..3d39724 100644
  static TCollection_AsciiString GetEnvir ( ) {
  
    static Standard_Boolean IsDefined=Standard_False ;
-diff --git a/src/Graphic3d/Graphic3d_TextureEnv.cxx b/src/Graphic3d/Graphic3d_TextureEnv.cxx
-index 5be4ba7..2943e41 100644
---- a/src/Graphic3d/Graphic3d_TextureEnv.cxx
-+++ b/src/Graphic3d/Graphic3d_TextureEnv.cxx
+Index: oce/src/Graphic3d/Graphic3d_TextureEnv.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d_TextureEnv.cxx
++++ oce/src/Graphic3d/Graphic3d_TextureEnv.cxx
 @@ -34,6 +34,10 @@
  
  #include <stdlib.h>
@@ -173,10 +173,10 @@ index 5be4ba7..2943e41 100644
  static TCollection_AsciiString GetEnvir ( ) {
  
    static Standard_Boolean IsDefined=Standard_False ;
-diff --git a/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx b/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
-index 71edcfa..dadc0b7 100644
---- a/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
-+++ b/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
+Index: oce/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
++++ oce/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
 @@ -26,6 +26,10 @@
  #include <OSD_Environment.hxx>
  #include <TCollection_AsciiString.hxx>
@@ -188,10 +188,10 @@ index 71edcfa..dadc0b7 100644
  // =======================================================================
  // function : Graphic3d_WNTGraphicDevice
  // purpose  :
-diff --git a/src/Plugin/Plugin.cxx b/src/Plugin/Plugin.cxx
-index 7de5020..cd68fc6 100644
---- a/src/Plugin/Plugin.cxx
-+++ b/src/Plugin/Plugin.cxx
+Index: oce/src/Plugin/Plugin.cxx
+===================================================================
+--- oce.orig/src/Plugin/Plugin.cxx
++++ oce/src/Plugin/Plugin.cxx
 @@ -28,6 +28,10 @@
  
  #include <TCollection_AsciiString.hxx>
@@ -203,10 +203,10 @@ index 7de5020..cd68fc6 100644
  static Standard_Character tc[1000];
  static Standard_PCharacter thePluginId = tc;
  
-diff --git a/src/Resource/Resource_Manager.cxx b/src/Resource/Resource_Manager.cxx
-index ff6e061..7748b9a 100644
---- a/src/Resource/Resource_Manager.cxx
-+++ b/src/Resource/Resource_Manager.cxx
+Index: oce/src/Resource/Resource_Manager.cxx
+===================================================================
+--- oce.orig/src/Resource/Resource_Manager.cxx
++++ oce/src/Resource/Resource_Manager.cxx
 @@ -34,6 +34,10 @@
  
  #include <errno.h>
@@ -218,10 +218,10 @@ index ff6e061..7748b9a 100644
  #define END      0
  #define EMPTY    1
  #define COMMENT  2
-diff --git a/src/UnitsAPI/UnitsAPI.cxx b/src/UnitsAPI/UnitsAPI.cxx
-index 446f620..ecf19b2 100644
---- a/src/UnitsAPI/UnitsAPI.cxx
-+++ b/src/UnitsAPI/UnitsAPI.cxx
+Index: oce/src/UnitsAPI/UnitsAPI.cxx
+===================================================================
+--- oce.orig/src/UnitsAPI/UnitsAPI.cxx
++++ oce/src/UnitsAPI/UnitsAPI.cxx
 @@ -26,6 +26,10 @@
  #include <Standard_NoSuchObject.hxx>
  #include <OSD_Environment.hxx>
@@ -233,10 +233,10 @@ index 446f620..ecf19b2 100644
  static Handle(Resource_Manager) CurrentUnits,SICurrentUnits,MDTVCurrentUnits;
  static Units_UnitsSystem LocalSystemUnits,SILocalSystemUnits,MDTVLocalSystemUnits;
  static TCollection_AsciiString rstring;
-diff --git a/src/ViewerTest/ViewerTest.cxx b/src/ViewerTest/ViewerTest.cxx
-index 7d82a4a..0339ebd 100644
---- a/src/ViewerTest/ViewerTest.cxx
-+++ b/src/ViewerTest/ViewerTest.cxx
+Index: oce/src/ViewerTest/ViewerTest.cxx
+===================================================================
+--- oce.orig/src/ViewerTest/ViewerTest.cxx
++++ oce/src/ViewerTest/ViewerTest.cxx
 @@ -79,6 +79,11 @@
  
  #include <NIS_InteractiveContext.hxx>
@@ -249,10 +249,10 @@ index 7d82a4a..0339ebd 100644
  extern int ViewerMainLoop(Standard_Integer argc, const char** argv);
  
  //=======================================================================
-diff --git a/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx b/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
-index 5d96047..6e78a4c 100644
---- a/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
-+++ b/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
+Index: oce/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
+===================================================================
+--- oce.orig/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
++++ oce/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
 @@ -49,6 +49,10 @@
  #include <OSD_File.hxx>
  #include <OSD_Environment.hxx>
@@ -264,6 +264,3 @@ index 5d96047..6e78a4c 100644
  #define STORAGE_VERSION      "STORAGE_VERSION: "
  #define REFERENCE_COUNTER    "REFERENCE_COUNTER: "
  #define MODIFICATION_COUNTER "MODIFICATION_COUNTER: "
--- 
-1.7.10.4
-

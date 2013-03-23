@@ -364,6 +364,19 @@ Index: oce/src/Graphic3d/Graphic3d_Structure.pxx
  #endif
  
  #ifdef HAVE_LIMITS
+Index: oce/src/Image/Image_AlienPixMap.cxx
+===================================================================
+--- oce.orig/src/Image/Image_AlienPixMap.cxx
++++ oce/src/Image/Image_AlienPixMap.cxx
+@@ -18,7 +18,7 @@
+ // and conditions governing the rights and limitations under the License.
+ 
+ #ifdef HAVE_CONFIG_H
+-  #include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #ifdef HAVE_FREEIMAGE
 Index: oce/src/MFT/MFT_FontManager.cxx
 ===================================================================
 --- oce.orig/src/MFT/MFT_FontManager.cxx
@@ -789,6 +802,19 @@ Index: oce/src/QABugs/QABugs_3.cxx
  #endif
  static int UKI61075(Draw_Interpretor& /*di*/, Standard_Integer /*argc*/, const char ** /*argv*/) {
   double da,db;
+Index: oce/src/QAViewer2dTest/QAViewer2dTest_ObjectCommands.cxx
+===================================================================
+--- oce.orig/src/QAViewer2dTest/QAViewer2dTest_ObjectCommands.cxx
++++ oce/src/QAViewer2dTest/QAViewer2dTest_ObjectCommands.cxx
+@@ -22,7 +22,7 @@
+ //===============================================
+ 
+ #ifdef HAVE_CONFIG_H
+-# include <config.h>
++# include <oce-config.h>
+ #endif
+ 
+ #include <QAViewer2dTest.hxx>
 Index: oce/src/STEPConstruct/STEPConstruct_AP203Context.cxx
 ===================================================================
 --- oce.orig/src/STEPConstruct/STEPConstruct_AP203Context.cxx
@@ -1201,29 +1227,3 @@ Index: oce/src/Xw/Xw_save_image.cxx
  #endif
  
  #include <Image_AlienPixMap.hxx>
-Index: oce/src/Image/Image_AlienPixMap.cxx
-===================================================================
---- oce.orig/src/Image/Image_AlienPixMap.cxx
-+++ oce/src/Image/Image_AlienPixMap.cxx
-@@ -18,7 +18,7 @@
- // and conditions governing the rights and limitations under the License.
- 
- #ifdef HAVE_CONFIG_H
--  #include <config.h>
-+# include <oce-config.h>
- #endif
- 
- #ifdef HAVE_FREEIMAGE
-Index: oce/src/QAViewer2dTest/QAViewer2dTest_ObjectCommands.cxx
-===================================================================
---- oce.orig/src/QAViewer2dTest/QAViewer2dTest_ObjectCommands.cxx
-+++ oce/src/QAViewer2dTest/QAViewer2dTest_ObjectCommands.cxx
-@@ -22,7 +22,7 @@
- //===============================================
- 
- #ifdef HAVE_CONFIG_H
--# include <config.h>
-+# include <oce-config.h>
- #endif
- 
- #include <QAViewer2dTest.hxx>

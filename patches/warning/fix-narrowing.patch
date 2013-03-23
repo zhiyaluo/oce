@@ -1,8 +1,8 @@
-diff --git a/src/Standard/Standard_CString.cxx b/src/Standard/Standard_CString.cxx
-index 19055bb..6a3a4d7 100644
---- a/src/Standard/Standard_CString.cxx
-+++ b/src/Standard/Standard_CString.cxx
-@@ -89,10 +89,10 @@ Standard_Integer HashCode (const Standard_CString Value,
+Index: oce/src/Standard/Standard_CString.cxx
+===================================================================
+--- oce.orig/src/Standard/Standard_CString.cxx
++++ oce/src/Standard/Standard_CString.cxx
+@@ -89,10 +89,10 @@ Standard_Integer HashCode (const Standar
    static Standard_Integer Standard_Mask_String_Left[4] =
                    { 0 , 0x00ffffff , 0x0000ffff , 0x000000ff } ;
    static Standard_Integer Standard_Mask_String_Right[4] =
@@ -15,6 +15,3 @@ index 19055bb..6a3a4d7 100644
    static Standard_Integer Standard_Mask_String_Right[4] =
                    { 0 , 0x000000ff , 0x0000ffff , 0x00ffffff } ;
  # endif
-diff --git a/src/ViewerTest/EXTERNLIB b/src/ViewerTest/EXTERNLIB
-old mode 100644
-new mode 100755

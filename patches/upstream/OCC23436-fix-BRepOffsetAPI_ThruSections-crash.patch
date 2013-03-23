@@ -10,10 +10,10 @@ Subject: [PATCH] [OCCT] 0023436: BRepOffsetAPI_ThruSections crashes when
  src/BRepOffsetAPI/BRepOffsetAPI_ThruSections.cxx |   22 ++++++++++++++++++++++
  1 file changed, 22 insertions(+)
 
-diff --git a/src/BRepOffsetAPI/BRepOffsetAPI_ThruSections.cxx b/src/BRepOffsetAPI/BRepOffsetAPI_ThruSections.cxx
-index 94028a7..631c26d 100644
---- a/src/BRepOffsetAPI/BRepOffsetAPI_ThruSections.cxx
-+++ b/src/BRepOffsetAPI/BRepOffsetAPI_ThruSections.cxx
+Index: oce/src/BRepOffsetAPI/BRepOffsetAPI_ThruSections.cxx
+===================================================================
+--- oce.orig/src/BRepOffsetAPI/BRepOffsetAPI_ThruSections.cxx
++++ oce/src/BRepOffsetAPI/BRepOffsetAPI_ThruSections.cxx
 @@ -102,7 +102,27 @@
  #include <BRepBuilderAPI_FindPlane.hxx>
  
@@ -42,7 +42,7 @@ index 94028a7..631c26d 100644
  
  //=======================================================================
  //function :  PerformPlan
-@@ -629,6 +649,8 @@ void BRepOffsetAPI_ThruSections::CreateSmoothed()
+@@ -629,6 +649,8 @@ void BRepOffsetAPI_ThruSections::CreateS
      Standard_Real Ui1,Ui2,V0,V1;
      Ui1 = i-1;
      Ui2 = i;
@@ -51,6 +51,3 @@ index 94028a7..631c26d 100644
      V0  = surface->VKnot(surface->FirstVKnotIndex());
      V1  = surface->VKnot(surface->LastVKnotIndex());
      surface->Segment(Ui1,Ui2,V0,V1);
--- 
-1.7.10.4
-

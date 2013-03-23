@@ -107,7 +107,7 @@ Index: oce/src/AIS/AIS_LocalContext.cxx
 ===================================================================
 --- oce.orig/src/AIS/AIS_LocalContext.cxx
 +++ oce/src/AIS/AIS_LocalContext.cxx
-@@ -531,7 +531,7 @@ Standard_Boolean AIS_LocalContext::Remov
+@@ -536,7 +536,7 @@ Standard_Boolean AIS_LocalContext::Remov
    const Handle(V3d_Viewer)& aViewer = myCTX->CurrentViewer();
    for(i = 1; i <= myMapOfOwner.Extent(); i++){
      const Handle(SelectMgr_EntityOwner)& anOwner = myMapOfOwner(i) ;
@@ -116,7 +116,7 @@ Index: oce/src/AIS/AIS_LocalContext.cxx
        if(anOwner->Selectable() != aSelectable)
          ownersToKeep.Add(anOwner);
        else
-@@ -542,6 +542,7 @@ Standard_Boolean AIS_LocalContext::Remov
+@@ -547,6 +547,7 @@ Standard_Boolean AIS_LocalContext::Remov
              Unhilight(anOwner, aViewer->ActiveView());
          }
        }
@@ -221,7 +221,7 @@ Index: oce/src/BRepFill/BRepFill_Sweep.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_Sweep.cxx
 +++ oce/src/BRepFill/BRepFill_Sweep.cxx
-@@ -2234,7 +2234,7 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
+@@ -2240,7 +2240,7 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
  	 }
         }
  
@@ -230,7 +230,7 @@ Index: oce/src/BRepFill/BRepFill_Sweep.cxx
  	if (uclose && (isec == NbLaw)) {
  	  Vertex(isec+1, 1) =  Vertex(1, 1);
  	}  
-@@ -2254,6 +2254,7 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
+@@ -2260,6 +2260,7 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
  	    VEdge(isec, 1) = NullEdge(Vertex(isec, 1)); 
  	  }
  	}
@@ -479,7 +479,7 @@ Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
 ===================================================================
 --- oce.orig/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
 +++ oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
-@@ -3027,14 +3027,16 @@ Standard_Integer IntPolyh_MaillageAffina
+@@ -3023,14 +3023,16 @@ Standard_Integer IntPolyh_MaillageAffina
        }
        else {
  	PI=PE1+Edge*lambda;
@@ -732,7 +732,7 @@ Index: oce/src/SWDRAW/SWDRAW_ShapeUpgrade.cxx
 ===================================================================
 --- oce.orig/src/SWDRAW/SWDRAW_ShapeUpgrade.cxx
 +++ oce/src/SWDRAW/SWDRAW_ShapeUpgrade.cxx
-@@ -1147,21 +1147,25 @@ static Standard_Integer splitface
+@@ -1149,21 +1149,25 @@ static Standard_Integer splitface
    Standard_Real Umin, Umax, Vmin, Vmax;
    S->Bounds ( Umin, Umax, Vmin, Vmax );
    if ( Uf < Umin && ! S->IsUPeriodic() ) Uf = Umin;
@@ -954,7 +954,7 @@ Index: oce/src/TNaming/TNaming_NamedShape.cxx
 ===================================================================
 --- oce.orig/src/TNaming/TNaming_NamedShape.cxx
 +++ oce/src/TNaming/TNaming_NamedShape.cxx
-@@ -1115,7 +1115,7 @@ static void SelectSameShape (TNaming_Nod
+@@ -1030,7 +1030,7 @@ static void SelectSameShape (TNaming_Nod
      if (Trans < 0) Valid = pdn->myAtt->IsValid(); 
      else Valid = pdn->IsValidInTrans(Trans);
  
@@ -963,7 +963,7 @@ Index: oce/src/TNaming/TNaming_NamedShape.cxx
        if (Old) {
  	if( pdn->myOld == RS && pdn->myNew != 0L && pdn->myNew != RS) {
  	  break;
-@@ -1126,6 +1126,7 @@ static void SelectSameShape (TNaming_Nod
+@@ -1041,6 +1041,7 @@ static void SelectSameShape (TNaming_Nod
  	  break;
  	}
        }
@@ -1003,7 +1003,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest.cxx
 +++ oce/src/ViewerTest/ViewerTest.cxx
-@@ -471,13 +471,14 @@ Handle(AIS_Shape) GetAISShapeFromName(co
+@@ -474,13 +474,14 @@ Handle(AIS_Shape) GetAISShapeFromName(co
      const Handle(AIS_InteractiveObject) IO =
        Handle(AIS_InteractiveObject)::DownCast(GetMapOfAIS().Find2(name));
      if (!IO.IsNull()) {
@@ -1019,7 +1019,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
      }
      return retsh;
    }
-@@ -1028,12 +1029,12 @@ static int VSubInt(Draw_Interpretor& di,
+@@ -1049,12 +1050,12 @@ static int VSubInt(Draw_Interpretor& di,
      TCollection_AsciiString name = argv[2];
      if(GetMapOfAIS().IsBound2(name)){
        IO = Handle(AIS_InteractiveObject)::DownCast(GetMapOfAIS().Find2(name));
@@ -1038,7 +1038,7 @@ Index: oce/src/VrmlData/VrmlData_Geometry.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_Geometry.cxx
 +++ oce/src/VrmlData/VrmlData_Geometry.cxx
-@@ -567,7 +567,7 @@ VrmlData_ErrorStatus VrmlData_TextureCoo
+@@ -563,7 +563,7 @@ VrmlData_ErrorStatus VrmlData_TextureCoo
      // Match the name with the current word in the stream
      if (VRMLDATA_LCOMPARE (theBuffer.LinePtr, "point"))
        // Read the body of the data node (comma-separated list of duplets)
@@ -1047,7 +1047,7 @@ Index: oce/src/VrmlData/VrmlData_Geometry.cxx
          if (theBuffer.LinePtr[0] != '[')  // opening bracket
            aStatus = VrmlData_VrmlFormatError;
          else {
-@@ -595,6 +595,7 @@ VrmlData_ErrorStatus VrmlData_TextureCoo
+@@ -591,6 +591,7 @@ VrmlData_ErrorStatus VrmlData_TextureCoo
              }
            }
          }
@@ -1055,7 +1055,7 @@ Index: oce/src/VrmlData/VrmlData_Geometry.cxx
      if (OK(aStatus) && OK(aStatus, readBrace (theBuffer))) {
        myLength = vecValues.Length();
        if (myLength > 0) {
-@@ -656,7 +657,7 @@ VrmlData_ErrorStatus VrmlData_ArrayVec3d
+@@ -652,7 +653,7 @@ VrmlData_ErrorStatus VrmlData_ArrayVec3d
          theBuffer.LinePtr++;
      }
      // Read the body of the data node (list of triplets)
@@ -1064,7 +1064,7 @@ Index: oce/src/VrmlData/VrmlData_Geometry.cxx
        if (theBuffer.LinePtr[0] != '[')  // opening bracket
          aStatus = VrmlData_VrmlFormatError;
        else {
-@@ -683,6 +684,7 @@ VrmlData_ErrorStatus VrmlData_ArrayVec3d
+@@ -679,6 +680,7 @@ VrmlData_ErrorStatus VrmlData_ArrayVec3d
            }
          }
        }
@@ -1265,7 +1265,7 @@ Index: oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
 ===================================================================
 --- oce.orig/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
 +++ oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
-@@ -606,11 +606,12 @@ static Standard_Integer hidesel
+@@ -605,11 +605,12 @@ static Standard_Integer hidesel
      {
        Handle( MeshVS_MeshEntityOwner ) anOwner =
          Handle( MeshVS_MeshEntityOwner )::DownCast( aContext->SelectedOwner() );
@@ -1279,7 +1279,7 @@ Index: oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
      }
      aContext->ClearSelected();
      aMesh->SetHiddenNodes( aHiddenNodes );
-@@ -651,11 +652,12 @@ static Standard_Integer showonly
+@@ -650,11 +651,12 @@ static Standard_Integer showonly
      {
        Handle( MeshVS_MeshEntityOwner ) anOwner =
          Handle( MeshVS_MeshEntityOwner )::DownCast( aContext->SelectedOwner() );

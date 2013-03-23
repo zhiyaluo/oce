@@ -8,11 +8,11 @@ Subject: [PATCH] The "k" variable was already used in an external loop. This
  src/GccAna/GccAna_Circ2d3Tan_2.cxx |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/src/GccAna/GccAna_Circ2d3Tan_2.cxx b/src/GccAna/GccAna_Circ2d3Tan_2.cxx
-index 8bbbb88..e6fcf55 100644
---- a/src/GccAna/GccAna_Circ2d3Tan_2.cxx
-+++ b/src/GccAna/GccAna_Circ2d3Tan_2.cxx
-@@ -205,7 +205,7 @@ pararg3(1,8)
+Index: oce/src/GccAna/GccAna_Circ2d3Tan_2.cxx
+===================================================================
+--- oce.orig/src/GccAna/GccAna_Circ2d3Tan_2.cxx
++++ oce/src/GccAna/GccAna_Circ2d3Tan_2.cxx
+@@ -209,7 +209,7 @@ pararg3(1,8)
  		 }
  	       }
  	       if (ok) {
@@ -21,6 +21,3 @@ index 8bbbb88..e6fcf55 100644
  		   NbrSol++;
  		   cirsol(NbrSol) = gp_Circ2d(gp_Ax2d(Center,dirx),Radius(k));
  //                 ==========================================================
--- 
-1.7.10.4
-

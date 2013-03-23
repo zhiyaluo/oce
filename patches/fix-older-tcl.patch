@@ -4,7 +4,7 @@ Index: oce/src/Draw/Draw_Window.cxx
 +++ oce/src/Draw/Draw_Window.cxx
 @@ -36,6 +36,8 @@
  #include <TCollection_AsciiString.hxx>
- #include <Image_PixMap.hxx>
+ #include <Image_AlienPixMap.hxx>
  
 +#include <stdio.h>
 +

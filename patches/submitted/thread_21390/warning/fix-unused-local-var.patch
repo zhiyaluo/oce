@@ -6744,7 +6744,7 @@ Index: oce/src/IntTools/IntTools_EdgeEdge.cxx
 ===================================================================
 --- oce.orig/src/IntTools/IntTools_EdgeEdge.cxx
 +++ oce/src/IntTools/IntTools_EdgeEdge.cxx
-@@ -694,7 +694,7 @@ IntTools_EdgeEdge::IntTools_EdgeEdge()
+@@ -703,7 +703,7 @@ Standard_Integer IntTools_EdgeEdge::Find
    //
    //
    Standard_Boolean aVFlag1, aVFlag2, aGeomFlag1, aGeomFlag2;
@@ -6753,7 +6753,7 @@ Index: oce/src/IntTools/IntTools_EdgeEdge.cxx
    Standard_Real tV1, tV2;
    //
    // parametric differences for C2
-@@ -730,8 +730,6 @@ IntTools_EdgeEdge::IntTools_EdgeEdge()
+@@ -739,8 +739,6 @@ Standard_Integer IntTools_EdgeEdge::Find
    }
    //
    // geometric distances for C1
@@ -6762,7 +6762,7 @@ Index: oce/src/IntTools/IntTools_EdgeEdge.cxx
    df1l1=aPf1.Distance(aPl1);
    //
    // if geometric distances between boundaries is less than myCriteria
-@@ -857,7 +855,7 @@ IntTools_EdgeEdge::IntTools_EdgeEdge()
+@@ -866,7 +864,7 @@ Standard_Integer IntTools_EdgeEdge::Find
    void IntTools_EdgeEdge::IsIntersection (const Standard_Real ta, 
  					  const Standard_Real tb) 
  {
@@ -6771,7 +6771,7 @@ Index: oce/src/IntTools/IntTools_EdgeEdge.cxx
    Standard_Real t, f;
    GeomAbs_CurveType aCT1, aCT2;
    IntTools_CArray1OfReal anArgs, aFunc;
-@@ -913,7 +911,7 @@ IntTools_EdgeEdge::IntTools_EdgeEdge()
+@@ -922,7 +920,7 @@ Standard_Integer IntTools_EdgeEdge::Find
    }
    //
    // Prepare values of arguments for the interval [ta, tb]
@@ -6780,7 +6780,7 @@ Index: oce/src/IntTools/IntTools_EdgeEdge.cxx
    aNb=anArgs.Length();
  
    aFunc.Resize(aNb);
-@@ -937,7 +935,7 @@ IntTools_EdgeEdge::IntTools_EdgeEdge()
+@@ -946,7 +944,7 @@ Standard_Integer IntTools_EdgeEdge::Find
  					     const IntTools_CArray1OfReal& f)  
  {
    Standard_Integer i, n, k;
@@ -6789,7 +6789,7 @@ Index: oce/src/IntTools/IntTools_EdgeEdge.cxx
    IntTools_CArray1OfReal fd;
    TColStd_SequenceOfReal aTSeq, aFSeq;
    
-@@ -984,7 +982,6 @@ IntTools_EdgeEdge::IntTools_EdgeEdge()
+@@ -993,7 +991,6 @@ Standard_Integer IntTools_EdgeEdge::Find
      //aa
      if (fd1*fd2 < 0.) {
        tr=FindSimpleRoot(2, t1, t2, fd1);
@@ -6797,7 +6797,7 @@ Index: oce/src/IntTools/IntTools_EdgeEdge.cxx
        myPar1=tr;
        myParallel=Standard_False;
        break;
-@@ -992,7 +989,6 @@ IntTools_EdgeEdge::IntTools_EdgeEdge()
+@@ -1001,7 +998,6 @@ Standard_Integer IntTools_EdgeEdge::Find
      
      if (!bF1 && bF2) {
        tr=t2;
@@ -6805,7 +6805,7 @@ Index: oce/src/IntTools/IntTools_EdgeEdge.cxx
        myPar1=tr;
        myParallel=Standard_False;
        break;
-@@ -1000,7 +996,6 @@ IntTools_EdgeEdge::IntTools_EdgeEdge()
+@@ -1009,7 +1005,6 @@ Standard_Integer IntTools_EdgeEdge::Find
      
      if (bF1 && !bF2) {
        tr=t1;
@@ -6813,7 +6813,7 @@ Index: oce/src/IntTools/IntTools_EdgeEdge.cxx
        myPar1=tr;
        myParallel=Standard_False;
        break;
-@@ -1243,7 +1238,7 @@ IntTools_EdgeEdge::IntTools_EdgeEdge()
+@@ -1252,7 +1247,7 @@ Standard_Integer IntTools_EdgeEdge::Find
    Standard_Real aTFR1, aTLR1, aTFR2, aTLR2;
    Standard_Real aTL1, aTL2, aTC1, aTC2;
    Standard_Real aRC, aDLC, aD2, aC2, aTLx, aTCx;
@@ -6822,7 +6822,7 @@ Index: oce/src/IntTools/IntTools_EdgeEdge.cxx
    gp_Circ aCirc;
    gp_Lin  aLine;
    gp_Pnt aPC, aPLx, aPCx;
-@@ -1253,7 +1248,6 @@ IntTools_EdgeEdge::IntTools_EdgeEdge()
+@@ -1262,7 +1257,6 @@ Standard_Integer IntTools_EdgeEdge::Find
    (aCP.Ranges2())(1).Range(aTFR2, aTLR2);
    //
    aTFrom=myCFrom.GetType();
@@ -6830,7 +6830,7 @@ Index: oce/src/IntTools/IntTools_EdgeEdge.cxx
    //
    aTL1=aTFR1;
    aTL2=aTLR1;
-@@ -1429,13 +1423,12 @@ IntTools_EdgeEdge::IntTools_EdgeEdge()
+@@ -1438,13 +1432,12 @@ Standard_Integer IntTools_EdgeEdge::Find
       (myCFrom.GetType() == GeomAbs_Circle && myCTo.GetType() == GeomAbs_Line))
    {
      Standard_Real aRadius;

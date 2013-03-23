@@ -15,9 +15,9 @@ Index: oce/inc/BRepBlend_BlendTool.lxx
 ===================================================================
 --- oce.orig/inc/BRepBlend_BlendTool.lxx
 +++ oce/inc/BRepBlend_BlendTool.lxx
-@@ -19,6 +19,8 @@
- // and conditions governing the rights and limitations under the License.
+@@ -20,6 +20,8 @@
  
+ #include <Adaptor3d_HVertex.hxx>
  
 +#include <Adaptor3d_HVertex.hxx>
 +

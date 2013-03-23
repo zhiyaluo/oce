@@ -36,7 +36,7 @@ Index: oce/oce_build_config.h.cmake
 ===================================================================
 --- oce.orig/oce_build_config.h.cmake
 +++ oce/oce_build_config.h.cmake
-@@ -272,3 +272,6 @@
+@@ -275,3 +275,6 @@
  
  /* Whether OCE is build as static lib */
  #cmakedefine OCE_BUILD_STATIC_LIB
@@ -47,7 +47,7 @@ Index: oce/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
 ===================================================================
 --- oce.orig/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
 +++ oce/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
-@@ -898,6 +898,7 @@ void BRepMesh_FastDiscretFace::InternalV
+@@ -906,6 +906,7 @@ void BRepMesh_FastDiscretFace::InternalV
        }
      }
    }
@@ -55,7 +55,7 @@ Index: oce/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
    else if (thetype == GeomAbs_BezierSurface || thetype == GeomAbs_BSplineSurface)
    {
      //define resolutions
-@@ -1044,6 +1045,7 @@ void BRepMesh_FastDiscretFace::InternalV
+@@ -1052,6 +1053,7 @@ void BRepMesh_FastDiscretFace::InternalV
        }
      }
    }

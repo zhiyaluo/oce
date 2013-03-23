@@ -50,7 +50,7 @@ Index: oce/oce_build_config.h.cmake
 ===================================================================
 --- oce.orig/oce_build_config.h.cmake
 +++ oce/oce_build_config.h.cmake
-@@ -270,3 +270,6 @@
+@@ -272,3 +272,6 @@
  
  /* Define MACOSX_USE_GLX to use X11 OpenGL on OSX */
  #cmakedefine MACOSX_USE_GLX

@@ -147,6 +147,31 @@ Index: oce/src/BlendFunc/BlendFunc_CSCircular.cxx
         //prmc, dprmc, istangent, ray, choix, normtg,
         maxang(RealFirst()),minang(RealLast()),mySShape(BlendFunc_Rational)
         //myTConv
+Index: oce/src/Font/Font_SystemFont.cxx
+===================================================================
+--- oce.orig/src/Font/Font_SystemFont.cxx
++++ oce/src/Font/Font_SystemFont.cxx
+@@ -38,8 +38,8 @@ Font_SystemFont::Font_SystemFont( const
+                                 const Handle(TCollection_HAsciiString)& FilePath ):
+ MyFontName(FontName),
+ MyFontAspect(FontAspect),
+-MyFilePath(FilePath),
+ MyFaceSize(-1),
++MyFilePath(FilePath),
+ MyVerification(Standard_True)
+ {
+ 
+@@ -47,8 +47,8 @@ MyVerification(Standard_True)
+ 
+ Font_SystemFont::Font_SystemFont( const Handle(TCollection_HAsciiString)& XLFD,
+                                 const Handle(TCollection_HAsciiString)& FilePath) :
+-MyFilePath(FilePath),
+-MyFontAspect(Font_FA_Undefined)
++MyFontAspect(Font_FA_Undefined),
++MyFilePath(FilePath)
+ {
+   MyVerification = Standard_True;
+   if ( XLFD.IsNull() )
 Index: oce/src/IntSurf/IntSurf_Quadric.cxx
 ===================================================================
 --- oce.orig/src/IntSurf/IntSurf_Quadric.cxx
@@ -180,31 +205,6 @@ Index: oce/src/NIS/NIS_TriangulatedDrawer.cxx
  {
    myColor[Draw_Normal]       = theNormal;
    myColor[Draw_Top]          = theNormal;
-Index: oce/src/Font/Font_SystemFont.cxx
-===================================================================
---- oce.orig/src/Font/Font_SystemFont.cxx
-+++ oce/src/Font/Font_SystemFont.cxx
-@@ -38,8 +38,8 @@ Font_SystemFont::Font_SystemFont( const Ha
-                                 const Handle(TCollection_HAsciiString)& FilePath ):
- MyFontName(FontName),
- MyFontAspect(FontAspect),
--MyFilePath(FilePath),
- MyFaceSize(-1),
-+MyFilePath(FilePath),
- MyVerification(Standard_True)
- {
- 
-@@ -47,8 +47,8 @@ MyVerification(Standard_True)
- 
- Font_SystemFont::Font_SystemFont( const Handle(TCollection_HAsciiString)& XLFD,
-                                 const Handle(TCollection_HAsciiString)& FilePath) :
--MyFilePath(FilePath),
--MyFontAspect(Font_FA_Undefined)
-+MyFontAspect(Font_FA_Undefined),
-+MyFilePath(FilePath)
- {
-   MyVerification = Standard_True;
-   if ( XLFD.IsNull() )
 Index: oce/src/Prs2d/Prs2d_Dimension.cxx
 ===================================================================
 --- oce.orig/src/Prs2d/Prs2d_Dimension.cxx

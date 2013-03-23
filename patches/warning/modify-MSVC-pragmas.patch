@@ -127,7 +127,7 @@ Index: oce/drv/ExprIntrp/lex.ExprIntrp.c
  #define yy_create_buffer ExprIntrp_create_buffer
  #define yy_delete_buffer ExprIntrp_delete_buffer
  #define yy_scan_buffer ExprIntrp_scan_buffer
-@@ -3221,3 +3226,7 @@ int main()
+@@ -3230,3 +3235,7 @@ int main()
  	return 0;
  	}
  #endif
@@ -196,7 +196,7 @@ Index: oce/drv/StepFile/lex.step.c
  #define yy_create_buffer step_create_buffer
  #define yy_delete_buffer step_delete_buffer
  #define yy_scan_buffer step_scan_buffer
-@@ -1739,3 +1744,7 @@ int main()
+@@ -1748,3 +1753,7 @@ int main()
  	return 0;
  	}
  #endif
@@ -221,7 +221,7 @@ Index: oce/drv/StepFile/step.tab.c
  /*
  #define stepparse STEPparse
  #define steplex STEPlex
-@@ -1016,3 +1022,8 @@ yyerrhandle:
+@@ -957,3 +963,8 @@ yyerrhandle:
    goto yynewstate;
  }
  #line 146 "/misc/dn47/KAS/builds/inv/LocalWOK/wok_entities/LOC/dev/inv-IR-2012-11-09-IR-2012-11-09-OCCT/src/StepFile/step.yacc"
@@ -437,7 +437,7 @@ Index: oce/src/IntTools/IntTools_EdgeFace.cxx
  static
    Standard_Boolean IsCoplanar (const BRepAdaptor_Curve&  ,
  			       const BRepAdaptor_Surface& );
-@@ -1576,7 +1572,3 @@ Standard_Integer AdaptiveDiscret (const
+@@ -1566,7 +1562,3 @@ Standard_Integer AdaptiveDiscret (const
    return iDiscretNew;
  }
  
@@ -479,9 +479,9 @@ Index: oce/src/OSD/OSD_Process.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Process.cxx
 +++ oce/src/OSD/OSD_Process.cxx
-@@ -236,10 +236,6 @@ Standard_Integer OSD_Process::Error()con
- #include <OSD_WNT_1.hxx>
- #include <lmcons.h> /// pour UNLEN  ( see MSDN about GetUserName() )
+@@ -239,10 +239,6 @@ Standard_Integer OSD_Process::Error()con
+ #include <stdint.h>
+ #endif
  
 -#ifdef _MSC_VER
 -#pragma warning( disable : 4700 )
@@ -576,7 +576,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest.cxx
 +++ oce/src/ViewerTest/ViewerTest.cxx
-@@ -71,7 +71,6 @@
+@@ -75,7 +75,6 @@
  #ifdef _MSC_VER
  #define _CRT_SECURE_NO_DEPRECATE
  #pragma warning(4:4190)
@@ -588,7 +588,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
-@@ -144,7 +144,6 @@
+@@ -146,7 +146,6 @@
  
  #ifdef _MSC_VER
  #define _CRT_SECURE_NO_DEPRECATE
@@ -600,7 +600,7 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-@@ -76,7 +76,6 @@
+@@ -78,7 +78,6 @@
  
  #ifdef _MSC_VER
  #define _CRT_SECURE_NO_DEPRECATE

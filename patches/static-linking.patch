@@ -11,10 +11,10 @@ Subject: [PATCH] Fixed linker errors in static build
  src/Standard/Standard_symlink.c                 |    3 ++-
  5 files changed, 16 insertions(+), 12 deletions(-)
 
-diff --git a/inc/InterfaceGraphic_WNT.hxx b/inc/InterfaceGraphic_WNT.hxx
-index 3b6f03e..8bf2cc6 100644
---- a/inc/InterfaceGraphic_WNT.hxx
-+++ b/inc/InterfaceGraphic_WNT.hxx
+Index: oce/inc/InterfaceGraphic_WNT.hxx
+===================================================================
+--- oce.orig/inc/InterfaceGraphic_WNT.hxx
++++ oce/inc/InterfaceGraphic_WNT.hxx
 @@ -43,6 +43,8 @@
  #define WDF_NOERASEBKGRND 0x00000001
  #define WDF_FOREIGN       0x00000002
@@ -33,18 +33,19 @@ index 3b6f03e..8bf2cc6 100644
 -#endif  /* __cplusplus */
 -
 -  __declspec( dllimport ) long InterfaceGraphic_RealizePalette ( HDC, HPALETTE, BOOL, BOOL );
-+Standard_IMPORTC long InterfaceGraphic_RealizePalette ( HDC, HPALETTE, BOOL, BOOL );
- 
+-
 -#ifdef __cplusplus
 -}
 -#endif  /* __cplusplus */
++Standard_IMPORTC long InterfaceGraphic_RealizePalette ( HDC, HPALETTE, BOOL, BOOL );
++
  #endif //WNT
  
  #endif  /* __INTERFACE_GRAPHIC_WNT_HXX */
-diff --git a/inc/Standard_Atomic.hxx b/inc/Standard_Atomic.hxx
-index 29a71cc..df2ed87 100644
---- a/inc/Standard_Atomic.hxx
-+++ b/inc/Standard_Atomic.hxx
+Index: oce/inc/Standard_Atomic.hxx
+===================================================================
+--- oce.orig/inc/Standard_Atomic.hxx
++++ oce/inc/Standard_Atomic.hxx
 @@ -42,8 +42,8 @@
      }
    #else
@@ -56,11 +57,11 @@ index 29a71cc..df2ed87 100644
      }
      #define _InterlockedIncrement InterlockedIncrement
      #define _InterlockedDecrement InterlockedDecrement
-diff --git a/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx b/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
-index 2ee9998..71edcfa 100644
---- a/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
-+++ b/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
-@@ -135,6 +135,12 @@ void Graphic3d_WNTGraphicDevice::SetGraphicDriver ()
+Index: oce/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
++++ oce/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
+@@ -131,6 +131,12 @@ void Graphic3d_WNTGraphicDevice::SetGrap
  {
       MyGraphicDriver = MetaGraphicDriverFactory("");
  }
@@ -73,10 +74,10 @@ index 2ee9998..71edcfa 100644
  #endif
  
  #endif  // WNT
-diff --git a/src/InterfaceGraphic/InterfaceGraphic_Palette.c b/src/InterfaceGraphic/InterfaceGraphic_Palette.c
-index e3612b6..2c2f594 100644
---- a/src/InterfaceGraphic/InterfaceGraphic_Palette.c
-+++ b/src/InterfaceGraphic/InterfaceGraphic_Palette.c
+Index: oce/src/InterfaceGraphic/InterfaceGraphic_Palette.c
+===================================================================
+--- oce.orig/src/InterfaceGraphic/InterfaceGraphic_Palette.c
++++ oce/src/InterfaceGraphic/InterfaceGraphic_Palette.c
 @@ -40,6 +40,8 @@ int _a_horreur_du_vide_a_la_compilation;
  #define BLACK RGB(   0,   0,   0 )
  #define WHITE RGB( 255, 255, 255 )
@@ -86,7 +87,7 @@ index e3612b6..2c2f594 100644
  static int s_sysPalIdx[ NB_STATIC_COLORS ] = {
  
              COLOR_SCROLLBAR, 
-@@ -105,7 +107,7 @@ static COLORREF s_sysPalBW[ NB_STATIC_COLORS ] = {
+@@ -105,7 +107,7 @@ static COLORREF s_sysPalBW[ NB_STATIC_CO
  static BOOL     s_sysUse;
  static COLORREF s_sysPal[ NB_STATIC_COLORS ];
  
@@ -95,10 +96,10 @@ index e3612b6..2c2f594 100644
  
   int i;
   long retVal = 0;
-diff --git a/src/Standard/Standard_symlink.c b/src/Standard/Standard_symlink.c
-index 0e0970b..b7fe6d1 100644
---- a/src/Standard/Standard_symlink.c
-+++ b/src/Standard/Standard_symlink.c
+Index: oce/src/Standard/Standard_symlink.c
+===================================================================
+--- oce.orig/src/Standard/Standard_symlink.c
++++ oce/src/Standard/Standard_symlink.c
 @@ -30,6 +30,7 @@
  #define STRICT
  #include <windows.h>
@@ -107,7 +108,7 @@ index 0e0970b..b7fe6d1 100644
  
  #ifdef __cplusplus
  extern "C" int symlink ( const _TCHAR*, const _TCHAR* );
-@@ -37,7 +38,7 @@ extern "C" int symlink ( const _TCHAR*, const _TCHAR* );
+@@ -37,7 +38,7 @@ extern "C" int symlink ( const _TCHAR*,
  /***/
  /******************************* symlink **************************************/
  /***/
@@ -116,6 +117,3 @@ index 0e0970b..b7fe6d1 100644
  
   return CopyFile ( name1, name2, FALSE ) == TRUE ? 0 : -1;
  
--- 
-1.7.10.4
-

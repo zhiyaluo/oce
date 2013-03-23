@@ -782,6 +782,26 @@ Index: oce/CMakeLists.txt
 +
 +add_custom_target(uninstall
 +    COMMAND ${CMAKE_COMMAND} -P ${CMAKE_CURRENT_BINARY_DIR}/cmake_uninstall.cmake)
+Index: oce/ProjectConfig.cmake.in
+===================================================================
+--- oce.orig/ProjectConfig.cmake.in
++++ oce/ProjectConfig.cmake.in
+@@ -4,6 +4,7 @@
+ #  ${PROJECT_NAME}_LIBRARIES    - all libraries to link against (warning, may be slower than just specify the used libs)
+ #  ${PROJECT_NAME}_ALL_FOUND    - set to TRUE if all requested COMPONENTS are specified (see below), false otherwise
+ #  ${PROJECT_NAME}_MISSING_TOOLKITS - when ${PROJECT_NAME}_ALL_FOUND is FALSE, contains a list of missing toolkits
++#  ${PROJECT_NAME}_ALL_BUILT_MODULES - the list of source directories compiled (mostly useful when running swig to generate wrappers)
+ #
+ # If COMPONENTS is specified in the find_package() commands, it contains
+ # a list of toolkit modules which are requested.  For each component,
+@@ -18,6 +19,7 @@ GET_FILENAME_COMPONENT(SELF_DIR "${CMAKE
+ 
+ SET(@PROJECT_NAME@_INCLUDE_DIRS "${SELF_DIR}/@OCE_CMAKE_DATA_TO_INCLUDE_RELATIVE_DIR@")
+ SET(@PROJECT_NAME@_LIBRARIES "@OCE_LIBRARIES@")
++SET(@PROJECT_NAME@_ALL_BUILT_MODULES "@OCE_ALL_BUILT_MODULES@")
+ INCLUDE("${SELF_DIR}/@PROJECT_NAME@-libraries.cmake")
+ 
+ SET(@PROJECT_NAME@_ALL_FOUND true)
 Index: oce/Version.rc.cmake
 ===================================================================
 --- oce.orig/Version.rc.cmake
@@ -1179,6 +1199,18 @@ Index: oce/adm/cmake/DRAWEXE/CMakeLists.txt
  
  IF(WIN32 AND (CMAKE_CONFIGURATION_TYPES OR NMAKE))
  	SET_TARGET_PROPERTIES(${TOOLKIT_APP} PROPERTIES
+Index: oce/adm/cmake/TKCAF/CMakeLists.txt
+===================================================================
+--- oce.orig/adm/cmake/TKCAF/CMakeLists.txt
++++ oce/adm/cmake/TKCAF/CMakeLists.txt
+@@ -8,6 +8,7 @@ SET(TOOLKIT_MODULES
+ )
+ SET(TOOLKIT_DEPENDS
+ 	TKernel
++	TKBO
+ 	TKLCAF
+ 	TKG3d
+ 	TKGeomBase
 Index: oce/adm/cmake/TKMesh/CMakeLists.txt
 ===================================================================
 --- oce.orig/adm/cmake/TKMesh/CMakeLists.txt
@@ -1481,38 +1513,6 @@ Index: oce/oce_build_config.h.cmake
 -#cmakedefine OCE_DISABLE_BSPLINE_MESHER
 +/* Define MACOSX_USE_GLX to use X11 OpenGL on OSX */
 +#cmakedefine MACOSX_USE_GLX
-Index: oce/ProjectConfig.cmake.in
-===================================================================
---- oce.orig/ProjectConfig.cmake.in
-+++ oce/ProjectConfig.cmake.in
-@@ -4,6 +4,7 @@
- #  ${PROJECT_NAME}_LIBRARIES    - all libraries to link against (warning, may be slower than just specify the used libs)
- #  ${PROJECT_NAME}_ALL_FOUND    - set to TRUE if all requested COMPONENTS are specified (see below), false otherwise
- #  ${PROJECT_NAME}_MISSING_TOOLKITS - when ${PROJECT_NAME}_ALL_FOUND is FALSE, contains a list of missing toolkits
-+#  ${PROJECT_NAME}_ALL_BUILT_MODULES - the list of source directories compiled (mostly useful when running swig to generate wrappers)
- #
- # If COMPONENTS is specified in the find_package() commands, it contains
- # a list of toolkit modules which are requested.  For each component,
-@@ -18,6 +19,7 @@ GET_FILENAME_COMPONENT(SELF_DIR "${CMAKE
- 
- SET(@PROJECT_NAME@_INCLUDE_DIRS "${SELF_DIR}/@OCE_CMAKE_DATA_TO_INCLUDE_RELATIVE_DIR@")
- SET(@PROJECT_NAME@_LIBRARIES "@OCE_LIBRARIES@")
-+SET(@PROJECT_NAME@_ALL_BUILT_MODULES "@OCE_ALL_BUILT_MODULES@")
- INCLUDE("${SELF_DIR}/@PROJECT_NAME@-libraries.cmake")
- 
- SET(@PROJECT_NAME@_ALL_FOUND true)
-Index: oce/adm/cmake/TKCAF/CMakeLists.txt
-===================================================================
---- oce.orig/adm/cmake/TKCAF/CMakeLists.txt
-+++ oce/adm/cmake/TKCAF/CMakeLists.txt
-@@ -8,6 +8,7 @@ SET(TOOLKIT_MODULES
- )
- SET(TOOLKIT_DEPENDS
- 	TKernel
-+	TKBO
- 	TKLCAF
- 	TKG3d
- 	TKGeomBase
 Index: oce/oce_build_paths.h.cmake
 ===================================================================
 --- /dev/null

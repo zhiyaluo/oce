@@ -86,7 +86,7 @@ Index: oce/src/Extrema/Extrema_GenExtPS.cxx
 ===================================================================
 --- oce.orig/src/Extrema/Extrema_GenExtPS.cxx
 +++ oce/src/Extrema/Extrema_GenExtPS.cxx
-@@ -43,6 +43,8 @@
+@@ -52,6 +52,8 @@
  
  class Bnd_SphereUBTreeSelector : public Extrema_UBTreeOfSphere::Selector
  {

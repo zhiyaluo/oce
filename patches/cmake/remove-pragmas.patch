@@ -44,6 +44,21 @@ Index: oce/src/OpenGl/OpenGl_FontMgr.cxx
  #undef TRACE
  
  #define DEFAULT_FONT_HEIGHT 16
+Index: oce/src/OpenGl/OpenGl_Workspace_2.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_Workspace_2.cxx
++++ oce/src/OpenGl/OpenGl_Workspace_2.cxx
+@@ -31,10 +31,6 @@
+ #ifdef HAVE_FREEIMAGE
+   #include <NCollection_Handle.hxx>
+   #include <FreeImagePlus.h>
+-  #ifdef _MSC_VER
+-  #pragma comment( lib, "FreeImage.lib" )
+-  #pragma comment( lib, "FreeImagePlus.lib" )
+-  #endif
+   typedef NCollection_Handle<fipImage> FipHandle;
+ #endif
+ 
 Index: oce/src/OpenGl/OpenGl_Workspace_5.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_Workspace_5.cxx
@@ -60,18 +75,3 @@ Index: oce/src/OpenGl/OpenGl_Workspace_5.cxx
  #endif
  
  #include <OpenGl_TextureBox.hxx>
-Index: oce/src/OpenGl/OpenGl_Workspace_2.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_Workspace_2.cxx
-+++ oce/src/OpenGl/OpenGl_Workspace_2.cxx
-@@ -31,10 +31,6 @@
- #ifdef HAVE_FREEIMAGE
-   #include <NCollection_Handle.hxx>
-   #include <FreeImagePlus.h>
--  #ifdef _MSC_VER
--  #pragma comment( lib, "FreeImage.lib" )
--  #pragma comment( lib, "FreeImagePlus.lib" )
--  #endif
-   typedef NCollection_Handle<fipImage> FipHandle;
- #endif
- 

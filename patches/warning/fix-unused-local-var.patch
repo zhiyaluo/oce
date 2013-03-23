@@ -203,6 +203,104 @@ Index: oce/inc/ApproxInt_Approx.gxx
      (POn2S.*pfunc)(U,V);
      if(U<u0) u0=U;
      if(U>u1) u1=U;
+Index: oce/inc/Approx_ComputeLine.gxx
+===================================================================
+--- oce.orig/inc/Approx_ComputeLine.gxx
++++ oce/inc/Approx_ComputeLine.gxx
+@@ -623,7 +623,6 @@ void Approx_ComputeLine::Perform(const M
+ 	// ========================================
+ 	GoUp = Standard_False;
+ 	Ok = Standard_True;
+-	Standard_Boolean FailOnPointsAdded = Standard_False;
+ 	if (MyStatus == Approx_PointsAdded) {
+ 	  // Appel recursif du decoupage:
+ 	  GoUp = Standard_True;
+@@ -637,7 +636,6 @@ void Approx_ComputeLine::Perform(const M
+ 	  //-- Si MakeML a echoue   on retourne une ligne vide
+ 	  if ((nbpdsotherligne == 0) || myMultiLineNb >= 3)
+ 	  {
+-	    FailOnPointsAdded = Standard_True; 
+ 	    //-- cout<<" ** ApproxComputeLine MakeML Echec ** LBR lbr "<<endl;
+ 	    if (myfirstpt == mylastpt) break;  // Pour etre sur de ne pas 
+ 	    // planter la station !!
+@@ -833,11 +831,10 @@ void Approx_ComputeLine::Parameters(cons
+ 			       const Standard_Integer lastP,
+ 			       math_Vector& TheParameters) const
+ {
+-  Standard_Integer i, j, Nbp, nbP2d, nbP3d;
++  Standard_Integer i, j, nbP2d, nbP3d;
+   Standard_Real dist;
+   gp_Pnt P1, P2;
+   gp_Pnt2d P12d, P22d;
+-  Nbp = lastP-firstP+1;
+ 
+   if (Par == Approx_ChordLength || Par == Approx_Centripetal) {
+     nbP3d = LineTool::NbP3d(Line);
+@@ -999,12 +996,12 @@ Standard_Boolean  Approx_ComputeLine::Co
+   gp_Vec2d V12d, V22d;
+   gp_Pnt P1, P2;
+   gp_Pnt2d P12d, P22d;
+-  Standard_Boolean Tangent1, Tangent2, Parallel, mydone= Standard_False;
++  Standard_Boolean Tangent1, Tangent2, mydone= Standard_False;
++#ifdef DEB
++  Standard_Boolean Parallel;
++#endif
+   Standard_Integer myfirstpt = firstpt, mylastpt = lastpt;
+   Standard_Integer nbp = lastpt-firstpt+1, Kopt = 0;
+-  AppParCurves_Constraint FirstC, LastC;
+-  FirstC = AppParCurves_PassPoint;
+-  LastC = AppParCurves_PassPoint;
+   math_Vector Para(firstpt, lastpt);
+ 
+   Parameters(Line, firstpt, lastpt, Para);
+@@ -1047,13 +1044,17 @@ Standard_Boolean  Approx_ComputeLine::Co
+   if (nbp == 2) {
+     // S il n y a que 2 points, on verifie quand meme que les tangentes sont 
+     // alignees.
++#ifdef DEB
+     Parallel = Standard_True;
++#endif
+     if (Tangent1) {
+       for (i = 1; i <= nbP3d; i++) {
+ 	gp_Vec PVec(tabP1(i), tabP2(i));
+ 	V13d = tabV1(i);
+ 	if (!PVec.IsParallel(V13d, Precision::Angular())) {
++#ifdef DEB
+ 	  Parallel = Standard_False;
++#endif
+ 	  break;
+ 	}
+       }
+@@ -1061,7 +1062,9 @@ Standard_Boolean  Approx_ComputeLine::Co
+ 	gp_Vec2d PVec2d(tabP12d(i), tabP22d(i));
+ 	V12d = tabV12d(i);
+ 	if (!PVec2d.IsParallel(V12d, Precision::Angular())) {
++#ifdef DEB
+ 	  Parallel = Standard_False;
++#endif
+ 	  break;
+ 	}
+       }
+@@ -1072,7 +1075,9 @@ Standard_Boolean  Approx_ComputeLine::Co
+ 	gp_Vec PVec(tabP1(i), tabP2(i));
+ 	V23d = tabV2(i);
+ 	if (!PVec.IsParallel(V23d, Precision::Angular())) {
++#ifdef DEB
+ 	  Parallel = Standard_False;
++#endif
+ 	  break;
+ 	}
+       }
+@@ -1080,7 +1085,9 @@ Standard_Boolean  Approx_ComputeLine::Co
+ 	gp_Vec2d PVec2d(tabP12d(i), tabP22d(i));
+ 	V22d = tabV22d(i);
+ 	if (!PVec2d.IsParallel(V22d, Precision::Angular())) {
++#ifdef DEB
+ 	  Parallel = Standard_False;
++#endif
+ 	  break;
+ 	}
+       }
 Index: oce/inc/Contap_ContourGen_2.gxx
 ===================================================================
 --- oce.orig/inc/Contap_ContourGen_2.gxx
@@ -216,6 +314,18 @@ Index: oce/inc/Contap_ContourGen_2.gxx
  
    if (Line.TypeContour() != Contap_Restriction) {
      return;
+Index: oce/inc/Extrema_GExtPC.gxx
+===================================================================
+--- oce.orig/inc/Extrema_GExtPC.gxx
++++ oce/inc/Extrema_GExtPC.gxx
+@@ -105,7 +105,6 @@ void Extrema_GExtPC::Perform(const ThePo
+       n = TheCurveTool::NbIntervals(*((TheCurve*)myC), GeomAbs_C2);
+       TColStd_Array1OfReal theInter(1, n+1);
+       Standard_Boolean isPeriodic = TheCurveTool::IsPeriodic(*((TheCurve*)myC));
+-      Standard_Real aPeriodicShift = 0.;
+       TheCurveTool::Intervals(*((TheCurve*)myC), theInter, GeomAbs_C2);
+       mysample = Max(mysample/n, 17);
+       TheVector V1;
 Index: oce/inc/GCPnts_TangentialDeflection.gxx
 ===================================================================
 --- oce.orig/inc/GCPnts_TangentialDeflection.gxx
@@ -250,6 +360,27 @@ Index: oce/inc/IntCurveSurface_Polyhedron.gxx
    if (Triang!=0) {
      t = (Triang-1)/(nbdeltaVm2);
      tt= (Triang-1)-t*nbdeltaVm2;
+Index: oce/inc/IntStart_SearchOnBoundaries_1.gxx
+===================================================================
+--- oce.orig/inc/IntStart_SearchOnBoundaries_1.gxx
++++ oce/inc/IntStart_SearchOnBoundaries_1.gxx
+@@ -772,7 +772,7 @@ Standard_Integer TreatLC (const TheArc&
+     return anExitCode;
+   }
+   
+-  Standard_Real f, l, U1f, U1l, U2f, U2l, U1, UEgde, TOL, aDist, aR, aRRel, Tol;
++  Standard_Real f, l, U1f, U1l, U2f, U2l, UEgde, TOL, aDist, aR, aRRel, Tol;
+   Handle(Geom_Curve) aCEdge=BRep_Tool::Curve(*anE, f, l);
+   
+   gp_Cylinder aCyl=aQuadric.Cylinder();
+@@ -810,7 +810,6 @@ Standard_Integer TreatLC (const TheArc&
+   P1   =PC1.Value();
+   PEdge=PC2.Value();
+   
+-  U1=PC1.Parameter();
+   UEgde=PC2.Parameter();
+   
+   aDist=PEdge.Distance(P1);
 Index: oce/inc/Primitives_Wedge.gxx
 ===================================================================
 --- oce.orig/inc/Primitives_Wedge.gxx
@@ -359,6 +490,19 @@ Index: oce/inc/Primitives_Wedge.gxx
      };
      
      gp_Lin L = Line(d1,d2);
+Index: oce/inc/QANCollection_PerfSparseArray.hxx
+===================================================================
+--- oce.orig/inc/QANCollection_PerfSparseArray.hxx
++++ oce/inc/QANCollection_PerfSparseArray.hxx
+@@ -51,7 +51,7 @@ void CompSparseArray (const Standard_Int
+       PERF_STOP_METER("NCollection_SparseArray filling")
+       
+       PERF_START_METER("NCollection_SparseArray size")
+-          Standard_Integer sizeSparseArray=a1.Size();
++          a1.Size();
+       PERF_STOP_METER("NCollection_SparseArray size")
+       
+       PERF_START_METER("NCollection_Array1 Assign")
 Index: oce/inc/TopClass_FaceClassifier.gxx
 ===================================================================
 --- oce.orig/inc/TopClass_FaceClassifier.gxx
@@ -425,6 +569,28 @@ Index: oce/src/AIS/AIS_DiameterDimension.cxx
    if (myAutomaticPosition) {
      Handle(Geom_Curve) curv;
      gp_Pnt ptfirst,ptend;
+Index: oce/src/AIS/AIS_InteractiveContext.cxx
+===================================================================
+--- oce.orig/src/AIS/AIS_InteractiveContext.cxx
++++ oce/src/AIS/AIS_InteractiveContext.cxx
+@@ -284,15 +284,14 @@ void AIS_InteractiveContext::DisplayedOb
+ #endif
+ 
+     //parse all local contexts...
++#ifdef DEBUG
+     Standard_Integer NbDisp;
+     for(AIS_DataMapIteratorOfDataMapOfILC it1(myLocalContexts);it1.More();it1.Next()){
+       const Handle(AIS_LocalContext)& LC = it1.Value();
+       NbDisp =  LC->DisplayedObjects(theMap);
+-#ifdef DEBUG
+       cout<<"\tIn Local Context "<<it1.Key()<<" : "<<NbDisp<<endl;
+-#endif
+-      
+     }
++#endif
+     Handle(AIS_InteractiveObject) curIO;
+     Handle(Standard_Transient) Tr;
+       for(TColStd_MapIteratorOfMapOfTransient it2(theMap);it2.More();it2.Next()){
 Index: oce/src/AIS/AIS_TexturedShape.cxx
 ===================================================================
 --- oce.orig/src/AIS/AIS_TexturedShape.cxx
@@ -444,6 +610,37 @@ Index: oce/src/AIS/AIS_TexturedShape.cxx
  
        if (OwnDeviationAngle (newangle, prevangle) || OwnDeviationCoefficient (newcoeff, prevcoeff))
        {
+Index: oce/src/AdvApp2Var/AdvApp2Var_Patch.cxx
+===================================================================
+--- oce.orig/src/AdvApp2Var/AdvApp2Var_Patch.cxx
++++ oce/src/AdvApp2Var/AdvApp2Var_Patch.cxx
+@@ -113,11 +113,9 @@ void AdvApp2Var_Patch::Discretise(const
+ {
+ 
+ // data stored in the Context
+-  Standard_Integer NDIMEN, NBSESP, NDIMSE, ISOFAV;
++  Standard_Integer NDIMEN, ISOFAV;
+   NDIMEN = Conditions.TotalDimension();
+-  NBSESP = Conditions.TotalNumberSSP();
+ // Attention : works only for 3D
+-  NDIMSE = 3;
+   ISOFAV = Conditions.FavorIso();
+ 
+ // data related to the patch to be discretized
+@@ -408,12 +406,10 @@ void AdvApp2Var_Patch::AddConstraints(co
+ 				      const AdvApp2Var_Framework& Constraints)
+ {
+ // data stored in the  Context
+-  Standard_Integer NDIMEN, NBSESP, NDIMSE;
++  Standard_Integer NDIMEN;
+   Standard_Integer IERCOD, NCFLMU, NCFLMV, NDegU, NDegV;
+   NDIMEN = Conditions.TotalDimension();
+-  NBSESP = Conditions.TotalNumberSSP();
+ // Attention : works only for 3D
+-  NDIMSE = 3;
+   NCFLMU = Conditions.ULimit();
+   NCFLMV = Conditions.VLimit();
+   NDegU = NCFLMU - 1;
 Index: oce/src/AdvApp2Var/AdvApp2Var_SysBase.cxx
 ===================================================================
 --- oce.orig/src/AdvApp2Var/AdvApp2Var_SysBase.cxx
@@ -497,6 +694,27 @@ Index: oce/src/AlienImage/AlienImage_BMPAlienData.cxx
    Standard_Address lpVoid;
    Quantity_Color color;
    Standard_Real r, g, b;
+Index: oce/src/BOP/BOP_ShellShell.cxx
+===================================================================
+--- oce.orig/src/BOP/BOP_ShellShell.cxx
++++ oce/src/BOP/BOP_ShellShell.cxx
+@@ -231,7 +231,7 @@ void BOP_ShellShell::BuildResult()
+   //
+   // vars
+   Standard_Boolean bIsTouchCase, bIsTouch;
+-  Standard_Integer i, aNb, j, aNbj, iFF, nF1, iRank, nF2;
++  Standard_Integer i, aNb, j, aNbj, iFF, nF1, iRank;
+   TopTools_ListOfShape aListOfNewFaces;
+   TopTools_IndexedMapOfShape anEMap;
+   TopAbs_Orientation anOriF1;
+@@ -291,7 +291,6 @@ void BOP_ShellShell::BuildResult()
+ 	BOPTools_SSInterference& aFF=aFFs(iFF);
+ 	bIsTouch=aFF.IsTangentFaces();
+ 	if (bIsTouch) {
+-	  nF2=aFF.OppositeIndex(nF1);
+ 	  AddINON2DPartsSh(nF1, iFF, aWES1);
+ 	}
+       }
 Index: oce/src/BOPTest/BOPTest_LowCommands.cxx
 ===================================================================
 --- oce.orig/src/BOPTest/BOPTest_LowCommands.cxx
@@ -510,6 +728,48 @@ Index: oce/src/BOPTest/BOPTest_LowCommands.cxx
    Standard_Real aTol, aUMin, aUMax, aVMin, aVMax;
    gp_Pnt2d aP2DInf;
    TopAbs_State aState;
+Index: oce/src/BOPTools/BOPTools_PaveFiller_1.cxx
+===================================================================
+--- oce.orig/src/BOPTools/BOPTools_PaveFiller_1.cxx
++++ oce/src/BOPTools/BOPTools_PaveFiller_1.cxx
+@@ -358,14 +358,14 @@ void BOPTools_PaveFiller::PerformEF()
+ 	      //
+ 	      BooleanOperations_AncestorsSeqAndSuccessorsSeq anASSeq; 
+ 	      //
+-	      Standard_Integer nVF, iFlag;
++	      Standard_Integer nVF;
+ 	      nVF=CheckFacePaves(aNewVertex, nF);
+ 	      if (nVF) {
+ 		const TopoDS_Vertex& aVF=TopoDS::Vertex(myDS->Shape(nVF));
+ 		
+ 		Standard_Real aTNew;
+ 		//
+-		iFlag=myContext->ComputeVE(aVF, aE, aTNew);
++		myContext->ComputeVE(aVF, aE, aTNew);
+ 		//
+ 		aT=aTNew;
+ 		aNewShape=nVF;
+Index: oce/src/BOPTools/BOPTools_PaveFiller_3.cxx
+===================================================================
+--- oce.orig/src/BOPTools/BOPTools_PaveFiller_3.cxx
++++ oce/src/BOPTools/BOPTools_PaveFiller_3.cxx
+@@ -3381,7 +3381,7 @@ void BOPTools_PaveFiller::PutClosingPave
+ {
+   Standard_Boolean bIsClosed, bHasBounds, bAdded;
+   Standard_Integer nVC, j;
+-  Standard_Real aT[2], aTolR3D, aTC, dT, aTx;
++  Standard_Real aT[2], aTC, dT, aTx;
+   gp_Pnt aP[2] ; 
+   BOPTools_Pave aPVx;
+   BOPTools_ListIteratorOfListOfPave aItLP;
+@@ -3404,7 +3404,6 @@ void BOPTools_PaveFiller::PutClosingPave
+   // 
+   bAdded=Standard_False;
+   dT=Precision::PConfusion();
+-  aTolR3D=aFFi.TolR3D();
+   aIC.Bounds (aT[0], aT[1], aP[0], aP[1]);
+   //
+   BOPTools_PaveSet& aFFiPS=aFFi.NewPaveSet();
 Index: oce/src/BRepClass3d/BRepClass3d_SClassifier.cxx
 ===================================================================
 --- oce.orig/src/BRepClass3d/BRepClass3d_SClassifier.cxx
@@ -523,6 +783,49 @@ Index: oce/src/BRepClass3d/BRepClass3d_SClassifier.cxx
    gp_Pnt A,B;
    gp_Dir aDN1, aDN2;
    TopoDS_Face aF1, aF2;
+Index: oce/src/BRepFeat/BRepFeat_MakeLinearForm.cxx
+===================================================================
+--- oce.orig/src/BRepFeat/BRepFeat_MakeLinearForm.cxx
++++ oce/src/BRepFeat/BRepFeat_MakeLinearForm.cxx
+@@ -1037,18 +1037,16 @@ void BRepFeat_MakeLinearForm::Perform()
+ 
+   TopoDS_Vertex Vprevious;
+   gp_Pnt ptprev;
+-  Standard_Real tvp, dp;
++  Standard_Real dp;
+ 
+   while (!(LastOK && FirstOK)) {
+     if (v1OK) {
+       Vprevious=v2;
+       ptprev=p2;
+-      tvp=t2;
+     }
+     else {
+       Vprevious=v1;
+       ptprev=p1;
+-      tvp=t1;
+     }
+     
+     // find edge connected to v1 or v2:
+Index: oce/src/BRepFeat/BRepFeat_RibSlot.cxx
+===================================================================
+--- oce.orig/src/BRepFeat/BRepFeat_RibSlot.cxx
++++ oce/src/BRepFeat/BRepFeat_RibSlot.cxx
+@@ -144,14 +144,12 @@ void BRepFeat_RibSlot::LFPerform()
+ 
+   Standard_Boolean ChangeOpe = Standard_False;
+       // Hope that there is just a solid in the result
+-  Standard_Boolean UntilInShape = Standard_False;
+ 
+   TopTools_MapOfShape M;
+   TopTools_ListOfShape LShape;
+   TopTools_ListOfShape LTool;
+ 
+   if (!mySUntil.IsNull()) {
+-    UntilInShape = Standard_True;
+     for (exp2.Init(mySUntil,TopAbs_FACE); exp2.More(); exp2.Next()) {
+       const TopoDS_Shape& funtil = exp2.Current();
+       for (exp.Init(mySbase,TopAbs_FACE); exp.More(); exp.Next()) {
 Index: oce/src/BRepFill/BRepFill_Filling.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_Filling.cxx
@@ -595,6 +898,40 @@ Index: oce/src/BRepFill/BRepFill_NSections.cxx
  
   for (jj=1; jj<=myShapes.Length(); jj++) {
  
+Index: oce/src/BRepFill/BRepFill_Sweep.cxx
+===================================================================
+--- oce.orig/src/BRepFill/BRepFill_Sweep.cxx
++++ oce/src/BRepFill/BRepFill_Sweep.cxx
+@@ -1694,7 +1694,9 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
+   LastShape  = Last; 
+ 
+   // It is necessary to check the SameRange on its (PRO13551)
++#ifdef DEB
+   Standard_Boolean issame = Standard_True;
++#endif
+   BRep_Builder B;
+   BRepTools_WireExplorer wexp;
+   if (!FirstShape.IsNull()) {
+@@ -1702,7 +1704,9 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
+       if (!BRepLib::CheckSameRange(wexp.Current())) {
+ 	B.SameRange(wexp.Current(), Standard_False);
+ 	B.SameParameter(wexp.Current(), Standard_False);
++#ifdef DEB
+ 	issame = Standard_False;
++#endif
+       }
+     }
+   }
+@@ -1712,7 +1716,9 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
+       if (!BRepLib::CheckSameRange(wexp.Current())) {
+ 	B.SameRange(wexp.Current(), Standard_False); 
+ 	B.SameParameter(wexp.Current(), Standard_False);
++#ifdef DEB
+ 	issame = Standard_False;
++#endif
+       }
+     }
+   }
 Index: oce/src/BRepFill/BRepFill_TrimSurfaceTool.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_TrimSurfaceTool.cxx
@@ -612,6 +949,88 @@ Index: oce/src/BRepFill/BRepFill_TrimSurfaceTool.cxx
    BRep_Tool::UVPoints(Edge,Face,PE1,PE2);
    VDeg = PE1.Y();
    TopExp_Explorer Exp(Face,TopAbs_EDGE);
+Index: oce/src/BRepGProp/BRepGProp.cxx
+===================================================================
+--- oce.orig/src/BRepGProp/BRepGProp.cxx
++++ oce/src/BRepGProp/BRepGProp.cxx
+@@ -62,7 +62,10 @@ void  BRepGProp::LinearProperties(const
+ }
+ 
+ static Standard_Real surfaceProperties(const TopoDS_Shape& S, GProp_GProps& Props, const Standard_Real Eps){
+-  Standard_Integer i, iErrorMax = 0;
++  Standard_Integer i;
++#ifdef DEB
++  Standard_Integer iErrorMax = 0;
++#endif
+   Standard_Real ErrorMax = 0.0, Error;
+   TopExp_Explorer ex; 
+   gp_Pnt P(roughBaryCenter(S));
+@@ -78,7 +81,12 @@ static Standard_Real surfaceProperties(c
+     if(Eps < 1.0) {
+       G.Perform(BF, BD, Eps); 
+       Error = G.GetEpsilon();
+-      if(ErrorMax < Error){ ErrorMax = Error; iErrorMax = i;}
++      if(ErrorMax < Error) {
++        ErrorMax = Error;
++#ifdef DEB
++        iErrorMax = i;
++#endif
++      }
+     } else {
+       if(BF.NaturalRestriction()) G.Perform(BF);
+       else G.Perform(BF, BD);
+@@ -114,7 +122,10 @@ Standard_Real BRepGProp::SurfaceProperti
+ //=======================================================================
+ 
+ static Standard_Real volumeProperties(const TopoDS_Shape& S, GProp_GProps& Props, const Standard_Real Eps){
+-  Standard_Integer i, iErrorMax = 0;
++  Standard_Integer i;
++#ifdef DEB
++  Standard_Integer iErrorMax = 0;
++#endif
+   Standard_Real ErrorMax = 0.0, Error = 0.0;
+   TopExp_Explorer ex; 
+   gp_Pnt P(roughBaryCenter(S)); 
+@@ -131,7 +142,12 @@ static Standard_Real volumeProperties(co
+       if(Eps < 1.0) {
+ 	G.Perform(BF, BD, Eps); 
+ 	Error = G.GetEpsilon();
+-	if(ErrorMax < Error){ ErrorMax = Error; iErrorMax = i;}
++	if(ErrorMax < Error) {
++	  ErrorMax = Error;
++#ifdef DEB
++	  iErrorMax = i;
++#endif
++	}
+       }
+       else {
+ 	if(BF.NaturalRestriction()) G.Perform(BF);
+@@ -172,7 +188,10 @@ Standard_Real BRepGProp::VolumePropertie
+   // find the origin
+   gp_Pnt P(0,0,0);  P.Transform(S.Location());
+   Props = GProp_GProps(P);
+-  Standard_Integer i, iErrorMax = 0;
++  Standard_Integer i;
++#ifdef DEB
++  Standard_Integer iErrorMax = 0;
++#endif
+   Standard_Real ErrorMax = 0.0, Error = 0.0;
+   if(OnlyClosed){
+     TopExp_Explorer ex(S,TopAbs_SHELL);
+@@ -180,7 +199,12 @@ Standard_Real BRepGProp::VolumePropertie
+       const TopoDS_Shape& Sh = ex.Current();
+       if(BRep_Tool::IsClosed(Sh)) {
+ 	Error = volumeProperties(Sh,Props,Eps);
+-	if(ErrorMax < Error){ ErrorMax = Error; iErrorMax = i;}
++	if(ErrorMax < Error) {
++	  ErrorMax = Error;
++#ifdef DEB
++	  iErrorMax = i;
++#endif
++	}
+       }
+     }
+   } else ErrorMax = volumeProperties(S,Props,Eps);
 Index: oce/src/BRepLib/BRepLib_MakeFace.cxx
 ===================================================================
 --- oce.orig/src/BRepLib/BRepLib_MakeFace.cxx
@@ -625,6 +1044,119 @@ Index: oce/src/BRepLib/BRepLib_MakeFace.cxx
  
    if (!umininf) {
      Cumin = S->UIso(UMin);
+Index: oce/src/BRepMesh/BRepMesh_Delaun.cxx
+===================================================================
+--- oce.orig/src/BRepMesh/BRepMesh_Delaun.cxx
++++ oce/src/BRepMesh/BRepMesh_Delaun.cxx
+@@ -765,7 +765,6 @@ void BRepMesh_Delaun::RemovePivotTriangl
+     GetTriangle( anElemId ).Edges( e[0], e[1], e[2],
+                                    o[0], o[1], o[2] );
+ 
+-    Standard_Boolean isFind = Standard_False;
+     for ( Standard_Integer anIndex = 0; anIndex < 3; ++anIndex )
+     {
+       if ( e[anIndex] == anMainEdgeId && o[anIndex] == anIsForward )
+@@ -1132,7 +1131,6 @@ void BRepMesh_Delaun::MeshLeftPolygonOf(
+         return;
+ 
+       Standard_Integer aDeadEdgeId = Abs( aPolygon.Last() );
+-      const BRepMesh_Edge& aDeadEdge = GetEdge( aDeadEdgeId );
+ 
+       aDealLinks.Add( aDeadEdgeId );
+ 
+Index: oce/src/BRepOffsetAPI/BRepOffsetAPI_MiddlePath.cxx
+===================================================================
+--- oce.orig/src/BRepOffsetAPI/BRepOffsetAPI_MiddlePath.cxx
++++ oce/src/BRepOffsetAPI/BRepOffsetAPI_MiddlePath.cxx
+@@ -540,8 +540,6 @@ void BRepOffsetAPI_MiddlePath::Build()
+       
+       TopoDS_Edge ProperEdge;
+       const TopTools_ListOfShape& LE = VEmap.FindFromKey(PrevVertex);
+-      //Temporary
+-      Standard_Integer LenList = LE.Extent();
+       ///////////
+       for (itl.Initialize(LE); itl.More(); itl.Next())
+       {
+@@ -610,17 +608,17 @@ void BRepOffsetAPI_MiddlePath::Build()
+           if (E2.IsNull())
+             E2 = TopoDS::Edge(myPaths((j<=NbPaths)? j : 1)(i-1));
+           Standard_Real fpar1, lpar1, fpar2, lpar2;
+-          Standard_Real FirstPar1, LastPar1, FirstPar2, LastPar2;
++          Standard_Real LastPar1, LastPar2;
+           Handle(Geom2d_Curve) PCurve1 = BRep_Tool::CurveOnSurface(E1, theFace, fpar1, lpar1);
+           Handle(Geom2d_Curve) PCurve2 = BRep_Tool::CurveOnSurface(E2, theFace, fpar2, lpar2);
+           if (E1.Orientation() == TopAbs_FORWARD)
+-          { FirstPar1 = fpar1; LastPar1 = lpar1; }
++          { LastPar1 = lpar1; }
+           else
+-          { FirstPar1 = lpar1; LastPar1 = fpar1; }
++          { LastPar1 = fpar1; }
+           if (E2.Orientation() == TopAbs_FORWARD)
+-          { FirstPar2 = fpar2; LastPar2 = lpar2; }
++          { LastPar2 = lpar2; }
+           else
+-          { FirstPar2 = lpar2; LastPar2 = fpar2; }
++          { LastPar2 = fpar2; }
+           gp_Pnt2d FirstPnt2d = PCurve1->Value(LastPar1);
+           gp_Pnt2d LastPnt2d  = PCurve2->Value(LastPar2);
+           Handle(Geom_Surface) theSurf = BRep_Tool::Surface(theFace);
+@@ -673,7 +671,6 @@ void BRepOffsetAPI_MiddlePath::Build()
+           BRepLib::BuildCurve3d(NewEdge2);
+           Standard_Boolean good_ne  = IsValidEdge(NewEdge, theFace);
+           Standard_Boolean good_ne1 = IsValidEdge(NewEdge1, theFace);
+-          Standard_Boolean good_ne2 = IsValidEdge(NewEdge2, theFace);
+ 
+           GeomAbs_CurveType type_E1 = TypeOfEdge(E1);
+           GeomAbs_CurveType type_E2 = TypeOfEdge(E2);
+Index: oce/src/BSplCLib/BSplCLib.cxx
+===================================================================
+--- oce.orig/src/BSplCLib/BSplCLib.cxx
++++ oce/src/BSplCLib/BSplCLib.cxx
+@@ -3061,7 +3061,6 @@ void  BSplCLib::Eval
+   NewRequest,
+   ExtrapolatingFlag[2],
+   ErrorCode,
+-  ReturnCode,
+   Order = Degree + 1,
+   FirstNonZeroBsplineIndex,
+   LocalRequest = DerivativeRequest ;
+@@ -3131,7 +3130,6 @@ void  BSplCLib::Eval
+ 			       FirstNonZeroBsplineIndex,
+ 			       BsplineBasis) ;
+   if (ErrorCode != 0) {
+-    ReturnCode = 1 ;
+     goto FINISH ;
+   }
+   if (ExtrapolatingFlag[0] == 0 && ExtrapolatingFlag[1] == 0) {
+@@ -3262,7 +3260,6 @@ void  BSplCLib::Eval
+   NewRequest,
+   ExtrapolatingFlag[2],
+   ErrorCode,
+-  ReturnCode,
+   Order = Degree + 1,
+   FirstNonZeroBsplineIndex,
+   LocalRequest = DerivativeRequest ;
+@@ -3332,7 +3329,6 @@ void  BSplCLib::Eval
+ 			       FirstNonZeroBsplineIndex,
+ 			       BsplineBasis);
+   if (ErrorCode != 0) {
+-    ReturnCode = 1 ;
+     goto FINISH ;
+   }
+   if (ExtrapolatingFlag[0] == 0 && ExtrapolatingFlag[1] == 0) {
+Index: oce/src/BiTgte/BiTgte_Blend.cxx
+===================================================================
+--- oce.orig/src/BiTgte/BiTgte_Blend.cxx
++++ oce/src/BiTgte/BiTgte_Blend.cxx
+@@ -1898,8 +1898,6 @@ void BiTgte_Blend::ComputeSurfaces()
+   // Iteration on the edges lines of center
+   // and their valid valid part is taken after cut and tube construction.
+   // --------------------------------------------------------------------
+-  BRepOffset_Type    OT = BRepOffset_Concave;
+-  if (myRadius < 0.) OT = BRepOffset_Convex; 
+ 
+   //TopTools_MapIteratorOfMapOfShape ic(myEdges);
+   Standard_Integer i;
 Index: oce/src/BinMDF/BinMDF_TagSourceDriver.cxx
 ===================================================================
 --- oce.orig/src/BinMDF/BinMDF_TagSourceDriver.cxx
@@ -839,6 +1371,36 @@ Index: oce/src/BinMXCAFDoc/BinMXCAFDoc_VolumeDriver.cxx
    Standard_Boolean isOk = theSource >> aVol;
    if(isOk)
      anAtt->Set(aVol);
+Index: oce/src/ChFi3d/ChFi3d_Builder_C1.cxx
+===================================================================
+--- oce.orig/src/ChFi3d/ChFi3d_Builder_C1.cxx
++++ oce/src/ChFi3d/ChFi3d_Builder_C1.cxx
+@@ -3661,7 +3661,7 @@ Standard_Boolean ChFi3d_Builder::FindFac
+     return Standard_False;
+   }
+   TopTools_ListIteratorOfListOfShape It,Jt;
+-  Standard_Boolean Found = Standard_False, ContainsV = Standard_False;
++  Standard_Boolean Found = Standard_False;
+   for(It.Initialize(myEFMap(P1.Arc()));It.More() && !Found;It.Next()) {
+     Fv = TopoDS::Face(It.Value());
+     if(!Fv.IsSame(Favoid)){
+@@ -3670,6 +3670,8 @@ Standard_Boolean ChFi3d_Builder::FindFac
+       }
+     }
+   }
++#ifdef DEB
++  Standard_Boolean ContainsV = Standard_False;
+   if (Found) {
+     for(It.Initialize(myVFMap(V));It.More();It.Next()) {
+       if (TopoDS::Face(It.Value()).IsSame(Fv)) {
+@@ -3678,7 +3680,6 @@ Standard_Boolean ChFi3d_Builder::FindFac
+       }
+     }
+   }
+-#ifdef DEB
+   if(!ContainsV){
+     cout<<"FindFace : the extremity of the spine is not in the end face"<<endl;
+   }
 Index: oce/src/ChFiDS/ChFiDS_FilSpine.cxx
 ===================================================================
 --- oce.orig/src/ChFiDS/ChFiDS_FilSpine.cxx
@@ -949,6 +1511,18 @@ Index: oce/src/Expr/Expr_Sum.cxx
    Standard_Boolean noone = Standard_True;
    for (i = 1; i <= max ; i++) {
      op = Operand(i);
+Index: oce/src/Extrema/Extrema_GenExtPS.cxx
+===================================================================
+--- oce.orig/src/Extrema/Extrema_GenExtPS.cxx
++++ oce/src/Extrema/Extrema_GenExtPS.cxx
+@@ -389,7 +389,6 @@ void Extrema_GenExtPS::GetGridPoints( co
+   {
+     Handle(TColStd_HArray1OfReal) anArrKnots;
+     Standard_Integer aDegree = 0;
+-    GeomAbs_CurveType aType = theSurf.BasisCurve()->Curve().GetType();
+     if(theSurf.BasisCurve()->Curve().GetType() == GeomAbs_BSplineCurve)
+     {
+       Handle(Geom_BSplineCurve) aBspl = theSurf.BasisCurve()->Curve().BSpline();
 Index: oce/src/FSD/FSD_CmpFile.cxx
 ===================================================================
 --- oce.orig/src/FSD/FSD_CmpFile.cxx
@@ -975,6 +1549,76 @@ Index: oce/src/FSD/FSD_File.cxx
    char b[8193],*tmpb;
    Standard_Boolean IsEnd = Standard_False;
    Standard_Integer i;
+Index: oce/src/GeomConvert/GeomConvert_1.cxx
+===================================================================
+--- oce.orig/src/GeomConvert/GeomConvert_1.cxx
++++ oce/src/GeomConvert/GeomConvert_1.cxx
+@@ -769,10 +769,8 @@ Handle(BSplineSurface) GeomConvert::Spli
+       Weights.Init(1.);
+       if ( C->IsRational()) C->Weights(Weights);
+ 
+-      Standard_Integer nbUSpans;
+       Standard_Real AlfaU;
+       NbUKnots = 4;
+-      nbUSpans = 3;
+       AlfaU    = M_PI / 3.;
+       NbUPoles = 6;
+ 
+Index: oce/src/GeomFill/GeomFill_LocationGuide.cxx
+===================================================================
+--- oce.orig/src/GeomFill/GeomFill_LocationGuide.cxx
++++ oce/src/GeomFill/GeomFill_LocationGuide.cxx
+@@ -226,7 +226,10 @@ static void InGoodPeriod(const Standard_
+   gp_Vec T,N,B;
+   Standard_Integer ii, Deg;
+   Standard_Boolean isconst, israt=Standard_False;
+-  Standard_Real t, v,w, OldAngle=0, Angle, DeltaG, DeltaU, Diff;
++  Standard_Real t, v,w, OldAngle=0, Angle, DeltaG, Diff;
++#if DEB
++  Standard_Real DeltaU;
++#endif
+   Standard_Real CurAngle =  PrecAngle, a1, a2;
+   gp_Pnt2d p1,p2;
+   Handle(Geom_SurfaceOfRevolution) Revol; // surface de revolution
+@@ -287,7 +290,9 @@ static void InGoodPeriod(const Standard_
+   Sup(3) = Ul + Delta/10;
+ 
+   // JALONNEMENT
++#if DEB
+   DeltaU = (Ul-Uf)/(2+NbKnots);
++#endif
+   if (uperiodic) UPeriod = Ul-Uf;
+ 
+   for (ii=1; ii<=myNbPts; ii++) {
+Index: oce/src/GeomFill/GeomFill_NSections.cxx
+===================================================================
+--- oce.orig/src/GeomFill/GeomFill_NSections.cxx
++++ oce/src/GeomFill/GeomFill_NSections.cxx
+@@ -528,8 +528,6 @@ GeomFill_NSections::GeomFill_NSections(c
+     Handle(Geom_TrimmedCurve) curvTrim;
+     Handle(Geom_BSplineCurve) curvBS, curvBS1;
+     Handle(Geom_Curve) curv =  mySections(1);
+-    Standard_Real first = curv->FirstParameter(),
+-                   last = curv->LastParameter();
+ 
+     for (j=jdeb; j<=jfin; j++) {
+ 
+Index: oce/src/GeomInt/GeomInt_IntSS_1.cxx
+===================================================================
+--- oce.orig/src/GeomInt/GeomInt_IntSS_1.cxx
++++ oce/src/GeomInt/GeomInt_IntSS_1.cxx
+@@ -407,10 +407,9 @@ Standard_Real ProjectPointOnSurf::LowerD
+ 	(Handle(IntPatch_GLine)::DownCast(L)->Ellipse());
+     }
+     //
+-    Standard_Real aPeriod, aNul, aRealEpsilon;
++    Standard_Real aPeriod, aRealEpsilon;
+     //
+     aRealEpsilon=RealEpsilon();
+-    aNul=0.;
+     aPeriod=M_PI+M_PI;
+     //
+     aNbParts=myLConstruct.NbParts();
 Index: oce/src/GeomLib/GeomLib.cxx
 ===================================================================
 --- oce.orig/src/GeomLib/GeomLib.cxx
@@ -1091,6 +1735,31 @@ Index: oce/src/HLRBRep/HLRBRep_ShapeToHLR.cxx
    if(nbEdge != 0) ed = &(DS->EDataArray().ChangeValue(1));
  //  ed++;
  
+Index: oce/src/IFSelect/IFSelect_WorkSession.cxx
+===================================================================
+--- oce.orig/src/IFSelect/IFSelect_WorkSession.cxx
++++ oce/src/IFSelect/IFSelect_WorkSession.cxx
+@@ -3438,8 +3438,6 @@ void IFSelect_WorkSession::DumpModel
+     if (level == 5 || level ==  8) mode = IFSelect_CountByItem;
+     if (level == 6 || level ==  9) mode = IFSelect_ListByItem;
+     if (level == 7 || level == 10) mode = IFSelect_EntitiesByItem;
+-    Standard_Boolean failsonly = Standard_False;
+-    if (level < 8 && level != 4) failsonly = Standard_True;
+     PrintCheckList (ModelCheckList(),Standard_False, mode);
+   } else {
+     if (level == 3) S << "        ********  Check Model (Fails)  ********"<<endl;
+Index: oce/src/Image/Image_AlienPixMap.cxx
+===================================================================
+--- oce.orig/src/Image/Image_AlienPixMap.cxx
++++ oce/src/Image/Image_AlienPixMap.cxx
+@@ -368,7 +368,6 @@ bool Image_AlienPixMap::Save (const TCol
+ 
+   // FreeImage doesn't provide flexible format convertion API
+   // so we should perform multiple convertions in some cases!
+-  Standard_Boolean isCopied = Standard_False;
+   FIBITMAP* anImageToDump = myLibImage;
+   switch (anImageFormat)
+   {
 Index: oce/src/IntPatch/IntPatch_LineConstructor.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_LineConstructor.cxx
@@ -1104,6 +1773,30 @@ Index: oce/src/IntPatch/IntPatch_LineConstructor.cxx
  	  (WLine->Point(midInd+1).*piParOnS)(utst1,vtst1);
  	  utst = (utst+utst1)*0.5;
  	  vtst = (vtst+vtst1)*0.5;
+Index: oce/src/IntPatch/IntPatch_Polyhedron.cxx
+===================================================================
+--- oce.orig/src/IntPatch/IntPatch_Polyhedron.cxx
++++ oce/src/IntPatch/IntPatch_Polyhedron.cxx
+@@ -522,13 +522,16 @@ Standard_Integer IntPatch_Polyhedron::Tr
+ #if MSG_DEBUG
+     cout<<" Probleme ds IntCurveSurface_Polyhedron : OtherP et PEdge Confondus "<<endl;
+ #endif
++    return(0); //-- BUG NON CORRIGE ( a revoir le role de nbdeltaU et nbdeltaV)
++
++	// @todo what does mean the above line ? should this really removed?
++#if 0 // added by warning-fix
+     Standard_Integer TempTri,TempOtherP;
+     TempTri = TriCon;
+     TempOtherP = OtherP;
+ 
+-    return(0); //-- BUG NON CORRIGE ( a revoir le role de nbdeltaU et nbdeltaV)
+-
+-    return(TriConnex(TempTri,Pivot,TempOtherP,TriCon,OtherP));
++	return(TriConnex(TempTri,Pivot,TempOtherP,TriCon,OtherP));
++#endif
+   }
+   return TriCon;
+ }
 Index: oce/src/IntPatch/IntPatch_RstInt.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_RstInt.cxx
@@ -1117,6 +1810,55 @@ Index: oce/src/IntPatch/IntPatch_RstInt.cxx
    Standard_Real paramarc=0.,paramline=0.;
    Standard_Integer i,j,k;
    TColgp_SequenceOfPnt locpt;
+Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
+===================================================================
+--- oce.orig/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
++++ oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
+@@ -463,7 +463,7 @@ void IntPolyh_MaillageAffinage::FillArra
+   Standard_Boolean bDegI, bDeg;
+   Standard_Integer aNbU, aNbV, iCnt, i, j;
+   Standard_Integer aID1, aID2, aJD1, aJD2;
+-  Standard_Real Tol, resol, u0, v0, u1, v1, aU, aV, aMag;
++  Standard_Real Tol, resol, aU, aV, aMag;
+   Standard_Real aX, aY, aZ;
+   gp_Pnt aP;
+   gp_Vec aDU, aDV, aNorm;
+@@ -475,10 +475,6 @@ void IntPolyh_MaillageAffinage::FillArra
+   IntPolyh_ArrayOfPoints &TPoints=(SurfID==1)? TPoints1:TPoints2;
+   //
+   resol = gp::Resolution();
+-  u0 = Upars(1);
+-  v0 = Vpars(1);
+-  u1 = Upars(aNbU);
+-  v1 = Vpars(aNbV);
+   //
+   IntCurveSurface_ThePolyhedronOfHInter polyhedron(aS, Upars, Vpars);
+   Tol=polyhedron.DeflectionOverEstimation();
+Index: oce/src/IntTools/IntTools_BeanBeanIntersector.cxx
+===================================================================
+--- oce.orig/src/IntTools/IntTools_BeanBeanIntersector.cxx
++++ oce/src/IntTools/IntTools_BeanBeanIntersector.cxx
+@@ -1281,10 +1281,9 @@ Standard_Integer FindMaxDistPC(const Sta
+ 			       Standard_Real& aDmax, 
+ 			       Standard_Real& aT1max) 
+ {
+-  Standard_Integer iErr, iCnt;
+-  Standard_Real aGS, aXP, aA, aB, aXL, aYP, aYL, aT2P, aT2L, aX0;
++  Standard_Integer iErr;
++  Standard_Real aGS, aXP, aA, aB, aXL, aYP, aYL, aT2P, aT2L;
+   //
+-  iCnt=0;
+   iErr=0;
+   aDmax=0.;
+   //
+@@ -1328,7 +1327,6 @@ Standard_Integer FindMaxDistPC(const Sta
+     }
+     //
+     if ((aB-aA)<aEps1) {
+-      aX0=0.5*(aA+aB);
+       break;
+     }
+   }// while(1) {
 Index: oce/src/IntTools/IntTools_BeanFaceIntersector.cxx
 ===================================================================
 --- oce.orig/src/IntTools/IntTools_BeanFaceIntersector.cxx
@@ -1130,6 +1872,67 @@ Index: oce/src/IntTools/IntTools_BeanFaceIntersector.cxx
  	Standard_Integer i;
  	Standard_Real aD;
  	gp_Pnt aPL[2];
+Index: oce/src/IntTools/IntTools_EdgeFace.cxx
+===================================================================
+--- oce.orig/src/IntTools/IntTools_EdgeFace.cxx
++++ oce/src/IntTools/IntTools_EdgeFace.cxx
+@@ -414,13 +414,7 @@ void IntTools_EdgeFace::CheckData()
+   Standard_Boolean IntTools_EdgeFace::IsProjectable(const Standard_Real t) const
+ {
+   Standard_Boolean bFlag;
+-  Standard_Real Umin, Usup, Vmin, Vsup;
+ 
+-  Umin=myS.FirstUParameter();
+-  Usup=myS.LastUParameter();
+-  Vmin=myS.FirstVParameter();
+-  Vsup=myS.LastVParameter ();
+-  
+   gp_Pnt P;
+   myC.D0(t, P);
+   GeomAPI_ProjectPointOnSurf aProjector;
+@@ -459,7 +453,8 @@ void IntTools_EdgeFace::CheckData()
+ //=======================================================================
+   Standard_Real IntTools_EdgeFace::DistanceFunction(const Standard_Real t)
+ {
+-  Standard_Real Umin, Usup, Vmin, Vsup, aD;
++  Standard_Real aD;
++
+   //
+   gp_Pnt P;
+   myC.D0(t, P);
+@@ -472,11 +467,6 @@ void IntTools_EdgeFace::CheckData()
+     return aD; 
+   }
+   
+-  Umin=myS.FirstUParameter();
+-  Usup=myS.LastUParameter();
+-  Vmin=myS.FirstVParameter();
+-  Vsup=myS.LastVParameter ();
+-  
+   //
+   Standard_Boolean bFlag = Standard_False;
+ 
+Index: oce/src/IntTools/IntTools_FaceFace.cxx
+===================================================================
+--- oce.orig/src/IntTools/IntTools_FaceFace.cxx
++++ oce/src/IntTools/IntTools_FaceFace.cxx
+@@ -985,7 +985,7 @@ void IntTools_FaceFace::SetList(IntSurf_
+   else if ((aType1==GeomAbs_Plane && aType2==GeomAbs_Sphere) ||
+ 	   (aType2==GeomAbs_Plane && aType1==GeomAbs_Sphere)) {
+     Standard_Integer i, j, aNbP;
+-    Standard_Real aT, aT1, aT2, dT, aD2max, aD2, aEps, aT11, aT12;
++    Standard_Real aT1, aT2, dT, aD2max, aD2, aEps, aT11, aT12;
+     //
+     aNbLin=mySeqOfCurve.Length();
+     aD2max=0.;
+@@ -1018,7 +1018,6 @@ void IntTools_FaceFace::SetList(IntSurf_
+       aEps=0.01*(aT2-aT1);
+       dT=(aT2-aT1)/(aNbP-1);
+       for (j=0; j<aNbP; ++j) {
+-	aT=aT1+j*dT;
+ 	aT11=aT1+j*dT;
+ 	aT12=aT11+dT;
+ 	if (j==aNbP-1) {
 Index: oce/src/Interface/Interface_FloatWriter.cxx
 ===================================================================
 --- oce.orig/src/Interface/Interface_FloatWriter.cxx
@@ -1193,6 +1996,22 @@ Index: oce/src/LocOpe/LocOpe_CurveShapeIntersector.cxx
  
    while (theInt.More()) {
      const gp_Pnt& thept = theInt.Pnt();
+Index: oce/src/LocOpe/LocOpe_SplitDrafts.cxx
+===================================================================
+--- oce.orig/src/LocOpe/LocOpe_SplitDrafts.cxx
++++ oce/src/LocOpe/LocOpe_SplitDrafts.cxx
+@@ -1614,10 +1614,9 @@ static TopoDS_Edge  NewEdge(const TopoDS
+   Standard_Real prmf=0,prml=0;
+   GeomAdaptor_Curve TheCurve;
+ 	
+-  Standard_Integer i,imin,k;
++  Standard_Integer i,k;
+   gp_Pnt pvf = BRep_Tool::Pnt(V1);
+   gp_Pnt pvl = BRep_Tool::Pnt(V2);
+-  imin = 0;
+   for (i=1; i<= i2s.NbLines(); i++) {
+     TheCurve.Load(i2s.Line(i));
+     Extrema_ExtPC myExtPC(pvf,TheCurve);
 Index: oce/src/LocOpe/LocOpe_SplitShape.cxx
 ===================================================================
 --- oce.orig/src/LocOpe/LocOpe_SplitShape.cxx
@@ -1207,6 +2026,20 @@ Index: oce/src/LocOpe/LocOpe_SplitShape.cxx
    for (; Explo.More(); Explo.Next())
    {
      RefEdge = TopoDS::Edge(Explo.Current());
+Index: oce/src/MAT2d/MAT2d_Tool2d.cxx
+===================================================================
+--- oce.orig/src/MAT2d/MAT2d_Tool2d.cxx
++++ oce/src/MAT2d/MAT2d_Tool2d.cxx
+@@ -412,8 +412,7 @@ void MAT2d_Tool2d::TrimBisec (      Bise
+   
+   //gp_Vec2d             Tan1,Tan2;
+   gp_Pnt2d             Ori; //PEdge;
+-  Standard_Integer     IPrec,INext;
+-  IPrec = (IndexEdge == 1)  ? theCircuit->NumberOfItems() : (IndexEdge - 1);
++  Standard_Integer     INext;
+   INext = (IndexEdge == theCircuit->NumberOfItems()) ? 1  : (IndexEdge + 1);
+   
+   Handle(Standard_Type) EdgeType = theCircuit->Value(IndexEdge)->DynamicType();
 Index: oce/src/MFT/MFT_FontManager.cxx
 ===================================================================
 --- oce.orig/src/MFT/MFT_FontManager.cxx
@@ -1292,1359 +2125,6 @@ Index: oce/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
          drawText(AWorkspace, wtextValue, myFontOfValues, myStyleOfValues, mySizeOfValues, 
                   m1[0] + offset * m2[0], m1[1] + offset * m2[1], LZ1[2] + i * step);
          i++;
-Index: oce/src/OpenGl/OpenGl_View_2.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_View_2.cxx
-+++ oce/src/OpenGl/OpenGl_View_2.cxx
-@@ -73,7 +73,7 @@ static void bind_light(const OpenGl_Ligh
-   if (*gl_lid > GL_LIGHT7) return;
- 
-   // the light is a headlight ?
--  GLint cur_matrix;
-+  GLint cur_matrix = 0;
-   if (lptr->HeadLight)
-   {
-     glGetIntegerv(GL_MATRIX_MODE, &cur_matrix);
-Index: oce/src/OpenGl/OpenGl_Workspace_3.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_Workspace_3.cxx
-+++ oce/src/OpenGl/OpenGl_Workspace_3.cxx
-@@ -373,7 +373,7 @@ void OpenGl_Workspace::DrawStructure (co
-   if (NamedStatus & (OPENGL_NS_ADD | OPENGL_NS_IMMEDIATE))
-   {
-     float mat16[16];
--    GLint mode1;
-+    GLint mode1 = 0;
- 
-     //TsmPushAttri();
- 
-Index: oce/src/ProjLib/ProjLib_ProjectOnPlane.cxx
-===================================================================
---- oce.orig/src/ProjLib/ProjLib_ProjectOnPlane.cxx
-+++ oce/src/ProjLib/ProjLib_ProjectOnPlane.cxx
-@@ -486,11 +486,8 @@ void ProjLib_ProjectOnPlane::Load(const
-   GeomAbs_CurveType Type = C->GetType();
- 
-   gp_Ax2 Axis;
--#ifndef DEB
-+
-   Standard_Real R1 =0., R2 =0.;
--#else 
--  Standard_Real R1, R2;
--#endif
- 
-   if ( Type != GeomAbs_Line)  // on garde le parametrage
-     myKeepParam = Standard_True;
-Index: oce/src/ProjLib/ProjLib_ProjectedCurve.cxx
-===================================================================
---- oce.orig/src/ProjLib/ProjLib_ProjectedCurve.cxx
-+++ oce/src/ProjLib/ProjLib_ProjectedCurve.cxx
-@@ -799,7 +799,7 @@ void ProjLib_ProjectedCurve::Load(const
- 	// doit etre une et une seule courbe !!!
- 	// De plus, cette courbe ne doit pas etre Single point
- 	Standard_Integer NbCurves = Projector.NbCurves();
--	Standard_Real Udeb,Ufin;
-+	Standard_Real Udeb = 0.0,Ufin = 0.0;
- 	if (NbCurves > 0) {
- 	  Projector.Bounds(1,Udeb,Ufin);
- 	}
-@@ -822,10 +822,9 @@ void ProjLib_ProjectedCurve::Load(const
- 
- 	if(IsTrimmed[0] || IsTrimmed[1]) {
- 	  // Treatment only for surface of revolution
--	  Standard_Real u1, u2, v1, v2;
-+	  Standard_Real u1, u2, v2;
- 	  u1 = mySurface->FirstUParameter();
- 	  u2 = mySurface->LastUParameter();
--	  v1 = mySurface->FirstVParameter();
- 	  v2 = mySurface->LastVParameter();
- 	  
- 	  if(IsTrimmed[0]) {
-Index: oce/src/Select3D/Select3D_SensitiveFace.cxx
-===================================================================
---- oce.orig/src/Select3D/Select3D_SensitiveFace.cxx
-+++ oce/src/Select3D/Select3D_SensitiveFace.cxx
-@@ -87,11 +87,8 @@ Matches(const Standard_Real X,
-         const Standard_Real aTol,
-         Standard_Real& DMin)
- {
--#ifndef DEB
-   Standard_Real DMin2 = 0.;
--#else
--  Standard_Real DMin2;
--#endif
-+
-   Standard_Real Xmin = 0.0,Ymin = 0.0,Xmax = RealLast(),Ymax = RealLast();
-   if(!Bnd_Box2d(mybox2d).IsVoid())
-   {
-Index: oce/src/TopOpeBRep/TopOpeBRep_EdgesFiller.cxx
-===================================================================
---- oce.orig/src/TopOpeBRep/TopOpeBRep_EdgesFiller.cxx
-+++ oce/src/TopOpeBRep/TopOpeBRep_EdgesFiller.cxx
-@@ -115,8 +115,8 @@ void TopOpeBRep_EdgesFiller::Insert(cons
-     const TopOpeBRep_Point2d P2D = myPEI->Point();
-     Standard_Real par1 = P2D.Parameter(1);
-     Standard_Real par2 = P2D.Parameter(2);
--    Standard_Integer if1 = 0; if ( ! myF1.IsNull() ) if1 = myPDS->AddShape(myF1,1);
--    Standard_Integer if2 = 0; if ( ! myF2.IsNull() ) if2 = myPDS->AddShape(myF2,2);
-+    if ( ! myF1.IsNull() ) myPDS->AddShape(myF1,1);
-+    if ( ! myF2.IsNull() ) myPDS->AddShape(myF2,2);
- 
- #ifdef DEB
-     Standard_Boolean pointofsegment =
-@@ -208,11 +208,8 @@ void TopOpeBRep_EdgesFiller::Insert(cons
- 	    Handle(TopOpeBRepDS_CurvePointInterference) epi = Handle(TopOpeBRepDS_CurvePointInterference)::DownCast(I);
- 	    const TopOpeBRepDS_Transition& tevi = epi->Transition();
- 	    Standard_Integer sevi = epi->Support();
--#ifdef DEB
--	    Standard_Integer gevi;
--#else
- 	    Standard_Integer gevi=0;
--#endif
-+
- 	    if      (isvertex1) gevi = myPDS->AddShape(V1,1);
- 	    else if (isvertex2) gevi = myPDS->AddShape(V2,2);
- 	    Standard_Boolean bevi = Standard_False;
-@@ -509,7 +506,9 @@ void TopOpeBRep_EdgesFiller::RecomputeIn
-     Handle(TopOpeBRepDS_Interference)& iloi = loi.First(); 
-     TopOpeBRepDS_Transition& TU = iloi->ChangeTransition();
-     Standard_Integer ifb = TU.IndexBefore();
--    Standard_Integer ifa = TU.IndexAfter();
-+#ifdef DEB
-+	Standard_Integer ifa = TU.IndexAfter();
-+#endif
-     const TopoDS_Face& fb = TopoDS::Face(myPDS->Shape(ifb));
- 
- #ifdef DEB
-Index: oce/src/TopOpeBRep/TopOpeBRep_EdgesIntersector_1.cxx
-===================================================================
---- oce.orig/src/TopOpeBRep/TopOpeBRep_EdgesIntersector_1.cxx
-+++ oce/src/TopOpeBRep/TopOpeBRep_EdgesIntersector_1.cxx
-@@ -159,12 +159,8 @@ TopOpeBRepDS_Transition TopOpeBRep_Edges
-   Standard_Boolean pointofsegment = IsPointOfSegment1();
-   Standard_Boolean pur1d = (pointofsegment && mySameDomain);
- 
--#ifdef DEB
--  TopAbs_State staB,staA; TopAbs_ShapeEnum shaB,shaA; Standard_Boolean pextremity; 
--#else
-   TopAbs_State staB=TopAbs_UNKNOWN,staA=TopAbs_UNKNOWN;
-   TopAbs_ShapeEnum shaB=TopAbs_COMPOUND,shaA=TopAbs_COMPOUND; Standard_Boolean pextremity; 
--#endif
-   
-   TopAbs_State staINON = TopAbs_IN;
-   Standard_Integer dim = myDimension;
-Index: oce/src/TopOpeBRep/TopOpeBRep_FFDumper.cxx
-===================================================================
---- oce.orig/src/TopOpeBRep/TopOpeBRep_FFDumper.cxx
-+++ oce/src/TopOpeBRep/TopOpeBRep_FFDumper.cxx
-@@ -295,7 +295,7 @@ void TopOpeBRep_FFDumper::DumpDSP(const
-   cout<<" "<<G;
-   
-   const Handle(TopOpeBRepDS_HDataStructure)& HDS = myPFF->HDataStructure();
--  Standard_Real tol;
-+  Standard_Real tol = -1.0;
-   if      (GK == TopOpeBRepDS_VERTEX) tol = BRep_Tool::Tolerance(TopoDS::Vertex(HDS->Shape(G)));
-   else if (GK == TopOpeBRepDS_POINT)  tol = HDS->Point(G).Tolerance();
-   cout<<" tol = "<<tol;
-Index: oce/src/TopOpeBRep/TopOpeBRep_FFTransitionTool.cxx
-===================================================================
---- oce.orig/src/TopOpeBRep/TopOpeBRep_FFTransitionTool.cxx
-+++ oce/src/TopOpeBRep/TopOpeBRep_FFTransitionTool.cxx
-@@ -218,11 +218,7 @@ TopOpeBRepDS_Transition TopOpeBRep_FFTra
-   }
-   else {
-     Standard_Boolean Odefined = Standard_True;
--#ifdef DEB
--    TopAbs_Orientation O;
--#else
--    TopAbs_Orientation O = TopAbs_FORWARD;
--#endif
-+	TopAbs_Orientation O = TopAbs_FORWARD;
- 
-     IntSurf_TypeTrans trans;
-     trans = (Index == 1) ? L.TransitionOnS1() : L.TransitionOnS2();
-Index: oce/src/TopOpeBRep/TopOpeBRep_FaceEdgeFiller.cxx
-===================================================================
---- oce.orig/src/TopOpeBRep/TopOpeBRep_FaceEdgeFiller.cxx
-+++ oce/src/TopOpeBRep/TopOpeBRep_FaceEdgeFiller.cxx
-@@ -261,7 +261,9 @@ void TopOpeBRep_FaceEdgeFiller::StoreInt
-   // append I to list LI
-   LI.Append(I);
- 
-+#ifdef DEB
-   Standard_Boolean appendtoG = Standard_False;
-+#endif
-   Standard_Integer G = I->Geometry();
- 
-   // append I to list of interference connected to G = I->Geometry()
-@@ -274,12 +276,16 @@ void TopOpeBRep_FaceEdgeFiller::StoreInt
-     break;
-     
-   case TopOpeBRepDS_SURFACE :
-+#ifdef DEB
-     appendtoG = Standard_True;
-+#endif
-     BDS.ChangeSurfaceInterferences(G).Append(I);
-     break;
-     
-   case TopOpeBRepDS_CURVE :
-+#ifdef DEB
-     appendtoG = Standard_True;
-+#endif
-     BDS.ChangeCurveInterferences(G).Append(I);
-     break;
-     
-@@ -312,11 +318,7 @@ Standard_Integer TopOpeBRep_FaceEdgeFill
-     (TopOpeBRep_FaceEdgeIntersector& FEINT,
-      TopOpeBRepDS_DataStructure& BDS) const
- {
--#ifdef DEB
--  Standard_Integer G;
--#else
-   Standard_Integer G=0;
--#endif
- 
-   TopoDS_Vertex V1;
-   Standard_Boolean isvertexF = FEINT.IsVertex(1,V1);
-Index: oce/src/TopOpeBRep/TopOpeBRep_VPointInter.cxx
-===================================================================
---- oce.orig/src/TopOpeBRep/TopOpeBRep_VPointInter.cxx
-+++ oce/src/TopOpeBRep/TopOpeBRep_VPointInter.cxx
-@@ -244,11 +244,8 @@ void TopOpeBRep_VPointInter::UpdateKeep(
- 
-   Standard_Integer SI = ShapeIndex();
- 
--#ifdef DEB
--  Standard_Boolean condition; 
--#else
-   Standard_Boolean condition=Standard_False; 
--#endif
-+
-   if      (SI == 1) condition = M_SINON(pos2);
-   else if (SI == 2) condition = M_SINON(pos1);
-   else if (SI == 0) condition = M_SINON(pos1) && M_SINON(pos2);
-Index: oce/src/TopOpeBRep/TopOpeBRep_mergePDS.cxx
-===================================================================
---- oce.orig/src/TopOpeBRep/TopOpeBRep_mergePDS.cxx
-+++ oce/src/TopOpeBRep/TopOpeBRep_mergePDS.cxx
-@@ -88,28 +88,32 @@ Standard_EXPORT void BREP_mergePDS(const
-       //**!
-       const TopOpeBRepDS_Point& PDS = BDS.Point(GI);
- 
--#ifdef DEB      
--      Standard_Integer ivp1; TopoDS_Shape v1; Standard_Boolean newv1 = Standard_False; TopOpeBRepDS_Kind k1; Standard_Integer iv1 = 0;
--#else
--      Standard_Integer ivp1; TopoDS_Shape v1; Standard_Boolean newv1 = Standard_False; TopOpeBRepDS_Kind k1=TopOpeBRepDS_UNKNOWN; Standard_Integer iv1 = 0;
-+      Standard_Integer ivp1; TopoDS_Shape v1; TopOpeBRepDS_Kind k1=TopOpeBRepDS_UNKNOWN; Standard_Integer iv1 = 0;
-+#ifdef DEB
-+      Standard_Boolean newv1 = Standard_False;
- #endif
-+
-       ivp1 = BREP_findPDSamongIDMOVP(PDS,Mvp1);
-       if (ivp1) {
- 	v1 = Mvp1.FindKey(ivp1);
-+#ifdef DEB
- 	newv1 = !BDS.HasShape(v1);
-+#endif
- 	iv1 = BDS.AddShape(v1);
- 	k1 = TopOpeBRepDS_VERTEX;
-       }
-       
--#ifdef DEB      
--      Standard_Integer ivp2; TopoDS_Shape v2; Standard_Boolean newv2 = Standard_False; TopOpeBRepDS_Kind k2; Standard_Integer iv2 = 0;
--#else
--      Standard_Integer ivp2; TopoDS_Shape v2; Standard_Boolean newv2 = Standard_False; TopOpeBRepDS_Kind k2=TopOpeBRepDS_UNKNOWN; Standard_Integer iv2 = 0;
-+      Standard_Integer ivp2; TopoDS_Shape v2; TopOpeBRepDS_Kind k2=TopOpeBRepDS_UNKNOWN; Standard_Integer iv2 = 0;
-+#ifdef DEB
-+      Standard_Boolean newv2 = Standard_False;
- #endif
-+
-       ivp2 = BREP_findPDSamongIDMOVP(PDS,Mvp2);
-       if (ivp2) {
- 	v2 = Mvp2.FindKey(ivp2);
-+#ifdef DEB
- 	newv2 = !BDS.HasShape(v2);
-+#endif
- 	iv2 = BDS.AddShape(v2);
- 	k2 = TopOpeBRepDS_VERTEX;
-       }
-Index: oce/src/TopOpeBRep/TopOpeBRep_vprclo.cxx
-===================================================================
---- oce.orig/src/TopOpeBRep/TopOpeBRep_vprclo.cxx
-+++ oce/src/TopOpeBRep/TopOpeBRep_vprclo.cxx
-@@ -96,11 +96,7 @@ TopOpeBRepDS_Transition TopOpeBRep_Faces
-   Standard_Real paredge = VP.EdgeParameter(ShapeIndex);
- 
-   TopoDS_Edge OOedge;
--#ifdef DEB
--  Standard_Real OOparedge;
--#else
-   Standard_Real OOparedge=0;
--#endif
-   Standard_Boolean hasONedge = (VP.State(OOShapeIndex) == TopAbs_ON);
-   Standard_Boolean hasOOedge = (on2edges) ? Standard_True : hasONedge;
-   if ( hasOOedge ) {
-@@ -178,24 +174,25 @@ void TopOpeBRep_FacesFiller::ProcessVPon
-   if (iOOFace == 0) iOOFace = myDS->AddShape(OOFace,OOShapeIndex);
- 
-   // current VPoint is on <edge>
-+#ifdef DEB
-   Standard_Integer SIedgeIndex = 0;
-+#endif
-   const TopoDS_Edge& edge = TopoDS::Edge(VP.Edge(ShapeIndex));
--  if (myDS->HasShape(edge)) SIedgeIndex = myDS->Shape(edge);
--  else                      myDS->AddShape(edge,ShapeIndex);
-+  if (!myDS->HasShape(edge)) myDS->AddShape(edge,ShapeIndex);
-+#ifdef DEB
-+  else                       SIedgeIndex = myDS->Shape(edge);
-+#endif
- 
-   Standard_Real paredge = VP.EdgeParameter(ShapeIndex);
-   
-   // dummy if !<hasOOedge>
-   Standard_Integer OOedgeIndex = 0; 
--  Standard_Boolean OOclosing,OOisrest; OOclosing = OOisrest = Standard_False;
-   TopoDS_Edge OOedge;
-   if ( hasOOedge ) {
-     TopoDS_Shape OOe;
-     if (on2edges) OOe = VP.Edge(OOShapeIndex);
-     else          OOe = VP.EdgeON(OOShapeIndex);
-     OOedge = TopoDS::Edge(OOe);
--    OOisrest = myDS->IsSectionEdge(OOedge);
--    OOclosing = TopOpeBRepTool_ShapeTool::Closed(OOedge,OOFace);
-     if (myDS->HasShape(OOedge)) OOedgeIndex = myDS->Shape(OOedge);
-     else                        OOedgeIndex = myDS->AddShape(OOedge,OOShapeIndex);
-   }
-Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder.cxx
-===================================================================
---- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder.cxx
-+++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder.cxx
-@@ -491,11 +491,8 @@ Standard_Boolean TopOpeBRepBuild_Builder
- //=======================================================================
- TopAbs_Orientation TopOpeBRepBuild_Builder::Orient(const TopAbs_Orientation Ori,const Standard_Boolean Reverse)
- {
--#ifdef DEB
--  TopAbs_Orientation result;
--#else
-   TopAbs_Orientation result=TopAbs_FORWARD;
--#endif
-+
-   switch (Reverse) {
-     case Standard_True  : result = TopAbs::Complement(Ori); break;
-     case Standard_False : result = Ori; break;
-Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Merge.cxx
-===================================================================
---- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_Merge.cxx
-+++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Merge.cxx
-@@ -209,11 +209,8 @@ void TopOpeBRepBuild_Builder::MergeShape
-   // NYI : SplitCompound appele par SplitShape
-   
-   TopOpeBRepTool_ShapeExplorer ex1;
--#ifdef DEB
--  TopAbs_ShapeEnum t1,tex1;
--#else
-   TopAbs_ShapeEnum t1=TopAbs_COMPOUND,tex1=TopAbs_COMPOUND;
--#endif
-+
-   if ( ! S1null ) {
-     t1 = tex1 = TopType(S1);
-     if ( t1 == TopAbs_COMPOUND ) {
-@@ -236,11 +233,8 @@ void TopOpeBRepBuild_Builder::MergeShape
-   }
-   
-   TopOpeBRepTool_ShapeExplorer ex2;
--#ifdef DEB
--  TopAbs_ShapeEnum t2,tex2;
--#else
-   TopAbs_ShapeEnum t2=TopAbs_COMPOUND,tex2=TopAbs_COMPOUND;
--#endif
-+
-   if ( ! S2null ) {
-     t2 = tex2 = TopType(S2);
-     if ( t2 == TopAbs_COMPOUND ) {
-Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_BuildTool.cxx
-===================================================================
---- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS_BuildTool.cxx
-+++ oce/src/TopOpeBRepDS/TopOpeBRepDS_BuildTool.cxx
-@@ -1155,11 +1155,8 @@ void  TopOpeBRepDS_BuildTool::Parameter(
-   Handle(Geom_Curve) C = BRep_Tool::Curve(e,loc,f,l);
-   if ( !C.IsNull() && C->IsPeriodic()) {
-     Standard_Real per = C->Period();
--#ifdef DEB
--    TopAbs_Orientation oV;
--#else
-     TopAbs_Orientation oV=TopAbs_FORWARD;
--#endif
-+
-     TopExp_Explorer exV(e,TopAbs_VERTEX);
-     for (; exV.More(); exV.Next()) {
-       const TopoDS_Vertex& vofe = TopoDS::Vertex(exV.Current());
-Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_Check.cxx
-===================================================================
---- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS_Check.cxx
-+++ oce/src/TopOpeBRepDS/TopOpeBRepDS_Check.cxx
-@@ -223,11 +223,8 @@ Standard_Boolean TopOpeBRepDS_Check::Che
-     return Standard_False;
-   }
-   const TopoDS_Shape& S =myHDS->Shape(I);
--#ifdef DEB
--  TopAbs_ShapeEnum se;
--#else
-   TopAbs_ShapeEnum se=TopAbs_COMPOUND;
--#endif
-+
-   switch (K) {
-   case TopOpeBRepDS_SOLID  : se = TopAbs_SOLID; break;
-   case TopOpeBRepDS_SHELL  : se = TopAbs_SHELL; break;
-Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_Dumper.cxx
-===================================================================
---- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS_Dumper.cxx
-+++ oce/src/TopOpeBRepDS/TopOpeBRepDS_Dumper.cxx
-@@ -196,7 +196,7 @@ Standard_OStream& TopOpeBRepDS_Dumper::P
-                                              )
- {
- #ifdef DEB
--  Standard_Integer i,l,lb,n;
-+  Standard_Integer i,l,lb=-1,n;
-   
-   Standard_Integer degree   = B->Degree();
-   Standard_Integer nbpoles  = B->NbPoles();
-Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_Transition.cxx
-===================================================================
---- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS_Transition.cxx
-+++ oce/src/TopOpeBRepDS/TopOpeBRepDS_Transition.cxx
-@@ -283,11 +283,7 @@ TopAbs_Orientation TopOpeBRepDS_Transiti
- //=======================================================================
- TopAbs_Orientation TopOpeBRepDS_Transition::OrientationON(const TopAbs_State S,const TopAbs_ShapeEnum ) const // T) const
- {
--#ifdef DEB
--  TopAbs_Orientation result;
--#else
-   TopAbs_Orientation result=TopAbs_FORWARD;
--#endif
- 
-   if      (myStateBefore == TopAbs_ON && myStateAfter == TopAbs_ON) {
- #if 0
-Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_repvg.cxx
-===================================================================
---- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS_repvg.cxx
-+++ oce/src/TopOpeBRepDS/TopOpeBRepDS_repvg.cxx
-@@ -139,7 +139,7 @@ Standard_EXPORT void FDS_repvg2
- 	  gp_Pnt2d uv; ok = FUN_tool_paronEF(E,pE,F1,uv); if (!ok) {it2.Next();continue;}
- 	  Standard_Real factor = 0.789;
- 	  TopOpeBRepTool_makeTransition MKT; 
--	  TopAbs_State stb,sta; 
-+	  TopAbs_State stb = TopAbs_State::TopAbs_UNKNOWN,sta = TopAbs_State::TopAbs_UNKNOWN; 
- 	  ok = MKT.Initialize(E,pbef,paft,pE, F1,uv, factor);
- 	  if (ok) ok = MKT.SetRest(E1,pE1);
- 	  if (ok) ok = MKT.MkTonE(stb,sta);
-Index: oce/src/TopOpeBRepTool/TopOpeBRepTool_STATE.cxx
-===================================================================
---- oce.orig/src/TopOpeBRepTool/TopOpeBRepTool_STATE.cxx
-+++ oce/src/TopOpeBRepTool/TopOpeBRepTool_STATE.cxx
-@@ -72,7 +72,7 @@ void TopOpeBRepTool_STATE::Set(const Sta
- 
- Standard_Boolean TopOpeBRepTool_STATE::Get(const TopAbs_State S)
- {
--  Standard_Boolean b;
-+  Standard_Boolean b = myunknown;
-   switch(S) {
-   case TopAbs_IN : b = myin; break;
-   case TopAbs_OUT : b = myout; break;
-Index: oce/src/TopOpeBRepTool/TopOpeBRepTool_TOPOLOGY.cxx
-===================================================================
---- oce.orig/src/TopOpeBRepTool/TopOpeBRepTool_TOPOLOGY.cxx
-+++ oce/src/TopOpeBRepTool/TopOpeBRepTool_TOPOLOGY.cxx
-@@ -1173,11 +1173,7 @@ Standard_EXPORT void FUN_ds_Parameter(co
-   Handle(Geom_Curve) C = BRep_Tool::Curve(e,loc,f,l);
-   if ( !C.IsNull() && C->IsPeriodic()) {
-     Standard_Real per = C->Period();
--#ifdef DEB
--    TopAbs_Orientation oV;
--#else
-     TopAbs_Orientation oV=TopAbs_FORWARD;
--#endif
-     TopExp_Explorer exV(e,TopAbs_VERTEX);
-     for (; exV.More(); exV.Next()) {
-       const TopoDS_Vertex& vofe = TopoDS::Vertex(exV.Current());
-Index: oce/src/WNT/W95_Allocator.cxx
-===================================================================
---- oce.orig/src/WNT/W95_Allocator.cxx
-+++ oce/src/WNT/W95_Allocator.cxx
-@@ -701,8 +701,8 @@ void W32_ImageNote :: Play ( BOOL fDummy
- 
-  int     xx, yy, w, h;
-  HDC     hdc, hdcMem;
-- BITMAP  bmp;
-- HBITMAP hbo;
-+ BITMAP  bmp = {};
-+ HBITMAP hbo = NULL;
-  SIZE    sz;
-  POINT   up[ 4 ];
-  BOOL    fScale = FALSE;
-Index: oce/src/WNT/WNT_DDriver.cxx
-===================================================================
---- oce.orig/src/WNT/WNT_DDriver.cxx
-+++ oce/src/WNT/WNT_DDriver.cxx
-@@ -422,12 +422,12 @@ Standard_Boolean WNT_DDriver::DoSpool
-                  (const Standard_Boolean anOriginalSize,
-                   const Aspect_PlotMode aPlotMode) const
- {
--  Standard_Integer i;
-+  Standard_Integer i = 0;
-   UINT             n;
-   char             buffer[ MAX_DESC_LEN ]; 
-   DOCINFO          di;
-   PLOGPALETTE      pLogPal;
--  HPALETTE         hPal;
-+  HPALETTE         hPal = NULL;
-   Standard_Boolean retVal = Standard_True;
- 
-   if (GetEnhMetaFileDescription ((HENHMETAFILE )myHMetaFile, MAX_DESC_LEN, buffer)
-Index: oce/src/WNT/WNT_GraphicDevice.cxx
-===================================================================
---- oce.orig/src/WNT/WNT_GraphicDevice.cxx
-+++ oce/src/WNT/WNT_GraphicDevice.cxx
-@@ -546,7 +546,7 @@ static int __fastcall _createColorRamp (
-  PPALETTEENTRY         sysPal, colorRamp;
-  PBYTE                 gRed, gGreen, gBlue;
-  BYTE                  inc;
-- LONG                  error, min_error, error_index, delta;
-+ LONG                  error, min_error, error_index = 0, delta;
-  double                dv, gamma;
-  char                  buff[ 32 ];
- 
-Index: oce/src/WNT/WNT_ImageProcessor.cxx
-===================================================================
---- oce.orig/src/WNT/WNT_ImageProcessor.cxx
-+++ oce/src/WNT/WNT_ImageProcessor.cxx
-@@ -125,7 +125,7 @@ HBITMAP LoadImageFromFile (
-          Handle( WNT_GraphicDevice )& gDev, char* fileName, HDC hDevCtx
- 	    ) {
- 
-- HANDLE   hFile, hFileMap = NULL;
-+ HANDLE   hFile = NULL, hFileMap = NULL;
-  HBITMAP  retVal = NULL;
-  DWORD    dwProtect, dwAccess;
-  bool Ret = true;
-@@ -410,7 +410,7 @@ void SetOutputFormat ( WNT_TypeOfImage t
- static HBITMAP loadXWD (  Handle( WNT_GraphicDevice )& gDev  ) {
- 
-  UINT             i, j, k;
-- UINT             red_shift, green_shift, blue_shift;
-+ UINT             red_shift = 0, green_shift = 0, blue_shift = 0;
-  HBITMAP          retVal = NULL;
-  PBITMAPINFO      pBmi   = NULL;
-  PBYTE            pbInit = NULL;
-Index: oce/inc/Approx_ComputeLine.gxx
-===================================================================
---- oce.orig/inc/Approx_ComputeLine.gxx
-+++ oce/inc/Approx_ComputeLine.gxx
-@@ -623,7 +623,6 @@ void Approx_ComputeLine::Perform(const M
- 	// ========================================
- 	GoUp = Standard_False;
- 	Ok = Standard_True;
--	Standard_Boolean FailOnPointsAdded = Standard_False;
- 	if (MyStatus == Approx_PointsAdded) {
- 	  // Appel recursif du decoupage:
- 	  GoUp = Standard_True;
-@@ -637,7 +636,6 @@ void Approx_ComputeLine::Perform(const M
- 	  //-- Si MakeML a echoue   on retourne une ligne vide
- 	  if ((nbpdsotherligne == 0) || myMultiLineNb >= 3)
- 	  {
--	    FailOnPointsAdded = Standard_True; 
- 	    //-- cout<<" ** ApproxComputeLine MakeML Echec ** LBR lbr "<<endl;
- 	    if (myfirstpt == mylastpt) break;  // Pour etre sur de ne pas 
- 	    // planter la station !!
-@@ -833,11 +831,10 @@ void Approx_ComputeLine::Parameters(cons
- 			       const Standard_Integer lastP,
- 			       math_Vector& TheParameters) const
- {
--  Standard_Integer i, j, Nbp, nbP2d, nbP3d;
-+  Standard_Integer i, j, nbP2d, nbP3d;
-   Standard_Real dist;
-   gp_Pnt P1, P2;
-   gp_Pnt2d P12d, P22d;
--  Nbp = lastP-firstP+1;
- 
-   if (Par == Approx_ChordLength || Par == Approx_Centripetal) {
-     nbP3d = LineTool::NbP3d(Line);
-@@ -999,12 +996,12 @@ Standard_Boolean  Approx_ComputeLine::Co
-   gp_Vec2d V12d, V22d;
-   gp_Pnt P1, P2;
-   gp_Pnt2d P12d, P22d;
--  Standard_Boolean Tangent1, Tangent2, Parallel, mydone= Standard_False;
-+  Standard_Boolean Tangent1, Tangent2, mydone= Standard_False;
-+#ifdef DEB
-+  Standard_Boolean Parallel;
-+#endif
-   Standard_Integer myfirstpt = firstpt, mylastpt = lastpt;
-   Standard_Integer nbp = lastpt-firstpt+1, Kopt = 0;
--  AppParCurves_Constraint FirstC, LastC;
--  FirstC = AppParCurves_PassPoint;
--  LastC = AppParCurves_PassPoint;
-   math_Vector Para(firstpt, lastpt);
- 
-   Parameters(Line, firstpt, lastpt, Para);
-@@ -1047,13 +1044,17 @@ Standard_Boolean  Approx_ComputeLine::Co
-   if (nbp == 2) {
-     // S il n y a que 2 points, on verifie quand meme que les tangentes sont 
-     // alignees.
-+#ifdef DEB
-     Parallel = Standard_True;
-+#endif
-     if (Tangent1) {
-       for (i = 1; i <= nbP3d; i++) {
- 	gp_Vec PVec(tabP1(i), tabP2(i));
- 	V13d = tabV1(i);
- 	if (!PVec.IsParallel(V13d, Precision::Angular())) {
-+#ifdef DEB
- 	  Parallel = Standard_False;
-+#endif
- 	  break;
- 	}
-       }
-@@ -1061,7 +1062,9 @@ Standard_Boolean  Approx_ComputeLine::Co
- 	gp_Vec2d PVec2d(tabP12d(i), tabP22d(i));
- 	V12d = tabV12d(i);
- 	if (!PVec2d.IsParallel(V12d, Precision::Angular())) {
-+#ifdef DEB
- 	  Parallel = Standard_False;
-+#endif
- 	  break;
- 	}
-       }
-@@ -1072,7 +1075,9 @@ Standard_Boolean  Approx_ComputeLine::Co
- 	gp_Vec PVec(tabP1(i), tabP2(i));
- 	V23d = tabV2(i);
- 	if (!PVec.IsParallel(V23d, Precision::Angular())) {
-+#ifdef DEB
- 	  Parallel = Standard_False;
-+#endif
- 	  break;
- 	}
-       }
-@@ -1080,7 +1085,9 @@ Standard_Boolean  Approx_ComputeLine::Co
- 	gp_Vec2d PVec2d(tabP12d(i), tabP22d(i));
- 	V22d = tabV22d(i);
- 	if (!PVec2d.IsParallel(V22d, Precision::Angular())) {
-+#ifdef DEB
- 	  Parallel = Standard_False;
-+#endif
- 	  break;
- 	}
-       }
-Index: oce/inc/Extrema_GExtPC.gxx
-===================================================================
---- oce.orig/inc/Extrema_GExtPC.gxx
-+++ oce/inc/Extrema_GExtPC.gxx
-@@ -105,7 +105,6 @@ void Extrema_GExtPC::Perform(const ThePo
-       n = TheCurveTool::NbIntervals(*((TheCurve*)myC), GeomAbs_C2);
-       TColStd_Array1OfReal theInter(1, n+1);
-       Standard_Boolean isPeriodic = TheCurveTool::IsPeriodic(*((TheCurve*)myC));
--      Standard_Real aPeriodicShift = 0.;
-       TheCurveTool::Intervals(*((TheCurve*)myC), theInter, GeomAbs_C2);
-       mysample = Max(mysample/n, 17);
-       TheVector V1;
-Index: oce/inc/IntStart_SearchOnBoundaries_1.gxx
-===================================================================
---- oce.orig/inc/IntStart_SearchOnBoundaries_1.gxx
-+++ oce/inc/IntStart_SearchOnBoundaries_1.gxx
-@@ -772,7 +772,7 @@ Standard_Integer TreatLC (const TheArc&
-     return anExitCode;
-   }
-   
--  Standard_Real f, l, U1f, U1l, U2f, U2l, U1, UEgde, TOL, aDist, aR, aRRel, Tol;
-+  Standard_Real f, l, U1f, U1l, U2f, U2l, UEgde, TOL, aDist, aR, aRRel, Tol;
-   Handle(Geom_Curve) aCEdge=BRep_Tool::Curve(*anE, f, l);
-   
-   gp_Cylinder aCyl=aQuadric.Cylinder();
-@@ -810,7 +810,6 @@ Standard_Integer TreatLC (const TheArc&
-   P1   =PC1.Value();
-   PEdge=PC2.Value();
-   
--  U1=PC1.Parameter();
-   UEgde=PC2.Parameter();
-   
-   aDist=PEdge.Distance(P1);
-Index: oce/inc/QANCollection_PerfSparseArray.hxx
-===================================================================
---- oce.orig/inc/QANCollection_PerfSparseArray.hxx
-+++ oce/inc/QANCollection_PerfSparseArray.hxx
-@@ -51,7 +51,7 @@ void CompSparseArray (const Standard_Int
-       PERF_STOP_METER("NCollection_SparseArray filling")
-       
-       PERF_START_METER("NCollection_SparseArray size")
--          Standard_Integer sizeSparseArray=a1.Size();
-+          a1.Size();
-       PERF_STOP_METER("NCollection_SparseArray size")
-       
-       PERF_START_METER("NCollection_Array1 Assign")
-Index: oce/src/AIS/AIS_InteractiveContext.cxx
-===================================================================
---- oce.orig/src/AIS/AIS_InteractiveContext.cxx
-+++ oce/src/AIS/AIS_InteractiveContext.cxx
-@@ -284,15 +284,14 @@ void AIS_InteractiveContext::DisplayedOb
- #endif
- 
-     //parse all local contexts...
-+#ifdef DEBUG
-     Standard_Integer NbDisp;
-     for(AIS_DataMapIteratorOfDataMapOfILC it1(myLocalContexts);it1.More();it1.Next()){
-       const Handle(AIS_LocalContext)& LC = it1.Value();
-       NbDisp =  LC->DisplayedObjects(theMap);
--#ifdef DEBUG
-       cout<<"\tIn Local Context "<<it1.Key()<<" : "<<NbDisp<<endl;
--#endif
--      
-     }
-+#endif
-     Handle(AIS_InteractiveObject) curIO;
-     Handle(Standard_Transient) Tr;
-       for(TColStd_MapIteratorOfMapOfTransient it2(theMap);it2.More();it2.Next()){
-Index: oce/src/AdvApp2Var/AdvApp2Var_Patch.cxx
-===================================================================
---- oce.orig/src/AdvApp2Var/AdvApp2Var_Patch.cxx
-+++ oce/src/AdvApp2Var/AdvApp2Var_Patch.cxx
-@@ -113,11 +113,9 @@ void AdvApp2Var_Patch::Discretise(const
- {
- 
- // data stored in the Context
--  Standard_Integer NDIMEN, NBSESP, NDIMSE, ISOFAV;
-+  Standard_Integer NDIMEN, ISOFAV;
-   NDIMEN = Conditions.TotalDimension();
--  NBSESP = Conditions.TotalNumberSSP();
- // Attention : works only for 3D
--  NDIMSE = 3;
-   ISOFAV = Conditions.FavorIso();
- 
- // data related to the patch to be discretized
-@@ -408,12 +406,10 @@ void AdvApp2Var_Patch::AddConstraints(co
- 				      const AdvApp2Var_Framework& Constraints)
- {
- // data stored in the  Context
--  Standard_Integer NDIMEN, NBSESP, NDIMSE;
-+  Standard_Integer NDIMEN;
-   Standard_Integer IERCOD, NCFLMU, NCFLMV, NDegU, NDegV;
-   NDIMEN = Conditions.TotalDimension();
--  NBSESP = Conditions.TotalNumberSSP();
- // Attention : works only for 3D
--  NDIMSE = 3;
-   NCFLMU = Conditions.ULimit();
-   NCFLMV = Conditions.VLimit();
-   NDegU = NCFLMU - 1;
-Index: oce/src/BOP/BOP_ShellShell.cxx
-===================================================================
---- oce.orig/src/BOP/BOP_ShellShell.cxx
-+++ oce/src/BOP/BOP_ShellShell.cxx
-@@ -231,7 +231,7 @@ void BOP_ShellShell::BuildResult()
-   //
-   // vars
-   Standard_Boolean bIsTouchCase, bIsTouch;
--  Standard_Integer i, aNb, j, aNbj, iFF, nF1, iRank, nF2;
-+  Standard_Integer i, aNb, j, aNbj, iFF, nF1, iRank;
-   TopTools_ListOfShape aListOfNewFaces;
-   TopTools_IndexedMapOfShape anEMap;
-   TopAbs_Orientation anOriF1;
-@@ -291,7 +291,6 @@ void BOP_ShellShell::BuildResult()
- 	BOPTools_SSInterference& aFF=aFFs(iFF);
- 	bIsTouch=aFF.IsTangentFaces();
- 	if (bIsTouch) {
--	  nF2=aFF.OppositeIndex(nF1);
- 	  AddINON2DPartsSh(nF1, iFF, aWES1);
- 	}
-       }
-Index: oce/src/BOPTools/BOPTools_PaveFiller_1.cxx
-===================================================================
---- oce.orig/src/BOPTools/BOPTools_PaveFiller_1.cxx
-+++ oce/src/BOPTools/BOPTools_PaveFiller_1.cxx
-@@ -358,14 +358,14 @@ void BOPTools_PaveFiller::PerformEF()
- 	      //
- 	      BooleanOperations_AncestorsSeqAndSuccessorsSeq anASSeq; 
- 	      //
--	      Standard_Integer nVF, iFlag;
-+	      Standard_Integer nVF;
- 	      nVF=CheckFacePaves(aNewVertex, nF);
- 	      if (nVF) {
- 		const TopoDS_Vertex& aVF=TopoDS::Vertex(myDS->Shape(nVF));
- 		
- 		Standard_Real aTNew;
- 		//
--		iFlag=myContext->ComputeVE(aVF, aE, aTNew);
-+		myContext->ComputeVE(aVF, aE, aTNew);
- 		//
- 		aT=aTNew;
- 		aNewShape=nVF;
-Index: oce/src/BOPTools/BOPTools_PaveFiller_3.cxx
-===================================================================
---- oce.orig/src/BOPTools/BOPTools_PaveFiller_3.cxx
-+++ oce/src/BOPTools/BOPTools_PaveFiller_3.cxx
-@@ -3381,7 +3381,7 @@ void BOPTools_PaveFiller::PutClosingPave
- {
-   Standard_Boolean bIsClosed, bHasBounds, bAdded;
-   Standard_Integer nVC, j;
--  Standard_Real aT[2], aTolR3D, aTC, dT, aTx;
-+  Standard_Real aT[2], aTC, dT, aTx;
-   gp_Pnt aP[2] ; 
-   BOPTools_Pave aPVx;
-   BOPTools_ListIteratorOfListOfPave aItLP;
-@@ -3404,7 +3404,6 @@ void BOPTools_PaveFiller::PutClosingPave
-   // 
-   bAdded=Standard_False;
-   dT=Precision::PConfusion();
--  aTolR3D=aFFi.TolR3D();
-   aIC.Bounds (aT[0], aT[1], aP[0], aP[1]);
-   //
-   BOPTools_PaveSet& aFFiPS=aFFi.NewPaveSet();
-Index: oce/src/BRepFeat/BRepFeat_MakeLinearForm.cxx
-===================================================================
---- oce.orig/src/BRepFeat/BRepFeat_MakeLinearForm.cxx
-+++ oce/src/BRepFeat/BRepFeat_MakeLinearForm.cxx
-@@ -1037,18 +1037,16 @@ void BRepFeat_MakeLinearForm::Perform()
- 
-   TopoDS_Vertex Vprevious;
-   gp_Pnt ptprev;
--  Standard_Real tvp, dp;
-+  Standard_Real dp;
- 
-   while (!(LastOK && FirstOK)) {
-     if (v1OK) {
-       Vprevious=v2;
-       ptprev=p2;
--      tvp=t2;
-     }
-     else {
-       Vprevious=v1;
-       ptprev=p1;
--      tvp=t1;
-     }
-     
-     // find edge connected to v1 or v2:
-Index: oce/src/BRepFeat/BRepFeat_RibSlot.cxx
-===================================================================
---- oce.orig/src/BRepFeat/BRepFeat_RibSlot.cxx
-+++ oce/src/BRepFeat/BRepFeat_RibSlot.cxx
-@@ -144,14 +144,12 @@ void BRepFeat_RibSlot::LFPerform()
- 
-   Standard_Boolean ChangeOpe = Standard_False;
-       // Hope that there is just a solid in the result
--  Standard_Boolean UntilInShape = Standard_False;
- 
-   TopTools_MapOfShape M;
-   TopTools_ListOfShape LShape;
-   TopTools_ListOfShape LTool;
- 
-   if (!mySUntil.IsNull()) {
--    UntilInShape = Standard_True;
-     for (exp2.Init(mySUntil,TopAbs_FACE); exp2.More(); exp2.Next()) {
-       const TopoDS_Shape& funtil = exp2.Current();
-       for (exp.Init(mySbase,TopAbs_FACE); exp.More(); exp.Next()) {
-Index: oce/src/BRepFill/BRepFill_Sweep.cxx
-===================================================================
---- oce.orig/src/BRepFill/BRepFill_Sweep.cxx
-+++ oce/src/BRepFill/BRepFill_Sweep.cxx
-@@ -1694,7 +1694,9 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
-   LastShape  = Last; 
- 
-   // It is necessary to check the SameRange on its (PRO13551)
-+#ifdef DEB
-   Standard_Boolean issame = Standard_True;
-+#endif
-   BRep_Builder B;
-   BRepTools_WireExplorer wexp;
-   if (!FirstShape.IsNull()) {
-@@ -1702,7 +1704,9 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
-       if (!BRepLib::CheckSameRange(wexp.Current())) {
- 	B.SameRange(wexp.Current(), Standard_False);
- 	B.SameParameter(wexp.Current(), Standard_False);
-+#ifdef DEB
- 	issame = Standard_False;
-+#endif
-       }
-     }
-   }
-@@ -1712,7 +1716,9 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
-       if (!BRepLib::CheckSameRange(wexp.Current())) {
- 	B.SameRange(wexp.Current(), Standard_False); 
- 	B.SameParameter(wexp.Current(), Standard_False);
-+#ifdef DEB
- 	issame = Standard_False;
-+#endif
-       }
-     }
-   }
-Index: oce/src/BRepGProp/BRepGProp.cxx
-===================================================================
---- oce.orig/src/BRepGProp/BRepGProp.cxx
-+++ oce/src/BRepGProp/BRepGProp.cxx
-@@ -62,7 +62,10 @@ void  BRepGProp::LinearProperties(const
- }
- 
- static Standard_Real surfaceProperties(const TopoDS_Shape& S, GProp_GProps& Props, const Standard_Real Eps){
--  Standard_Integer i, iErrorMax = 0;
-+  Standard_Integer i;
-+#ifdef DEB
-+  Standard_Integer iErrorMax = 0;
-+#endif
-   Standard_Real ErrorMax = 0.0, Error;
-   TopExp_Explorer ex; 
-   gp_Pnt P(roughBaryCenter(S));
-@@ -78,7 +81,12 @@ static Standard_Real surfaceProperties(c
-     if(Eps < 1.0) {
-       G.Perform(BF, BD, Eps); 
-       Error = G.GetEpsilon();
--      if(ErrorMax < Error){ ErrorMax = Error; iErrorMax = i;}
-+      if(ErrorMax < Error) {
-+        ErrorMax = Error;
-+#ifdef DEB
-+        iErrorMax = i;
-+#endif
-+      }
-     } else {
-       if(BF.NaturalRestriction()) G.Perform(BF);
-       else G.Perform(BF, BD);
-@@ -114,7 +122,10 @@ Standard_Real BRepGProp::SurfaceProperti
- //=======================================================================
- 
- static Standard_Real volumeProperties(const TopoDS_Shape& S, GProp_GProps& Props, const Standard_Real Eps){
--  Standard_Integer i, iErrorMax = 0;
-+  Standard_Integer i;
-+#ifdef DEB
-+  Standard_Integer iErrorMax = 0;
-+#endif
-   Standard_Real ErrorMax = 0.0, Error = 0.0;
-   TopExp_Explorer ex; 
-   gp_Pnt P(roughBaryCenter(S)); 
-@@ -131,7 +142,12 @@ static Standard_Real volumeProperties(co
-       if(Eps < 1.0) {
- 	G.Perform(BF, BD, Eps); 
- 	Error = G.GetEpsilon();
--	if(ErrorMax < Error){ ErrorMax = Error; iErrorMax = i;}
-+	if(ErrorMax < Error) {
-+	  ErrorMax = Error;
-+#ifdef DEB
-+	  iErrorMax = i;
-+#endif
-+	}
-       }
-       else {
- 	if(BF.NaturalRestriction()) G.Perform(BF);
-@@ -172,7 +188,10 @@ Standard_Real BRepGProp::VolumePropertie
-   // find the origin
-   gp_Pnt P(0,0,0);  P.Transform(S.Location());
-   Props = GProp_GProps(P);
--  Standard_Integer i, iErrorMax = 0;
-+  Standard_Integer i;
-+#ifdef DEB
-+  Standard_Integer iErrorMax = 0;
-+#endif
-   Standard_Real ErrorMax = 0.0, Error = 0.0;
-   if(OnlyClosed){
-     TopExp_Explorer ex(S,TopAbs_SHELL);
-@@ -180,7 +199,12 @@ Standard_Real BRepGProp::VolumePropertie
-       const TopoDS_Shape& Sh = ex.Current();
-       if(BRep_Tool::IsClosed(Sh)) {
- 	Error = volumeProperties(Sh,Props,Eps);
--	if(ErrorMax < Error){ ErrorMax = Error; iErrorMax = i;}
-+	if(ErrorMax < Error) {
-+	  ErrorMax = Error;
-+#ifdef DEB
-+	  iErrorMax = i;
-+#endif
-+	}
-       }
-     }
-   } else ErrorMax = volumeProperties(S,Props,Eps);
-Index: oce/src/BRepMesh/BRepMesh_Delaun.cxx
-===================================================================
---- oce.orig/src/BRepMesh/BRepMesh_Delaun.cxx
-+++ oce/src/BRepMesh/BRepMesh_Delaun.cxx
-@@ -765,7 +765,6 @@ void BRepMesh_Delaun::RemovePivotTriangl
-     GetTriangle( anElemId ).Edges( e[0], e[1], e[2],
-                                    o[0], o[1], o[2] );
- 
--    Standard_Boolean isFind = Standard_False;
-     for ( Standard_Integer anIndex = 0; anIndex < 3; ++anIndex )
-     {
-       if ( e[anIndex] == anMainEdgeId && o[anIndex] == anIsForward )
-@@ -1132,7 +1131,6 @@ void BRepMesh_Delaun::MeshLeftPolygonOf(
-         return;
- 
-       Standard_Integer aDeadEdgeId = Abs( aPolygon.Last() );
--      const BRepMesh_Edge& aDeadEdge = GetEdge( aDeadEdgeId );
- 
-       aDealLinks.Add( aDeadEdgeId );
- 
-Index: oce/src/BRepOffsetAPI/BRepOffsetAPI_MiddlePath.cxx
-===================================================================
---- oce.orig/src/BRepOffsetAPI/BRepOffsetAPI_MiddlePath.cxx
-+++ oce/src/BRepOffsetAPI/BRepOffsetAPI_MiddlePath.cxx
-@@ -540,8 +540,6 @@ void BRepOffsetAPI_MiddlePath::Build()
-       
-       TopoDS_Edge ProperEdge;
-       const TopTools_ListOfShape& LE = VEmap.FindFromKey(PrevVertex);
--      //Temporary
--      Standard_Integer LenList = LE.Extent();
-       ///////////
-       for (itl.Initialize(LE); itl.More(); itl.Next())
-       {
-@@ -610,17 +608,17 @@ void BRepOffsetAPI_MiddlePath::Build()
-           if (E2.IsNull())
-             E2 = TopoDS::Edge(myPaths((j<=NbPaths)? j : 1)(i-1));
-           Standard_Real fpar1, lpar1, fpar2, lpar2;
--          Standard_Real FirstPar1, LastPar1, FirstPar2, LastPar2;
-+          Standard_Real LastPar1, LastPar2;
-           Handle(Geom2d_Curve) PCurve1 = BRep_Tool::CurveOnSurface(E1, theFace, fpar1, lpar1);
-           Handle(Geom2d_Curve) PCurve2 = BRep_Tool::CurveOnSurface(E2, theFace, fpar2, lpar2);
-           if (E1.Orientation() == TopAbs_FORWARD)
--          { FirstPar1 = fpar1; LastPar1 = lpar1; }
-+          { LastPar1 = lpar1; }
-           else
--          { FirstPar1 = lpar1; LastPar1 = fpar1; }
-+          { LastPar1 = fpar1; }
-           if (E2.Orientation() == TopAbs_FORWARD)
--          { FirstPar2 = fpar2; LastPar2 = lpar2; }
-+          { LastPar2 = lpar2; }
-           else
--          { FirstPar2 = lpar2; LastPar2 = fpar2; }
-+          { LastPar2 = fpar2; }
-           gp_Pnt2d FirstPnt2d = PCurve1->Value(LastPar1);
-           gp_Pnt2d LastPnt2d  = PCurve2->Value(LastPar2);
-           Handle(Geom_Surface) theSurf = BRep_Tool::Surface(theFace);
-@@ -673,7 +671,6 @@ void BRepOffsetAPI_MiddlePath::Build()
-           BRepLib::BuildCurve3d(NewEdge2);
-           Standard_Boolean good_ne  = IsValidEdge(NewEdge, theFace);
-           Standard_Boolean good_ne1 = IsValidEdge(NewEdge1, theFace);
--          Standard_Boolean good_ne2 = IsValidEdge(NewEdge2, theFace);
- 
-           GeomAbs_CurveType type_E1 = TypeOfEdge(E1);
-           GeomAbs_CurveType type_E2 = TypeOfEdge(E2);
-Index: oce/src/BSplCLib/BSplCLib.cxx
-===================================================================
---- oce.orig/src/BSplCLib/BSplCLib.cxx
-+++ oce/src/BSplCLib/BSplCLib.cxx
-@@ -3061,7 +3061,6 @@ void  BSplCLib::Eval
-   NewRequest,
-   ExtrapolatingFlag[2],
-   ErrorCode,
--  ReturnCode,
-   Order = Degree + 1,
-   FirstNonZeroBsplineIndex,
-   LocalRequest = DerivativeRequest ;
-@@ -3131,7 +3130,6 @@ void  BSplCLib::Eval
- 			       FirstNonZeroBsplineIndex,
- 			       BsplineBasis) ;
-   if (ErrorCode != 0) {
--    ReturnCode = 1 ;
-     goto FINISH ;
-   }
-   if (ExtrapolatingFlag[0] == 0 && ExtrapolatingFlag[1] == 0) {
-@@ -3262,7 +3260,6 @@ void  BSplCLib::Eval
-   NewRequest,
-   ExtrapolatingFlag[2],
-   ErrorCode,
--  ReturnCode,
-   Order = Degree + 1,
-   FirstNonZeroBsplineIndex,
-   LocalRequest = DerivativeRequest ;
-@@ -3332,7 +3329,6 @@ void  BSplCLib::Eval
- 			       FirstNonZeroBsplineIndex,
- 			       BsplineBasis);
-   if (ErrorCode != 0) {
--    ReturnCode = 1 ;
-     goto FINISH ;
-   }
-   if (ExtrapolatingFlag[0] == 0 && ExtrapolatingFlag[1] == 0) {
-Index: oce/src/BiTgte/BiTgte_Blend.cxx
-===================================================================
---- oce.orig/src/BiTgte/BiTgte_Blend.cxx
-+++ oce/src/BiTgte/BiTgte_Blend.cxx
-@@ -1898,8 +1898,6 @@ void BiTgte_Blend::ComputeSurfaces()
-   // Iteration on the edges lines of center
-   // and their valid valid part is taken after cut and tube construction.
-   // --------------------------------------------------------------------
--  BRepOffset_Type    OT = BRepOffset_Concave;
--  if (myRadius < 0.) OT = BRepOffset_Convex; 
- 
-   //TopTools_MapIteratorOfMapOfShape ic(myEdges);
-   Standard_Integer i;
-Index: oce/src/ChFi3d/ChFi3d_Builder_C1.cxx
-===================================================================
---- oce.orig/src/ChFi3d/ChFi3d_Builder_C1.cxx
-+++ oce/src/ChFi3d/ChFi3d_Builder_C1.cxx
-@@ -3661,7 +3661,7 @@ Standard_Boolean ChFi3d_Builder::FindFac
-     return Standard_False;
-   }
-   TopTools_ListIteratorOfListOfShape It,Jt;
--  Standard_Boolean Found = Standard_False, ContainsV = Standard_False;
-+  Standard_Boolean Found = Standard_False;
-   for(It.Initialize(myEFMap(P1.Arc()));It.More() && !Found;It.Next()) {
-     Fv = TopoDS::Face(It.Value());
-     if(!Fv.IsSame(Favoid)){
-@@ -3670,6 +3670,8 @@ Standard_Boolean ChFi3d_Builder::FindFac
-       }
-     }
-   }
-+#ifdef DEB
-+  Standard_Boolean ContainsV = Standard_False;
-   if (Found) {
-     for(It.Initialize(myVFMap(V));It.More();It.Next()) {
-       if (TopoDS::Face(It.Value()).IsSame(Fv)) {
-@@ -3678,7 +3680,6 @@ Standard_Boolean ChFi3d_Builder::FindFac
-       }
-     }
-   }
--#ifdef DEB
-   if(!ContainsV){
-     cout<<"FindFace : the extremity of the spine is not in the end face"<<endl;
-   }
-Index: oce/src/Extrema/Extrema_GenExtPS.cxx
-===================================================================
---- oce.orig/src/Extrema/Extrema_GenExtPS.cxx
-+++ oce/src/Extrema/Extrema_GenExtPS.cxx
-@@ -389,7 +389,6 @@ void Extrema_GenExtPS::GetGridPoints( co
-   {
-     Handle(TColStd_HArray1OfReal) anArrKnots;
-     Standard_Integer aDegree = 0;
--    GeomAbs_CurveType aType = theSurf.BasisCurve()->Curve().GetType();
-     if(theSurf.BasisCurve()->Curve().GetType() == GeomAbs_BSplineCurve)
-     {
-       Handle(Geom_BSplineCurve) aBspl = theSurf.BasisCurve()->Curve().BSpline();
-Index: oce/src/GeomConvert/GeomConvert_1.cxx
-===================================================================
---- oce.orig/src/GeomConvert/GeomConvert_1.cxx
-+++ oce/src/GeomConvert/GeomConvert_1.cxx
-@@ -769,10 +769,8 @@ Handle(BSplineSurface) GeomConvert::Spli
-       Weights.Init(1.);
-       if ( C->IsRational()) C->Weights(Weights);
- 
--      Standard_Integer nbUSpans;
-       Standard_Real AlfaU;
-       NbUKnots = 4;
--      nbUSpans = 3;
-       AlfaU    = M_PI / 3.;
-       NbUPoles = 6;
- 
-Index: oce/src/GeomFill/GeomFill_LocationGuide.cxx
-===================================================================
---- oce.orig/src/GeomFill/GeomFill_LocationGuide.cxx
-+++ oce/src/GeomFill/GeomFill_LocationGuide.cxx
-@@ -226,7 +226,10 @@ static void InGoodPeriod(const Standard_
-   gp_Vec T,N,B;
-   Standard_Integer ii, Deg;
-   Standard_Boolean isconst, israt=Standard_False;
--  Standard_Real t, v,w, OldAngle=0, Angle, DeltaG, DeltaU, Diff;
-+  Standard_Real t, v,w, OldAngle=0, Angle, DeltaG, Diff;
-+#if DEB
-+  Standard_Real DeltaU;
-+#endif
-   Standard_Real CurAngle =  PrecAngle, a1, a2;
-   gp_Pnt2d p1,p2;
-   Handle(Geom_SurfaceOfRevolution) Revol; // surface de revolution
-@@ -287,7 +290,9 @@ static void InGoodPeriod(const Standard_
-   Sup(3) = Ul + Delta/10;
- 
-   // JALONNEMENT
-+#if DEB
-   DeltaU = (Ul-Uf)/(2+NbKnots);
-+#endif
-   if (uperiodic) UPeriod = Ul-Uf;
- 
-   for (ii=1; ii<=myNbPts; ii++) {
-Index: oce/src/GeomFill/GeomFill_NSections.cxx
-===================================================================
---- oce.orig/src/GeomFill/GeomFill_NSections.cxx
-+++ oce/src/GeomFill/GeomFill_NSections.cxx
-@@ -528,8 +528,6 @@ GeomFill_NSections::GeomFill_NSections(c
-     Handle(Geom_TrimmedCurve) curvTrim;
-     Handle(Geom_BSplineCurve) curvBS, curvBS1;
-     Handle(Geom_Curve) curv =  mySections(1);
--    Standard_Real first = curv->FirstParameter(),
--                   last = curv->LastParameter();
- 
-     for (j=jdeb; j<=jfin; j++) {
- 
-Index: oce/src/GeomInt/GeomInt_IntSS_1.cxx
-===================================================================
---- oce.orig/src/GeomInt/GeomInt_IntSS_1.cxx
-+++ oce/src/GeomInt/GeomInt_IntSS_1.cxx
-@@ -407,10 +407,9 @@ Standard_Real ProjectPointOnSurf::LowerD
- 	(Handle(IntPatch_GLine)::DownCast(L)->Ellipse());
-     }
-     //
--    Standard_Real aPeriod, aNul, aRealEpsilon;
-+    Standard_Real aPeriod, aRealEpsilon;
-     //
-     aRealEpsilon=RealEpsilon();
--    aNul=0.;
-     aPeriod=M_PI+M_PI;
-     //
-     aNbParts=myLConstruct.NbParts();
-Index: oce/src/IFSelect/IFSelect_WorkSession.cxx
-===================================================================
---- oce.orig/src/IFSelect/IFSelect_WorkSession.cxx
-+++ oce/src/IFSelect/IFSelect_WorkSession.cxx
-@@ -3438,8 +3438,6 @@ void IFSelect_WorkSession::DumpModel
-     if (level == 5 || level ==  8) mode = IFSelect_CountByItem;
-     if (level == 6 || level ==  9) mode = IFSelect_ListByItem;
-     if (level == 7 || level == 10) mode = IFSelect_EntitiesByItem;
--    Standard_Boolean failsonly = Standard_False;
--    if (level < 8 && level != 4) failsonly = Standard_True;
-     PrintCheckList (ModelCheckList(),Standard_False, mode);
-   } else {
-     if (level == 3) S << "        ********  Check Model (Fails)  ********"<<endl;
-Index: oce/src/Image/Image_AlienPixMap.cxx
-===================================================================
---- oce.orig/src/Image/Image_AlienPixMap.cxx
-+++ oce/src/Image/Image_AlienPixMap.cxx
-@@ -368,7 +368,6 @@ bool Image_AlienPixMap::Save (const TCol
- 
-   // FreeImage doesn't provide flexible format convertion API
-   // so we should perform multiple convertions in some cases!
--  Standard_Boolean isCopied = Standard_False;
-   FIBITMAP* anImageToDump = myLibImage;
-   switch (anImageFormat)
-   {
-Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
-===================================================================
---- oce.orig/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
-+++ oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
-@@ -463,7 +463,7 @@ void IntPolyh_MaillageAffinage::FillArra
-   Standard_Boolean bDegI, bDeg;
-   Standard_Integer aNbU, aNbV, iCnt, i, j;
-   Standard_Integer aID1, aID2, aJD1, aJD2;
--  Standard_Real Tol, resol, u0, v0, u1, v1, aU, aV, aMag;
-+  Standard_Real Tol, resol, aU, aV, aMag;
-   Standard_Real aX, aY, aZ;
-   gp_Pnt aP;
-   gp_Vec aDU, aDV, aNorm;
-@@ -475,10 +475,6 @@ void IntPolyh_MaillageAffinage::FillArra
-   IntPolyh_ArrayOfPoints &TPoints=(SurfID==1)? TPoints1:TPoints2;
-   //
-   resol = gp::Resolution();
--  u0 = Upars(1);
--  v0 = Vpars(1);
--  u1 = Upars(aNbU);
--  v1 = Vpars(aNbV);
-   //
-   IntCurveSurface_ThePolyhedronOfHInter polyhedron(aS, Upars, Vpars);
-   Tol=polyhedron.DeflectionOverEstimation();
-Index: oce/src/IntTools/IntTools_BeanBeanIntersector.cxx
-===================================================================
---- oce.orig/src/IntTools/IntTools_BeanBeanIntersector.cxx
-+++ oce/src/IntTools/IntTools_BeanBeanIntersector.cxx
-@@ -1281,10 +1281,9 @@ Standard_Integer FindMaxDistPC(const Sta
- 			       Standard_Real& aDmax, 
- 			       Standard_Real& aT1max) 
- {
--  Standard_Integer iErr, iCnt;
--  Standard_Real aGS, aXP, aA, aB, aXL, aYP, aYL, aT2P, aT2L, aX0;
-+  Standard_Integer iErr;
-+  Standard_Real aGS, aXP, aA, aB, aXL, aYP, aYL, aT2P, aT2L;
-   //
--  iCnt=0;
-   iErr=0;
-   aDmax=0.;
-   //
-@@ -1328,7 +1327,6 @@ Standard_Integer FindMaxDistPC(const Sta
-     }
-     //
-     if ((aB-aA)<aEps1) {
--      aX0=0.5*(aA+aB);
-       break;
-     }
-   }// while(1) {
-Index: oce/src/IntTools/IntTools_EdgeFace.cxx
-===================================================================
---- oce.orig/src/IntTools/IntTools_EdgeFace.cxx
-+++ oce/src/IntTools/IntTools_EdgeFace.cxx
-@@ -414,13 +414,7 @@ void IntTools_EdgeFace::CheckData()
-   Standard_Boolean IntTools_EdgeFace::IsProjectable(const Standard_Real t) const
- {
-   Standard_Boolean bFlag;
--  Standard_Real Umin, Usup, Vmin, Vsup;
- 
--  Umin=myS.FirstUParameter();
--  Usup=myS.LastUParameter();
--  Vmin=myS.FirstVParameter();
--  Vsup=myS.LastVParameter ();
--  
-   gp_Pnt P;
-   myC.D0(t, P);
-   GeomAPI_ProjectPointOnSurf aProjector;
-@@ -459,7 +453,8 @@ void IntTools_EdgeFace::CheckData()
- //=======================================================================
-   Standard_Real IntTools_EdgeFace::DistanceFunction(const Standard_Real t)
- {
--  Standard_Real Umin, Usup, Vmin, Vsup, aD;
-+  Standard_Real aD;
-+
-   //
-   gp_Pnt P;
-   myC.D0(t, P);
-@@ -472,11 +467,6 @@ void IntTools_EdgeFace::CheckData()
-     return aD; 
-   }
-   
--  Umin=myS.FirstUParameter();
--  Usup=myS.LastUParameter();
--  Vmin=myS.FirstVParameter();
--  Vsup=myS.LastVParameter ();
--  
-   //
-   Standard_Boolean bFlag = Standard_False;
- 
-Index: oce/src/IntTools/IntTools_FaceFace.cxx
-===================================================================
---- oce.orig/src/IntTools/IntTools_FaceFace.cxx
-+++ oce/src/IntTools/IntTools_FaceFace.cxx
-@@ -985,7 +985,7 @@ void IntTools_FaceFace::SetList(IntSurf_
-   else if ((aType1==GeomAbs_Plane && aType2==GeomAbs_Sphere) ||
- 	   (aType2==GeomAbs_Plane && aType1==GeomAbs_Sphere)) {
-     Standard_Integer i, j, aNbP;
--    Standard_Real aT, aT1, aT2, dT, aD2max, aD2, aEps, aT11, aT12;
-+    Standard_Real aT1, aT2, dT, aD2max, aD2, aEps, aT11, aT12;
-     //
-     aNbLin=mySeqOfCurve.Length();
-     aD2max=0.;
-@@ -1018,7 +1018,6 @@ void IntTools_FaceFace::SetList(IntSurf_
-       aEps=0.01*(aT2-aT1);
-       dT=(aT2-aT1)/(aNbP-1);
-       for (j=0; j<aNbP; ++j) {
--	aT=aT1+j*dT;
- 	aT11=aT1+j*dT;
- 	aT12=aT11+dT;
- 	if (j==aNbP-1) {
-Index: oce/src/LocOpe/LocOpe_SplitDrafts.cxx
-===================================================================
---- oce.orig/src/LocOpe/LocOpe_SplitDrafts.cxx
-+++ oce/src/LocOpe/LocOpe_SplitDrafts.cxx
-@@ -1614,10 +1614,9 @@ static TopoDS_Edge  NewEdge(const TopoDS
-   Standard_Real prmf=0,prml=0;
-   GeomAdaptor_Curve TheCurve;
- 	
--  Standard_Integer i,imin,k;
-+  Standard_Integer i,k;
-   gp_Pnt pvf = BRep_Tool::Pnt(V1);
-   gp_Pnt pvl = BRep_Tool::Pnt(V2);
--  imin = 0;
-   for (i=1; i<= i2s.NbLines(); i++) {
-     TheCurve.Load(i2s.Line(i));
-     Extrema_ExtPC myExtPC(pvf,TheCurve);
-Index: oce/src/MAT2d/MAT2d_Tool2d.cxx
-===================================================================
---- oce.orig/src/MAT2d/MAT2d_Tool2d.cxx
-+++ oce/src/MAT2d/MAT2d_Tool2d.cxx
-@@ -412,8 +412,7 @@ void MAT2d_Tool2d::TrimBisec (      Bise
-   
-   //gp_Vec2d             Tan1,Tan2;
-   gp_Pnt2d             Ori; //PEdge;
--  Standard_Integer     IPrec,INext;
--  IPrec = (IndexEdge == 1)  ? theCircuit->NumberOfItems() : (IndexEdge - 1);
-+  Standard_Integer     INext;
-   INext = (IndexEdge == theCircuit->NumberOfItems()) ? 1  : (IndexEdge + 1);
-   
-   Handle(Standard_Type) EdgeType = theCircuit->Value(IndexEdge)->DynamicType();
 Index: oce/src/OpenGl/OpenGl_Polygon.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_Polygon.cxx
@@ -2787,6 +2267,19 @@ Index: oce/src/OpenGl/OpenGl_Trihedron.cxx
  
    glMatrixMode(GL_MODELVIEW);
  
+Index: oce/src/OpenGl/OpenGl_View_2.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_View_2.cxx
++++ oce/src/OpenGl/OpenGl_View_2.cxx
+@@ -73,7 +73,7 @@ static void bind_light(const OpenGl_Ligh
+   if (*gl_lid > GL_LIGHT7) return;
+ 
+   // the light is a headlight ?
+-  GLint cur_matrix;
++  GLint cur_matrix = 0;
+   if (lptr->HeadLight)
+   {
+     glGetIntegerv(GL_MATRIX_MODE, &cur_matrix);
 Index: oce/src/OpenGl/OpenGl_Window.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_Window.cxx
@@ -2799,6 +2292,61 @@ Index: oce/src/OpenGl/OpenGl_Window.cxx
    Display*    aDisplay  = (Display*    )myGlContext->myDisplay;
    GLXContext  aGContext = (GLXContext  )myGlContext->myGContext;
    myGlContext.Nullify();
+Index: oce/src/OpenGl/OpenGl_Workspace_3.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_Workspace_3.cxx
++++ oce/src/OpenGl/OpenGl_Workspace_3.cxx
+@@ -373,7 +373,7 @@ void OpenGl_Workspace::DrawStructure (co
+   if (NamedStatus & (OPENGL_NS_ADD | OPENGL_NS_IMMEDIATE))
+   {
+     float mat16[16];
+-    GLint mode1;
++    GLint mode1 = 0;
+ 
+     //TsmPushAttri();
+ 
+Index: oce/src/ProjLib/ProjLib_ProjectOnPlane.cxx
+===================================================================
+--- oce.orig/src/ProjLib/ProjLib_ProjectOnPlane.cxx
++++ oce/src/ProjLib/ProjLib_ProjectOnPlane.cxx
+@@ -486,11 +486,8 @@ void ProjLib_ProjectOnPlane::Load(const
+   GeomAbs_CurveType Type = C->GetType();
+ 
+   gp_Ax2 Axis;
+-#ifndef DEB
++
+   Standard_Real R1 =0., R2 =0.;
+-#else 
+-  Standard_Real R1, R2;
+-#endif
+ 
+   if ( Type != GeomAbs_Line)  // on garde le parametrage
+     myKeepParam = Standard_True;
+Index: oce/src/ProjLib/ProjLib_ProjectedCurve.cxx
+===================================================================
+--- oce.orig/src/ProjLib/ProjLib_ProjectedCurve.cxx
++++ oce/src/ProjLib/ProjLib_ProjectedCurve.cxx
+@@ -799,7 +799,7 @@ void ProjLib_ProjectedCurve::Load(const
+ 	// doit etre une et une seule courbe !!!
+ 	// De plus, cette courbe ne doit pas etre Single point
+ 	Standard_Integer NbCurves = Projector.NbCurves();
+-	Standard_Real Udeb,Ufin;
++	Standard_Real Udeb = 0.0,Ufin = 0.0;
+ 	if (NbCurves > 0) {
+ 	  Projector.Bounds(1,Udeb,Ufin);
+ 	}
+@@ -822,10 +822,9 @@ void ProjLib_ProjectedCurve::Load(const
+ 
+ 	if(IsTrimmed[0] || IsTrimmed[1]) {
+ 	  // Treatment only for surface of revolution
+-	  Standard_Real u1, u2, v1, v2;
++	  Standard_Real u1, u2, v2;
+ 	  u1 = mySurface->FirstUParameter();
+ 	  u2 = mySurface->LastUParameter();
+-	  v1 = mySurface->FirstVParameter();
+ 	  v2 = mySurface->LastVParameter();
+ 	  
+ 	  if(IsTrimmed[0]) {
 Index: oce/src/QABugs/QABugs_1.cxx
 ===================================================================
 --- oce.orig/src/QABugs/QABugs_1.cxx
@@ -3102,6 +2650,23 @@ Index: oce/src/Select3D/Select3D_SensitiveCircle.cxx
    CSLib_Class2d aClassifier2d(aPoly,aTol,aTol,Umin,Vmin,Umax,Vmax);
  
    for(Standard_Integer anIndex=0;anIndex<mypolyg.Size();++anIndex)
+Index: oce/src/Select3D/Select3D_SensitiveFace.cxx
+===================================================================
+--- oce.orig/src/Select3D/Select3D_SensitiveFace.cxx
++++ oce/src/Select3D/Select3D_SensitiveFace.cxx
+@@ -87,11 +87,8 @@ Matches(const Standard_Real X,
+         const Standard_Real aTol,
+         Standard_Real& DMin)
+ {
+-#ifndef DEB
+   Standard_Real DMin2 = 0.;
+-#else
+-  Standard_Real DMin2;
+-#endif
++
+   Standard_Real Xmin = 0.0,Ymin = 0.0,Xmax = RealLast(),Ymax = RealLast();
+   if(!Bnd_Box2d(mybox2d).IsVoid())
+   {
 Index: oce/src/TPrsStd/TPrsStd_ConstraintTools.cxx
 ===================================================================
 --- oce.orig/src/TPrsStd/TPrsStd_ConstraintTools.cxx
@@ -3172,6 +2737,45 @@ Index: oce/src/TestTopOpe/TestTopOpe_DSACommands.cxx
  
  	TopTools_ListIteratorOfListOfShape li(los);
  	for(; li.More(); li.Next()) {
+Index: oce/src/TopOpeBRep/TopOpeBRep_EdgesFiller.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRep/TopOpeBRep_EdgesFiller.cxx
++++ oce/src/TopOpeBRep/TopOpeBRep_EdgesFiller.cxx
+@@ -115,8 +115,8 @@ void TopOpeBRep_EdgesFiller::Insert(cons
+     const TopOpeBRep_Point2d P2D = myPEI->Point();
+     Standard_Real par1 = P2D.Parameter(1);
+     Standard_Real par2 = P2D.Parameter(2);
+-    Standard_Integer if1 = 0; if ( ! myF1.IsNull() ) if1 = myPDS->AddShape(myF1,1);
+-    Standard_Integer if2 = 0; if ( ! myF2.IsNull() ) if2 = myPDS->AddShape(myF2,2);
++    if ( ! myF1.IsNull() ) myPDS->AddShape(myF1,1);
++    if ( ! myF2.IsNull() ) myPDS->AddShape(myF2,2);
+ 
+ #ifdef DEB
+     Standard_Boolean pointofsegment =
+@@ -208,11 +208,8 @@ void TopOpeBRep_EdgesFiller::Insert(cons
+ 	    Handle(TopOpeBRepDS_CurvePointInterference) epi = Handle(TopOpeBRepDS_CurvePointInterference)::DownCast(I);
+ 	    const TopOpeBRepDS_Transition& tevi = epi->Transition();
+ 	    Standard_Integer sevi = epi->Support();
+-#ifdef DEB
+-	    Standard_Integer gevi;
+-#else
+ 	    Standard_Integer gevi=0;
+-#endif
++
+ 	    if      (isvertex1) gevi = myPDS->AddShape(V1,1);
+ 	    else if (isvertex2) gevi = myPDS->AddShape(V2,2);
+ 	    Standard_Boolean bevi = Standard_False;
+@@ -509,7 +506,9 @@ void TopOpeBRep_EdgesFiller::RecomputeIn
+     Handle(TopOpeBRepDS_Interference)& iloi = loi.First(); 
+     TopOpeBRepDS_Transition& TU = iloi->ChangeTransition();
+     Standard_Integer ifb = TU.IndexBefore();
+-    Standard_Integer ifa = TU.IndexAfter();
++#ifdef DEB
++	Standard_Integer ifa = TU.IndexAfter();
++#endif
+     const TopoDS_Face& fb = TopoDS::Face(myPDS->Shape(ifb));
+ 
+ #ifdef DEB
 Index: oce/src/TopOpeBRep/TopOpeBRep_EdgesIntersector.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRep/TopOpeBRep_EdgesIntersector.cxx
@@ -3212,6 +2816,96 @@ Index: oce/src/TopOpeBRep/TopOpeBRep_EdgesIntersector.cxx
        }      
        
        // xpu121098 : cto900I7 (e12on,vG14)
+Index: oce/src/TopOpeBRep/TopOpeBRep_EdgesIntersector_1.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRep/TopOpeBRep_EdgesIntersector_1.cxx
++++ oce/src/TopOpeBRep/TopOpeBRep_EdgesIntersector_1.cxx
+@@ -159,12 +159,8 @@ TopOpeBRepDS_Transition TopOpeBRep_Edges
+   Standard_Boolean pointofsegment = IsPointOfSegment1();
+   Standard_Boolean pur1d = (pointofsegment && mySameDomain);
+ 
+-#ifdef DEB
+-  TopAbs_State staB,staA; TopAbs_ShapeEnum shaB,shaA; Standard_Boolean pextremity; 
+-#else
+   TopAbs_State staB=TopAbs_UNKNOWN,staA=TopAbs_UNKNOWN;
+   TopAbs_ShapeEnum shaB=TopAbs_COMPOUND,shaA=TopAbs_COMPOUND; Standard_Boolean pextremity; 
+-#endif
+   
+   TopAbs_State staINON = TopAbs_IN;
+   Standard_Integer dim = myDimension;
+Index: oce/src/TopOpeBRep/TopOpeBRep_FFDumper.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRep/TopOpeBRep_FFDumper.cxx
++++ oce/src/TopOpeBRep/TopOpeBRep_FFDumper.cxx
+@@ -295,7 +295,7 @@ void TopOpeBRep_FFDumper::DumpDSP(const
+   cout<<" "<<G;
+   
+   const Handle(TopOpeBRepDS_HDataStructure)& HDS = myPFF->HDataStructure();
+-  Standard_Real tol;
++  Standard_Real tol = -1.0;
+   if      (GK == TopOpeBRepDS_VERTEX) tol = BRep_Tool::Tolerance(TopoDS::Vertex(HDS->Shape(G)));
+   else if (GK == TopOpeBRepDS_POINT)  tol = HDS->Point(G).Tolerance();
+   cout<<" tol = "<<tol;
+Index: oce/src/TopOpeBRep/TopOpeBRep_FFTransitionTool.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRep/TopOpeBRep_FFTransitionTool.cxx
++++ oce/src/TopOpeBRep/TopOpeBRep_FFTransitionTool.cxx
+@@ -218,11 +218,7 @@ TopOpeBRepDS_Transition TopOpeBRep_FFTra
+   }
+   else {
+     Standard_Boolean Odefined = Standard_True;
+-#ifdef DEB
+-    TopAbs_Orientation O;
+-#else
+-    TopAbs_Orientation O = TopAbs_FORWARD;
+-#endif
++	TopAbs_Orientation O = TopAbs_FORWARD;
+ 
+     IntSurf_TypeTrans trans;
+     trans = (Index == 1) ? L.TransitionOnS1() : L.TransitionOnS2();
+Index: oce/src/TopOpeBRep/TopOpeBRep_FaceEdgeFiller.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRep/TopOpeBRep_FaceEdgeFiller.cxx
++++ oce/src/TopOpeBRep/TopOpeBRep_FaceEdgeFiller.cxx
+@@ -261,7 +261,9 @@ void TopOpeBRep_FaceEdgeFiller::StoreInt
+   // append I to list LI
+   LI.Append(I);
+ 
++#ifdef DEB
+   Standard_Boolean appendtoG = Standard_False;
++#endif
+   Standard_Integer G = I->Geometry();
+ 
+   // append I to list of interference connected to G = I->Geometry()
+@@ -274,12 +276,16 @@ void TopOpeBRep_FaceEdgeFiller::StoreInt
+     break;
+     
+   case TopOpeBRepDS_SURFACE :
++#ifdef DEB
+     appendtoG = Standard_True;
++#endif
+     BDS.ChangeSurfaceInterferences(G).Append(I);
+     break;
+     
+   case TopOpeBRepDS_CURVE :
++#ifdef DEB
+     appendtoG = Standard_True;
++#endif
+     BDS.ChangeCurveInterferences(G).Append(I);
+     break;
+     
+@@ -312,11 +318,7 @@ Standard_Integer TopOpeBRep_FaceEdgeFill
+     (TopOpeBRep_FaceEdgeIntersector& FEINT,
+      TopOpeBRepDS_DataStructure& BDS) const
+ {
+-#ifdef DEB
+-  Standard_Integer G;
+-#else
+   Standard_Integer G=0;
+-#endif
+ 
+   TopoDS_Vertex V1;
+   Standard_Boolean isvertexF = FEINT.IsVertex(1,V1);
 Index: oce/src/TopOpeBRep/TopOpeBRep_FacesFiller_1.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRep/TopOpeBRep_FacesFiller_1.cxx
@@ -3263,6 +2957,68 @@ Index: oce/src/TopOpeBRep/TopOpeBRep_FacesIntersector.cxx
  	      MinDist2 = extPS.SquareDistance(i);
  	    }
  	}
+Index: oce/src/TopOpeBRep/TopOpeBRep_VPointInter.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRep/TopOpeBRep_VPointInter.cxx
++++ oce/src/TopOpeBRep/TopOpeBRep_VPointInter.cxx
+@@ -244,11 +244,8 @@ void TopOpeBRep_VPointInter::UpdateKeep(
+ 
+   Standard_Integer SI = ShapeIndex();
+ 
+-#ifdef DEB
+-  Standard_Boolean condition; 
+-#else
+   Standard_Boolean condition=Standard_False; 
+-#endif
++
+   if      (SI == 1) condition = M_SINON(pos2);
+   else if (SI == 2) condition = M_SINON(pos1);
+   else if (SI == 0) condition = M_SINON(pos1) && M_SINON(pos2);
+Index: oce/src/TopOpeBRep/TopOpeBRep_mergePDS.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRep/TopOpeBRep_mergePDS.cxx
++++ oce/src/TopOpeBRep/TopOpeBRep_mergePDS.cxx
+@@ -88,28 +88,32 @@ Standard_EXPORT void BREP_mergePDS(const
+       //**!
+       const TopOpeBRepDS_Point& PDS = BDS.Point(GI);
+ 
+-#ifdef DEB      
+-      Standard_Integer ivp1; TopoDS_Shape v1; Standard_Boolean newv1 = Standard_False; TopOpeBRepDS_Kind k1; Standard_Integer iv1 = 0;
+-#else
+-      Standard_Integer ivp1; TopoDS_Shape v1; Standard_Boolean newv1 = Standard_False; TopOpeBRepDS_Kind k1=TopOpeBRepDS_UNKNOWN; Standard_Integer iv1 = 0;
++      Standard_Integer ivp1; TopoDS_Shape v1; TopOpeBRepDS_Kind k1=TopOpeBRepDS_UNKNOWN; Standard_Integer iv1 = 0;
++#ifdef DEB
++      Standard_Boolean newv1 = Standard_False;
+ #endif
++
+       ivp1 = BREP_findPDSamongIDMOVP(PDS,Mvp1);
+       if (ivp1) {
+ 	v1 = Mvp1.FindKey(ivp1);
++#ifdef DEB
+ 	newv1 = !BDS.HasShape(v1);
++#endif
+ 	iv1 = BDS.AddShape(v1);
+ 	k1 = TopOpeBRepDS_VERTEX;
+       }
+       
+-#ifdef DEB      
+-      Standard_Integer ivp2; TopoDS_Shape v2; Standard_Boolean newv2 = Standard_False; TopOpeBRepDS_Kind k2; Standard_Integer iv2 = 0;
+-#else
+-      Standard_Integer ivp2; TopoDS_Shape v2; Standard_Boolean newv2 = Standard_False; TopOpeBRepDS_Kind k2=TopOpeBRepDS_UNKNOWN; Standard_Integer iv2 = 0;
++      Standard_Integer ivp2; TopoDS_Shape v2; TopOpeBRepDS_Kind k2=TopOpeBRepDS_UNKNOWN; Standard_Integer iv2 = 0;
++#ifdef DEB
++      Standard_Boolean newv2 = Standard_False;
+ #endif
++
+       ivp2 = BREP_findPDSamongIDMOVP(PDS,Mvp2);
+       if (ivp2) {
+ 	v2 = Mvp2.FindKey(ivp2);
++#ifdef DEB
+ 	newv2 = !BDS.HasShape(v2);
++#endif
+ 	iv2 = BDS.AddShape(v2);
+ 	k2 = TopOpeBRepDS_VERTEX;
+       }
 Index: oce/src/TopOpeBRep/TopOpeBRep_vpr.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRep/TopOpeBRep_vpr.cxx
@@ -3277,6 +3033,53 @@ Index: oce/src/TopOpeBRep/TopOpeBRep_vpr.cxx
    // Gfound = VP corresponds with an existing geometry of ShapeIndex
    Standard_Boolean Gfound = ( EPIfound || CPIfound );  
  #ifdef DEB
+Index: oce/src/TopOpeBRep/TopOpeBRep_vprclo.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRep/TopOpeBRep_vprclo.cxx
++++ oce/src/TopOpeBRep/TopOpeBRep_vprclo.cxx
+@@ -96,11 +96,7 @@ TopOpeBRepDS_Transition TopOpeBRep_Faces
+   Standard_Real paredge = VP.EdgeParameter(ShapeIndex);
+ 
+   TopoDS_Edge OOedge;
+-#ifdef DEB
+-  Standard_Real OOparedge;
+-#else
+   Standard_Real OOparedge=0;
+-#endif
+   Standard_Boolean hasONedge = (VP.State(OOShapeIndex) == TopAbs_ON);
+   Standard_Boolean hasOOedge = (on2edges) ? Standard_True : hasONedge;
+   if ( hasOOedge ) {
+@@ -178,24 +174,25 @@ void TopOpeBRep_FacesFiller::ProcessVPon
+   if (iOOFace == 0) iOOFace = myDS->AddShape(OOFace,OOShapeIndex);
+ 
+   // current VPoint is on <edge>
++#ifdef DEB
+   Standard_Integer SIedgeIndex = 0;
++#endif
+   const TopoDS_Edge& edge = TopoDS::Edge(VP.Edge(ShapeIndex));
+-  if (myDS->HasShape(edge)) SIedgeIndex = myDS->Shape(edge);
+-  else                      myDS->AddShape(edge,ShapeIndex);
++  if (!myDS->HasShape(edge)) myDS->AddShape(edge,ShapeIndex);
++#ifdef DEB
++  else                       SIedgeIndex = myDS->Shape(edge);
++#endif
+ 
+   Standard_Real paredge = VP.EdgeParameter(ShapeIndex);
+   
+   // dummy if !<hasOOedge>
+   Standard_Integer OOedgeIndex = 0; 
+-  Standard_Boolean OOclosing,OOisrest; OOclosing = OOisrest = Standard_False;
+   TopoDS_Edge OOedge;
+   if ( hasOOedge ) {
+     TopoDS_Shape OOe;
+     if (on2edges) OOe = VP.Edge(OOShapeIndex);
+     else          OOe = VP.EdgeON(OOShapeIndex);
+     OOedge = TopoDS::Edge(OOe);
+-    OOisrest = myDS->IsSectionEdge(OOedge);
+-    OOclosing = TopOpeBRepTool_ShapeTool::Closed(OOedge,OOFace);
+     if (myDS->HasShape(OOedge)) OOedgeIndex = myDS->Shape(OOedge);
+     else                        OOedgeIndex = myDS->AddShape(OOedge,OOShapeIndex);
+   }
 Index: oce/src/TopOpeBRep/TopOpeBRep_vprdeg.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRep/TopOpeBRep_vprdeg.cxx
@@ -3296,6 +3099,23 @@ Index: oce/src/TopOpeBRep/TopOpeBRep_vprdeg.cxx
      ok = mktdg.MkTonE(ei,mkt, par1,par2);  
      if ((!ok) || (mkt == NOI)) return NOI;      
      OOEi = ei; paronOOEi = pari; hasOOEi = Standard_True;
+Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder.cxx
++++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder.cxx
+@@ -491,11 +491,8 @@ Standard_Boolean TopOpeBRepBuild_Builder
+ //=======================================================================
+ TopAbs_Orientation TopOpeBRepBuild_Builder::Orient(const TopAbs_Orientation Ori,const Standard_Boolean Reverse)
+ {
+-#ifdef DEB
+-  TopAbs_Orientation result;
+-#else
+   TopAbs_Orientation result=TopAbs_FORWARD;
+-#endif
++
+   switch (Reverse) {
+     case Standard_True  : result = TopAbs::Complement(Ori); break;
+     case Standard_False : result = Ori; break;
 Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_BuilderON.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_BuilderON.cxx
@@ -3350,6 +3170,83 @@ Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_GridSS.cxx
    
  #ifdef DEB
    Standard_Integer iSO; Standard_Boolean tSPS = GtraceSPS(SO1,iSO);
+Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Merge.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_Merge.cxx
++++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Merge.cxx
+@@ -209,11 +209,8 @@ void TopOpeBRepBuild_Builder::MergeShape
+   // NYI : SplitCompound appele par SplitShape
+   
+   TopOpeBRepTool_ShapeExplorer ex1;
+-#ifdef DEB
+-  TopAbs_ShapeEnum t1,tex1;
+-#else
+   TopAbs_ShapeEnum t1=TopAbs_COMPOUND,tex1=TopAbs_COMPOUND;
+-#endif
++
+   if ( ! S1null ) {
+     t1 = tex1 = TopType(S1);
+     if ( t1 == TopAbs_COMPOUND ) {
+@@ -236,11 +233,8 @@ void TopOpeBRepBuild_Builder::MergeShape
+   }
+   
+   TopOpeBRepTool_ShapeExplorer ex2;
+-#ifdef DEB
+-  TopAbs_ShapeEnum t2,tex2;
+-#else
+   TopAbs_ShapeEnum t2=TopAbs_COMPOUND,tex2=TopAbs_COMPOUND;
+-#endif
++
+   if ( ! S2null ) {
+     t2 = tex2 = TopType(S2);
+     if ( t2 == TopAbs_COMPOUND ) {
+Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_BuildTool.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS_BuildTool.cxx
++++ oce/src/TopOpeBRepDS/TopOpeBRepDS_BuildTool.cxx
+@@ -1155,11 +1155,8 @@ void  TopOpeBRepDS_BuildTool::Parameter(
+   Handle(Geom_Curve) C = BRep_Tool::Curve(e,loc,f,l);
+   if ( !C.IsNull() && C->IsPeriodic()) {
+     Standard_Real per = C->Period();
+-#ifdef DEB
+-    TopAbs_Orientation oV;
+-#else
+     TopAbs_Orientation oV=TopAbs_FORWARD;
+-#endif
++
+     TopExp_Explorer exV(e,TopAbs_VERTEX);
+     for (; exV.More(); exV.Next()) {
+       const TopoDS_Vertex& vofe = TopoDS::Vertex(exV.Current());
+Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_Check.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS_Check.cxx
++++ oce/src/TopOpeBRepDS/TopOpeBRepDS_Check.cxx
+@@ -223,11 +223,8 @@ Standard_Boolean TopOpeBRepDS_Check::Che
+     return Standard_False;
+   }
+   const TopoDS_Shape& S =myHDS->Shape(I);
+-#ifdef DEB
+-  TopAbs_ShapeEnum se;
+-#else
+   TopAbs_ShapeEnum se=TopAbs_COMPOUND;
+-#endif
++
+   switch (K) {
+   case TopOpeBRepDS_SOLID  : se = TopAbs_SOLID; break;
+   case TopOpeBRepDS_SHELL  : se = TopAbs_SHELL; break;
+Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_Dumper.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS_Dumper.cxx
++++ oce/src/TopOpeBRepDS/TopOpeBRepDS_Dumper.cxx
+@@ -196,7 +196,7 @@ Standard_OStream& TopOpeBRepDS_Dumper::P
+                                              )
+ {
+ #ifdef DEB
+-  Standard_Integer i,l,lb,n;
++  Standard_Integer i,l,lb=-1,n;
+   
+   Standard_Integer degree   = B->Degree();
+   Standard_Integer nbpoles  = B->NbPoles();
 Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_EIR.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS_EIR.cxx
@@ -3520,6 +3417,76 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_HDataStructure.cxx
      myDS.ChangeCurveInterferences(G).Append(I);
      break;
      
+Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_Transition.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS_Transition.cxx
++++ oce/src/TopOpeBRepDS/TopOpeBRepDS_Transition.cxx
+@@ -283,11 +283,7 @@ TopAbs_Orientation TopOpeBRepDS_Transiti
+ //=======================================================================
+ TopAbs_Orientation TopOpeBRepDS_Transition::OrientationON(const TopAbs_State S,const TopAbs_ShapeEnum ) const // T) const
+ {
+-#ifdef DEB
+-  TopAbs_Orientation result;
+-#else
+   TopAbs_Orientation result=TopAbs_FORWARD;
+-#endif
+ 
+   if      (myStateBefore == TopAbs_ON && myStateAfter == TopAbs_ON) {
+ #if 0
+Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_repvg.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS_repvg.cxx
++++ oce/src/TopOpeBRepDS/TopOpeBRepDS_repvg.cxx
+@@ -139,7 +139,7 @@ Standard_EXPORT void FDS_repvg2
+ 	  gp_Pnt2d uv; ok = FUN_tool_paronEF(E,pE,F1,uv); if (!ok) {it2.Next();continue;}
+ 	  Standard_Real factor = 0.789;
+ 	  TopOpeBRepTool_makeTransition MKT; 
+-	  TopAbs_State stb,sta; 
++	  TopAbs_State stb = TopAbs_State::TopAbs_UNKNOWN,sta = TopAbs_State::TopAbs_UNKNOWN; 
+ 	  ok = MKT.Initialize(E,pbef,paft,pE, F1,uv, factor);
+ 	  if (ok) ok = MKT.SetRest(E1,pE1);
+ 	  if (ok) ok = MKT.MkTonE(stb,sta);
+Index: oce/src/TopOpeBRepTool/TopOpeBRepTool_STATE.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRepTool/TopOpeBRepTool_STATE.cxx
++++ oce/src/TopOpeBRepTool/TopOpeBRepTool_STATE.cxx
+@@ -72,7 +72,7 @@ void TopOpeBRepTool_STATE::Set(const Sta
+ 
+ Standard_Boolean TopOpeBRepTool_STATE::Get(const TopAbs_State S)
+ {
+-  Standard_Boolean b;
++  Standard_Boolean b = myunknown;
+   switch(S) {
+   case TopAbs_IN : b = myin; break;
+   case TopAbs_OUT : b = myout; break;
+Index: oce/src/TopOpeBRepTool/TopOpeBRepTool_TOPOLOGY.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRepTool/TopOpeBRepTool_TOPOLOGY.cxx
++++ oce/src/TopOpeBRepTool/TopOpeBRepTool_TOPOLOGY.cxx
+@@ -1173,11 +1173,7 @@ Standard_EXPORT void FUN_ds_Parameter(co
+   Handle(Geom_Curve) C = BRep_Tool::Curve(e,loc,f,l);
+   if ( !C.IsNull() && C->IsPeriodic()) {
+     Standard_Real per = C->Period();
+-#ifdef DEB
+-    TopAbs_Orientation oV;
+-#else
+     TopAbs_Orientation oV=TopAbs_FORWARD;
+-#endif
+     TopExp_Explorer exV(e,TopAbs_VERTEX);
+     for (; exV.More(); exV.Next()) {
+       const TopoDS_Vertex& vofe = TopoDS::Vertex(exV.Current());
+Index: oce/src/Units/Units_Lexicon.cxx
+===================================================================
+--- oce.orig/src/Units/Units_Lexicon.cxx
++++ oce/src/Units/Units_Lexicon.cxx
+@@ -59,7 +59,6 @@ void Units_Lexicon::Creates(const Standa
+   char *Oper = oper ;
+   char *Coeff = coeff ;
+ #endif
+-  Standard_Integer fr;
+   Standard_Size i;
+   Standard_Real value;
+   Handle(Units_Token) token;
 Index: oce/src/Units/Units_Sentence.cxx
 ===================================================================
 --- oce.orig/src/Units/Units_Sentence.cxx
@@ -3614,6 +3581,75 @@ Index: oce/src/Visual3d/Visual3d_ViewManager.cxx
  
  		// (AU, AV) : Device Coordinate Space
  		// DCS -> NPCS Normalized Projection Coordinate Space
+Index: oce/src/WNT/W95_Allocator.cxx
+===================================================================
+--- oce.orig/src/WNT/W95_Allocator.cxx
++++ oce/src/WNT/W95_Allocator.cxx
+@@ -701,8 +701,8 @@ void W32_ImageNote :: Play ( BOOL fDummy
+ 
+  int     xx, yy, w, h;
+  HDC     hdc, hdcMem;
+- BITMAP  bmp;
+- HBITMAP hbo;
++ BITMAP  bmp = {};
++ HBITMAP hbo = NULL;
+  SIZE    sz;
+  POINT   up[ 4 ];
+  BOOL    fScale = FALSE;
+Index: oce/src/WNT/WNT_DDriver.cxx
+===================================================================
+--- oce.orig/src/WNT/WNT_DDriver.cxx
++++ oce/src/WNT/WNT_DDriver.cxx
+@@ -422,12 +422,12 @@ Standard_Boolean WNT_DDriver::DoSpool
+                  (const Standard_Boolean anOriginalSize,
+                   const Aspect_PlotMode aPlotMode) const
+ {
+-  Standard_Integer i;
++  Standard_Integer i = 0;
+   UINT             n;
+   char             buffer[ MAX_DESC_LEN ]; 
+   DOCINFO          di;
+   PLOGPALETTE      pLogPal;
+-  HPALETTE         hPal;
++  HPALETTE         hPal = NULL;
+   Standard_Boolean retVal = Standard_True;
+ 
+   if (GetEnhMetaFileDescription ((HENHMETAFILE )myHMetaFile, MAX_DESC_LEN, buffer)
+Index: oce/src/WNT/WNT_GraphicDevice.cxx
+===================================================================
+--- oce.orig/src/WNT/WNT_GraphicDevice.cxx
++++ oce/src/WNT/WNT_GraphicDevice.cxx
+@@ -546,7 +546,7 @@ static int __fastcall _createColorRamp (
+  PPALETTEENTRY         sysPal, colorRamp;
+  PBYTE                 gRed, gGreen, gBlue;
+  BYTE                  inc;
+- LONG                  error, min_error, error_index, delta;
++ LONG                  error, min_error, error_index = 0, delta;
+  double                dv, gamma;
+  char                  buff[ 32 ];
+ 
+Index: oce/src/WNT/WNT_ImageProcessor.cxx
+===================================================================
+--- oce.orig/src/WNT/WNT_ImageProcessor.cxx
++++ oce/src/WNT/WNT_ImageProcessor.cxx
+@@ -125,7 +125,7 @@ HBITMAP LoadImageFromFile (
+          Handle( WNT_GraphicDevice )& gDev, char* fileName, HDC hDevCtx
+ 	    ) {
+ 
+- HANDLE   hFile, hFileMap = NULL;
++ HANDLE   hFile = NULL, hFileMap = NULL;
+  HBITMAP  retVal = NULL;
+  DWORD    dwProtect, dwAccess;
+  bool Ret = true;
+@@ -410,7 +410,7 @@ void SetOutputFormat ( WNT_TypeOfImage t
+ static HBITMAP loadXWD (  Handle( WNT_GraphicDevice )& gDev  ) {
+ 
+  UINT             i, j, k;
+- UINT             red_shift, green_shift, blue_shift;
++ UINT             red_shift = 0, green_shift = 0, blue_shift = 0;
+  HBITMAP          retVal = NULL;
+  PBITMAPINFO      pBmi   = NULL;
+  PBYTE            pbInit = NULL;
 Index: oce/src/math/math_TrigonometricFunctionRoots.cxx
 ===================================================================
 --- oce.orig/src/math/math_TrigonometricFunctionRoots.cxx
@@ -3635,39 +3671,3 @@ Index: oce/src/math/math_TrigonometricFunctionRoots.cxx
  
        // Appel de Newton:
        //OCC541(apo):  Standard_Real TetaNewton=0;  
-Index: oce/src/Units/Units_Lexicon.cxx
-===================================================================
---- oce.orig/src/Units/Units_Lexicon.cxx
-+++ oce/src/Units/Units_Lexicon.cxx
-@@ -59,7 +59,6 @@ void Units_Lexicon::Creates(const Standa
-   char *Oper = oper ;
-   char *Coeff = coeff ;
- #endif
--  Standard_Integer fr;
-   Standard_Size i;
-   Standard_Real value;
-   Handle(Units_Token) token;
-Index: oce/src/IntPatch/IntPatch_Polyhedron.cxx
-===================================================================
---- oce.orig/src/IntPatch/IntPatch_Polyhedron.cxx
-+++ oce/src/IntPatch/IntPatch_Polyhedron.cxx
-@@ -522,13 +522,16 @@ Standard_Integer IntPatch_Polyhedron::Tr
- #if MSG_DEBUG
-     cout<<" Probleme ds IntCurveSurface_Polyhedron : OtherP et PEdge Confondus "<<endl;
- #endif
-+    return(0); //-- BUG NON CORRIGE ( a revoir le role de nbdeltaU et nbdeltaV)
-+
-+	// @todo what does mean the above line ? should this really removed?
-+#if 0 // added by warning-fix
-     Standard_Integer TempTri,TempOtherP;
-     TempTri = TriCon;
-     TempOtherP = OtherP;
- 
--    return(0); //-- BUG NON CORRIGE ( a revoir le role de nbdeltaU et nbdeltaV)
--
--    return(TriConnex(TempTri,Pivot,TempOtherP,TriCon,OtherP));
-+	return(TriConnex(TempTri,Pivot,TempOtherP,TriCon,OtherP));
-+#endif
-   }
-   return TriCon;
- }

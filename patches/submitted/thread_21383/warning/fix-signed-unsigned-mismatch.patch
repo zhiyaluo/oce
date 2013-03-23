@@ -47,7 +47,7 @@ Index: oce/src/BinMNaming/BinMNaming_NamingDriver.cxx
 ===================================================================
 --- oce.orig/src/BinMNaming/BinMNaming_NamingDriver.cxx
 +++ oce/src/BinMNaming/BinMNaming_NamingDriver.cxx
-@@ -181,7 +181,7 @@ Standard_Boolean BinMNaming_NamingDriver
+@@ -183,7 +183,7 @@ Standard_Boolean BinMNaming_NamingDriver
            Standard_Integer i;
            // read array
            for(i=1; i<=aNbArgs;i++) {
@@ -56,7 +56,7 @@ Index: oce/src/BinMNaming/BinMNaming_NamingDriver.cxx
              ok = theSource >> anIndx;
              if (!ok)
                break;
-@@ -196,8 +196,8 @@ Standard_Boolean BinMNaming_NamingDriver
+@@ -198,8 +198,8 @@ Standard_Boolean BinMNaming_NamingDriver
              }
            }
            //patch to release the rest of items	
@@ -93,7 +93,7 @@ Index: oce/src/OSD/OSD_MAllocHook.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_MAllocHook.cxx
 +++ oce/src/OSD/OSD_MAllocHook.cxx
-@@ -470,7 +470,7 @@ void OSD_MAllocHook::CollectBySize::Rese
+@@ -471,7 +471,7 @@ void OSD_MAllocHook::CollectBySize::Rese
      myArray = new Numbers[MAX_ALLOC_SIZE];
    else
    {
@@ -102,7 +102,7 @@ Index: oce/src/OSD/OSD_MAllocHook.cxx
        myArray[i] = Numbers();
    }
    myTotalLeftSize = 0;
-@@ -493,7 +493,7 @@ Standard_Boolean OSD_MAllocHook::Collect
+@@ -494,7 +494,7 @@ Standard_Boolean OSD_MAllocHook::Collect
            "BlockSize", "NbAlloc", "NbLeft", "NbLeftPeak",
            "AllocSize", "LeftSize", "PeakSize");
    Standard_Size aTotAlloc = 0;

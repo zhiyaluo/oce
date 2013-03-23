@@ -7,11 +7,11 @@ Subject: [PATCH] SortTools_Quicksort : fix for out-of-bound exception
  inc/SortTools_QuickSort.gxx |    8 +++-----
  1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/inc/SortTools_QuickSort.gxx b/inc/SortTools_QuickSort.gxx
-index 0b928d6..ef1c098 100644
---- a/inc/SortTools_QuickSort.gxx
-+++ b/inc/SortTools_QuickSort.gxx
-@@ -50,19 +50,17 @@ static void SortRecursive(Array& TheArray,
+Index: oce/inc/SortTools_QuickSort.gxx
+===================================================================
+--- oce.orig/inc/SortTools_QuickSort.gxx
++++ oce/inc/SortTools_QuickSort.gxx
+@@ -50,19 +50,17 @@ static void SortRecursive(Array& TheArra
      Exchange(TheArray(Middle), TheArray(Right - 1));
      Front = Left + 1;
      Back = Right - 1;
@@ -34,6 +34,3 @@ index 0b928d6..ef1c098 100644
  	Exchange(TheArray(Front), TheArray(Back));
  	Front = Front + 1;
  	Back = Back - 1;
--- 
-1.7.10.4
-

@@ -199,7 +199,7 @@ Index: oce/src/OSD/OSD_MAllocHook.cxx
      myMutex.Unlock();
    }
  }
-@@ -492,7 +502,7 @@ Standard_Boolean OSD_MAllocHook::Collect
+@@ -493,7 +503,7 @@ Standard_Boolean OSD_MAllocHook::Collect
        Standard_Size aSizeAlloc = myArray[i].nbAlloc * aSize;
        ptrdiff_t     aSizeLeft = nbLeft * aSize;
        Standard_Size aSizePeak = myArray[i].nbLeftPeak * aSize;
@@ -208,7 +208,7 @@ Index: oce/src/OSD/OSD_MAllocHook.cxx
                myArray[i].nbAlloc, nbLeft, myArray[i].nbLeftPeak,
                aSizeAlloc, aSizeLeft, aSizePeak);
        if (aTotAlloc + aSizeAlloc < aTotAlloc) // overflow ?
-@@ -501,7 +511,7 @@ Standard_Boolean OSD_MAllocHook::Collect
+@@ -502,7 +512,7 @@ Standard_Boolean OSD_MAllocHook::Collect
          aTotAlloc += aSizeAlloc;
      }
    }

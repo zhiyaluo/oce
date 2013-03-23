@@ -941,7 +941,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
 ===================================================================
 --- oce.orig/src/WNT/WNT_ImageProcessor.cxx
 +++ oce/src/WNT/WNT_ImageProcessor.cxx
-@@ -67,6 +67,7 @@
+@@ -68,6 +68,7 @@
  #endif  /* _DEBUG */
  #define WINNT35X() (WNT_osVer.dwPlatformId   == VER_PLATFORM_WIN32_NT && \
                      WNT_osVer.dwMajorVersion == 3 )
@@ -949,7 +949,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  //***//
  typedef struct {
  
-@@ -126,6 +127,7 @@ HBITMAP LoadImageFromFile (
+@@ -127,6 +128,7 @@ HBITMAP LoadImageFromFile (
   HANDLE   hFile, hFileMap = NULL;
   HBITMAP  retVal = NULL;
   DWORD    dwProtect, dwAccess;
@@ -957,7 +957,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
   if ( WNT_osVer.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS ) {
  
-@@ -161,7 +163,7 @@ HBITMAP LoadImageFromFile (
+@@ -162,7 +164,7 @@ HBITMAP LoadImageFromFile (
   _makepath ( ifl, drv, dir, fnm, ext );
  #endif
  
@@ -966,7 +966,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    hFile = CreateFile (
  #ifdef IMP080200
-@@ -172,22 +174,32 @@ HBITMAP LoadImageFromFile (
+@@ -173,22 +175,32 @@ HBITMAP LoadImageFromFile (
             OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL
  		  );
  
@@ -1005,7 +1005,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
    if (   memcmp (  ( const void* )lpvFile, ( const void* )"BM", 2  ) == 0   )
  
     retVal = loadBMP ( gDev );
-@@ -201,10 +213,7 @@ HBITMAP LoadImageFromFile (
+@@ -202,10 +214,7 @@ HBITMAP LoadImageFromFile (
    else  // assume XWD file
  
     retVal = loadXWD ( gDev );
@@ -1017,7 +1017,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    if ( lpvFile  != NULL ) {
  
-@@ -216,8 +225,6 @@ HBITMAP LoadImageFromFile (
+@@ -217,8 +226,6 @@ HBITMAP LoadImageFromFile (
    if ( hFileMap != NULL                 ) CloseHandle ( hFileMap );
    if ( hFile    != INVALID_HANDLE_VALUE ) CloseHandle ( hFile    );
  
@@ -1026,7 +1026,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
   if ( hDevCtx == NULL ) ReleaseDC ( NULL, hDC );
  
   return retVal;
-@@ -233,8 +240,9 @@ int __WNT_API SaveWindowToFile (
+@@ -234,8 +241,9 @@ int __WNT_API SaveWindowToFile (
   HDC      hDCmem;
   HBITMAP  hBmp = NULL, hOldBmp;
   HPALETTE hOldPal;
@@ -1037,7 +1037,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    hDC = GetDC ( hWnd );
  #ifdef TEST
-@@ -252,8 +260,10 @@ int __WNT_API SaveWindowToFile (
+@@ -253,8 +261,10 @@ int __WNT_API SaveWindowToFile (
  
    hBmp = CreateCompatibleBitmap ( hDC, w, h );
  
@@ -1050,7 +1050,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
    hOldBmp = SelectBitmap ( hDCmem, hBmp );
  
     BitBlt ( hDCmem, 0, 0, w, h, hDC, x, y, SRCCOPY );
-@@ -261,10 +271,7 @@ int __WNT_API SaveWindowToFile (
+@@ -262,10 +272,7 @@ int __WNT_API SaveWindowToFile (
    SelectBitmap ( hDCmem, hOldBmp );
  
    retVal = SaveBitmapToFile ( gDev, hBmp, fName, 0, 0, w, h );
@@ -1062,7 +1062,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
  #ifdef TEST
    fWindow = FALSE;
-@@ -279,8 +286,6 @@ int __WNT_API SaveWindowToFile (
+@@ -280,8 +287,6 @@ int __WNT_API SaveWindowToFile (
    DeleteDC ( hDCmem );
    ReleaseDC ( hWnd, hDC );
  
@@ -1071,7 +1071,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
   return retVal;
  
  }  // end SaveWindowToFile
-@@ -354,8 +359,8 @@ int SaveBitmapToFile (Handle(WNT_Graphic
+@@ -336,8 +341,8 @@ int SaveBitmapToFile (Handle(WNT_Graphic
    HBITMAP  hNewBmp = NULL;
    HPALETTE hOldPal;
    BOOL     newBmp  = FALSE, newDC = FALSE;
@@ -1082,7 +1082,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    #ifdef TEST
      if (!fWindow)
-@@ -394,19 +399,21 @@ int SaveBitmapToFile (Handle(WNT_Graphic
+@@ -376,19 +381,21 @@ int SaveBitmapToFile (Handle(WNT_Graphic
        {
          SelectPalette (hDC, hOldPal, FALSE);
        }
@@ -1109,7 +1109,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
    return retVal;
  }  // end SaveBitmapToFile
  //***//
-@@ -442,7 +449,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
+@@ -423,7 +430,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
   LPVOID           imageData;
   DWORD            dataSize;
  
@@ -1118,7 +1118,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    xwdHdr = ( XWDFileHeader* )lpvFile;
  
-@@ -451,7 +458,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
+@@ -432,7 +439,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
    if ( xwdHdr -> file_version  != XWD_FILE_VERSION ||
         xwdHdr -> pixmap_format != ZPixmap          ||
         xwdHdr -> header_size   <  sizeof ( XWDFileHeader )
@@ -1127,7 +1127,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    xColor = ( XColor* )(  ( char* )lpvFile + xwdHdr -> header_size  );
  
-@@ -487,7 +494,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
+@@ -468,7 +475,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
  
  	else
  
@@ -1136,7 +1136,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
      break;
  
-@@ -512,7 +519,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
+@@ -493,7 +500,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
  
  	 else
  
@@ -1145,7 +1145,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
      break;
  
-@@ -520,7 +527,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
+@@ -501,7 +508,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
  
    pBmi = ( PBITMAPINFO )MALLOC( nBytes );
  
@@ -1154,7 +1154,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    pBmi -> bmiHeader.biSize          = sizeof ( BITMAPINFOHEADER );
    pBmi -> bmiHeader.biWidth	        = xwdHdr -> pixmap_width;
-@@ -559,7 +566,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
+@@ -540,7 +547,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
  
  	  pbInit = ( PBYTE )MALLOC( bitmapSize );
  
@@ -1163,7 +1163,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
  	  newMem = TRUE;
  
-@@ -579,7 +586,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
+@@ -560,7 +567,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
  
       ptrDIB = ( PBYTE )MALLOC( dataSize );
  
@@ -1172,7 +1172,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
  	 CopyMemory (  ( PVOID )ptrDIB, ( PVOID )pbInit, dataSize  );
  	 FillMemory (  ( PVOID )colors, MAXCOLOR * sizeof ( WORD ), 0xFFFF );
-@@ -642,7 +649,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
+@@ -623,7 +630,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
  
  	  pbInit = ( PBYTE )MALLOC( bitmapSize );
  
@@ -1181,7 +1181,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
  	  newMem = TRUE;
  
-@@ -708,7 +715,7 @@ AllocColors_16:
+@@ -689,7 +696,7 @@ AllocColors_16:
  
  	  pbInit = ( PBYTE )MALLOC( bitmapSize );
  
@@ -1190,7 +1190,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
  	  newMem = TRUE;
  
-@@ -761,7 +768,7 @@ AllocColors_16:
+@@ -742,7 +749,7 @@ AllocColors_16:
  
  	   default:
  
@@ -1199,7 +1199,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
        }  // end switch ( xwdHdr -> bits_per_pixel . . . )
  
-@@ -771,7 +778,7 @@ AllocColors_16:
+@@ -752,7 +759,7 @@ AllocColors_16:
  
       case 24:
  
@@ -1208,7 +1208,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
       case 32:
  
-@@ -845,15 +852,13 @@ AllocColors_16:
+@@ -826,15 +833,13 @@ AllocColors_16:
  
     SelectPalette ( hDC, hOldPal, FALSE );
  
@@ -1226,7 +1226,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
   return retVal;
  
  }  // end readXWD
-@@ -924,8 +929,7 @@ static HBITMAP loadBMP (  Handle( WNT_Gr
+@@ -905,8 +910,7 @@ static HBITMAP loadBMP (  Handle( WNT_Gr
   UINT              nColors;
   DWORD             dwWidth, dwHeight;
   BOOL              os2Flag;
@@ -1236,7 +1236,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    pBmfh = ( PBITMAPFILEHEADER )lpvFile;
    pBmih = ( PBITMAPINFOHEADER )(  ( PBYTE )lpvFile + sizeof ( BITMAPFILEHEADER )  );
-@@ -942,8 +946,10 @@ static HBITMAP loadBMP (  Handle( WNT_Gr
+@@ -923,8 +927,10 @@ static HBITMAP loadBMP (  Handle( WNT_Gr
  						         sizeof ( RGBQUAD ) * nColors
  					            );
  
@@ -1248,7 +1248,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
     pBmih -> biSize        = sizeof ( BITMAPINFOHEADER );
     pBmih -> biWidth       = pBmch -> bcWidth;
     pBmih -> biHeight      = pBmch -> bcHeight;
-@@ -959,12 +965,12 @@ static HBITMAP loadBMP (  Handle( WNT_Gr
+@@ -940,12 +946,12 @@ static HBITMAP loadBMP (  Handle( WNT_Gr
     	 (  ( PBITMAPCOREINFO )pBmch  ) -> bmciColors[ i ].rgbtGreen;
     	(  ( PBITMAPINFO )pBmih  ) -> bmiColors[ i ].rgbBlue =
     	 (  ( PBITMAPCOREINFO )pBmch  ) -> bmciColors[ i ].rgbtBlue;
@@ -1262,7 +1262,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
    } else {  // Windows DIB
  
     pRGB     = ( LPRGBQUAD )(  ( PBYTE )pBmih + pBmih -> biSize  );
-@@ -994,14 +1000,8 @@ static HBITMAP loadBMP (  Handle( WNT_Gr
+@@ -975,14 +981,8 @@ static HBITMAP loadBMP (  Handle( WNT_Gr
  
     SelectPalette ( hDC, hOldPal, FALSE );
  
@@ -1277,7 +1277,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
    return retVal;
  
  }  // end  loadBMP
-@@ -1042,7 +1042,7 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
+@@ -1023,7 +1023,7 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
    Suffix = Prefix = OutCode = NULL;
  #endif
  
@@ -1286,7 +1286,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
  #ifdef BUC60837
    OutCode = ( PUINT )MALLOC(  1026 * sizeof ( UINT )  );
-@@ -1054,7 +1054,7 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
+@@ -1035,7 +1035,7 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
    Prefix  = ( PUINT )MALLOC(  4096 * sizeof ( UINT )  );
    Suffix  = ( PUINT )MALLOC(  4096 * sizeof ( UINT )  );
  
@@ -1295,7 +1295,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    byte = NEXT_BYTE;
  
-@@ -1064,13 +1064,13 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
+@@ -1045,13 +1045,13 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
    BitMask     = nColors - 1;
    ++ptr;
  
@@ -1311,7 +1311,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    if ( hasColormap ) {
  
-@@ -1094,11 +1094,11 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
+@@ -1075,11 +1075,11 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
  
    }  // end while
  
@@ -1325,7 +1325,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    ptr += 4;
  
-@@ -1133,7 +1133,7 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
+@@ -1114,7 +1114,7 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
  
     }  // end while
  
@@ -1334,7 +1334,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    } while ( byte1 );
  
-@@ -1142,7 +1142,7 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
+@@ -1123,7 +1123,7 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
  
    pData = ( PBYTE )MALLOC( dataSize );
  
@@ -1343,7 +1343,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    x = y = pass = OutCount = BitOffset = ByteOffset = 0;
  
-@@ -1197,7 +1197,7 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
+@@ -1178,7 +1178,7 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
  #ifdef BUC60837
  					break;
  #else
@@ -1352,7 +1352,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  #endif
  	 OutCode[ OutCount++ ] = Suffix[ CurCode ];
  	 CurCode               = Prefix[ CurCode ];
-@@ -1269,9 +1269,12 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
+@@ -1250,9 +1250,12 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
  
     SelectPalette ( hDC, hOldPal, FALSE );
  
@@ -1367,7 +1367,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
  
    if ( pData     != NULL ) FREE( pData     );
    if ( rasterPtr != NULL ) FREE( rasterPtr );
-@@ -1280,7 +1283,6 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
+@@ -1261,7 +1264,6 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
    if ( Prefix    != NULL ) FREE( Prefix    );
    if ( OutCode   != NULL ) FREE( OutCode   );
  

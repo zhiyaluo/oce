@@ -17,10 +17,10 @@ be amended.
  inc/Image_Color.hxx |   39 ++++++++++++++++++++++++---------------
  1 file changed, 24 insertions(+), 15 deletions(-)
 
-diff --git a/inc/Image_Color.hxx b/inc/Image_Color.hxx
-index ef58a57..892ffa2 100644
---- a/inc/Image_Color.hxx
-+++ b/inc/Image_Color.hxx
+Index: oce/inc/Image_Color.hxx
+===================================================================
+--- oce.orig/inc/Image_Color.hxx
++++ oce/inc/Image_Color.hxx
 @@ -54,6 +54,7 @@ public: // access methods
  
  public:
@@ -122,7 +122,7 @@ index ef58a57..892ffa2 100644
    return aRes;
  }
  
-@@ -433,10 +442,10 @@ inline Image_ColorBGRF operator+ (const Image_ColorBGRF& theA, const Image_Color
+@@ -433,10 +442,10 @@ inline Image_ColorBGRF operator+ (const
  template<typename ColorType_t>
  inline ColorType_t Image_ColorSumm4 (const ColorType_t& theA, const ColorType_t& theB)
  {
@@ -137,7 +137,7 @@ index ef58a57..892ffa2 100644
    return aRes;
  }
  
-@@ -474,9 +483,9 @@ inline Image_ColorBGRAF operator+ (const Image_ColorBGRAF& theA, const Image_Col
+@@ -474,9 +483,9 @@ inline Image_ColorBGRAF operator+ (const
  template<typename ColorType_t>
  inline ColorType_t Image_ColorSub3 (const ColorType_t& theA, const ColorType_t& theB)
  {
@@ -150,7 +150,7 @@ index ef58a57..892ffa2 100644
    return aRes;
  }
  
-@@ -503,10 +512,10 @@ inline Image_ColorBGRF operator- (const Image_ColorBGRF& theA, const Image_Color
+@@ -503,10 +512,10 @@ inline Image_ColorBGRF operator- (const
  template<typename ColorType_t>
  inline ColorType_t Image_ColorSub4 (const ColorType_t& theA, const ColorType_t& theB)
  {
@@ -165,6 +165,3 @@ index ef58a57..892ffa2 100644
    return aRes;
  }
  
--- 
-1.7.10.4
-

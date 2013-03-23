@@ -208,7 +208,7 @@ Index: oce/src/QABugs/QABugs_3.cxx
  #include<Draw_Interpretor.hxx>
  #include<TopLoc_Location.hxx>
  #include<TopoDS_Face.hxx>
-@@ -287,15 +287,15 @@ void stringerror(int state)
+@@ -246,15 +246,15 @@ void stringerror(int state)
  //#else
  //#include <strstream.h>
  //#endif
@@ -227,7 +227,7 @@ Index: oce/src/QABugs/QABugs_3.cxx
  #endif
  static int UKI61075(Draw_Interpretor& /*di*/, Standard_Integer /*argc*/, const char ** /*argv*/) {
   double da,db;
-@@ -1405,9 +1405,9 @@ static Standard_Integer BUC60856(Draw_In
+@@ -1365,9 +1365,9 @@ static Standard_Integer BUC60856(Draw_In
  
  #if ! defined(WNT)
  //#include <fstream.h>

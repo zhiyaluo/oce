@@ -1,398 +1,3 @@
-Index: oce/src/BOPTest/BOPTest_LowCommands.cxx
-===================================================================
---- oce.orig/src/BOPTest/BOPTest_LowCommands.cxx
-+++ oce/src/BOPTest/BOPTest_LowCommands.cxx
-@@ -90,11 +90,6 @@ static
-   void PrintState (Draw_Interpretor& aDI,
- 		   const TopAbs_State& aState);
- 
--//modified by NIZNHY-PKV Thu Nov 10 12:11:15 2011f
--static
--  void DumpArray(const BOPTColStd_CArray1OfInteger& aC,
--	       Draw_Interpretor& aDI);
--//modified by NIZNHY-PKV Thu Nov 10 12:11:18 2011t
- 
- static  Standard_Integer bhaspc      (Draw_Interpretor& , Standard_Integer , const char** );
- static  Standard_Integer baddve      (Draw_Interpretor& , Standard_Integer , const char** );
-Index: oce/src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx
-===================================================================
---- oce.orig/src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx
-+++ oce/src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx
-@@ -129,16 +129,6 @@
- #include <BRepBuilderAPI_BndBoxTreeSelector.hxx>
- #include <NCollection_UBTreeFiller.hxx>
- 
--static void SortBox (const Handle(Bnd_HArray1OfBox) hSetBoxes,
--		     const Bnd_Box& aBox,
--		     TColStd_ListOfInteger& listIndex)
--{
--  Standard_Integer i, nbBoxes = hSetBoxes->Length();
--  for (i = 1; i <= nbBoxes; i++)
--    if (!aBox.IsOut(hSetBoxes->Value(i)))
--      listIndex.Append(i);
--}
--
- //=======================================================================
- //function : SameRange
- //purpose  : 
-Index: oce/src/BRepFeat/BRepFeat_MakeDPrism.cxx
-===================================================================
---- oce.orig/src/BRepFeat/BRepFeat_MakeDPrism.cxx
-+++ oce/src/BRepFeat/BRepFeat_MakeDPrism.cxx
-@@ -1260,7 +1260,7 @@ Standard_Integer SensOfPrism(const Handl
-   return sens;
- }
- 
--
-+#ifdef DEB
-  //=======================================================================
- //function : SetGluedFaces
- //purpose  : 
-@@ -1314,7 +1314,7 @@ static void SetGluedFaces(const TopoDS_F
-     }
-   }
- }
--
-+#endif
- 
- //=======================================================================
- //function : VerifGluedFaces
-Index: oce/src/BRepFeat/BRepFeat_MakePipe.cxx
-===================================================================
---- oce.orig/src/BRepFeat/BRepFeat_MakePipe.cxx
-+++ oce/src/BRepFeat/BRepFeat_MakePipe.cxx
-@@ -377,7 +377,7 @@ Handle(Geom_Curve) BRepFeat_MakePipe::Ba
-   return myBCurve;
- }
- 
--
-+#ifdef DEB
- //=======================================================================
- //function : SetGluedFaces
- //purpose  : management of faces of gluing and sliding  
-@@ -432,7 +432,7 @@ static void SetGluedFaces(const TopoDS_F
-     }
-   }
- }
--
-+#endif
- 
- //=======================================================================
- //function : MajMap
-Index: oce/src/BRepFeat/BRepFeat_MakePrism.cxx
-===================================================================
---- oce.orig/src/BRepFeat/BRepFeat_MakePrism.cxx
-+++ oce/src/BRepFeat/BRepFeat_MakePrism.cxx
-@@ -1200,7 +1200,7 @@ Standard_Integer SensOfPrism(const Handl
-   return sens;
- }
- 
--
-+#ifdef DEB
- //=======================================================================
- //function : SetGluedFaces
- //purpose  : management of gluing faces
-@@ -1254,7 +1254,7 @@ static void SetGluedFaces(const TopoDS_F
-     }
-   }
- }
--
-+#endif
- 
- //=======================================================================
- //function : VerifGluedFaces
-Index: oce/src/BRepFeat/BRepFeat_MakeRevol.cxx
-===================================================================
---- oce.orig/src/BRepFeat/BRepFeat_MakeRevol.cxx
-+++ oce/src/BRepFeat/BRepFeat_MakeRevol.cxx
-@@ -849,7 +849,7 @@ Handle(Geom_Curve) BRepFeat_MakeRevol::B
-   return myBCurve;
- }
- 
--
-+#ifdef DEB
- //=======================================================================
- //function : SetGluedFaces
- //purpose  : management of gluing faces
-@@ -904,6 +904,7 @@ static void SetGluedFaces(const TopoDS_F
-     }
-   }
- }
-+#endif
- 
- //=======================================================================
- //function : VerifGluedFaces
-Index: oce/src/BRepFill/BRepFill_CompatibleWires.cxx
-===================================================================
---- oce.orig/src/BRepFill/BRepFill_CompatibleWires.cxx
-+++ oce/src/BRepFill/BRepFill_CompatibleWires.cxx
-@@ -69,7 +69,7 @@
- #include <TColStd_Array1OfReal.hxx>
- #include <TColStd_SequenceOfReal.hxx>
- 
--
-+#ifdef DEB
- static void EdgesFromVertex (const TopoDS_Wire&   W,
- 			     const TopoDS_Vertex& V, 
- 			     TopoDS_Edge& E1, 
-@@ -119,7 +119,7 @@ static void EdgesFromVertex (const TopoD
-     }
-   }
- }
--				      
-+#endif				      
- 
- static void SeqOfVertices (const TopoDS_Wire&   W,
- 			   TopTools_SequenceOfShape& S)
-Index: oce/src/GeomFill/GeomFill_CorrectedFrenet.cxx
-===================================================================
---- oce.orig/src/GeomFill/GeomFill_CorrectedFrenet.cxx
-+++ oce/src/GeomFill/GeomFill_CorrectedFrenet.cxx
-@@ -581,9 +581,6 @@ Standard_Real GeomFill_CorrectedFrenet::
- // Function : ... (OCC78)
- // Purpose : This family of functions produce conversion of angle utility
- //===============================================================
--static Standard_Real corrPI_2PI(Standard_Real Ang){
--  return Ang = (Ang >= 0.0? Ang: 2*M_PI+Ang);
--};
- static Standard_Real corr2PI_PI(Standard_Real Ang){
-   return Ang = (Ang < M_PI? Ang: Ang-2*M_PI);
- };
-Index: oce/src/HLRBRep/HLRBRep_Data.cxx
-===================================================================
---- oce.orig/src/HLRBRep/HLRBRep_Data.cxx
-+++ oce/src/HLRBRep/HLRBRep_Data.cxx
-@@ -466,29 +466,6 @@ public:
- };
- 
- 
--
--//-- ================================================================================
--
--
--//=======================================================================
--//function : FindInList
--//purpose  : 
--//=======================================================================
--// Unused :
--#ifdef DEB
--static Standard_Boolean FindInList (const TColStd_ListOfInteger& L,
--				    const Standard_Integer V)
--{
--  for (TColStd_ListIteratorOfListOfInteger ILV(L);
--       ILV.More();
--       ILV.Next()) {
--    if (V == ILV.Value())
--      return Standard_True;
--  }
--  return Standard_False;
--}
--#endif
--
- //=======================================================================
- //function : AdjustParameter
- //purpose  : 
-Index: oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
-===================================================================
---- oce.orig/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
-+++ oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
-@@ -1397,25 +1397,6 @@ static Standard_Real AdjustUFirst(Standa
-   return u;
- }
- 
--// adjust U parameters on Quadric
--static Standard_Real AdjustUNext(Standard_Real Un,Standard_Real Up)
--{
--  Standard_Real u = Un;
--  if( Un < 0. )
--    while(u < 0.)
--      u += (2.*M_PI);
--  else if( Un > (2.*M_PI) )
--    while( u > (2.*M_PI) )
--      u -= (2.*M_PI);
--  else if(Un == 0. || fabs(Un) <= 1.e-9)
--    u = (fabs(Up) < fabs(2.*M_PI-Up)) ? 0. : (2.*M_PI);
--  else if(Un == (2.*M_PI) || fabs(Un-(2.*M_PI)) <= 1.e-9)
--    u = (fabs(Up) < fabs(2.*M_PI-Up)) ? 0. : (2.*M_PI);
--  else //( Un > 0. && Un < (2.*M_PI) )
--    return u;
--  return u;
--}
--
- // collect vertices, reject equals
- static Handle(IntSurf_LineOn2S) GetVertices(const Handle(IntPatch_WLine)& WLine,
- 					    const Standard_Boolean  ,//IsReversed,
-Index: oce/src/IntPolyh/IntPolyh_Triangle.cxx
-===================================================================
---- oce.orig/src/IntPolyh/IntPolyh_Triangle.cxx
-+++ oce/src/IntPolyh/IntPolyh_Triangle.cxx
-@@ -58,16 +58,6 @@ static
- 	       const Standard_Integer NumTri,
- 	       const Standard_Integer NewTriNum,
- 	       IntPolyh_ArrayOfEdges & TEdges) ;
--static
--  void TestOldEdgeB(const Standard_Integer NumTA,
--		    const Standard_Integer numPtT1,
--		    const Standard_Integer numPtT2,
--		    const Standard_Integer T1,
--		    const Standard_Integer T2,
--		    const IntPolyh_ArrayOfTriangles & TTriangles,
--		    const Standard_Integer Edge1,
--		    const Standard_Integer Edge3,
--		    IntPolyh_ArrayOfEdges & TEdges );
- 
- //=======================================================================
- //function : IntPolyh_Triangle
-@@ -604,42 +594,6 @@ void OldEdge(const Standard_Integer Edge
- }
- 
- //=======================================================================
--//function : TestOldEdgeB
--//purpose  : 
--//=======================================================================
--void TestOldEdgeB(const Standard_Integer NumTA,
--		  const Standard_Integer numPtT1,
--		  const Standard_Integer numPtT2,
--		  const Standard_Integer T1,
--		  const Standard_Integer T2,
--		  const IntPolyh_ArrayOfTriangles & TTriangles,
--		  const Standard_Integer Edge1,
--		  const Standard_Integer Edge3,
--		  IntPolyh_ArrayOfEdges & TEdges )
--{
--
--  if( (TEdges[Edge1].FirstPoint() == numPtT1)
--     ||(TEdges[Edge1].SecondPoint()== numPtT1) ) {
--    /// L'edge1 est commun aux triangles NumTA et T1 
--    if(TEdges[Edge1].FirstTriangle()==NumTA) 
--      TEdges[Edge1].SetFirstTriangle(T1);
--    else TEdges[Edge1].SetSecondTriangle(T1);
--    
--    if(TEdges[Edge3].FirstTriangle()==NumTA) 
--      TEdges[Edge3].SetFirstTriangle(T2);
--    else TEdges[Edge3].SetSecondTriangle(T2);
--  }
--  else {
--    /// L'edge3 est commun aux triangles NumTA et T1 
--    if(TEdges[Edge3].FirstTriangle()==NumTA) 
--      TEdges[Edge3].SetFirstTriangle(T1);
--    else TEdges[Edge3].SetSecondTriangle(T1);      
--    if(TEdges[Edge1].FirstTriangle()==NumTA) 
--      TEdges[Edge1].SetFirstTriangle(T2);
--    else TEdges[Edge1].SetSecondTriangle(T2);
--  }
--}
--//=======================================================================
- //function : MiddleRefinement
- //purpose  : 
- //=======================================================================
-Index: oce/src/IntTools/IntTools_FaceFace.cxx
-===================================================================
---- oce.orig/src/IntTools/IntTools_FaceFace.cxx
-+++ oce/src/IntTools/IntTools_FaceFace.cxx
-@@ -125,8 +125,10 @@
- static
-   void RefineVector(gp_Vec2d& aV2D);
- 
-+#ifdef DEB
- static
-   void DumpWLine(const Handle(IntPatch_WLine)& aWLine);
-+#endif
- //
- static
-   void TolR3d(const TopoDS_Face& ,
-@@ -4708,6 +4710,8 @@ Standard_Integer IndexType(const GeomAbs
-   } 
-   return aIndex;
- }
-+
-+#ifdef DEB
- //=======================================================================
- //function : DumpWLine
- //purpose  : 
-@@ -4730,6 +4734,7 @@ void DumpWLine(const Handle(IntPatch_WLi
- 	//   i, aX, aY, aZ, aU1, aV1, aU2, aV2);
-   }
- }
-+#endif
- //=======================================================================
- //function : RefineVector
- //purpose  : 
-Index: oce/src/NCollection/NCollection_IncAllocator.cxx
-===================================================================
---- oce.orig/src/NCollection/NCollection_IncAllocator.cxx
-+++ oce/src/NCollection/NCollection_IncAllocator.cxx
-@@ -97,7 +97,7 @@ Standard_EXPORT void IncAllocator_SetDeb
-  * numbering of allocators.
-  */
- //=======================================================================
--#ifdef _DEBUG
-+#if defined(_DEBUG) && defined(DEB)
- static Standard_Size CurrentID = 0;
- static Standard_Size CATCH_ID = 0;
- 
-Index: oce/src/TopOpeBRep/TopOpeBRep_FacesFiller.cxx
-===================================================================
---- oce.orig/src/TopOpeBRep/TopOpeBRep_FacesFiller.cxx
-+++ oce/src/TopOpeBRep/TopOpeBRep_FacesFiller.cxx
-@@ -78,19 +78,6 @@ static void FUN_MakeERL(TopOpeBRep_Faces
-   }
- }
- 
--// Unused :
--#ifdef DEB
--static void FUN_MakeERL(const TopTools_MapOfShape& mapES,TopTools_ListOfShape& ERL)
--{
--  ERL.Clear();
--  TopTools_MapIteratorOfMapOfShape itES;
--  for (itES.Initialize(mapES);itES.More();itES.Next()) {
--    const TopoDS_Shape& E = itES.Key();
--    ERL.Append(E);
--  }
--}
--#endif
--
- //=======================================================================
- //function : TopOpeBRep_FacesFiller
- //purpose  : 
-Index: oce/src/TopOpeBRep/TopOpeBRep_FacesFiller_1.cxx
-===================================================================
---- oce.orig/src/TopOpeBRep/TopOpeBRep_FacesFiller_1.cxx
-+++ oce/src/TopOpeBRep/TopOpeBRep_FacesFiller_1.cxx
-@@ -73,14 +73,6 @@ Standard_EXPORT Standard_Boolean TopOpeB
- Standard_IMPORT Standard_Boolean GLOBAL_bvpr;Standard_EXPORT void debvprmess(Standard_Integer f1,Standard_Integer f2,Standard_Integer il,Standard_Integer vp,Standard_Integer si);
- Standard_EXPORT Standard_Boolean TopOpeBRep_GetcontextNOPUNK();
- 
--static void SSAVFF(const TopoDS_Shape& F1, const TopoDS_Shape& F2)
--{
--  TCollection_AsciiString aname_1("ffbug_1"), aname_2("ffbug_2");
--  Standard_CString name_1=aname_1.ToCString(),name_2=aname_2.ToCString();
--  cout<<"FacesFiller : "<<name_1<<","<<name_2<<endl;
--  BRepTools::Write(F1,name_1); BRepTools::Write(F2,name_2);
--}
--
- static void FUN_traceRLine(const TopOpeBRep_LineInter& L)
- {
- #ifdef DRAW
-@@ -534,18 +526,6 @@ static Standard_Boolean FUN_brep_ONfirst
-   return ONfirstP;
- }
- 
--#ifdef DEB
--static void FUN_remove(TopOpeBRepDS_ListOfInterference& lI, const Handle(TopOpeBRepDS_Interference)& I)
--{
--  TopOpeBRepDS_ListIteratorOfListOfInterference itI(lI);
--  while (itI.More()) {
--    const Handle(TopOpeBRepDS_Interference)& Icur = itI.Value();
--    if (Icur == I) lI.Remove(itI);
--    else           itI.Next();
--  }
--}
--#endif
--
- //=======================================================================
- //function : ProcessRLine
- //purpose  : 
 Index: oce/inc/IntCurveSurface_Inter.gxx
 ===================================================================
 --- oce.orig/inc/IntCurveSurface_Inter.gxx
@@ -593,6 +198,152 @@ Index: oce/inc/IntCurveSurface_Inter.gxx
 -  //modified by NIZNHY-PKV Wed Apr 04 12:11:03 2012t
 -  return result;
 -}
+Index: oce/src/BOPTest/BOPTest_LowCommands.cxx
+===================================================================
+--- oce.orig/src/BOPTest/BOPTest_LowCommands.cxx
++++ oce/src/BOPTest/BOPTest_LowCommands.cxx
+@@ -90,11 +90,6 @@ static
+   void PrintState (Draw_Interpretor& aDI,
+ 		   const TopAbs_State& aState);
+ 
+-//modified by NIZNHY-PKV Thu Nov 10 12:11:15 2011f
+-static
+-  void DumpArray(const BOPTColStd_CArray1OfInteger& aC,
+-	       Draw_Interpretor& aDI);
+-//modified by NIZNHY-PKV Thu Nov 10 12:11:18 2011t
+ 
+ static  Standard_Integer bhaspc      (Draw_Interpretor& , Standard_Integer , const char** );
+ static  Standard_Integer baddve      (Draw_Interpretor& , Standard_Integer , const char** );
+Index: oce/src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx
+===================================================================
+--- oce.orig/src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx
++++ oce/src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx
+@@ -129,16 +129,6 @@
+ #include <BRepBuilderAPI_BndBoxTreeSelector.hxx>
+ #include <NCollection_UBTreeFiller.hxx>
+ 
+-static void SortBox (const Handle(Bnd_HArray1OfBox) hSetBoxes,
+-		     const Bnd_Box& aBox,
+-		     TColStd_ListOfInteger& listIndex)
+-{
+-  Standard_Integer i, nbBoxes = hSetBoxes->Length();
+-  for (i = 1; i <= nbBoxes; i++)
+-    if (!aBox.IsOut(hSetBoxes->Value(i)))
+-      listIndex.Append(i);
+-}
+-
+ //=======================================================================
+ //function : SameRange
+ //purpose  : 
+Index: oce/src/BRepFeat/BRepFeat_MakeDPrism.cxx
+===================================================================
+--- oce.orig/src/BRepFeat/BRepFeat_MakeDPrism.cxx
++++ oce/src/BRepFeat/BRepFeat_MakeDPrism.cxx
+@@ -1260,7 +1260,7 @@ Standard_Integer SensOfPrism(const Handl
+   return sens;
+ }
+ 
+-
++#ifdef DEB
+  //=======================================================================
+ //function : SetGluedFaces
+ //purpose  : 
+@@ -1314,7 +1314,7 @@ static void SetGluedFaces(const TopoDS_F
+     }
+   }
+ }
+-
++#endif
+ 
+ //=======================================================================
+ //function : VerifGluedFaces
+Index: oce/src/BRepFeat/BRepFeat_MakePipe.cxx
+===================================================================
+--- oce.orig/src/BRepFeat/BRepFeat_MakePipe.cxx
++++ oce/src/BRepFeat/BRepFeat_MakePipe.cxx
+@@ -377,7 +377,7 @@ Handle(Geom_Curve) BRepFeat_MakePipe::Ba
+   return myBCurve;
+ }
+ 
+-
++#ifdef DEB
+ //=======================================================================
+ //function : SetGluedFaces
+ //purpose  : management of faces of gluing and sliding  
+@@ -432,7 +432,7 @@ static void SetGluedFaces(const TopoDS_F
+     }
+   }
+ }
+-
++#endif
+ 
+ //=======================================================================
+ //function : MajMap
+Index: oce/src/BRepFeat/BRepFeat_MakePrism.cxx
+===================================================================
+--- oce.orig/src/BRepFeat/BRepFeat_MakePrism.cxx
++++ oce/src/BRepFeat/BRepFeat_MakePrism.cxx
+@@ -1200,7 +1200,7 @@ Standard_Integer SensOfPrism(const Handl
+   return sens;
+ }
+ 
+-
++#ifdef DEB
+ //=======================================================================
+ //function : SetGluedFaces
+ //purpose  : management of gluing faces
+@@ -1254,7 +1254,7 @@ static void SetGluedFaces(const TopoDS_F
+     }
+   }
+ }
+-
++#endif
+ 
+ //=======================================================================
+ //function : VerifGluedFaces
+Index: oce/src/BRepFeat/BRepFeat_MakeRevol.cxx
+===================================================================
+--- oce.orig/src/BRepFeat/BRepFeat_MakeRevol.cxx
++++ oce/src/BRepFeat/BRepFeat_MakeRevol.cxx
+@@ -849,7 +849,7 @@ Handle(Geom_Curve) BRepFeat_MakeRevol::B
+   return myBCurve;
+ }
+ 
+-
++#ifdef DEB
+ //=======================================================================
+ //function : SetGluedFaces
+ //purpose  : management of gluing faces
+@@ -904,6 +904,7 @@ static void SetGluedFaces(const TopoDS_F
+     }
+   }
+ }
++#endif
+ 
+ //=======================================================================
+ //function : VerifGluedFaces
+Index: oce/src/BRepFill/BRepFill_CompatibleWires.cxx
+===================================================================
+--- oce.orig/src/BRepFill/BRepFill_CompatibleWires.cxx
++++ oce/src/BRepFill/BRepFill_CompatibleWires.cxx
+@@ -69,7 +69,7 @@
+ #include <TColStd_Array1OfReal.hxx>
+ #include <TColStd_SequenceOfReal.hxx>
+ 
+-
++#ifdef DEB
+ static void EdgesFromVertex (const TopoDS_Wire&   W,
+ 			     const TopoDS_Vertex& V, 
+ 			     TopoDS_Edge& E1, 
+@@ -119,7 +119,7 @@ static void EdgesFromVertex (const TopoD
+     }
+   }
+ }
+-				      
++#endif				      
+ 
+ static void SeqOfVertices (const TopoDS_Wire&   W,
+ 			   TopTools_SequenceOfShape& S)
 Index: oce/src/BRepOffsetAPI/BRepOffsetAPI_MiddlePath.cxx
 ===================================================================
 --- oce.orig/src/BRepOffsetAPI/BRepOffsetAPI_MiddlePath.cxx
@@ -611,6 +362,193 @@ Index: oce/src/BRepOffsetAPI/BRepOffsetAPI_MiddlePath.cxx
  static Standard_Boolean IsLinear(const TopoDS_Edge& anEdge,
                                   gp_Lin& aLine)
  {
+Index: oce/src/GeomFill/GeomFill_CorrectedFrenet.cxx
+===================================================================
+--- oce.orig/src/GeomFill/GeomFill_CorrectedFrenet.cxx
++++ oce/src/GeomFill/GeomFill_CorrectedFrenet.cxx
+@@ -581,9 +581,6 @@ Standard_Real GeomFill_CorrectedFrenet::
+ // Function : ... (OCC78)
+ // Purpose : This family of functions produce conversion of angle utility
+ //===============================================================
+-static Standard_Real corrPI_2PI(Standard_Real Ang){
+-  return Ang = (Ang >= 0.0? Ang: 2*M_PI+Ang);
+-};
+ static Standard_Real corr2PI_PI(Standard_Real Ang){
+   return Ang = (Ang < M_PI? Ang: Ang-2*M_PI);
+ };
+Index: oce/src/HLRBRep/HLRBRep_Data.cxx
+===================================================================
+--- oce.orig/src/HLRBRep/HLRBRep_Data.cxx
++++ oce/src/HLRBRep/HLRBRep_Data.cxx
+@@ -466,29 +466,6 @@ public:
+ };
+ 
+ 
+-
+-//-- ================================================================================
+-
+-
+-//=======================================================================
+-//function : FindInList
+-//purpose  : 
+-//=======================================================================
+-// Unused :
+-#ifdef DEB
+-static Standard_Boolean FindInList (const TColStd_ListOfInteger& L,
+-				    const Standard_Integer V)
+-{
+-  for (TColStd_ListIteratorOfListOfInteger ILV(L);
+-       ILV.More();
+-       ILV.Next()) {
+-    if (V == ILV.Value())
+-      return Standard_True;
+-  }
+-  return Standard_False;
+-}
+-#endif
+-
+ //=======================================================================
+ //function : AdjustParameter
+ //purpose  : 
+Index: oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
+===================================================================
+--- oce.orig/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
++++ oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
+@@ -1397,25 +1397,6 @@ static Standard_Real AdjustUFirst(Standa
+   return u;
+ }
+ 
+-// adjust U parameters on Quadric
+-static Standard_Real AdjustUNext(Standard_Real Un,Standard_Real Up)
+-{
+-  Standard_Real u = Un;
+-  if( Un < 0. )
+-    while(u < 0.)
+-      u += (2.*M_PI);
+-  else if( Un > (2.*M_PI) )
+-    while( u > (2.*M_PI) )
+-      u -= (2.*M_PI);
+-  else if(Un == 0. || fabs(Un) <= 1.e-9)
+-    u = (fabs(Up) < fabs(2.*M_PI-Up)) ? 0. : (2.*M_PI);
+-  else if(Un == (2.*M_PI) || fabs(Un-(2.*M_PI)) <= 1.e-9)
+-    u = (fabs(Up) < fabs(2.*M_PI-Up)) ? 0. : (2.*M_PI);
+-  else //( Un > 0. && Un < (2.*M_PI) )
+-    return u;
+-  return u;
+-}
+-
+ // collect vertices, reject equals
+ static Handle(IntSurf_LineOn2S) GetVertices(const Handle(IntPatch_WLine)& WLine,
+ 					    const Standard_Boolean  ,//IsReversed,
+Index: oce/src/IntPolyh/IntPolyh_Triangle.cxx
+===================================================================
+--- oce.orig/src/IntPolyh/IntPolyh_Triangle.cxx
++++ oce/src/IntPolyh/IntPolyh_Triangle.cxx
+@@ -58,16 +58,6 @@ static
+ 	       const Standard_Integer NumTri,
+ 	       const Standard_Integer NewTriNum,
+ 	       IntPolyh_ArrayOfEdges & TEdges) ;
+-static
+-  void TestOldEdgeB(const Standard_Integer NumTA,
+-		    const Standard_Integer numPtT1,
+-		    const Standard_Integer numPtT2,
+-		    const Standard_Integer T1,
+-		    const Standard_Integer T2,
+-		    const IntPolyh_ArrayOfTriangles & TTriangles,
+-		    const Standard_Integer Edge1,
+-		    const Standard_Integer Edge3,
+-		    IntPolyh_ArrayOfEdges & TEdges );
+ 
+ //=======================================================================
+ //function : IntPolyh_Triangle
+@@ -604,42 +594,6 @@ void OldEdge(const Standard_Integer Edge
+ }
+ 
+ //=======================================================================
+-//function : TestOldEdgeB
+-//purpose  : 
+-//=======================================================================
+-void TestOldEdgeB(const Standard_Integer NumTA,
+-		  const Standard_Integer numPtT1,
+-		  const Standard_Integer numPtT2,
+-		  const Standard_Integer T1,
+-		  const Standard_Integer T2,
+-		  const IntPolyh_ArrayOfTriangles & TTriangles,
+-		  const Standard_Integer Edge1,
+-		  const Standard_Integer Edge3,
+-		  IntPolyh_ArrayOfEdges & TEdges )
+-{
+-
+-  if( (TEdges[Edge1].FirstPoint() == numPtT1)
+-     ||(TEdges[Edge1].SecondPoint()== numPtT1) ) {
+-    /// L'edge1 est commun aux triangles NumTA et T1 
+-    if(TEdges[Edge1].FirstTriangle()==NumTA) 
+-      TEdges[Edge1].SetFirstTriangle(T1);
+-    else TEdges[Edge1].SetSecondTriangle(T1);
+-    
+-    if(TEdges[Edge3].FirstTriangle()==NumTA) 
+-      TEdges[Edge3].SetFirstTriangle(T2);
+-    else TEdges[Edge3].SetSecondTriangle(T2);
+-  }
+-  else {
+-    /// L'edge3 est commun aux triangles NumTA et T1 
+-    if(TEdges[Edge3].FirstTriangle()==NumTA) 
+-      TEdges[Edge3].SetFirstTriangle(T1);
+-    else TEdges[Edge3].SetSecondTriangle(T1);      
+-    if(TEdges[Edge1].FirstTriangle()==NumTA) 
+-      TEdges[Edge1].SetFirstTriangle(T2);
+-    else TEdges[Edge1].SetSecondTriangle(T2);
+-  }
+-}
+-//=======================================================================
+ //function : MiddleRefinement
+ //purpose  : 
+ //=======================================================================
+Index: oce/src/IntTools/IntTools_FaceFace.cxx
+===================================================================
+--- oce.orig/src/IntTools/IntTools_FaceFace.cxx
++++ oce/src/IntTools/IntTools_FaceFace.cxx
+@@ -125,8 +125,10 @@
+ static
+   void RefineVector(gp_Vec2d& aV2D);
+ 
++#ifdef DEB
+ static
+   void DumpWLine(const Handle(IntPatch_WLine)& aWLine);
++#endif
+ //
+ static
+   void TolR3d(const TopoDS_Face& ,
+@@ -4708,6 +4710,8 @@ Standard_Integer IndexType(const GeomAbs
+   } 
+   return aIndex;
+ }
++
++#ifdef DEB
+ //=======================================================================
+ //function : DumpWLine
+ //purpose  : 
+@@ -4730,6 +4734,7 @@ void DumpWLine(const Handle(IntPatch_WLi
+ 	//   i, aX, aY, aZ, aU1, aV1, aU2, aV2);
+   }
+ }
++#endif
+ //=======================================================================
+ //function : RefineVector
+ //purpose  : 
+Index: oce/src/NCollection/NCollection_IncAllocator.cxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_IncAllocator.cxx
++++ oce/src/NCollection/NCollection_IncAllocator.cxx
+@@ -97,7 +97,7 @@ Standard_EXPORT void IncAllocator_SetDeb
+  * numbering of allocators.
+  */
+ //=======================================================================
+-#ifdef _DEBUG
++#if defined(_DEBUG) && defined(DEB)
+ static Standard_Size CurrentID = 0;
+ static Standard_Size CATCH_ID = 0;
+ 
 Index: oce/src/ProjLib/ProjLib_ProjectedCurve.cxx
 ===================================================================
 --- oce.orig/src/ProjLib/ProjLib_ProjectedCurve.cxx
@@ -1005,3 +943,65 @@ Index: oce/src/QADraw/QADraw.cxx
  static Standard_Integer QANbSelected (Draw_Interpretor& di, Standard_Integer argc, const char** argv)
  {
    if(argc != 1) {
+Index: oce/src/TopOpeBRep/TopOpeBRep_FacesFiller.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRep/TopOpeBRep_FacesFiller.cxx
++++ oce/src/TopOpeBRep/TopOpeBRep_FacesFiller.cxx
+@@ -78,19 +78,6 @@ static void FUN_MakeERL(TopOpeBRep_Faces
+   }
+ }
+ 
+-// Unused :
+-#ifdef DEB
+-static void FUN_MakeERL(const TopTools_MapOfShape& mapES,TopTools_ListOfShape& ERL)
+-{
+-  ERL.Clear();
+-  TopTools_MapIteratorOfMapOfShape itES;
+-  for (itES.Initialize(mapES);itES.More();itES.Next()) {
+-    const TopoDS_Shape& E = itES.Key();
+-    ERL.Append(E);
+-  }
+-}
+-#endif
+-
+ //=======================================================================
+ //function : TopOpeBRep_FacesFiller
+ //purpose  : 
+Index: oce/src/TopOpeBRep/TopOpeBRep_FacesFiller_1.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRep/TopOpeBRep_FacesFiller_1.cxx
++++ oce/src/TopOpeBRep/TopOpeBRep_FacesFiller_1.cxx
+@@ -73,14 +73,6 @@ Standard_EXPORT Standard_Boolean TopOpeB
+ Standard_IMPORT Standard_Boolean GLOBAL_bvpr;Standard_EXPORT void debvprmess(Standard_Integer f1,Standard_Integer f2,Standard_Integer il,Standard_Integer vp,Standard_Integer si);
+ Standard_EXPORT Standard_Boolean TopOpeBRep_GetcontextNOPUNK();
+ 
+-static void SSAVFF(const TopoDS_Shape& F1, const TopoDS_Shape& F2)
+-{
+-  TCollection_AsciiString aname_1("ffbug_1"), aname_2("ffbug_2");
+-  Standard_CString name_1=aname_1.ToCString(),name_2=aname_2.ToCString();
+-  cout<<"FacesFiller : "<<name_1<<","<<name_2<<endl;
+-  BRepTools::Write(F1,name_1); BRepTools::Write(F2,name_2);
+-}
+-
+ static void FUN_traceRLine(const TopOpeBRep_LineInter& L)
+ {
+ #ifdef DRAW
+@@ -534,18 +526,6 @@ static Standard_Boolean FUN_brep_ONfirst
+   return ONfirstP;
+ }
+ 
+-#ifdef DEB
+-static void FUN_remove(TopOpeBRepDS_ListOfInterference& lI, const Handle(TopOpeBRepDS_Interference)& I)
+-{
+-  TopOpeBRepDS_ListIteratorOfListOfInterference itI(lI);
+-  while (itI.More()) {
+-    const Handle(TopOpeBRepDS_Interference)& Icur = itI.Value();
+-    if (Icur == I) lI.Remove(itI);
+-    else           itI.Next();
+-  }
+-}
+-#endif
+-
+ //=======================================================================
+ //function : ProcessRLine
+ //purpose  : 

@@ -132,7 +132,7 @@ Index: oce/src/Draw/Draw.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw.cxx
 +++ oce/src/Draw/Draw.cxx
-@@ -288,6 +288,8 @@ void Draw_Appli(Standard_Integer argc, c
+@@ -304,6 +304,8 @@ void Draw_Appli(Standard_Integer argc, c
      {
  #ifdef WNT
        ReadInitFile ("ddefault");
@@ -161,7 +161,7 @@ Index: oce/src/DrawResources/DrawDefault
 ===================================================================
 --- oce.orig/src/DrawResources/DrawDefault
 +++ oce/src/DrawResources/DrawDefault
-@@ -8,12 +8,7 @@ set dir ""
+@@ -13,12 +13,7 @@ set dir ""
  if { [info exists env(DRAWHOME) ] } { 
    set dir $env(DRAWHOME)  
  } else {
@@ -322,7 +322,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest.cxx
 +++ oce/src/ViewerTest/ViewerTest.cxx
-@@ -1692,6 +1692,11 @@ static TCollection_AsciiString GetEnvir
+@@ -1806,6 +1806,11 @@ static TCollection_AsciiString GetEnvir
      Standard_Boolean HasDefinition = Standard_False ;
      if ( !envir ) {
        casroot  = getenv("CASROOT");

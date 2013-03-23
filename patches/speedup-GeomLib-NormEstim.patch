@@ -7,11 +7,11 @@ Subject: [PATCH] Ensure GeomLib::NormEstim won't last for ever
  src/GeomLib/GeomLib.cxx |   12 +++++++++++-
  1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/src/GeomLib/GeomLib.cxx b/src/GeomLib/GeomLib.cxx
-index 559122b..b92ab75 100644
---- a/src/GeomLib/GeomLib.cxx
-+++ b/src/GeomLib/GeomLib.cxx
-@@ -2399,7 +2399,14 @@ Standard_Integer GeomLib::NormEstim(const Handle(Geom_Surface)& S,
+Index: oce/src/GeomLib/GeomLib.cxx
+===================================================================
+--- oce.orig/src/GeomLib/GeomLib.cxx
++++ oce/src/GeomLib/GeomLib.cxx
+@@ -2399,7 +2399,14 @@ Standard_Integer GeomLib::NormEstim(cons
  
    gp_Vec NAux = DU^DV;
    Standard_Real h1 = h;
@@ -27,7 +27,7 @@ index 559122b..b92ab75 100644
      h1 += h;
      if(AlongV) {
        Standard_Real v = UV.Y() + sign*h1;
-@@ -2417,8 +2424,11 @@ Standard_Integer GeomLib::NormEstim(const Handle(Geom_Surface)& S,
+@@ -2417,8 +2424,11 @@ Standard_Integer GeomLib::NormEstim(cons
  
      }
      NAux = DU^DV;
@@ -39,6 +39,3 @@ index 559122b..b92ab75 100644
  
    Iso->D2(t, DummyPnt, Tang, DD);
  
--- 
-1.7.10.4
-

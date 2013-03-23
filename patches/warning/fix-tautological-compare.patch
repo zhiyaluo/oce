@@ -9,11 +9,11 @@ This makes UnitsAPITestSuite.testMDTVCurrentUnits fail on Windows, but only in R
  src/Units/Units_Lexicon.cxx |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/src/Units/Units_Lexicon.cxx b/src/Units/Units_Lexicon.cxx
-index c1433b5..b0a6ea7 100644
---- a/src/Units/Units_Lexicon.cxx
-+++ b/src/Units/Units_Lexicon.cxx
-@@ -60,7 +60,7 @@ void Units_Lexicon::Creates(const Standard_CString afilename)
+Index: oce/src/Units/Units_Lexicon.cxx
+===================================================================
+--- oce.orig/src/Units/Units_Lexicon.cxx
++++ oce/src/Units/Units_Lexicon.cxx
+@@ -59,7 +59,7 @@ void Units_Lexicon::Creates(const Standa
    char *Oper = oper ;
    char *Coeff = coeff ;
  #endif
@@ -22,7 +22,7 @@ index c1433b5..b0a6ea7 100644
    Standard_Real value;
    Handle(Units_Token) token;
    struct stat buf;
-@@ -86,7 +86,7 @@ void Units_Lexicon::Creates(const Standard_CString afilename)
+@@ -85,7 +85,7 @@ void Units_Lexicon::Creates(const Standa
    //for(i=0; i<=255; i++)line[i]=0;
  
    while(file.getline(line,255)) {
@@ -31,6 +31,3 @@ index c1433b5..b0a6ea7 100644
      if(len == 1) continue; //skl - ???
      for ( i = 0 ; i < 30 ; i++ ) {
        if ( i < len )
--- 
-1.7.10.4
-

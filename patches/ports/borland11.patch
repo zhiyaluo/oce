@@ -545,7 +545,7 @@ Index: oce/src/BRepOffset/BRepOffset_MakeOffset.cxx
 ===================================================================
 --- oce.orig/src/BRepOffset/BRepOffset_MakeOffset.cxx
 +++ oce/src/BRepOffset/BRepOffset_MakeOffset.cxx
-@@ -2109,7 +2109,7 @@ void BRepOffset_MakeOffset::CorrectConic
+@@ -2112,7 +2112,7 @@ void BRepOffset_MakeOffset::CorrectConic
        {
  	Vfirst = -M_PI/2.; Vlast = p2d1.Y();
        }
@@ -554,7 +554,7 @@ Index: oce/src/BRepOffset/BRepOffset_MakeOffset.cxx
      TopoDS_Edge OldEdge;
      for (Explo.Init(NewSphericalFace, TopAbs_EDGE); Explo.More(); Explo.Next())
        {
-@@ -3061,7 +3061,7 @@ void BRepOffset_MakeOffset::MakeMissingW
+@@ -3112,7 +3112,7 @@ void BRepOffset_MakeOffset::MakeMissingW
  	      BB.Add(arcWire, EA2);
  	      BRepLib::BuildCurves3d( arcWire, myTol );
  	      arcWire.Closed(Standard_True);
@@ -827,7 +827,7 @@ Index: oce/src/VrmlData/VrmlData_Geometry.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_Geometry.cxx
 +++ oce/src/VrmlData/VrmlData_Geometry.cxx
-@@ -104,7 +104,7 @@ const Handle(TopoDS_TShape)& VrmlData_Bo
+@@ -100,7 +100,7 @@ const Handle(TopoDS_TShape)& VrmlData_Bo
    if (myIsModified) {
      try {
        const TopoDS_Shell aShell =

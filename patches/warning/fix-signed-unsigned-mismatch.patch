@@ -40,7 +40,7 @@ Index: oce/src/OpenGl/OpenGl_TextureBox.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_TextureBox.cxx
 +++ oce/src/OpenGl/OpenGl_TextureBox.cxx
-@@ -408,8 +408,8 @@ static void MyBindTextureEXT (TextureID
+@@ -406,8 +406,8 @@ static void MyBindTextureEXT (TextureID
    GLenum aParamName = texdata(data).status == TEXDATA_1D ? 
    GL_TEXTURE_BINDING_1D : GL_TEXTURE_BINDING_2D;
  

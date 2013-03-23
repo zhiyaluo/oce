@@ -8,11 +8,11 @@ Subject: [PATCH] Fixes a duplicate check in the condition. Probably a
  src/GccAna/GccAna_Circ2d3Tan_8.cxx |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/src/GccAna/GccAna_Circ2d3Tan_8.cxx b/src/GccAna/GccAna_Circ2d3Tan_8.cxx
-index 99eaa7a..e354615 100644
---- a/src/GccAna/GccAna_Circ2d3Tan_8.cxx
-+++ b/src/GccAna/GccAna_Circ2d3Tan_8.cxx
-@@ -135,7 +135,7 @@ GccAna_Circ2d3Tan::
+Index: oce/src/GccAna/GccAna_Circ2d3Tan_8.cxx
+===================================================================
+--- oce.orig/src/GccAna/GccAna_Circ2d3Tan_8.cxx
++++ oce/src/GccAna/GccAna_Circ2d3Tan_8.cxx
+@@ -140,7 +140,7 @@ GccAna_Circ2d3Tan::
  	     Radius = dist1;
  	   }
  	   if (ok) {
@@ -21,6 +21,3 @@ index 99eaa7a..e354615 100644
  	       nbsol3 = 1;
  	     }
  	     else { ok = Standard_False; }
--- 
-1.7.10.4
-

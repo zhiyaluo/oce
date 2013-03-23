@@ -18,7 +18,7 @@ Index: oce/inc/Plate_LinearScalarConstraint.hxx
 ===================================================================
 --- oce.orig/inc/Plate_LinearScalarConstraint.hxx
 +++ oce/inc/Plate_LinearScalarConstraint.hxx
-@@ -57,9 +57,9 @@ public:
+@@ -49,9 +49,9 @@ public:
    
    Standard_EXPORT   Plate_LinearScalarConstraint(const Plate_PinpointConstraint& PPC1,const gp_XYZ& coeff);
    
@@ -30,7 +30,7 @@ Index: oce/inc/Plate_LinearScalarConstraint.hxx
    
    Standard_EXPORT   Plate_LinearScalarConstraint(const Standard_Integer ColLen,const Standard_Integer RowLen);
    
-@@ -68,7 +68,7 @@ public:
+@@ -60,7 +60,7 @@ public:
         const TColgp_Array2OfXYZ& Coeff() const;
    //!  Sets   the PinPointConstraint of   index Index to <br>
  //!          Value raise if Index is greater than the length of <br>
@@ -43,7 +43,7 @@ Index: oce/inc/Plate_LinearXYZConstraint.hxx
 ===================================================================
 --- oce.orig/inc/Plate_LinearXYZConstraint.hxx
 +++ oce/inc/Plate_LinearXYZConstraint.hxx
-@@ -57,9 +57,9 @@ public:
+@@ -49,9 +49,9 @@ public:
    
    Standard_EXPORT   Plate_LinearXYZConstraint();
    
@@ -55,7 +55,7 @@ Index: oce/inc/Plate_LinearXYZConstraint.hxx
    
    Standard_EXPORT   Plate_LinearXYZConstraint(const Standard_Integer ColLen,const Standard_Integer RowLen);
    
-@@ -68,7 +68,7 @@ public:
+@@ -60,7 +60,7 @@ public:
         const TColStd_Array2OfReal& Coeff() const;
    //!  Sets   the PinPointConstraint of   index Index to <br>
  //!          Value raise if Index is greater than the length of <br>
@@ -83,7 +83,7 @@ Index: oce/src/BRepLib/BRepLib_FindSurface.cxx
 ===================================================================
 --- oce.orig/src/BRepLib/BRepLib_FindSurface.cxx
 +++ oce/src/BRepLib/BRepLib_FindSurface.cxx
-@@ -116,7 +116,7 @@ void BRepLib_FindSurface::Init(const Top
+@@ -203,7 +203,7 @@ void BRepLib_FindSurface::Init(const Top
  
    TopoDS_Edge E = TopoDS::Edge(ex.Current());
    Standard_Real f,l,ff,ll;
@@ -92,7 +92,7 @@ Index: oce/src/BRepLib/BRepLib_FindSurface.cxx
    Handle(Geom_Surface) SS;
    TopLoc_Location L;
    Standard_Integer i = 0,j;
-@@ -135,7 +135,7 @@ void BRepLib_FindSurface::Init(const Top
+@@ -222,7 +222,7 @@ void BRepLib_FindSurface::Init(const Top
  	while (Standard_True) {
  	  j++;
  	  BRep_Tool::CurveOnSurface(TopoDS::Edge(ex.Current()),

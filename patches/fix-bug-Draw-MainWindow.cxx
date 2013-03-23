@@ -10,11 +10,11 @@ Subject: [PATCH] Fixed a bug caused by missing branches. The second
  src/Draw/MainWindow.cxx |    4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/src/Draw/MainWindow.cxx b/src/Draw/MainWindow.cxx
-index 3c0f012..d555195 100644
---- a/src/Draw/MainWindow.cxx
-+++ b/src/Draw/MainWindow.cxx
-@@ -104,8 +104,10 @@ BOOL CommandProc(HWND hWndFrame, WPARAM wParam, LPARAM lParam)
+Index: oce/src/Draw/MainWindow.cxx
+===================================================================
+--- oce.orig/src/Draw/MainWindow.cxx
++++ oce/src/Draw/MainWindow.cxx
+@@ -104,8 +104,10 @@ BOOL CommandProc(HWND hWndFrame, WPARAM
  	{
  	  case IDM_WINDOW_NEXT :
  					if(hWndClient = (HWND)GetWindowLong(hWndFrame, CLIENTWND))
@@ -26,6 +26,3 @@ index 3c0f012..d555195 100644
  					break;
  
  		case IDM_WINDOW_CASCADE :
--- 
-1.7.10.4
-

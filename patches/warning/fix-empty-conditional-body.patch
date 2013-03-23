@@ -107,7 +107,7 @@ Index: oce/src/Adaptor3d/Adaptor3d_TopolTool.cxx
 ===================================================================
 --- oce.orig/src/Adaptor3d/Adaptor3d_TopolTool.cxx
 +++ oce/src/Adaptor3d/Adaptor3d_TopolTool.cxx
-@@ -1139,7 +1139,7 @@ void Adaptor3d_TopolTool::BSplSamplePnts
+@@ -1145,7 +1145,7 @@ void Adaptor3d_TopolTool::BSplSamplePnts
      else { //myNbSamplesU == 3
        //insert in bigger segment
        i = 2;
@@ -116,7 +116,7 @@ Index: oce/src/Adaptor3d/Adaptor3d_TopolTool.cxx
        if(i < nbsu/2) j = Min(i+(nbsu-i)/2, nbsu-1);
        else j = Max(i/2, 2);
      }
-@@ -1218,7 +1218,7 @@ void Adaptor3d_TopolTool::BSplSamplePnts
+@@ -1230,7 +1230,7 @@ void Adaptor3d_TopolTool::BSplSamplePnts
      else { //myNbSamplesU == 3
        //insert in bigger segment
        i = 2;

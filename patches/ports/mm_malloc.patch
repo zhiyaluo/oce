@@ -14,10 +14,10 @@ posix_memalign if this function was found, otherwise call malloc.
  src/Image/Image_PixMap.cxx |   14 +++++++-------
  2 files changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/src/Image/Image_PixMap.cxx b/src/Image/Image_PixMap.cxx
-index 8101d7e..a5d4738 100644
---- a/src/Image/Image_PixMap.cxx
-+++ b/src/Image/Image_PixMap.cxx
+Index: oce/src/Image/Image_PixMap.cxx
+===================================================================
+--- oce.orig/src/Image/Image_PixMap.cxx
++++ oce/src/Image/Image_PixMap.cxx
 @@ -21,10 +21,10 @@
  
  #ifdef _MSC_VER
@@ -31,7 +31,7 @@ index 8101d7e..a5d4738 100644
  #endif
  
  template<typename TypePtr>
-@@ -33,15 +33,17 @@ inline TypePtr MemAllocAligned (const Standard_Size& theBytesCount,
+@@ -33,15 +33,17 @@ inline TypePtr MemAllocAligned (const St
  {
  #if defined(_MSC_VER)
    return (TypePtr )_aligned_malloc (theBytesCount, theAlign);
@@ -51,7 +51,7 @@ index 8101d7e..a5d4738 100644
  #endif
  }
  
-@@ -51,7 +51,7 @@ inline void MemFreeAligned (void* thePtrAligned)
+@@ -49,7 +51,7 @@ inline void MemFreeAligned (void* thePtr
  {
  #if defined(_MSC_VER)
    _aligned_free (thePtrAligned);
@@ -60,6 +60,3 @@ index 8101d7e..a5d4738 100644
    _mm_free (thePtrAligned);
  #else
    free (thePtrAligned);
--- 
-1.7.10.4
-

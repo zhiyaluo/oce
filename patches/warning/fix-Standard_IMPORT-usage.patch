@@ -195,7 +195,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
-@@ -151,7 +151,7 @@ extern ViewerTest_DoubleMapOfInteractive
+@@ -153,7 +153,7 @@ extern ViewerTest_DoubleMapOfInteractive
  extern Standard_Boolean VDisplayAISObject (const TCollection_AsciiString& theName,
                                             const Handle(AIS_InteractiveObject)& theAISObj,
                                             Standard_Boolean theReplaceIfExists = Standard_True);

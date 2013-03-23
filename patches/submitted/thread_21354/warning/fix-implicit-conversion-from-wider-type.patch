@@ -171,7 +171,7 @@ Index: oce/inc/OSD_Real2String.hxx
 ===================================================================
 --- oce.orig/inc/OSD_Real2String.hxx
 +++ oce/inc/OSD_Real2String.hxx
-@@ -76,8 +76,8 @@ private:
+@@ -68,8 +68,8 @@ private:
  
  
  
@@ -523,7 +523,7 @@ Index: oce/src/Draw/CommandWindow.cxx
 ===================================================================
 --- oce.orig/src/Draw/CommandWindow.cxx
 +++ oce/src/Draw/CommandWindow.cxx
-@@ -107,7 +107,7 @@ LONG APIENTRY CommandProc(HWND hWnd, UIN
+@@ -105,7 +105,7 @@ LONG APIENTRY CommandProc(HWND hWnd, UIN
      			hWndEdit = (HWND)GetWindowLong(hWnd, CLIENTWND);          
      			MoveWindow(hWndEdit, 0, 0, LOWORD(lParam), HIWORD(lParam), TRUE);
              // Place the cursor at the end of the buffer
@@ -532,7 +532,7 @@ Index: oce/src/Draw/CommandWindow.cxx
            SendMessage(hWnd, EM_SETSEL, index, index); 
      			break;
  
-@@ -117,7 +117,7 @@ LONG APIENTRY CommandProc(HWND hWnd, UIN
+@@ -115,7 +115,7 @@ LONG APIENTRY CommandProc(HWND hWnd, UIN
            break;
  
      default :
@@ -541,7 +541,7 @@ Index: oce/src/Draw/CommandWindow.cxx
    }
    return(0l);
  }
-@@ -178,7 +178,7 @@ int GetCommand(HWND hWnd, char* buffer)
+@@ -176,7 +176,7 @@ int GetCommand(HWND hWnd, char* buffer)
    int again = 1;
    char temp[COMMANDSIZE]="";
  
@@ -550,7 +550,7 @@ Index: oce/src/Draw/CommandWindow.cxx
    
    int nbChar = 0;
    buffer[0]='\0';
-@@ -189,7 +189,7 @@ int GetCommand(HWND hWnd, char* buffer)
+@@ -187,7 +187,7 @@ int GetCommand(HWND hWnd, char* buffer)
        WORD* nbMaxChar = (WORD*)temp;
        *nbMaxChar = COMMANDSIZE-1;
        
@@ -559,7 +559,7 @@ Index: oce/src/Draw/CommandWindow.cxx
        nbChar += nbCharRead ;
        int cmp = strncmp(temp, PROMPT, 10);
        temp[nbCharRead]='\0';
-@@ -240,16 +240,16 @@ LONG APIENTRY EditProc(HWND hWnd, UINT w
+@@ -238,16 +238,16 @@ LONG APIENTRY EditProc(HWND hWnd, UINT w
  									strcpy(console_command, buffer+strlen(PROMPT));
  									console_semaphore = HAS_CONSOLE_COMMAND;
  									  // Purge the buffer
@@ -579,7 +579,7 @@ Index: oce/src/Draw/CommandWindow.cxx
                        SendMessage(hWnd, EM_SETSEL, index, index);                      
  									}
      				      return(0l);
-@@ -258,7 +258,7 @@ LONG APIENTRY EditProc(HWND hWnd, UINT w
+@@ -256,7 +256,7 @@ LONG APIENTRY EditProc(HWND hWnd, UINT w
                    if (IsAlphanumeric((Standard_Character)LOWORD(wParam)))
                    {
                        // Place the cursor at the end of text before display
@@ -588,7 +588,7 @@ Index: oce/src/Draw/CommandWindow.cxx
                      SendMessage(hWnd, EM_SETSEL, index, index);
                      CallWindowProc(OldEditProc, hWnd, wMsg, wParam, lParam);                    
                      return 0l;
-@@ -270,7 +270,7 @@ LONG APIENTRY EditProc(HWND hWnd, UINT w
+@@ -268,7 +268,7 @@ LONG APIENTRY EditProc(HWND hWnd, UINT w
      if (console_semaphore != WAIT_CONSOLE_COMMAND) 
        return 0l;									
    }
@@ -601,7 +601,7 @@ Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx
 +++ oce/src/Draw/Draw_Window.cxx
-@@ -1347,9 +1347,9 @@ LONG APIENTRY DrawWindow::DrawProc(HWND
+@@ -1344,9 +1344,9 @@ LONG APIENTRY DrawWindow::DrawProc(HWND
    if (!localObjet)
      {
        if (Draw_IsConsoleSubsystem)
@@ -613,7 +613,7 @@ Index: oce/src/Draw/Draw_Window.cxx
      }
  
    PAINTSTRUCT ps;
-@@ -1377,9 +1377,9 @@ LONG APIENTRY DrawWindow::DrawProc(HWND
+@@ -1374,9 +1374,9 @@ LONG APIENTRY DrawWindow::DrawProc(HWND
  
    default:
      if (Draw_IsConsoleSubsystem)
@@ -643,7 +643,7 @@ Index: oce/src/Graphic3d/Graphic3d_Group_8.cxx
 --- oce.orig/src/Graphic3d/Graphic3d_Group_8.cxx
 +++ oce/src/Graphic3d/Graphic3d_Group_8.cxx
 @@ -281,8 +281,8 @@ void Graphic3d_Group::SetGroupPrimitives
-   Standard_Real    aPolyFactor, aPolyUnits;
+   Standard_ShortReal    aPolyFactor, aPolyUnits;
    CTX->PolygonOffsets(aPolyMode, aPolyFactor, aPolyUnits);
    MyCGroup.ContextFillArea.PolygonOffsetMode   = aPolyMode;
 -  MyCGroup.ContextFillArea.PolygonOffsetFactor = aPolyFactor;
@@ -654,7 +654,7 @@ Index: oce/src/Graphic3d/Graphic3d_Group_8.cxx
  
    int noinsert = 1;
 @@ -601,8 +601,8 @@ void Graphic3d_Group::SetPrimitivesAspec
-   Standard_Real    aPolyFactor, aPolyUnits;
+   Standard_ShortReal    aPolyFactor, aPolyUnits;
    CTX->PolygonOffsets(aPolyMode, aPolyFactor, aPolyUnits);
    MyCGroup.ContextFillArea.PolygonOffsetMode   = aPolyMode;
 -  MyCGroup.ContextFillArea.PolygonOffsetFactor = aPolyFactor;
@@ -668,8 +668,8 @@ Index: oce/src/Graphic3d/Graphic3d_Structure.cxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_Structure.cxx
 +++ oce/src/Graphic3d/Graphic3d_Structure.cxx
-@@ -1265,8 +1265,8 @@ void Graphic3d_Structure::SetPrimitivesA
-   Standard_Real    aPolyFactor, aPolyUnits;
+@@ -1258,8 +1258,8 @@ void Graphic3d_Structure::SetPrimitivesA
+   Standard_ShortReal    aPolyFactor, aPolyUnits;
    CTX->PolygonOffsets(aPolyMode, aPolyFactor, aPolyUnits);
    MyCStructure.ContextFillArea.PolygonOffsetMode   = aPolyMode;
 -  MyCStructure.ContextFillArea.PolygonOffsetFactor = aPolyFactor;
@@ -679,8 +679,8 @@ Index: oce/src/Graphic3d/Graphic3d_Structure.cxx
    // OCC4895 SAN 22/03/04 High-level interface for controlling polygon offsets
  
    MyGraphicDriver->ContextStructure (MyCStructure);
-@@ -2333,8 +2333,8 @@ void Graphic3d_Structure::SetPrimitivesA
-   Standard_Real    aPolyFactor, aPolyUnits;
+@@ -2335,8 +2335,8 @@ void Graphic3d_Structure::UpdateStructur
+   Standard_ShortReal    aPolyFactor, aPolyUnits;
    CTXF->PolygonOffsets(aPolyMode, aPolyFactor, aPolyUnits);
    MyCStructure.ContextFillArea.PolygonOffsetMode   = aPolyMode;
 -  MyCStructure.ContextFillArea.PolygonOffsetFactor = aPolyFactor;
@@ -816,7 +816,7 @@ Index: oce/src/OpenGl/OpenGl_AVIWriter.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_AVIWriter.cxx
 +++ oce/src/OpenGl/OpenGl_AVIWriter.cxx
-@@ -255,7 +255,7 @@ HRESULT OpenGl_AVIWriter::InitMovieCreat
+@@ -258,7 +258,7 @@ HRESULT OpenGl_AVIWriter::InitMovieCreat
    bmpInfo.bmiHeader.biWidth             = nFrameWidth;
    bmpInfo.bmiHeader.biHeight            = nFrameHeight;
    bmpInfo.bmiHeader.biCompression       = BI_RGB;
@@ -1201,7 +1201,7 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-@@ -1918,7 +1918,7 @@ static int VColorScale (Draw_Interpretor
+@@ -1981,7 +1981,7 @@ static int VColorScale (Draw_Interpretor
    {
      aCS->SetPosition( X , Y );
      aCS->SetHeight( 0.95) ;
@@ -1396,7 +1396,7 @@ Index: oce/src/WNT/WNT_ImageProcessor.cxx
 ===================================================================
 --- oce.orig/src/WNT/WNT_ImageProcessor.cxx
 +++ oce/src/WNT/WNT_ImageProcessor.cxx
-@@ -605,9 +605,9 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
+@@ -586,9 +586,9 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
  
  	   if ( ptrDIB[ k ] == xColor[ j ].pixel )
  

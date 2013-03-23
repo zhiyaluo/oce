@@ -470,7 +470,7 @@ Index: oce/src/Extrema/Extrema_GenExtPS.cxx
 ===================================================================
 --- oce.orig/src/Extrema/Extrema_GenExtPS.cxx
 +++ oce/src/Extrema/Extrema_GenExtPS.cxx
-@@ -210,51 +210,6 @@ Processing:
+@@ -219,51 +219,6 @@ Processing:
        - update table TbSel.
  -----------------------------------------------------------------------------*/
  
@@ -783,7 +783,7 @@ Index: oce/src/TNaming/TNaming_Name.cxx
 ===================================================================
 --- oce.orig/src/TNaming/TNaming_Name.cxx
 +++ oce/src/TNaming/TNaming_Name.cxx
-@@ -1069,92 +1069,6 @@ static Standard_Boolean Union (const TDF
+@@ -1082,92 +1082,6 @@ static Standard_Boolean Union (const TDF
  // function: FindShape
  //
  //=======================================================================

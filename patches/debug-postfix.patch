@@ -30,7 +30,7 @@ Index: oce/src/Draw/Draw.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw.cxx
 +++ oce/src/Draw/Draw.cxx
-@@ -544,7 +544,11 @@ void Draw::Load(Draw_Interpretor& theDI,
+@@ -563,7 +563,11 @@ void Draw::Load(Draw_Interpretor& theDI,
  #endif
      aPluginLibrary +=  aPluginResource->Value(theKey.ToCString());
  #ifdef WNT

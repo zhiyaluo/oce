@@ -66,7 +66,7 @@ Index: oce/src/FWOSDriver/FWOSDriver_Driver.cxx
 ===================================================================
 --- oce.orig/src/FWOSDriver/FWOSDriver_Driver.cxx
 +++ oce/src/FWOSDriver/FWOSDriver_Driver.cxx
-@@ -73,7 +73,7 @@ Standard_Boolean FWOSDriver_Driver::HasR
+@@ -92,7 +92,7 @@ Standard_Boolean FWOSDriver_Driver::HasR
      case OSD_RWXD:
        return Standard_True;
      default:
@@ -170,7 +170,7 @@ Index: oce/src/TNaming/TNaming_Name.cxx
 ===================================================================
 --- oce.orig/src/TNaming/TNaming_Name.cxx
 +++ oce/src/TNaming/TNaming_Name.cxx
-@@ -1076,7 +1076,7 @@ static TopoDS_Shape FindShape(const TNam
+@@ -1089,7 +1089,7 @@ static TopoDS_Shape FindShape(const TNam
    if(aNum < 1) return aResult;  
    TopTools_ListOfShape List;
    TNaming_DataMapIteratorOfDataMapOfShapeMapOfShape it(DM);
@@ -179,7 +179,7 @@ Index: oce/src/TNaming/TNaming_Name.cxx
      const TopoDS_Shape& aKey1 = it.Key();
      const TNaming_MapOfShape& aMap = it.Value();
  
-@@ -1094,7 +1094,6 @@ static TopoDS_Shape FindShape(const TNam
+@@ -1107,7 +1107,6 @@ static TopoDS_Shape FindShape(const TNam
        if(isCand)
  	List.Append(aS);
      }
@@ -191,7 +191,7 @@ Index: oce/src/TNaming/TNaming_Naming.cxx
 ===================================================================
 --- oce.orig/src/TNaming/TNaming_Naming.cxx
 +++ oce/src/TNaming/TNaming_Naming.cxx
-@@ -562,9 +562,8 @@ static void FindNewShapeInFather (const
+@@ -567,9 +567,8 @@ static void FindNewShapeInFather (const
  {  
    TDF_Label         Father  = NS->Label().Father(); 
    TNaming_Iterator  itLab(Father);
