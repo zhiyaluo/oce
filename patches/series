@@ -109,20 +109,12 @@ warning/remove-const-return-value.patch
 #  Do not report this bug to OCC, it has to be investigated
 
 cmake/remove-Autotools-and-project-files.patch
-cmake/copy-CMake-files-from-5e184f9.patch
+cmake/add-support-for-CMake.patch
 cmake/bump-version-number.patch
-
-cmake/cpack/add-CPack-support.patch
-
-cmake/ctest/add-CTest-support.patch
 cmake/ctest/more-tests.patch
-
-cmake/precompiled-headers/add-precompiled-headers-support-in-CMake.patch
 cmake/precompiled-headers/add-the-effective-precompiled-headers.patch
-
 cmake/remove-pragmas.patch
 cmake/remove-RETSIGTYPE-in-Csemaphore.c.patch
-cmake/add-examples.patch
 
 ports/drop-utsname-usage-for-unknown-architectures.patch
 ports/fix-OSD_Process-CurrentDirectory-on-the-Hurd.patch
@@ -183,7 +175,6 @@ config/rename-config.h-into-oce-config.h.patch
 config/add-OCE-prefix-to-macros.patch
 config/separate-installation-path.patch
 
-cmake/unsorted.patch
 ports/borland11.patch
 ports/borland14.patch
 ports/borland15.patch

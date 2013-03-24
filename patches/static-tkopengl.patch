@@ -46,17 +46,6 @@ Subject: [PATCH 2/2] Apply changes to CMake files to define OCE_BUILD_STATIC_LIB
  oce_build_config.h.cmake |    4 ++--
  3 files changed, 8 insertions(+), 6 deletions(-)
 
-Index: oce/oce_build_config.h.cmake
-===================================================================
---- oce.orig/oce_build_config.h.cmake
-+++ oce/oce_build_config.h.cmake
-@@ -272,3 +272,6 @@
- 
- /* Define MACOSX_USE_GLX to use X11 OpenGL on OSX */
- #cmakedefine MACOSX_USE_GLX
-+
-+/* Whether OCE is build as static lib */
-+#cmakedefine OCE_BUILD_STATIC_LIB
 Index: oce/src/Graphic3d/Graphic3d_GraphicDevice.cxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_GraphicDevice.cxx

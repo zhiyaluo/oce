@@ -769,27 +769,6 @@ Index: oce/inc/OpenGl_GlCore12.hxx
  #include <OpenGl_glext.h>
  
  //! Function list for GL1.2 core functionality.
-Index: oce/oce_build_config.h.cmake
-===================================================================
---- oce.orig/oce_build_config.h.cmake
-+++ oce/oce_build_config.h.cmake
-@@ -270,3 +270,5 @@
- #cmakedefine OCE_DEFAULT_CSF_GraphicShr "@OCE_DEFAULT_CSF_GraphicShr@"
- #endif
- 
-+/* Define MACOSX_USE_GLX to use X11 OpenGL on OSX */
-+#cmakedefine MACOSX_USE_GLX
-Index: oce/oce_install_config.h.cmake
-===================================================================
---- oce.orig/oce_install_config.h.cmake
-+++ oce/oce_install_config.h.cmake
-@@ -23,3 +23,6 @@
- #cmakedefine OCE_HAVE_LIMITS 1
- #cmakedefine OCE_HAVE_CLIMITS 1
- #cmakedefine OCE_HAVE_LIMITS_H 1
-+
-+#cmakedefine MACOSX_USE_GLX
-+
 Index: oce/src/Cocoa/Cocoa_LocalPool.mm
 ===================================================================
 --- /dev/null
