@@ -174,20 +174,6 @@ this class must be defined.
  inc/BOP_SolidSolid.hxx |    1 +
  1 file changed, 1 insertion(+)
 
-Index: oce/drv/IntPolyh/IntPolyh_MaillageAffinage.jxx
-===================================================================
---- oce.orig/drv/IntPolyh/IntPolyh_MaillageAffinage.jxx
-+++ oce/drv/IntPolyh/IntPolyh_MaillageAffinage.jxx
-@@ -34,9 +34,6 @@
- #ifndef _IntPolyh_ArrayOfTriangles_HeaderFile
- #include <IntPolyh_ArrayOfTriangles.hxx>
- #endif
--#ifndef _IntPolyh_ArrayOfStartPoints_HeaderFile
--#include <IntPolyh_ArrayOfStartPoints.hxx>
--#endif
- #ifndef _IntPolyh_ArrayOfCouples_HeaderFile
- #include <IntPolyh_ArrayOfCouples.hxx>
- #endif
 Index: oce/drv/TopTools/TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape_0.cxx
 ===================================================================
 --- /dev/null
@@ -369,7 +355,7 @@ Index: oce/inc/BOP_SolidSolid.hxx
 ===================================================================
 --- oce.orig/inc/BOP_SolidSolid.hxx
 +++ oce/inc/BOP_SolidSolid.hxx
-@@ -37,7 +37,8 @@ class TopTools_ListOfShape;
+@@ -40,7 +40,8 @@ class TopTools_ListOfShape;
  class BOP_ShellFaceSet;
  class TopoDS_Shape;
  class TopTools_DataMapOfShapeInteger;
@@ -379,7 +365,7 @@ Index: oce/inc/BOP_SolidSolid.hxx
  
  
  
-@@ -87,10 +88,11 @@ private:
+@@ -94,10 +95,11 @@ private:
    
    Standard_EXPORT     Standard_Boolean PropagateFaceStateByEdges(const TopoDS_Shape& theFace,const TopTools_DataMapOfShapeInteger& theMapOfEdgeIndex,TopAbs_State& theState) ;
    
@@ -437,62 +423,11 @@ Index: oce/inc/Handle_TopTools_DataMapNodeOfDataMapOfShapeMapOfShape.hxx
 +DEFINE_STANDARD_HANDLE(TopTools_DataMapNodeOfDataMapOfShapeMapOfShape,TCollection_MapNode)
 +
 +#endif
-Index: oce/inc/IntPolyh_Intersection.hxx
-===================================================================
---- oce.orig/inc/IntPolyh_Intersection.hxx
-+++ oce/inc/IntPolyh_Intersection.hxx
-@@ -22,6 +22,9 @@
- #ifndef _Standard_Integer_HeaderFile
- #include <Standard_Integer.hxx>
- #endif
-+#ifndef _IntPolyh_ArrayOfCouples_HeaderFile
-+#include <IntPolyh_ArrayOfCouples.hxx>
-+#endif
- #ifndef _IntPolyh_ArrayOfSectionLines_HeaderFile
- #include <IntPolyh_ArrayOfSectionLines.hxx>
- #endif
-@@ -39,7 +42,6 @@
- #endif
- class Adaptor3d_HSurface;
- class TColStd_Array1OfReal;
--class IntPolyh_ArrayOfCouples;
- 
- 
- 
 Index: oce/inc/IntPolyh_MaillageAffinage.hxx
 ===================================================================
 --- oce.orig/inc/IntPolyh_MaillageAffinage.hxx
 +++ oce/inc/IntPolyh_MaillageAffinage.hxx
-@@ -40,8 +40,11 @@
- #ifndef _IntPolyh_ArrayOfCouples_HeaderFile
- #include <IntPolyh_ArrayOfCouples.hxx>
- #endif
--#ifndef _IntPolyh_ArrayOfStartPoints_HeaderFile
--#include <IntPolyh_ArrayOfStartPoints.hxx>
-+#ifndef _IntPolyh_ArrayOfSectionLines_HeaderFile
-+#include <IntPolyh_ArrayOfSectionLines.hxx>
-+#endif
-+#ifndef _IntPolyh_ArrayOfTangentZones_HeaderFile
-+#include <IntPolyh_ArrayOfTangentZones.hxx>
- #endif
- #ifndef _Standard_Boolean_HeaderFile
- #include <Standard_Boolean.hxx>
-@@ -52,14 +55,7 @@ class Bnd_Box;
- class IntPolyh_Point;
- class IntPolyh_StartPoint;
- class IntPolyh_Triangle;
--class IntPolyh_ArrayOfSectionLines;
--class IntPolyh_ArrayOfTangentZones;
- class IntPolyh_SectionLine;
--class IntPolyh_ArrayOfPoints;
--class IntPolyh_ArrayOfEdges;
--class IntPolyh_ArrayOfTriangles;
--class IntPolyh_ArrayOfStartPoints;
--class IntPolyh_ArrayOfCouples;
- 
- 
- 
-@@ -172,7 +168,6 @@ public:
+@@ -171,7 +171,6 @@ public:
    
    Standard_EXPORT     void GetBoxDraw(const Standard_Integer SurfID) const;
    
@@ -500,42 +435,12 @@ Index: oce/inc/IntPolyh_MaillageAffinage.hxx
    //! This method returns array of couples of contact triangles. <br>
    Standard_EXPORT     IntPolyh_ArrayOfCouples& GetArrayOfCouples() ;
    
-@@ -215,7 +210,6 @@ IntPolyh_ArrayOfEdges TEdges2;
+@@ -214,7 +213,6 @@ IntPolyh_ArrayOfEdges TEdges2;
  IntPolyh_ArrayOfTriangles TTriangles1;
  IntPolyh_ArrayOfTriangles TTriangles2;
  IntPolyh_ArrayOfCouples TTrianglesContacts;
 -IntPolyh_ArrayOfStartPoints TStartPoints;
  Standard_Boolean myEnlargeZone;
- 
- 
-Index: oce/inc/IntPolyh_Triangle.hxx
-===================================================================
---- oce.orig/inc/IntPolyh_Triangle.hxx
-+++ oce/inc/IntPolyh_Triangle.hxx
-@@ -25,13 +25,21 @@
- #ifndef _Handle_Adaptor3d_HSurface_HeaderFile
- #include <Handle_Adaptor3d_HSurface.hxx>
- #endif
-+#ifndef _IntPolyh_ArrayOfCouples_HeaderFile
-+#include <IntPolyh_ArrayOfCouples.hxx>
-+#endif
-+#ifndef _IntPolyh_ArrayOfEdges_HeaderFile
-+#include <IntPolyh_ArrayOfEdges.hxx>
-+#endif
-+#ifndef _IntPolyh_ArrayOfPoints_HeaderFile
-+#include <IntPolyh_ArrayOfPoints.hxx>
-+#endif
-+#ifndef _IntPolyh_ArrayOfTriangles_HeaderFile
-+#include <IntPolyh_ArrayOfTriangles.hxx>
-+#endif
- class Adaptor3d_HSurface;
--class IntPolyh_ArrayOfPoints;
--class IntPolyh_ArrayOfTriangles;
--class IntPolyh_ArrayOfEdges;
- class Bnd_Box;
- class IntPolyh_StartPoint;
--class IntPolyh_ArrayOfCouples;
- 
  
  
 Index: oce/inc/TopTools_DataMapIteratorOfDataMapOfShapeMapOfShape.hxx
@@ -1042,7 +947,7 @@ Index: oce/src/BOP/BOP_SolidSolid.cxx
 ===================================================================
 --- oce.orig/src/BOP/BOP_SolidSolid.cxx
 +++ oce/src/BOP/BOP_SolidSolid.cxx
-@@ -305,6 +305,9 @@ static Standard_Boolean LocalIsKeepTwice
+@@ -342,6 +342,9 @@ void BOP_SolidSolid::PrepareReferences()
    BOPTColStd_IndexedDataMapOfIntegerIndexedMapOfInteger aFFMap;
    BOP_BuilderTools::DoMap(aFFs, aFFMap);
    //
@@ -1052,7 +957,7 @@ Index: oce/src/BOP/BOP_SolidSolid.cxx
    aNb=aFFMap.Extent();
    for (i=1; i<=aNb; i++) {
      // 
-@@ -337,7 +340,7 @@ static Standard_Boolean LocalIsKeepTwice
+@@ -374,7 +377,7 @@ void BOP_SolidSolid::PrepareReferences()
  	}
  	else {
  	   if(iRank == 1) {
@@ -1065,7 +970,7 @@ Index: oce/src/BOP/BOP_SolidSolid_1.cxx
 ===================================================================
 --- oce.orig/src/BOP/BOP_SolidSolid_1.cxx
 +++ oce/src/BOP/BOP_SolidSolid_1.cxx
-@@ -69,14 +69,9 @@ Standard_Integer GetIndex(const TopoDS_S
+@@ -85,14 +85,9 @@ Standard_Integer GetIndex(const TopoDS_S
  			  const BooleanOperations_ShapesDataStructure& theDS);
  
  static
@@ -1081,7 +986,7 @@ Index: oce/src/BOP/BOP_SolidSolid_1.cxx
  			      TColStd_MapOfInteger&        theMapOfUsedIndices,
  			      Standard_Boolean&            bFoundINOUT,
  			      Standard_Boolean&            bFoundININ,
-@@ -119,6 +114,7 @@ void BOP_SolidSolid::PrepareFaceSplits()
+@@ -158,6 +153,7 @@ void BOP_SolidSolid::PrepareFaceSplits()
      // 
  
      nF1 = aFFMap.FindKey(i);
@@ -1089,7 +994,7 @@ Index: oce/src/BOP/BOP_SolidSolid_1.cxx
      TopoDS_Face aF1 = TopoDS::Face(aDS.Shape(nF1));
      
      iRank   = aDS.Rank(nF1);
-@@ -126,7 +122,7 @@ void BOP_SolidSolid::PrepareFaceSplits()
+@@ -165,7 +161,7 @@ void BOP_SolidSolid::PrepareFaceSplits()
      TopTools_DataMapOfShapeInteger aMapOfEdgeIndex;
      TopTools_ListOfShape aListOfSplits;
  
@@ -1098,7 +1003,7 @@ Index: oce/src/BOP/BOP_SolidSolid_1.cxx
  
        DoInternalVertices(nF1, aListOfSplits);
  
-@@ -161,10 +157,11 @@ void BOP_SolidSolid::PrepareFaceSplits()
+@@ -200,10 +196,11 @@ void BOP_SolidSolid::PrepareFaceSplits()
  	  }
  	}
  
@@ -1114,7 +1019,7 @@ Index: oce/src/BOP/BOP_SolidSolid_1.cxx
  	    if(aState != TopAbs_ON) {
  	      BooleanOperations_StateOfShape aConvertedState = BOPTools_StateFiller::ConvertState(aState);
  
-@@ -172,10 +169,8 @@ void BOP_SolidSolid::PrepareFaceSplits()
+@@ -211,10 +208,8 @@ void BOP_SolidSolid::PrepareFaceSplits()
  	    }
  	    bFoundFaceState = Standard_True;
  	  }
@@ -1127,7 +1032,7 @@ Index: oce/src/BOP/BOP_SolidSolid_1.cxx
  	  if(ComputeStateForAnalyticalSurfaces(aNewFaceIndex, nF1, aFFMap, *myDSFiller, aState)) {
  	    if(aState != TopAbs_ON) {
  	      BooleanOperations_StateOfShape aConvertedState = BOPTools_StateFiller::ConvertState(aState);
-@@ -184,6 +179,7 @@ void BOP_SolidSolid::PrepareFaceSplits()
+@@ -223,6 +218,7 @@ void BOP_SolidSolid::PrepareFaceSplits()
  	      bFoundFaceState = Standard_True;
  	    }
  	  }
@@ -1135,16 +1040,16 @@ Index: oce/src/BOP/BOP_SolidSolid_1.cxx
  	}
        }
      }
-@@ -268,7 +264,7 @@ Standard_Boolean BOP_SolidSolid::Propaga
- Standard_Boolean BOP_SolidSolid::ComputeStateByInsidePoints(const Standard_Integer theFaceIndex,
- 							    const Standard_Integer theBaseFaceIndex,
- 							    const Standard_Integer theFaceRank,
--							    const BOPTColStd_IndexedDataMapOfIntegerIndexedMapOfInteger& theFFMap,
-+							    const TColStd_IndexedMapOfInteger& aFFIndicesMap,
- 							    TopAbs_State& theState) 
+@@ -308,7 +304,7 @@ Standard_Boolean BOP_SolidSolid::
+   ComputeStateByInsidePoints(const Standard_Integer theFaceIndex,
+ 			     const Standard_Integer theBaseFaceIndex,
+ 			     const Standard_Integer theFaceRank,
+-			     const BOPTColStd_IndexedDataMapOfIntegerIndexedMapOfInteger& theFFMap,
++			     const TColStd_IndexedMapOfInteger& aFFIndicesMap,
+ 			     TopAbs_State& theState) 
  
  {
-@@ -289,17 +285,8 @@ Standard_Boolean BOP_SolidSolid::Compute
+@@ -329,17 +325,8 @@ Standard_Boolean BOP_SolidSolid::
    TopoDS_Face aFace = TopoDS::Face(aS);
    //
    //
@@ -1163,7 +1068,7 @@ Index: oce/src/BOP/BOP_SolidSolid_1.cxx
      Standard_Integer aNbj = aFFIndicesMap.Extent();
  
      for (j=1; j<=aNbj; j++) {
-@@ -308,7 +295,7 @@ Standard_Boolean BOP_SolidSolid::Compute
+@@ -348,7 +335,7 @@ Standard_Boolean BOP_SolidSolid::
        Standard_Boolean bIsTouchCase = aFF.IsTangentFaces();
  
        if (bIsTouchCase) {
@@ -1172,7 +1077,7 @@ Index: oce/src/BOP/BOP_SolidSolid_1.cxx
  	const TopoDS_Face& aF2 = TopoDS::Face(aDS.Shape(nF2));
  
  	if(BOPTools_Tools3D::CheckSameDomainFaceInside(aFace, aF2, pPaveFiller->Context())) {
-@@ -317,7 +304,6 @@ Standard_Boolean BOP_SolidSolid::Compute
+@@ -357,7 +344,6 @@ Standard_Boolean BOP_SolidSolid::
  	}
        }
      }
@@ -1180,26 +1085,26 @@ Index: oce/src/BOP/BOP_SolidSolid_1.cxx
    const TopoDS_Shape& aTool = (theFaceRank == 1) ? aDS.Tool() : aDS.Object();
    TopoDS_Solid aRefSolid;
  
-@@ -348,7 +334,8 @@ Standard_Boolean BOP_SolidSolid::Compute
- //  purpose:
- // =====================================================================================================================
+@@ -387,7 +373,8 @@ Standard_Boolean BOP_SolidSolid::
+ //purpose  : 
+ //=======================================================================
  Standard_Boolean BOP_SolidSolid::TakeOnSplit(const Standard_Integer theFaceIndex,
 -					     const Standard_Integer theBaseFaceIndex) const
 +					     const Standard_Integer theBaseFaceIndex,
-+                         const TColStd_DataMapOfIntegerListOfInteger &aMapOfEdgeFaces) const
++					     const TColStd_DataMapOfIntegerListOfInteger &aMapOfEdgeFaces) const
  {
    Standard_Boolean bTake = Standard_False;
  
-@@ -360,7 +347,7 @@ Standard_Boolean BOP_SolidSolid::TakeOnS
-   TColStd_ListOfInteger aListOfFacesToCheck;
-   aListOfFacesToCheck.Append(theFaceIndex);
- 
--  GetStatesOfAdjacentFaces(aListOfFacesToCheck, *myDSFiller, aMapOfUsedIndices, binout, binin, boutout);
-+  GetStatesOfAdjacentFaces(aListOfFacesToCheck, *myDSFiller, aMapOfEdgeFaces, aMapOfUsedIndices, binout, binin, boutout);
+@@ -415,7 +402,7 @@ Standard_Boolean BOP_SolidSolid::TakeOnS
+   //
+   GetStatesOfAdjacentFaces(aListOfFacesToCheck, 
+ 			   *myDSFiller, 
+-			   aMapOfUsedIndices, 
++			   aMapOfEdgeFaces, aMapOfUsedIndices, 
+ 			   binout, binin, boutout);
    
-   switch(myOperation) {
-   case BOP_FUSE: {
-@@ -394,86 +381,63 @@ Standard_Boolean BOP_SolidSolid::TakeOnS
+   //zzf
+@@ -479,86 +466,63 @@ Standard_Boolean BOP_SolidSolid::TakeOnS
    return bTake;
  }
  
@@ -1292,17 +1197,14 @@ Index: oce/src/BOP/BOP_SolidSolid_1.cxx
 -      }
 -      else {
 -	TColStd_ListIteratorOfListOfInteger anIttmp(aMap.Find(i));
-+  Standard_Integer anIndex = 0, i = 0;
- 
+-
 -	for(; anIttmp.More(); anIttmp.Next()) {
 -	  if(theFaceIndex == anIttmp.Value())
 -	    continue;
 -	  aListOfFaceIndex.Append(anIttmp.Value());
 -	}
 -      }
-+  anIndex = theDS.ShapeIndex(theShape, 1);
-+  anIndex = (anIndex == 0) ? theDS.ShapeIndex(theShape, 2) : anIndex;
-+  anIndex = (anIndex == 0) ? theDS.ShapeIndex(theShape, 3) : anIndex;
++  Standard_Integer anIndex = 0, i = 0;
  
 -      TColStd_ListIteratorOfListOfInteger anIt(aListOfFaceIndex);
 -      
@@ -1311,7 +1213,10 @@ Index: oce/src/BOP/BOP_SolidSolid_1.cxx
 -	  continue;
 -	const TopoDS_Shape& aFace = aDS.Shape(anIt.Value());
 -	TopExp_Explorer anExpE(aFace, TopAbs_EDGE);
--
++  anIndex = theDS.ShapeIndex(theShape, 1);
++  anIndex = (anIndex == 0) ? theDS.ShapeIndex(theShape, 2) : anIndex;
++  anIndex = (anIndex == 0) ? theDS.ShapeIndex(theShape, 3) : anIndex;
+ 
 -	for(; anExpE.More(); anExpE.Next()) {
 -	  const TopoDS_Shape& anEdge = anExpE.Current();
 -	  Standard_Integer nE = GetIndex(anEdge, aDS);
@@ -1326,19 +1231,19 @@ Index: oce/src/BOP/BOP_SolidSolid_1.cxx
 -  }  
 +  return anIndex;
  }
- 
- // ------------------------------------------------------------------------------------
-@@ -482,6 +446,7 @@ void GetAttachedFaces(const Standard_Int
- // ------------------------------------------------------------------------------------
+ //=======================================================================
+ //function : GetStatesOfAdjacentFaces
+@@ -566,6 +530,7 @@ void GetAttachedFaces(const Standard_Int
+ //=======================================================================
  void GetStatesOfAdjacentFaces(const TColStd_ListOfInteger& theListOfFacesToCheck,
  			      const BOPTools_DSFiller&     theDSFiller,
 +			      const TColStd_DataMapOfIntegerListOfInteger& aMapOfEdgeFaces,
  			      TColStd_MapOfInteger&        theMapOfUsedIndices,
  			      Standard_Boolean&            bFoundINOUT,
  			      Standard_Boolean&            bFoundININ,
-@@ -515,10 +480,8 @@ void GetStatesOfAdjacentFaces(const TCol
-       if(theMapOfUsedIndices.Contains(nE))
- 	continue;
+@@ -604,10 +569,8 @@ void GetStatesOfAdjacentFaces(const TCol
+       }
+       //
        theMapOfUsedIndices.Add(nE);
 -      TColStd_ListOfInteger aListOfFaces, aListOfIN, aListOfOUT;
 -      GetAttachedFaces(nE, nF, theDSFiller, aListOfFaces);
@@ -1348,8 +1253,8 @@ Index: oce/src/BOP/BOP_SolidSolid_1.cxx
 +      TColStd_ListIteratorOfListOfInteger anIt(aMapOfEdgeFaces.Find(nE));
  
        for(; anIt.More(); anIt.Next()) {
- 	if(theMapOfUsedIndices.Contains(anIt.Value()))
-@@ -541,7 +504,7 @@ void GetStatesOfAdjacentFaces(const TCol
+ 	nFa=anIt.Value();
+@@ -635,7 +598,7 @@ void GetStatesOfAdjacentFaces(const TCol
    }
  
    if(!aLisOfON.IsEmpty() && (theMapOfUsedIndices.Extent() <= aDS.NumberOfInsertedShapes())) {
@@ -1447,7 +1352,7 @@ Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
 ===================================================================
 --- oce.orig/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
 +++ oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
-@@ -166,15 +166,6 @@ IntPolyh_MaillageAffinage::IntPolyh_Mail
+@@ -170,15 +170,6 @@ IntPolyh_MaillageAffinage::IntPolyh_Mail
    FlecheMoy2(0.0), 
    myEnlargeZone(Standard_False) 
  { 
@@ -1463,7 +1368,7 @@ Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
  }
  //=======================================================================
  //function : IntPolyh_MaillageAffinage
-@@ -203,16 +194,7 @@ IntPolyh_MaillageAffinage::IntPolyh_Mail
+@@ -207,16 +198,7 @@ IntPolyh_MaillageAffinage::IntPolyh_Mail
    FlecheMoy2(0.0), 
    myEnlargeZone(Standard_False)
  { 
@@ -1481,64 +1386,31 @@ Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
  //=======================================================================
  //function : FillArrayOfPnt
  //purpose  : Compute points on one surface and fill an array of points
-@@ -262,6 +244,7 @@ void IntPolyh_MaillageAffinage::FillArra
-   itV=(v1-v0)/Standard_Real(NbSamplesV-1);
-   PtrBox = (SurfID==1) ? (&MyBox1) : (&MyBox2);
- 
-+  TPoints.Init(NbSamplesU * NbSamplesV);
-   for(BoucleU=0; BoucleU<NbSamplesU; BoucleU++){
-      U = (BoucleU == (NbSamplesU - 1)) ? u1 : u0+BoucleU*itU;
-     for(BoucleV=0; BoucleV<NbSamplesV; BoucleV++){
-@@ -273,7 +256,6 @@ void IntPolyh_MaillageAffinage::FillArra
-       PtrBox->Add(PtXYZ);
-     }
+@@ -351,6 +333,7 @@ void IntPolyh_MaillageAffinage::FillArra
    }
--  TPoints.SetNbItems(iCnt);
    //
-   IntCurveSurface_ThePolyhedronOfHInter polyhedron(MaSurface,
- 						   NbSamplesU,
-@@ -341,6 +323,7 @@ void IntPolyh_MaillageAffinage::FillArra
-   Bnd_Box *PtrBox = (SurfID==1) ? (&MyBox1) : (&MyBox2);
-   Standard_Real resol = gp::Resolution();
- 
-+  TPoints.Init(NbSamplesU * NbSamplesV);
-   for(Standard_Integer BoucleU=0; BoucleU<NbSamplesU; BoucleU++){
-     Standard_Real U = (BoucleU == (NbSamplesU - 1)) ? u1 : u0+BoucleU*itU;
-     for(Standard_Integer BoucleV=0; BoucleV<NbSamplesV; BoucleV++){
-@@ -370,7 +353,6 @@ void IntPolyh_MaillageAffinage::FillArra
-       PtrBox->Add(PtXYZ);
-     }
-   }
--  TPoints.SetNbItems(CpteurTabPnt);
- 
-   Tol*=1.2;
- 
-@@ -411,6 +393,7 @@ void IntPolyh_MaillageAffinage::FillArra
-   }
-   //modified by NIZNHY-PKV Fri Jan 20 09:49:00 2012t
-   //
-+  TPoints.Init(aNbU * aNbV);
    iCnt=0;
++  TPoints.Init(aNbU * aNbV);
    for(i=1; i<=aNbU; ++i){
-     //modified by NIZNHY-PKV Fri Jan 20 13:59:15 2012f
-@@ -435,8 +418,6 @@ void IntPolyh_MaillageAffinage::FillArra
+     bDegI=(aID1==i || aID2==i);
+     aU=Upars(i);
+@@ -370,7 +353,6 @@ void IntPolyh_MaillageAffinage::FillArra
      }
    }
    //
 -  TPoints.SetNbItems(iCnt);
--  //
+   //
    IntCurveSurface_ThePolyhedronOfHInter polyhedron(aS, Upars, Vpars);
    //
-   aTol=polyhedron.DeflectionOverEstimation();
-@@ -489,6 +470,7 @@ void IntPolyh_MaillageAffinage::FillArra
+@@ -422,6 +404,7 @@ void IntPolyh_MaillageAffinage::FillArra
+     DegeneratedIndex(Upars, aNbU, aS, 2, aID1, aID2);
    }
-   //modified by NIZNHY-PKV Fri Jan 20 09:49:00 2012t
    //
 +  TPoints.Init(aNbU * aNbV);
    iCnt=0;
    for(i=1; i<=aNbU; ++i){
-     //modified by NIZNHY-PKV Fri Jan 20 13:59:15 2012f
-@@ -528,8 +510,6 @@ void IntPolyh_MaillageAffinage::FillArra
+     bDegI=(aID1==i || aID2==i);
+@@ -457,8 +440,6 @@ void IntPolyh_MaillageAffinage::FillArra
      }
    }
    //
@@ -1547,7 +1419,7 @@ Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
    Tol*=1.2;
    //
    Standard_Real a1,a2,a3,b1,b2,b3;
-@@ -690,6 +670,17 @@ void IntPolyh_MaillageAffinage::FillArra
+@@ -619,6 +600,17 @@ void IntPolyh_MaillageAffinage::FillArra
    Standard_Integer NbSamplesU=(SurfID==1)? NbSamplesU1:NbSamplesU2;
    Standard_Integer NbSamplesV=(SurfID==1)? NbSamplesV1:NbSamplesV2;
  
@@ -1565,7 +1437,7 @@ Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
    Standard_Integer CpteurTabEdges=0;
  
    //maillage u0 v0
-@@ -804,7 +795,6 @@ void IntPolyh_MaillageAffinage::FillArra
+@@ -733,7 +725,6 @@ void IntPolyh_MaillageAffinage::FillArra
      TEdges[CpteurTabEdges].SetSecondTriangle(BoucleMeshV*2*(NbSamplesV-1)+(NbSamplesV-2)*2);
      CpteurTabEdges++;
    }
@@ -1573,7 +1445,7 @@ Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
  
  }
  
-@@ -826,6 +816,8 @@ void IntPolyh_MaillageAffinage::FillArra
+@@ -755,6 +746,8 @@ void IntPolyh_MaillageAffinage::FillArra
    Standard_Integer NbSamplesU=(SurfID==1)? NbSamplesU1:NbSamplesU2;
    Standard_Integer NbSamplesV=(SurfID==1)? NbSamplesV1:NbSamplesV2;
  
@@ -1582,7 +1454,7 @@ Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
    
    //To provide recursion, I associate a point with two triangles  
    for(Standard_Integer BoucleMeshU=0; BoucleMeshU<NbSamplesU-1; BoucleMeshU++){
-@@ -863,7 +855,6 @@ void IntPolyh_MaillageAffinage::FillArra
+@@ -792,7 +785,6 @@ void IntPolyh_MaillageAffinage::FillArra
      }
      PntInit++;//Pass the last point of the column
    }
@@ -1590,46 +1462,7 @@ Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
    const Standard_Integer FinTT = TTriangles.NbItems();
    if (FinTT==0) {
    }
-@@ -3220,24 +3211,26 @@ Standard_Integer IntPolyh_MaillageAffina
-   const Standard_Integer FinTT2 = TTriangles2.NbItems();
- 
-   for(Standard_Integer i_S1=0; i_S1<FinTT1; i_S1++) {
-+    IntPolyh_Triangle &Triangle1 =  TTriangles1[i_S1];
-+    if (!((Triangle1.IndiceIntersectionPossible() != 0) && (Triangle1.GetFleche() >= 0.0)))
-+      continue;
-     for(Standard_Integer i_S2=0; i_S2<FinTT2; i_S2++){
--      if ( (TTriangles1[i_S1].IndiceIntersectionPossible() != 0)
--	  &&(TTriangles1[i_S1].GetFleche() >= 0.0)
--	  && (TTriangles2[i_S2].IndiceIntersectionPossible() != 0)
--	  && (TTriangles2[i_S2].GetFleche() >= 0.0) ) {
-+      IntPolyh_Triangle &Triangle2 =  TTriangles2[i_S2];
-+      if ((Triangle2.IndiceIntersectionPossible() != 0)
-+       && (Triangle2.GetFleche() >= 0.0) ) {
- 	IntPolyh_StartPoint SP1, SP2;
- 	//If a triangle is dead or not in BSB, comparison is not possible
--    	if (TriContact(TPoints1[TTriangles1[i_S1].FirstPoint()],
--		       TPoints1[TTriangles1[i_S1].SecondPoint()],
--		       TPoints1[TTriangles1[i_S1].ThirdPoint()],
--		       TPoints2[TTriangles2[i_S2].FirstPoint()],
--		       TPoints2[TTriangles2[i_S2].SecondPoint()],
--		       TPoints2[TTriangles2[i_S2].ThirdPoint()],
-+	if (TriContact(TPoints1[Triangle1.FirstPoint()],
-+		       TPoints1[Triangle1.SecondPoint()],
-+		       TPoints1[Triangle1.ThirdPoint()],
-+		       TPoints2[Triangle2.FirstPoint()],
-+		       TPoints2[Triangle2.SecondPoint()],
-+		       TPoints2[Triangle2.ThirdPoint()],
- 		       CoupleAngle)){
- 
- 
--	  TTriangles1[i_S1].SetIndiceIntersection(1);//The triangle is cut by another
--	  TTriangles2[i_S2].SetIndiceIntersection(1);
-+	  Triangle1.SetIndiceIntersection(1);//The triangle is cut by another
-+	  Triangle2.SetIndiceIntersection(1);
- 	  
- 	  Standard_Integer NbPoints;
- 	  NbPoints=StartingPointsResearch(i_S1,i_S2,SP1, SP2);
-@@ -3248,7 +3241,6 @@ Standard_Integer IntPolyh_MaillageAffina
+@@ -3194,7 +3186,6 @@ Standard_Integer IntPolyh_MaillageAffina
  
  	  if ( (NbPoints>0)&&(NbPoints<3) ) {
  	    SP1.SetCoupleValue(i_S1,i_S2);
@@ -1637,7 +1470,7 @@ Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
  	    CpteurTabSP++;
  
  
-@@ -3256,7 +3248,6 @@ Standard_Integer IntPolyh_MaillageAffina
+@@ -3202,7 +3193,6 @@ Standard_Integer IntPolyh_MaillageAffina
  
  	  if(NbPoints==2) { 	  
  	    SP2.SetCoupleValue(i_S1,i_S2);
@@ -1645,7 +1478,7 @@ Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
  	    CpteurTabSP++;
  
  
-@@ -3296,16 +3287,16 @@ Standard_Integer IntPolyh_MaillageAffina
+@@ -3242,14 +3232,14 @@ Standard_Integer IntPolyh_MaillageAffina
  
    Standard_Real CoupleAngle=-2.0;
    for(Standard_Integer i_S1=0; i_S1<FinTT1; i_S1++) {
@@ -1657,15 +1490,12 @@ Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
 -	  &&(TTriangles1[i_S1].GetFleche() >= 0.0)
 -	  && (TTriangles2[i_S2].IndiceIntersectionPossible() != 0)
 -	  && (TTriangles2[i_S2].GetFleche() >= 0.0) ) {
-+      IntPolyh_Triangle &Triangle2 = TTriangles2[i_S2];
-+      if ( (Triangle2.IndiceIntersectionPossible() != 0)
-+        && (Triangle2.GetFleche() >= 0.0) ) {
++	  IntPolyh_Triangle &Triangle2 =  TTriangles2[i_S2];
++      if ((Triangle2.IndiceIntersectionPossible() != 0)
++	  && (Triangle2.GetFleche() >= 0.0) ) {
  	//If a triangle is dead or not in BSB, comparison is not possible
 -	IntPolyh_Triangle &Triangle1 =  TTriangles1[i_S1];
 -	IntPolyh_Triangle &Triangle2 =  TTriangles2[i_S2];
- 
--    	if (TriContact(TPoints1[Triangle1.FirstPoint()],
-+	if (TriContact(TPoints1[Triangle1.FirstPoint()],
- 		       TPoints1[Triangle1.SecondPoint()],
- 		       TPoints1[Triangle1.ThirdPoint()],
- 		       TPoints2[Triangle2.FirstPoint()],
+ 	//
+ 	Standard_Integer iDeg1, iDeg2, iDeg3, iDeg;
+     	//

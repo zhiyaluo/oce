@@ -224,7 +224,7 @@ Index: oce/drv/StepFile/step.tab.c
 @@ -957,3 +963,8 @@ yyerrhandle:
    goto yynewstate;
  }
- #line 146 "/misc/dn47/KAS/builds/inv/LocalWOK/wok_entities/LOC/dev/inv-IR-2012-11-09-IR-2012-11-09-OCCT/src/StepFile/step.yacc"
+ #line 146 "/misc/dn60/WOKLOC/wok_entities/LOC/dev/CR000655-CR655-products-occt/src/StepFile/step.yacc"
 +
 +
 +#ifdef _MSC_VER

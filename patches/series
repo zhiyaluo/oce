@@ -1,7 +1,6 @@
 remove-duplicate-headers.patch
 
 submitted/OCC22327/fix-build-tcl-8.6.patch
-upstream/OCC23603-boolean-two-edges.patch
 upstream/OCC23436-fix-BRepOffsetAPI_ThruSections-crash.patch
 
 # See if the new OpenGL stuff needs it # submitted/OCC22332/fix-layer-line.patch
@@ -151,7 +150,6 @@ warning/fix-implicit-bool-conversion.patch
 review/avoid-macro-redefinition.patch
 # TO BE REVIEWED # review/fix-ftgl-font-issue.patch
 
-upstream/OCC23548-Boolean-operation-between-two-faces-fails.patch
 improve-boolean.patch
 speedup-GeomLib-NormEstim.patch
 
