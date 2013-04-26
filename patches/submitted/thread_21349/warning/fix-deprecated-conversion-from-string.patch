@@ -119,19 +119,6 @@ Index: oce/inc/InterfaceGraphic_wntio.hxx
  
  # ifdef __cplusplus
  }
-Index: oce/src/Aspect/Aspect_Driver.cxx
-===================================================================
---- oce.orig/src/Aspect/Aspect_Driver.cxx
-+++ oce/src/Aspect/Aspect_Driver.cxx
-@@ -49,7 +49,7 @@ Aspect_Driver::Aspect_Driver () {
- 
-   OSD_Environment CSF_MDTVFontDirectory ;
- 
--  char *fontdir , *casroot ;
-+  const char *fontdir , *casroot ;
-   fontdir =  getenv("CSF_MDTVFontDirectory" );
-   if ( !fontdir) {
-     casroot  = getenv("CASROOT");
 Index: oce/src/DPrsStd/DPrsStd.cxx
 ===================================================================
 --- oce.orig/src/DPrsStd/DPrsStd.cxx
@@ -145,45 +132,6 @@ Index: oce/src/DPrsStd/DPrsStd.cxx
    plugin   = getenv("CSF_PluginDefaults");
    standard = getenv("CSF_StandardDefaults");
    casroot  = getenv("CASROOT");
-Index: oce/src/Graphic3d/Graphic3d_Texture1D.cxx
-===================================================================
---- oce.orig/src/Graphic3d/Graphic3d_Texture1D.cxx
-+++ oce/src/Graphic3d/Graphic3d_Texture1D.cxx
-@@ -42,7 +42,7 @@ static TCollection_AsciiString GetEnvir
-   static Standard_Boolean IsDefined=Standard_False ;
-   static TCollection_AsciiString VarName;
-   if ( !IsDefined ) {
--    char *envir, *casroot ;
-+    const char *envir, *casroot ;
-     envir = getenv("CSF_MDTVTexturesDirectory") ;
-     
-     Standard_Boolean HasDefinition = Standard_False ;
-Index: oce/src/Graphic3d/Graphic3d_Texture2D.cxx
-===================================================================
---- oce.orig/src/Graphic3d/Graphic3d_Texture2D.cxx
-+++ oce/src/Graphic3d/Graphic3d_Texture2D.cxx
-@@ -38,7 +38,7 @@ static TCollection_AsciiString GetEnvir
-   static Standard_Boolean IsDefined=Standard_False ;
-   static TCollection_AsciiString VarName;
-   if ( !IsDefined ) {
--    char *envir, *casroot ;
-+    char const*envir, *casroot ;
-     envir = getenv("CSF_MDTVTexturesDirectory") ;
-     
-     Standard_Boolean HasDefinition = Standard_False ;
-Index: oce/src/Graphic3d/Graphic3d_TextureEnv.cxx
-===================================================================
---- oce.orig/src/Graphic3d/Graphic3d_TextureEnv.cxx
-+++ oce/src/Graphic3d/Graphic3d_TextureEnv.cxx
-@@ -39,7 +39,7 @@ static TCollection_AsciiString GetEnvir
-   static Standard_Boolean IsDefined=Standard_False ;
-   static TCollection_AsciiString VarName;
-   if ( !IsDefined ) {
--    char *envir, *casroot ;
-+    char const *envir, *casroot ;
-     envir = getenv("CSF_MDTVTexturesDirectory") ;
-     
-     Standard_Boolean HasDefinition = Standard_False ;
 Index: oce/src/InterfaceGraphic/InterfaceGraphic_cPrintf.cxx
 ===================================================================
 --- oce.orig/src/InterfaceGraphic/InterfaceGraphic_cPrintf.cxx

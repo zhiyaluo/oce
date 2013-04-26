@@ -192,7 +192,7 @@ Index: oce/inc/OSD_SharedMemory.hxx
 ===================================================================
 --- oce.orig/inc/OSD_SharedMemory.hxx
 +++ oce/inc/OSD_SharedMemory.hxx
-@@ -95,7 +95,11 @@ private:
+@@ -101,7 +101,11 @@ private:
  
  
  
@@ -986,7 +986,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_WNT.cxx
 +++ oce/src/OSD/OSD_WNT.cxx
-@@ -1012,12 +1012,12 @@ BOOL MoveDirectory ( LPCTSTR oldDir, LPC
+@@ -865,12 +865,12 @@ BOOL MoveDirectory ( LPCTSTR oldDir, LPC
   BOOL                fFind;
   BOOL                retVal = FALSE;
   DIR_RESPONSE        response;
@@ -1003,7 +1003,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  
    fFind = FALSE;
    driveSrc = driveDst = pathSrc = pathDst = NULL;
-@@ -1071,16 +1071,16 @@ retry:
+@@ -924,16 +924,16 @@ retry:
  
    if ( fFind ) {
      
@@ -1024,7 +1024,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
   
   }  // end else
  
-@@ -1226,8 +1226,8 @@ retry_2:
+@@ -1079,8 +1079,8 @@ retry_2:
    
   }  /* end if */
  
@@ -1035,80 +1035,11 @@ Index: oce/src/OSD/OSD_WNT.cxx
  
   return retVal;
  
-Index: oce/src/OSD/OSD_WNT_1.cxx
-===================================================================
---- oce.orig/src/OSD/OSD_WNT_1.cxx
-+++ oce/src/OSD/OSD_WNT_1.cxx
-@@ -20,6 +20,9 @@
- #include <OSD_WNT_1.hxx>
- 
- #include <windowsx.h>
-+#if !defined (_MSC_VER) || (_MSC_VER >= 1600)
-+#include <stdint.h>
-+#endif
- 
- #ifndef min
- # define min(a, b)  (((a) < (b)) ? (a) : (b))
-@@ -240,13 +243,7 @@ static void __fastcall QuadWordToFileTim
- ////////////////////////////////////////////////////////////////
- LPWORD lpwAlign (LPWORD lpIn)
- {
--  ULONG ul;
--
--  ul = (ULONG) lpIn;
--  ul +=3;
--  ul >>=2;
--  ul <<=2;
--  return (LPWORD) ul;
-+  return (LPWORD) ((uintptr_t(lpIn)+3) & ~0x3);
- }
- 
- int CopyAnsiToWideChar (LPWORD lpWCStr, LPSTR lpAnsiIn)
-@@ -311,7 +308,7 @@ LONG GetTextParams ( HDC hdc, LPCTSTR lp
-     _TCHAR* tok = _tcstok ( dummy, TEXT( "\n" ) );
- 
-     while ( tok ) {
--      if ( !GetTextExtentPoint32 (hdc, tok, _tcslen(tok), (LPSIZE)&size) ) { Ret = false; break; }
-+      if ( !GetTextExtentPoint32 (hdc, tok, (int)_tcslen(tok), (LPSIZE)&size) ) { Ret = false; break; }
-       txtH += (short)size.cy;
-       if ( txtW < size.cx )
-         txtW = (short)size.cx;
-@@ -372,7 +369,7 @@ _TINT MsgBox ( HWND hParent,
-   int             nchar;
-   DWORD           lStyle;
-   _TINT           scrW = 0, scrH = 0;
--  UINT            bufSize = 0;
-+  size_t          bufSize = 0;
-   HDC             hDisp = NULL;
- 
-   short           iconWidth = 0, iconHeight = 0;
-@@ -454,10 +451,10 @@ _TINT MsgBox ( HWND hParent,
-         iconHeight  =  MapY (  GetSystemMetrics ( SM_CYICON )  );
-       }
-       if ( lpChildren[i].itemType == MBT_BUTTON ) {
--        _TINT len = _tcslen (lpChildren[i].buttonLabel);
-+        size_t len = _tcslen (lpChildren[i].buttonLabel);
-         SIZE aTxtSize;
-         GetTextExtentPoint32 ( hDisp, lpChildren[i].buttonLabel,
--                               len, (LPSIZE)&aTxtSize );
-+                               (int)len, (LPSIZE)&aTxtSize );
-         if ( butMaxWidth < aTxtSize.cx )
-           butMaxWidth = (short)aTxtSize.cx;
-         if ( butMaxHeight < aTxtSize.cy )
-@@ -535,7 +532,7 @@ _TINT MsgBox ( HWND hParent,
-   /*----------------------------------------------------------------------*/
-   
-   {
--    int res = -1;
-+    INT_PTR res = -1;
-     if ( pDlgTemplate )
-       res = DialogBoxIndirect (
-               GetModuleHandle(NULL),
 Index: oce/src/OSD/OSD_signal_WNT.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_signal_WNT.cxx
 +++ oce/src/OSD/OSD_signal_WNT.cxx
-@@ -200,6 +200,9 @@ _CRTIMP _se_translator_function __cdecl
+@@ -194,6 +194,9 @@ _CRTIMP _se_translator_function __cdecl
  #include <process.h>
  #include <signal.h>
  #include <float.h>
@@ -1118,10 +1049,10 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
  
  static Standard_Boolean fMsgBox;
  static Standard_Boolean fFltExceptions;
-@@ -214,7 +217,7 @@ extern "C" Standard_EXPORT void _debug_b
+@@ -210,7 +213,7 @@ static LONG _osd_debug   ( void );
  
  MB_DESC fatalErrorDesc[] = {
- 									  
+ 
 -                 { MBT_ICON,   ( int )IDI_HAND              },
 +                 { MBT_ICON,   ( intptr_t )IDI_HAND              },
                   { MBT_BUTTON, IDYES,    TEXT( "Continue" ) },
@@ -1131,7 +1062,7 @@ Index: oce/src/OpenGl/OpenGl_Context.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_Context.cxx
 +++ oce/src/OpenGl/OpenGl_Context.cxx
-@@ -249,7 +249,7 @@ void OpenGl_Context::SwapBuffers()
+@@ -280,7 +280,7 @@ void OpenGl_Context::SwapBuffers()
  void* OpenGl_Context::findProc (const char* theFuncName)
  {
  #if (defined(_WIN32) || defined(__WIN32__))

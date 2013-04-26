@@ -93,25 +93,13 @@ Index: oce/inc/NCollection_Vector.hxx
 +++ oce/inc/NCollection_Vector.hxx
 @@ -99,7 +99,11 @@ template <class TheItemType> class NColl
      {
-       if (myData) {
-         for (Standard_Integer i=0; i < mySize; i++)
+       for (Standard_Integer anItemIter = 0; anItemIter < theBlock.Size; ++anItemIter)
+       {
 +#ifdef __BORLANDC__
-+          ((TheItemType *) myData)[i].~TheItemType();
++        ((TheItemType* )theBlock.DataPtr)[anItemIter].~TheItemType();
 +#else
-           ((TheItemType *) myData)[i].~TheItemTypeD();
+         ((TheItemType* )theBlock.DataPtr)[anItemIter].~TheItemTypeD();
 +#endif
-         myAlloc->Free(myData);
-         myData = NULL;
        }
-@@ -117,7 +121,11 @@ template <class TheItemType> class NColl
-     {
-       if (myData) {
-         for (Standard_Integer i=0; i < Size(); i++)
-+#ifdef __BORLANDC__
-+          ((TheItemType *) myData)[i].~TheItemType();
-+#else
-           ((TheItemType *) myData)[i].~TheItemTypeD();
-+#endif
-         myAlloc->Free(myData);
-         myData = NULL;
-       }
+       anAllocator->Free (theBlock.DataPtr);
+       theBlock.DataPtr = NULL;

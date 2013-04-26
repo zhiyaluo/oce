@@ -45,22 +45,6 @@ Subject: [PATCH] Restored DumpWhaIs required for STEP Import/Export in debug
  src/STEPControl/STEPControl_ActorWrite.cxx |   55 ++++++++++++++++++++++++++++
  2 files changed, 109 insertions(+), 0 deletions(-)
 
-Index: oce/src/AIS2D/AIS2D_LocalContext.cxx
-===================================================================
---- oce.orig/src/AIS2D/AIS2D_LocalContext.cxx
-+++ oce/src/AIS2D/AIS2D_LocalContext.cxx
-@@ -34,11 +34,6 @@
- #include <Graphic2d_DisplayList.hxx>
- #include <AIS2D_HSequenceOfIO.hxx>
- 
--static Standard_Integer GetHiMod(const Handle(AIS2D_InteractiveObject)& anIO)
--{
--  return anIO->HasHighlightMode() ? anIO->HighlightMode() 
--                                  : anIO->DefaultHighlightMode();
--}
- 
- 
- AIS2D_LocalContext::AIS2D_LocalContext()
 Index: oce/src/BRepFeat/BRepFeat_MakeDPrism.cxx
 ===================================================================
 --- oce.orig/src/BRepFeat/BRepFeat_MakeDPrism.cxx
@@ -117,7 +101,7 @@ Index: oce/src/BRepFeat/BRepFeat_MakeRevol.cxx
 ===================================================================
 --- oce.orig/src/BRepFeat/BRepFeat_MakeRevol.cxx
 +++ oce/src/BRepFeat/BRepFeat_MakeRevol.cxx
-@@ -91,12 +91,6 @@ static void MajMap(const TopoDS_Shape&,
+@@ -90,12 +90,6 @@ static void MajMap(const TopoDS_Shape&,
  		   TopoDS_Shape&); // myLShape
  
  
@@ -172,7 +156,7 @@ Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
  					      AC, aDefl, f, l, Precision::Confusion(),
  					      2);
  
-@@ -2305,40 +2306,6 @@ static void CheckBadEdges(const TopoDS_F
+@@ -2276,40 +2277,6 @@ static void CheckBadEdges(const TopoDS_F
  
  
  //=======================================================================
@@ -213,7 +197,7 @@ Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
  //function : QuasiFleche
  //purpose  : 
  //=======================================================================
-@@ -2418,3 +2385,37 @@ static void QuasiFleche(const Adaptor3d_
+@@ -2389,3 +2356,37 @@ static void QuasiFleche(const Adaptor3d_
    }
  }
  			
@@ -251,86 +235,6 @@ Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
 +		Parameters,Points);
 +	return Standard_True;
 +}
-Index: oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
-===================================================================
---- oce.orig/src/BRepFill/BRepFill_TrimShellCorner.cxx
-+++ oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
-@@ -84,11 +84,6 @@
- #include <TColgp_SequenceOfPnt.hxx>
- #include <gce_MakeLin.hxx>
- 
--static Standard_Boolean IsFromFirstToSecond(const TopoDS_Edge&   theEdge,
--					    const Standard_Real  theParameterOnUEdge,
--					    const TopoDS_Edge&   theUEdge1,
--					    const TopoDS_Edge&   theUEdge2,
--					    const TopoDS_Face&   theFace);
- 
- static Standard_Boolean FindParameter(const BOPTools_PaveSet&                     thePaveSet,
- 				      const BooleanOperations_KindOfInterference& theType,
-@@ -223,10 +218,6 @@ static Standard_Boolean ChooseSection(co
- 				      gp_Pln& resPlane,
- 				      Standard_Boolean& IsSingular);
- 
--static Standard_Boolean ChoosePlane(const TopoDS_Shape& Comp,
--				    const gp_Ax2& bis,
--				    gp_Pln& resPlane,
--				    TopoDS_Compound& NewComp);
- 
- 
- // ===========================================================================================
-@@ -1084,52 +1075,6 @@ Standard_Boolean FindCommonVertex(const
-   return bvertexfound;
- }
- 
--// ------------------------------------------------------------------------------------------
--// static function: IsFromFirstToSecond
--// purpose:
--// ------------------------------------------------------------------------------------------
--Standard_Boolean IsFromFirstToSecond(const TopoDS_Edge&   theEdge,
--				     const Standard_Real  theParameterOnUEdge,
--				     const TopoDS_Edge&   theUEdge1,
--				     const TopoDS_Edge&   theUEdge2,
--				     const TopoDS_Face&   theFace) {
--  TopoDS_Face aFace = theFace;
--  aFace.Orientation(TopAbs_FORWARD);
--  TopoDS_Edge E1, E2;
--  TopExp_Explorer anExp(aFace, TopAbs_EDGE);
--
--  for(; anExp.More(); anExp.Next()) {
--    if(E1.IsNull() && theUEdge1.IsSame(anExp.Current())) {
--      E1 = TopoDS::Edge(anExp.Current());
--    }
--    else if(E2.IsNull() && theUEdge2.IsSame(anExp.Current())) {
--      E2 = TopoDS::Edge(anExp.Current());
--    }
--  }
--
--  if(E1.IsNull() || E2.IsNull())
--    return Standard_True;
--
--  gp_Pnt2d PU1, PU2, pf, pl;
--  Standard_Real f, l;
--  Handle(Geom2d_Curve) C1 = BRep_Tool::CurveOnSurface(E1, aFace, f, l);
--  Handle(Geom2d_Curve) C2 = BRep_Tool::CurveOnSurface(E2, aFace, f, l);
--  Handle(Geom2d_Curve) CC = BRep_Tool::CurveOnSurface(theEdge, aFace, f, l);
--  PU1 = C1->Value(theParameterOnUEdge);
--  PU2 = C2->Value(theParameterOnUEdge);
--  BRep_Tool::Range(theEdge, f, l);
--  pf = CC->Value(f);
--  pl = CC->Value(l);
--  Standard_Real aTolerance = Precision::Confusion();
--
--  if(pf.Distance(PU1) < aTolerance)
--    return Standard_True;
--
--  if(pl.Distance(PU2) < aTolerance)
--    return Standard_True;
--  
--  return Standard_False;
--}
- 
- // ----------------------------------------------------------------------------------------------------
- // static function: GetUEdges
 Index: oce/src/BRepGProp/BRepGProp_Face.cxx
 ===================================================================
 --- oce.orig/src/BRepGProp/BRepGProp_Face.cxx
@@ -470,7 +374,7 @@ Index: oce/src/Extrema/Extrema_GenExtPS.cxx
 ===================================================================
 --- oce.orig/src/Extrema/Extrema_GenExtPS.cxx
 +++ oce/src/Extrema/Extrema_GenExtPS.cxx
-@@ -219,51 +219,6 @@ Processing:
+@@ -281,51 +281,6 @@ Processing:
        - update table TbSel.
  -----------------------------------------------------------------------------*/
  
@@ -876,111 +780,6 @@ Index: oce/src/TNaming/TNaming_Name.cxx
  static TopoDS_Shape FindShape(const TNaming_DataMapOfShapeMapOfShape& DM) 
  {
    TopoDS_Shape aResult;
-Index: oce/src/Units/Units_UnitsDictionary.cxx
-===================================================================
---- oce.orig/src/Units/Units_UnitsDictionary.cxx
-+++ oce/src/Units/Units_UnitsDictionary.cxx
-@@ -59,10 +59,6 @@
- #include <Units_Operators.hxx>
- #include <OSD.hxx>
- 
--#ifdef PRO13136		//Temporaire en attendant OSD::CStringToReal()
--static char DecimalPoint = '\0' ;
--
--#endif
- // Make the RealToCString reciprocal conversion.
- 
- //=======================================================================
-Index: oce/src/Viewer2dTest/Viewer2dTest_DisplayCommands.cxx
-===================================================================
---- oce.orig/src/Viewer2dTest/Viewer2dTest_DisplayCommands.cxx
-+++ oce/src/Viewer2dTest/Viewer2dTest_DisplayCommands.cxx
-@@ -303,42 +303,6 @@ Handle(AIS2D_InteractiveObject) Select2d
-   return ret;
- }
- 
--//==============================================================================
--//function : Displays,Erase...
--//purpose  : 
--//Draw arg : 
--//==============================================================================
--static int VwrTst_DispErase2d (const Handle(AIS2D_InteractiveObject)& IO,
--                               const Standard_Integer Mode,
--                               const Standard_Integer TypeOfOperation,
--                               const Standard_Boolean Upd)
--{
--  Handle(AIS2D_InteractiveContext) Ctx = Viewer2dTest::GetAIS2DContext();
--  
--  switch (TypeOfOperation)
--  {
--  case 1:
--    Ctx->Display(IO,Mode,Upd);
--    break;
--  case 2:
--    Ctx->Erase(IO,Mode,Upd);
--    break;
--  case 3:
--//    if(IO.IsNull())
--//      Ctx->SetDisplayMode((AIS2D_DisplayMode)Mode,Upd);
--//    else
--//      Ctx->SetDisplayMode(IO,Mode,Upd);
--    break;
--  case 4:
--//    if(IO.IsNull())
--//      Ctx->SetDisplayMode(0,Upd);
--//    else
--//      Ctx->UnsetDisplayMode(IO,Upd);
--    break;
--  }
--
--  return 0;
--}
- 
- #if 0
- //=======================================================================
-Index: oce/src/Viewer2dTest/Viewer2dTest_ViewerCommands.cxx
-===================================================================
---- oce.orig/src/Viewer2dTest/Viewer2dTest_ViewerCommands.cxx
-+++ oce/src/Viewer2dTest/Viewer2dTest_ViewerCommands.cxx
-@@ -116,11 +116,10 @@ static int X_ButtonPress = 0, Y_ButtonPr
- #ifdef WNT
- static LRESULT WINAPI Viewer2dWindowProc (HWND hwnd, UINT uMsg,
-                                           WPARAM wParam, LPARAM lParam);
--#endif
- 
- //==============================================================================
- //function : WClass
--//purpose  :
-+//purpose :
- //==============================================================================
- static Handle(MMgt_TShared)& WClass()
- {
-@@ -135,6 +134,9 @@ static Handle(MMgt_TShared)& WClass()
-   return theWClass;
- }
- 
-+#endif
-+
-+
- //==============================================================================
- //function : ViewerInit
- //purpose  : Create the window viewer and initialize all the global variable
-@@ -650,6 +652,7 @@ static void ProcessMotion2d()
-   EM->MoveTo(X_Motion, Y_Motion, V);
- }
- 
-+#ifndef WNT
- //==============================================================================
- //function : ProcessGridMotion2d
- //purpose  : pre-hilights grid point near mouse position
-@@ -670,6 +673,7 @@ static void ProcessGridMotion2d()
-     LastIsGridActiveStatus = Standard_False;
-   }
- }
-+#endif
- 
- //==============================================================================
- //function : GetMousePosition
 Index: oce/src/Visual3d/Visual3d_ViewMapping.cxx
 ===================================================================
 --- oce.orig/src/Visual3d/Visual3d_ViewMapping.cxx

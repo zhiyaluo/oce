@@ -20,8 +20,8 @@ Index: oce/src/Standard/Standard.cxx
 ===================================================================
 --- oce.orig/src/Standard/Standard.cxx
 +++ oce/src/Standard/Standard.cxx
-@@ -33,6 +33,28 @@
- #include <malloc.h>
+@@ -38,6 +38,28 @@
+ #define OCCT_MMGT_OPT_DEFAULT 0
  #endif
  
 +#ifndef MMGT_OPT_DEFAULT
@@ -49,18 +49,18 @@ Index: oce/src/Standard/Standard.cxx
  // Global reentrant flag
  static Standard_Boolean Standard_IsReentrant = Standard_True;
  
-@@ -60,8 +82,8 @@ Standard_MMgrFactory::Standard_MMgrFacto
- : myFMMgr (NULL)
- {
+@@ -78,8 +100,8 @@ Standard_MMgrFactory::Standard_MMgrFacto
+ 
    char* aVar;
--  Standard_Integer anAllocId   = (aVar = getenv ("MMGT_OPT"      )) ?  atoi (aVar)       : 0;
+   Standard_Integer anAllocId   = (aVar = getenv ("MMGT_OPT"      )) ?  atoi (aVar)       :
+-    (OCCT_MMGT_OPT_DEFAULT);
 -  Standard_Boolean toClear     = (aVar = getenv ("MMGT_CLEAR"    )) ? (atoi (aVar) != 0) : Standard_True;
-+  Standard_Integer anAllocId   = (aVar = getenv ("MMGT_OPT"      )) ?  atoi (aVar)       : MMGT_OPT_DEFAULT;
++    (MMGT_OPT_DEFAULT);
 +  Standard_Boolean toClear     = (aVar = getenv ("MMGT_CLEAR"    )) ? (atoi (aVar) != 0) : (MMGT_CLEAR_DEFAULT != 0);
  
- 
    // on Windows (actual for XP and 2000) activate low fragmentation heap
-@@ -80,15 +102,17 @@ Standard_MMgrFactory::Standard_MMgrFacto
+   // for CRT heap in order to get best performance.
+@@ -97,15 +119,17 @@ Standard_MMgrFactory::Standard_MMgrFacto
    aVar = getenv ("MMGT_REENTRANT");
    if ( aVar != NULL ) 
      Standard_IsReentrant = (atoi (aVar) != 0);

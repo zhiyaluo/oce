@@ -30,7 +30,7 @@ Index: oce/src/Draw/Draw.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw.cxx
 +++ oce/src/Draw/Draw.cxx
-@@ -563,7 +563,11 @@ void Draw::Load(Draw_Interpretor& theDI,
+@@ -592,7 +592,11 @@ void Draw::Load(Draw_Interpretor& theDI,
  #endif
      aPluginLibrary +=  aPluginResource->Value(theKey.ToCString());
  #ifdef WNT
@@ -43,22 +43,6 @@ Index: oce/src/Draw/Draw.cxx
  #elif __APPLE__
      aPluginLibrary += ".dylib";
  #elif defined (HPUX) || defined(_hpux)
-Index: oce/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
-===================================================================
---- oce.orig/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
-+++ oce/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
-@@ -78,7 +78,11 @@ void Graphic3d_WNTGraphicDevice::SetGrap
- {
-   Standard_CString aLibPath = getenv ("CSF_GraphicShr");
-   if (aLibPath == NULL || strlen (aLibPath) == 0)
-+#ifdef OCE_DEBUG_POSTFIX
-+    aLibPath = "TKOpenGl" OCE_DEBUG_POSTFIX ".dll";
-+#else
-     aLibPath = "TKOpenGl.dll";
-+#endif /* OCE_DEBUG_POSTFIX */
- 
-   SetGraphicDriver (aLibPath);
- }
 Index: oce/src/Plugin/Plugin.cxx
 ===================================================================
 --- oce.orig/src/Plugin/Plugin.cxx

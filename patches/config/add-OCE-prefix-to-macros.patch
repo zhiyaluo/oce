@@ -144,22 +144,6 @@ Index: oce/src/BinLDrivers/BinLDrivers_DocumentRetrievalDriver.cxx
      const Storage_Position endPos = IS.rdbuf()->pubseekoff(0L, std::ios_base::end, std::ios_base::in);
  #else
      const Storage_Position endPos = IS.rdbuf()->seekoff(0L, unsafe_ios::end, unsafe_ios::in);
-Index: oce/src/Draw/Draw_BasicCommands.cxx
-===================================================================
---- oce.orig/src/Draw/Draw_BasicCommands.cxx
-+++ oce/src/Draw/Draw_BasicCommands.cxx
-@@ -56,9 +56,9 @@ extern Standard_Boolean Draw_Batch;
- #include <process.h>
- #include <stdio.h>
- #include <stdlib.h>
--#ifdef HAVE_LIMITS 
-+#ifdef OCE_HAVE_LIMITS
- # include <limits>
--#elif defined (HAVE_LIMITS_H)
-+#elif defined (OCE_HAVE_LIMITS_H)
- # include <limits.h>
- #endif
- 
 Index: oce/src/Graphic3d/Graphic3d_Structure.pxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_Structure.pxx
@@ -205,9 +189,9 @@ Index: oce/src/QABugs/QABugs_3.cxx
  #include <oce-config.h>
  #endif
 +#include <QABugs.hxx>
- #include<Draw_Interpretor.hxx>
- #include<TopLoc_Location.hxx>
- #include<TopoDS_Face.hxx>
+ #include <Draw.hxx>
+ #include <Draw_Interpretor.hxx>
+ #include <TopLoc_Location.hxx>
 @@ -246,15 +246,15 @@ void stringerror(int state)
  //#else
  //#include <strstream.h>

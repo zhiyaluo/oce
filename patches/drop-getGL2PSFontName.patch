@@ -18,7 +18,7 @@ Index: oce/inc/OpenGl_Display.hxx
 ===================================================================
 --- oce.orig/inc/OpenGl_Display.hxx
 +++ oce/inc/OpenGl_Display.hxx
-@@ -133,10 +133,6 @@ class OpenGl_Display : public MMgt_TShar
+@@ -124,10 +124,6 @@ class OpenGl_Display : public MMgt_TShar
  
    void ExportText (const wchar_t *text, const int is2d, const float x, const float y, const float z, const OpenGl_AspectText *aspect, const OpenGl_TextParam *param, const short height);
  
@@ -29,16 +29,3 @@ Index: oce/inc/OpenGl_Display.hxx
    Aspect_Display   myDisplay;
    OpenGl_Facilities myFacilities;
  
-Index: oce/src/OpenGl/OpenGl_Display_1.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_Display_1.cxx
-+++ oce/src/OpenGl/OpenGl_Display_1.cxx
-@@ -90,7 +90,7 @@ static const FontMapNode myFontMap[] =
- */
- 
- #ifdef HAVE_GL2PS
--void OpenGl_Display::getGL2PSFontName (const char *src_font, char *ps_font)
-+static void getGL2PSFontName (const char *src_font, char *ps_font)
- {
-   /* 
-   Convert font name used for rendering to some "good" font names

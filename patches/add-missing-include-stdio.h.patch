@@ -34,40 +34,14 @@ Index: oce/src/OpenGl/OpenGl_Display.cxx
  
 +#include <stdio.h>
 +
- #if (!defined(_WIN32) && !defined(__WIN32__))
+ #if (!defined(_WIN32) && !defined(__WIN32__) && (!defined(__APPLE__) || defined(MACOSX_USE_GLX)))
    #include <X11/Xlib.h> // XOpenDisplay()
  #endif
-Index: oce/src/OpenGl/OpenGl_GraphicDriver_9.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_GraphicDriver_9.cxx
-+++ oce/src/OpenGl/OpenGl_GraphicDriver_9.cxx
-@@ -30,6 +30,8 @@
- #include <AlienImage_AlienImage.hxx>
- #include <Image_Image.hxx>
- 
-+#include <stdio.h>
-+
- void OpenGl_GraphicDriver::Environment(const Graphic3d_CView& ACView)
- {
-   const OpenGl_CView *aCView = (const OpenGl_CView *)ACView.ptrView;
-Index: oce/src/OpenGl/OpenGl_Polygon.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_Polygon.cxx
-+++ oce/src/OpenGl/OpenGl_Polygon.cxx
-@@ -30,6 +30,8 @@
- 
- #include <GL/glu.h>
- 
-+#include <stdio.h>
-+
- #if (defined(_WIN32) || defined(__WIN32__))
-   #define STATIC
- #else
 Index: oce/src/QABugs/QABugs_13.cxx
 ===================================================================
 --- oce.orig/src/QABugs/QABugs_13.cxx
 +++ oce/src/QABugs/QABugs_13.cxx
-@@ -30,6 +30,7 @@
+@@ -29,6 +29,7 @@
  #include <TopoDS_Shape.hxx>
  
  #include <tcl.h>

@@ -53,21 +53,6 @@ This may be needed when compiling with WOK.
  src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx |    4 +++-
  15 files changed, 43 insertions(+), 14 deletions(-)
 
-Index: oce/src/Aspect/Aspect_Driver.cxx
-===================================================================
---- oce.orig/src/Aspect/Aspect_Driver.cxx
-+++ oce/src/Aspect/Aspect_Driver.cxx
-@@ -43,6 +43,10 @@
- #include <Aspect_Driver.ixx>
- #include <OSD_Environment.hxx>
- 
-+#ifdef HAVE_OCE_PATHS_H
-+# include "oce-paths.h"
-+#endif
-+
- static Standard_Boolean dirMFTisDefined = Standard_False;
- 
- Aspect_Driver::Aspect_Driver () {
 Index: oce/src/DPrsStd/DPrsStd.cxx
 ===================================================================
 --- oce.orig/src/DPrsStd/DPrsStd.cxx
@@ -87,7 +72,7 @@ Index: oce/src/Draw/Draw.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw.cxx
 +++ oce/src/Draw/Draw.cxx
-@@ -70,6 +70,10 @@
+@@ -71,6 +71,10 @@
  
  #include <stdio.h>
  
@@ -113,81 +98,6 @@ Index: oce/src/Draw/Draw_PloadCommands.cxx
  static Handle(Resource_Manager) myResources;
  
  //=======================================================================
-Index: oce/src/Graphic3d/Graphic3d_GraphicDevice.cxx
-===================================================================
---- oce.orig/src/Graphic3d/Graphic3d_GraphicDevice.cxx
-+++ oce/src/Graphic3d/Graphic3d_GraphicDevice.cxx
-@@ -50,6 +50,10 @@
- 
- #include <Xw_Cextern.hxx>
- 
-+#ifdef HAVE_OCE_PATHS_H
-+# include "oce-paths.h"
-+#endif
-+
- //-Static data definitions
- 
- static char LocalMessag[80] ;
-Index: oce/src/Graphic3d/Graphic3d_Texture1D.cxx
-===================================================================
---- oce.orig/src/Graphic3d/Graphic3d_Texture1D.cxx
-+++ oce/src/Graphic3d/Graphic3d_Texture1D.cxx
-@@ -31,6 +31,10 @@
- #include <OSD_File.hxx>
- #include <OSD_Path.hxx>
- 
-+#ifdef HAVE_OCE_PATHS_H
-+# include "oce-paths.h"
-+#endif
-+
- static const char *NameOfTexture_to_FileName[] = 
- {
-   "1d_elevation.rgb"
-Index: oce/src/Graphic3d/Graphic3d_Texture2D.cxx
-===================================================================
---- oce.orig/src/Graphic3d/Graphic3d_Texture2D.cxx
-+++ oce/src/Graphic3d/Graphic3d_Texture2D.cxx
-@@ -33,6 +33,10 @@
- #include <OSD_File.hxx>
- #include <OSD_Path.hxx>
- 
-+#ifdef HAVE_OCE_PATHS_H
-+# include "oce-paths.h"
-+#endif
-+
- static TCollection_AsciiString GetEnvir ( ) {
- 
-   static Standard_Boolean IsDefined=Standard_False ;
-Index: oce/src/Graphic3d/Graphic3d_TextureEnv.cxx
-===================================================================
---- oce.orig/src/Graphic3d/Graphic3d_TextureEnv.cxx
-+++ oce/src/Graphic3d/Graphic3d_TextureEnv.cxx
-@@ -34,6 +34,10 @@
- 
- #include <stdlib.h>
- 
-+#ifdef HAVE_OCE_PATHS_H
-+# include "oce-paths.h"
-+#endif
-+
- static TCollection_AsciiString GetEnvir ( ) {
- 
-   static Standard_Boolean IsDefined=Standard_False ;
-Index: oce/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
-===================================================================
---- oce.orig/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
-+++ oce/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
-@@ -26,6 +26,10 @@
- #include <OSD_Environment.hxx>
- #include <TCollection_AsciiString.hxx>
- 
-+#ifdef HAVE_OCE_PATHS_H
-+# include "oce-paths.h"
-+#endif
-+
- // =======================================================================
- // function : Graphic3d_WNTGraphicDevice
- // purpose  :
 Index: oce/src/Plugin/Plugin.cxx
 ===================================================================
 --- oce.orig/src/Plugin/Plugin.cxx
@@ -237,7 +147,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest.cxx
 +++ oce/src/ViewerTest/ViewerTest.cxx
-@@ -79,6 +79,11 @@
+@@ -81,6 +81,11 @@
  
  #include <NIS_InteractiveContext.hxx>
  #include <NIS_Triangulated.hxx>
@@ -248,7 +158,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
 +
  extern int ViewerMainLoop(Standard_Integer argc, const char** argv);
  
- //=======================================================================
+ #include <Quantity_Color.hxx>
 Index: oce/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
 ===================================================================
 --- oce.orig/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx

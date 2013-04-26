@@ -271,12 +271,12 @@ Index: oce/src/BRepOffset/BRepOffset_Tool.cxx
    if (V1onBound && V2onBound)
      {
 -      if (TangFirst.IsParallel(RefTangFirst,AngTol) && TangLast.IsParallel(RefTangLast,AngTol) ||
--	  TangFirst.IsParallel(RefTangLast,AngTol)  && TangLast.IsParallel(RefTangFirst,AngTol))
+-          TangFirst.IsParallel(RefTangLast,AngTol)  && TangLast.IsParallel(RefTangFirst,AngTol))
 +      if ((TangFirst.IsParallel(RefTangFirst,AngTol) && TangLast.IsParallel(RefTangLast,AngTol)) ||
-+	  (TangFirst.IsParallel(RefTangLast,AngTol)  && TangLast.IsParallel(RefTangFirst,AngTol)))
- 	{
- 	  TrueEdges.Add( Edges(i) );
- 	  return Standard_True;
++          (TangFirst.IsParallel(RefTangLast,AngTol)  && TangLast.IsParallel(RefTangFirst,AngTol)))
+         {
+           TrueEdges.Add( Edges(i) );
+           return Standard_True;
 Index: oce/src/BRepTest/BRepTest_GPropCommands.cxx
 ===================================================================
 --- oce.orig/src/BRepTest/BRepTest_GPropCommands.cxx
@@ -287,7 +287,7 @@ Index: oce/src/BRepTest/BRepTest_GPropCommands.cxx
    Standard_Boolean witheps = Standard_False;
 -  if(n > 2 && *a[2]=='c' || n > 3 && *a[3]=='c') onlyClosed = Standard_True;
 +  if((n > 2 && *a[2]=='c') || (n > 3 && *a[3]=='c')) onlyClosed = Standard_True;
-   if(n > 2 && *a[2]!='c' && n != 5) {eps = atof (a[2]); witheps = Standard_True;}
+   if(n > 2 && *a[2]!='c' && n != 5) {eps = Draw::Atof (a[2]); witheps = Standard_True;}
  
    if (witheps){
 Index: oce/src/BRepTopAdaptor/BRepTopAdaptor_FClass2d.cxx
@@ -406,18 +406,18 @@ Index: oce/src/DsgPrs/DsgPrs_LengthPresentation.cxx
    gp_Pnt FirstPoint, LastPoint;
 -  if (Par1 > 0.0 && Par2 > 0.0 || Par1 < 0.0 && Par2 < 0.0)
 +  if ((Par1 > 0.0 && Par2 > 0.0) || (Par1 < 0.0 && Par2 < 0.0))
-     {
-       FirstPoint = OffsetPoint;
-       LastPoint  = (Abs( Par1 ) > Abs( Par2 ))? EndOfArrow1 : EndOfArrow2;
+   {
+     FirstPoint = OffsetPoint;
+     LastPoint  = (Abs( Par1 ) > Abs( Par2 ))? EndOfArrow1 : EndOfArrow2;
 @@ -371,7 +371,7 @@ void DsgPrs_LengthPresentation::Add( con
    Standard_Real Par1 = ElCLib::Parameter( LengthLine, AttachmentPoint1 );
    Standard_Real Par2 = ElCLib::Parameter( LengthLine, EndOfArrow2 );
    gp_Pnt FirstPoint, LastPoint;
 -  if (Par1 > 0.0 && Par2 > 0.0 || Par1 < 0.0 && Par2 < 0.0)
 +  if ((Par1 > 0.0 && Par2 > 0.0) || (Par1 < 0.0 && Par2 < 0.0))
-     {
-       FirstPoint = OffsetPoint;
-       LastPoint  = (Abs( Par1 ) > Abs( Par2 ))? AttachmentPoint1 : EndOfArrow2;
+   {
+     FirstPoint = OffsetPoint;
+     LastPoint  = (Abs( Par1 ) > Abs( Par2 ))? AttachmentPoint1 : EndOfArrow2;
 Index: oce/src/DsgPrs/DsgPrs_ShapeDirPresentation.cxx
 ===================================================================
 --- oce.orig/src/DsgPrs/DsgPrs_ShapeDirPresentation.cxx
@@ -781,9 +781,9 @@ Index: oce/src/MeshVS/MeshVS_NodalColorPrsBuilder.cxx
    if ( !( DisplayMode & GetFlags() ) || !IsElement )
      return;
  
--  if ( myUseTexture && ( !myTextureCoords.Extent() || !myTextureColorMap.Length() ) || 
+-  if ( myUseTexture && ( !myTextureCoords.Extent() || !myTextureColorMap.Length() ) ||
 -       !myUseTexture && !myNodeColorMap.Extent() )
-+  if ( ( myUseTexture && ( !myTextureCoords.Extent() || !myTextureColorMap.Length() ) ) || 
++  if ( ( myUseTexture && ( !myTextureCoords.Extent() || !myTextureColorMap.Length() ) ) ||
 +       ( !myUseTexture && !myNodeColorMap.Extent() ) )
      return;
  
@@ -819,19 +819,6 @@ Index: oce/src/PLib/PLib_JacobiPolynomial.cxx
        NbGaussPoints <= myDegree)
      Standard_ConstructionError::Raise("Invalid NbGaussPoints");
  
-Index: oce/src/PlotMgt/PlotMgt_PlotterParameter.cxx
-===================================================================
---- oce.orig/src/PlotMgt/PlotMgt_PlotterParameter.cxx
-+++ oce/src/PlotMgt/PlotMgt_PlotterParameter.cxx
-@@ -479,7 +479,7 @@ Standard_Boolean PlotMgt_PlotterParamete
-   if (myType == _T_BOOL) {
-     if (myFlags & FLAG_DEFVAL && !myDefValue.IsEmpty()) {
-       if (myDefValue.IsEqual("true") ||
--            myDefValue.IsIntegerValue() && myDefValue.IntegerValue())
-+            (myDefValue.IsIntegerValue() && myDefValue.IntegerValue()))
-         return Standard_True;
-     } else
-       GET_EMPTY_VALUE_INFO("FALSE");
 Index: oce/src/Poly/Poly_MakeLoops.cxx
 ===================================================================
 --- oce.orig/src/Poly/Poly_MakeLoops.cxx
@@ -964,37 +951,6 @@ Index: oce/src/TopOpeBRepTool/TopOpeBRepTool_mkTondgE.cxx
  	  { mkT = MKI12; return Standard_True; }
  	else
  	  dot = tgi.Dot(tgin1di);
-Index: oce/src/V3d/V3d_CircularGrid.cxx
-===================================================================
---- oce.orig/src/V3d/V3d_CircularGrid.cxx
-+++ oce/src/V3d/V3d_CircularGrid.cxx
-@@ -218,7 +218,7 @@ TColStd_Array2OfReal TheMatrix (1, 4, 1,
- 	switch (DrawMode ()) {
- 		default:
- 		case Aspect_GDM_Points:
--			if (! myCurAreDefined || myCurAreDefined &&
-+			if (! myCurAreDefined ||
- 				myCurDrawMode == Aspect_GDM_Lines)
- 					myGroup2->Clear ();
- 			DefinePoints ();
-Index: oce/src/V3d/V3d_RectangularGrid.cxx
-===================================================================
---- oce.orig/src/V3d/V3d_RectangularGrid.cxx
-+++ oce/src/V3d/V3d_RectangularGrid.cxx
-@@ -241,13 +241,8 @@ TColStd_Array2OfReal TheMatrix (1, 4, 1,
- 	switch (DrawMode ()) {
- 		default:
- 		case Aspect_GDM_Points:
--#ifdef IMP210100
- 			if (! myCurAreDefined || 
- 				(myCurDrawMode == Aspect_GDM_Lines) )
--#else
--			if (! myCurAreDefined || myCurAreDefined &&
--				myCurDrawMode == Aspect_GDM_Lines)
--#endif
- 					myGroup2->Clear ();
- 			DefinePoints ();
- 			myCurDrawMode = Aspect_GDM_Points;
 Index: oce/src/XCAFPrs/XCAFPrs.cxx
 ===================================================================
 --- oce.orig/src/XCAFPrs/XCAFPrs.cxx
@@ -1008,55 +964,3 @@ Index: oce/src/XCAFPrs/XCAFPrs.cxx
           !CTool->IsVisible(lab) ) {
        style.SetVisibility(Standard_False);
      }
-Index: oce/src/Xw/Xw_load_bmp_image.cxx
-===================================================================
---- oce.orig/src/Xw/Xw_load_bmp_image.cxx
-+++ oce/src/Xw/Xw_load_bmp_image.cxx
-@@ -134,15 +134,15 @@ XW_EXT_IMAGEDATA* Xw_load_bmp_image(void
- 
-   /* Detect format using the size field (.biSize or .bcSize) */
-   isOS2Format = _TestSwapDWORD (bmfh.dwHeaderSize) == sizeof (bmch) + 4;
--  if (!isOS2Format && sizeof (bmih) != read (fimage, (char *)&bmih, sizeof (bmih))
--    || isOS2Format && sizeof (bmch) != read (fimage, (char *)&bmch, sizeof (bmch)))
-+  if ((!isOS2Format && sizeof (bmih) != read (fimage, (char *)&bmih, sizeof (bmih)))
-+    || (isOS2Format && sizeof (bmch) != read (fimage, (char *)&bmch, sizeof (bmch))))
-     goto _ExitReadError;
- 
- 
-   nBitCount = _TestSwapWORD (isOS2Format? bmch.bcBitCount: bmih.biBitCount);
--  if (nBitCount != 1 && nBitCount != 4 && nBitCount != 8
--      && nBitCount != 16 && nBitCount != 24 && nBitCount != 32
--      || isOS2Format && (nBitCount == 16 || nBitCount == 32)) {
-+  if ((nBitCount != 1 && nBitCount != 4 && nBitCount != 8
-+      && nBitCount != 16 && nBitCount != 24 && nBitCount != 32)
-+      || (isOS2Format && (nBitCount == 16 || nBitCount == 32))) {
- #ifdef DEB
-     fprintf (stderr, "\r\nXw_load_bmp_image: "
- 	   "Error: Wrong count of bits per pixel (%d) specified!", nBitCount);
-@@ -326,8 +326,8 @@ XW_EXT_IMAGEDATA* Xw_load_bmp_image(void
- 
- 
- 	 /* each run must aligned on a word boundary */
--	 if (iCompression == BI_RLE8 && (bCode & 1)
--	     || iCompression == BI_RLE4 && (bCode & 3))
-+	 if ((iCompression == BI_RLE8 && (bCode & 1))
-+	     || (iCompression == BI_RLE4 && (bCode & 3)))
- 	   ptrByte ++;
-        }
-      }
-Index: oce/src/Xw/Xw_load_image.cxx
-===================================================================
---- oce.orig/src/Xw/Xw_load_image.cxx
-+++ oce/src/Xw/Xw_load_image.cxx
-@@ -116,9 +116,9 @@ void* Xw_load_image (awindow,aimageinfo,
- 		 "\r\nWarning: variable CSF_DefaultImageFormat is undefined!"
- 		 " Assuming 'xwd'.\r\n");
-       else if (strlen (pchDefExt) != 3 ||
--	          0 != strcasecmp (pchDefExt, "xwd")
-+	         (0 != strcasecmp (pchDefExt, "xwd")
- 	       && 0 != strcasecmp (pchDefExt, "bmp")
--	       && 0 != strcasecmp (pchDefExt, "gif"))
-+	       && 0 != strcasecmp (pchDefExt, "gif")))
-         fprintf (stderr,
- 		 "\r\nWarning: value '%s' of CSF_DefaultImageFormat "
- 		 "is incorrect!\r\n", pchDefExt);

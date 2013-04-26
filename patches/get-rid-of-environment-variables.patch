@@ -70,22 +70,6 @@ Index: oce/DrawDefault.cmake
 -      wm iconbitmap . -default [file join $dir lamp.ico]
 -   }
 -} 
-Index: oce/src/Aspect/Aspect_Driver.cxx
-===================================================================
---- oce.orig/src/Aspect/Aspect_Driver.cxx
-+++ oce/src/Aspect/Aspect_Driver.cxx
-@@ -53,6 +53,11 @@ Aspect_Driver::Aspect_Driver () {
-   fontdir =  getenv("CSF_MDTVFontDirectory" );
-   if ( !fontdir) {
-     casroot  = getenv("CASROOT");
-+#ifdef OCE_INSTALL_DATA_DIR
-+    if ( !casroot ) {
-+      casroot = OCE_INSTALL_DATA_DIR;
-+    }
-+#endif
-     if ( casroot ) {
-       TCollection_AsciiString CasRootString (casroot);
-       CasRootString += "/src/FontMFT" ; 
 Index: oce/src/DPrsStd/DPrsStd.cxx
 ===================================================================
 --- oce.orig/src/DPrsStd/DPrsStd.cxx
@@ -161,76 +145,6 @@ Index: oce/src/DrawResources/TKTopTest.tcl
 -source $env(CASROOT)/src/DrawResources/SURFACES.tcl
 +source [file dirname [info script]]/CURVES.tcl
 +source [file dirname [info script]]/SURFACES.tcl
-Index: oce/src/Graphic3d/Graphic3d_GraphicDevice.cxx
-===================================================================
---- oce.orig/src/Graphic3d/Graphic3d_GraphicDevice.cxx
-+++ oce/src/Graphic3d/Graphic3d_GraphicDevice.cxx
-@@ -192,6 +192,9 @@ TCollection_AsciiString Graphic3d_Graphi
-     return aEnvShr.Value();
-   }
- 
-+#ifdef OCE_DEFAULT_CSF_GraphicShr
-+    return TCollection_AsciiString (OCE_DEFAULT_CSF_GraphicShr);
-+#else
-   // load TKOpenGl using default searching mechanisms in system
- #if defined(__hpux) || defined(HPUX)
-   return TCollection_AsciiString ("libTKOpenGl.sl");
-@@ -200,6 +203,7 @@ TCollection_AsciiString Graphic3d_Graphi
- #else
-   return TCollection_AsciiString ("libTKOpenGl.so");
- #endif
-+#endif
- }
- 
- #endif // !WNT
-Index: oce/src/Graphic3d/Graphic3d_Texture1D.cxx
-===================================================================
---- oce.orig/src/Graphic3d/Graphic3d_Texture1D.cxx
-+++ oce/src/Graphic3d/Graphic3d_Texture1D.cxx
-@@ -48,6 +48,11 @@ static TCollection_AsciiString GetEnvir
-     Standard_Boolean HasDefinition = Standard_False ;
-     if ( !envir ) { 
-       casroot  = getenv("CASROOT");
-+#ifdef OCE_INSTALL_DATA_DIR
-+      if ( !casroot ) {
-+	casroot  = OCE_INSTALL_DATA_DIR;
-+      }
-+#endif
-       if ( casroot ) {
- 	VarName = TCollection_AsciiString  (casroot);
- 	VarName += "/src/Textures" ;
-Index: oce/src/Graphic3d/Graphic3d_Texture2D.cxx
-===================================================================
---- oce.orig/src/Graphic3d/Graphic3d_Texture2D.cxx
-+++ oce/src/Graphic3d/Graphic3d_Texture2D.cxx
-@@ -44,6 +44,11 @@ static TCollection_AsciiString GetEnvir
-     Standard_Boolean HasDefinition = Standard_False ;
-     if ( !envir ) { 
-       casroot  = getenv("CASROOT");
-+#ifdef OCE_INSTALL_DATA_DIR
-+      if ( !casroot ) {
-+	casroot  = OCE_INSTALL_DATA_DIR;
-+      }
-+#endif
-       if ( casroot ) {
- 	VarName = TCollection_AsciiString  (casroot);
- 	VarName += "/src/Textures" ;
-Index: oce/src/Graphic3d/Graphic3d_TextureEnv.cxx
-===================================================================
---- oce.orig/src/Graphic3d/Graphic3d_TextureEnv.cxx
-+++ oce/src/Graphic3d/Graphic3d_TextureEnv.cxx
-@@ -45,6 +45,11 @@ static TCollection_AsciiString GetEnvir
-     Standard_Boolean HasDefinition = Standard_False ;
-     if ( !envir ) { 
-       casroot  = getenv("CASROOT");
-+#ifdef OCE_INSTALL_DATA_DIR
-+      if ( !casroot ) {
-+	casroot  = OCE_INSTALL_DATA_DIR;
-+      }
-+#endif
-       if ( casroot ) {
- 	VarName = TCollection_AsciiString  (casroot);
- 	VarName += "/src/Textures" ;
 Index: oce/src/Resource/Resource_Manager.cxx
 ===================================================================
 --- oce.orig/src/Resource/Resource_Manager.cxx
@@ -292,22 +206,6 @@ Index: oce/src/UnitsAPI/UnitsAPI.cxx
        if (CasRootString.Length() > 0 ) {
  	CasRootString += "/src/UnitsAPI/Units.dat";
  	Units::UnitsFile(CasRootString.ToCString());
-Index: oce/src/ViewerTest/ViewerTest.cxx
-===================================================================
---- oce.orig/src/ViewerTest/ViewerTest.cxx
-+++ oce/src/ViewerTest/ViewerTest.cxx
-@@ -1806,6 +1806,11 @@ static TCollection_AsciiString GetEnvir
-     Standard_Boolean HasDefinition = Standard_False ;
-     if ( !envir ) {
-       casroot  = getenv("CASROOT");
-+#ifdef OCE_INSTALL_DATA_DIR
-+      if ( !casroot )  {
-+        casroot = OCE_INSTALL_DATA_DIR;
-+      }
-+#endif
-       if ( casroot ) {
- 	VarName = TCollection_AsciiString  (casroot);
- 	VarName += "/src/Textures" ;
 Index: oce/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
 ===================================================================
 --- oce.orig/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx

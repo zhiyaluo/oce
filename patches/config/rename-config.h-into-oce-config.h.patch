@@ -52,32 +52,6 @@ Index: oce/inc/Standard_values.h
  #endif
  #endif
  
-Index: oce/inc/Xw_Extension.h
-===================================================================
---- oce.orig/inc/Xw_Extension.h
-+++ oce/inc/Xw_Extension.h
-@@ -42,7 +42,7 @@
- #define min(a,b) 	(a>b ? b : a)
- #endif
- 
--#include <config.h>
-+#include <oce-config.h>
- 
- #ifdef HAVE_X11_EXTENSIONS_TRANSOLV_H
- #include <X11/extensions/transovl.h>
-Index: oce/src/AIS2D/AIS2D.cxx
-===================================================================
---- oce.orig/src/AIS2D/AIS2D.cxx
-+++ oce/src/AIS2D/AIS2D.cxx
-@@ -55,7 +55,7 @@
- #include <AIS2D_KindOfPrimitive.hxx>
- 
- #ifdef HAVE_CONFIG_H
--# include <config.h>
-+# include <oce-config.h>
- #endif
- 
- #include <Standard_Stream.hxx>
 Index: oce/src/BRepTest/BRepTest_ChamferCommands.cxx
 ===================================================================
 --- oce.orig/src/BRepTest/BRepTest_ChamferCommands.cxx
@@ -186,15 +160,15 @@ Index: oce/src/Draw/Draw_BasicCommands.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_BasicCommands.cxx
 +++ oce/src/Draw/Draw_BasicCommands.cxx
-@@ -32,7 +32,7 @@
- #include <OSD_MemInfo.hxx>
+@@ -57,7 +57,7 @@ static clock_t CPU_CURRENT; // cpu time
+ #include <sys/resource.h>
  
  #ifdef HAVE_CONFIG_H
 -# include <config.h>
 +# include <oce-config.h>
  #endif
  
- #if defined(HAVE_TIME_H) || defined(WNT)
+ #ifdef HAVE_STRINGS_H
 Index: oce/src/Draw/Draw_GraphicCommands.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_GraphicCommands.cxx
@@ -238,7 +212,7 @@ Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx
 +++ oce/src/Draw/Draw_Window.cxx
-@@ -102,7 +102,7 @@ defaultPrompt:
+@@ -101,7 +101,7 @@ defaultPrompt:
  #if !defined(_WIN32) && !defined(__WIN32__)
  
  #ifdef HAVE_CONFIG_H
@@ -377,19 +351,6 @@ Index: oce/src/Image/Image_AlienPixMap.cxx
  #endif
  
  #ifdef HAVE_FREEIMAGE
-Index: oce/src/MFT/MFT_FontManager.cxx
-===================================================================
---- oce.orig/src/MFT/MFT_FontManager.cxx
-+++ oce/src/MFT/MFT_FontManager.cxx
-@@ -94,7 +94,7 @@
- //  4+4*(N-1)  		valueN		card32
- 
- #ifdef HAVE_CONFIG_H
--# include <config.h>
-+# include <oce-config.h>
- #endif
- 
- #include <MFT_FontManager.ixx>
 Index: oce/src/MMgt/MMgt_StackManager.cxx
 ===================================================================
 --- oce.orig/src/MMgt/MMgt_StackManager.cxx
@@ -598,19 +559,6 @@ Index: oce/src/OSD/OSD_Process.cxx
  #endif
  
  #ifndef WNT
-Index: oce/src/OSD/OSD_Real2String.cxx
-===================================================================
---- oce.orig/src/OSD/OSD_Real2String.cxx
-+++ oce/src/OSD/OSD_Real2String.cxx
-@@ -24,7 +24,7 @@
- // +---------------------------------------------------------------------------+
- 
- #ifdef HAVE_CONFIG_H
--# include <config.h>
-+# include <oce-config.h>
- #endif
- 
- #include <OSD_Real2String.ixx>
 Index: oce/src/OSD/OSD_Semaphore.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Semaphore.cxx
@@ -663,19 +611,6 @@ Index: oce/src/OSD/OSD_signal.cxx
  #endif
  
  # include <stdio.h>
-Index: oce/src/OpenGl/OpenGl_Display_1.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_Display_1.cxx
-+++ oce/src/OpenGl/OpenGl_Display_1.cxx
-@@ -30,7 +30,7 @@
- #include <OpenGl_AspectText.hxx>
- 
- #ifdef HAVE_CONFIG_H
--# include <config.h>
-+# include <oce-config.h>
- #endif
- 
- #ifdef HAVE_GL2PS
 Index: oce/src/OpenGl/OpenGl_Display_2.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_Display_2.cxx
@@ -693,25 +628,38 @@ Index: oce/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
 +++ oce/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
-@@ -31,7 +31,7 @@
- 
+@@ -29,7 +29,7 @@
+ #include <InterfaceGraphic_Visual3d.hxx>
  
  #ifdef HAVE_CONFIG_H
--#include <config.h>
-+#include <oce-config.h>
+-  #include <config.h>
++  #include <oce-config.h>
  #endif
  #ifdef HAVE_STRING_H
- #include <string.h>
+   #include <string.h>
 Index: oce/src/OpenGl/OpenGl_GraphicDriver_Export.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_GraphicDriver_Export.cxx
 +++ oce/src/OpenGl/OpenGl_GraphicDriver_Export.cxx
-@@ -25,7 +25,7 @@
- #include <OSD_Localizer.hxx>
+@@ -22,7 +22,7 @@
+ #include <Standard_CLocaleSentry.hxx>
  
  #ifdef HAVE_CONFIG_H
 -# include <config.h>
 +# include <oce-config.h>
+ #endif
+ 
+ #ifdef HAVE_GL2PS
+Index: oce/src/OpenGl/OpenGl_Text.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_Text.cxx
++++ oce/src/OpenGl/OpenGl_Text.cxx
+@@ -28,7 +28,7 @@
+ #include <TCollection_HAsciiString.hxx>
+ 
+ #ifdef HAVE_CONFIG_H
+-  #include <config.h>
++  #include <oce-config.h>
  #endif
  
  #ifdef HAVE_GL2PS
@@ -728,19 +676,6 @@ Index: oce/src/OpenGl/OpenGl_Workspace_2.cxx
  #endif
  
  #if (defined(_WIN32) || defined(__WIN32__)) && defined(HAVE_FREEIMAGE)
-Index: oce/src/OpenGl/OpenGl_Workspace_3.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_Workspace_3.cxx
-+++ oce/src/OpenGl/OpenGl_Workspace_3.cxx
-@@ -28,7 +28,7 @@
- #include <OpenGl_Structure.hxx>
- 
- #ifdef HAVE_CONFIG_H
--# include <config.h>
-+# include <oce-config.h>
- #endif
- 
- #ifdef HAVE_GL2PS
 Index: oce/src/OpenGl/OpenGl_Workspace_5.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_Workspace_5.cxx
@@ -791,9 +726,9 @@ Index: oce/src/QABugs/QABugs_3.cxx
 -#include <config.h>
 +#include <oce-config.h>
  #endif
- #include<Draw_Interpretor.hxx>
- #include<TopLoc_Location.hxx>
-@@ -254,7 +254,7 @@ using namespace std;
+ #include <Draw.hxx>
+ #include <Draw_Interpretor.hxx>
+@@ -255,7 +255,7 @@ using namespace std;
  #include <iostream.h>
  #include <strstream.h>
  #else
@@ -802,19 +737,6 @@ Index: oce/src/QABugs/QABugs_3.cxx
  #endif
  static int UKI61075(Draw_Interpretor& /*di*/, Standard_Integer /*argc*/, const char ** /*argv*/) {
   double da,db;
-Index: oce/src/QAViewer2dTest/QAViewer2dTest_ObjectCommands.cxx
-===================================================================
---- oce.orig/src/QAViewer2dTest/QAViewer2dTest_ObjectCommands.cxx
-+++ oce/src/QAViewer2dTest/QAViewer2dTest_ObjectCommands.cxx
-@@ -22,7 +22,7 @@
- //===============================================
- 
- #ifdef HAVE_CONFIG_H
--# include <config.h>
-+# include <oce-config.h>
- #endif
- 
- #include <QAViewer2dTest.hxx>
 Index: oce/src/STEPConstruct/STEPConstruct_AP203Context.cxx
 ===================================================================
 --- oce.orig/src/STEPConstruct/STEPConstruct_AP203Context.cxx
@@ -828,6 +750,19 @@ Index: oce/src/STEPConstruct/STEPConstruct_AP203Context.cxx
  #endif
  
  #include <STEPConstruct_AP203Context.ixx>
+Index: oce/src/Standard/Standard_CLocaleSentry.cxx
+===================================================================
+--- oce.orig/src/Standard/Standard_CLocaleSentry.cxx
++++ oce/src/Standard/Standard_CLocaleSentry.cxx
+@@ -18,7 +18,7 @@
+ // and conditions governing the rights and limitations under the License.
+ 
+ #ifdef HAVE_CONFIG_H
+-  #include <config.h>
++  #include <oce-config.h>
+ #endif
+ 
+ #include <Standard_CLocaleSentry.hxx>
 Index: oce/src/Standard/Standard_CString.cxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_CString.cxx
@@ -840,7 +775,7 @@ Index: oce/src/Standard/Standard_CString.cxx
 +# include <oce-config.h>
  #endif
  
- 
+ #include <Standard_CLocaleSentry.hxx>
 Index: oce/src/Standard/Standard_ExtString.cxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_ExtString.cxx
@@ -1040,7 +975,7 @@ Index: oce/src/Units/Units_UnitsDictionary.cxx
 ===================================================================
 --- oce.orig/src/Units/Units_UnitsDictionary.cxx
 +++ oce/src/Units/Units_UnitsDictionary.cxx
-@@ -29,7 +29,7 @@
+@@ -24,7 +24,7 @@
  #include <Standard_Stream.hxx>
  
  #ifdef HAVE_CONFIG_H
@@ -1049,25 +984,12 @@ Index: oce/src/Units/Units_UnitsDictionary.cxx
  #endif
  #include <stdio.h>
  #ifdef HAVE_STDLIB_H
-Index: oce/src/Viewer2dTest/Viewer2dTest_ObjectCommands.cxx
-===================================================================
---- oce.orig/src/Viewer2dTest/Viewer2dTest_ObjectCommands.cxx
-+++ oce/src/Viewer2dTest/Viewer2dTest_ObjectCommands.cxx
-@@ -21,7 +21,7 @@
- //===============================================
- 
- #ifdef HAVE_CONFIG_H
--# include <config.h>
-+# include <oce-config.h>
- #endif
- 
- #include <Viewer2dTest.hxx>
 Index: oce/src/ViewerTest/ViewerTest.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest.cxx
 +++ oce/src/ViewerTest/ViewerTest.cxx
-@@ -58,7 +58,7 @@
- #include <Prs3d_ShadingAspect.hxx>
+@@ -61,7 +61,7 @@
+ #include <Prs3d_IsoAspect.hxx>
  
  #ifdef HAVE_CONFIG_H
 -# include <config.h>
@@ -1140,90 +1062,3 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
  #endif
  
  #ifdef WNT
-Index: oce/src/Xw/Xw_def_colormap.cxx
-===================================================================
---- oce.orig/src/Xw/Xw_def_colormap.cxx
-+++ oce/src/Xw/Xw_def_colormap.cxx
-@@ -16,7 +16,7 @@
- // and conditions governing the rights and limitations under the License.
- 
- #ifdef HAVE_CONFIG_H
--# include <config.h>
-+# include <oce-config.h>
- #endif
- 
- #define CTS17988	/*GG_240697
-@@ -48,7 +48,7 @@
- #include <Xw_Extension.h>
- 
- #ifdef HAVE_CONFIG_H
--# include <config.h>
-+# include <oce-config.h>
- #endif
- #if (!defined (CTS17988))  && defined(HAVE_X11_EXTENSIONS_MULTIBUF_H)
- # include <X11/extensions/multibuf.h>
-Index: oce/src/Xw/Xw_get_image.cxx
-===================================================================
---- oce.orig/src/Xw/Xw_get_image.cxx
-+++ oce/src/Xw/Xw_get_image.cxx
-@@ -26,7 +26,7 @@
- //		Capture an image from any pixmap.
- */
- #ifdef HAVE_CONFIG_H
--# include <config.h>
-+# include <oce-config.h>
- #endif
- 
- #ifdef HAVE_X11_EXTENSIONS_READDISPLAY_H
-Index: oce/src/Xw/Xw_load_icons.cxx
-===================================================================
---- oce.orig/src/Xw/Xw_load_icons.cxx
-+++ oce/src/Xw/Xw_load_icons.cxx
-@@ -43,7 +43,7 @@
- */
- 
- #ifdef HAVE_CONFIG_H
--# include <config.h>
-+# include <oce-config.h>
- #endif
- 
- #include <Xw_Extension.h>
-Index: oce/src/Xw/Xw_load_image.cxx
-===================================================================
---- oce.orig/src/Xw/Xw_load_image.cxx
-+++ oce/src/Xw/Xw_load_image.cxx
-@@ -46,7 +46,7 @@
- 
- #include <Xw_Extension.h>
- #ifdef HAVE_CONFIG_H
--# include <config.h>
-+# include <oce-config.h>
- #endif
- #include <fcntl.h>
- #ifdef HAVE_STRINGS_H
-Index: oce/src/Xw/Xw_open_pixmap.cxx
-===================================================================
---- oce.orig/src/Xw/Xw_open_pixmap.cxx
-+++ oce/src/Xw/Xw_open_pixmap.cxx
-@@ -16,7 +16,7 @@
- // and conditions governing the rights and limitations under the License.
- 
- #ifdef HAVE_CONFIG_H
--# include <config.h>
-+# include <oce-config.h>
- #endif
- 
- #include <Xw_Extension.h>
-Index: oce/src/Xw/Xw_save_image.cxx
-===================================================================
---- oce.orig/src/Xw/Xw_save_image.cxx
-+++ oce/src/Xw/Xw_save_image.cxx
-@@ -31,7 +31,7 @@
-  */
- 
- #ifdef HAVE_CONFIG_H
--# include <config.h>
-+# include <oce-config.h>
- #endif
- 
- #include <Image_AlienPixMap.hxx>

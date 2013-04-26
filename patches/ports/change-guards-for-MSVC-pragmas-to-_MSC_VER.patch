@@ -17,27 +17,6 @@ Subject: [PATCH 06/26] proper MSVC compiler check to fix compilation errors
  src/OSD/OSD_MAllocHook.cxx |    6 +++---
  1 files changed, 3 insertions(+), 3 deletions(-)
 
-Index: oce/src/BOPTools/BOPTools_PaveSet.cxx
-===================================================================
---- oce.orig/src/BOPTools/BOPTools_PaveSet.cxx
-+++ oce/src/BOPTools/BOPTools_PaveSet.cxx
-@@ -26,7 +26,7 @@
- #include <BOPTools_QuickSortPave.hxx>
- #include <BOPTools_ComparePave.hxx>
- 
--#ifdef WNT
-+#ifdef _MSC_VER
- #pragma warning ( disable : 4101 )
- #endif
- 
-@@ -89,6 +89,6 @@
-     }
-   }
- }
--#ifdef WNT
-+#ifdef _MSC_VER
- #pragma warning ( default : 4101 )
- #endif
 Index: oce/src/BinDrivers/BinDrivers.cxx
 ===================================================================
 --- oce.orig/src/BinDrivers/BinDrivers.cxx
@@ -88,19 +67,6 @@ Index: oce/src/BinXCAFDrivers/BinXCAFDrivers.cxx
 -#ifdef WNT
 +#ifdef _MSC_VER
  #pragma warning(4:4190)
- #endif
- 
-Index: oce/src/BooleanOperations/BooleanOperations_ShapesDataStructure.cxx
-===================================================================
---- oce.orig/src/BooleanOperations/BooleanOperations_ShapesDataStructure.cxx
-+++ oce/src/BooleanOperations/BooleanOperations_ShapesDataStructure.cxx
-@@ -59,7 +59,7 @@
- #include <BOPTColStd_Dump.hxx>
- 
- 
--#ifdef WNT
-+#ifdef _MSC_VER
- #pragma warning ( disable : 4291 )
  #endif
  
 Index: oce/src/DPrsStd/DPrsStd.cxx
@@ -163,7 +129,7 @@ Index: oce/src/IntTools/IntTools_EdgeFace.cxx
  #pragma warning ( disable : 4101 )
  #endif
  
-@@ -1567,6 +1567,6 @@ Standard_Integer AdaptiveDiscret (const
+@@ -1568,6 +1568,6 @@ Standard_Integer AdaptiveDiscret (const
  }
  
  
@@ -230,32 +196,6 @@ Index: oce/src/OSD/OSD_Process.cxx
 +#endif
  
  void _osd_wnt_set_error ( OSD_Error&, OSD_WhoAmI, ... );
- 
-Index: oce/src/PS/PS_Driver.cxx
-===================================================================
---- oce.orig/src/PS/PS_Driver.cxx
-+++ oce/src/PS/PS_Driver.cxx
-@@ -123,7 +123,7 @@ static const char* MONTHS [] = {
- #include <Image_Image.hxx>
- #include <stdio.h>
- static Handle(Image_Image) myImage;
--#ifdef WNT
-+#ifdef _MSC_VER
- #pragma warning (disable : 4244 4018 4101)
- #endif
- 
-Index: oce/src/PlotMgt/PlotMgt_TextManager.cxx
-===================================================================
---- oce.orig/src/PlotMgt/PlotMgt_TextManager.cxx
-+++ oce/src/PlotMgt/PlotMgt_TextManager.cxx
-@@ -21,7 +21,7 @@
- #include <PlotMgt_TextManager.ixx>
- #include <Aspect_Units.hxx>
- 
--#ifdef WNT
-+#ifdef _MSC_VER
- #pragma warning (disable : 4244)
- #endif
  
 Index: oce/src/Poly/Poly_CoherentNode.cxx
 ===================================================================
@@ -348,8 +288,8 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest.cxx
 +++ oce/src/ViewerTest/ViewerTest.cxx
-@@ -72,7 +72,7 @@
- #include <Viewer2dTest.hxx>
+@@ -74,7 +74,7 @@
+ #include <ViewerTest.hxx>
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
 -#ifdef WNT
@@ -361,7 +301,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
-@@ -144,7 +144,7 @@
+@@ -146,7 +146,7 @@
  #include <strings.h>
  #endif
  
@@ -370,21 +310,6 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
  #define _CRT_SECURE_NO_DEPRECATE
  #pragma warning (disable:4996)
  #endif
-Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-===================================================================
---- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-+++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-@@ -76,8 +76,10 @@
- #include <WNT_WClass.hxx>
- #include <WNT_Window.hxx>
- 
-+#ifdef _MSC_VER
- #define _CRT_SECURE_NO_DEPRECATE
- #pragma warning (disable:4996)
-+#endif
- 
- #endif
- 
 Index: oce/src/VrmlData/VrmlData_Geometry.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_Geometry.cxx

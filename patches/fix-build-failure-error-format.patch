@@ -16,24 +16,24 @@ Index: oce/src/QABugs/QABugs_11.cxx
    //
    switch (aState) {
    case TopAbs_IN:
--    sprintf(sbf, sIN.ToCString());
-+    sprintf(sbf, "%s", sIN.ToCString());
+-    Sprintf(sbf, sIN.ToCString());
++    Sprintf(sbf, "%s", sIN.ToCString());
      break;
    case TopAbs_OUT:
--    sprintf(sbf, sOUT.ToCString());
-+    sprintf(sbf, "%s", sOUT.ToCString());
+-    Sprintf(sbf, sOUT.ToCString());
++    Sprintf(sbf, "%s", sOUT.ToCString());
      break;
    case TopAbs_ON:
--    sprintf(sbf, sON.ToCString());
-+    sprintf(sbf, "%s", sON.ToCString());
+-    Sprintf(sbf, sON.ToCString());
++    Sprintf(sbf, "%s", sON.ToCString());
      break;
    case TopAbs_UNKNOWN:
--    sprintf(sbf, sUNKNOWN.ToCString());
-+    sprintf(sbf, "%s", sUNKNOWN.ToCString());
+-    Sprintf(sbf, sUNKNOWN.ToCString());
++    Sprintf(sbf, "%s", sUNKNOWN.ToCString());
      break;
    default:
--    sprintf(sbf, sUNKNOWN.ToCString());
-+    sprintf(sbf, "%s", sUNKNOWN.ToCString());
+-    Sprintf(sbf, sUNKNOWN.ToCString());
++    Sprintf(sbf, "%s", sUNKNOWN.ToCString());
      break;
    }
    di<<sbf;

@@ -15,46 +15,20 @@ Index: oce/src/OpenGl/OpenGl_PrinterContext.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_PrinterContext.cxx
 +++ oce/src/OpenGl/OpenGl_PrinterContext.cxx
-@@ -29,8 +29,10 @@ GLCONTEXT             OpenGl_PrinterCont
- //=======================================================================
+@@ -29,10 +29,10 @@ GLCONTEXT             OpenGl_PrinterCont
  
- OpenGl_PrinterContext::OpenGl_PrinterContext (GLCONTEXT theCtx) :
--  myCtx (theCtx), myProjTransform (0, 3, 0, 3), myLayerViewportX (0),
--  myLayerViewportY (0), myScaleX (1.0f), myScaleY (1.0f)
-+  myProjTransform (0, 3, 0, 3),
-+  myScaleX (1.0f), myScaleY (1.0f),
-+  myLayerViewportX (0), myLayerViewportY (0),
-+  myCtx (theCtx)
+ OpenGl_PrinterContext::OpenGl_PrinterContext ()
+ : myProjTransform  (0, 3, 0, 3),
++  myScaleX (1.0f),
++  myScaleY (1.0f),
+   myLayerViewportX (0),
+-  myLayerViewportY (0),
+-  myScaleX (1.0f),
+-  myScaleY (1.0f)
++  myLayerViewportY (0)
  {
    // assign global instance to the current object
    if (myCtx != NULL)
-Index: oce/src/OpenGl/OpenGl_Workspace.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_Workspace.cxx
-+++ oce/src/OpenGl/OpenGl_Workspace.cxx
-@@ -66,6 +66,11 @@ OpenGl_Workspace::OpenGl_Workspace (cons
-                                     Aspect_RenderingContext       theGContext,
-                                     const Handle(OpenGl_Context)& theShareCtx)
- : OpenGl_Window (theDisplay, theCWindow, theGContext, theShareCtx),
-+  NamedStatus (0),
-+  DegenerateModel (0),
-+  SkipRatio (0.F),
-+  HighlightColor (&myDefaultHighlightColor),
-+  //
-   myTransientList (0),
-   myIsTransientOpen (Standard_False),
-   myRetainMode (Standard_False),
-@@ -75,10 +80,6 @@ OpenGl_Workspace::OpenGl_Workspace (cons
-   myUseGLLight (Standard_True),
-   myBackBufferRestored (Standard_False),
-   //
--  NamedStatus (0),
--  DegenerateModel (0),
--  SkipRatio (0.F),
--  HighlightColor (&myDefaultHighlightColor),
-   AspectLine_set (&myDefaultAspectLine),
-   AspectLine_applied (NULL),
-   AspectFace_set (&myDefaultAspectFace),
 Index: oce/src/QANewModTopOpe/QANewModTopOpe_Glue.cxx
 ===================================================================
 --- oce.orig/src/QANewModTopOpe/QANewModTopOpe_Glue.cxx
@@ -62,7 +36,7 @@ Index: oce/src/QANewModTopOpe/QANewModTopOpe_Glue.cxx
 @@ -98,8 +98,8 @@ QANewModTopOpe_Glue::QANewModTopOpe_Glue
  			       const Standard_Boolean theAllowCutting,
  			       const Standard_Boolean thePerformNow)
- : BRepAlgoAPI_BooleanOperation (theS1,theS2, BOP_FUSE),
+ : BRepAlgoAPI_BooleanOperation (theS1,theS2, BOPAlgo_FUSE),
 -  myAllowCutting (theAllowCutting),
 -  myCompleted (Standard_False)
 +  myCompleted (Standard_False),

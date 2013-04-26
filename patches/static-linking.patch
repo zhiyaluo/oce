@@ -46,7 +46,7 @@ Index: oce/inc/Standard_Atomic.hxx
 ===================================================================
 --- oce.orig/inc/Standard_Atomic.hxx
 +++ oce/inc/Standard_Atomic.hxx
-@@ -42,8 +42,8 @@
+@@ -67,8 +67,8 @@ int Standard_Atomic_Decrement (volatile
      }
    #else
      extern "C" {
@@ -57,23 +57,6 @@ Index: oce/inc/Standard_Atomic.hxx
      }
      #define _InterlockedIncrement InterlockedIncrement
      #define _InterlockedDecrement InterlockedDecrement
-Index: oce/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
-===================================================================
---- oce.orig/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
-+++ oce/src/Graphic3d/Graphic3d_WNTGraphicDevice.cxx
-@@ -131,6 +131,12 @@ void Graphic3d_WNTGraphicDevice::SetGrap
- {
-      MyGraphicDriver = MetaGraphicDriverFactory("");
- }
-+
-+void Graphic3d_WNTGraphicDevice::SetGraphicDriver (const Standard_CString theGraphicLib)
-+{
-+     MyGraphicDriver = MetaGraphicDriverFactory("");
-+}
-+
- #endif
- 
- #endif  // WNT
 Index: oce/src/InterfaceGraphic/InterfaceGraphic_Palette.c
 ===================================================================
 --- oce.orig/src/InterfaceGraphic/InterfaceGraphic_Palette.c

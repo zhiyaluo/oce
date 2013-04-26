@@ -28,22 +28,6 @@ Index: oce/src/Image/Image_AlienPixMap.cxx
  #endif
  
  #include <Image_AlienPixMap.hxx>
-Index: oce/src/OpenGl/OpenGl_FontMgr.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_FontMgr.cxx
-+++ oce/src/OpenGl/OpenGl_FontMgr.cxx
-@@ -22,11 +22,6 @@
- 
- #include <ft2build.h>
- 
--#ifdef _MSC_VER
--#pragma comment( lib, "ftgl.lib" )
--#pragma comment( lib, "freetype.lib" )
--#endif
--
- #undef TRACE
- 
- #define DEFAULT_FONT_HEIGHT 16
 Index: oce/src/OpenGl/OpenGl_Workspace_2.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_Workspace_2.cxx
@@ -53,8 +37,8 @@ Index: oce/src/OpenGl/OpenGl_Workspace_2.cxx
    #include <NCollection_Handle.hxx>
    #include <FreeImagePlus.h>
 -  #ifdef _MSC_VER
--  #pragma comment( lib, "FreeImage.lib" )
--  #pragma comment( lib, "FreeImagePlus.lib" )
+-    #pragma comment( lib, "FreeImage.lib" )
+-    #pragma comment( lib, "FreeImagePlus.lib" )
 -  #endif
    typedef NCollection_Handle<fipImage> FipHandle;
  #endif
@@ -65,13 +49,14 @@ Index: oce/src/OpenGl/OpenGl_Workspace_5.cxx
 +++ oce/src/OpenGl/OpenGl_Workspace_5.cxx
 @@ -34,11 +34,6 @@
  /* OCC22218 NOTE: project dependency on gl2ps is specified by macro */
+ #include <Aspect_PolygonOffsetMode.hxx>
  #ifdef HAVE_GL2PS
    #include <gl2ps.h>
--  /* OCC22216 NOTE: linker dependency can be switched off by undefining macro. 
--     Pragma comment for gl2ps.lib is defined only here. */ 
--  #ifdef _MSC_VER 
+-  /* OCC22216 NOTE: linker dependency can be switched off by undefining macro.
+-     Pragma comment for gl2ps.lib is defined only here. */
+-  #ifdef _MSC_VER
 -  #pragma comment( lib, "gl2ps.lib" )
 -  #endif
  #endif
  
- #include <OpenGl_TextureBox.hxx>
+ #include <Aspect_PolygonOffsetMode.hxx>

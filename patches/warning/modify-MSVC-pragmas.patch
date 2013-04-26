@@ -224,7 +224,7 @@ Index: oce/drv/StepFile/step.tab.c
 @@ -957,3 +963,8 @@ yyerrhandle:
    goto yynewstate;
  }
- #line 146 "/misc/dn60/WOKLOC/wok_entities/LOC/dev/CR000655-CR655-products-occt/src/StepFile/step.yacc"
+ #line 146 "/misc/dn47/KAS/builds/inv/LocalWOK/wok_entities/LOC/dev/inv-IR-2013-04-18-master-OCCT/src/StepFile/step.yacc"
 +
 +
 +#ifdef _MSC_VER
@@ -250,25 +250,29 @@ Index: oce/inc/Standard_Atomic.hxx
 ===================================================================
 --- oce.orig/inc/Standard_Atomic.hxx
 +++ oce/inc/Standard_Atomic.hxx
-@@ -34,20 +34,20 @@
+@@ -59,24 +59,20 @@ int Standard_Atomic_Decrement (volatile
+   return __sync_sub_and_fetch (theValue, 1);
+ }
  
- #include <Standard_Macro.hxx>
- 
--#if defined(_MSC_VER) || defined(__BORLANDC__)
+-#elif defined(_MSC_VER) || defined(__BORLANDC__)
 -#ifdef __BORLANDC__
 -extern "C" {
 -  __declspec(dllimport) long __stdcall InterlockedIncrement ( long volatile *lpAddend);
 -  __declspec(dllimport) long __stdcall InterlockedDecrement ( long volatile *lpAddend);
 - }
-- #define _InterlockedIncrement InterlockedIncrement
-- #define _InterlockedDecrement InterlockedDecrement
--#elif defined(_MSC_VER)
-- extern "C" {
--  long _InterlockedIncrement(long volatile* lpAddend);
--  long _InterlockedDecrement(long volatile* lpAddend);
-- }
+-#else
+-extern "C" {
+-  long _InterlockedIncrement (volatile long* lpAddend);
+-  long _InterlockedDecrement (volatile long* lpAddend);
+-}
 -#endif
-+#if (defined(_WIN32) || defined(__WIN32__))
+-
+-#if defined(_MSC_VER)
+-  // force intrinsic instead of WinAPI calls
+-  #pragma intrinsic (_InterlockedIncrement)
+-  #pragma intrinsic (_InterlockedDecrement)
+-#endif
++#elif (defined(_WIN32) || defined(__WIN32__))
 +  #ifdef _MSC_VER
 +    extern "C" {
 +      long _InterlockedIncrement(long volatile* lpAddend);
@@ -282,31 +286,9 @@ Index: oce/inc/Standard_Atomic.hxx
 +    #define _InterlockedIncrement InterlockedIncrement
 +    #define _InterlockedDecrement InterlockedDecrement
 +  #endif
- #endif
  
- #if defined(_MSC_VER)
-Index: oce/src/BOPTools/BOPTools_PaveSet.cxx
-===================================================================
---- oce.orig/src/BOPTools/BOPTools_PaveSet.cxx
-+++ oce/src/BOPTools/BOPTools_PaveSet.cxx
-@@ -26,9 +26,6 @@
- #include <BOPTools_QuickSortPave.hxx>
- #include <BOPTools_ComparePave.hxx>
- 
--#ifdef _MSC_VER
--#pragma warning ( disable : 4101 )
--#endif
- 
- //=======================================================================
- // function: BOPTools_PaveSet::BOPTools_PaveSet
-@@ -89,6 +86,4 @@
-     }
-   }
- }
--#ifdef _MSC_VER
--#pragma warning ( default : 4101 )
--#endif
-+
+ // WinAPI function or MSVC intrinsic
+ // Note that we safely cast int* to long*, as they have same size and endian-ness
 Index: oce/src/BinDrivers/BinDrivers.cxx
 ===================================================================
 --- oce.orig/src/BinDrivers/BinDrivers.cxx
@@ -359,34 +341,6 @@ Index: oce/src/BinXCAFDrivers/BinXCAFDrivers.cxx
  #endif
  
  static Standard_GUID BinXCAFStorageDriver  ("a78ff496-a779-11d5-aab4-0050044b1af1");
-Index: oce/src/BooleanOperations/BooleanOperations_ShapesDataStructure.cxx
-===================================================================
---- oce.orig/src/BooleanOperations/BooleanOperations_ShapesDataStructure.cxx
-+++ oce/src/BooleanOperations/BooleanOperations_ShapesDataStructure.cxx
-@@ -58,11 +58,6 @@
- #include <TColStd_MapOfInteger.hxx>
- #include <BOPTColStd_Dump.hxx>
- 
--
--#ifdef _MSC_VER
--#pragma warning ( disable : 4291 )
--#endif
--
- static
-   void Message(const Standard_Integer i);
- 
-@@ -902,11 +897,6 @@ void Message(const Standard_Integer i)
- }
- //modified by NIZNHY-PKV Wed Feb  2 14:44:08 2005f
- /*
--#ifdef WNT
--#pragma warning ( default : 4291 )
--#endif
--*/
--/*
- //===========================================================================
- //function : InsertInterference
- //purpose  : 
 Index: oce/src/FWOSDriver/FWOSDriver.cxx
 ===================================================================
 --- oce.orig/src/FWOSDriver/FWOSDriver.cxx
@@ -437,7 +391,7 @@ Index: oce/src/IntTools/IntTools_EdgeFace.cxx
  static
    Standard_Boolean IsCoplanar (const BRepAdaptor_Curve&  ,
  			       const BRepAdaptor_Surface& );
-@@ -1566,7 +1562,3 @@ Standard_Integer AdaptiveDiscret (const
+@@ -1567,7 +1563,3 @@ Standard_Integer AdaptiveDiscret (const
    return iDiscretNew;
  }
  
@@ -490,21 +444,6 @@ Index: oce/src/OSD/OSD_Process.cxx
  void _osd_wnt_set_error ( OSD_Error&, OSD_WhoAmI, ... );
  
  OSD_Process :: OSD_Process () {
-Index: oce/src/PlotMgt/PlotMgt_TextManager.cxx
-===================================================================
---- oce.orig/src/PlotMgt/PlotMgt_TextManager.cxx
-+++ oce/src/PlotMgt/PlotMgt_TextManager.cxx
-@@ -21,10 +21,6 @@
- #include <PlotMgt_TextManager.ixx>
- #include <Aspect_Units.hxx>
- 
--#ifdef _MSC_VER
--#pragma warning (disable : 4244)
--#endif
--
- //#define TRACE
- #define MAXPATHPOINTS  800
- #define MAXCHARPATHS   20
 Index: oce/src/Poly/Poly_CoherentNode.cxx
 ===================================================================
 --- oce.orig/src/Poly/Poly_CoherentNode.cxx
@@ -576,7 +515,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest.cxx
 +++ oce/src/ViewerTest/ViewerTest.cxx
-@@ -75,7 +75,6 @@
+@@ -77,7 +77,6 @@
  #ifdef _MSC_VER
  #define _CRT_SECURE_NO_DEPRECATE
  #pragma warning(4:4190)
@@ -588,7 +527,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
-@@ -146,7 +146,6 @@
+@@ -148,7 +148,6 @@
  
  #ifdef _MSC_VER
  #define _CRT_SECURE_NO_DEPRECATE
@@ -600,14 +539,14 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-@@ -78,7 +78,6 @@
+@@ -82,7 +82,6 @@
  
- #ifdef _MSC_VER
- #define _CRT_SECURE_NO_DEPRECATE
--#pragma warning (disable:4996)
- #endif
- 
- #endif
+   #if defined(_MSC_VER)
+     #define _CRT_SECURE_NO_DEPRECATE
+-    #pragma warning (disable:4996)
+   #endif
+ #elif defined(__APPLE__) && !defined(MACOSX_USE_GLX)
+   #include <Cocoa_Window.hxx>
 Index: oce/src/VrmlData/VrmlData_Geometry.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_Geometry.cxx

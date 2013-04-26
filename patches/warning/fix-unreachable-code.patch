@@ -193,77 +193,11 @@ Index: oce/src/Adaptor3d/Adaptor3d_SurfaceOfLinearExtrusion.cxx
  
    }
    
-Index: oce/src/BOP/BOP_CorrectTolerances.cxx
-===================================================================
---- oce.orig/src/BOP/BOP_CorrectTolerances.cxx
-+++ oce/src/BOP/BOP_CorrectTolerances.cxx
-@@ -267,9 +267,6 @@ void CorrectEdgeTolerance (const TopoDS_
- 	GC->Range(f,l);
- 	if (SameRange && (f != First || l != Last)) {
- 	  return ;//BRepCheck_InvalidSameRangeFlag);
--	  if (SameParameter) {
--	    return; //BRepCheck_InvalidSameParameterFlag);
--	  }
-         }
- 	
- 	Handle(Geom_Surface) Sb = cr->Surface();
-Index: oce/src/BOPTools/BOPTools_PaveFiller_1.cxx
-===================================================================
---- oce.orig/src/BOPTools/BOPTools_PaveFiller_1.cxx
-+++ oce/src/BOPTools/BOPTools_PaveFiller_1.cxx
-@@ -496,9 +496,10 @@ void BOPTools_PaveFiller::PerformEF()
- 	      //error: can not find SplitIndex
- 	      throw 
- 		BOPTColStd_Failure(" BOPTools_PaveFiller::DoSDEdges()=> can not find SplitIndex");
--	      
-+#ifndef _MSC_VER
- 	      myIsDone=Standard_False;
- 	      return;
-+#endif
- 	    }
- 	    
- 	  } // if (aPBTool1.IsEqual(aPBObj2) && aPBTool2.IsEqual(aPBObj1)) 
-@@ -535,8 +536,10 @@ void BOPTools_PaveFiller::PerformEF()
- 	    //error: can not find SplitIndex
- 	    throw 
- 		BOPTColStd_Failure(" BOPTools_PaveFiller::DoSDEdges()=> can not find SplitIndex");
-+#ifndef _MSC_VER
- 	    myIsDone=Standard_False;
- 	    return;
-+#endif
- 	  }
- 	}
-       }
-Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
-===================================================================
---- oce.orig/src/BRepFill/BRepFill_OffsetWire.cxx
-+++ oce/src/BRepFill/BRepFill_OffsetWire.cxx
-@@ -1619,10 +1619,11 @@ Standard_Integer CutEdge (const TopoDS_E
- 
-   if (CT2d->BasisCurve()->IsKind(STANDARD_TYPE(Geom2d_Circle)) &&
-       ( Abs(f-l) >= M_PI) ) {
--    return 0;
-+    return 0; // @todo check here possible bug or really workaround?
-     //---------------------------
-     // Cut closed circle.
-     //---------------------------
-+#if 0 // Eventually re-enable here
-     Standard_Real m = (f + l)*0.5;
- //  Modified by Sergey KHROMOV - Wed Mar  6 17:37:28 2002 Begin
-     gp_Pnt        P = aC->Value(m);
-@@ -1649,6 +1650,7 @@ Standard_Integer CutEdge (const TopoDS_E
-     // Return.
-     //--------
-     return 2;
-+#endif
-   }
- 
-   //-------------------------
 Index: oce/src/BRepFill/BRepFill_Pipe.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_Pipe.cxx
 +++ oce/src/BRepFill/BRepFill_Pipe.cxx
-@@ -593,7 +593,7 @@ TopoDS_Shape BRepFill_Pipe::MakeShape(co
+@@ -633,7 +633,7 @@ TopoDS_Shape BRepFill_Pipe::MakeShape(co
      return solid;
    }
    else {
@@ -317,7 +251,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_CnCrn.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder_CnCrn.cxx
 +++ oce/src/ChFi3d/ChFi3d_Builder_CnCrn.cxx
-@@ -923,7 +923,7 @@ static Standard_Integer SurfIndex(const
+@@ -915,7 +915,7 @@ static Standard_Integer SurfIndex(const
    case ChFiSURFACE: return aSurfData->Surf();
    case FACE1:       return aSurfData->IndexOfS1();
    case FACE2:       return aSurfData->IndexOfS2();
@@ -386,7 +320,7 @@ Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx
 +++ oce/src/Draw/Draw_Window.cxx
-@@ -1371,7 +1371,9 @@ LONG APIENTRY DrawWindow::DrawProc(HWND
+@@ -1398,7 +1398,9 @@ LONG APIENTRY DrawWindow::DrawProc(HWND
      else
        return LONG(DefMDIChildProc(hWnd, wMsg, wParam, lParam));
    }
@@ -400,7 +334,7 @@ Index: oce/src/FSD/FSD_CmpFile.cxx
 ===================================================================
 --- oce.orig/src/FSD/FSD_CmpFile.cxx
 +++ oce/src/FSD/FSD_CmpFile.cxx
-@@ -1433,7 +1433,7 @@ Storage_Position FSD_CmpFile::Tell()
+@@ -1392,7 +1392,7 @@ Storage_Position FSD_CmpFile::Tell()
      else
        return aPosR;
    }
@@ -413,7 +347,7 @@ Index: oce/src/FSD/FSD_File.cxx
 ===================================================================
 --- oce.orig/src/FSD/FSD_File.cxx
 +++ oce/src/FSD/FSD_File.cxx
-@@ -1397,7 +1397,7 @@ Storage_Position FSD_File::Tell()
+@@ -1366,7 +1366,7 @@ Storage_Position FSD_File::Tell()
      else
        return aPosR;
    }
@@ -489,26 +423,6 @@ Index: oce/src/GeomFill/GeomFill.cxx
    return Standard_False;
 +#endif
  }
-Index: oce/src/GeomFill/GeomFill_LocationGuide.cxx
-===================================================================
---- oce.orig/src/GeomFill/GeomFill_LocationGuide.cxx
-+++ oce/src/GeomFill/GeomFill_LocationGuide.cxx
-@@ -748,6 +748,7 @@ static void InGoodPeriod(const Standard_
-   if (rotation) {  
-     return Standard_False;
-     
-+#if 0 // @todo Should be really dead code?
-     // initialisation du germe 
-     InitX(Param);      
-     
-@@ -861,6 +862,7 @@ static void InGoodPeriod(const Standard_
- 	return Standard_False;
-       }
- 
-+#endif // Dead code?
-     }//if_rotation
-   
- 
 Index: oce/src/GeometryTest/GeometryTest_ConstraintCommands.cxx
 ===================================================================
 --- oce.orig/src/GeometryTest/GeometryTest_ConstraintCommands.cxx
@@ -523,36 +437,6 @@ Index: oce/src/GeometryTest/GeometryTest_ConstraintCommands.cxx
  }
  
  
-Index: oce/src/Graphic2d/Graphic2d_GraphicObject.cxx
-===================================================================
---- oce.orig/src/Graphic2d/Graphic2d_GraphicObject.cxx
-+++ oce/src/Graphic2d/Graphic2d_GraphicObject.cxx
-@@ -666,8 +666,9 @@ Standard_Boolean Graphic2d_GraphicObject
-   }
-   else
-     return Standard_False;
--#endif
-+#else
-   return Standard_False;
-+#endif
- }
- 
- Standard_Boolean Graphic2d_GraphicObject::Pick( const Standard_Real Xmin,
-Index: oce/src/Graphic2d/Graphic2d_SetOfMarkers.cxx
-===================================================================
---- oce.orig/src/Graphic2d/Graphic2d_SetOfMarkers.cxx
-+++ oce/src/Graphic2d/Graphic2d_SetOfMarkers.cxx
-@@ -450,8 +450,9 @@ Standard_Boolean Graphic2d_SetOfMarkers:
- {
- #ifdef OCC402
-   return (myMapOfSelected.Extent() > 0);
--#endif
-+#else
-   return Standard_False;
-+#endif
- }
- 
- //SAV
 Index: oce/src/IntPatch/IntPatch_LineConstructor.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_LineConstructor.cxx
@@ -621,26 +505,6 @@ Index: oce/src/IntSurf/IntSurf_Quadric.cxx
  }
  // ============================================================
  void IntSurf_Quadric::Parameters (const gp_Pnt& P,
-Index: oce/src/IntTools/IntTools_EdgeFace.cxx
-===================================================================
---- oce.orig/src/IntTools/IntTools_EdgeFace.cxx
-+++ oce/src/IntTools/IntTools_EdgeFace.cxx
-@@ -885,6 +885,7 @@ void IntTools_EdgeFace::CheckData()
-     return 0;
-   }
- 
-+#if 0 // @todo Should this code really be removed? (a test will be appropriate)
-   //
-   dt=al1-af1;
-   if (dt<1.e-5) {
-@@ -925,6 +926,7 @@ void IntTools_EdgeFace::CheckData()
-     }
-   }
-   return 0;
-+#endif
- }
- 
- 
 Index: oce/src/MAT2d/MAT2d_Circuit.cxx
 ===================================================================
 --- oce.orig/src/MAT2d/MAT2d_Circuit.cxx
@@ -681,23 +545,6 @@ Index: oce/src/MNaming/MNaming_NamingRetrievalDriver_1.cxx
      }
    return TopAbs_SHAPE;
  }
-Index: oce/src/OpenGl/OpenGl_GraphicDriver_9.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_GraphicDriver_9.cxx
-+++ oce/src/OpenGl/OpenGl_GraphicDriver_9.cxx
-@@ -184,9 +184,9 @@ Standard_Integer OpenGl_GraphicDriver::C
-       for (i = 0; i < aGlWidth; i++){
-         if (i < MyPic->Width()){
-           MyColor = MyPic->PixelColor(i, j);
--          *MyData++ = (int)(255 * MyColor.Red());
--          *MyData++ = (int)(255 * MyColor.Green());
--          *MyData++ = (int)(255 * MyColor.Blue());
-+          *MyData++ = (unsigned char)(int)(255 * MyColor.Red());
-+          *MyData++ = (unsigned char)(int)(255 * MyColor.Green());
-+          *MyData++ = (unsigned char)(int)(255 * MyColor.Blue());
-         }
-         else {
-           *MyData++ = (int)(0);
 Index: oce/src/ProjLib/ProjLib_ComputeApproxOnPolarSurface.cxx
 ===================================================================
 --- oce.orig/src/ProjLib/ProjLib_ComputeApproxOnPolarSurface.cxx
@@ -748,7 +595,7 @@ Index: oce/src/ShapeConstruct/ShapeConstruct_ProjectCurveOnSurface.cxx
 ===================================================================
 --- oce.orig/src/ShapeConstruct/ShapeConstruct_ProjectCurveOnSurface.cxx
 +++ oce/src/ShapeConstruct/ShapeConstruct_ProjectCurveOnSurface.cxx
-@@ -1565,7 +1565,9 @@ Handle(Geom_Curve) ShapeConstruct_Projec
+@@ -1564,7 +1564,9 @@ Handle(Geom_Curve) ShapeConstruct_Projec
  #endif
      return Standard_False;
    }
@@ -806,31 +653,12 @@ Index: oce/src/ShapeFix/ShapeFix_Wireframe.cxx
    }
    return ReplaceFirst;
  }
-Index: oce/src/StdPrs/StdPrs_Curve.cxx
-===================================================================
---- oce.orig/src/StdPrs/StdPrs_Curve.cxx
-+++ oce/src/StdPrs/StdPrs_Curve.cxx
-@@ -255,9 +255,13 @@ static Standard_Boolean MatchCurve (
-       }
-       return Standard_False;
-     }
-+#ifndef _MSC_VER
-     return Standard_False;
-+#endif
-   }
--  return Standard_False;
-+#ifndef _MSC_VER
-+    return Standard_False;
-+#endif
- }
- 
- 
 Index: oce/src/StdPrs/StdPrs_DeflectionCurve.cxx
 ===================================================================
 --- oce.orig/src/StdPrs/StdPrs_DeflectionCurve.cxx
 +++ oce/src/StdPrs/StdPrs_DeflectionCurve.cxx
-@@ -298,7 +298,9 @@ static Standard_Boolean MatchCurve (
-       return Standard_False;
+@@ -278,7 +278,9 @@ static Standard_Boolean MatchCurve (
+       }
      }
    }
 +#ifndef _MSC_VER
@@ -863,19 +691,6 @@ Index: oce/src/TopOpeBRep/TopOpeBRep_FFDumper.cxx
  
  //=======================================================================
  //function : DumpDSP
-Index: oce/src/TopOpeBRep/TopOpeBRep_ShapeIntersector2d.cxx
-===================================================================
---- oce.orig/src/TopOpeBRep/TopOpeBRep_ShapeIntersector2d.cxx
-+++ oce/src/TopOpeBRep/TopOpeBRep_ShapeIntersector2d.cxx
-@@ -278,7 +278,7 @@ void TopOpeBRep_ShapeIntersector2d::Find
-     BS.Box(GS2);
-     myFFDone = Standard_True;
-     break;
--    NextFFCouple();
-+    NextFFCouple();  // @todo Should be really after the break?
-   }
-   
-   SetIntersectionDone();
 Index: oce/src/TopOpeBRep/TopOpeBRep_sort.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRep/TopOpeBRep_sort.cxx
@@ -1058,29 +873,6 @@ Index: oce/src/TopOpeBRepTool/TopOpeBRepTool_makeTransition.cxx
  } 
  static Standard_Boolean FUN_mkT2dquad(const TopoDS_Edge& e1,const Standard_Real par1,const Standard_Real f1,const Standard_Real l1,
  			 const TopoDS_Edge& e2,const Standard_Real par2,
-Index: oce/src/TopOpeBRepTool/TopOpeBRepTool_mkTondgE.cxx
-===================================================================
---- oce.orig/src/TopOpeBRepTool/TopOpeBRepTool_mkTondgE.cxx
-+++ oce/src/TopOpeBRepTool/TopOpeBRepTool_mkTondgE.cxx
-@@ -366,7 +366,9 @@ Standard_Boolean TopOpeBRepTool_mkTondgE
-     else         mkT = outin ? MKI2 : MKI1;
-     return Standard_True;
-     ////////////////////////////////////////////////
--
-+	
-+	// @todo Must this be really dead code? (warning-fix removal)
-+#if 0
-     // xxri : 
-     Standard_Real ddot = tgin1di.Dot(faxis);
-     Standard_Boolean tgaxis = Abs(1-(Abs(ddot))) < FUN_tola(); //=true : edge is tangent to sphere's axis
-@@ -379,6 +381,7 @@ Standard_Boolean TopOpeBRepTool_mkTondgE
-       if (closedi)            {mkT = MKI12; return Standard_True;}// onfi || onli @190499
-       xxri = tgin1di;
-     }
-+#endif
-   }//!isT2d
- 
-   mkT = MKI12;  // without restrictions.
 Index: oce/src/XSControl/XSControl_Functions.cxx
 ===================================================================
 --- oce.orig/src/XSControl/XSControl_Functions.cxx

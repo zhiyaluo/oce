@@ -13,7 +13,7 @@ Index: oce/src/Geom/Geom_OffsetSurface.cxx
 ===================================================================
 --- oce.orig/src/Geom/Geom_OffsetSurface.cxx
 +++ oce/src/Geom/Geom_OffsetSurface.cxx
-@@ -1632,7 +1632,7 @@ void Geom_OffsetSurface::SetD0(const Sta
+@@ -1663,7 +1663,7 @@ void Geom_OffsetSurface::SetD0(const Sta
    CSLib_NormalStatus NStatus;
    CSLib::Normal (D1U, D1V, MagTol, NStatus, Normal);
  
@@ -22,16 +22,3 @@ Index: oce/src/Geom/Geom_OffsetSurface.cxx
      {
        P.SetXYZ(P.XYZ() + offsetValue * Normal.XYZ());
      }
-Index: oce/src/Xw/Xw_set_double_buffer.cxx
-===================================================================
---- oce.orig/src/Xw/Xw_set_double_buffer.cxx
-+++ oce/src/Xw/Xw_set_double_buffer.cxx
-@@ -64,7 +64,7 @@ char svalue[4] ;
-         }
-     }
- 
--    if( (SetDoubleBuffer == 'Y') ) { 
-+    if( SetDoubleBuffer == 'Y' ) { 
- 	state = XW_ENABLE ;
-     } else if( SetDoubleBuffer == 'N' ) {
- 	state = XW_DISABLE ;

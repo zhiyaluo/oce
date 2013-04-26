@@ -460,7 +460,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_WNT.cxx
 +++ oce/src/OSD/OSD_WNT.cxx
-@@ -124,12 +124,6 @@ void FreeSD ( PSECURITY_DESCRIPTOR pSD )
+@@ -123,12 +123,6 @@ void FreeSD ( PSECURITY_DESCRIPTOR pSD )
  /******************************************************************************/
  /***/
  
@@ -473,7 +473,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  LPVOID GetTokenInformationEx ( HANDLE hToken, TOKEN_INFORMATION_CLASS tic ) {
  
   DWORD  errVal;
-@@ -137,8 +131,7 @@ LPVOID GetTokenInformationEx ( HANDLE hT
+@@ -136,8 +130,7 @@ LPVOID GetTokenInformationEx ( HANDLE hT
   DWORD  dwSizeNeeded = 0;
   LPVOID buffer       = NULL;
   BOOL   fOK          = FALSE;
@@ -483,7 +483,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  
    do {
  
-@@ -148,46 +141,35 @@ LPVOID GetTokenInformationEx ( HANDLE hT
+@@ -147,46 +140,35 @@ LPVOID GetTokenInformationEx ( HANDLE hT
     if (  !GetTokenInformation ( hToken, tic, buffer, dwSize, &dwSizeNeeded )  ) {
  
      if (   (  errVal = GetLastError ()  ) != ERROR_INSUFFICIENT_BUFFER   )
@@ -539,7 +539,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  /***/
  /******************************************************************************/
  /* Function : FreeTokenInformation                                          */
-@@ -446,13 +428,6 @@ PSID NullSid ( void ) {
+@@ -445,13 +427,6 @@ PSID NullSid ( void ) {
  /******************************************************************************/
  /***/
  
@@ -553,7 +553,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  PSECURITY_DESCRIPTOR GetFileSecurityEx ( LPCTSTR fileName, SECURITY_INFORMATION si ) {
  
   DWORD                errVal;
-@@ -460,8 +435,8 @@ PSECURITY_DESCRIPTOR GetFileSecurityEx (
+@@ -459,8 +434,8 @@ PSECURITY_DESCRIPTOR GetFileSecurityEx (
   DWORD                dwSizeNeeded = 0;
   PSECURITY_DESCRIPTOR retVal = NULL;
   BOOL                 fOK    = FALSE;
@@ -564,7 +564,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  
    do {
  
-@@ -474,21 +449,24 @@ PSECURITY_DESCRIPTOR GetFileSecurityEx (
+@@ -473,21 +448,24 @@ PSECURITY_DESCRIPTOR GetFileSecurityEx (
            )
     ) {
   
@@ -595,7 +595,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
   
    if ( !fOK && retVal != NULL ) {
    
-@@ -497,22 +475,10 @@ PSECURITY_DESCRIPTOR GetFileSecurityEx (
+@@ -496,22 +474,10 @@ PSECURITY_DESCRIPTOR GetFileSecurityEx (
    
    }  /* end if */
   
@@ -618,7 +618,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  /***/
  /******************************************************************************/
  /* Function : FreeFileSecurity                                              */
-@@ -539,12 +505,6 @@ void FreeFileSecurity ( PSECURITY_DESCRI
+@@ -538,12 +504,6 @@ void FreeFileSecurity ( PSECURITY_DESCRI
  /******************************************************************************/
  /***/
  
@@ -631,7 +631,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  BOOL LookupAccountSidEx ( PSID pSID, LPTSTR* name, LPTSTR* domain ) {
  
   DWORD        errVal;
-@@ -552,8 +512,7 @@ BOOL LookupAccountSidEx ( PSID pSID, LPT
+@@ -551,8 +511,7 @@ BOOL LookupAccountSidEx ( PSID pSID, LPT
   DWORD        dwSizeDomain = 0;
   BOOL         retVal       = FALSE;
   SID_NAME_USE eUse;
@@ -641,7 +641,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  
    do {   
  
-@@ -564,21 +523,26 @@ BOOL LookupAccountSidEx ( PSID pSID, LPT
+@@ -563,21 +522,26 @@ BOOL LookupAccountSidEx ( PSID pSID, LPT
            )
     ) {
     
@@ -674,7 +674,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  
    if ( !retVal ) {
    
-@@ -587,22 +551,10 @@ BOOL LookupAccountSidEx ( PSID pSID, LPT
+@@ -586,22 +550,10 @@ BOOL LookupAccountSidEx ( PSID pSID, LPT
    
    }  /* end if */
   
@@ -697,148 +697,11 @@ Index: oce/src/OSD/OSD_WNT.cxx
  /***/
  /******************************************************************************/
  /* Function : FreeAccountNames                                              */
-Index: oce/src/OSD/OSD_WNT_1.cxx
-===================================================================
---- oce.orig/src/OSD/OSD_WNT_1.cxx
-+++ oce/src/OSD/OSD_WNT_1.cxx
-@@ -287,47 +287,35 @@ short MapY (LONG aY) {
-   return (short)(aY*8) / HIWORD (baseUnits);
- }
- 
--#if defined(__CYGWIN32__) || defined(__MINGW32__)
--#define __try
--#define __finally
--#define __leave return res
--#endif
--
- LONG GetTextParams ( HDC hdc, LPCTSTR lpText ) {
-   LONG res = 0;
-   SIZE size;
-   _TCHAR* dummy;
--  __try {
-+  bool Ret = true;
-+
-     dummy = _tcsdup (lpText);
--    if ( !dummy ) __leave;
-+   
-+    if ( !dummy ) Ret = false;
-+
-+    if (Ret)
-+    {
-     short txtW = 0, txtH = 0;
-     _TCHAR* tok = _tcstok ( dummy, TEXT( "\n" ) );
-+
-     while ( tok ) {
--      if ( !GetTextExtentPoint32 (hdc, tok, _tcslen(tok), (LPSIZE)&size) ) __leave;
-+      if ( !GetTextExtentPoint32 (hdc, tok, _tcslen(tok), (LPSIZE)&size) ) { Ret = false; break; }
-       txtH += (short)size.cy;
-       if ( txtW < size.cx )
-         txtW = (short)size.cx;
-       tok = _tcstok ( NULL, TEXT( "\n" ) );
-     }
-+    if (Ret)
-     res = MAKELONG (MapX(txtW), MapY(txtH));
-   }
--
--  __finally {
-     free (dummy);
--  }
--
--#ifdef VAC
--leave: ;       // added for VisualAge
--#endif
--
-   return res;
- }
- 
--#if defined(__CYGWIN32__) || defined(__MINGW32__)
--#undef __try
--#undef __finally
--#undef __leave
--#endif
- 
- /////////////////ON_COMMAND/////////////////////////////////////
- void MsgBox_OnCommand (HWND hwnd, _TINT id, HWND hCtl, UINT codeNotify) {
-@@ -363,11 +351,6 @@ BOOL CALLBACK MsgBoxProc (HWND hdlg,
- 
- /////////////////////////////////////////////////////////////////
- 
--#if defined(__CYGWIN32__) || defined(__MINGW32__)
--#define __try
--#define __finally
--#define __leave return -1
--#endif
- 
- _TINT MsgBox ( HWND hParent,
-                LPTSTR  lpText,
-@@ -388,16 +371,17 @@ _TINT MsgBox ( HWND hParent,
-   short           butCount  = 0, butMaxWidth = 0, butMaxHeight = 0;
-   short           butSpace = 8, butOffset = 0;
- 
--  __try {
-+  {
-     /* Get dialog base units & map it to dialog units*/
-     hDisp = CreateDC ( TEXT( "DISPLAY" ), NULL, NULL, NULL );
--    if ( !hDisp ) __leave;
-+
-+    if ( !hDisp ) goto leave;
-     scrW = GetDeviceCaps ( hDisp, HORZRES );
-     scrH = GetDeviceCaps ( hDisp, VERTRES );
-     scrW = MapX (scrW);
-     scrH = MapY (scrH);
-     LONG txtParam = GetTextParams ( hDisp, lpText );
--    if ( !txtParam ) __leave;
-+    if ( !txtParam ) goto leave;
-  
-     // Calculate needed size of buffer
-     bufSize = 14*sizeof(WORD)  + _tcslen(lpCaption)*CHR_SIZE;
-@@ -417,7 +401,7 @@ _TINT MsgBox ( HWND hParent,
-     }
- 
-     pDlgTemplate = p = (PWORD) LocalAlloc (LPTR, bufSize);
--    if ( !pDlgTemplate )  __leave;
-+    if ( !pDlgTemplate ) goto leave;
- 
-     lStyle = DS_MODALFRAME | DS_SYSMODAL | WS_POPUP | WS_CAPTION;
-     *p++ = LOWORD (lStyle);
-@@ -536,9 +520,13 @@ _TINT MsgBox ( HWND hParent,
-         *pItemsCount += 1;
-       }
-     } // Childs
--  }  // __try
-+	
-+	
-+  }
-+  leave:
-   /*----------------------------------------------------------------------*/
--  __finally {
-+  
-+  {
-     int res = -1;
-     if ( pDlgTemplate )
-       res = DialogBoxIndirect (
-@@ -553,16 +541,6 @@ _TINT MsgBox ( HWND hParent,
-     return ( res );
-   }
- 
--#ifdef VAC
--leave: ;         // added for VisualAge
--#endif
--
- }
- 
--#if defined(__CYGWIN32__) || defined(__MINGW32__)
--#undef __try
--#undef __finally
--#undef __leave
--#endif
--
- #endif
 Index: oce/src/OSD/OSD_signal_WNT.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_signal_WNT.cxx
 +++ oce/src/OSD/OSD_signal_WNT.cxx
-@@ -582,12 +582,6 @@ static LONG __fastcall _osd_raise ( DWOR
+@@ -521,12 +521,6 @@ static LONG __fastcall _osd_raise ( DWOR
  //==== _osd_debug 
  //============================================================================
  
@@ -851,7 +714,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
  LONG _osd_debug ( void ) {
  
   LONG action ;
-@@ -603,29 +597,33 @@ LONG _osd_debug ( void ) {
+@@ -542,29 +536,33 @@ LONG _osd_debug ( void ) {
    SECURITY_ATTRIBUTES sa;
    PROCESS_INFORMATION pi;
    STARTUPINFO         si;
@@ -891,7 +754,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
     wsprintf (  cmdLine, keyValue, GetCurrentProcessId (), hEvent  );
  
     ZeroMemory (  &si, sizeof ( STARTUPINFO )  );
-@@ -638,8 +636,11 @@ LONG _osd_debug ( void ) {
+@@ -577,8 +575,11 @@ LONG _osd_debug ( void ) {
             NULL, cmdLine, NULL, NULL, TRUE, CREATE_DEFAULT_ERROR_MODE,
             NULL, NULL, &si, &pi
            )
@@ -904,7 +767,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
  //   cout << "_osd_debug -> WaitForSingleObject " << endl ;
     WaitForSingleObject ( hEvent, INFINITE );
  //   cout << "_osd_debug <- WaitForSingleObject -> CloseHandle " << endl ;
-@@ -650,18 +651,13 @@ LONG _osd_debug ( void ) {
+@@ -589,18 +590,13 @@ LONG _osd_debug ( void ) {
  //   cout << "_osd_debug fDbgLoaded  " << endl ;
     fDbgLoaded = TRUE;
    
@@ -924,7 +787,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
   }  /* end if */
  
   action = fDbgLoaded ? EXCEPTION_CONTINUE_EXECUTION : EXCEPTION_EXECUTE_HANDLER;
-@@ -671,12 +667,6 @@ LONG _osd_debug ( void ) {
+@@ -610,12 +606,6 @@ LONG _osd_debug ( void ) {
  
  }  // end _osd_debug
  
@@ -934,444 +797,6 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
 -#undef __leave
 -#endif
 -
- //============================================================================
- //==== _debug_break 
- //============================================================================
-Index: oce/src/WNT/WNT_ImageProcessor.cxx
-===================================================================
---- oce.orig/src/WNT/WNT_ImageProcessor.cxx
-+++ oce/src/WNT/WNT_ImageProcessor.cxx
-@@ -68,6 +68,7 @@
- #endif  /* _DEBUG */
- #define WINNT35X() (WNT_osVer.dwPlatformId   == VER_PLATFORM_WIN32_NT && \
-                     WNT_osVer.dwMajorVersion == 3 )
-+
- //***//
- typedef struct {
+ // Must be there for compatibility with UNIX system code ----------------------
  
-@@ -127,6 +128,7 @@ HBITMAP LoadImageFromFile (
-  HANDLE   hFile, hFileMap = NULL;
-  HBITMAP  retVal = NULL;
-  DWORD    dwProtect, dwAccess;
-+ bool Ret = true;
- 
-  if ( WNT_osVer.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS ) {
- 
-@@ -162,7 +164,7 @@ HBITMAP LoadImageFromFile (
-  _makepath ( ifl, drv, dir, fnm, ext );
- #endif
- 
-- __try {
-+ if (Ret) {
- 
-   hFile = CreateFile (
- #ifdef IMP080200
-@@ -173,22 +175,32 @@ HBITMAP LoadImageFromFile (
-            OPEN_EXISTING, FILE_ATTRIBUTE_NORMAL, NULL
- 		  );
- 
--  if ( hFile == INVALID_HANDLE_VALUE ) __leave;
--
-+  if ( hFile == INVALID_HANDLE_VALUE ) Ret = false;
-+ }
-+ if (Ret)
-+ {
-   dwFileSize = GetFileSize ( hFile, NULL );
- 
--  if ( dwFileSize == 0xFFFFFFFF ) __leave;
-+  if ( dwFileSize == 0xFFFFFFFF ) Ret = false;
-+ }
-+ if (Ret)
-+ {
- 
-   hFileMap = CreateFileMapping (
-               hFile, NULL, dwProtect, 0, dwFileSize, NULL
-              );
- 
--  if ( hFileMap == NULL ) __leave;
-+  if ( hFileMap == NULL ) Ret = false;
-+ }
-+ if (Ret)
-+ {
- 
-   lpvFile = MapViewOfFile ( hFileMap, FILE_MAP_COPY, 0, 0, 0 );
- 
--  if ( lpvFile == NULL ) __leave;
--
-+  if ( lpvFile == NULL ) Ret = false;
-+ }
-+ if (Ret)
-+ {
-   if (   memcmp (  ( const void* )lpvFile, ( const void* )"BM", 2  ) == 0   )
- 
-    retVal = loadBMP ( gDev );
-@@ -202,10 +214,7 @@ HBITMAP LoadImageFromFile (
-   else  // assume XWD file
- 
-    retVal = loadXWD ( gDev );
--
-- }  // end __try
--
-- __finally {
-+ }
- 
-   if ( lpvFile  != NULL ) {
- 
-@@ -217,8 +226,6 @@ HBITMAP LoadImageFromFile (
-   if ( hFileMap != NULL                 ) CloseHandle ( hFileMap );
-   if ( hFile    != INVALID_HANDLE_VALUE ) CloseHandle ( hFile    );
- 
-- }  // end __finally
--
-  if ( hDevCtx == NULL ) ReleaseDC ( NULL, hDC );
- 
-  return retVal;
-@@ -234,8 +241,9 @@ int __WNT_API SaveWindowToFile (
-  HDC      hDCmem;
-  HBITMAP  hBmp = NULL, hOldBmp;
-  HPALETTE hOldPal;
-+ bool Ret = true;
- 
-- __try {
-+ if (Ret) {
- 
-   hDC = GetDC ( hWnd );
- #ifdef TEST
-@@ -253,8 +261,10 @@ int __WNT_API SaveWindowToFile (
- 
-   hBmp = CreateCompatibleBitmap ( hDC, w, h );
- 
--  if ( hBmp == NULL ) __leave;
--
-+  if ( hBmp == NULL ) Ret = false;
-+ }
-+ if (Ret)
-+ {
-   hOldBmp = SelectBitmap ( hDCmem, hBmp );
- 
-    BitBlt ( hDCmem, 0, 0, w, h, hDC, x, y, SRCCOPY );
-@@ -262,10 +272,7 @@ int __WNT_API SaveWindowToFile (
-   SelectBitmap ( hDCmem, hOldBmp );
- 
-   retVal = SaveBitmapToFile ( gDev, hBmp, fName, 0, 0, w, h );
--
-- }  // end __try
--
-- __finally {
-+ }  
- 
- #ifdef TEST
-   fWindow = FALSE;
-@@ -280,8 +287,6 @@ int __WNT_API SaveWindowToFile (
-   DeleteDC ( hDCmem );
-   ReleaseDC ( hWnd, hDC );
- 
-- }  // end __finally
--
-  return retVal;
- 
- }  // end SaveWindowToFile
-@@ -336,8 +341,8 @@ int SaveBitmapToFile (Handle(WNT_Graphic
-   HBITMAP  hNewBmp = NULL;
-   HPALETTE hOldPal;
-   BOOL     newBmp  = FALSE, newDC = FALSE;
--
--  __try {
-+  bool Ret = true;
-+  if (Ret) {
- 
-   #ifdef TEST
-     if (!fWindow)
-@@ -376,19 +381,21 @@ int SaveBitmapToFile (Handle(WNT_Graphic
-       {
-         SelectPalette (hDC, hOldPal, FALSE);
-       }
--      if (hNewBmp == NULL) __leave;
-+      if (hNewBmp == NULL) Ret = false;
-     }
-     else
-     {
-       hNewBmp = hBmp;
-     }
--
-+  }
-+  if (Ret)
-+  {
-     retVal = DumpBitmapToFile (hNewBmp, fName);
--  }  // end __try
--  __finally {
-+  } 
-+ 
-     if (hNewBmp != NULL && newBmp) DeleteObject (hNewBmp);
-     if (newDC) ReleaseDC (NULL, hDC);
--  }  // end __finally
-+
-   return retVal;
- }  // end SaveBitmapToFile
- //***//
-@@ -423,7 +430,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
-  LPVOID           imageData;
-  DWORD            dataSize;
- 
-- __try {
-+ {
- 
-   xwdHdr = ( XWDFileHeader* )lpvFile;
- 
-@@ -432,7 +439,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
-   if ( xwdHdr -> file_version  != XWD_FILE_VERSION ||
-        xwdHdr -> pixmap_format != ZPixmap          ||
-        xwdHdr -> header_size   <  sizeof ( XWDFileHeader )
--  ) __leave;
-+  ) goto leave;
- 
-   xColor = ( XColor* )(  ( char* )lpvFile + xwdHdr -> header_size  );
- 
-@@ -468,7 +475,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
- 
- 	else
- 
--	 __leave;
-+	 goto leave;
- 
-     break;
- 
-@@ -493,7 +500,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
- 
- 	 else
- 
--	  __leave;
-+	  goto leave;
- 
-     break;
- 
-@@ -501,7 +508,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
- 
-   pBmi = ( PBITMAPINFO )MALLOC( nBytes );
- 
--  if ( pBmi == NULL ) __leave;
-+  if ( pBmi == NULL ) goto leave;
- 
-   pBmi -> bmiHeader.biSize          = sizeof ( BITMAPINFOHEADER );
-   pBmi -> bmiHeader.biWidth	        = xwdHdr -> pixmap_width;
-@@ -540,7 +547,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
- 
- 	  pbInit = ( PBYTE )MALLOC( bitmapSize );
- 
--	  if ( pbInit == NULL ) __leave;
-+	  if ( pbInit == NULL ) goto leave;
- 
- 	  newMem = TRUE;
- 
-@@ -560,7 +567,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
- 
-      ptrDIB = ( PBYTE )MALLOC( dataSize );
- 
--	 if ( ptrDIB == NULL ) __leave;
-+	 if ( ptrDIB == NULL ) goto leave;
- 
- 	 CopyMemory (  ( PVOID )ptrDIB, ( PVOID )pbInit, dataSize  );
- 	 FillMemory (  ( PVOID )colors, MAXCOLOR * sizeof ( WORD ), 0xFFFF );
-@@ -623,7 +630,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
- 
- 	  pbInit = ( PBYTE )MALLOC( bitmapSize );
- 
--	  if ( pbInit == NULL ) __leave;
-+	  if ( pbInit == NULL ) goto leave;
- 
- 	  newMem = TRUE;
- 
-@@ -689,7 +696,7 @@ AllocColors_16:
- 
- 	  pbInit = ( PBYTE )MALLOC( bitmapSize );
- 
--	  if ( pbInit == NULL ) __leave;
-+	  if ( pbInit == NULL ) goto leave;
- 
- 	  newMem = TRUE;
- 
-@@ -742,7 +749,7 @@ AllocColors_16:
- 
- 	   default:
- 
--	    __leave;
-+	    goto leave;
- 
-       }  // end switch ( xwdHdr -> bits_per_pixel . . . )
- 
-@@ -752,7 +759,7 @@ AllocColors_16:
- 
-      case 24:
- 
--      __leave;
-+      goto leave;
- 
-      case 32:
- 
-@@ -826,15 +833,13 @@ AllocColors_16:
- 
-    SelectPalette ( hDC, hOldPal, FALSE );
- 
-- }  // end try
-+leave: ;
- 
-- __finally {
-+ }  // end try
- 
-   if ( pbInit != NULL && newMem ) FREE( pbInit );
-   if ( pBmi   != NULL           ) FREE( pBmi   );
- 
-- }  // end finally
--
-  return retVal;
- 
- }  // end readXWD
-@@ -905,8 +910,7 @@ static HBITMAP loadBMP (  Handle( WNT_Gr
-  UINT              nColors;
-  DWORD             dwWidth, dwHeight;
-  BOOL              os2Flag;
--
-- __try {
-+ bool Ret = true;
- 
-   pBmfh = ( PBITMAPFILEHEADER )lpvFile;
-   pBmih = ( PBITMAPINFOHEADER )(  ( PBYTE )lpvFile + sizeof ( BITMAPFILEHEADER )  );
-@@ -923,8 +927,10 @@ static HBITMAP loadBMP (  Handle( WNT_Gr
- 						         sizeof ( RGBQUAD ) * nColors
- 					            );
- 
--   if ( pBmih == NULL ) __leave;
-+   if ( pBmih == NULL ) Ret = false;
- 
-+  if (Ret)
-+  {
-    pBmih -> biSize        = sizeof ( BITMAPINFOHEADER );
-    pBmih -> biWidth       = pBmch -> bcWidth;
-    pBmih -> biHeight      = pBmch -> bcHeight;
-@@ -940,12 +946,12 @@ static HBITMAP loadBMP (  Handle( WNT_Gr
-    	 (  ( PBITMAPCOREINFO )pBmch  ) -> bmciColors[ i ].rgbtGreen;
-    	(  ( PBITMAPINFO )pBmih  ) -> bmiColors[ i ].rgbBlue =
-    	 (  ( PBITMAPCOREINFO )pBmch  ) -> bmciColors[ i ].rgbtBlue;
--
-    }  // end for
- 
-    pRGB     = (  ( PBITMAPINFO )pBmih  ) -> bmiColors;
-    os2Flag  = TRUE;
- 
-+  } // if Ret
-   } else {  // Windows DIB
- 
-    pRGB     = ( LPRGBQUAD )(  ( PBYTE )pBmih + pBmih -> biSize  );
-@@ -975,14 +981,8 @@ static HBITMAP loadBMP (  Handle( WNT_Gr
- 
-    SelectPalette ( hDC, hOldPal, FALSE );
- 
-- }  // end __try
--
-- __finally {
--
-   if ( os2Flag && pBmih ) FREE( pBmih );
- 
-- }  // end __finally
--
-   return retVal;
- 
- }  // end  loadBMP
-@@ -1023,7 +1023,7 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
-   Suffix = Prefix = OutCode = NULL;
- #endif
- 
-- __try {
-+ {
- 
- #ifdef BUC60837
-   OutCode = ( PUINT )MALLOC(  1026 * sizeof ( UINT )  );
-@@ -1035,7 +1035,7 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
-   Prefix  = ( PUINT )MALLOC(  4096 * sizeof ( UINT )  );
-   Suffix  = ( PUINT )MALLOC(  4096 * sizeof ( UINT )  );
- 
--  if ( OutCode == NULL || Prefix == NULL || Suffix == NULL ) __leave;
-+  if ( OutCode == NULL || Prefix == NULL || Suffix == NULL ) goto leave;
- 
-   byte = NEXT_BYTE;
- 
-@@ -1045,13 +1045,13 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
-   BitMask     = nColors - 1;
-   ++ptr;
- 
--  if ( NEXT_BYTE ) __leave;
-+  if ( NEXT_BYTE ) goto leave;
- 
-   pBmi = ( PBITMAPINFO )MALLOC(
-                          sizeof ( BITMAPINFO ) + sizeof ( RGBQUAD ) * 256
- 					    );
- 
--  if ( pBmi == NULL ) __leave;
-+  if ( pBmi == NULL ) goto leave;
- 
-   if ( hasColormap ) {
- 
-@@ -1075,11 +1075,11 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
- 
-   }  // end while
- 
--  if ( NEXT_BYTE != IMAGESEP ) __leave;
-+  if ( NEXT_BYTE != IMAGESEP ) goto leave;
- 
-   rasterPtr = ( PBYTE )MALLOC( dwFileSize );
- 
--  if ( rasterPtr == NULL ) __leave;
-+  if ( rasterPtr == NULL ) goto leave;
- 
-   ptr += 4;
- 
-@@ -1114,7 +1114,7 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
- 
-    }  // end while
- 
--   if (  ( UINT )( ptr1 - rasterPtr ) > dwFileSize  ) __leave;  // corrupt file - unblock
-+   if (  ( UINT )( ptr1 - rasterPtr ) > dwFileSize  ) goto leave;  // corrupt file - unblock
- 
-   } while ( byte1 );
- 
-@@ -1123,7 +1123,7 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
- 
-   pData = ( PBYTE )MALLOC( dataSize );
- 
--  if ( pData == NULL ) __leave;
-+  if ( pData == NULL ) goto leave;
- 
-   x = y = pass = OutCount = BitOffset = ByteOffset = 0;
- 
-@@ -1178,7 +1178,7 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
- #ifdef BUC60837
- 					break;
- #else
--					__leave;
-+					goto leave;
- #endif
- 	 OutCode[ OutCount++ ] = Suffix[ CurCode ];
- 	 CurCode               = Prefix[ CurCode ];
-@@ -1250,9 +1250,12 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
- 
-    SelectPalette ( hDC, hOldPal, FALSE );
- 
-- }  // end __try
- 
-- __finally {
-+  leave: ;
-+
-+
-+ } 
-+
- 
-   if ( pData     != NULL ) FREE( pData     );
-   if ( rasterPtr != NULL ) FREE( rasterPtr );
-@@ -1261,7 +1264,6 @@ static HBITMAP loadGIF (  Handle( WNT_Gr
-   if ( Prefix    != NULL ) FREE( Prefix    );
-   if ( OutCode   != NULL ) FREE( OutCode   );
- 
-- }  // end __finally
- 
-  return retVal;
- 
+ //void OSD::Handler(const OSD_Signals aSig,

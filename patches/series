@@ -1,14 +1,10 @@
 remove-duplicate-headers.patch
 
-submitted/OCC22327/fix-build-tcl-8.6.patch
-upstream/OCC23436-fix-BRepOffsetAPI_ThruSections-crash.patch
-
 # See if the new OpenGL stuff needs it # submitted/OCC22332/fix-layer-line.patch
 # May have been fixed upstream         # submitted/OCC22749/fix-hashcode.patch
 
 submitted/thread_20051/fix-build-failure-powerpc.patch
 submitted/thread_20052/fix-build-failure-gnu-kfreebsd.patch
-submitted/thread_20101/fix-XOpenDisplay-remote-call.patch
 submitted/thread_20105/add-openmp-support.patch
 
 fix-cast-OSD_Process.patch
@@ -18,17 +14,12 @@ fix-std-atol.patch
 fix-out-of-bounds-errors.patch
 add-missing-include-stdio.h.patch
 fix-build-failure-error-format.patch
-fix-NCollection_Vec.patch
 fix-sorttools-quicksort.patch
 fix-bug-Draw-MainWindow.cxx
-fix-duplicate-check.patch
-fix-duplicate-loop-variable.patch
 
 submitted/thread_21346/ports/remove-__try-__finally.patch
-submitted/thread_21347/warning/remove-extra-token-after-endif.patch
 submitted/thread_21348/warning/fix-declared-but-never-defined.patch
 submitted/thread_21349/warning/fix-deprecated-conversion-from-string.patch
-submitted/thread_21350/warning/fix-comparison-between-different-enums.patch
 # See if the new OpenGL stuff needs it # submitted/thread_21351/warning/deleting-void-ptr-is-undefined.patch
 submitted/thread_21352/warning/fix-format-type-mismatch.patch
 # See if the new OpenGL stuff needs it # submitted/thread_21353/warning/fix-function-never-returns.patch
@@ -39,7 +30,6 @@ submitted/thread_21382/warning/fix-old_declarators.patch
 submitted/thread_21383/warning/fix-signed-unsigned-mismatch.patch
 submitted/thread_21384/warning/fix-logical-op-parentheses.patch
 submitted/thread_21385/warning/add-scope-to-declare-constant-variable.patch
-submitted/thread_21386/warning/fix-statement-has-no-effect.patch
 submitted/thread_21387/warning/remove-useless-statements-after-comma.patch
 submitted/thread_21388/warning/fix-uninitialized-var.patch
 submitted/thread_21389/warning/fix-unused-function.patch
@@ -52,15 +42,12 @@ submitted/thread_21963/bugfix-add-missing-include-BRepBlend_BlendTool.lxx.patch
 submitted/thread_22234/Standard_StdAllocator.patch
 submitted/thread_22556/fix-elif-HAVE_SYS_TIME_H.patch
 
-new-Standard_Time-type.patch
 do-not-redefine-memmove.patch
 fix-symbol-decorators-Draw.patch
 drop-getGL2PSFontName.patch
 bugfix-points-swapped-in-BRepExtrema_DistanceSS.patch
 
 cppcheck/fix-unused-local-var.patch
-cppcheck/fix-resource-leak.patch
-cppcheck/fix-memory-leak.patch
 cppcheck/fix-return-reference-auto.patch
 
 warning/fix-unused-local-var.patch
@@ -69,10 +56,8 @@ warning/format-issue.patch
 warning/fix-unhandled-enumeration-value2.patch
 warning/fix-comment-format.patch
 # See if the new OpenGL stuff needs it # warning/fix-comparison-between-different-enums.patch
-warning/fix-mismatch-allocation-deallocation.patch
 warning/fix-ambiguous-else.patch
 warning/fix-defined-but-not-used.patch
-warning/fix-signed-unsigned-mismatch.patch
 warning/fix-implicit-conversion-from-wider-type.patch
 warning/fix-parentheses-equality.patch
 
@@ -84,19 +69,13 @@ warning/fix-assignment-in-conditional-expression.patch
 warning/add-equal-operator.patch
 warning/fix-unreachable-code.patch
 warning/fix-unreachable-code-rewrite-loops.patch
-warning/fix-Standard_IMPORT-usage.patch
-warning/fix-dynamic-class-memaccess.patch
 warning/fix-constant-logical-operand.patch
 warning/fix-uninitialized-var.patch
 warning/fix-maybe-uninitialized.patch
-warning/fix-comparison-between-different-enums.patch
 warning/fix-dangling-else.patch
 warning/remove-duplicate-checks.patch
 warning/fix-old-declarators.patch
 warning/fix-initialization-order.patch
-warning/deprecated-conversion-string.patch
-warning/missing-braces-around-initializer.patch
-warning/fix-tautological-compare.patch
 warning/fix-unused-value.patch
 warning/fix-logical-op-parentheses.patch
 warning/fix-narrowing.patch
@@ -117,7 +96,6 @@ cmake/remove-RETSIGTYPE-in-Csemaphore.c.patch
 
 ports/drop-utsname-usage-for-unknown-architectures.patch
 ports/fix-OSD_Process-CurrentDirectory-on-the-Hurd.patch
-ports/fix-build-on-Alpha.patch
 ports/rename-ED-variables-into-EData.patch
 ports/do-not-include-X11-bitmaps-icon.patch
 
@@ -133,24 +111,20 @@ ports/borland9.patch
 ports/borland10.patch
 ports/borland12.patch
 ports/borland13.patch
-ports/workaround-clang-bug-remove-trampoline.patch
 ports/workaround-gcc42-bug-gpMat.patch
 ports/rename-PPC-in-cdl.patch
 ports/rename-glext.h.patch
 ports/mingw64-intptr_t-fixes.patch
-ports/mm_malloc.patch
 
 ports/do-not-undef-GL_VERSION.patch
 MMGT-default-values.patch
 warning/modify-MSVC-pragmas.patch
 
-ports/cocoa.patch
-
 warning/fix-implicit-bool-conversion.patch
 review/avoid-macro-redefinition.patch
 # TO BE REVIEWED # review/fix-ftgl-font-issue.patch
 
-improve-boolean.patch
+# improve-boolean.patch
 speedup-GeomLib-NormEstim.patch
 
 fix-older-tcl.patch
@@ -163,7 +137,6 @@ fix-wok-issues.patch
 get-rid-of-environment-variables.patch
 
 TKService-depends-X11-only-if-needed.patch
-static-tkopengl.patch
 static-linking.patch
 debug-postfix.patch
 disable-bspline-mesher.patch
@@ -177,5 +150,6 @@ config/separate-installation-path.patch
 ports/borland11.patch
 ports/borland14.patch
 ports/borland15.patch
-review/add-todos.patch
 
+fix-ftbfs-c++11.patch
+fix-ftbfs-Hurd.patch

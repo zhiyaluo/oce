@@ -17,19 +17,6 @@ Subject: [PATCH 06/11] [warning-fix][unreachable-code] Fixes unreachable code
  src/TNaming/TNaming_Naming.cxx           |    3 +--
  10 files changed, 27 insertions(+), 28 deletions(-)
 
-Index: oce/src/BOP/BOP_WireEdgeClassifier.cxx
-===================================================================
---- oce.orig/src/BOP/BOP_WireEdgeClassifier.cxx
-+++ oce/src/BOP/BOP_WireEdgeClassifier.cxx
-@@ -272,7 +272,7 @@ static
-   IntTools_Tools::MakeFaceFromWireAndFace (aW2, theFace, aFN2);  
-   
-   anExp1.Init (aFN1, TopAbs_EDGE);
--  for (; anExp1.More(); anExp1.Next()){
-+  if(anExp1.More()){
-     const TopoDS_Edge& aE1=TopoDS::Edge(anExp1.Current());
-     //
-     // The block that choises step in 2D taking into account
 Index: oce/src/BRepAlgo/BRepAlgo_FaceRestrictor.cxx
 ===================================================================
 --- oce.orig/src/BRepAlgo/BRepAlgo_FaceRestrictor.cxx
@@ -75,24 +62,6 @@ Index: oce/src/FWOSDriver/FWOSDriver_Driver.cxx
      }
    return Standard_False;
  }
-Index: oce/src/Graphic2d/Graphic2d_Buffer.cxx
-===================================================================
---- oce.orig/src/Graphic2d/Graphic2d_Buffer.cxx
-+++ oce/src/Graphic2d/Graphic2d_Buffer.cxx
-@@ -362,11 +362,9 @@ printf(" Graphic2d_Buffer::ReLoad(%d)\n"
- 
- 	    // The color of the 1st primitive from the buffer is required
- 	    if( theColorIndex < 0) {
--	        Standard_Integer i;
--                for (i=1; i<=myPrimitives.Length(); i++) {
-+	        Standard_Integer i=1;
-+                if(i<=myPrimitives.Length()) {
- 		  theColorIndex = myPrimitives.Value (i)->ColorIndex ();
--		    break;
-- 
- 		}
- 		if( theColorIndex < 0 ) theColorIndex = 0;
- 	    }
 Index: oce/src/MeshVS/MeshVS_MeshOwner.cxx
 ===================================================================
 --- oce.orig/src/MeshVS/MeshVS_MeshOwner.cxx

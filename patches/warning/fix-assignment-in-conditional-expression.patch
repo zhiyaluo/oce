@@ -113,16 +113,16 @@ Index: oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
 --- oce.orig/src/BRepFill/BRepFill_TrimShellCorner.cxx
 +++ oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
 @@ -915,8 +915,8 @@ Standard_Boolean SplitUEdges(const Handl
-       for(vvit = 1; !bvertexfound && (vvit <= aVVs.Extent()); vvit++) {
- 	const BOPTools_VVInterference& aVV = aVVs(vvit);
+         //const BOPTools_VVInterference& aVV = aVVs(vvit);
+         const BOPDS_InterfVV& aVV = aVVs(vvit);
  
--	if(((vindex1 == aVV.Index1()) && (vindex2 = aVV.Index2())) ||
--	   ((vindex1 == aVV.Index2()) && (vindex2 = aVV.Index1()))) {
-+	if(((vindex1 == aVV.Index1()) && (vindex2 == aVV.Index2())) ||
-+	   ((vindex1 == aVV.Index2()) && (vindex2 == aVV.Index1()))) {
+-        if(((vindex1 == aVV.Index1()) && (vindex2 = aVV.Index2())) ||
+-           ((vindex1 == aVV.Index2()) && (vindex2 = aVV.Index1()))) {
++        if(((vindex1 == aVV.Index1()) && (vindex2 == aVV.Index2())) ||
++           ((vindex1 == aVV.Index2()) && (vindex2 == aVV.Index1()))) {
  
- 	  if(aVV.NewShape() == 0) {
- 	    continue;
+           if(!aVV.HasIndexNew()) {
+             continue;
 Index: oce/src/BRepTest/BRepTest_CheckCommands.cxx
 ===================================================================
 --- oce.orig/src/BRepTest/BRepTest_CheckCommands.cxx
@@ -164,28 +164,6 @@ Index: oce/src/BRepTopAdaptor/BRepTopAdaptor_FClass2d.cxx
      vperiod = surf->VPeriod();
    TopAbs_State Status = TopAbs_UNKNOWN;
    Standard_Boolean urecadre = Standard_False, vrecadre = Standard_False;
-Index: oce/src/CGM/Gestfic.cxx
-===================================================================
---- oce.orig/src/CGM/Gestfic.cxx
-+++ oce/src/CGM/Gestfic.cxx
-@@ -29,7 +29,7 @@ FILE* OPEN_FILE (char* f_name, int TypeC
-   switch (TypeCgm){
-     case 1:
-     case 2:
--      if ((filed = fopen(f_name,"wb" ))) {
-+      if ((filed = fopen(f_name,"wb" )) != NULL) {
- #ifdef WNT
-         chmod (f_name, S_IREAD | S_IWRITE);
- #else
-@@ -39,7 +39,7 @@ FILE* OPEN_FILE (char* f_name, int TypeC
-       }
-       break;
-     case 3:
--      if ((filed = fopen(f_name,"w" ))) {
-+      if ((filed = fopen(f_name,"w" )) != NULL) {
- #ifdef WNT
-         chmod (f_name, S_IREAD | S_IWRITE);
- #else
 Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx
@@ -277,125 +255,6 @@ Index: oce/src/GeomPlate/GeomPlate_BuildPlateSurface.cxx
      {
        nopt = 3;
        // Tableau contenant le nuage de point pour le calcul du plan
-Index: oce/src/Graphic2d/Graphic2d_Drawer.cxx
-===================================================================
---- oce.orig/src/Graphic2d/Graphic2d_Drawer.cxx
-+++ oce/src/Graphic2d/Graphic2d_Drawer.cxx
-@@ -350,7 +350,7 @@ Standard_Boolean Graphic2d_Drawer::GetIm
-     Standard_Integer width,height;
- 
-         if( myDriverIsDefined ) {
--          if(( theStatus = myDriver->SizeOfImageFile(aFileName,width,height))){
-+          if(( theStatus = myDriver->SizeOfImageFile(aFileName,width,height)) == Standard_True ){
-             aWidth = Standard_ShortReal(myDriver->Convert(width)/Scale());
-             aHeight = Standard_ShortReal(myDriver->Convert(height)/Scale());
-           }
-Index: oce/src/Graphic2d/Graphic2d_FramedText.cxx
-===================================================================
---- oce.orig/src/Graphic2d/Graphic2d_FramedText.cxx
-+++ oce/src/Graphic2d/Graphic2d_FramedText.cxx
-@@ -255,7 +255,7 @@ Standard_ShortReal wscale,hscale;
- Standard_Boolean status;
- 
-     myAdjustFlag = Adjust;
--    if(( status = TextSize(twidth,theight,xoffset,yoffset) )) {
-+    if(( status = TextSize(twidth,theight,xoffset,yoffset) ) == Standard_True ) {
-       wscale = Standard_ShortReal( aWidth/twidth );
-       if( wscale > 0. ) {
-         if( Expand || (twidth > aWidth) ) myWScale *= wscale;
-@@ -279,7 +279,7 @@ Quantity_Length twidth,theight,txoffset,
- //Standard_ShortReal wscale,hscale;
- Standard_Boolean status;
- 
--    if(( status = TextSize(twidth,theight,txoffset,tyoffset) )) {
-+    if(( status = TextSize(twidth,theight,txoffset,tyoffset) ) == Standard_True ) {
-       Standard_Integer l = myText.Length();
-       while( (l > 1) && (twidth > aWidth) ) {
-         --l;
-@@ -314,7 +314,7 @@ Standard_Boolean status = Standard_False
-       Standard_ShortReal width,height,xoffset,yoffset;
-           aDrawer->SetTextAttrib(myColorIndex,myFontIndex,
- 					mySlant,hscale,wscale,myIsUnderlined);
--          if(( status = aDrawer->GetTextSize(myText,width,height,xoffset,yoffset) )) {
-+          if(( status = aDrawer->GetTextSize(myText,width,height,xoffset,yoffset) ) == Standard_True ) {
-             Standard_ShortReal dxm,dym;
- #ifndef PERF
- 	    myResetFlag = Standard_False; 
-Index: oce/src/Graphic2d/Graphic2d_HidingText.cxx
-===================================================================
---- oce.orig/src/Graphic2d/Graphic2d_HidingText.cxx
-+++ oce/src/Graphic2d/Graphic2d_HidingText.cxx
-@@ -273,7 +273,7 @@ Standard_ShortReal wscale,hscale;
- Standard_Boolean status;
- 
-     myAdjustFlag = Adjust;
--    if(( status = TextSize(twidth,theight,xoffset,yoffset) )) {
-+    if(( status = TextSize(twidth,theight,xoffset,yoffset) ) == Standard_True ) {
-       wscale = Standard_ShortReal( aWidth/twidth );
-       if( wscale > 0. ) {
-         if( Expand || (twidth > aWidth) ) myWScale *= wscale;
-@@ -297,7 +297,7 @@ Quantity_Length twidth,theight,txoffset,
- //Standard_ShortReal wscale,hscale;
- Standard_Boolean status;
- 
--    if(( status = TextSize(twidth,theight,txoffset,tyoffset) )) {
-+    if(( status = TextSize(twidth,theight,txoffset,tyoffset) ) == Standard_True )  {
-       Standard_Integer l = myText.Length();
-       while( (l > 1) && (twidth > aWidth) ) {
-         --l;
-@@ -332,7 +332,7 @@ Standard_Boolean status = Standard_False
-           Standard_ShortReal width,height,xoffset,yoffset;
-           aDrawer->SetTextAttrib(myColorIndex,myFontIndex,
-                                         mySlant,hscale,wscale,myIsUnderlined);
--          if(( status = aDrawer->GetTextSize(myText,width,height,xoffset,yoffset) )) {
-+          if(( status = aDrawer->GetTextSize(myText,width,height,xoffset,yoffset) ) == Standard_True ) {
-             Standard_ShortReal dxm,dym;
- #ifndef PERF
-             myResetFlag = Standard_False;
-Index: oce/src/Graphic2d/Graphic2d_Paragraph.cxx
-===================================================================
---- oce.orig/src/Graphic2d/Graphic2d_Paragraph.cxx
-+++ oce/src/Graphic2d/Graphic2d_Paragraph.cxx
-@@ -751,7 +751,7 @@ Standard_Boolean status = Standard_False
-               static TCollection_ExtendedString hletter("Hp");
-               Standard_ShortReal hwidth,hheight,hxoffset,hyoffset;
-               if(( status = aDrawer->GetTextSize(hletter,hwidth,hheight,
--                                                        hxoffset,hyoffset) )) {
-+                                                        hxoffset,hyoffset) ) == Standard_True ) {
-                 theight = Max(hheight-hyoffset,theight-tyoffset);
-                 tyoffset = Max(hyoffset,tyoffset);
-               }
-Index: oce/src/Graphic2d/Graphic2d_Text.cxx
-===================================================================
---- oce.orig/src/Graphic2d/Graphic2d_Text.cxx
-+++ oce/src/Graphic2d/Graphic2d_Text.cxx
-@@ -382,7 +382,7 @@ Standard_ShortReal wscale,hscale;
- Standard_Boolean status;
- 
-     myAdjustFlag = Adjust;
--    if(( status = TextSize(twidth,theight,txoffset,tyoffset) )) {
-+    if(( status = TextSize(twidth,theight,txoffset,tyoffset) ) == Standard_True ) {
-       wscale = Standard_ShortReal(aWidth/twidth);
-       if( wscale > 0. ) {
- 	if( Expand || (twidth > aWidth) ) myWScale *= wscale;
-@@ -406,7 +406,7 @@ Quantity_Length twidth,theight,txoffset,
- //Standard_ShortReal wscale,hscale;
- Standard_Boolean status;
- 
--    if(( status = TextSize(twidth,theight,txoffset,tyoffset) )) {
-+    if(( status = TextSize(twidth,theight,txoffset,tyoffset) ) == Standard_True ) {
-       Standard_Integer l = myText.Length();
-       while( (l > 1) && (twidth > aWidth) ) {
-         --l;
-@@ -438,7 +438,7 @@ Standard_Boolean status = Standard_False
-           aDrawer->SetTextAttrib(myColorIndex,myFontIndex,
- 					mySlant,hscale,wscale,myIsUnderlined);
-           if(( status = 
--		aDrawer->GetTextSize(myText,width,height,xoffset,yoffset) )) {
-+		aDrawer->GetTextSize(myText,width,height,xoffset,yoffset) ) == Standard_True ) {
- #ifndef PERF
- 	    myResetFlag = Standard_False;
- #endif
 Index: oce/src/IntTools/IntTools_FClass2d.cxx
 ===================================================================
 --- oce.orig/src/IntTools/IntTools_FClass2d.cxx
@@ -416,13 +275,7 @@ Index: oce/src/OSD/OSD.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD.cxx
 +++ oce/src/OSD/OSD.cxx
-@@ -59,12 +59,12 @@ Standard_Boolean OSD::RealToCString(cons
-   if (sprintf(aString,"%.17e",aReal)  <= 0) //BUC60808
-     return Standard_False ;
- 
--  if ((p = strchr(aString,DecimalPoint)))
-+  if ((p = strchr(aString,DecimalPoint)) != 0)
-     *p = '.' ;
+@@ -59,7 +59,7 @@ Standard_Boolean OSD::RealToCString(cons
  
    // Suppress "e+00" and unsignificant 0's 
  
@@ -431,37 +284,6 @@ Index: oce/src/OSD/OSD.cxx
      if (!strcmp(p,"e+00"))
        *p = 0 ;
      for (q = p-1 ; *q == '0' ; q--) ;
-@@ -95,7 +95,7 @@ Standard_Boolean OSD::CStringToReal(cons
-   const char *str = aString;
-   char buff[1024];  
-   //if((p = strchr(aString,'.')))
--  if(DecimalPoint != '.' && (p = strchr(aString,'.'))&& ((p-aString) < 1000) )
-+  if(DecimalPoint != '.' && ((p = strchr(aString,'.')) != NULL) && ((p-aString) < 1000) )
-   {
-     strncpy(buff, aString, 1000);
-     buff[p-aString] = DecimalPoint ;
-Index: oce/src/OSD/OSD_Real2String.cxx
-===================================================================
---- oce.orig/src/OSD/OSD_Real2String.cxx
-+++ oce/src/OSD/OSD_Real2String.cxx
-@@ -64,7 +64,7 @@ Standard_Boolean OSD_Real2String::RealTo
- 
-   // Suppress "e+00" and unsignificant 0's 
- 
--  if ((p = strchr(theString,'e'))) {
-+  if ((p = strchr(theString,'e')) != NULL) {
-     if (!strcmp(p,"e+00"))
-       *p = 0 ;
-     for (q = p-1 ; *q == '0' ; q--) ;
-@@ -106,7 +106,7 @@ Standard_Boolean OSD_Real2String::CStrin
- 	  const char * p; 
- 	  // replace the decimal point by the local one
-           if(myReadDecimalPoint != myLocalDecimalPoint && 
--             (p = strchr(theString,myReadDecimalPoint))&& ((p-theString) < 1000) )
-+             ((p = strchr(theString,myReadDecimalPoint)) != NULL) && ((p-theString) < 1000) )
-           {
-             strncpy(buff, theString, 1000);
-             buff[p-theString] = myLocalDecimalPoint;
 Index: oce/src/OSD/OSD_WNT.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_WNT.cxx
@@ -494,19 +316,6 @@ Index: oce/src/OSD/OSD_WNT.cxx
        
         if ( _response_dir_proc != NULL ) {
        
-Index: oce/src/PlotMgt/PlotMgt_Plotter.cxx
-===================================================================
---- oce.orig/src/PlotMgt/PlotMgt_Plotter.cxx
-+++ oce/src/PlotMgt/PlotMgt_Plotter.cxx
-@@ -431,7 +431,7 @@ Standard_Boolean PlotMgt_Plotter::ReadPa
-       STRING_TRIM(aParamDef);
-       aParamDef.Prepend (TCollection_AsciiString ("."));
-     }
--    if ((idx = FindParameter(aParamName))) {
-+    if ((idx = FindParameter(aParamName)) != 0) {
-       aParameter = myParameters -> Value (idx);
-     } else {
-       aParameter = new PlotMgt_PlotterParameter (aParamName);
 Index: oce/src/Resource/Resource_Manager.cxx
 ===================================================================
 --- oce.orig/src/Resource/Resource_Manager.cxx
@@ -562,7 +371,7 @@ Index: oce/src/Visual3d/Visual3d_View.cxx
          MyCView.Orientation.ViewScaleZ                  = float (Sz);
  
          CustomIsModified =
--          MyCView.Orientation.IsCustomMatrix != MyViewOrientation.IsCustomMatrix();
+-        MyCView.Orientation.IsCustomMatrix != MyViewOrientation.IsCustomMatrix();
 +          Standard_Boolean(MyCView.Orientation.IsCustomMatrix != 0) != MyViewOrientation.IsCustomMatrix();  // note: warning should be removed by changing .IsCustomMatrix type
          MyCView.Orientation.IsCustomMatrix = MyViewOrientation.IsCustomMatrix();
          if ( MyViewOrientation.IsCustomMatrix() ) {
@@ -571,7 +380,7 @@ Index: oce/src/Visual3d/Visual3d_View.cxx
          MyCView.Orientation.ViewScaleZ                  = float (Sz);
  
          CustomIsModified =
--          MyCView.Orientation.IsCustomMatrix != MyViewOrientation.IsCustomMatrix();
+-        MyCView.Orientation.IsCustomMatrix != MyViewOrientation.IsCustomMatrix();
 +          Standard_Boolean(MyCView.Orientation.IsCustomMatrix != 0) != MyViewOrientation.IsCustomMatrix(); // note: warning should be removed by changing .IsCustomMatrix type
          MyCView.Orientation.IsCustomMatrix = MyViewOrientation.IsCustomMatrix();
          if ( MyViewOrientation.IsCustomMatrix() ) {

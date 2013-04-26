@@ -142,60 +142,6 @@ Index: oce/src/AIS/AIS_Selection.cxx
  //--------------------------------------------------------------------
  #ifdef BUC60953
      // In the mode of advanced mesh selection only one owner is created
-Index: oce/src/AIS2D/AIS2D_InteractiveContext.cxx
-===================================================================
---- oce.orig/src/AIS2D/AIS2D_InteractiveContext.cxx
-+++ oce/src/AIS2D/AIS2D_InteractiveContext.cxx
-@@ -1981,7 +1981,7 @@ AIS2D_StatusOfDetection AIS2D_Interactiv
-          
-        myLastPicked = Handle(AIS2D_InteractiveObject)::DownCast( theGOi );
-        ( is_main ) ? myLastinMain = myLastPicked : myLastinColl = myLastPicked;
--       if ( myLastPicked->HasHighlightMode() ) 
-+       if ( myLastPicked->HasHighlightMode() ) {
- 
-          if ( AvailableToDetect(myLastPicked) ) {
-              if ( myLastPicked->HighlightMode() == AIS2D_TOD_OBJECT )
-@@ -1998,6 +1998,7 @@ AIS2D_StatusOfDetection AIS2D_Interactiv
-           
-          } else theStat = AIS2D_SOD_Selected;
-        }
-+      }
-      } // end for
-     
-      myResetDetect= Standard_False;   
-@@ -2108,7 +2109,7 @@ AIS2D_StatusOfDetection AIS2D_Interactiv
-       Handle(Graphic2d_GraphicObject) theGOi = dList->Value(i);
-     if ( theGOi->IsKind(STANDARD_TYPE(AIS2D_InteractiveObject))) { 
-       theIO = Handle(AIS2D_InteractiveObject)::DownCast( theGOi );
--      if ( theIO->HasHighlightMode() ) 
-+      if ( theIO->HasHighlightMode() ) {
-        if ( AvailableToDetect( theIO ) ) {
-         if ( theIO->HighlightMode() == AIS2D_TOD_OBJECT )
-              theIO->Highlight( ind );
-@@ -2116,6 +2117,7 @@ AIS2D_StatusOfDetection AIS2D_Interactiv
-         DoDetectObject( theIO, theDrawer );
-        
-        } else theStat = AIS2D_SOD_Selected;
-+      }
-     } 
-    } // end for
-    theDrawer->EndDraw();
-@@ -2139,13 +2141,14 @@ AIS2D_StatusOfDetection AIS2D_Interactiv
- 
- AIS2D_StatusOfPick AIS2D_InteractiveContext::Select( const Standard_Boolean UpdateVwr ) {
- 
-- if ( HasOpenedContext() )
-+ if ( HasOpenedContext() ) {
-   if ( myWasLastMain )
-       return myLocalContexts(myCurLocalIndex)->Select(UpdateVwr);
-     else {
- 	  myLocalContexts( myCurLocalIndex )->SetSelected( myLastPicked, UpdateVwr );
- 	  return AIS2D_SOP_OneSelected;
-   }
-+ }
- 
-  if ( ! mySeqOfDetIO->IsEmpty() ) {
-     Handle(AIS2D_InteractiveObject) theIO;
 Index: oce/src/BRepExtrema/BRepExtrema_DistShapeShape.cxx
 ===================================================================
 --- oce.orig/src/BRepExtrema/BRepExtrema_DistShapeShape.cxx
@@ -221,7 +167,7 @@ Index: oce/src/BRepFill/BRepFill_Sweep.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_Sweep.cxx
 +++ oce/src/BRepFill/BRepFill_Sweep.cxx
-@@ -2240,7 +2240,7 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
+@@ -2263,7 +2263,7 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
  	 }
         }
  
@@ -230,7 +176,7 @@ Index: oce/src/BRepFill/BRepFill_Sweep.cxx
  	if (uclose && (isec == NbLaw)) {
  	  Vertex(isec+1, 1) =  Vertex(1, 1);
  	}  
-@@ -2260,6 +2260,7 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
+@@ -2283,6 +2283,7 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
  	    VEdge(isec, 1) = NullEdge(Vertex(isec, 1)); 
  	  }
  	}
@@ -289,7 +235,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_6.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder_6.cxx
 +++ oce/src/ChFi3d/ChFi3d_Builder_6.cxx
-@@ -1802,7 +1802,7 @@ Standard_Boolean ChFi3d_Builder::Compute
+@@ -1778,7 +1778,7 @@ Standard_Boolean ChFi3d_Builder::Compute
        narc1 = Lin->StartPointOnFirst().NbPointOnRst();
        narc2 = Lin->StartPointOnSecond().NbPointOnRst();
  //  modified by eap Fri Feb  8 11:43:48 2002 ___BEGIN___
@@ -298,7 +244,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_6.cxx
  	if (narc1 == 0)
  	  backwContinueFailed = Lin->StartPointOnFirst().ParameterOnGuide() > Target;
  	else {
-@@ -1823,7 +1823,8 @@ Standard_Boolean ChFi3d_Builder::Compute
+@@ -1799,7 +1799,8 @@ Standard_Boolean ChFi3d_Builder::Compute
  // 	    }
  	  }
  	}
@@ -308,7 +254,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_6.cxx
  	if (narc2 == 0)
  	  backwContinueFailed = Lin->StartPointOnSecond().ParameterOnGuide() > Target;
  	else {
-@@ -1844,6 +1845,7 @@ Standard_Boolean ChFi3d_Builder::Compute
+@@ -1820,6 +1821,7 @@ Standard_Boolean ChFi3d_Builder::Compute
  //             }
            }
          }
@@ -316,7 +262,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_6.cxx
        if (backwContinueFailed) {
  	// if we leave backwContinueFailed as is, we will stop in this direction
  	// but we are to continue if there are no more faces on the side with arc
-@@ -1903,7 +1905,7 @@ Standard_Boolean ChFi3d_Builder::Compute
+@@ -1879,7 +1881,7 @@ Standard_Boolean ChFi3d_Builder::Compute
        narc1 = Lin->EndPointOnFirst().NbPointOnRst();
        narc2 = Lin->EndPointOnSecond().NbPointOnRst();
  //  modified by eap Fri Feb  8 11:44:57 2002 ___BEGIN___
@@ -325,7 +271,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_6.cxx
  	if (narc1 == 0) 
  	  forwContinueFailed = Lin->EndPointOnFirst().ParameterOnGuide() < Target;
  	else {
-@@ -1919,7 +1921,8 @@ Standard_Boolean ChFi3d_Builder::Compute
+@@ -1895,7 +1897,8 @@ Standard_Boolean ChFi3d_Builder::Compute
  // 	    }
  	  }
  	}
@@ -335,7 +281,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_6.cxx
  	if (narc2 == 0)
  	  forwContinueFailed = Lin->EndPointOnSecond().ParameterOnGuide() < Target;
  	else {
-@@ -1935,6 +1938,7 @@ Standard_Boolean ChFi3d_Builder::Compute
+@@ -1911,6 +1914,7 @@ Standard_Boolean ChFi3d_Builder::Compute
  // 	    }
  	  }
  	}
@@ -406,7 +352,7 @@ Index: oce/src/IGESControl/IGESControl_IGESBoundary.cxx
 ===================================================================
 --- oce.orig/src/IGESControl/IGESControl_IGESBoundary.cxx
 +++ oce/src/IGESControl/IGESControl_IGESBoundary.cxx
-@@ -173,13 +173,14 @@ IGESControl_IGESBoundary::IGESControl_IG
+@@ -204,13 +204,14 @@ static Standard_Boolean Connect (const H
    else if (( surfcurv == -3 && len3d > 0) || len2d == 0)
      GTranslate2d = Standard_False;
   
@@ -479,7 +425,7 @@ Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
 ===================================================================
 --- oce.orig/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
 +++ oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
-@@ -3023,14 +3023,16 @@ Standard_Integer IntPolyh_MaillageAffina
+@@ -2948,14 +2948,16 @@ Standard_Integer IntPolyh_MaillageAffina
        }
        else {
  	PI=PE1+Edge*lambda;
@@ -523,7 +469,7 @@ Index: oce/src/MeshVS/MeshVS_MeshPrsBuilder.cxx
 ===================================================================
 --- oce.orig/src/MeshVS/MeshVS_MeshPrsBuilder.cxx
 +++ oce/src/MeshVS/MeshVS_MeshPrsBuilder.cxx
-@@ -863,7 +863,7 @@ void MeshVS_MeshPrsBuilder::HowManyPrimi
+@@ -852,7 +852,7 @@ void MeshVS_MeshPrsBuilder::HowManyPrimi
                                                 Standard_Integer& Vertices,
                                                 Standard_Integer& Bounds)
  {
@@ -532,7 +478,7 @@ Index: oce/src/MeshVS/MeshVS_MeshPrsBuilder.cxx
      if( AsPolygons || IsSelect )
      {
        Standard_Integer B = Topo->Upper()-Topo->Lower()+1;
-@@ -883,6 +883,7 @@ void MeshVS_MeshPrsBuilder::HowManyPrimi
+@@ -872,6 +872,7 @@ void MeshVS_MeshPrsBuilder::HowManyPrimi
        Bounds += E;
        Vertices += 2*E;
      }
@@ -582,27 +528,6 @@ Index: oce/src/NIS/NIS_InteractiveObject.cxx
  
    Standard_NullValue_Raise_if
      (aCtx == 0L, "NIS_InteractiveObject::SetDrawer: NULL drawer context");
-Index: oce/src/NIS/NIS_TriangulatedDrawer.cxx
-===================================================================
---- oce.orig/src/NIS/NIS_TriangulatedDrawer.cxx
-+++ oce/src/NIS/NIS_TriangulatedDrawer.cxx
-@@ -286,7 +286,7 @@ void NIS_TriangulatedDrawer::Draw (const
-                     aType, pObject->mypLines);
-   else {
-     Standard_Boolean isLoop;
--    if (pObject->IsLine(isLoop))
-+    if (pObject->IsLine(isLoop)) {
-       if (isLoop) {
- //         glPolygonMode (GL_FRONT_AND_BACK, GL_LINE);
-         glDrawElements (GL_LINE_LOOP, pObject->NLineNodes(),
-@@ -296,6 +296,7 @@ void NIS_TriangulatedDrawer::Draw (const
-         glDrawElements (GL_LINE_STRIP, pObject->NLineNodes(),
-                         aType, pObject->mypLines);
-       }
-+    }
-   }
- 
- }
 Index: oce/src/ProjLib/ProjLib_ComputeApproxOnPolarSurface.cxx
 ===================================================================
 --- oce.orig/src/ProjLib/ProjLib_ComputeApproxOnPolarSurface.cxx
@@ -697,7 +622,7 @@ Index: oce/src/STEPControl/STEPControl_ActorWrite.cxx
 ===================================================================
 --- oce.orig/src/STEPControl/STEPControl_ActorWrite.cxx
 +++ oce/src/STEPControl/STEPControl_ActorWrite.cxx
-@@ -1337,12 +1337,13 @@ Handle(Transfer_Binder) STEPControl_Acto
+@@ -1338,12 +1338,13 @@ Handle(Transfer_Binder) STEPControl_Acto
      while ( !bnd.IsNull() ) {
        Handle(Transfer_SimpleBinderOfTransient) bx = 
          Handle(Transfer_SimpleBinderOfTransient)::DownCast(bnd);
@@ -732,7 +657,7 @@ Index: oce/src/SWDRAW/SWDRAW_ShapeUpgrade.cxx
 ===================================================================
 --- oce.orig/src/SWDRAW/SWDRAW_ShapeUpgrade.cxx
 +++ oce/src/SWDRAW/SWDRAW_ShapeUpgrade.cxx
-@@ -1149,21 +1149,25 @@ static Standard_Integer splitface
+@@ -1150,21 +1150,25 @@ static Standard_Integer splitface
    Standard_Real Umin, Umax, Vmin, Vmax;
    S->Bounds ( Umin, Umax, Vmin, Vmax );
    if ( Uf < Umin && ! S->IsUPeriodic() ) Uf = Umin;
@@ -954,7 +879,7 @@ Index: oce/src/TNaming/TNaming_NamedShape.cxx
 ===================================================================
 --- oce.orig/src/TNaming/TNaming_NamedShape.cxx
 +++ oce/src/TNaming/TNaming_NamedShape.cxx
-@@ -1030,7 +1030,7 @@ static void SelectSameShape (TNaming_Nod
+@@ -1051,7 +1051,7 @@ static void SelectSameShape (TNaming_Nod
      if (Trans < 0) Valid = pdn->myAtt->IsValid(); 
      else Valid = pdn->IsValidInTrans(Trans);
  
@@ -963,7 +888,7 @@ Index: oce/src/TNaming/TNaming_NamedShape.cxx
        if (Old) {
  	if( pdn->myOld == RS && pdn->myNew != 0L && pdn->myNew != RS) {
  	  break;
-@@ -1041,6 +1041,7 @@ static void SelectSameShape (TNaming_Nod
+@@ -1062,6 +1062,7 @@ static void SelectSameShape (TNaming_Nod
  	  break;
  	}
        }
@@ -1019,7 +944,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
      }
      return retsh;
    }
-@@ -1049,12 +1050,12 @@ static int VSubInt(Draw_Interpretor& di,
+@@ -1044,12 +1045,12 @@ static int VSubInt(Draw_Interpretor& di,
      TCollection_AsciiString name = argv[2];
      if(GetMapOfAIS().IsBound2(name)){
        IO = Handle(AIS_InteractiveObject)::DownCast(GetMapOfAIS().Find2(name));
@@ -1230,11 +1155,11 @@ Index: oce/src/VrmlData/VrmlData_Scene.cxx
 -  if (IsDummyWrite() == Standard_False)
 +  if (IsDummyWrite() == Standard_False) {
      if (isApplyScale && myLinearScale > Precision::Confusion())
-       sprintf (buf, "%.12g %.12g %.12g%s", theXYZ.X() / myLinearScale,
+       Sprintf (buf, "%.12g %.12g %.12g%s", theXYZ.X() / myLinearScale,
                 theXYZ.Y() / myLinearScale, theXYZ.Z() / myLinearScale,
 @@ -934,6 +941,7 @@ VrmlData_ErrorStatus VrmlData_Scene::Wri
      else
-       sprintf (buf, "%.12g %.12g %.12g%s", theXYZ.X(), theXYZ.Y(), theXYZ.Z(),
+       Sprintf (buf, "%.12g %.12g %.12g%s", theXYZ.X(), theXYZ.Y(), theXYZ.Z(),
                 thePostfix ? thePostfix : "");
 +  }
    return WriteLine (buf);
@@ -1265,7 +1190,7 @@ Index: oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
 ===================================================================
 --- oce.orig/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
 +++ oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
-@@ -605,11 +605,12 @@ static Standard_Integer hidesel
+@@ -600,11 +600,12 @@ static Standard_Integer hidesel
      {
        Handle( MeshVS_MeshEntityOwner ) anOwner =
          Handle( MeshVS_MeshEntityOwner )::DownCast( aContext->SelectedOwner() );
@@ -1279,7 +1204,7 @@ Index: oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
      }
      aContext->ClearSelected();
      aMesh->SetHiddenNodes( aHiddenNodes );
-@@ -650,11 +651,12 @@ static Standard_Integer showonly
+@@ -645,11 +646,12 @@ static Standard_Integer showonly
      {
        Handle( MeshVS_MeshEntityOwner ) anOwner =
          Handle( MeshVS_MeshEntityOwner )::DownCast( aContext->SelectedOwner() );

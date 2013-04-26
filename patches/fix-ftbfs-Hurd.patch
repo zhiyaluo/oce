@@ -1,0 +1,32 @@
+commit 574adbe4084fc6239a4a31d5b2233a45d14b2725
+Author: Denis Barbier <bouzim@gmail.com>
+Date:   Wed Mar 20 21:28:35 2013 +0100
+
+    Fix OSD_Path::OSD_Path(const TCollection_AsciiString&, const OSD_SysType) on unknown systems
+    
+    See https://buildd.debian.org/status/fetch.php?pkg=oce&arch=hurd-i386&ver=0.11-2&stamp=1355676025
+    several tests fail on Hurd:
+        24 - IGESImportTestSuite.testImportIGES_1 (Failed)
+        25 - STEPImportTestSuite.testImportAP203_1 (Failed)
+        26 - STEPImportTestSuite.testImportAP203_2 (Failed)
+        27 - STEPImportTestSuite.testImportAP214_1 (Failed)
+        28 - STEPImportTestSuite.testImportAP214_2 (Failed)
+        29 - STEPImportTestSuite.testImportAP214_3 (Failed)
+        34 - TDataXtdTestSuite.testPattern (Failed)
+        35 - UnitsAPITestSuite.testCurrentUnits (Failed)
+        36 - UnitsAPITestSuite.testMDTVCurrentUnits (Failed)
+    because this OSD_Path constructor did nothing when system is unknown.
+    Use UnixExtract by default.
+
+diff --git a/src/OSD/OSD_Path.cxx b/src/OSD/OSD_Path.cxx
+index a72f49f..dae20fe 100644
+--- a/src/OSD/OSD_Path.cxx
++++ b/src/OSD/OSD_Path.cxx
+@@ -365,6 +365,7 @@ OSD_Path::OSD_Path(const TCollection_AsciiString& aDependentName,
+ #ifdef DEB
+        cout << " WARNING WARNING : OSD Path for an Unknown SYSTEM : " << (Standard_Integer)todo << endl;
+ #endif 
++     UnixExtract(aDependentName,myNode,myUserName,myPassword,myTrek,myName,myExtension);
+      break ;
+  } 
+ }

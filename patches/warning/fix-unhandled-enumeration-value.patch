@@ -251,26 +251,6 @@ Index: oce/src/GeomInt/GeomInt_LineConstructor.cxx
          }
          Parameters(myHS1,myHS2,Pmid,u1,v1,u2,v2);
          Recadre(myHS1,myHS2,u1,v1,u2,v2);
-Index: oce/src/Graphic2d/Graphic2d_SetOfMarkers.cxx
-===================================================================
---- oce.orig/src/Graphic2d/Graphic2d_SetOfMarkers.cxx
-+++ oce/src/Graphic2d/Graphic2d_SetOfMarkers.cxx
-@@ -310,6 +310,7 @@ Standard_Boolean Graphic2d_SetOfMarkers:
- 	return Standard_True;
-       break;
-     }
-+    default: /* Do nothing */ break;
-   }
- #endif
-   return Standard_False;
-@@ -350,6 +351,7 @@ Standard_Boolean Graphic2d_SetOfMarkers
- 	return Standard_True;
-       break;
-     }
-+    default: /* Do nothing */ break;
-   }
- #endif
-   return Standard_False;
 Index: oce/src/IntPatch/IntPatch_HInterTool.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_HInterTool.cxx

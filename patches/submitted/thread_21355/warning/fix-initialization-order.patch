@@ -104,23 +104,6 @@ Index: oce/src/Aspect/Aspect_ColorScale.cxx
  myTextHeight(20)
  {
  }
-Index: oce/src/Aspect/Aspect_Window.cxx
-===================================================================
---- oce.orig/src/Aspect/Aspect_Window.cxx
-+++ oce/src/Aspect/Aspect_Window.cxx
-@@ -49,9 +49,10 @@ Aspect_Window::Aspect_Window (const Hand
- : MyGraphicDevice(aGraphicDevice),
-   MyBackground(),
-   MyBackgroundImage(),
--  MyGradientBackground(),
-   MyBackgroundFillMethod(Aspect_FM_NONE),
--  MyHBackground(0)
-+  MyHBackground(0),
-+  MyGradientBackground()
-+  
- {
- }
- 
 Index: oce/src/BinTools/BinTools_ShapeSet.cxx
 ===================================================================
 --- oce.orig/src/BinTools/BinTools_ShapeSet.cxx
@@ -147,31 +130,6 @@ Index: oce/src/BlendFunc/BlendFunc_CSCircular.cxx
         //prmc, dprmc, istangent, ray, choix, normtg,
         maxang(RealFirst()),minang(RealLast()),mySShape(BlendFunc_Rational)
         //myTConv
-Index: oce/src/Font/Font_SystemFont.cxx
-===================================================================
---- oce.orig/src/Font/Font_SystemFont.cxx
-+++ oce/src/Font/Font_SystemFont.cxx
-@@ -38,8 +38,8 @@ Font_SystemFont::Font_SystemFont( const
-                                 const Handle(TCollection_HAsciiString)& FilePath ):
- MyFontName(FontName),
- MyFontAspect(FontAspect),
--MyFilePath(FilePath),
- MyFaceSize(-1),
-+MyFilePath(FilePath),
- MyVerification(Standard_True)
- {
- 
-@@ -47,8 +47,8 @@ MyVerification(Standard_True)
- 
- Font_SystemFont::Font_SystemFont( const Handle(TCollection_HAsciiString)& XLFD,
-                                 const Handle(TCollection_HAsciiString)& FilePath) :
--MyFilePath(FilePath),
--MyFontAspect(Font_FA_Undefined)
-+MyFontAspect(Font_FA_Undefined),
-+MyFilePath(FilePath)
- {
-   MyVerification = Standard_True;
-   if ( XLFD.IsNull() )
 Index: oce/src/IntSurf/IntSurf_Quadric.cxx
 ===================================================================
 --- oce.orig/src/IntSurf/IntSurf_Quadric.cxx
@@ -187,44 +145,6 @@ Index: oce/src/IntSurf/IntSurf_Quadric.cxx
  {}
  // ============================================================
  IntSurf_Quadric::IntSurf_Quadric (const gp_Pln& P):
-Index: oce/src/NIS/NIS_TriangulatedDrawer.cxx
-===================================================================
---- oce.orig/src/NIS/NIS_TriangulatedDrawer.cxx
-+++ oce/src/NIS/NIS_TriangulatedDrawer.cxx
-@@ -51,10 +51,10 @@ NIS_TriangulatedDrawer::NIS_Triangulated
-                                 (const Quantity_Color theNormal,
-                                  const Quantity_Color theHilight,
-                                  const Quantity_Color theDynHilight)
--  : myLineWidth      (1.f),
-+  : myPolygonAsLineLoop (Standard_False),
-+    myLineWidth      (1.f),
-     myIsDrawPolygons (Standard_False),
--    myPolygonType    (NIS_Triangulated::Polygon_Default),
--    myPolygonAsLineLoop (Standard_False)
-+    myPolygonType    (NIS_Triangulated::Polygon_Default)
- {
-   myColor[Draw_Normal]       = theNormal;
-   myColor[Draw_Top]          = theNormal;
-Index: oce/src/Prs2d/Prs2d_Dimension.cxx
-===================================================================
---- oce.orig/src/Prs2d/Prs2d_Dimension.cxx
-+++ oce/src/Prs2d/Prs2d_Dimension.cxx
-@@ -28,13 +28,13 @@ Prs2d_Dimension::Prs2d_Dimension( const
-    :  Graphic2d_Line( aGO ),
-       myText( aText ),
-       myTextScale( aTxtScale ),
--      myTextFont( 0 ),
-       myTextPosH( 0 ),
-       myTextPosV( 0 ),
-       myTextAngle( 0 ), 
-       myAbsX( 0 ),
-       myAbsY( 0 ),
--      myAbsAngle( 0 ), 
-+      myAbsAngle( 0 ),
-+      myTextFont( 0 ),
-       mySymbFont( 0 ),
-       myXVert1( 1, 3 ),
-       myYVert1( 1, 3 ),
 Index: oce/src/V3d/V3d_View.cxx
 ===================================================================
 --- oce.orig/src/V3d/V3d_View.cxx
@@ -244,9 +164,9 @@ Index: oce/src/V3d/V3d_View.cxx
 -MyTrsf (1, 4, 1, 4),                                    // S3892
 -MyProjModel(V3d_TPM_SCREEN)
 +MyTrsf (1, 4, 1, 4)                                    // S3892
- #if defined(TRACE_POINTS)
- ,MyGridEchoStructure (new Graphic3d_Structure (VM->Viewer ())),  // S3892
- MyGridEchoGroup (new Graphic3d_Group (MyGridEchoStructure))            // S3892
+ {
+   myImmediateUpdate = Standard_False;
+   MyView = new Visual3d_View(MyViewer->Viewer());
 @@ -414,6 +414,7 @@ MyGridEchoGroup (new Graphic3d_Group (My
  
  V3d_View::V3d_View(const Handle(V3d_Viewer)& VM,const Handle(V3d_View)& V, const V3d_TypeOfView Type ) :
@@ -262,9 +182,9 @@ Index: oce/src/V3d/V3d_View.cxx
 -MyTrsf (1, 4, 1, 4),                                    // S3892
 -MyProjModel(V3d_TPM_SCREEN)
 +MyTrsf (1, 4, 1, 4)                                    // S3892
- #if defined(TRACE_POINTS)
- ,MyGridEchoStructure (new Graphic3d_Structure (VM->Viewer ())),  // S3892
- MyGridEchoGroup (new Graphic3d_Group (MyGridEchoStructure))      // S3892
+ {
+   Handle(Visual3d_View) FromView = V->View() ;
+ 
 Index: oce/src/ViewerTest/ViewerTest_EventManager.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_EventManager.cxx

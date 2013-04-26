@@ -90,7 +90,7 @@ Index: oce/src/OpenGl/OpenGl_Window.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_Window.cxx
 +++ oce/src/OpenGl/OpenGl_Window.cxx
-@@ -51,8 +51,8 @@ namespace
+@@ -52,8 +52,8 @@ namespace
      aPixelFrmtTmp.iLayerType = PFD_MAIN_PLANE;
  
      const int BUFF_BITS_STENCIL[] = {  8,  1     };
@@ -101,7 +101,7 @@ Index: oce/src/OpenGl/OpenGl_Window.cxx
  
      int aGoodBits[] = { 0, 0, 0 };
      int aPixelFrmtIdLast = 0;
-@@ -61,11 +61,11 @@ namespace
+@@ -62,11 +62,11 @@ namespace
      for (aStencilIter = 0; aStencilIter < sizeof(BUFF_BITS_STENCIL) / sizeof(int); ++aStencilIter)
      {
        aPixelFrmtTmp.cStencilBits = BUFF_BITS_STENCIL[aStencilIter];
@@ -115,19 +115,6 @@ Index: oce/src/OpenGl/OpenGl_Window.cxx
          {
            aPixelFrmtTmp.cColorBits = BUFF_BITS_COLOR[aColorIter];
            aPixelFrmtIdLast = ChoosePixelFormat (theDevCtx, &aPixelFrmtTmp);
-Index: oce/src/PlotMgt/PlotMgt_TextManager.cxx
-===================================================================
---- oce.orig/src/PlotMgt/PlotMgt_TextManager.cxx
-+++ oce/src/PlotMgt/PlotMgt_TextManager.cxx
-@@ -33,7 +33,7 @@
- #define CONVERT(v) (v)*72./(0.0254005 METER)
- 
- #define TRANSFORM(X,Y)                 \
--  { Standard_Real x = (X), y = (Y);    \
-+  { Standard_ShortReal x = (X), y = (Y);    \
-     X = x*theCosAngle - y*theSinAngle; \
-     Y = x*theSinAngle + y*theCosAngle; \
-   }
 Index: oce/src/TopOpeBRep/TopOpeBRep_vpr.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRep/TopOpeBRep_vpr.cxx
@@ -151,16 +138,3 @@ Index: oce/src/TopOpeBRep/TopOpeBRep_vpr.cxx
      else          OOpar = VP.EdgeONParameter(OOShapeIndex); 
      Standard_Real tolOOe = FUN_tool_maxtol(OOedge);
      Standard_Real OOtolp = Precision::Parametric(tolOOe);
-Index: oce/src/WNT/WNT_ImageProcessor.cxx
-===================================================================
---- oce.orig/src/WNT/WNT_ImageProcessor.cxx
-+++ oce/src/WNT/WNT_ImageProcessor.cxx
-@@ -570,7 +570,7 @@ static HBITMAP loadXWD (  Handle( WNT_Gr
- 	 if ( ptrDIB == NULL ) goto leave;
- 
- 	 CopyMemory (  ( PVOID )ptrDIB, ( PVOID )pbInit, dataSize  );
--	 FillMemory (  ( PVOID )colors, MAXCOLOR * sizeof ( WORD ), 0xFFFF );
-+	 FillMemory (  ( PVOID )colors, MAXCOLOR * sizeof ( WORD ), 0xFF );
- 
- 	 for ( i = 0; i < dataSize; ++i ) {
- 

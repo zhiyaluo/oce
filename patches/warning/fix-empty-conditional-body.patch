@@ -138,32 +138,6 @@ Index: oce/src/AlienImage/AlienImage_GIFLZWDict.cxx
  
    if ( bi == boxes ) break;
  
-Index: oce/src/BOP/BOP_ArgumentAnalyzer.cxx
-===================================================================
---- oce.orig/src/BOP/BOP_ArgumentAnalyzer.cxx
-+++ oce/src/BOP/BOP_ArgumentAnalyzer.cxx
-@@ -527,7 +527,7 @@ void BOP_ArgumentAnalyzer::TestRebuildFa
- 	Standard_Integer nbedgeused = 0;
- 	anExpE.Init(aLF.First(), TopAbs_EDGE);
- 
--	for(; anExpE.More(); anExpE.Next(), nbedgeused++);
-+	for(; anExpE.More(); anExpE.Next(), nbedgeused++) {}
- 
- 	if(nbstartedges != nbedgeused) {
- 	  bBadFace = Standard_True;
-Index: oce/src/BOP/BOP_ShellSolid_3.cxx
-===================================================================
---- oce.orig/src/BOP/BOP_ShellSolid_3.cxx
-+++ oce/src/BOP/BOP_ShellSolid_3.cxx
-@@ -465,7 +465,7 @@ Standard_Boolean BOP_ShellSolid::SplitFa
-   if(aLF.Extent() != 2) {
-     for(; anItNewF.More(); anItNewF.Next()) {
-       TopExp_Explorer anExp(anItNewF.Value(), TopAbs_EDGE);
--      for(; anExp.More(); anExp.Next(), nbedgeused++);
-+      for(; anExp.More(); anExp.Next(), nbedgeused++) {}
-     }
-     if(nbedgeused != nbstartedges) {
-       return Standard_False;
 Index: oce/src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx
 ===================================================================
 --- oce.orig/src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx
@@ -269,7 +243,7 @@ Index: oce/src/MgtTopoDS/MgtTopoDS.cxx
 ===================================================================
 --- oce.orig/src/MgtTopoDS/MgtTopoDS.cxx
 +++ oce/src/MgtTopoDS/MgtTopoDS.cxx
-@@ -384,7 +384,7 @@ void MgtTopoDS::Translate1
+@@ -378,7 +378,7 @@ void MgtTopoDS::Translate1
      // count the number of <sub-shape> of the Shape's TShape
      Standard_Integer nbElem = 0;
      TopoDS_Iterator itr(S);
@@ -278,45 +252,11 @@ Index: oce/src/MgtTopoDS/MgtTopoDS.cxx
  
      if (nbElem) {
        Handle(PTopoDS_HArray1OfShape1) myArray = 
-Index: oce/src/PlotMgt/PlotMgt_fillpolyarc.cxx
-===================================================================
---- oce.orig/src/PlotMgt/PlotMgt_fillpolyarc.cxx
-+++ oce/src/PlotMgt/PlotMgt_fillpolyarc.cxx
-@@ -221,7 +221,6 @@ int __InitFillArc(double X,  double Y, d
-             (mpo_lines+i)->type = 5;
-           else (mpo_lines+i)->type = 4;
-         }
--      else;
- //      cout << "Xlm  = " << (mpo_lines+i)->X3 << "      Xrm  = " << (mpo_lines+i)->X4 << endl << flush;
- //      cout << "------------ i = " << i << endl << flush;
-     }
-Index: oce/src/PlotMgt/PlotMgt_fillpolygon.cxx
-===================================================================
---- oce.orig/src/PlotMgt/PlotMgt_fillpolygon.cxx
-+++ oce/src/PlotMgt/PlotMgt_fillpolygon.cxx
-@@ -169,8 +169,6 @@ int __InitFillPolygon(double* X, double*
-                 || (level == Ypts[j])) k++;
-             if (level == Ypts[j+1])
-               if (mpo_sign(Ypts[j] - Ypts[j+1]) == mpo_next_sign(j, n)) k++;
--              else;
--            else;
-           }
-       mpo_Xs[i] = (double *)malloc(sizeof(double)*k);
-       mpo_Ys[i] = (double *)malloc(sizeof(double)*k);
-@@ -198,8 +196,6 @@ int __InitFillPolygon(double* X, double*
-                 {
-                   mpo_Xs[i][k] = Xpts[j+1]; k++;
-                 }
--              else;
--            else;
-           }
- 
-       if (k != mpo_sizes[i]) 
 Index: oce/src/RWStl/RWStl.cxx
 ===================================================================
 --- oce.orig/src/RWStl/RWStl.cxx
 +++ oce/src/RWStl/RWStl.cxx
-@@ -444,7 +444,7 @@ Handle_StlMesh_Mesh RWStl::ReadAscii (co
+@@ -441,7 +441,7 @@ Handle_StlMesh_Mesh RWStl::ReadAscii (co
    rewind(file);
  
    // skip header
@@ -398,12 +338,12 @@ Index: oce/src/TCollection/TCollection_ExtendedString.cxx
 ===================================================================
 --- oce.orig/src/TCollection/TCollection_ExtendedString.cxx
 +++ oce/src/TCollection/TCollection_ExtendedString.cxx
-@@ -168,6 +168,8 @@ TCollection_ExtendedString::TCollection_
-       if(!ConvertToUnicode (astring))
+@@ -169,6 +169,8 @@ TCollection_ExtendedString::TCollection_
+       {
  #ifdef DEB
  	cout <<"UTF8 decoding failure..." <<endl;
 +#else
 +	  {}
  #endif
-       ;
+       }
      }
