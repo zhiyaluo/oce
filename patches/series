@@ -88,8 +88,8 @@ warning/remove-const-return-value.patch
 
 cmake/remove-Autotools-and-project-files.patch
 cmake/add-support-for-CMake.patch
+cmake/move-scripts-in-subdir.patch
 cmake/bump-version-number.patch
-cmake/ctest/more-tests.patch
 cmake/precompiled-headers/add-the-effective-precompiled-headers.patch
 cmake/remove-pragmas.patch
 cmake/remove-RETSIGTYPE-in-Csemaphore.c.patch

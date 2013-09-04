@@ -299,10 +299,9 @@ Index: oce/adm/cmake/FWOSPlugin/Precompiled.h
 ===================================================================
 --- /dev/null
 +++ oce/adm/cmake/FWOSPlugin/Precompiled.h
-@@ -0,0 +1,3 @@
+@@ -0,0 +1,2 @@
 +#pragma once
 +#include "../TKernel/Precompiled.h"
-+#include "../TKMath/Precompiled.h"
 Index: oce/adm/cmake/PTKernel/Precompiled.cpp
 ===================================================================
 --- /dev/null
@@ -334,7 +333,7 @@ Index: oce/adm/cmake/TKAdvTools/Precompiled.h
 +#pragma once
 +
 +#include "Dynamic.hxx"
-+#include "../TKMath/Precompiled.h"
++#include "../TKernel/Precompiled.h"
 Index: oce/adm/cmake/TKBO/Precompiled.cpp
 ===================================================================
 --- /dev/null
@@ -346,20 +345,17 @@ Index: oce/adm/cmake/TKBO/Precompiled.h
 ===================================================================
 --- /dev/null
 +++ oce/adm/cmake/TKBO/Precompiled.h
-@@ -0,0 +1,12 @@
+@@ -0,0 +1,10 @@
 +#pragma once
 +
 +#include "../TKTopAlgo/Precompiled.h"
 +
-+#include "BooleanOperations_Explorer.hxx"
-+#include "BOPTools_Tools.hxx"
 +#include "IntTools_Tools.hxx"
 +#include "BRepAlgoAPI_BooleanOperation.hxx"
 +#include "BRepAlgoAPI_Common.hxx"
 +#include "BRepAlgoAPI_Cut.hxx"
 +#include "BRepAlgoAPI_Fuse.hxx"
 +#include "BRepAlgoAPI_Section.hxx"
-\ No newline at end of file
 Index: oce/adm/cmake/TKBRep/Precompiled.cpp
 ===================================================================
 --- /dev/null
@@ -414,10 +410,9 @@ Index: oce/adm/cmake/TKBin/Precompiled.h
 ===================================================================
 --- /dev/null
 +++ oce/adm/cmake/TKBin/Precompiled.h
-@@ -0,0 +1,13 @@
+@@ -0,0 +1,12 @@
 +#pragma once
 +#include "../TKService/Precompiled.h"
-+#include "../TKV2d/Precompiled.h"
 +#include "../TKV3d/Precompiled.h"
 +#include "../TKHLR/Precompiled.h"
 +#include "../TKCAF/Precompiled.h"
@@ -507,7 +502,7 @@ Index: oce/adm/cmake/TKBool/Precompiled.h
 ===================================================================
 --- /dev/null
 +++ oce/adm/cmake/TKBool/Precompiled.h
-@@ -0,0 +1,21 @@
+@@ -0,0 +1,20 @@
 +#pragma once
 +
 +#include "../TKTopAlgo/Precompiled.h"
@@ -519,7 +514,6 @@ Index: oce/adm/cmake/TKBool/Precompiled.h
 +#include "BRepAlgo_Fuse.hxx"
 +#include "BRepAlgo_Cut.hxx"
 +#include "BRepAlgo_Common.hxx"
-+#include "BRepAlgo_TopOpe.hxx"
 +#include "BRepAlgo_Loop.hxx"
 +#include "BRepFill_Filling.hxx"
 +#include "BRepFill_Generator.hxx"
@@ -540,10 +534,9 @@ Index: oce/adm/cmake/TKCAF/Precompiled.h
 ===================================================================
 --- /dev/null
 +++ oce/adm/cmake/TKCAF/Precompiled.h
-@@ -0,0 +1,10 @@
+@@ -0,0 +1,9 @@
 +#pragma once
 +#include "../TKService/Precompiled.h"
-+#include "../TKV2d/Precompiled.h"
 +#include "../TKV3d/Precompiled.h"
 +#include "../TKHLR/Precompiled.h"
 +
@@ -615,7 +608,7 @@ Index: oce/adm/cmake/TKFeat/Precompiled.h
 ===================================================================
 --- /dev/null
 +++ oce/adm/cmake/TKFeat/Precompiled.h
-@@ -0,0 +1,11 @@
+@@ -0,0 +1,10 @@
 +#pragma once
 +
 +#include "../TKTopAlgo/Precompiled.h"
@@ -626,8 +619,6 @@ Index: oce/adm/cmake/TKFeat/Precompiled.h
 +#include "BRepFeat.hxx"
 +#include "BRepFeat_Builder.hxx"
 +#include "LocOpe.hxx"
-+#include "LocOpe_Builder.hxx"
-\ No newline at end of file
 Index: oce/adm/cmake/TKFillet/Precompiled.cpp
 ===================================================================
 --- /dev/null
@@ -910,10 +901,9 @@ Index: oce/adm/cmake/TKNIS/Precompiled.h
 ===================================================================
 --- /dev/null
 +++ oce/adm/cmake/TKNIS/Precompiled.h
-@@ -0,0 +1,5 @@
+@@ -0,0 +1,4 @@
 +#pragma once
 +#include "../TKService/Precompiled.h"
-+#include "../TKV2d/Precompiled.h"
 +#include "../TKV3d/Precompiled.h"
 +#include "../TKHLR/Precompiled.h"
 Index: oce/adm/cmake/TKOffset/Precompiled.cpp
@@ -958,10 +948,9 @@ Index: oce/adm/cmake/TKOpenGl/Precompiled.h
 ===================================================================
 --- /dev/null
 +++ oce/adm/cmake/TKOpenGl/Precompiled.h
-@@ -0,0 +1,5 @@
+@@ -0,0 +1,4 @@
 +#pragma once
 +#include "../TKService/Precompiled.h"
-+#include "../TKV2d/Precompiled.h"
 +#include "../TKV3d/Precompiled.h"
 +#include "../TKHLR/Precompiled.h"
 Index: oce/adm/cmake/TKPCAF/Precompiled.cpp
@@ -975,13 +964,12 @@ Index: oce/adm/cmake/TKPCAF/Precompiled.h
 ===================================================================
 --- /dev/null
 +++ oce/adm/cmake/TKPCAF/Precompiled.h
-@@ -0,0 +1,13 @@
+@@ -0,0 +1,12 @@
 +#pragma once
 +
 +#include "../TKService/Precompiled.h"
 +#include "../TKG2d/Precompiled.h"
 +#include "../TKG3d/Precompiled.h"
-+#include "../TKV2d/Precompiled.h"
 +#include "../TKV3d/Precompiled.h"
 +#include "../TKHLR/Precompiled.h"
 +#include "../TKCAF/Precompiled.h"
@@ -1145,7 +1133,7 @@ Index: oce/adm/cmake/TKService/Precompiled.h
 ===================================================================
 --- /dev/null
 +++ oce/adm/cmake/TKService/Precompiled.h
-@@ -0,0 +1,14 @@
+@@ -0,0 +1,10 @@
 +#pragma once
 +
 +#include "../TKernel/Precompiled.h"
@@ -1155,11 +1143,7 @@ Index: oce/adm/cmake/TKService/Precompiled.h
 +#include "Aspect.hxx"
 +#include "Aspect_Handle.hxx"
 +#include "Image.hxx"
-+#include "MFT.hxx"
-+#include "PlotMgt.hxx"
 +#include "SelectBasics.hxx"
-+#include "Viewer_View.hxx"
-+#include "Viewer_Viewer.hxx"
 Index: oce/adm/cmake/TKShHealing/Precompiled.cpp
 ===================================================================
 --- /dev/null
@@ -1245,10 +1229,9 @@ Index: oce/adm/cmake/TKStdSchema/Precompiled.h
 ===================================================================
 --- /dev/null
 +++ oce/adm/cmake/TKStdSchema/Precompiled.h
-@@ -0,0 +1,8 @@
+@@ -0,0 +1,7 @@
 +#pragma once
 +#include "../TKService/Precompiled.h"
-+#include "../TKV2d/Precompiled.h"
 +#include "../TKV3d/Precompiled.h"
 +#include "../TKHLR/Precompiled.h"
 +#include "../TKCAF/Precompiled.h"
@@ -1368,27 +1351,6 @@ Index: oce/adm/cmake/TKTopTest/Precompiled.h
 +#include "../TKG2d/Precompiled.h"
 +#include "../TKG3d/Precompiled.h"
 \ No newline at end of file
-Index: oce/adm/cmake/TKV2d/Precompiled.cpp
-===================================================================
---- /dev/null
-+++ oce/adm/cmake/TKV2d/Precompiled.cpp
-@@ -0,0 +1 @@
-+#include "Precompiled.h"
-\ No newline at end of file
-Index: oce/adm/cmake/TKV2d/Precompiled.h
-===================================================================
---- /dev/null
-+++ oce/adm/cmake/TKV2d/Precompiled.h
-@@ -0,0 +1,9 @@
-+#pragma once
-+
-+#include "../TKService/Precompiled.h"
-+#include "../TKTopAlgo/Precompiled.h"
-+#include "../TKHLR/Precompiled.h"
-+
-+#include "AIS2D.hxx"
-+#include "Graphic2d_View.hxx"
-+#include "V2d.hxx"
 Index: oce/adm/cmake/TKV3d/Precompiled.cpp
 ===================================================================
 --- /dev/null
@@ -1400,7 +1362,7 @@ Index: oce/adm/cmake/TKV3d/Precompiled.h
 ===================================================================
 --- /dev/null
 +++ oce/adm/cmake/TKV3d/Precompiled.h
-@@ -0,0 +1,14 @@
+@@ -0,0 +1,13 @@
 +#pragma once
 +
 +#include "../TKService/Precompiled.h"
@@ -1408,7 +1370,6 @@ Index: oce/adm/cmake/TKV3d/Precompiled.h
 +#include "../TKHLR/Precompiled.h"
 +
 +#include "AIS.hxx"
-+#include "Graphic2d_View.hxx"
 +#include "V3d.hxx"
 +#include "DsgPrs.hxx"
 +#include "PrsMgr_Prs.hxx"
@@ -1467,10 +1428,9 @@ Index: oce/adm/cmake/TKVoxel/Precompiled.h
 ===================================================================
 --- /dev/null
 +++ oce/adm/cmake/TKVoxel/Precompiled.h
-@@ -0,0 +1,4 @@
+@@ -0,0 +1,3 @@
 +#pragma once
 +#include "../TKService/Precompiled.h"
-+#include "../TKV2d/Precompiled.h"
 +#include "../TKV3d/Precompiled.h"
 \ No newline at end of file
 Index: oce/adm/cmake/TKXCAF/Precompiled.cpp
