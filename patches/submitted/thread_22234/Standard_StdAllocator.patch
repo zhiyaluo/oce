@@ -17,10 +17,10 @@ Subject: [PATCH 3/5] Fixed Standard_StdAllocator class for gcc-4.2.1
  inc/Standard_StdAllocator.hxx |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
-Index: oce/inc/Standard_StdAllocator.hxx
+Index: oce/src/Standard/Standard_StdAllocator.hxx
 ===================================================================
 --- /dev/null
-+++ oce/inc/Standard_StdAllocator.hxx
++++ oce/src/Standard/Standard_StdAllocator.hxx
 @@ -0,0 +1,125 @@
 +// Author: Roman Lygin, 2011.
 +// This file is put into Public Domain and thus can freely be used for any purpose.

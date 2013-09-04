@@ -19,10 +19,10 @@ Subject: [PATCH] Fix cppcheck-1.53 report error 'Returning reference to auto
  src/TopOpeBRepTool/TopOpeBRepTool_box.cxx          |    3 +-
  12 files changed, 24 insertions(+), 48 deletions(-)
 
-Index: oce/inc/HatchGen_Hatcher.lxx
+Index: oce/src/HatchGen/HatchGen_Hatcher.lxx
 ===================================================================
---- oce.orig/inc/HatchGen_Hatcher.lxx
-+++ oce/inc/HatchGen_Hatcher.lxx
+--- oce.orig/src/HatchGen/HatchGen_Hatcher.lxx
++++ oce/src/HatchGen/HatchGen_Hatcher.lxx
 @@ -188,8 +188,7 @@ inline const HatchGen_PointOnHatching& H
  #if RAISE_IF_NOSUCHOBJECT
    Standard_OutOfRange_Raise_if (IndP < 0 || IndP > Hatching.NbPoints(), "") ;

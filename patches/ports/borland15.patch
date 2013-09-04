@@ -29,10 +29,10 @@ Subject: [PATCH 3/3] Reflect type changes in wok build system
  src/OSD/OSD_SharedMemory.cdl        |    2 +-
  5 files changed, 5 insertions(+), 5 deletions(-)
 
-Index: oce/inc/OpenGl_GraphicDriver.hxx
+Index: oce/src/OpenGl/OpenGl_GraphicDriver.hxx
 ===================================================================
---- oce.orig/inc/OpenGl_GraphicDriver.hxx
-+++ oce/inc/OpenGl_GraphicDriver.hxx
+--- oce.orig/src/OpenGl/OpenGl_GraphicDriver.hxx
++++ oce/src/OpenGl/OpenGl_GraphicDriver.hxx
 @@ -23,6 +23,8 @@
  
  #include <Graphic3d_GraphicDriver.hxx>

@@ -15,10 +15,10 @@ is required.
  src/LDOM/LDOM_CharReference.cxx  |    3 +++
  6 files changed, 20 insertions(+), 1 deletions(-)
 
-Index: oce/inc/LDOM_MemManager.hxx
+Index: oce/src/LDOM/LDOM_MemManager.hxx
 ===================================================================
---- oce.orig/inc/LDOM_MemManager.hxx
-+++ oce/inc/LDOM_MemManager.hxx
+--- oce.orig/src/LDOM/LDOM_MemManager.hxx
++++ oce/src/LDOM/LDOM_MemManager.hxx
 @@ -96,6 +96,7 @@ class LDOM_MemManager : public MMgt_TSha
  
    // ---- CLASS HashTable ----
@@ -38,10 +38,10 @@ Index: oce/inc/LDOM_MemManager.hxx
      struct TableItem {
        char             * str;
        struct TableItem * next;
-Index: oce/inc/SelectMgr_CompareResults.hxx
+Index: oce/src/SelectMgr/SelectMgr_CompareResults.hxx
 ===================================================================
---- oce.orig/inc/SelectMgr_CompareResults.hxx
-+++ oce/inc/SelectMgr_CompareResults.hxx
+--- oce.orig/src/SelectMgr/SelectMgr_CompareResults.hxx
++++ oce/src/SelectMgr/SelectMgr_CompareResults.hxx
 @@ -24,6 +24,8 @@
  
  class SelectMgr_CompareResults: public TCollection_CompareOfInteger
@@ -51,10 +51,10 @@ Index: oce/inc/SelectMgr_CompareResults.hxx
   public:
    SelectMgr_CompareResults
          (const SelectMgr_IndexedDataMapOfOwnerCriterion& aMapOfCriterion)
-Index: oce/inc/VrmlData_InBuffer.hxx
+Index: oce/src/VrmlData/VrmlData_InBuffer.hxx
 ===================================================================
---- oce.orig/inc/VrmlData_InBuffer.hxx
-+++ oce/inc/VrmlData_InBuffer.hxx
+--- oce.orig/src/VrmlData/VrmlData_InBuffer.hxx
++++ oce/src/VrmlData/VrmlData_InBuffer.hxx
 @@ -29,6 +29,10 @@
   * Structure passed to the methods dealing with input stream.
   */
@@ -66,10 +66,10 @@ Index: oce/inc/VrmlData_InBuffer.hxx
    Standard_IStream& Input;
    char              Line[8096];
    char *            LinePtr;
-Index: oce/inc/VrmlData_ShapeConvert.hxx
+Index: oce/src/VrmlData/VrmlData_ShapeConvert.hxx
 ===================================================================
---- oce.orig/inc/VrmlData_ShapeConvert.hxx
-+++ oce/inc/VrmlData_ShapeConvert.hxx
+--- oce.orig/src/VrmlData/VrmlData_ShapeConvert.hxx
++++ oce/src/VrmlData/VrmlData_ShapeConvert.hxx
 @@ -38,7 +38,10 @@ class Handle_VrmlData_Coordinate;
  
  class VrmlData_ShapeConvert 

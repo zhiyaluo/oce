@@ -8,10 +8,10 @@ Subject: [PATCH] [clang-warning-fix][unused-value]
  src/AdvApp2Var/AdvApp2Var_Iso.cxx |    2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
-Index: oce/inc/OpenGl_telem_util.hxx
+Index: oce/src/OpenGl/OpenGl_telem_util.hxx
 ===================================================================
---- oce.orig/inc/OpenGl_telem_util.hxx
-+++ oce/inc/OpenGl_telem_util.hxx
+--- oce.orig/src/OpenGl/OpenGl_telem_util.hxx
++++ oce/src/OpenGl/OpenGl_telem_util.hxx
 @@ -87,7 +87,7 @@ xx-xx-xx : xxx ; Creation.
  /* normalize */
  #define  vecnrmd(a,d)    ( d = (Tfloat)vecmag(a), \

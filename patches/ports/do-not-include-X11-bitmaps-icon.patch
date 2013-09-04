@@ -8,10 +8,10 @@ it is better to not include it.
  inc/InterfaceGraphic_X11.hxx |   20 --------------------
  1 files changed, 0 insertions(+), 20 deletions(-)
 
-Index: oce/inc/InterfaceGraphic_X11.hxx
+Index: oce/src/InterfaceGraphic/InterfaceGraphic_X11.hxx
 ===================================================================
---- oce.orig/inc/InterfaceGraphic_X11.hxx
-+++ oce/inc/InterfaceGraphic_X11.hxx
+--- oce.orig/src/InterfaceGraphic/InterfaceGraphic_X11.hxx
++++ oce/src/InterfaceGraphic/InterfaceGraphic_X11.hxx
 @@ -27,26 +27,6 @@
  #  include <X11/Xatom.h>
  #  include <GL/glx.h>

@@ -10,10 +10,10 @@ Subject: [PATCH] [clang-warning-fix][defined-but-not-used]
  src/PLib/PLib.cxx                         |    2 -
  4 files changed, 1 insertion(+), 174 deletions(-)
 
-Index: oce/inc/IntImpParGen_Intersector.gxx
+Index: oce/src/IntImpParGen/IntImpParGen_Intersector.gxx
 ===================================================================
---- oce.orig/inc/IntImpParGen_Intersector.gxx
-+++ oce/inc/IntImpParGen_Intersector.gxx
+--- oce.orig/src/IntImpParGen/IntImpParGen_Intersector.gxx
++++ oce/src/IntImpParGen/IntImpParGen_Intersector.gxx
 @@ -44,7 +44,6 @@
  #define EPSX    ParTool::EpsX(TheParCurve)
  #define NB_ECHANTILLONS 

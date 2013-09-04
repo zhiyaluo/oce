@@ -246,10 +246,10 @@ Index: oce/drv/XCAFSchema/XCAFSchema.cxx
  IMPLEMENT_STANDARD_HANDLE(XCAFSchema,Storage_Schema)
  IMPLEMENT_STANDARD_RTTIEXT(XCAFSchema,Storage_Schema)
  
-Index: oce/inc/Standard_Atomic.hxx
+Index: oce/src/Standard/Standard_Atomic.hxx
 ===================================================================
---- oce.orig/inc/Standard_Atomic.hxx
-+++ oce/inc/Standard_Atomic.hxx
+--- oce.orig/src/Standard/Standard_Atomic.hxx
++++ oce/src/Standard/Standard_Atomic.hxx
 @@ -59,24 +59,20 @@ int Standard_Atomic_Decrement (volatile
    return __sync_sub_and_fetch (theValue, 1);
  }

@@ -11,10 +11,10 @@ Subject: [PATCH] Rename glext.h into OpenGl_glext.h
  create mode 100644 inc/OpenGl_glext.h
  delete mode 100644 inc/glext.h
 
-Index: oce/inc/OpenGl_GlCore12.hxx
+Index: oce/src/OpenGl/OpenGl_GlCore12.hxx
 ===================================================================
---- oce.orig/inc/OpenGl_GlCore12.hxx
-+++ oce/inc/OpenGl_GlCore12.hxx
+--- oce.orig/src/OpenGl/OpenGl_GlCore12.hxx
++++ oce/src/OpenGl/OpenGl_GlCore12.hxx
 @@ -31,8 +31,7 @@
  #undef GL_VERSION_1_5
  #undef GL_VERSION_2_0
@@ -25,10 +25,10 @@ Index: oce/inc/OpenGl_GlCore12.hxx
  
  //! Function list for GL1.2 core functionality.
  struct OpenGl_GlCore12
-Index: oce/inc/OpenGl_glext.h
+Index: oce/src/OpenGl/OpenGl_glext.h
 ===================================================================
 --- /dev/null
-+++ oce/inc/OpenGl_glext.h
++++ oce/src/OpenGl/OpenGl_glext.h
 @@ -0,0 +1,11751 @@
 +#ifndef __glext_h_
 +#define __glext_h_
@@ -11781,9 +11781,9 @@ Index: oce/inc/OpenGl_glext.h
 +#endif
 +
 +#endif
-Index: oce/inc/glext.h
+Index: oce/src/OpenGl/glext.h
 ===================================================================
---- oce.orig/inc/glext.h
+--- oce.orig/src/OpenGl/glext.h
 +++ /dev/null
 @@ -1,11751 +0,0 @@
 -#ifndef __glext_h_

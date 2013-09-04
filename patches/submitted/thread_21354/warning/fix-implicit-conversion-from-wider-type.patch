@@ -154,10 +154,10 @@ Changed some of the interface types (inc files) to correct some implicit casts.
  src/PlotMgt/PlotMgt_TextManager.cxx   |   20 ++++++++++----------
  5 files changed, 18 insertions(+), 20 deletions(-)
 
-Index: oce/inc/LDOM_OSStream.hxx
+Index: oce/src/LDOM/LDOM_OSStream.hxx
 ===================================================================
---- oce.orig/inc/LDOM_OSStream.hxx
-+++ oce/inc/LDOM_OSStream.hxx
+--- oce.orig/src/LDOM/LDOM_OSStream.hxx
++++ oce/src/LDOM/LDOM_OSStream.hxx
 @@ -67,7 +67,7 @@ class LDOM_SBuffer : public streambuf
  
      // Methods of streambuf

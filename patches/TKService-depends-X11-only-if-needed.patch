@@ -14,10 +14,10 @@ Closes issue #36.
  src/AlienImage/AlienImage_X11XWDFileHeader.cxx |    4 +---
  4 files changed, 4 insertions(+), 7 deletions(-)
 
-Index: oce/inc/Aspect_XWD.hxx
+Index: oce/src/Aspect/Aspect_XWD.hxx
 ===================================================================
---- oce.orig/inc/Aspect_XWD.hxx
-+++ oce/inc/Aspect_XWD.hxx
+--- oce.orig/src/Aspect/Aspect_XWD.hxx
++++ oce/src/Aspect/Aspect_XWD.hxx
 @@ -20,6 +20,7 @@
  
  # ifndef WNT

@@ -66,10 +66,10 @@ Subject: [PATCH 23/82] [warning-fix][assignment-in-conditional-expression]
  src/Visual3d/Visual3d_View.cxx                 |    2 +-
  15 files changed, 32 insertions(+), 36 deletions(-)
 
-Index: oce/inc/Extrema_GExtCC.gxx
+Index: oce/src/Extrema/Extrema_GExtCC.gxx
 ===================================================================
---- oce.orig/inc/Extrema_GExtCC.gxx
-+++ oce/inc/Extrema_GExtCC.gxx
+--- oce.orig/src/Extrema/Extrema_GExtCC.gxx
++++ oce/src/Extrema/Extrema_GExtCC.gxx
 @@ -206,7 +206,7 @@ void Extrema_GExtCC::Perform()
      //analytical case - one curve is always a line
      Standard_Integer anInd1 = 0, anInd2 = 1;

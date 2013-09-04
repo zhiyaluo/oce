@@ -37,10 +37,10 @@ Subject: [PATCH] [warning-fix][empty-body]
  src/StepData/StepData_StepWriter.cxx         |    6 +++---
  19 files changed, 32 insertions(+), 37 deletions(-)
 
-Index: oce/inc/LDOM_DeclareSequence.hxx
+Index: oce/src/LDOM/LDOM_DeclareSequence.hxx
 ===================================================================
---- oce.orig/inc/LDOM_DeclareSequence.hxx
-+++ oce/inc/LDOM_DeclareSequence.hxx
+--- oce.orig/src/LDOM/LDOM_DeclareSequence.hxx
++++ oce/src/LDOM/LDOM_DeclareSequence.hxx
 @@ -217,7 +217,7 @@ void ClassName::InsertAt (const Standard
        if (anItem -> myPrev) anItem -> myPrev -> myNext = anItem;              \
        myLength++;                                                             \
@@ -50,10 +50,10 @@ Index: oce/inc/LDOM_DeclareSequence.hxx
  }                                                                             \
                                                                                \
  void ClassName::Clear ()                                                      \
-Index: oce/inc/Standard_String.hxx
+Index: oce/src/Standard/Standard_String.hxx
 ===================================================================
---- oce.orig/inc/Standard_String.hxx
-+++ oce/inc/Standard_String.hxx
+--- oce.orig/src/Standard/Standard_String.hxx
++++ oce/src/Standard/Standard_String.hxx
 @@ -28,8 +28,8 @@
  
  # if OptJr

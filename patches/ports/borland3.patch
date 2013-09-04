@@ -14,10 +14,10 @@ These errors are fixed when including non-Handle_ headers.
  ros/inc/NIS_InteractiveContext.hxx |    9 +++++++--
  1 files changed, 7 insertions(+), 2 deletions(-)
 
-Index: oce/inc/NIS_InteractiveContext.hxx
+Index: oce/src/NIS/NIS_InteractiveContext.hxx
 ===================================================================
---- oce.orig/inc/NIS_InteractiveContext.hxx
-+++ oce/inc/NIS_InteractiveContext.hxx
+--- oce.orig/src/NIS/NIS_InteractiveContext.hxx
++++ oce/src/NIS/NIS_InteractiveContext.hxx
 @@ -22,8 +22,13 @@
  #ifndef NIS_InteractiveContext_HeaderFile
  #define NIS_InteractiveContext_HeaderFile

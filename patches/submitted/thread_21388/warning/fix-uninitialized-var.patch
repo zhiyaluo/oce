@@ -344,10 +344,10 @@ Subject: [PATCH 10/11] [warning-fix][uninitialized-var] Fixes warnings like :
  src/OSD/OSD_Process.cxx |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
-Index: oce/inc/AppParCurves_ResolConstraint.gxx
+Index: oce/src/AppParCurves/AppParCurves_ResolConstraint.gxx
 ===================================================================
---- oce.orig/inc/AppParCurves_ResolConstraint.gxx
-+++ oce/inc/AppParCurves_ResolConstraint.gxx
+--- oce.orig/src/AppParCurves/AppParCurves_ResolConstraint.gxx
++++ oce/src/AppParCurves/AppParCurves_ResolConstraint.gxx
 @@ -79,7 +79,7 @@ AppParCurves_ResolConstraint::
    Standard_Integer Inc3, IncSec, IncCol, IP, CCol;
    Standard_Integer myindex, Def = SCurv.NbPoles()-1;    
@@ -357,10 +357,10 @@ Index: oce/inc/AppParCurves_ResolConstraint.gxx
    Standard_Boolean Ok;
    gp_Vec V;
    gp_Vec2d V2d;
-Index: oce/inc/AppParCurves_Variational_1.gxx
+Index: oce/src/AppParCurves/AppParCurves_Variational_1.gxx
 ===================================================================
---- oce.orig/inc/AppParCurves_Variational_1.gxx
-+++ oce/inc/AppParCurves_Variational_1.gxx
+--- oce.orig/src/AppParCurves/AppParCurves_Variational_1.gxx
++++ oce/src/AppParCurves/AppParCurves_Variational_1.gxx
 @@ -60,7 +60,7 @@ void AppParCurves_Variational::TheMotor(
    Standard_Integer NbrPnt = myLastPoint - myFirstPoint + 1;
    Standard_Integer NbrConstraint = myNbPassPoints + myNbTangPoints + myNbCurvPoints;
@@ -370,10 +370,10 @@ Index: oce/inc/AppParCurves_Variational_1.gxx
    Standard_Real EpsDeg; // = Min(WQuality * .1, CBLONG * .001);
  
    Standard_Real e1, e2, e3;
-Index: oce/inc/Approx_ComputeCLine.gxx
+Index: oce/src/Approx/Approx_ComputeCLine.gxx
 ===================================================================
---- oce.orig/inc/Approx_ComputeCLine.gxx
-+++ oce/inc/Approx_ComputeCLine.gxx
+--- oce.orig/src/Approx/Approx_ComputeCLine.gxx
++++ oce/src/Approx/Approx_ComputeCLine.gxx
 @@ -28,6 +28,7 @@
  #include <TColStd_Array1OfReal.hxx>
  #include <AppParCurves_Constraint.hxx>
@@ -400,10 +400,10 @@ Index: oce/inc/Approx_ComputeCLine.gxx
      Standard_Integer NbWorseDecis = 0, NbAllowedBadDecis = 10;
      
      KeptT3d = RealLast(); KeptT2d = 0;
-Index: oce/inc/Blend_Walking_1.gxx
+Index: oce/src/Blend/Blend_Walking_1.gxx
 ===================================================================
---- oce.orig/inc/Blend_Walking_1.gxx
-+++ oce/inc/Blend_Walking_1.gxx
+--- oce.orig/src/Blend/Blend_Walking_1.gxx
++++ oce/src/Blend/Blend_Walking_1.gxx
 @@ -260,8 +260,8 @@ Standard_Boolean Blend_Walking::PerformF
    math_Vector tolerance(1,4),infbound(1,4),supbound(1,4);
    math_Vector solrst1(1,4),solrst2(1,4);
@@ -415,10 +415,10 @@ Index: oce/inc/Blend_Walking_1.gxx
    TheVertex Vtx1,Vtx2;
    gp_Pnt2d p2d;
  
-Index: oce/inc/Blend_Walking_3.gxx
+Index: oce/src/Blend/Blend_Walking_3.gxx
 ===================================================================
---- oce.orig/inc/Blend_Walking_3.gxx
-+++ oce/inc/Blend_Walking_3.gxx
+--- oce.orig/src/Blend/Blend_Walking_3.gxx
++++ oce/src/Blend/Blend_Walking_3.gxx
 @@ -29,7 +29,7 @@ Standard_Integer Blend_Walking::ArcToRec
    Standard_Boolean ok = Standard_False;
    Standard_Boolean byinter = (line->NbPoints() != 0), okinter = 0;
@@ -428,10 +428,10 @@ Index: oce/inc/Blend_Walking_3.gxx
    Handle(TheTopolTool) Iter;
  
    if (OnFirst) {
-Index: oce/inc/Blend_Walking_4.gxx
+Index: oce/src/Blend/Blend_Walking_4.gxx
 ===================================================================
---- oce.orig/inc/Blend_Walking_4.gxx
-+++ oce/inc/Blend_Walking_4.gxx
+--- oce.orig/src/Blend/Blend_Walking_4.gxx
++++ oce/src/Blend/Blend_Walking_4.gxx
 @@ -91,9 +91,9 @@ void Blend_Walking::InternalPerform(Blen
    Blend_Status State = Blend_OnRst12;
    TopAbs_State situ1 =TopAbs_IN,situ2=TopAbs_IN;
@@ -445,10 +445,10 @@ Index: oce/inc/Blend_Walking_4.gxx
    gp_Pnt2d p2d;
    math_Vector tolerance(1,4),infbound(1,4),supbound(1,4),parinit(1,4);
    math_Vector solrst1(1,4),solrst2(1,4);
-Index: oce/inc/Contap_ContourGen_3.gxx
+Index: oce/src/Contap/Contap_ContourGen_3.gxx
 ===================================================================
---- oce.orig/inc/Contap_ContourGen_3.gxx
-+++ oce/inc/Contap_ContourGen_3.gxx
+--- oce.orig/src/Contap/Contap_ContourGen_3.gxx
++++ oce/src/Contap/Contap_ContourGen_3.gxx
 @@ -86,7 +86,7 @@ static void PutPointsOnLine (const Conta
  
    gp_Pnt ptonsurf;
@@ -476,10 +476,10 @@ Index: oce/inc/Contap_ContourGen_3.gxx
    switch (typS) {
    case GeomAbs_Cylinder: {
      ElSLib::Parameters(TheSurfaceTool::Cylinder(Surf),P,u,v);
-Index: oce/inc/GCPnts_TangentialDeflection.gxx
+Index: oce/src/GCPnts/GCPnts_TangentialDeflection.gxx
 ===================================================================
---- oce.orig/inc/GCPnts_TangentialDeflection.gxx
-+++ oce/inc/GCPnts_TangentialDeflection.gxx
+--- oce.orig/src/GCPnts/GCPnts_TangentialDeflection.gxx
++++ oce/src/GCPnts/GCPnts_TangentialDeflection.gxx
 @@ -252,7 +252,7 @@ void GCPnts_TangentialDeflection::Perfor
    Standard_Integer i;       
    gp_XYZ V1, V2;
@@ -489,10 +489,10 @@ Index: oce/inc/GCPnts_TangentialDeflection.gxx
  
    Standard_Real U1       = firstu;   
    Standard_Real LTol     = Precision::Confusion ();  //protection longueur nulle
-Index: oce/inc/GProp_UFunction.gxx
+Index: oce/src/GProp/GProp_UFunction.gxx
 ===================================================================
---- oce.orig/inc/GProp_UFunction.gxx
-+++ oce/inc/GProp_UFunction.gxx
+--- oce.orig/src/GProp/GProp_UFunction.gxx
++++ oce/src/GProp/GProp_UFunction.gxx
 @@ -115,7 +115,7 @@ Standard_Boolean GProp_UFunction::Center
  {
    gp_XYZ        aPmP0;
@@ -513,10 +513,10 @@ Index: oce/inc/GProp_UFunction.gxx
    Standard_Real aParam1;
    Standard_Real aParam2;
    Standard_Real *aCoeffs = (Standard_Real *)myCoeffs;
-Index: oce/inc/IntCurveSurface_Inter.gxx
+Index: oce/src/IntCurveSurface/IntCurveSurface_Inter.gxx
 ===================================================================
---- oce.orig/inc/IntCurveSurface_Inter.gxx
-+++ oce/inc/IntCurveSurface_Inter.gxx
+--- oce.orig/src/IntCurveSurface/IntCurveSurface_Inter.gxx
++++ oce/src/IntCurveSurface/IntCurveSurface_Inter.gxx
 @@ -1587,7 +1587,7 @@ void SectionPointToParameters(const Intf
    gp_Pnt P(Sp.Pnt());
    
@@ -526,10 +526,10 @@ Index: oce/inc/IntCurveSurface_Inter.gxx
    //----------------------------------------------------------------------
    //--          Calcul des parametres approches sur la surface          --
    //----------------------------------------------------------------------
-Index: oce/inc/IntPatch_ImpImpIntersection_0.gxx
+Index: oce/src/IntPatch/IntPatch_ImpImpIntersection_0.gxx
 ===================================================================
---- oce.orig/inc/IntPatch_ImpImpIntersection_0.gxx
-+++ oce/inc/IntPatch_ImpImpIntersection_0.gxx
+--- oce.orig/src/IntPatch/IntPatch_ImpImpIntersection_0.gxx
++++ oce/src/IntPatch/IntPatch_ImpImpIntersection_0.gxx
 @@ -1232,7 +1232,7 @@ Standard_Boolean  SingleLine (const gp_P
  
    IntPatch_IType typarc = lin->ArcType();
@@ -539,10 +539,10 @@ Index: oce/inc/IntPatch_ImpImpIntersection_0.gxx
    gp_Vec tgint;
    gp_Pnt ptproj;
    Standard_Boolean retvalue;
-Index: oce/inc/IntStart_SearchOnBoundaries_1.gxx
+Index: oce/src/IntStart/IntStart_SearchOnBoundaries_1.gxx
 ===================================================================
---- oce.orig/inc/IntStart_SearchOnBoundaries_1.gxx
-+++ oce/inc/IntStart_SearchOnBoundaries_1.gxx
+--- oce.orig/src/IntStart/IntStart_SearchOnBoundaries_1.gxx
++++ oce/src/IntStart/IntStart_SearchOnBoundaries_1.gxx
 @@ -143,7 +143,7 @@ void BoundedArc (const TheArc& A,
    Standard_Integer i,Nbi,Nbp;
  
@@ -561,10 +561,10 @@ Index: oce/inc/IntStart_SearchOnBoundaries_1.gxx
    Standard_Integer ideb,ifin,range,ranged,rangef;
    
  
-Index: oce/inc/IntWalk_IWalking_4.gxx
+Index: oce/src/IntWalk/IntWalk_IWalking_4.gxx
 ===================================================================
---- oce.orig/inc/IntWalk_IWalking_4.gxx
-+++ oce/inc/IntWalk_IWalking_4.gxx
+--- oce.orig/src/IntWalk/IntWalk_IWalking_4.gxx
++++ oce/src/IntWalk/IntWalk_IWalking_4.gxx
 @@ -51,7 +51,7 @@ void IntWalk_IWalking::ComputeCloseLine(
  // ******************************************************************** 
  {

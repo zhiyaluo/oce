@@ -1,7 +1,7 @@
-Index: oce/inc/IntCurveSurface_Inter.gxx
+Index: oce/src/IntCurveSurface/IntCurveSurface_Inter.gxx
 ===================================================================
---- oce.orig/inc/IntCurveSurface_Inter.gxx
-+++ oce/inc/IntCurveSurface_Inter.gxx
+--- oce.orig/src/IntCurveSurface/IntCurveSurface_Inter.gxx
++++ oce/src/IntCurveSurface/IntCurveSurface_Inter.gxx
 @@ -150,25 +150,6 @@ static
  					      Standard_Real& v);
  

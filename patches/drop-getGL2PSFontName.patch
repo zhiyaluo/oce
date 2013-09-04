@@ -14,10 +14,10 @@ Bump OCE_ABI_SOVERSION.
  src/OpenGl/OpenGl_Display_1.cxx |    2 +-
  3 files changed, 2 insertions(+), 6 deletions(-)
 
-Index: oce/inc/OpenGl_Display.hxx
+Index: oce/src/OpenGl/OpenGl_Display.hxx
 ===================================================================
---- oce.orig/inc/OpenGl_Display.hxx
-+++ oce/inc/OpenGl_Display.hxx
+--- oce.orig/src/OpenGl/OpenGl_Display.hxx
++++ oce/src/OpenGl/OpenGl_Display.hxx
 @@ -124,10 +124,6 @@ class OpenGl_Display : public MMgt_TShar
  
    void ExportText (const wchar_t *text, const int is2d, const float x, const float y, const float z, const OpenGl_AspectText *aspect, const OpenGl_TextParam *param, const short height);

@@ -108,10 +108,10 @@ Subject: [PATCH] [warning-fix][unreachable-code] Fixes unreachable code
  src/TopOpeBRepDS/TopOpeBRepDS_BuildTool.cxx |    8 ++------
  3 files changed, 7 insertions(+), 12 deletions(-)
 
-Index: oce/inc/GCPnts_QuasiUniformDeflection.gxx
+Index: oce/src/GCPnts/GCPnts_QuasiUniformDeflection.gxx
 ===================================================================
---- oce.orig/inc/GCPnts_QuasiUniformDeflection.gxx
-+++ oce/inc/GCPnts_QuasiUniformDeflection.gxx
+--- oce.orig/src/GCPnts/GCPnts_QuasiUniformDeflection.gxx
++++ oce/src/GCPnts/GCPnts_QuasiUniformDeflection.gxx
 @@ -229,7 +229,10 @@ static Standard_Boolean PerformComposite
  
      Ua = Ub;
@@ -123,10 +123,10 @@ Index: oce/inc/GCPnts_QuasiUniformDeflection.gxx
  }
  
  
-Index: oce/inc/GCPnts_UniformDeflection.gxx
+Index: oce/src/GCPnts/GCPnts_UniformDeflection.gxx
 ===================================================================
---- oce.orig/inc/GCPnts_UniformDeflection.gxx
-+++ oce/inc/GCPnts_UniformDeflection.gxx
+--- oce.orig/src/GCPnts/GCPnts_UniformDeflection.gxx
++++ oce/src/GCPnts/GCPnts_UniformDeflection.gxx
 @@ -194,7 +194,9 @@ static Standard_Boolean PerformComposite
  
      Ua = Ub;

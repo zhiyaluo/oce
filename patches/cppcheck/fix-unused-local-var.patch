@@ -1,7 +1,7 @@
-Index: oce/inc/GCPnts_UniformAbscissa.gxx
+Index: oce/src/GCPnts/GCPnts_UniformAbscissa.gxx
 ===================================================================
---- oce.orig/inc/GCPnts_UniformAbscissa.gxx
-+++ oce/inc/GCPnts_UniformAbscissa.gxx
+--- oce.orig/src/GCPnts/GCPnts_UniformAbscissa.gxx
++++ oce/src/GCPnts/GCPnts_UniformAbscissa.gxx
 @@ -174,7 +174,7 @@ PerformLengthParametrized( Handle(TColSt
  {
    Standard_Boolean NotDone = Standard_True;
@@ -11,10 +11,10 @@ Index: oce/inc/GCPnts_UniformAbscissa.gxx
    Standard_Real UU1 = Min(U1, U2);
  //  Standard_Real UCurrent;
    Standard_Real Delta, Ui;
-Index: oce/inc/IntCurveSurface_Inter.gxx
+Index: oce/src/IntCurveSurface/IntCurveSurface_Inter.gxx
 ===================================================================
---- oce.orig/inc/IntCurveSurface_Inter.gxx
-+++ oce/inc/IntCurveSurface_Inter.gxx
+--- oce.orig/src/IntCurveSurface/IntCurveSurface_Inter.gxx
++++ oce/src/IntCurveSurface/IntCurveSurface_Inter.gxx
 @@ -419,7 +419,6 @@ void IntCurveSurface_Inter::Perform(cons
    done = Standard_True;
    Standard_Integer NbUOnS = TheSurfaceTool::NbUIntervals(surface,GeomAbs_C2);
@@ -23,10 +23,10 @@ Index: oce/inc/IntCurveSurface_Inter.gxx
    Standard_Real U0,U1,V0,V1; 
    
    if(NbUOnS > 1) { 
-Index: oce/inc/IntWalk_PWalking_1.gxx
+Index: oce/src/IntWalk/IntWalk_PWalking_1.gxx
 ===================================================================
---- oce.orig/inc/IntWalk_PWalking_1.gxx
-+++ oce/inc/IntWalk_PWalking_1.gxx
+--- oce.orig/src/IntWalk/IntWalk_PWalking_1.gxx
++++ oce/src/IntWalk/IntWalk_PWalking_1.gxx
 @@ -418,7 +418,6 @@ void IntWalk_PWalking::Perform(const TCo
    //xf
    Standard_Integer i, NbPasOKConseq;
@@ -35,10 +35,10 @@ Index: oce/inc/IntWalk_PWalking_1.gxx
    TColStd_Array1OfReal Param(1,4);
    IntImp_ConstIsoparametric ChoixIso;
    //xt
-Index: oce/inc/Intf_InterferencePolygonPolyhedron.gxx
+Index: oce/src/Intf/Intf_InterferencePolygonPolyhedron.gxx
 ===================================================================
---- oce.orig/inc/Intf_InterferencePolygonPolyhedron.gxx
-+++ oce/inc/Intf_InterferencePolygonPolyhedron.gxx
+--- oce.orig/src/Intf/Intf_InterferencePolygonPolyhedron.gxx
++++ oce/src/Intf/Intf_InterferencePolygonPolyhedron.gxx
 @@ -1059,7 +1059,6 @@ void Intf_InterferencePolygonPolyhedron:
  //   Standard_Real dEndTri=(triNor*EndO.XYZ())-triDp; // Distance <EndO> plan
  

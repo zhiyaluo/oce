@@ -62,10 +62,10 @@ GCC emits warnings:
  src/Xw/Xw_load_image.cxx                           |    4 +-
  49 files changed, 131 insertions(+), 136 deletions(-)
 
-Index: oce/inc/AppParCurves_Variational_7.gxx
+Index: oce/src/AppParCurves/AppParCurves_Variational_7.gxx
 ===================================================================
---- oce.orig/inc/AppParCurves_Variational_7.gxx
-+++ oce/inc/AppParCurves_Variational_7.gxx
+--- oce.orig/src/AppParCurves/AppParCurves_Variational_7.gxx
++++ oce/src/AppParCurves/AppParCurves_Variational_7.gxx
 @@ -151,7 +151,7 @@ void AppParCurves_Variational::Adjusting
      vseuil = Sqrt(vocri[1]) + (erold - myMaxError) * 4;
      
@@ -84,10 +84,10 @@ Index: oce/inc/AppParCurves_Variational_7.gxx
        loptim = Standard_False;
      }
      
-Index: oce/inc/Blend_Walking_1.gxx
+Index: oce/src/Blend/Blend_Walking_1.gxx
 ===================================================================
---- oce.orig/inc/Blend_Walking_1.gxx
-+++ oce/inc/Blend_Walking_1.gxx
+--- oce.orig/src/Blend/Blend_Walking_1.gxx
++++ oce/src/Blend/Blend_Walking_1.gxx
 @@ -472,8 +472,8 @@ Standard_Boolean Blend_Walking::Continu(
    if (sens < 0.) {
      Ext1 = line->StartPointOnFirst();
@@ -131,10 +131,10 @@ Index: oce/inc/Blend_Walking_1.gxx
        line->Remove(length,newlength);
        line->SetEndPoints(Ext1,Ext2);
        return Standard_False;
-Index: oce/inc/Contap_ContourGen_2.gxx
+Index: oce/src/Contap/Contap_ContourGen_2.gxx
 ===================================================================
---- oce.orig/inc/Contap_ContourGen_2.gxx
-+++ oce/inc/Contap_ContourGen_2.gxx
+--- oce.orig/src/Contap/Contap_ContourGen_2.gxx
++++ oce/src/Contap/Contap_ContourGen_2.gxx
 @@ -502,8 +502,8 @@ static void ComputeTangency (const Conta
  		  LocTrans = TopAbs_EXTERNAL; // et pourquoi pas INTERNAL
  		}
@@ -157,10 +157,10 @@ Index: oce/inc/Contap_ContourGen_2.gxx
  			    LocTrans = TopAbs_FORWARD;
  			  }
  			  else {
-Index: oce/inc/Poly_MakeLoops.hxx
+Index: oce/src/Poly/Poly_MakeLoops.hxx
 ===================================================================
---- oce.orig/inc/Poly_MakeLoops.hxx
-+++ oce/inc/Poly_MakeLoops.hxx
+--- oce.orig/src/Poly/Poly_MakeLoops.hxx
++++ oce/src/Poly/Poly_MakeLoops.hxx
 @@ -271,10 +271,10 @@ inline Standard_Integer HashCode(const P
  inline Standard_Boolean IsEqual(const Poly_MakeLoops::Link& theKey1,
                                  const Poly_MakeLoops::Link& theKey2)
@@ -176,10 +176,10 @@ Index: oce/inc/Poly_MakeLoops.hxx
  }
  
  /**
-Index: oce/inc/Quantity_Date.lxx
+Index: oce/src/Quantity/Quantity_Date.lxx
 ===================================================================
---- oce.orig/inc/Quantity_Date.lxx
-+++ oce/inc/Quantity_Date.lxx
+--- oce.orig/src/Quantity/Quantity_Date.lxx
++++ oce/src/Quantity/Quantity_Date.lxx
 @@ -18,6 +18,6 @@
  
  inline Standard_Boolean Quantity_Date::IsLeap (const Standard_Integer yy){

@@ -11,10 +11,10 @@ Subject: [PATCH] Added missing include in BRepBlend_BlendTool.lxx
  inc/BRepBlend_BlendTool.lxx |    2 ++
  1 files changed, 2 insertions(+), 0 deletions(-)
 
-Index: oce/inc/BRepBlend_BlendTool.lxx
+Index: oce/src/BRepBlend/BRepBlend_BlendTool.lxx
 ===================================================================
---- oce.orig/inc/BRepBlend_BlendTool.lxx
-+++ oce/inc/BRepBlend_BlendTool.lxx
+--- oce.orig/src/BRepBlend/BRepBlend_BlendTool.lxx
++++ oce/src/BRepBlend/BRepBlend_BlendTool.lxx
 @@ -20,6 +20,8 @@
  
  #include <Adaptor3d_HVertex.hxx>

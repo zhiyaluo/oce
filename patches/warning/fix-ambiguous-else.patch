@@ -54,10 +54,10 @@ Subject: [PATCH] [warning-fix][ambiguous-else]
  src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx                |    6 ++-
  48 files changed, 178 insertions(+), 91 deletions(-)
 
-Index: oce/inc/GProp_SGProps.gxx
+Index: oce/src/GProp/GProp_SGProps.gxx
 ===================================================================
---- oce.orig/inc/GProp_SGProps.gxx
-+++ oce/inc/GProp_SGProps.gxx
+--- oce.orig/src/GProp/GProp_SGProps.gxx
++++ oce/src/GProp/GProp_SGProps.gxx
 @@ -112,8 +112,9 @@ static Standard_Integer FillIntervalBoun
    VA(j++) = A;
    for(; i <= iEnd; i++){
@@ -69,10 +69,10 @@ Index: oce/inc/GProp_SGProps.gxx
    }
    VB(k) = B;
    return k;
-Index: oce/inc/GProp_VGProps.gxx
+Index: oce/src/GProp/GProp_VGProps.gxx
 ===================================================================
---- oce.orig/inc/GProp_VGProps.gxx
-+++ oce/inc/GProp_VGProps.gxx
+--- oce.orig/src/GProp/GProp_VGProps.gxx
++++ oce/src/GProp/GProp_VGProps.gxx
 @@ -81,8 +81,9 @@ static Standard_Integer FillIntervalBoun
    VA(j++) = A;
    for(; i <= iEnd; i++){

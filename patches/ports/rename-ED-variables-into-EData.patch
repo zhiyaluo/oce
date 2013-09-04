@@ -54,10 +54,10 @@ Index: oce/inc/HLRBRep_Data.hxx
    //! Returns  True  if the  intersection is  rejected. <br>
    Standard_EXPORT     Standard_Boolean RejectedPoint(const IntRes2d_IntersectionPoint& PInter,const TopAbs_Orientation BoundOri,const Standard_Integer NumSeg) ;
    //! returns True  if there is a common  vertex between <br>
-Index: oce/inc/HLRBRep_Data.lxx
+Index: oce/src/HLRBRep/HLRBRep_Data.lxx
 ===================================================================
---- oce.orig/inc/HLRBRep_Data.lxx
-+++ oce/inc/HLRBRep_Data.lxx
+--- oce.orig/src/HLRBRep/HLRBRep_Data.lxx
++++ oce/src/HLRBRep/HLRBRep_Data.lxx
 @@ -138,5 +138,5 @@ inline HLRAlgo_Interference & HLRBRep_Da
  
  inline Standard_Boolean 

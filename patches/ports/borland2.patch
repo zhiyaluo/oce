@@ -30,10 +30,10 @@ the class name and not of its typedef.
  inc/NCollection_Vector.hxx |    8 ++++++++
  1 files changed, 8 insertions(+), 0 deletions(-)
 
-Index: oce/inc/NCollection_CellFilter.hxx
+Index: oce/src/NCollection/NCollection_CellFilter.hxx
 ===================================================================
---- oce.orig/inc/NCollection_CellFilter.hxx
-+++ oce/inc/NCollection_CellFilter.hxx
+--- oce.orig/src/NCollection/NCollection_CellFilter.hxx
++++ oce/src/NCollection/NCollection_CellFilter.hxx
 @@ -324,10 +324,20 @@ protected:
    };
  
@@ -55,10 +55,10 @@ Index: oce/inc/NCollection_CellFilter.hxx
  
  protected:
  
-Index: oce/inc/NCollection_IndexedDataMap.hxx
+Index: oce/src/NCollection/NCollection_IndexedDataMap.hxx
 ===================================================================
---- oce.orig/inc/NCollection_IndexedDataMap.hxx
-+++ oce/inc/NCollection_IndexedDataMap.hxx
+--- oce.orig/src/NCollection/NCollection_IndexedDataMap.hxx
++++ oce/src/NCollection/NCollection_IndexedDataMap.hxx
 @@ -110,7 +110,11 @@ template < class TheKeyType,
        myIndex(0) {}
      //! Constructor
@@ -71,10 +71,10 @@ Index: oce/inc/NCollection_IndexedDataMap.hxx
        myIndex(1) {}
      //! Query if the end of collection is reached by iterator
      virtual Standard_Boolean More(void) const
-Index: oce/inc/NCollection_IndexedMap.hxx
+Index: oce/src/NCollection/NCollection_IndexedMap.hxx
 ===================================================================
---- oce.orig/inc/NCollection_IndexedMap.hxx
-+++ oce/inc/NCollection_IndexedMap.hxx
+--- oce.orig/src/NCollection/NCollection_IndexedMap.hxx
++++ oce/src/NCollection/NCollection_IndexedMap.hxx
 @@ -100,7 +100,11 @@ template < class TheKeyType,
        myIndex(0) {}
      //! Constructor
@@ -87,10 +87,10 @@ Index: oce/inc/NCollection_IndexedMap.hxx
        myIndex(1) {}
      //! Query if the end of collection is reached by iterator
      virtual Standard_Boolean More(void) const
-Index: oce/inc/NCollection_Vector.hxx
+Index: oce/src/NCollection/NCollection_Vector.hxx
 ===================================================================
---- oce.orig/inc/NCollection_Vector.hxx
-+++ oce/inc/NCollection_Vector.hxx
+--- oce.orig/src/NCollection/NCollection_Vector.hxx
++++ oce/src/NCollection/NCollection_Vector.hxx
 @@ -99,7 +99,11 @@ template <class TheItemType> class NColl
      {
        for (Standard_Integer anItemIter = 0; anItemIter < theBlock.Size; ++anItemIter)

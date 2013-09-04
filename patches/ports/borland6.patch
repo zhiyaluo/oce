@@ -16,10 +16,10 @@ Subject: [PATCH] In placement delete not supported under bcc32
  inc/TDF_LabelNode.hxx |    3 ++-
  1 files changed, 2 insertions(+), 1 deletions(-)
 
-Index: oce/inc/W32_Allocator.hxx
+Index: oce/src/WNT/W32_Allocator.hxx
 ===================================================================
---- oce.orig/inc/W32_Allocator.hxx
-+++ oce/inc/W32_Allocator.hxx
+--- oce.orig/src/WNT/W32_Allocator.hxx
++++ oce/src/WNT/W32_Allocator.hxx
 @@ -117,7 +117,10 @@ struct W32_Note {  // base class to repr
   PW32_Allocator myAllocator;
  

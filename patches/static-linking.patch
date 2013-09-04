@@ -11,10 +11,10 @@ Subject: [PATCH] Fixed linker errors in static build
  src/Standard/Standard_symlink.c                 |    3 ++-
  5 files changed, 16 insertions(+), 12 deletions(-)
 
-Index: oce/inc/InterfaceGraphic_WNT.hxx
+Index: oce/src/InterfaceGraphic/InterfaceGraphic_WNT.hxx
 ===================================================================
---- oce.orig/inc/InterfaceGraphic_WNT.hxx
-+++ oce/inc/InterfaceGraphic_WNT.hxx
+--- oce.orig/src/InterfaceGraphic/InterfaceGraphic_WNT.hxx
++++ oce/src/InterfaceGraphic/InterfaceGraphic_WNT.hxx
 @@ -43,6 +43,8 @@
  #define WDF_NOERASEBKGRND 0x00000001
  #define WDF_FOREIGN       0x00000002
@@ -42,10 +42,10 @@ Index: oce/inc/InterfaceGraphic_WNT.hxx
  #endif //WNT
  
  #endif  /* __INTERFACE_GRAPHIC_WNT_HXX */
-Index: oce/inc/Standard_Atomic.hxx
+Index: oce/src/Standard/Standard_Atomic.hxx
 ===================================================================
---- oce.orig/inc/Standard_Atomic.hxx
-+++ oce/inc/Standard_Atomic.hxx
+--- oce.orig/src/Standard/Standard_Atomic.hxx
++++ oce/src/Standard/Standard_Atomic.hxx
 @@ -67,8 +67,8 @@ int Standard_Atomic_Decrement (volatile
      }
    #else

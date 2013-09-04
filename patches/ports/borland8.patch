@@ -31,10 +31,10 @@ otherwise an internal compiler error occurs.
  src/ShapeFix/ShapeFix_ComposeShell.cxx |    4 ++++
  1 files changed, 4 insertions(+), 0 deletions(-)
 
-Index: oce/inc/AIS_InteractiveContext.lxx
+Index: oce/src/AIS/AIS_InteractiveContext.lxx
 ===================================================================
---- oce.orig/inc/AIS_InteractiveContext.lxx
-+++ oce/inc/AIS_InteractiveContext.lxx
+--- oce.orig/src/AIS/AIS_InteractiveContext.lxx
++++ oce/src/AIS/AIS_InteractiveContext.lxx
 @@ -96,7 +96,7 @@ inline Standard_Boolean AIS_InteractiveC
  {return myCurLocalIndex != 0;}
  

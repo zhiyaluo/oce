@@ -102,10 +102,10 @@ Fix proposed by Denis Barbier : modify global variable
  src/Graphic3d/Graphic3d_GraphicDevice.cxx |    7 ++++---
  2 files changed, 7 insertions(+), 6 deletions(-)
 
-Index: oce/inc/InterfaceGraphic_wntio.hxx
+Index: oce/src/InterfaceGraphic/InterfaceGraphic_wntio.hxx
 ===================================================================
---- oce.orig/inc/InterfaceGraphic_wntio.hxx
-+++ oce/inc/InterfaceGraphic_wntio.hxx
+--- oce.orig/src/InterfaceGraphic/InterfaceGraphic_wntio.hxx
++++ oce/src/InterfaceGraphic/InterfaceGraphic_wntio.hxx
 @@ -31,9 +31,9 @@ extern "C" {
  #  endif  /* __InterfaceGraphic_DLL */
  # endif  /* __InterfaceGraphic_API */

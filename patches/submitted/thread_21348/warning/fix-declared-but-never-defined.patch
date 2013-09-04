@@ -17,10 +17,10 @@ Subject: [PATCH 4/4] Remove undefined form() function
  inc/InterfaceGraphic_wntio.hxx |    1 -
  1 files changed, 0 insertions(+), 1 deletions(-)
 
-Index: oce/inc/InterfaceGraphic_wntio.hxx
+Index: oce/src/InterfaceGraphic/InterfaceGraphic_wntio.hxx
 ===================================================================
---- oce.orig/inc/InterfaceGraphic_wntio.hxx
-+++ oce/inc/InterfaceGraphic_wntio.hxx
+--- oce.orig/src/InterfaceGraphic/InterfaceGraphic_wntio.hxx
++++ oce/src/InterfaceGraphic/InterfaceGraphic_wntio.hxx
 @@ -33,7 +33,6 @@ extern "C" {
  
  __InterfaceGraphic_API int   cPrintf ( char*, ... );

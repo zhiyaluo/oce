@@ -58,10 +58,10 @@ Index: oce/inc/TopoDS_Shape.hxx
  class TopoDS_TShape;
  class Standard_NullObject;
  class Standard_DomainError;
-Index: oce/inc/TopoDS_Shape.lxx
+Index: oce/src/TopoDS/TopoDS_Shape.lxx
 ===================================================================
---- oce.orig/inc/TopoDS_Shape.lxx
-+++ oce/inc/TopoDS_Shape.lxx
+--- oce.orig/src/TopoDS/TopoDS_Shape.lxx
++++ oce/src/TopoDS/TopoDS_Shape.lxx
 @@ -22,6 +22,11 @@
  #include <TopoDS_TShape.hxx>
  #include <TopAbs.hxx>
@@ -74,10 +74,10 @@ Index: oce/inc/TopoDS_Shape.lxx
  
  //=======================================================================
  //function : TopoDS_Shape
-Index: oce/inc/TopoDS_TShape.lxx
+Index: oce/src/TopoDS/TopoDS_TShape.lxx
 ===================================================================
---- oce.orig/inc/TopoDS_TShape.lxx
-+++ oce/inc/TopoDS_TShape.lxx
+--- oce.orig/src/TopoDS/TopoDS_TShape.lxx
++++ oce/src/TopoDS/TopoDS_TShape.lxx
 @@ -23,6 +23,12 @@
  #include <TopoDS_Shape.hxx>
  #include <TopoDS_ListIteratorOfListOfShape.hxx>
@@ -91,10 +91,10 @@ Index: oce/inc/TopoDS_TShape.lxx
  // Defined mask values
  #define TopoDS_TShape_Flags_Free       (1<<0)
  #define TopoDS_TShape_Flags_Modified   (1<<1)
-Index: oce/inc/TopoDS_TVertex.lxx
+Index: oce/src/TopoDS/TopoDS_TVertex.lxx
 ===================================================================
---- oce.orig/inc/TopoDS_TVertex.lxx
-+++ oce/inc/TopoDS_TVertex.lxx
+--- oce.orig/src/TopoDS/TopoDS_TVertex.lxx
++++ oce/src/TopoDS/TopoDS_TVertex.lxx
 @@ -19,6 +19,12 @@
  // and conditions governing the rights and limitations under the License.
  

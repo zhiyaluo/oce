@@ -9,10 +9,10 @@ See problems on OSX on #267.
  inc/OpenGl_GlCore12.hxx |    7 -------
  1 file changed, 7 deletions(-)
 
-Index: oce/inc/OpenGl_GlCore12.hxx
+Index: oce/src/OpenGl/OpenGl_GlCore12.hxx
 ===================================================================
---- oce.orig/inc/OpenGl_GlCore12.hxx
-+++ oce/inc/OpenGl_GlCore12.hxx
+--- oce.orig/src/OpenGl/OpenGl_GlCore12.hxx
++++ oce/src/OpenGl/OpenGl_GlCore12.hxx
 @@ -24,13 +24,6 @@
  
  #include <OpenGl_GlCore11.hxx>

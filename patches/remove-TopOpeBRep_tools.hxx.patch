@@ -9,9 +9,9 @@ Date:   Sat May 28 22:50:22 2011 +0200
     
     This commit fixes issue #5
 
-Index: oce/inc/TopOpeBRep_tools.hxx
+Index: oce/src/TopOpeBRep/TopOpeBRep_tools.hxx
 ===================================================================
---- oce.orig/inc/TopOpeBRep_tools.hxx
+--- oce.orig/src/TopOpeBRep/TopOpeBRep_tools.hxx
 +++ /dev/null
 @@ -1,27 +0,0 @@
 -// Created on: 1997-11-28

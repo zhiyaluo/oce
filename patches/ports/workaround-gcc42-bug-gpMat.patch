@@ -42,10 +42,10 @@ Subject: [PATCH 2/2] Propagated gp_Mat changes to gp_Mat2d/gp_XY
  src/gp/gp_Mat2d.cxx |   80 +++++++++++++++++++--------------------------------
  3 files changed, 46 insertions(+), 97 deletions(-)
 
-Index: oce/inc/gp_Mat2d.lxx
+Index: oce/src/gp/gp_Mat2d.lxx
 ===================================================================
---- oce.orig/inc/gp_Mat2d.lxx
-+++ oce/inc/gp_Mat2d.lxx
+--- oce.orig/src/gp/gp_Mat2d.lxx
++++ oce/src/gp/gp_Mat2d.lxx
 @@ -20,44 +20,40 @@
  #include <gp.hxx>
  #include <Standard_OutOfRange.hxx>
@@ -228,10 +228,10 @@ Index: oce/inc/gp_Mat2d.lxx
    Nat2d10 = Mat2d01;
    Nat2d01 = Mat2d10;
    Nat2d00 = Mat2d00;
-Index: oce/inc/gp_XY.lxx
+Index: oce/src/gp/gp_XY.lxx
 ===================================================================
---- oce.orig/inc/gp_XY.lxx
-+++ oce/inc/gp_XY.lxx
+--- oce.orig/src/gp/gp_XY.lxx
++++ oce/src/gp/gp_XY.lxx
 @@ -125,9 +125,8 @@ inline void gp_XY::Multiply (const gp_XY
  
  inline void gp_XY::Multiply (const gp_Mat2d& Matrix)

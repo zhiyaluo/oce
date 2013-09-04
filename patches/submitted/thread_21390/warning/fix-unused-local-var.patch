@@ -1549,10 +1549,10 @@ Index: oce/drv/XCAFSchema/XCAFSchema_Standard_Persistent.cxx
  
      theSchema->ReadPersistentObjectHeader(f);
      f.BeginReadPersistentObjectData();
-Index: oce/inc/AppParCurves_LeastSquare.gxx
+Index: oce/src/AppParCurves/AppParCurves_LeastSquare.gxx
 ===================================================================
---- oce.orig/inc/AppParCurves_LeastSquare.gxx
-+++ oce/inc/AppParCurves_LeastSquare.gxx
+--- oce.orig/src/AppParCurves/AppParCurves_LeastSquare.gxx
++++ oce/src/AppParCurves/AppParCurves_LeastSquare.gxx
 @@ -434,7 +434,7 @@ void AppParCurves_LeastSquare::Perform(c
    if (!isready) {
      return;
@@ -1622,10 +1622,10 @@ Index: oce/inc/AppParCurves_LeastSquare.gxx
        for (j = indexdeb; j <= indexfin; j++) {
  	AIJ = A(i, j);
  	AA += AIJ*Px(j);
-Index: oce/inc/AppParCurves_ResolConstraint.gxx
+Index: oce/src/AppParCurves/AppParCurves_ResolConstraint.gxx
 ===================================================================
---- oce.orig/inc/AppParCurves_ResolConstraint.gxx
-+++ oce/inc/AppParCurves_ResolConstraint.gxx
+--- oce.orig/src/AppParCurves/AppParCurves_ResolConstraint.gxx
++++ oce/src/AppParCurves/AppParCurves_ResolConstraint.gxx
 @@ -80,7 +80,6 @@ AppParCurves_ResolConstraint::
    Standard_Integer myindex, Def = SCurv.NbPoles()-1;    
    Standard_Integer nb3d, nb2d, Npol= Def+1, Npol2 = 2*Npol;
@@ -1985,10 +1985,10 @@ Index: oce/inc/AppParCurves_ResolConstraint.gxx
  	  V = tabV(k+1);
  	  T2 = V.Z();
  	  for (j = 1; j <=  Npol; j++) {
-Index: oce/inc/ApproxInt_ImpPrmSvSurfaces.gxx
+Index: oce/src/ApproxInt/ApproxInt_ImpPrmSvSurfaces.gxx
 ===================================================================
---- oce.orig/inc/ApproxInt_ImpPrmSvSurfaces.gxx
-+++ oce/inc/ApproxInt_ImpPrmSvSurfaces.gxx
+--- oce.orig/src/ApproxInt/ApproxInt_ImpPrmSvSurfaces.gxx
++++ oce/src/ApproxInt/ApproxInt_ImpPrmSvSurfaces.gxx
 @@ -62,11 +62,7 @@ void ApproxInt_ImpPrmSvSurfaces::Pnt(con
    Standard_Real tu2=u2;
    Standard_Real tv1=v1;
@@ -2001,10 +2001,10 @@ Index: oce/inc/ApproxInt_ImpPrmSvSurfaces.gxx
    P=MyPnt;
  }
  //--------------------------------------------------------------------------------
-Index: oce/inc/Blend_CSWalking_2.gxx
+Index: oce/src/Blend/Blend_CSWalking_2.gxx
 ===================================================================
---- oce.orig/inc/Blend_CSWalking_2.gxx
-+++ oce/inc/Blend_CSWalking_2.gxx
+--- oce.orig/src/Blend/Blend_CSWalking_2.gxx
++++ oce/src/Blend/Blend_CSWalking_2.gxx
 @@ -173,7 +173,7 @@ Blend_Status Blend_CSWalking::CheckDefle
  
    Standard_Real Norme, prevNorme, Cosi, Cosi2; // JAG MODIF 25.04.94
@@ -2022,10 +2022,10 @@ Index: oce/inc/Blend_CSWalking_2.gxx
    if ((Abs(Du) < tolu && Abs(Dv) < tolv) ||  // JAG MODIF 25.04.94
        (Abs(previousd2d.X()) < tolu && Abs(previousd2d.Y()) < tolv)){
      // il faudra peut etre  forcer meme point   JAG MODIF 25.04.94
-Index: oce/inc/Blend_Walking_1.gxx
+Index: oce/src/Blend/Blend_Walking_1.gxx
 ===================================================================
---- oce.orig/inc/Blend_Walking_1.gxx
-+++ oce/inc/Blend_Walking_1.gxx
+--- oce.orig/src/Blend/Blend_Walking_1.gxx
++++ oce/src/Blend/Blend_Walking_1.gxx
 @@ -186,8 +186,6 @@ Standard_Boolean Blend_Walking::PerformF
  
    Pos1 = Pos2 = TopAbs_UNKNOWN;
@@ -2044,10 +2044,10 @@ Index: oce/inc/Blend_Walking_1.gxx
  #ifdef DEB
    if (Blend_GettraceDRAWSECT()){
      Drawsect(surf1,surf2,sol,param,Func);
-Index: oce/inc/Extrema_GLocateExtCC.gxx
+Index: oce/src/Extrema/Extrema_GLocateExtCC.gxx
 ===================================================================
---- oce.orig/inc/Extrema_GLocateExtCC.gxx
-+++ oce/inc/Extrema_GLocateExtCC.gxx
+--- oce.orig/src/Extrema/Extrema_GLocateExtCC.gxx
++++ oce/src/Extrema/Extrema_GLocateExtCC.gxx
 @@ -31,13 +31,6 @@ Extrema_GLocateExtCC::Extrema_GLocateExt
  					    const Standard_Real V0)
  {
@@ -2062,10 +2062,10 @@ Index: oce/inc/Extrema_GLocateExtCC.gxx
    Standard_Real TolU = C1.Resolution(Precision::Confusion());
    Standard_Real TolV = C2.Resolution(Precision::Confusion());
    Extrema_POnCurv P1, P2;
-Index: oce/inc/Extrema_GLocateExtCC2d.gxx
+Index: oce/src/Extrema/Extrema_GLocateExtCC2d.gxx
 ===================================================================
---- oce.orig/inc/Extrema_GLocateExtCC2d.gxx
-+++ oce/inc/Extrema_GLocateExtCC2d.gxx
+--- oce.orig/src/Extrema/Extrema_GLocateExtCC2d.gxx
++++ oce/src/Extrema/Extrema_GLocateExtCC2d.gxx
 @@ -37,13 +37,6 @@ Extrema_GLocateExtCC2d::Extrema_GLocateE
  						const Standard_Real U0,
  						const Standard_Real V0)
@@ -2080,10 +2080,10 @@ Index: oce/inc/Extrema_GLocateExtCC2d.gxx
    Standard_Real TolU = Tool1::Resolution(C1, Precision::Confusion());
    Standard_Real TolV = Tool2::Resolution(C2, Precision::Confusion());
    Extrema_POnCurv2d P1, P2;
-Index: oce/inc/Extrema_GLocateExtPC.gxx
+Index: oce/src/Extrema/Extrema_GLocateExtPC.gxx
 ===================================================================
---- oce.orig/inc/Extrema_GLocateExtPC.gxx
-+++ oce/inc/Extrema_GLocateExtPC.gxx
+--- oce.orig/src/Extrema/Extrema_GLocateExtPC.gxx
++++ oce/src/Extrema/Extrema_GLocateExtPC.gxx
 @@ -113,11 +113,6 @@ void Extrema_GLocateExtPC::Perform(const
  				   const Standard_Real U0)
  {
@@ -2096,10 +2096,10 @@ Index: oce/inc/Extrema_GLocateExtPC.gxx
    Standard_Real Par, valU, valU2 = RealLast(),
    local_u0 ;
    Standard_Real myintuinf=0, myintusup=0;
-Index: oce/inc/Extrema_GenExtCC.gxx
+Index: oce/src/Extrema/Extrema_GenExtCC.gxx
 ===================================================================
---- oce.orig/inc/Extrema_GenExtCC.gxx
-+++ oce/inc/Extrema_GenExtCC.gxx
+--- oce.orig/src/Extrema/Extrema_GenExtCC.gxx
++++ oce/src/Extrema/Extrema_GenExtCC.gxx
 @@ -156,8 +156,6 @@ a- Constitution du tableau des distances
    U0 = aCache1->TrimFirstParameter() + (U0/2.);
    V0 = aCache2->TrimFirstParameter() + (V0/2.);
@@ -2109,10 +2109,10 @@ Index: oce/inc/Extrema_GenExtCC.gxx
    const Handle(ArrayOfPnt)& aPntArray1 = aCache1->Points();
    const Handle(ArrayOfPnt)& aPntArray2 = aCache2->Points();
    Standard_Integer NoU, NoV;
-Index: oce/inc/GCPnts_TangentialDeflection.gxx
+Index: oce/src/GCPnts/GCPnts_TangentialDeflection.gxx
 ===================================================================
---- oce.orig/inc/GCPnts_TangentialDeflection.gxx
-+++ oce/inc/GCPnts_TangentialDeflection.gxx
+--- oce.orig/src/GCPnts/GCPnts_TangentialDeflection.gxx
++++ oce/src/GCPnts/GCPnts_TangentialDeflection.gxx
 @@ -371,8 +371,6 @@ void GCPnts_TangentialDeflection::Perfor
      TooSmall   = Standard_False;
      Correction = Standard_True;
@@ -2130,10 +2130,10 @@ Index: oce/inc/GCPnts_TangentialDeflection.gxx
              //Standard_Real UUU2 = U2;
              Du += Min((U2-U1)*(1.-Coef), Du*Us3);
  
-Index: oce/inc/GCPnts_UniformAbscissa.gxx
+Index: oce/src/GCPnts/GCPnts_UniformAbscissa.gxx
 ===================================================================
---- oce.orig/inc/GCPnts_UniformAbscissa.gxx
-+++ oce/inc/GCPnts_UniformAbscissa.gxx
+--- oce.orig/src/GCPnts/GCPnts_UniformAbscissa.gxx
++++ oce/src/GCPnts/GCPnts_UniformAbscissa.gxx
 @@ -188,7 +188,6 @@ PerformLengthParametrized( Handle(TColSt
  
  
@@ -2142,10 +2142,10 @@ Index: oce/inc/GCPnts_UniformAbscissa.gxx
      UU2 = Min(U1, U2);
      UU1 = Max(U1, U2);
    }
-Index: oce/inc/GProp_SGProps.gxx
+Index: oce/src/GProp/GProp_SGProps.gxx
 ===================================================================
---- oce.orig/inc/GProp_SGProps.gxx
-+++ oce/inc/GProp_SGProps.gxx
+--- oce.orig/src/GProp/GProp_SGProps.gxx
++++ oce/src/GProp/GProp_SGProps.gxx
 @@ -438,7 +438,7 @@ static void Compute(Face& S, Domain& D,
     Standard_Integer NbCGaussgp_Pnts = 0;
  
@@ -2165,10 +2165,10 @@ Index: oce/inc/GProp_SGProps.gxx
  
        for (Standard_Integer i = 1; i <= NbCGaussgp_Pnts; i++) {
          l = lm + lr * GaussCP (i);
-Index: oce/inc/GccGeo_Circ2d2TanOn.gxx
+Index: oce/src/GccGeo/GccGeo_Circ2d2TanOn.gxx
 ===================================================================
---- oce.orig/inc/GccGeo_Circ2d2TanOn.gxx
-+++ oce/inc/GccGeo_Circ2d2TanOn.gxx
+--- oce.orig/src/GccGeo/GccGeo_Circ2d2TanOn.gxx
++++ oce/src/GccGeo/GccGeo_Circ2d2TanOn.gxx
 @@ -157,7 +157,6 @@ GccGeo_Circ2d2TanOn::
  	    Standard_Real dist1 = Center.Distance(C1.Location());
  	    Standard_Real dist2 = Center.Distance(C2.Location());
@@ -2200,10 +2200,10 @@ Index: oce/inc/GccGeo_Circ2d2TanOn.gxx
  	      RBid(1) = dist2+R2;
  	      RBid(2) = Abs(R2-dist2);
  	    }
-Index: oce/inc/GccIter_Circ2d2TanOn.gxx
+Index: oce/src/GccIter/GccIter_Circ2d2TanOn.gxx
 ===================================================================
---- oce.orig/inc/GccIter_Circ2d2TanOn.gxx
-+++ oce/inc/GccIter_Circ2d2TanOn.gxx
+--- oce.orig/src/GccIter/GccIter_Circ2d2TanOn.gxx
++++ oce/src/GccIter/GccIter_Circ2d2TanOn.gxx
 @@ -105,17 +105,11 @@ GccIter_Circ2d2TanOn::
       Standard_Real dist2 = point3.Distance(point2);
       if ( Abs(dist1-dist2)/2. <= Tol) {
@@ -2318,10 +2318,10 @@ Index: oce/inc/GccIter_Circ2d2TanOn.gxx
         if (normevec2 >= gp::Resolution() && normetan2 >= gp::Resolution()) {
  	 angle2 = Vec2.Angle(Tan2);
         }
-Index: oce/inc/Image_GImage.gxx
+Index: oce/src/Image/Image_GImage.gxx
 ===================================================================
---- oce.orig/inc/Image_GImage.gxx
-+++ oce/inc/Image_GImage.gxx
+--- oce.orig/src/Image/Image_GImage.gxx
++++ oce/src/Image/Image_GImage.gxx
 @@ -318,10 +318,9 @@ void Image_GImage::Rotate180()
  void Image_GImage::FlipHorizontal()
  
@@ -2347,10 +2347,10 @@ Index: oce/inc/Image_GImage.gxx
  
  	for ( y = LowerY() ; y <= UpY ; y++ ){
            for ( x = 0 ; x < HalfX ; x++ ) {
-Index: oce/inc/IntCurve_IntPolyPolyGen.gxx
+Index: oce/src/IntCurve/IntCurve_IntPolyPolyGen.gxx
 ===================================================================
---- oce.orig/inc/IntCurve_IntPolyPolyGen.gxx
-+++ oce/inc/IntCurve_IntPolyPolyGen.gxx
+--- oce.orig/src/IntCurve/IntCurve_IntPolyPolyGen.gxx
++++ oce/src/IntCurve/IntCurve_IntPolyPolyGen.gxx
 @@ -272,13 +272,6 @@ void IntCurve_IntPolyPolyGen::Perform( c
    Standard_Real Tl=(TheTol < TOL_MINI)? TOL_MINI : TheTol;
    Standard_Real TlConf=(TheTolConf < TOL_CONF_MINI)? TOL_CONF_MINI : TheTolConf;
@@ -2404,10 +2404,10 @@ Index: oce/inc/IntCurve_IntPolyPolyGen.gxx
  
      if(Pos1 == IntRes2d_Head) { 
        if(Pos2 == IntRes2d_Head)     PosSegment|=1;
-Index: oce/inc/IntCurve_Polygon2dGen.gxx
+Index: oce/src/IntCurve/IntCurve_Polygon2dGen.gxx
 ===================================================================
---- oce.orig/inc/IntCurve_Polygon2dGen.gxx
-+++ oce/inc/IntCurve_Polygon2dGen.gxx
+--- oce.orig/src/IntCurve/IntCurve_Polygon2dGen.gxx
++++ oce/src/IntCurve/IntCurve_Polygon2dGen.gxx
 @@ -325,17 +325,9 @@ void IntCurve_Polygon2dGen::ComputeWithB
  		Standard_Real u1m = 0.5*(u+TheParams.Value(TheIndex.Value(i-1)));
  		Standard_Real um2 = 0.5*(u+TheParams.Value(TheIndex.Value(i+1)));
@@ -2428,10 +2428,10 @@ Index: oce/inc/IntCurve_Polygon2dGen.gxx
  		t = L1m.Distance(P1m);
  		i--; 
  	      }
-Index: oce/inc/IntImpParGen_Intersector.gxx
+Index: oce/src/IntImpParGen/IntImpParGen_Intersector.gxx
 ===================================================================
---- oce.orig/inc/IntImpParGen_Intersector.gxx
-+++ oce/inc/IntImpParGen_Intersector.gxx
+--- oce.orig/src/IntImpParGen/IntImpParGen_Intersector.gxx
++++ oce/src/IntImpParGen/IntImpParGen_Intersector.gxx
 @@ -65,7 +65,6 @@ void IntImpParGen_Intersector::And_Domai
    NbResultats=0;
    
@@ -2491,10 +2491,10 @@ Index: oce/inc/IntImpParGen_Intersector.gxx
        }
      }
  
-Index: oce/inc/IntPatch_ImpImpIntersection_2.gxx
+Index: oce/src/IntPatch/IntPatch_ImpImpIntersection_2.gxx
 ===================================================================
---- oce.orig/inc/IntPatch_ImpImpIntersection_2.gxx
-+++ oce/inc/IntPatch_ImpImpIntersection_2.gxx
+--- oce.orig/src/IntPatch/IntPatch_ImpImpIntersection_2.gxx
++++ oce/src/IntPatch/IntPatch_ImpImpIntersection_2.gxx
 @@ -555,10 +555,8 @@ void IntPatch_ImpImpIntersection::Perfor
      gp_Pnt P;
      IntPatch_Point point;
@@ -2514,10 +2514,10 @@ Index: oce/inc/IntPatch_ImpImpIntersection_2.gxx
        if(glin->NbVertex() == 0) { 
  	gp_Elips Elips = glin->Ellipse();
  	P=ElCLib::Value(0.0,Elips);
-Index: oce/inc/IntPatch_ImpImpIntersection_4.gxx
+Index: oce/src/IntPatch/IntPatch_ImpImpIntersection_4.gxx
 ===================================================================
---- oce.orig/inc/IntPatch_ImpImpIntersection_4.gxx
-+++ oce/inc/IntPatch_ImpImpIntersection_4.gxx
+--- oce.orig/src/IntPatch/IntPatch_ImpImpIntersection_4.gxx
++++ oce/src/IntPatch/IntPatch_ImpImpIntersection_4.gxx
 @@ -911,7 +911,6 @@ Standard_Boolean IntCyCo(const IntSurf_Q
        IntAna_Curve aC;
        IntAna_ListOfCurve aLC;
@@ -2535,10 +2535,10 @@ Index: oce/inc/IntPatch_ImpImpIntersection_4.gxx
  	//
  	aIt.Initialize(aLC);
  	for (; aIt.More(); aIt.Next()) {
-Index: oce/inc/IntPatch_ImpImpIntersection_5.gxx
+Index: oce/src/IntPatch/IntPatch_ImpImpIntersection_5.gxx
 ===================================================================
---- oce.orig/inc/IntPatch_ImpImpIntersection_5.gxx
-+++ oce/inc/IntPatch_ImpImpIntersection_5.gxx
+--- oce.orig/src/IntPatch/IntPatch_ImpImpIntersection_5.gxx
++++ oce/src/IntPatch/IntPatch_ImpImpIntersection_5.gxx
 @@ -208,7 +207,6 @@ Standard_Boolean IntCoCo(const IntSurf_Q
  
    case IntAna_Circle:
@@ -2633,10 +2633,10 @@ Index: oce/inc/IntPatch_ImpImpIntersection_5.gxx
  	Standard_Real first,last,para;
  	Standard_Boolean tgfound,firstp,lastp,kept;
  	Standard_Integer kount;
-Index: oce/inc/IntWalk_PWalking_1.gxx
+Index: oce/src/IntWalk/IntWalk_PWalking_1.gxx
 ===================================================================
---- oce.orig/inc/IntWalk_PWalking_1.gxx
-+++ oce/inc/IntWalk_PWalking_1.gxx
+--- oce.orig/src/IntWalk/IntWalk_PWalking_1.gxx
++++ oce/src/IntWalk/IntWalk_PWalking_1.gxx
 @@ -375,11 +375,9 @@ Standard_Boolean IntWalk_PWalking::Perfo
    close = Standard_False;
    //
@@ -2664,10 +2664,10 @@ Index: oce/inc/IntWalk_PWalking_1.gxx
    }
  
    //-- calcul du premier point solution
-Index: oce/inc/Intf_InterferencePolygonPolyhedron.gxx
+Index: oce/src/Intf/Intf_InterferencePolygonPolyhedron.gxx
 ===================================================================
---- oce.orig/inc/Intf_InterferencePolygonPolyhedron.gxx
-+++ oce/inc/Intf_InterferencePolygonPolyhedron.gxx
+--- oce.orig/src/Intf/Intf_InterferencePolygonPolyhedron.gxx
++++ oce/src/Intf/Intf_InterferencePolygonPolyhedron.gxx
 @@ -784,7 +784,6 @@ void Intf_InterferencePolygonPolyhedron:
    gp_XYZ segO=EndO.XYZ()-BegO.XYZ();
    segO.Normalize();
@@ -2692,10 +2692,10 @@ Index: oce/inc/Intf_InterferencePolygonPolyhedron.gxx
        NoIntersectionWithTriangle = Standard_True;
      }
    }
-Index: oce/inc/Intf_InterferencePolyhedron.gxx
+Index: oce/src/Intf/Intf_InterferencePolyhedron.gxx
 ===================================================================
---- oce.orig/inc/Intf_InterferencePolyhedron.gxx
-+++ oce/inc/Intf_InterferencePolyhedron.gxx
+--- oce.orig/src/Intf/Intf_InterferencePolyhedron.gxx
++++ oce/src/Intf/Intf_InterferencePolyhedron.gxx
 @@ -748,8 +748,6 @@ Standard_Boolean Intf_InterferencePolyhe
      tOP[nou]= Intf_EXTERNAL;
      tTP[nou]= Intf_EXTERNAL;
@@ -2752,10 +2752,10 @@ Index: oce/inc/Intf_InterferencePolyhedron.gxx
  	    nbpInt++;
  	  }
  	}
-Index: oce/inc/Primitives_Wedge.gxx
+Index: oce/src/Primitives/Primitives_Wedge.gxx
 ===================================================================
---- oce.orig/inc/Primitives_Wedge.gxx
-+++ oce/inc/Primitives_Wedge.gxx
+--- oce.orig/src/Primitives/Primitives_Wedge.gxx
++++ oce/src/Primitives/Primitives_Wedge.gxx
 @@ -684,26 +684,19 @@ gp_Lin Primitives_Wedge::Line
    gp_Vec VX = myAxes.XDirection();
    gp_Vec VY = myAxes.YDirection();
@@ -2783,10 +2783,10 @@ Index: oce/inc/Primitives_Wedge.gxx
      break;
      
    };
-Index: oce/inc/TopOpeBRepBuild_SplitEdge.hxx
+Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_SplitEdge.hxx
 ===================================================================
---- oce.orig/inc/TopOpeBRepBuild_SplitEdge.hxx
-+++ oce/inc/TopOpeBRepBuild_SplitEdge.hxx
+--- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_SplitEdge.hxx
++++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_SplitEdge.hxx
 @@ -52,26 +52,6 @@ void TopOpeBRepBuild_Builder::SplitEdge1
  {
    // work on a FORWARD edge <Eforward>
@@ -2843,10 +2843,10 @@ Index: oce/inc/TopOpeBRepBuild_SplitEdge.hxx
      
    // Make a PaveSet <PVS> on edge <Eforward>
    TopOpeBRepBuild_PaveSet PVS(Eforward);
-Index: oce/inc/Transfer_TransferProcess.gxx
+Index: oce/src/Transfer/Transfer_TransferProcess.gxx
 ===================================================================
---- oce.orig/inc/Transfer_TransferProcess.gxx
-+++ oce/inc/Transfer_TransferProcess.gxx
+--- oce.orig/src/Transfer/Transfer_TransferProcess.gxx
++++ oce/src/Transfer/Transfer_TransferProcess.gxx
 @@ -1253,7 +1253,7 @@ void Transfer_TransferProcess::StartTrac
  
    if (!binder.IsNull()) {   // old: if IsNull sout <<endl<< "  ---  Not Bound";

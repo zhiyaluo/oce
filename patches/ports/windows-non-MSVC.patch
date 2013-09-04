@@ -318,10 +318,10 @@ lost due to upstream changes.Corrects bcc compilation issue.
  src/BRepMesh/BRepMesh_CellFilter.hxx |    8 ++++++++
  1 files changed, 8 insertions(+), 0 deletions(-)
 
-Index: oce/inc/Handle_Standard_Transient.hxx
+Index: oce/src/Standard/Handle_Standard_Transient.hxx
 ===================================================================
---- oce.orig/inc/Handle_Standard_Transient.hxx
-+++ oce/inc/Handle_Standard_Transient.hxx
+--- oce.orig/src/Standard/Handle_Standard_Transient.hxx
++++ oce/src/Standard/Handle_Standard_Transient.hxx
 @@ -34,7 +34,7 @@
  #include <Standard_Transient_proto.hxx>
  #endif
@@ -340,10 +340,10 @@ Index: oce/inc/Handle_Standard_Transient.hxx
  #pragma warning (pop)
  #endif
  
-Index: oce/inc/InterfaceGraphic_telem.hxx
+Index: oce/src/InterfaceGraphic/InterfaceGraphic_telem.hxx
 ===================================================================
---- oce.orig/inc/InterfaceGraphic_telem.hxx
-+++ oce/inc/InterfaceGraphic_telem.hxx
+--- oce.orig/src/InterfaceGraphic/InterfaceGraphic_telem.hxx
++++ oce/src/InterfaceGraphic/InterfaceGraphic_telem.hxx
 @@ -24,6 +24,10 @@
  #include <InterfaceGraphic_tgl_all.hxx>
  #include <stdlib.h>
@@ -355,10 +355,10 @@ Index: oce/inc/InterfaceGraphic_telem.hxx
  struct TEL_TEXTURE_COORD
  {
    float xy[2];
-Index: oce/inc/NCollection_CellFilter.hxx
+Index: oce/src/NCollection/NCollection_CellFilter.hxx
 ===================================================================
---- oce.orig/inc/NCollection_CellFilter.hxx
-+++ oce/inc/NCollection_CellFilter.hxx
+--- oce.orig/src/NCollection/NCollection_CellFilter.hxx
++++ oce/src/NCollection/NCollection_CellFilter.hxx
 @@ -233,8 +233,9 @@ public:
      iterateInspect (Inspector::Dimension-1, aCell, 
                      aCellMin, aCellMax, theInspector);
@@ -371,10 +371,10 @@ Index: oce/inc/NCollection_CellFilter.hxx
  public: // work-around against obsolete SUN WorkShop 5.3 compiler
  #else
  protected:
-Index: oce/inc/OSD_WNT_1.hxx
+Index: oce/src/OSD/OSD_WNT_1.hxx
 ===================================================================
---- oce.orig/inc/OSD_WNT_1.hxx
-+++ oce/inc/OSD_WNT_1.hxx
+--- oce.orig/src/OSD/OSD_WNT_1.hxx
++++ oce/src/OSD/OSD_WNT_1.hxx
 @@ -69,8 +69,13 @@ enum MB_ITEMTYPE { MBT_BUTTON, MBT_ICON
  //#define LODWORD( a ) ( DWORD )(   ( ( DWORDLONG )( a ) ) & 0x00000000FFFFFFFF   )
  //#define HIDWORD( a ) ( DWORD )(   ( ( DWORDLONG )( a ) ) >> 32                  )
@@ -391,10 +391,10 @@ Index: oce/inc/OSD_WNT_1.hxx
  
  typedef struct _group_sid {
  
-Index: oce/inc/Standard_Atomic.hxx
+Index: oce/src/Standard/Standard_Atomic.hxx
 ===================================================================
---- oce.orig/inc/Standard_Atomic.hxx
-+++ oce/inc/Standard_Atomic.hxx
+--- oce.orig/src/Standard/Standard_Atomic.hxx
++++ oce/src/Standard/Standard_Atomic.hxx
 @@ -59,11 +59,18 @@ int Standard_Atomic_Decrement (volatile
    return __sync_sub_and_fetch (theValue, 1);
  }
@@ -415,10 +415,10 @@ Index: oce/inc/Standard_Atomic.hxx
  
  #if defined(_MSC_VER)
    // force intrinsic instead of WinAPI calls
-Index: oce/inc/Standard_CString.hxx
+Index: oce/src/Standard/Standard_CString.hxx
 ===================================================================
---- oce.orig/inc/Standard_CString.hxx
-+++ oce/inc/Standard_CString.hxx
+--- oce.orig/src/Standard/Standard_CString.hxx
++++ oce/src/Standard/Standard_CString.hxx
 @@ -33,6 +33,8 @@
  
  # ifdef _MSC_VER
@@ -428,10 +428,10 @@ Index: oce/inc/Standard_CString.hxx
  # endif
  
  # include <string.h>
-Index: oce/inc/Standard_Macro.hxx
+Index: oce/src/Standard/Standard_Macro.hxx
 ===================================================================
---- oce.orig/inc/Standard_Macro.hxx
-+++ oce/inc/Standard_Macro.hxx
+--- oce.orig/src/Standard/Standard_Macro.hxx
++++ oce/src/Standard/Standard_Macro.hxx
 @@ -35,9 +35,8 @@
  // Windows-specific definitions
  //======================================================
@@ -469,10 +469,10 @@ Index: oce/inc/Standard_Macro.hxx
  #   endif  // __Standard_DLL
  //#  else
  //#   define __Standard_API
-Index: oce/inc/Standard_values.h
+Index: oce/src/Standard/Standard_values.h
 ===================================================================
---- oce.orig/inc/Standard_values.h
-+++ oce/inc/Standard_values.h
+--- oce.orig/src/Standard/Standard_values.h
++++ oce/src/Standard/Standard_values.h
 @@ -22,7 +22,7 @@
  #ifndef _Standard_values_HeaderFile
  # define _Standard_values_HeaderFile
@@ -493,10 +493,10 @@ Index: oce/inc/Standard_values.h
  #if defined (__hpux) || defined (HPUX)
  # ifdef MAXINT
  #  undef MAXINT
-Index: oce/inc/W32_Allocator.hxx
+Index: oce/src/WNT/W32_Allocator.hxx
 ===================================================================
---- oce.orig/inc/W32_Allocator.hxx
-+++ oce/inc/W32_Allocator.hxx
+--- oce.orig/src/WNT/W32_Allocator.hxx
++++ oce/src/WNT/W32_Allocator.hxx
 @@ -60,7 +60,9 @@
  # define W32F_POUTL 0x20000000
  # define W32F_DFONT 0x10000000
@@ -508,10 +508,10 @@ Index: oce/inc/W32_Allocator.hxx
  
  typedef enum {
  
-Index: oce/inc/math_DoubleTab.lxx
+Index: oce/src/math/math_DoubleTab.lxx
 ===================================================================
---- oce.orig/inc/math_DoubleTab.lxx
-+++ oce/inc/math_DoubleTab.lxx
+--- oce.orig/src/math/math_DoubleTab.lxx
++++ oce/src/math/math_DoubleTab.lxx
 @@ -21,6 +21,10 @@
  #include <Standard_OutOfRange.hxx>
  #include <cstring>

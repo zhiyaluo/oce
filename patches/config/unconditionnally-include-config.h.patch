@@ -15,10 +15,10 @@ Fixes https://github.com/tpaviot/oce/issues/15
  inc/Xw_Extension.h     |    4 +---
  4 files changed, 13 insertions(+), 21 deletions(-)
 
-Index: oce/inc/Standard_Macro.hxx
+Index: oce/src/Standard/Standard_Macro.hxx
 ===================================================================
---- oce.orig/inc/Standard_Macro.hxx
-+++ oce/inc/Standard_Macro.hxx
+--- oce.orig/src/Standard/Standard_Macro.hxx
++++ oce/src/Standard/Standard_Macro.hxx
 @@ -23,9 +23,7 @@
  #ifndef _Standard_Macro_HeaderFile
  # define _Standard_Macro_HeaderFile
@@ -29,10 +29,10 @@ Index: oce/inc/Standard_Macro.hxx
  
  // Standard OCC macros: Handle(), STANDARD_TYPE()
  # define   Handle(ClassName)      Handle_##ClassName
-Index: oce/inc/Standard_values.h
+Index: oce/src/Standard/Standard_values.h
 ===================================================================
---- oce.orig/inc/Standard_values.h
-+++ oce/inc/Standard_values.h
+--- oce.orig/src/Standard/Standard_values.h
++++ oce/src/Standard/Standard_values.h
 @@ -26,11 +26,9 @@
  #error "Wrong compiler options has been detected. Add /DWNT option for proper compilation!!!!!"
  #endif

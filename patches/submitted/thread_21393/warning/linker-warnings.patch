@@ -8,10 +8,10 @@ Date:   Thu May 12 20:53:28 2011 +0200
     
     in this case there was missing a case in the ifdef for __Standard_API, so a bunch of HashCode functions were wrongly imported.
 
-Index: oce/inc/Standard_Macro.hxx
+Index: oce/src/Standard/Standard_Macro.hxx
 ===================================================================
---- oce.orig/inc/Standard_Macro.hxx
-+++ oce/inc/Standard_Macro.hxx
+--- oce.orig/src/Standard/Standard_Macro.hxx
++++ oce/src/Standard/Standard_Macro.hxx
 @@ -133,7 +133,7 @@
  
  # ifndef __Standard_API

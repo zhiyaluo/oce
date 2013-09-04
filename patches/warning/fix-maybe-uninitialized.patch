@@ -7,10 +7,10 @@ Subject: [PATCH] [warning-fix][maybe-uninitialized]
  inc/Intf_InterferencePolygonPolyhedron.gxx |    2 ++
  1 file changed, 2 insertions(+)
 
-Index: oce/inc/Intf_InterferencePolygonPolyhedron.gxx
+Index: oce/src/Intf/Intf_InterferencePolygonPolyhedron.gxx
 ===================================================================
---- oce.orig/inc/Intf_InterferencePolygonPolyhedron.gxx
-+++ oce/inc/Intf_InterferencePolygonPolyhedron.gxx
+--- oce.orig/src/Intf/Intf_InterferencePolygonPolyhedron.gxx
++++ oce/src/Intf/Intf_InterferencePolygonPolyhedron.gxx
 @@ -813,6 +813,7 @@ void Intf_InterferencePolygonPolyhedron:
      Standard_Integer sEdge=-1;
      Standard_Integer sVertex=-1;

@@ -204,10 +204,10 @@ Index: oce/inc/OSD_SharedMemory.hxx
  Standard_Address myAddress;
  TCollection_AsciiString myName;
  Standard_Integer mySize;
-Index: oce/inc/TDF_LabelMapHasher.lxx
+Index: oce/src/TDF/TDF_LabelMapHasher.lxx
 ===================================================================
---- oce.orig/inc/TDF_LabelMapHasher.lxx
-+++ oce/inc/TDF_LabelMapHasher.lxx
+--- oce.orig/src/TDF/TDF_LabelMapHasher.lxx
++++ oce/src/TDF/TDF_LabelMapHasher.lxx
 @@ -23,6 +23,11 @@
  //Version	Date		Purpose
  //		0.0	Feb 13 1997	Creation

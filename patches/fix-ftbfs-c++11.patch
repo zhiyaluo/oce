@@ -7,10 +7,10 @@ Date:   Tue Mar 26 16:13:01 2013 -0600
     In every case the problem was two double-quotes toget '""' in string literals which
     is no longer valid in C++ 2011.
 
-diff --git a/inc/Interface_Version.hxx b/inc/Interface_Version.hxx
+diff --git a/src/Interface/Interface_Version.hxx b/src/Interface/Interface_Version.hxx
 index 71a64c2..0de5ef9 100644
---- a/inc/Interface_Version.hxx
-+++ b/inc/Interface_Version.hxx
+--- a/src/Interface/Interface_Version.hxx
++++ b/src/Interface/Interface_Version.hxx
 @@ -16,8 +16,8 @@
  // and conditions governing the rights and limitations under the License.
  

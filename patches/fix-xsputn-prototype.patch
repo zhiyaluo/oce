@@ -29,10 +29,10 @@ Subject: [PATCH] Fix OSX conflict return type in LDOM_SBuffer::xsputn
  src/LDOM/LDOM_OSStream.cxx |    2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
-Index: oce/inc/LDOM_OSStream.hxx
+Index: oce/src/LDOM/LDOM_OSStream.hxx
 ===================================================================
---- oce.orig/inc/LDOM_OSStream.hxx
-+++ oce/inc/LDOM_OSStream.hxx
+--- oce.orig/src/LDOM/LDOM_OSStream.hxx
++++ oce/src/LDOM/LDOM_OSStream.hxx
 @@ -71,7 +71,7 @@ class LDOM_SBuffer : public streambuf
      Standard_EXPORT virtual int underflow();
      //virtual int uflow();

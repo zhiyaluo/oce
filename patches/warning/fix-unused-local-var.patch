@@ -172,10 +172,10 @@ Subject: [PATCH] [warning-fix][unused-local-var]
  src/math/math_TrigonometricFunctionRoots.cxx       |    3 +-
  81 files changed, 235 insertions(+), 229 deletions(-)
 
-Index: oce/inc/AppParCurves_Variational_1.gxx
+Index: oce/src/AppParCurves/AppParCurves_Variational_1.gxx
 ===================================================================
---- oce.orig/inc/AppParCurves_Variational_1.gxx
-+++ oce/inc/AppParCurves_Variational_1.gxx
+--- oce.orig/src/AppParCurves/AppParCurves_Variational_1.gxx
++++ oce/src/AppParCurves/AppParCurves_Variational_1.gxx
 @@ -51,11 +51,11 @@ void AppParCurves_Variational::TheMotor(
    Handle(TColStd_HArray1OfReal) CurrentTi, NewTi, OldTi;  
    Handle(TColStd_HArray2OfInteger) Dependence;
@@ -190,10 +190,10 @@ Index: oce/inc/AppParCurves_Variational_1.gxx
    Standard_Real CBLONG, LNOLD;
    Standard_Integer NbrPnt = myLastPoint - myFirstPoint + 1;
    Standard_Integer NbrConstraint = myNbPassPoints + myNbTangPoints + myNbCurvPoints;
-Index: oce/inc/ApproxInt_Approx.gxx
+Index: oce/src/ApproxInt/ApproxInt_Approx.gxx
 ===================================================================
---- oce.orig/inc/ApproxInt_Approx.gxx
-+++ oce/inc/ApproxInt_Approx.gxx
+--- oce.orig/src/ApproxInt/ApproxInt_Approx.gxx
++++ oce/src/ApproxInt/ApproxInt_Approx.gxx
 @@ -115,7 +115,7 @@ static void  ComputeTrsf2d(const Handle(
      pfunc = &IntSurf_PntOn2S::ParametersOnS2;
    for(Standard_Integer i=1;i<=nbp;i++) { 
@@ -203,10 +203,10 @@ Index: oce/inc/ApproxInt_Approx.gxx
      (POn2S.*pfunc)(U,V);
      if(U<u0) u0=U;
      if(U>u1) u1=U;
-Index: oce/inc/Approx_ComputeLine.gxx
+Index: oce/src/Approx/Approx_ComputeLine.gxx
 ===================================================================
---- oce.orig/inc/Approx_ComputeLine.gxx
-+++ oce/inc/Approx_ComputeLine.gxx
+--- oce.orig/src/Approx/Approx_ComputeLine.gxx
++++ oce/src/Approx/Approx_ComputeLine.gxx
 @@ -623,7 +623,6 @@ void Approx_ComputeLine::Perform(const M
  	// ========================================
  	GoUp = Standard_False;
@@ -301,10 +301,10 @@ Index: oce/inc/Approx_ComputeLine.gxx
  	  break;
  	}
        }
-Index: oce/inc/Contap_ContourGen_2.gxx
+Index: oce/src/Contap/Contap_ContourGen_2.gxx
 ===================================================================
---- oce.orig/inc/Contap_ContourGen_2.gxx
-+++ oce/inc/Contap_ContourGen_2.gxx
+--- oce.orig/src/Contap/Contap_ContourGen_2.gxx
++++ oce/src/Contap/Contap_ContourGen_2.gxx
 @@ -861,7 +861,7 @@ void ComputeInternalPointsOnRstr
    gp_Pnt2d p2d;
    gp_Vec2d d2d;
@@ -314,10 +314,10 @@ Index: oce/inc/Contap_ContourGen_2.gxx
  
    if (Line.TypeContour() != Contap_Restriction) {
      return;
-Index: oce/inc/Extrema_GExtPC.gxx
+Index: oce/src/Extrema/Extrema_GExtPC.gxx
 ===================================================================
---- oce.orig/inc/Extrema_GExtPC.gxx
-+++ oce/inc/Extrema_GExtPC.gxx
+--- oce.orig/src/Extrema/Extrema_GExtPC.gxx
++++ oce/src/Extrema/Extrema_GExtPC.gxx
 @@ -105,7 +105,6 @@ void Extrema_GExtPC::Perform(const ThePo
        n = TheCurveTool::NbIntervals(*((TheCurve*)myC), GeomAbs_C2);
        TColStd_Array1OfReal theInter(1, n+1);
@@ -326,10 +326,10 @@ Index: oce/inc/Extrema_GExtPC.gxx
        TheCurveTool::Intervals(*((TheCurve*)myC), theInter, GeomAbs_C2);
        mysample = Max(mysample/n, 17);
        TheVector V1;
-Index: oce/inc/GCPnts_TangentialDeflection.gxx
+Index: oce/src/GCPnts/GCPnts_TangentialDeflection.gxx
 ===================================================================
---- oce.orig/inc/GCPnts_TangentialDeflection.gxx
-+++ oce/inc/GCPnts_TangentialDeflection.gxx
+--- oce.orig/src/GCPnts/GCPnts_TangentialDeflection.gxx
++++ oce/src/GCPnts/GCPnts_TangentialDeflection.gxx
 @@ -365,7 +365,7 @@ void GCPnts_TangentialDeflection::Perfor
      }
      else D0 (C, U2, CurrentPoint);           //Point suivant
@@ -339,10 +339,10 @@ Index: oce/inc/GCPnts_TangentialDeflection.gxx
      Standard_Boolean Correction, TooLarge, TooSmall;
      TooLarge   = Standard_False;
      TooSmall   = Standard_False;
-Index: oce/inc/IntCurveSurface_Polyhedron.gxx
+Index: oce/src/IntCurveSurface/IntCurveSurface_Polyhedron.gxx
 ===================================================================
---- oce.orig/inc/IntCurveSurface_Polyhedron.gxx
-+++ oce/inc/IntCurveSurface_Polyhedron.gxx
+--- oce.orig/src/IntCurveSurface/IntCurveSurface_Polyhedron.gxx
++++ oce/src/IntCurveSurface/IntCurveSurface_Polyhedron.gxx
 @@ -465,15 +465,10 @@ Standard_Integer IntCurveSurface_Polyhed
    }
  
@@ -360,10 +360,10 @@ Index: oce/inc/IntCurveSurface_Polyhedron.gxx
    if (Triang!=0) {
      t = (Triang-1)/(nbdeltaVm2);
      tt= (Triang-1)-t*nbdeltaVm2;
-Index: oce/inc/IntStart_SearchOnBoundaries_1.gxx
+Index: oce/src/IntStart/IntStart_SearchOnBoundaries_1.gxx
 ===================================================================
---- oce.orig/inc/IntStart_SearchOnBoundaries_1.gxx
-+++ oce/inc/IntStart_SearchOnBoundaries_1.gxx
+--- oce.orig/src/IntStart/IntStart_SearchOnBoundaries_1.gxx
++++ oce/src/IntStart/IntStart_SearchOnBoundaries_1.gxx
 @@ -772,7 +772,7 @@ Standard_Integer TreatLC (const TheArc&
      return anExitCode;
    }
@@ -381,10 +381,10 @@ Index: oce/inc/IntStart_SearchOnBoundaries_1.gxx
    UEgde=PC2.Parameter();
    
    aDist=PEdge.Distance(P1);
-Index: oce/inc/Primitives_Wedge.gxx
+Index: oce/src/Primitives/Primitives_Wedge.gxx
 ===================================================================
---- oce.orig/inc/Primitives_Wedge.gxx
-+++ oce/inc/Primitives_Wedge.gxx
+--- oce.orig/src/Primitives/Primitives_Wedge.gxx
++++ oce/src/Primitives/Primitives_Wedge.gxx
 @@ -362,11 +362,8 @@ gp_Pln Primitives_Wedge::Plane(const Pri
      break;
      
@@ -490,10 +490,10 @@ Index: oce/inc/Primitives_Wedge.gxx
      };
      
      gp_Lin L = Line(d1,d2);
-Index: oce/inc/QANCollection_PerfSparseArray.hxx
+Index: oce/src/QANCollection/QANCollection_PerfSparseArray.hxx
 ===================================================================
---- oce.orig/inc/QANCollection_PerfSparseArray.hxx
-+++ oce/inc/QANCollection_PerfSparseArray.hxx
+--- oce.orig/src/QANCollection/QANCollection_PerfSparseArray.hxx
++++ oce/src/QANCollection/QANCollection_PerfSparseArray.hxx
 @@ -51,7 +51,7 @@ void CompSparseArray (const Standard_Int
        PERF_STOP_METER("NCollection_SparseArray filling")
        
@@ -503,10 +503,10 @@ Index: oce/inc/QANCollection_PerfSparseArray.hxx
        PERF_STOP_METER("NCollection_SparseArray size")
        
        PERF_START_METER("NCollection_Array1 Assign")
-Index: oce/inc/TopClass_FaceClassifier.gxx
+Index: oce/src/TopClass/TopClass_FaceClassifier.gxx
 ===================================================================
---- oce.orig/inc/TopClass_FaceClassifier.gxx
-+++ oce/inc/TopClass_FaceClassifier.gxx
+--- oce.orig/src/TopClass/TopClass_FaceClassifier.gxx
++++ oce/src/TopClass/TopClass_FaceClassifier.gxx
 @@ -68,7 +68,7 @@ void TopClass_FaceClassifier::Perform(Th
    TopAbs_Orientation         anEdgeOri;
    Standard_Integer           aClosestInd;
@@ -516,10 +516,10 @@ Index: oce/inc/TopClass_FaceClassifier.gxx
    Standard_Boolean           IsWReject;
    Standard_Boolean           IsEReject;
  
-Index: oce/inc/TopOpeBRepBuild_Fill.hxx
+Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Fill.hxx
 ===================================================================
---- oce.orig/inc/TopOpeBRepBuild_Fill.hxx
-+++ oce/inc/TopOpeBRepBuild_Fill.hxx
+--- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_Fill.hxx
++++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Fill.hxx
 @@ -36,11 +36,8 @@ void TopOpeBRepBuild_Builder::FillShape(
    Standard_Boolean RevOri = In_RevOri;
  

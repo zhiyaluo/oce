@@ -44,10 +44,10 @@ Subject: [PATCH] HashCode & IsEqual are needed as global for bcc32
  inc/BRepBuilderAPI_CellFilter.hxx |    8 ++++++++
  1 file changed, 8 insertions(+)
 
-Index: oce/inc/BRepBuilderAPI_CellFilter.hxx
+Index: oce/src/BRepBuilderAPI/BRepBuilderAPI_CellFilter.hxx
 ===================================================================
---- oce.orig/inc/BRepBuilderAPI_CellFilter.hxx
-+++ oce/inc/BRepBuilderAPI_CellFilter.hxx
+--- oce.orig/src/BRepBuilderAPI/BRepBuilderAPI_CellFilter.hxx
++++ oce/src/BRepBuilderAPI/BRepBuilderAPI_CellFilter.hxx
 @@ -36,4 +36,12 @@
  
  typedef NCollection_CellFilter<BRepBuilderAPI_VertexInspector> BRepBuilderAPI_CellFilter;
@@ -61,10 +61,10 @@ Index: oce/inc/BRepBuilderAPI_CellFilter.hxx
 +#endif
 +
  #endif
-Index: oce/inc/NCollection_Array1.hxx
+Index: oce/src/NCollection/NCollection_Array1.hxx
 ===================================================================
---- oce.orig/inc/NCollection_Array1.hxx
-+++ oce/inc/NCollection_Array1.hxx
+--- oce.orig/src/NCollection/NCollection_Array1.hxx
++++ oce/src/NCollection/NCollection_Array1.hxx
 @@ -75,7 +75,7 @@ template <class TheItemType> class NColl
      //! Constructor with initialisation
      Iterator  (const NCollection_Array1& theArray) :
@@ -74,10 +74,10 @@ Index: oce/inc/NCollection_Array1.hxx
      //! Initialisation
      void Init (const NCollection_Array1& theArray)
      { 
-Index: oce/inc/NCollection_Array2.hxx
+Index: oce/src/NCollection/NCollection_Array2.hxx
 ===================================================================
---- oce.orig/inc/NCollection_Array2.hxx
-+++ oce/inc/NCollection_Array2.hxx
+--- oce.orig/src/NCollection/NCollection_Array2.hxx
++++ oce/src/NCollection/NCollection_Array2.hxx
 @@ -59,7 +59,7 @@ template <class TheItemType> class NColl
      Iterator  (const NCollection_Array2& theArray) :
        myCurrent (0),
@@ -87,10 +87,10 @@ Index: oce/inc/NCollection_Array2.hxx
      //! Initialisation
      void Init (const NCollection_Array2& theArray)
      { 
-Index: oce/inc/NCollection_SList.hxx
+Index: oce/src/NCollection/NCollection_SList.hxx
 ===================================================================
---- oce.orig/inc/NCollection_SList.hxx
-+++ oce/inc/NCollection_SList.hxx
+--- oce.orig/src/NCollection/NCollection_SList.hxx
++++ oce/src/NCollection/NCollection_SList.hxx
 @@ -73,7 +73,7 @@ template <class TheItemType> class NColl
                 const NCollection_SList& theTail) :
                   myCount(1),
@@ -123,10 +123,10 @@ Index: oce/inc/NCollection_SList.hxx
  
    //! ToTail
    void ToTail (void)
-Index: oce/inc/NCollection_SparseArray.hxx
+Index: oce/src/NCollection/NCollection_SparseArray.hxx
 ===================================================================
---- oce.orig/inc/NCollection_SparseArray.hxx
-+++ oce/inc/NCollection_SparseArray.hxx
+--- oce.orig/src/NCollection/NCollection_SparseArray.hxx
++++ oce/src/NCollection/NCollection_SparseArray.hxx
 @@ -264,7 +264,7 @@ private:
    //! Call destructor to the item at given address
    virtual void destroyItem (Standard_Address theAddress)
@@ -136,10 +136,10 @@ Index: oce/inc/NCollection_SparseArray.hxx
    }
  
    //! Call assignment operator to the item
-Index: oce/inc/NCollection_UBTreeFiller.hxx
+Index: oce/src/NCollection/NCollection_UBTreeFiller.hxx
 ===================================================================
---- oce.orig/inc/NCollection_UBTreeFiller.hxx
-+++ oce/inc/NCollection_UBTreeFiller.hxx
+--- oce.orig/src/NCollection/NCollection_UBTreeFiller.hxx
++++ oce/src/NCollection/NCollection_UBTreeFiller.hxx
 @@ -26,6 +26,10 @@
  #include <stdlib.h>
  #include <stdio.h>

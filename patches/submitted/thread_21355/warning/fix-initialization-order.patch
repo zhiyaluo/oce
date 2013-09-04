@@ -30,10 +30,10 @@ Subject: [PATCH 10/26] [warning-fix][initialization-order]
  src/NIS/NIS_TriangulatedDrawer.cxx |    6 +++---
  2 files changed, 5 insertions(+), 7 deletions(-)
 
-Index: oce/inc/ShapeAnalysis_BoxBndTree.hxx
+Index: oce/src/ShapeAnalysis/ShapeAnalysis_BoxBndTree.hxx
 ===================================================================
---- oce.orig/inc/ShapeAnalysis_BoxBndTree.hxx
-+++ oce/inc/ShapeAnalysis_BoxBndTree.hxx
+--- oce.orig/src/ShapeAnalysis/ShapeAnalysis_BoxBndTree.hxx
++++ oce/src/ShapeAnalysis/ShapeAnalysis_BoxBndTree.hxx
 @@ -42,8 +42,8 @@ class ShapeAnalysis_BoxBndTreeSelector
    ShapeAnalysis_BoxBndTreeSelector
      (Handle (TopTools_HArray1OfShape) theSeq,
@@ -45,10 +45,10 @@ Index: oce/inc/ShapeAnalysis_BoxBndTree.hxx
        {
          myArrIndices.Init(0);
        }
-Index: oce/inc/TopClass_Classifier2d.gxx
+Index: oce/src/TopClass/TopClass_Classifier2d.gxx
 ===================================================================
---- oce.orig/inc/TopClass_Classifier2d.gxx
-+++ oce/inc/TopClass_Classifier2d.gxx
+--- oce.orig/src/TopClass/TopClass_Classifier2d.gxx
++++ oce/src/TopClass/TopClass_Classifier2d.gxx
 @@ -37,8 +37,8 @@
  TopClass_Classifier2d::TopClass_Classifier2d() :
         myIsSet(Standard_False),

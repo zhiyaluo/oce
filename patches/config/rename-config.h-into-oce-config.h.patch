@@ -17,10 +17,10 @@ Date:   Mon Apr 11 22:17:41 2011 +0200
      * Ideally, installed header files should not rely on
        config.h header file at all.
 
-Index: oce/inc/Standard_Macro.hxx
+Index: oce/src/Standard/Standard_Macro.hxx
 ===================================================================
---- oce.orig/inc/Standard_Macro.hxx
-+++ oce/inc/Standard_Macro.hxx
+--- oce.orig/src/Standard/Standard_Macro.hxx
++++ oce/src/Standard/Standard_Macro.hxx
 @@ -23,7 +23,7 @@
  #ifndef _Standard_Macro_HeaderFile
  # define _Standard_Macro_HeaderFile
@@ -30,10 +30,10 @@ Index: oce/inc/Standard_Macro.hxx
  
  // Standard OCC macros: Handle(), STANDARD_TYPE()
  # define   Handle(ClassName)      Handle_##ClassName
-Index: oce/inc/Standard_values.h
+Index: oce/src/Standard/Standard_values.h
 ===================================================================
---- oce.orig/inc/Standard_values.h
-+++ oce/inc/Standard_values.h
+--- oce.orig/src/Standard/Standard_values.h
++++ oce/src/Standard/Standard_values.h
 @@ -26,7 +26,7 @@
  #error "Wrong compiler options has been detected. Add /DWNT option for proper compilation!!!!!"
  #endif
