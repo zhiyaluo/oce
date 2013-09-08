@@ -1,0 +1,56 @@
+From b5d8dedca2fbd8b652b762a61c5b92d9db63a2f5 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Thu, 13 Jun 2013 12:33:12 +0200
+Subject: [PATCH] Fix loading of TKOpenGl
+
+The TKOpenGl library name was previously returned by the
+Graphic3d_GraphicDevice::ShrEnvString method.
+We had modified it in the past in order to support debug
+libraries on Windows.
+
+Our changes did no more apply cleanly on OCCT 6.6.0, and since
+OCCT developers claimed that TKOpenGl is no more loaded at
+runtime, our changes had been discarded.
+
+Qb noticed that TKOpenGl is still loaded at runtime, so reinstate
+our changes, but this time against Graphic3d::InitGraphicDriver.
+---
+ src/Graphic3d/Graphic3d.cxx | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/src/Graphic3d/Graphic3d.cxx b/src/Graphic3d/Graphic3d.cxx
+index 8b493ac..db2ceee 100644
+--- a/src/Graphic3d/Graphic3d.cxx
++++ b/src/Graphic3d/Graphic3d.cxx
+@@ -21,6 +21,10 @@
+ #include <Aspect_DriverDefinitionError.hxx>
+ #include <OSD_Environment.hxx>
+ 
++#ifdef HAVE_OCE_PATHS_H
++# include <oce-paths.h>
++#endif
++
+ //=======================================================================
+ //function : InitGraphicDriver
+ //purpose  :
+@@ -36,6 +40,9 @@ Handle(Graphic3d_GraphicDriver) Graphic3d::InitGraphicDriver (const Handle(Aspec
+ 
+   TCollection_AsciiString aGraphicLibName;
+ 
++#ifdef OCE_DEFAULT_CSF_GraphicShr
++  aGraphicLibName = OCE_DEFAULT_CSF_GraphicShr;
++#else
+   // Setting the library name. Depends on the platform.
+ #if defined(_WIN32) || defined(__WIN32__)
+   aGraphicLibName = "TKOpenGl.dll";
+@@ -46,6 +53,7 @@ Handle(Graphic3d_GraphicDriver) Graphic3d::InitGraphicDriver (const Handle(Aspec
+ #else
+   aGraphicLibName = "libTKOpenGl.so";
+ #endif
++#endif
+ 
+   // Loading the library.
+   OSD_SharedLibrary aSharedLibrary (aGraphicLibName.ToCString());
+-- 
+1.8.4.rc1
+

@@ -1,0 +1,144 @@
+Fix handling of non-ASCII characters in DRAW and paths on Unix
+
+diff --git a/src/Draw/Draw_Window.cxx b/src/Draw/Draw_Window.cxx
+index dc6cb14..79fb0ae 100644
+--- a/src/Draw/Draw_Window.cxx
++++ b/src/Draw/Draw_Window.cxx
+@@ -1162,23 +1162,6 @@ static void StdinProc(ClientData clientData, int )
+   Tcl_DStringFree(&line);
+   count = Tcl_Gets(chan, &line);
+ 
+-  // MKV 26.05.05
+-#if ((TCL_MAJOR_VERSION > 8) || ((TCL_MAJOR_VERSION == 8) && (TCL_MINOR_VERSION >= 4)))
+-  Tcl_DString linetmp;
+-  Tcl_DStringInit(&linetmp);
+-  Tcl_UniChar * UniCharString;
+-  UniCharString = Tcl_UtfToUniCharDString(Tcl_DStringValue(&line),-1,&linetmp);
+-  Standard_Integer l = Tcl_UniCharLen(UniCharString);
+-  TCollection_AsciiString AsciiString("");
+-  Standard_Character Character;
+-  Standard_Integer i;
+-  for (i=0; i<l; i++) {
+-    Character = UniCharString[i];
+-    AsciiString.AssignCat(Character);
+-  }
+-  Tcl_DStringInit(&line);
+-  Tcl_DStringAppend(&line, AsciiString.ToCString(), -1);
+-#endif
+   if (count < 0) {
+     if (!gotPartial) {
+       if (tty) {
+diff --git a/src/OSD/OSD_Path.cxx b/src/OSD/OSD_Path.cxx
+index a72f49f..fd54c1a 100644
+--- a/src/OSD/OSD_Path.cxx
++++ b/src/OSD/OSD_Path.cxx
+@@ -416,19 +416,6 @@ void OSD_Path::SetValues(const TCollection_AsciiString& Nod,
+                          const TCollection_AsciiString& Nam,
+                          const TCollection_AsciiString& ext){
+ 
+- if (!Nod.IsAscii())
+-  Standard_ConstructionError::Raise("OSD_Path::SetValues argument : Node");
+- if (!UsrNm.IsAscii())
+-  Standard_ConstructionError::Raise("OSD_Path::SetValues argument : User Name");
+- if (!Dsk.IsAscii())
+-  Standard_ConstructionError::Raise("OSD_Path::SetValues argument : Disk");
+- if (!Trk.IsAscii())
+-  Standard_ConstructionError::Raise("OSD_Path::SetValues argument : Trek");
+- if (!Nam.IsAscii())
+-  Standard_ConstructionError::Raise("OSD_Path::SetValues argument : Name");
+- if (!ext.IsAscii())
+-  Standard_ConstructionError::Raise("OSD_Path::SetValues argument : Extension");
+-
+  myNode = Nod;
+  myUserName = UsrNm;
+  myPassword = Passwd;
+@@ -521,25 +508,7 @@ static Standard_Boolean Analyse_UNIX(const TCollection_AsciiString& /*name*/)
+ 
+ Standard_Boolean OSD_Path::IsValid(const TCollection_AsciiString& aDependentName,
+                                    const OSD_SysType aSysType)const{
+- if (aDependentName.Length()==0) return(Standard_True);
+- if (!aDependentName.IsAscii()) return(Standard_False);
+-
+- OSD_SysType provSys;
+- if (aSysType == OSD_Default) provSys = SysDep;
+-                      else provSys = aSysType; 
+-
+- switch (provSys){
+-  case OSD_VMS:
+-            return(Analyse_VMS(aDependentName));
+-  case OSD_OS2:
+-  case OSD_WindowsNT:
+-            return(Analyse_DOS(aDependentName));
+-  case OSD_MacOs:
+-            return(Analyse_MACOS(aDependentName));
+-  default:
+-            return(Analyse_UNIX(aDependentName));
+-
+- }
++ return Standard_True;
+ }
+ 
+ 
+@@ -947,8 +916,6 @@ TCollection_AsciiString OSD_Path::Name()const{
+ 
+ 
+ void OSD_Path::SetNode(const TCollection_AsciiString& aName){
+- if (!aName.IsAscii())
+-  Standard_ConstructionError::Raise("OSD_Path::SetNode bad name");
+  myNode = aName;
+ }
+ 
+@@ -956,8 +923,6 @@ void OSD_Path::SetNode(const TCollection_AsciiString& aName){
+ 
+ 
+ void OSD_Path::SetUserName(const TCollection_AsciiString& aName){
+- if (!aName.IsAscii())
+-  Standard_ConstructionError::Raise("OSD_Path::SetUserName bad name");
+  myUserName = aName;
+ }
+ 
+@@ -965,8 +930,6 @@ void OSD_Path::SetUserName(const TCollection_AsciiString& aName){
+ 
+ 
+ void OSD_Path::SetPassword(const TCollection_AsciiString& aName){
+- if (!aName.IsAscii())
+-  Standard_ConstructionError::Raise("OSD_Path::SetPassword bad name");
+   myPassword = aName;
+ }
+ 
+@@ -974,8 +937,6 @@ void OSD_Path::SetPassword(const TCollection_AsciiString& aName){
+ 
+ 
+ void OSD_Path::SetDisk(const TCollection_AsciiString& aName){
+- if (!aName.IsAscii())
+-  Standard_ConstructionError::Raise("OSD_Path::SetDisk bad name");
+   myDisk = aName;
+ }
+ 
+@@ -983,8 +944,6 @@ void OSD_Path::SetDisk(const TCollection_AsciiString& aName){
+ 
+ 
+ void OSD_Path::SetTrek(const TCollection_AsciiString& aName){
+- if (!aName.IsAscii())
+-  Standard_ConstructionError::Raise("OSD_Path::SetTrek bad name");
+   myTrek = aName;
+ }
+ 
+@@ -992,8 +951,6 @@ void OSD_Path::SetTrek(const TCollection_AsciiString& aName){
+ 
+ 
+ void OSD_Path::SetName(const TCollection_AsciiString& aName){
+- if (!aName.IsAscii())
+-  Standard_ConstructionError::Raise("OSD_Path::SetName bad name");
+   myName = aName;
+ }
+ 
+@@ -1001,8 +958,6 @@ void OSD_Path::SetName(const TCollection_AsciiString& aName){
+ 
+ 
+ void OSD_Path::SetExtension(const TCollection_AsciiString& aName){
+- if (!aName.IsAscii())
+-  Standard_ConstructionError::Raise("OSD_Path::SetExtension bad name");
+   myExtension = aName;
+ }
+ 

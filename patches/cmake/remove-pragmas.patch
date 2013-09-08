@@ -13,6 +13,21 @@ Date:   Tue May 17 00:47:05 2011 +0200
     - removed pragmas
     - removed NOP cmake instructions
 
+Index: oce/src/Font/Font_FontMgr.cxx
+===================================================================
+--- oce.orig/src/Font/Font_FontMgr.cxx
++++ oce/src/Font/Font_FontMgr.cxx
+@@ -75,10 +75,6 @@ static const Font_FontMgr_FontAliasMapNo
+   #include <windows.h>
+   #include <stdlib.h>
+ 
+-  #ifdef _MSC_VER
+-    #pragma comment (lib, "freetype.lib")
+-  #endif
+-
+   namespace
+   {
+ 
 Index: oce/src/Image/Image_AlienPixMap.cxx
 ===================================================================
 --- oce.orig/src/Image/Image_AlienPixMap.cxx
@@ -33,7 +48,7 @@ Index: oce/src/OpenGl/OpenGl_Workspace_2.cxx
 --- oce.orig/src/OpenGl/OpenGl_Workspace_2.cxx
 +++ oce/src/OpenGl/OpenGl_Workspace_2.cxx
 @@ -31,10 +31,6 @@
- #ifdef HAVE_FREEIMAGE
+ #if (defined(_WIN32) || defined(__WIN32__)) && defined(HAVE_FREEIMAGE)
    #include <NCollection_Handle.hxx>
    #include <FreeImagePlus.h>
 -  #ifdef _MSC_VER
@@ -49,7 +64,6 @@ Index: oce/src/OpenGl/OpenGl_Workspace_5.cxx
 +++ oce/src/OpenGl/OpenGl_Workspace_5.cxx
 @@ -34,11 +34,6 @@
  /* OCC22218 NOTE: project dependency on gl2ps is specified by macro */
- #include <Aspect_PolygonOffsetMode.hxx>
  #ifdef HAVE_GL2PS
    #include <gl2ps.h>
 -  /* OCC22216 NOTE: linker dependency can be switched off by undefining macro.

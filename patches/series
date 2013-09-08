@@ -49,6 +49,7 @@ bugfix-points-swapped-in-BRepExtrema_DistanceSS.patch
 
 cppcheck/fix-unused-local-var.patch
 cppcheck/fix-return-reference-auto.patch
+cppcheck/fix-instance-destroyed-immediatly.patch
 
 warning/fix-unused-local-var.patch
 warning/fix-unused-local-function.patch
@@ -116,7 +117,7 @@ ports/rename-PPC-in-cdl.patch
 ports/rename-glext.h.patch
 ports/mingw64-intptr_t-fixes.patch
 
-ports/do-not-undef-GL_VERSION.patch
+ports/osx.patch
 MMGT-default-values.patch
 warning/modify-MSVC-pragmas.patch
 
@@ -133,6 +134,8 @@ undefined-address-64bit.patch
 remove-TopOpeBRep_tools.hxx.patch
 remove-ExprIntrp.tab.c.patch
 fix-wok-issues.patch
+fix-non-ASCII-path.patch
+fix-loading-of-debug-TKOpenGl.patch
 
 get-rid-of-environment-variables.patch
 

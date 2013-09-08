@@ -35,6 +35,19 @@ Index: oce/src/AlienImage/AlienImage_BMPAlienData.cxx
    AlienImage_BMPHeader bmfh; // Standard BMP file header
    BITMAPINFOHEADER bmih = {}; // Windows BMP header
    BITMAPCOREHEADER bmch = {}; // OS/2 BMP header
+Index: oce/src/BOPAlgo/BOPAlgo_BOP.cxx
+===================================================================
+--- oce.orig/src/BOPAlgo/BOPAlgo_BOP.cxx
++++ oce/src/BOPAlgo/BOPAlgo_BOP.cxx
+@@ -467,7 +467,7 @@ static
+   void BOPAlgo_BOP::BuildRC()
+ {
+   Standard_Boolean bFlag;
+-  Standard_Integer i, aDmin, aNb[2], iX, iY;
++  Standard_Integer i, aDmin, aNb[2], iX = 0, iY = 0;
+   TopAbs_ShapeEnum aTmin;
+   TopoDS_Compound aC, aCS[2];
+   BRep_Builder aBB;
 Index: oce/src/BSplCLib/BSplCLib_2.cxx
 ===================================================================
 --- oce.orig/src/BSplCLib/BSplCLib_2.cxx
@@ -78,3 +91,18 @@ Index: oce/src/LDOM/LDOM_BasicElement.cxx
      if (aBNode -> isNull()) continue;
      const LDOM_BasicAttribute * aBNodeAtt= (const LDOM_BasicAttribute *) aBNode;
      LDOM_BasicAttribute * aNewAtt =
+Index: oce/src/ViewerTest/ViewerTest.cxx
+===================================================================
+--- oce.orig/src/ViewerTest/ViewerTest.cxx
++++ oce/src/ViewerTest/ViewerTest.cxx
+@@ -626,8 +626,8 @@ static int visos (Draw_Interpretor& di,
+ 
+   Standard_Integer aLastInd = argc - 1;
+   Standard_Boolean isChanged = Standard_False;
+-  Standard_Integer aNbUIsos;
+-  Standard_Integer aNbVIsos;
++  Standard_Integer aNbUIsos = 0;
++  Standard_Integer aNbVIsos = 0;
+ 
+   if (aLastInd >= 3) {
+     Standard_Boolean isIsoOnPlane = Standard_False;

@@ -1,0 +1,269 @@
+From 1566e29699f16c002738b02c9b57a32f26af67a6 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Thu, 24 May 2012 23:29:13 +0200
+Subject: [PATCH] Do not undefine GL_VERSION_* macros to avoid conflicting
+ declarations
+
+See problems on OSX on #267.
+---
+ inc/OpenGl_GlCore12.hxx |    7 -------
+ 1 file changed, 7 deletions(-)
+
+From a383e61c47e917b574a19b432c3f4c6467aa68a1 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Sun, 12 May 2013 13:10:19 +0200
+Subject: [PATCH] Also remove #include <WNT_Window.hxx> on Windows
+
+It is very unlikely that it is used, we will put it back if needed.
+---
+ src/V3d/V3d_PositionLight.cxx | 3 ---
+ src/V3d/V3d_SpotLight.cxx     | 3 ---
+ 2 files changed, 6 deletions(-)
+
+From ed514389d76a38c2aa6db806ecd547997cccdf01 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Mon, 3 Jun 2013 15:01:26 +0200
+Subject: [PATCH] Add missing overloaded function HashCode(const unsigned int&,
+ const Standard_Integer&)
+
+Fix build failure on Mac OSX 10.5, see discussion in issue #378.
+---
+ src/Standard/Standard_Integer.hxx | 2 --
+ 1 file changed, 2 deletions(-)
+
+Index: oce/src/Image/Image_PixMap.cxx
+===================================================================
+--- oce.orig/src/Image/Image_PixMap.cxx
++++ oce/src/Image/Image_PixMap.cxx
+@@ -21,10 +21,10 @@
+ 
+ #ifdef _MSC_VER
+   #include <malloc.h>
+-#elif (defined(__GNUC__) && __GNUC__ >= 4 && __GNUC_MINOR__ >= 1)
++#elif defined(HAVE_MM_MALLOC_H)
+   #include <mm_malloc.h>
+ #else
+-  extern "C" int posix_memalign (void** thePtr, size_t theAlign, size_t theBytesCount);
++  #include <stdlib.h>
+ #endif
+ 
+ template<typename TypePtr>
+@@ -33,15 +33,17 @@ inline TypePtr MemAllocAligned (const St
+ {
+ #if defined(_MSC_VER)
+   return (TypePtr )_aligned_malloc (theBytesCount, theAlign);
+-#elif (defined(__GNUC__) && __GNUC__ >= 4 && __GNUC_MINOR__ >= 1)
++#elif defined(HAVE_MM_MALLOC_H)
+   return (TypePtr )     _mm_malloc (theBytesCount, theAlign);
+-#else
++#elif defined(HAVE_POSIX_MEMALIGN)
+   void* aPtr;
+   if (posix_memalign (&aPtr, theAlign, theBytesCount))
+   {
+     aPtr = NULL;
+   }
+   return (TypePtr )aPtr;
++#else
++  return (TypePtr ) malloc (theBytesCount);
+ #endif
+ }
+ 
+@@ -49,7 +51,7 @@ inline void MemFreeAligned (void* thePtr
+ {
+ #if defined(_MSC_VER)
+   _aligned_free (thePtrAligned);
+-#elif (defined(__GNUC__) && __GNUC__ >= 4 && __GNUC_MINOR__ >= 1)
++#elif defined(HAVE_MM_MALLOC_H)
+   _mm_free (thePtrAligned);
+ #else
+   free (thePtrAligned);
+Index: oce/src/InterfaceGraphic/InterfaceGraphic_Cocoa.hxx
+===================================================================
+--- oce.orig/src/InterfaceGraphic/InterfaceGraphic_Cocoa.hxx
++++ oce/src/InterfaceGraphic/InterfaceGraphic_Cocoa.hxx
+@@ -35,6 +35,6 @@
+   #define EXPORT
+ #endif
+ 
+-#endif InterfaceGraphic_CocoaHeader
++#endif // InterfaceGraphic_CocoaHeader
+ 
+ #endif // __APPLE__
+Index: oce/src/OpenGl/OpenGl_GlCore11.hxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_GlCore11.hxx
++++ oce/src/OpenGl/OpenGl_GlCore11.hxx
+@@ -22,6 +22,10 @@
+ #ifndef _OpenGl_GlCore11_H__
+ #define _OpenGl_GlCore11_H__
+ 
++#ifdef HAVE_CONFIG_H
++# include <oce-config.h>
++#endif
++
+ // required for correct APIENTRY definition
+ #if defined(_WIN32) && !defined(APIENTRY) && !defined(__CYGWIN__) && !defined(__SCITECH_SNAP__)
+ #define WIN32_LEAN_AND_MEAN
+@@ -42,7 +46,7 @@
+ #define GL_GLEXT_LEGACY
+ 
+ // include main OpenGL header provided with system
+-#if defined(__APPLE__)
++#if defined(__APPLE__) && !defined(MACOSX_USE_GLX)
+   #include <OpenGL/gl.h>
+   #include <OpenGL/glu.h>
+   #define __X_GL_H // prevent chaotic gl.h inclusions to avoid compile errors
+Index: oce/src/OpenGl/OpenGl_GlCore12.hxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_GlCore12.hxx
++++ oce/src/OpenGl/OpenGl_GlCore12.hxx
+@@ -22,14 +22,19 @@
+ #ifndef _OpenGl_GlCore12_H__
+ #define _OpenGl_GlCore12_H__
+ 
++#ifdef HAVE_CONFIG_H
++# include <oce-config.h>
++#endif
++
+ #include <OpenGl_GlCore11.hxx>
+ 
+-// GL version can be defined by system gl.h header
+-#undef GL_VERSION_1_2
+-#undef GL_VERSION_1_3
+-#undef GL_VERSION_1_4
+-#undef GL_VERSION_1_5
+-#undef GL_VERSION_2_0
++#if defined(__APPLE__) && !defined(MACOSX_USE_GLX)
++  #undef GL_VERSION_1_2
++  #undef GL_VERSION_1_3
++  #undef GL_VERSION_1_4
++  #undef GL_VERSION_1_5
++  #undef GL_VERSION_2_0
++#endif
+ 
+ #include <OpenGl_glext.h>
+ 
+Index: oce/src/OpenGl/OpenGl_glext.h
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_glext.h
++++ oce/src/OpenGl/OpenGl_glext.h
+@@ -5471,14 +5471,24 @@ typedef char GLchar;
+ 
+ #ifndef GL_VERSION_1_5
+ /* GL types for handling large vertex buffer objects */
++# ifdef __APPLE__
++typedef long GLintptr;
++typedef long GLsizeiptr;
++# else
+ typedef ptrdiff_t GLintptr;
+ typedef ptrdiff_t GLsizeiptr;
++# endif
+ #endif
+ 
+ #ifndef GL_ARB_vertex_buffer_object
+ /* GL types for handling large vertex buffer objects */
++# ifdef __APPLE__
++typedef long GLintptrARB;
++typedef long GLsizeiptrARB;
++# else
+ typedef ptrdiff_t GLintptrARB;
+ typedef ptrdiff_t GLsizeiptrARB;
++# endif
+ #endif
+ 
+ #ifndef GL_ARB_shader_objects
+Index: oce/src/Standard/Standard_Integer.hxx
+===================================================================
+--- oce.orig/src/Standard/Standard_Integer.hxx
++++ oce/src/Standard/Standard_Integer.hxx
+@@ -27,6 +27,10 @@
+ # include <Standard_values.h>
+ #endif
+ 
++#ifdef HAVE_CONFIG_H
++# include <oce-config.h>
++#endif
++
+ class Handle_Standard_Type;
+ 
+ __Standard_API const Handle_Standard_Type& Standard_Integer_Type_();
+@@ -79,7 +83,7 @@ inline Standard_Boolean IsEqual (const S
+   return theOne == theTwo;
+ }
+ 
+-#if (defined(_LP64) || defined(__LP64__) || defined(_WIN64))
++#ifdef OCE_HAVE_DIFFERENT_SIZEOF_INT_SIZE_T
+ // ------------------------------------------------------------------
+ // Hascode : Computes a hascoding value for a given unsigned integer
+ // ------------------------------------------------------------------
+@@ -97,7 +101,7 @@ inline Standard_Boolean IsEqual (const S
+ {
+   return theOne == theTwo;
+ }
+-#endif
++#endif  /* OCE_HAVE_DIFFERENT_SIZEOF_INT_SIZE_T */
+ 
+ // ------------------------------------------------------------------
+ // IsSimilar : Returns Standard_True if two integers are equal
+Index: oce/src/V3d/V3d_PositionLight.cxx
+===================================================================
+--- oce.orig/src/V3d/V3d_PositionLight.cxx
++++ oce/src/V3d/V3d_PositionLight.cxx
+@@ -46,11 +46,6 @@
+ #include <gp_Pnt.hxx>
+ #include <gp_Trsf.hxx>
+ #include <TCollection_AsciiString.hxx>
+-#ifdef WNT
+-# include <WNT_Window.hxx>
+-#else
+-# include <Xw_Window.hxx>
+-#endif
+ 
+ V3d_PositionLight::V3d_PositionLight(const Handle(V3d_Viewer)& VM) : V3d_Light(VM) {
+ }
+Index: oce/src/V3d/V3d_SpotLight.cxx
+===================================================================
+--- oce.orig/src/V3d/V3d_SpotLight.cxx
++++ oce/src/V3d/V3d_SpotLight.cxx
+@@ -58,11 +58,6 @@
+ #include <gp_Trsf.hxx>
+ #include <TCollection_AsciiString.hxx>
+ 
+-#ifdef WNT
+-# include <WNT_Window.hxx>
+-#else
+-# include <Xw_Window.hxx>
+-#endif
+ 
+ 
+ V3d_SpotLight::V3d_SpotLight(const Handle(V3d_Viewer)& VM, const Standard_Real X, const Standard_Real Y, const Standard_Real Z, const V3d_TypeOfOrientation Direction, const Quantity_NameOfColor Name, const Standard_Real A1, const Standard_Real A2, const Standard_Real CN, const Standard_Real AN):V3d_PositionLight(VM) {
+Index: oce/src/ViewerTest/ViewerTest_ViewerCommands_1.mm
+===================================================================
+--- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands_1.mm
++++ oce/src/ViewerTest/ViewerTest_ViewerCommands_1.mm
+@@ -15,6 +15,10 @@
+ // purpose or non-infringement. Please see the License for the specific terms
+ // and conditions governing the rights and limitations under the License.
+ 
++#ifdef HAVE_CONFIG_H
++# include <oce-config.h>
++#endif
++
+ #if defined(__APPLE__) && !defined(MACOSX_USE_GLX)
+ 
+ #import <Cocoa/Cocoa.h>
+Index: oce/src/Visual3d/Visual3d_View.cxx
+===================================================================
+--- oce.orig/src/Visual3d/Visual3d_View.cxx
++++ oce/src/Visual3d/Visual3d_View.cxx
+@@ -16,6 +16,10 @@
+ // purpose or non-infringement. Please see the License for the specific terms
+ // and conditions governing the rights and limitations under the License.
+ 
++#ifdef HAVE_CONFIG_H
++# include <oce-config.h>
++#endif
++
+ /***********************************************************************
+ 
+      FONCTION :

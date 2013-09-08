@@ -108,35 +108,6 @@ Subject: [PATCH] [warning-fix][unreachable-code] Fixes unreachable code
  src/TopOpeBRepDS/TopOpeBRepDS_BuildTool.cxx |    8 ++------
  3 files changed, 7 insertions(+), 12 deletions(-)
 
-Index: oce/src/GCPnts/GCPnts_QuasiUniformDeflection.gxx
-===================================================================
---- oce.orig/src/GCPnts/GCPnts_QuasiUniformDeflection.gxx
-+++ oce/src/GCPnts/GCPnts_QuasiUniformDeflection.gxx
-@@ -229,7 +229,10 @@ static Standard_Boolean PerformComposite
- 
-     Ua = Ub;
-   }
-+ 
-+#ifndef _MSC_VER
-   return Standard_True;
-+#endif
- }
- 
- 
-Index: oce/src/GCPnts/GCPnts_UniformDeflection.gxx
-===================================================================
---- oce.orig/src/GCPnts/GCPnts_UniformDeflection.gxx
-+++ oce/src/GCPnts/GCPnts_UniformDeflection.gxx
-@@ -194,7 +194,9 @@ static Standard_Boolean PerformComposite
- 
-     Ua = Ub;
-   }
-+  #ifndef _MSC_VER
-   return Standard_True;
-+  #endif
- }
- 
- 
 Index: oce/src/AIS/AIS_Selection.cxx
 ===================================================================
 --- oce.orig/src/AIS/AIS_Selection.cxx
@@ -356,6 +327,35 @@ Index: oce/src/FSD/FSD_File.cxx
    }
    return -1;
  }
+Index: oce/src/GCPnts/GCPnts_QuasiUniformDeflection.gxx
+===================================================================
+--- oce.orig/src/GCPnts/GCPnts_QuasiUniformDeflection.gxx
++++ oce/src/GCPnts/GCPnts_QuasiUniformDeflection.gxx
+@@ -229,7 +229,10 @@ static Standard_Boolean PerformComposite
+ 
+     Ua = Ub;
+   }
++ 
++#ifndef _MSC_VER
+   return Standard_True;
++#endif
+ }
+ 
+ 
+Index: oce/src/GCPnts/GCPnts_UniformDeflection.gxx
+===================================================================
+--- oce.orig/src/GCPnts/GCPnts_UniformDeflection.gxx
++++ oce/src/GCPnts/GCPnts_UniformDeflection.gxx
+@@ -194,7 +194,9 @@ static Standard_Boolean PerformComposite
+ 
+     Ua = Ub;
+   }
++  #ifndef _MSC_VER
+   return Standard_True;
++  #endif
+ }
+ 
+ 
 Index: oce/src/Geom2dGcc/Geom2dGcc_Circ2d2TanOn.cxx
 ===================================================================
 --- oce.orig/src/Geom2dGcc/Geom2dGcc_Circ2d2TanOn.cxx
@@ -653,20 +653,6 @@ Index: oce/src/ShapeFix/ShapeFix_Wireframe.cxx
    }
    return ReplaceFirst;
  }
-Index: oce/src/StdPrs/StdPrs_DeflectionCurve.cxx
-===================================================================
---- oce.orig/src/StdPrs/StdPrs_DeflectionCurve.cxx
-+++ oce/src/StdPrs/StdPrs_DeflectionCurve.cxx
-@@ -278,7 +278,9 @@ static Standard_Boolean MatchCurve (
-       }
-     }
-   }
-+#ifndef _MSC_VER
-   return Standard_False;
-+#endif
- }
- 
- 
 Index: oce/src/TopOpeBRep/TopOpeBRep_FFDumper.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRep/TopOpeBRep_FFDumper.cxx

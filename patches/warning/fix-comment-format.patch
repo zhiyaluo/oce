@@ -448,6 +448,18 @@ Index: oce/src/AdvApp2Var/AdvApp2Var_SysBase.cxx
  /*  !__________!  DOUBLE PRECISIONs is reserved. This buffer is initialized by */
  /*  <---------->  the instruction DATA. The overflow is accessed in a  */
  /*    NLONGR*8    specific COMMON not by a routine as */
+Index: oce/src/BOPDS/BOPDS_Interf.hxx
+===================================================================
+--- oce.orig/src/BOPDS/BOPDS_Interf.hxx
++++ oce/src/BOPDS/BOPDS_Interf.hxx
+@@ -531,6 +531,7 @@ class BOPDS_InterfFF  : public BOPDS_Int
+       myCurves(myAllocator),
+       myPoints(myAllocator) {
+   };
++  */
+   //
+   /**
+    *  Destructor
 Index: oce/src/ExprIntrp/ExprIntrp.lex
 ===================================================================
 --- oce.orig/src/ExprIntrp/ExprIntrp.lex

@@ -1,0 +1,84 @@
+From da711db64b2ad90bf6b5300b3fbf1c2b0859c45e Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Mon, 29 Apr 2013 09:00:31 +0200
+Subject: [PATCH] [cppcheck-fix][instance-destroyed-immediatly]
+
+This commit fixes following cppcheck-1.49 errors:
+[src/Extrema/Extrema_GenExtCS.cxx:311]: (error) Instance of 'math_FunctionSetRoot' object is destroyed immediately.
+[src/MeshTest/MeshTest.cxx:1243]: (error) Instance of 'BRepMesh_IncrementalMesh' object is destroyed immediately.
+[src/QABugs/QABugs_19.cxx:124]: (error) Instance of 'BRepAlgo_Cut' object is destroyed immediately.
+[src/StdSelect/StdSelect_BRepSelectionTool.cxx:88]: (error) Instance of 'BRepMesh_IncrementalMesh' object is destroyed immediately.
+[src/TestTopOpe/TestTopOpe_HDSCommands.cxx:213]: (error) Instance of 'Standard_Failure' object is destroyed immediately.
+---
+ src/Extrema/Extrema_GenExtCS.cxx              | 2 +-
+ src/MeshTest/MeshTest.cxx                     | 2 +-
+ src/QABugs/QABugs_19.cxx                      | 2 +-
+ src/StdSelect/StdSelect_BRepSelectionTool.cxx | 2 +-
+ src/TestTopOpe/TestTopOpe_HDSCommands.cxx     | 2 +-
+ 5 files changed, 5 insertions(+), 5 deletions(-)
+
+Index: oce/src/Extrema/Extrema_GenExtCS.cxx
+===================================================================
+--- oce.orig/src/Extrema/Extrema_GenExtCS.cxx
++++ oce/src/Extrema/Extrema_GenExtCS.cxx
+@@ -308,7 +308,7 @@ void Extrema_GenExtCS::Perform(const Ada
+         UV(1) = aMaxCU;
+         UV(2) = aMaxSU;
+         UV(3) = aMaxSV;
+-        math_FunctionSetRoot(myF, UV, Tol, UVinf, UVsup);
++        math_FunctionSetRoot aFunctionSetRoot(myF, UV, Tol, UVinf, UVsup);
+         break;
+       }
+       //
+Index: oce/src/MeshTest/MeshTest.cxx
+===================================================================
+--- oce.orig/src/MeshTest/MeshTest.cxx
++++ oce/src/MeshTest/MeshTest.cxx
+@@ -1240,7 +1240,7 @@ static Standard_Integer wavefront(Draw_I
+   Standard_Real aDeflection = 
+     MAX3( aXmax-aXmin , aYmax-aYmin , aZmax-aZmin) * 0.004;
+ 
+-  BRepMesh_IncrementalMesh(S, aDeflection);
++  BRepMesh_IncrementalMesh aMesh(S, aDeflection);
+ 
+ 
+   TopLoc_Location L;
+Index: oce/src/QABugs/QABugs_19.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_19.cxx
++++ oce/src/QABugs/QABugs_19.cxx
+@@ -121,7 +121,7 @@ static Standard_Integer OCC23237 (Draw_I
+     // do some operation that will take considerable time compared with time or starting / stopping timers
+     BRepPrimAPI_MakeBox aBox (10., 10., 10.);
+     BRepPrimAPI_MakeSphere aSphere (10.);
+-    BRepAlgo_Cut (aBox.Shape(), aSphere.Shape());
++    BRepAlgo_Cut aCut(aBox.Shape(), aSphere.Shape());
+ 
+     aTM.Stop();
+     aPM.Stop();
+Index: oce/src/StdSelect/StdSelect_BRepSelectionTool.cxx
+===================================================================
+--- oce.orig/src/StdSelect/StdSelect_BRepSelectionTool.cxx
++++ oce/src/StdSelect/StdSelect_BRepSelectionTool.cxx
+@@ -85,7 +85,7 @@ void StdSelect_BRepSelectionTool
+ 
+   if( isAutoTriangulation && !BRepTools::Triangulation (theShape, Precision::Infinite()) )
+   {
+-    BRepMesh_IncrementalMesh(theShape, theDeflection, Standard_False, theDeviationAngle);
++    BRepMesh_IncrementalMesh aMesh(theShape, theDeflection, Standard_False, theDeviationAngle);
+   }
+ 
+   Handle(StdSelect_BRepOwner) aBrepOwner;
+Index: oce/src/TestTopOpe/TestTopOpe_HDSCommands.cxx
+===================================================================
+--- oce.orig/src/TestTopOpe/TestTopOpe_HDSCommands.cxx
++++ oce/src/TestTopOpe/TestTopOpe_HDSCommands.cxx
+@@ -210,7 +210,7 @@ public:
+ 
+ gp_Pnt tsee_entity0::Pnt() const
+ {
+-  if (!Is0()) Standard_Failure("not 0d");
++  if (!Is0()) Standard_Failure::Raise("not 0d");
+   gp_Pnt P; 
+   if      (IsP()) P = myEPDS->Point(myEindex).Point();
+   else if (IsV()) P = BRep_Tool::Pnt(TopoDS::Vertex(myEPDS->Shape(myEindex)));
