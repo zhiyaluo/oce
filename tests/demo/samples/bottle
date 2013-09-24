@@ -1,5 +1,5 @@
-# test for creation of bottle as in tutorial (script is in samples)
-source $env(CASROOT)/samples/tcl/bottle.tcl
+# test for creation of bottle as in tutorial
+source [locate_data_file bottle.tcl]
 
 # check result for validity and make a snapshot
 checkshape bottle
