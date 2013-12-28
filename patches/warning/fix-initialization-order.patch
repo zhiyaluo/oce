@@ -15,20 +15,20 @@ Index: oce/src/OpenGl/OpenGl_PrinterContext.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_PrinterContext.cxx
 +++ oce/src/OpenGl/OpenGl_PrinterContext.cxx
-@@ -29,10 +29,10 @@ GLCONTEXT             OpenGl_PrinterCont
- 
- OpenGl_PrinterContext::OpenGl_PrinterContext ()
+@@ -29,10 +29,10 @@ IMPLEMENT_STANDARD_RTTIEXT(OpenGl_Printe
+ //=======================================================================
+ OpenGl_PrinterContext::OpenGl_PrinterContext()
  : myProjTransform  (0, 3, 0, 3),
-+  myScaleX (1.0f),
-+  myScaleY (1.0f),
-   myLayerViewportX (0),
+-  myLayerViewportX (0),
 -  myLayerViewportY (0),
--  myScaleX (1.0f),
+   myScaleX (1.0f),
 -  myScaleY (1.0f)
++  myScaleY (1.0f),
++  myLayerViewportX (0),
 +  myLayerViewportY (0)
  {
-   // assign global instance to the current object
-   if (myCtx != NULL)
+   // identity projection matrix
+   Standard_Real anInitValue = 0.0;
 Index: oce/src/QANewModTopOpe/QANewModTopOpe_Glue.cxx
 ===================================================================
 --- oce.orig/src/QANewModTopOpe/QANewModTopOpe_Glue.cxx
@@ -67,7 +67,7 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-@@ -2362,13 +2362,13 @@ V3d_TextItem::V3d_TextItem (const TColle
+@@ -2529,13 +2529,13 @@ V3d_TextItem::V3d_TextItem (const TColle
                              const Aspect_TypeOfDisplayText& theTypeOfDisplay,
                              const Handle(Visual3d_Layer)& theLayer)
   : myX1 (theX1), myY1 (theY1),
@@ -84,7 +84,7 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
  {
    if (!myLayer.IsNull ())
      myLayer->AddLayerItem (this);
-@@ -2426,8 +2426,9 @@ V3d_LineItem::V3d_LineItem(Standard_Real
+@@ -2593,8 +2593,9 @@ V3d_LineItem::V3d_LineItem(Standard_Real
                             Aspect_TypeOfLine theType,
                             Standard_Real theWidth,
                             Standard_Real theTransp) :

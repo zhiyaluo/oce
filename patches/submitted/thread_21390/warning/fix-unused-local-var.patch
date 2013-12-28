@@ -1549,6 +1549,386 @@ Index: oce/drv/XCAFSchema/XCAFSchema_Standard_Persistent.cxx
  
      theSchema->ReadPersistentObjectHeader(f);
      f.BeginReadPersistentObjectData();
+Index: oce/src/AIS/AIS_AngleDimension.cxx
+===================================================================
+--- oce.orig/src/AIS/AIS_AngleDimension.cxx
++++ oce/src/AIS/AIS_AngleDimension.cxx
+@@ -932,7 +932,6 @@ void AIS_AngleDimension::ComputeTwoEdges
+   else d2 = l2->Lin().Direction();
+   if (!isInfinite1) {
+     Standard_Boolean In1(Standard_False);
+-    Standard_Boolean In2(Standard_False);
+     if ( !(Abs(d1.Angle(d2) - Abs(myVal)) <= Precision::Confusion())
+ 	 &&  (Abs(myVal) <  M_PI) ) {
+       Standard_Real parcent1 = ElCLib::Parameter(l1->Lin(), myCenter);
+@@ -951,7 +950,6 @@ void AIS_AngleDimension::ComputeTwoEdges
+       }
+       }
+       if ( !In1) {
+-	In2 = Standard_True;
+ 	d2.Reverse();
+       }
+     }
+@@ -1270,11 +1268,6 @@ void AIS_AngleDimension::ComputeTwoEdges
+       tabdist(3) = tabdist(4) = 0.;
+     }
+     if ( SameLines ) {
+-      Standard_Real dist1(RealLast());
+-      if (!isInfinite1) dist1 = Max(tabdist(1),tabdist(2));
+-      Standard_Real dist2(RealLast());
+-      if (!isInfinite2) dist2 = Max(tabdist(3),tabdist(4));      
+-      
+       myFAttach = myCenter;
+       mySAttach = myCenter;
+       P1 = myFAttach;
+@@ -1956,9 +1949,6 @@ void AIS_AngleDimension::ComputeConeAngl
+  
+   Standard_Boolean IsArrowOut = Standard_True;    //Is arrows inside or outside of the cone
+   //Standard_Real PntOnMainAxis = 0;   //Is projection of aPosition inside of the cone = 0, above = 1, or below = -1
+-  Standard_Boolean IsConeTrimmed = Standard_False; 
+-
+-  if( CircVmin.Radius() > 0.01 ) IsConeTrimmed = Standard_True;
+ 
+   gp_Pnt AttachmentPnt;
+   gp_Pnt OppositePnt;
+Index: oce/src/AIS/AIS_DiameterDimension.cxx
+===================================================================
+--- oce.orig/src/AIS/AIS_DiameterDimension.cxx
++++ oce/src/AIS/AIS_DiameterDimension.cxx
+@@ -198,13 +198,11 @@ void AIS_DiameterDimension::ComputeSelec
+     
+     Standard_Real dist    = center.Distance(AttachmentPoint);
+     Standard_Real aRadius = myCircle.Radius();
+-    Standard_Real inside  = Standard_False;
+     
+     gp_Pnt pt1 = AttachmentPoint;
+     if (dist < aRadius) {
+       pt1 = ptoncirc;
+       dist = aRadius;
+-      inside = Standard_True;
+     }
+     vecrap.Normalize();
+     vecrap *= (dist+aRadius);
+Index: oce/src/AIS/AIS_EqualDistanceRelation.cxx
+===================================================================
+--- oce.orig/src/AIS/AIS_EqualDistanceRelation.cxx
++++ oce/src/AIS/AIS_EqualDistanceRelation.cxx
+@@ -618,8 +618,6 @@ void AIS_EqualDistanceRelation::ComputeT
+   AIS::ComputeGeometry( FirstVertex, FirstAttach, Plane, isOnPlane1);
+   AIS::ComputeGeometry( SecondVertex, SecondAttach, Plane, isOnPlane2);
+ 
+-  //Computation of Val
+-  Standard_Real Val = FirstAttach.Distance( SecondAttach );
+   Standard_Real confusion(Precision::Confusion());
+   Standard_Boolean samePoint(FirstAttach.IsEqual(SecondAttach,confusion));
+ 
+@@ -633,9 +631,6 @@ void AIS_EqualDistanceRelation::ComputeT
+   }
+   
+   // size
+-  Standard_Real arrsize = ArrowSize;
+-  if (Abs(Val) <= confusion) arrsize =0.;
+-
+   if (AutomaticPos) {
+    if (!samePoint) {
+      gp_Pnt curpos((FirstAttach.XYZ()+SecondAttach.XYZ())*0.5);
+Index: oce/src/AIS/AIS_InteractiveContext.cxx
+===================================================================
+--- oce.orig/src/AIS/AIS_InteractiveContext.cxx
++++ oce/src/AIS/AIS_InteractiveContext.cxx
+@@ -963,11 +963,11 @@ void AIS_InteractiveContext::Remove(cons
+   }
+   else
+     {
+-      Standard_Boolean  WasInCtx = myLocalContexts(myCurLocalIndex)->Remove(anIObj);
++      myLocalContexts(myCurLocalIndex)->Remove(anIObj);
+       AIS_DataMapIteratorOfDataMapOfILC It(myLocalContexts);
+       for (;It.More() ;It.Next()){
+         if(It.Value()->AcceptErase())
+-          WasInCtx = It.Value()->Remove(anIObj);
++          It.Value()->Remove(anIObj);
+         
+       }
+       //      if(!WasInCtx)
+Index: oce/src/AIS/AIS_LocalContext.cxx
+===================================================================
+--- oce.orig/src/AIS/AIS_LocalContext.cxx
++++ oce/src/AIS/AIS_LocalContext.cxx
+@@ -449,7 +449,6 @@ Standard_Boolean AIS_LocalContext::Remov
+   const Handle(AIS_LocalStatus)& Att = myActiveObjects(aSelectable);
+   
+   TColStd_ListIteratorOfListOfInteger It;
+-  Standard_Boolean jobdone(Standard_False);
+   // it is checked which were the temporary attributes 
+   // and they are set to 0
+ 
+@@ -472,7 +471,6 @@ Standard_Boolean AIS_LocalContext::Remov
+       if(myMainPM->IsDisplayed(aSelectable,Att->HilightMode()))
+ 	myMainPM->Erase(aSelectable,Att->HilightMode());
+       //	myMainPM->Clear(aSelectable,Att->HilightMode());
+-      jobdone = Standard_True;
+     }
+   // if below intensity
+   else
+Index: oce/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
+===================================================================
+--- oce.orig/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
++++ oce/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
+@@ -456,7 +456,6 @@ static void Locate2Coord(const Standard_
+ {
+   Standard_Real Tol=Precision::PConfusion()/10;
+   Standard_Real Comp1=0,DComp1=0;
+-  Standard_Boolean DIsNull = Standard_False;
+   if(Index==1)   {   Comp1=UV.X();
+ 		     DComp1=DUV.X();} 
+   else
+@@ -483,10 +482,9 @@ static void Locate2Coord(const Standard_
+ 		 if(Index==2) { LeftBot.SetY(I1);
+ 				RightTop.SetY(I2);}
+ 	       }
+-	   DIsNull=Standard_False;
+ 	 }
+     else 
+-      if(Abs(DComp1)<=Tol) {  DIsNull = Standard_True;
++      if(Abs(DComp1)<=Tol) {
+ 			      if(Index==1) { LeftBot.SetX(I1) ;
+ 					     RightTop.SetX(I2);}
+ 			      if(Index==2) { LeftBot.SetY(I1) ;
+Index: oce/src/AdvApp2Var/AdvApp2Var_ApproxAFunc2Var.cxx
+===================================================================
+--- oce.orig/src/AdvApp2Var/AdvApp2Var_ApproxAFunc2Var.cxx
++++ oce/src/AdvApp2Var/AdvApp2Var_ApproxAFunc2Var.cxx
+@@ -439,7 +439,7 @@ void AdvApp2Var_ApproxAFunc2Var::Compute
+ 					 const AdvApp2Var_EvaluatorFunc2Var& Func,
+ 					 const AdvApp2Var_Criterion& Crit)
+ {
+-  Standard_Real Udec, Vdec, CritValue, m0=0., m1=0.;
++  Standard_Real Udec, Vdec, CritValue, m1=0.;
+   Standard_Boolean Umore, Vmore, CritAbs = (Crit.Type() == AdvApp2Var_Absolute);
+   Standard_Integer NbPatch, NbU, NbV, NbInt, NumDec;
+   Standard_Integer FirstNA, decision=0;
+@@ -449,7 +449,6 @@ void AdvApp2Var_ApproxAFunc2Var::Compute
+ // complete the set of constraints 
+     ComputeConstraints(UChoice, VChoice, Func, Crit);
+     if (decision>0) {
+-      m0 = m1;
+       m1 = 0.;
+     }
+ 
+Index: oce/src/AdvApp2Var/AdvApp2Var_ApproxF2var.cxx
+===================================================================
+--- oce.orig/src/AdvApp2Var/AdvApp2Var_ApproxF2var.cxx
++++ oce/src/AdvApp2Var/AdvApp2Var_ApproxF2var.cxx
+@@ -1393,7 +1393,6 @@ int mma1jak_(integer *ndimen,
+     crvjac_dim1 = *ndgjac + 1;
+     crvjac_offset = crvjac_dim1;
+     crvjac -= crvjac_offset;
+-    cgauss_dim1 = *nbroot / 2 + 1;
+ 
+     /* Function Body */
+     ibb = AdvApp2Var_SysBase::mnfndeb_();
+Index: oce/src/AdvApp2Var/AdvApp2Var_MathBase.cxx
+===================================================================
+--- oce.orig/src/AdvApp2Var/AdvApp2Var_MathBase.cxx
++++ oce/src/AdvApp2Var/AdvApp2Var_MathBase.cxx
+@@ -7100,8 +7100,6 @@ int mmpojac_(doublereal *tparam,
+   
+     /* Initialized data */
+ 
+-    static integer nbcof = -1;
+-
+     /* System generated locals */
+     integer valjac_dim1, i__1, i__2;
+ 
+@@ -7213,8 +7211,6 @@ int mmpojac_(doublereal *tparam,
+ 		c__2, &i__2));
+     }
+ 
+-    nbcof = *ncoeff;
+-
+ /*      END IF */
+ 
+ /*  --- Trivial Positions ----- */
+@@ -9885,7 +9881,6 @@ L9999:
+   static logical colin;
+   static doublereal valaux;
+   static integer aux;
+-  static logical nul;
+  
+ /* ***********************************************************************
+  */
+@@ -9953,7 +9948,6 @@ L9999:
+     if (*ndimen <= 1 || *ndimen > 3) {
+ 	goto L9101;
+     }
+-    nul = FALSE_;
+     d__ = 1;
+     aux = 0;
+     while(d__ <= *ndimen) {
+Index: oce/src/AdvApp2Var/AdvApp2Var_SysBase.cxx
+===================================================================
+--- oce.orig/src/AdvApp2Var/AdvApp2Var_SysBase.cxx
++++ oce/src/AdvApp2Var/AdvApp2Var_SysBase.cxx
+@@ -155,9 +155,6 @@ int AdvApp2Var_SysBase::macinit_(integer
+ 
+ {
+  
+-  /* Fortran I/O blocks */
+-  static cilist io______1 = { 0, 0, 0, (char*) "(' --- Debug-mode : ',I10,' ---')", 0 };
+-  
+   /* ************************************************************************/
+   /*     FUNCTION : */
+   /*     ---------- */
+@@ -217,13 +214,6 @@ int AdvApp2Var_SysBase::macinit_(integer
+     mblank__.imp = *ival;
+   } else if (*imode == 2) {
+     mblank__.ibb = *ival;
+-    io______1.ciunit = mblank__.imp;
+-    /*
+-    s__wsfe(&io______1);
+-    */
+-    /*
+-    do__fio(&c____1, (char *)&mblank__.ibb, (ftnlen)sizeof(integer));
+-    */
+     AdvApp2Var_SysBase::e__wsfe();
+   } else if (*imode == 3) {
+     mblank__.lec = *ival;
+@@ -889,14 +879,9 @@ int macrmsg_(const char *,//crout,
+ {
+   
+   /* Local variables */
+-  static integer inum, iunite;
+-  static char cfm[80], cln[3];
++  static integer inum;
++  static char cln[3];
+   
+-  /* Fortran I/O blocks */
+-  static cilist io___5 = { 0, 0, 0, cfm, 0 };
+-  static cilist io___6 = { 0, 0, 0, cfm, 0 };
+-  static cilist io___7 = { 0, 0, 0, cfm, 0 };
+- 
+ 
+ /* ***********************************************************************
+  */
+@@ -1132,15 +1117,12 @@ t !! ')", 80L, 54L);
+    */
+   /*  iMPLEMENTATION OF WRITE , WITH OR WITHOUT DATA : */
+   
+-  iunite = AdvApp2Var_SysBase::mnfnimp_();
+   if (inum == 0) {
+-    io___5.ciunit = iunite;
+     /*
+     s__wsfe(&io___5);
+     */
+     AdvApp2Var_SysBase::e__wsfe();
+   } else if (inum == 1) {
+-    io___6.ciunit = iunite;
+     /*
+     s__wsfe(&io___6);
+     */
+@@ -1150,7 +1132,6 @@ t !! ')", 80L, 54L);
+     AdvApp2Var_SysBase::e__wsfe();
+   } else {
+     /*  MESSAGE DOES NOT EXIST ... */
+-    io___7.ciunit = iunite;
+     /*
+     s__wsfe(&io___7);
+     */
+@@ -2959,7 +2940,6 @@ int AdvApp2Var_SysBase::mcrrqst_(integer
+ 
+ /* DEMAND OF ALLOCATION */
+ 
+-    isyst = 0;
+ /* L1001: */
+ /*      IF ( ISYST.EQ.0.AND.IBYTE .LE. 100 * 1024 ) THEN */
+ /*        ALLOCATION SUR TABLE */
+@@ -3141,8 +3121,6 @@ void AdvApp2Var_SysBase::miraz_(integer
+ 				void *adt)
+ 
+ {
+-  integer offset;
+-  offset = *taille;
+   memset(adt , '\0' , *taille) ;
+ }
+ //=======================================================================
+@@ -3287,9 +3265,6 @@ int AdvApp2Var_SysBase::mswrdbg_(const c
+ 
+ {
+ 
+-  static cilist io___1 = { 0, 0, 0, 0, 0 };
+-  
+-
+ /* ***********************************************************************
+  */
+ 
+@@ -3334,8 +3309,6 @@ int AdvApp2Var_SysBase::mswrdbg_(const c
+  */
+ 
+     if (AdvApp2Var_SysBase::mnfndeb_() >= 1) {
+-	io___1.ciunit = AdvApp2Var_SysBase::mnfnimp_();
+-	//s__wsle(&io___1);
+ 	//do__lio(&c__9, &c__1, "Dbg ", 4L);
+ 	//do__lio(&c__9, &c__1, ctexte, ctexte_len);
+ 	AdvApp2Var_SysBase::e__wsle();
+Index: oce/src/AlienImage/AlienImage_SunRFAlienData.cxx
+===================================================================
+--- oce.orig/src/AlienImage/AlienImage_SunRFAlienData.cxx
++++ oce/src/AlienImage/AlienImage_SunRFAlienData.cxx
+@@ -127,7 +127,7 @@ void AlienImage_SunRFAlienData::Clear()
+ 
+ Standard_Boolean AlienImage_SunRFAlienData::Write( OSD_File& file ) const
+ 
+-{ Standard_Integer  size;
++{
+   AlienImage_SUNRFFileHeader TheHeader = myHeader ;
+ 
+   // Write out TheHeader information
+@@ -154,8 +154,6 @@ Standard_Boolean AlienImage_SunRFAlienDa
+ 	}
+   }
+ 
+-  size = ( Standard_Integer ) sizeof( TheHeader ) ;
+-
+   const Standard_Address pHeader = ( Standard_Address ) &TheHeader ;
+ 
+   file.Write( pHeader,  sizeof( TheHeader ) ) ;
+Index: oce/src/AlienImage/AlienImage_X11XWDAlienData.cxx
+===================================================================
+--- oce.orig/src/AlienImage/AlienImage_X11XWDAlienData.cxx
++++ oce/src/AlienImage/AlienImage_X11XWDAlienData.cxx
+@@ -64,7 +64,7 @@ const TCollection_AsciiString&  AlienIma
+ 
+ void AlienImage_X11XWDAlienData::Clear()
+ 
+-{ Standard_Integer size ;
++{
+ 
+   myHeader.header_size	= sizeof( myHeader ) ; 
+ 				/* Size of the entire file header (bytes).*/
+@@ -102,8 +102,6 @@ void AlienImage_X11XWDAlienData::Clear()
+   }
+ 
+   if ( myColors ) {
+-	size = ( Standard_Integer ) 
+-			myHeader.ncolors * sizeof( AlienImage_X11XColor ) ;
+ 	//Free all allocated memory
+ 	Standard::Free(myColors);
+ 	myColors = NULL ;
+Index: oce/src/AppParCurves/AppParCurves.cxx
+===================================================================
+--- oce.orig/src/AppParCurves/AppParCurves.cxx
++++ oce/src/AppParCurves/AppParCurves.cxx
+@@ -109,8 +109,8 @@ void AppParCurves::SecondDerivativeBerns
+ //  Standard_Real U1 = 1-U, Y0, Y1, Xs;
+   Standard_Real Y0, Y1, Xs;
+   Standard_Integer NbPoles = DDA.Length();
+-  Standard_Integer id, j, N2, N3, N4, deg = NbPoles-1;
+-  N2 = deg-1; N3 = deg-2, N4 = deg*(deg-1);
++  Standard_Integer id, j, N4, deg = NbPoles-1;
++  N4 = deg*(deg-1);
+   math_Vector B(1, deg-1);
+   B(1) = 1.;
+   
 Index: oce/src/AppParCurves/AppParCurves_LeastSquare.gxx
 ===================================================================
 --- oce.orig/src/AppParCurves/AppParCurves_LeastSquare.gxx
@@ -2001,1249 +2381,6 @@ Index: oce/src/ApproxInt/ApproxInt_ImpPrmSvSurfaces.gxx
    P=MyPnt;
  }
  //--------------------------------------------------------------------------------
-Index: oce/src/Blend/Blend_CSWalking_2.gxx
-===================================================================
---- oce.orig/src/Blend/Blend_CSWalking_2.gxx
-+++ oce/src/Blend/Blend_CSWalking_2.gxx
-@@ -173,7 +173,7 @@ Blend_Status Blend_CSWalking::CheckDefle
- 
-   Standard_Real Norme, prevNorme, Cosi, Cosi2; // JAG MODIF 25.04.94
-   Standard_Real FlecheCourante;
--  Standard_Real Du,Dv,Duv,SqrtDuv;
-+  Standard_Real Du,Dv,Duv;
-   Standard_Real paramu,paramv,tolu,tolv;
- //  TColgp_Array1OfPnt Poles(1,4);
- //  gp_Pnt POnCurv,Milieu;
-@@ -211,7 +211,6 @@ Blend_Status Blend_CSWalking::CheckDefle
-   Du = Ponsurf.X() - paramu;
-   Dv = Ponsurf.Y() - paramv;
-   Duv = Du * Du + Dv * Dv;
--  SqrtDuv = Sqrt(Duv);
-   if ((Abs(Du) < tolu && Abs(Dv) < tolv) ||  // JAG MODIF 25.04.94
-       (Abs(previousd2d.X()) < tolu && Abs(previousd2d.Y()) < tolv)){
-     // il faudra peut etre  forcer meme point   JAG MODIF 25.04.94
-Index: oce/src/Blend/Blend_Walking_1.gxx
-===================================================================
---- oce.orig/src/Blend/Blend_Walking_1.gxx
-+++ oce/src/Blend/Blend_Walking_1.gxx
-@@ -186,8 +186,6 @@ Standard_Boolean Blend_Walking::PerformF
- 
-   Pos1 = Pos2 = TopAbs_UNKNOWN;
- 
--  Blend_Status State;
--
-   param = Pdep;
-   Func.Set(param);
- 
-@@ -211,7 +209,7 @@ Standard_Boolean Blend_Walking::PerformF
-     return Standard_False;
-   }
- 
--  State = TestArret(Func, Blend_OK, Standard_False);
-+  TestArret(Func, Blend_OK, Standard_False);
- #ifdef DEB
-   if (Blend_GettraceDRAWSECT()){
-     Drawsect(surf1,surf2,sol,param,Func);
-Index: oce/src/Extrema/Extrema_GLocateExtCC.gxx
-===================================================================
---- oce.orig/src/Extrema/Extrema_GLocateExtCC.gxx
-+++ oce/src/Extrema/Extrema_GLocateExtCC.gxx
-@@ -31,13 +31,6 @@ Extrema_GLocateExtCC::Extrema_GLocateExt
- 					    const Standard_Real V0)
- {
- 
--#ifdef DEB
--  GeomAbs_CurveType type1 = Tool1::GetType(C1);
--  GeomAbs_CurveType type2 = Tool2::GetType(C2);
--#else
--  Tool1::GetType(C1);
--  Tool2::GetType(C2);
--#endif
-   Standard_Real TolU = C1.Resolution(Precision::Confusion());
-   Standard_Real TolV = C2.Resolution(Precision::Confusion());
-   Extrema_POnCurv P1, P2;
-Index: oce/src/Extrema/Extrema_GLocateExtCC2d.gxx
-===================================================================
---- oce.orig/src/Extrema/Extrema_GLocateExtCC2d.gxx
-+++ oce/src/Extrema/Extrema_GLocateExtCC2d.gxx
-@@ -37,13 +37,6 @@ Extrema_GLocateExtCC2d::Extrema_GLocateE
- 						const Standard_Real U0,
- 						const Standard_Real V0)
- {
--#ifdef DEB
--  GeomAbs_CurveType type1 = Tool1::GetType(C1);
--  GeomAbs_CurveType type2 = Tool2::GetType(C2);
--#else
--  Tool1::GetType(C1);
--  Tool2::GetType(C2);
--#endif
-   Standard_Real TolU = Tool1::Resolution(C1, Precision::Confusion());
-   Standard_Real TolV = Tool2::Resolution(C2, Precision::Confusion());
-   Extrema_POnCurv2d P1, P2;
-Index: oce/src/Extrema/Extrema_GLocateExtPC.gxx
-===================================================================
---- oce.orig/src/Extrema/Extrema_GLocateExtPC.gxx
-+++ oce/src/Extrema/Extrema_GLocateExtPC.gxx
-@@ -113,11 +113,6 @@ void Extrema_GLocateExtPC::Perform(const
- 				   const Standard_Real U0)
- {
-   Standard_Integer i, i1, i2, inter;
--#ifdef DEB
--  Standard_Real Tol = TheCurveTool::Resolution(*((TheCurve*)myC), Precision::Confusion());
--#else
--  TheCurveTool::Resolution(*((TheCurve*)myC), Precision::Confusion());
--#endif
-   Standard_Real Par, valU, valU2 = RealLast(),
-   local_u0 ;
-   Standard_Real myintuinf=0, myintusup=0;
-Index: oce/src/Extrema/Extrema_GenExtCC.gxx
-===================================================================
---- oce.orig/src/Extrema/Extrema_GenExtCC.gxx
-+++ oce/src/Extrema/Extrema_GenExtCC.gxx
-@@ -156,8 +156,6 @@ a- Constitution du tableau des distances
-   U0 = aCache1->TrimFirstParameter() + (U0/2.);
-   V0 = aCache2->TrimFirstParameter() + (V0/2.);
- 
--  const Curve1& aCurve1 = *((Curve1*)(myF.CurvePtr (1)));
--  const Curve2& aCurve2 = *((Curve1*)(myF.CurvePtr (2)));
-   const Handle(ArrayOfPnt)& aPntArray1 = aCache1->Points();
-   const Handle(ArrayOfPnt)& aPntArray2 = aCache2->Points();
-   Standard_Integer NoU, NoV;
-Index: oce/src/GCPnts/GCPnts_TangentialDeflection.gxx
-===================================================================
---- oce.orig/src/GCPnts/GCPnts_TangentialDeflection.gxx
-+++ oce/src/GCPnts/GCPnts_TangentialDeflection.gxx
-@@ -371,8 +371,6 @@ void GCPnts_TangentialDeflection::Perfor
-     TooSmall   = Standard_False;
-     Correction = Standard_True;
- 
--    Standard_Real lastCoef = 0;
--     
-     while (Correction) {                     //Ajustement Du
-       MiddleU = (U1+U2)*0.5;                 //Verif / au point milieu
-       D0 (C, MiddleU, MiddlePoint);
-@@ -417,7 +415,6 @@ void GCPnts_TangentialDeflection::Perfor
-           }
-           else {
-             TooSmall = Standard_True;
--            lastCoef = Coef;
-             //Standard_Real UUU2 = U2;
-             Du += Min((U2-U1)*(1.-Coef), Du*Us3);
- 
-Index: oce/src/GCPnts/GCPnts_UniformAbscissa.gxx
-===================================================================
---- oce.orig/src/GCPnts/GCPnts_UniformAbscissa.gxx
-+++ oce/src/GCPnts/GCPnts_UniformAbscissa.gxx
-@@ -188,7 +188,6 @@ PerformLengthParametrized( Handle(TColSt
- 
- 
-   if (Abscissa < 0.0e0)    {
--    Forward = Standard_False ;
-     UU2 = Min(U1, U2);
-     UU1 = Max(U1, U2);
-   }
-Index: oce/src/GProp/GProp_SGProps.gxx
-===================================================================
---- oce.orig/src/GProp/GProp_SGProps.gxx
-+++ oce/src/GProp/GProp_SGProps.gxx
-@@ -438,7 +438,7 @@ static void Compute(Face& S, Domain& D,
-    Standard_Integer NbCGaussgp_Pnts = 0;
- 
-    Standard_Real l1, l2, lm, lr, l;   //boundary curve parametrization
--   Standard_Real v1, v2, vm, vr, v;   //Face parametrization in v direction
-+   Standard_Real v1, v2, v;   //Face parametrization in v direction
-    Standard_Real u1, u2, um, ur, u;
-    Standard_Real ds;                  //Jacobien (x, y, z) -> (u, v) = ||n||
- 
-@@ -492,9 +492,7 @@ static void Compute(Face& S, Domain& D,
-       lr = 0.5 * (l2 - l1);
- 
-       Puv = S.Value2d (lm);
--      vm  = Puv.Y();
-       Puv = S.Value2d (lr);
--      vr  = Puv.Y();
- 
-       for (Standard_Integer i = 1; i <= NbCGaussgp_Pnts; i++) {
-         l = lm + lr * GaussCP (i);
-Index: oce/src/GccGeo/GccGeo_Circ2d2TanOn.gxx
-===================================================================
---- oce.orig/src/GccGeo/GccGeo_Circ2d2TanOn.gxx
-+++ oce/src/GccGeo/GccGeo_Circ2d2TanOn.gxx
-@@ -157,7 +157,6 @@ GccGeo_Circ2d2TanOn::
- 	    Standard_Real dist1 = Center.Distance(C1.Location());
- 	    Standard_Real dist2 = Center.Distance(C2.Location());
- 	    Standard_Integer nbsol = 0;
--	    Standard_Integer nsol = 0;
- 	    Standard_Integer nnsol = 0;
- 	    R1 = C1.Radius();
- 	    R2 = C2.Radius();
-@@ -184,22 +183,18 @@ GccGeo_Circ2d2TanOn::
- 	    }
- 	    if (Qualified2.IsEnclosed() && nbsol != 0) {
- 	      if (dist2-R2 < Tol) {
--		nsol = 1;
- 		RBid(1) = Abs(R2-dist2);
- 	      }
- 	    }
- 	    else if (Qualified2.IsOutside() && nbsol != 0) {
- 	      if (R2-dist2 < Tol) {
--		nsol = 1;
- 		RBid(1) = Abs(R2-dist2);
- 	      }
- 	    }
- 	    else if (Qualified2.IsEnclosing() && nbsol != 0) {
--	      nsol = 1;
- 	      RBid(1) = dist2+R2;
- 	    }
- 	    else if (Qualified2.IsUnqualified() && nbsol != 0) {
--	      nsol = 1;
- 	      RBid(1) = dist2+R2;
- 	      RBid(2) = Abs(R2-dist2);
- 	    }
-Index: oce/src/GccIter/GccIter_Circ2d2TanOn.gxx
-===================================================================
---- oce.orig/src/GccIter/GccIter_Circ2d2TanOn.gxx
-+++ oce/src/GccIter/GccIter_Circ2d2TanOn.gxx
-@@ -105,17 +105,11 @@ GccIter_Circ2d2TanOn::
-      Standard_Real dist2 = point3.Distance(point2);
-      if ( Abs(dist1-dist2)/2. <= Tol) {
-        cirsol = gp_Circ2d(gp_Ax2d(point3,dirx),(dist1+dist2)/2.);
--       Standard_Real normetan1 = Tan1.Magnitude();
-        Standard_Real normetan2 = Tan2.Magnitude();
-        gp_Vec2d Vec1(point1,point3);
-        gp_Vec2d Vec2(point2,point3);
--       Standard_Real normevec1 = Vec1.Magnitude();
-        Standard_Real normevec2 = Vec2.Magnitude();
--       Standard_Real angle1,angle2;
--       if (normevec1 >= gp::Resolution() && normetan1 >= gp::Resolution()) {
--	 angle1 = Vec1.Angle(Tan1);
--       }
--       else { angle1 = 0.; }
-+       Standard_Real angle2;
-        if (normevec2 >= gp::Resolution() && normetan2 >= gp::Resolution()) {
- 	 angle2 = Vec2.Angle(Tan2);
-        }
-@@ -405,17 +399,11 @@ GccIter_Circ2d2TanOn::
-      Standard_Real dist2 = point3.Distance(point2);
-      if ( Abs(dist1-dist2)/2. <= Tol) {
-        cirsol = gp_Circ2d(gp_Ax2d(point3,dirx),(dist1+dist2)/2.);
--       Standard_Real normetan1 = Tan1.Magnitude();
-        Standard_Real normetan2 = Tan2.Magnitude();
-        gp_Vec2d Vec1(point1,point3);
-        gp_Vec2d Vec2(point2,point3);
--       Standard_Real normevec1 = Vec1.Magnitude();
-        Standard_Real normevec2 = Vec2.Magnitude();
--       Standard_Real angle1,angle2;
--       if (normevec1 >= gp::Resolution() && normetan1 >= gp::Resolution()) {
--	 angle1 = Vec1.Angle(Tan1);
--       }
--       else { angle1 = 0.; }
-+       Standard_Real angle2;
-        if (normevec2 >= gp::Resolution() && normetan2 >= gp::Resolution()) {
- 	 angle2 = Vec2.Angle(Tan2);
-        }
-@@ -516,17 +504,11 @@ GccIter_Circ2d2TanOn::
-      Standard_Real dist2 = point3.Distance(point2);
-      if ( Abs(dist1-dist2)/2. <= Tol) {
-        cirsol = gp_Circ2d(gp_Ax2d(point3,dirx),(dist1+dist2)/2.);
--       Standard_Real normetan1 = Tan1.Magnitude();
-        Standard_Real normetan2 = Tan2.Magnitude();
-        gp_Vec2d Vec1(point1,point3);
-        gp_Vec2d Vec2(point2,point3);
--       Standard_Real normevec1 = Vec1.Magnitude();
-        Standard_Real normevec2 = Vec2.Magnitude();
--       Standard_Real angle1,angle2;
--       if (normevec1 >= gp::Resolution() && normetan1 >= gp::Resolution()) {
--	 angle1 = Vec1.Angle(Tan1);
--       }
--       else { angle1 = 0.; }
-+       Standard_Real angle2;
-        if (normevec2 >= gp::Resolution() && normetan2 >= gp::Resolution()) {
- 	 angle2 = Vec2.Angle(Tan2);
-        }
-@@ -626,17 +608,11 @@ GccIter_Circ2d2TanOn::
-      Standard_Real dist2 = point3.Distance(point2);
-      if ( Abs(dist1-dist2)/2. <= Tol) {
-        cirsol = gp_Circ2d(gp_Ax2d(point3,dirx),(dist1+dist2)/2.);
--       Standard_Real normetan1 = Tan1.Magnitude();
-        Standard_Real normetan2 = Tan2.Magnitude();
-        gp_Vec2d Vec1(point1,point3);
-        gp_Vec2d Vec2(point2,point3);
--       Standard_Real normevec1 = Vec1.Magnitude();
-        Standard_Real normevec2 = Vec2.Magnitude();
--       Standard_Real angle1,angle2;
--       if (normevec1 >= gp::Resolution() && normetan1 >= gp::Resolution()) {
--	 angle1 = Vec1.Angle(Tan1);
--       }
--       else { angle1 = 0.; }
-+       Standard_Real angle2;
-        if (normevec2 >= gp::Resolution() && normetan2 >= gp::Resolution()) {
- 	 angle2 = Vec2.Angle(Tan2);
-        }
-@@ -1031,17 +1007,11 @@ GccIter_Circ2d2TanOn::
-      if ( Abs(dist1-dist2)/2. <= Tol) {
-        gp_Dir2d dirx(1.,0.);
-        cirsol = gp_Circ2d(gp_Ax2d(point3,dirx),(dist1+dist2)/2.);
--       Standard_Real normetan1 = Tan1.Magnitude();
-        Standard_Real normetan2 = Tan2.Magnitude();
-        gp_Vec2d Vec1(point1.XY(),point3.XY());
-        gp_Vec2d Vec2(point2.XY(),point3.XY());
--       Standard_Real normevec1 = Vec1.Magnitude();
-        Standard_Real normevec2 = Vec2.Magnitude();
--       Standard_Real angle1,angle2;
--       if (normevec1 >= gp::Resolution() && normetan1 >= gp::Resolution()) {
--	 angle1 = Vec1.Angle(Tan1);
--       }
--       else { angle1 = 0.; }
-+       Standard_Real angle2;
-        if (normevec2 >= gp::Resolution() && normetan2 >= gp::Resolution()) {
- 	 angle2 = Vec2.Angle(Tan2);
-        }
-@@ -1137,17 +1107,11 @@ GccIter_Circ2d2TanOn::
-      Standard_Real dist2 = point3.Distance(point2);
-      if ( Abs(dist1-dist2)/2. <= Tol) {
-        cirsol = gp_Circ2d(gp_Ax2d(point3,dirx),(dist1+dist2)/2.);
--       Standard_Real normetan1 = Tan1.Magnitude();
-        Standard_Real normetan2 = Tan2.Magnitude();
-        gp_Vec2d Vec1(point1,point3);
-        gp_Vec2d Vec2(point2,point3);
--       Standard_Real normevec1 = Vec1.Magnitude();
-        Standard_Real normevec2 = Vec2.Magnitude();
--       Standard_Real angle1,angle2;
--       if (normevec1 >= gp::Resolution() && normetan1 >= gp::Resolution()) {
--	 angle1 = Vec1.Angle(Tan1);
--       }
--       else { angle1 = 0.; }
-+       Standard_Real angle2;
-        if (normevec2 >= gp::Resolution() && normetan2 >= gp::Resolution()) {
- 	 angle2 = Vec2.Angle(Tan2);
-        }
-Index: oce/src/Image/Image_GImage.gxx
-===================================================================
---- oce.orig/src/Image/Image_GImage.gxx
-+++ oce/src/Image/Image_GImage.gxx
-@@ -318,10 +318,9 @@ void Image_GImage::Rotate180()
- void Image_GImage::FlipHorizontal()
- 
- { anyPixel P ;
--  Standard_Integer x, y, HalfX, HalfY ;
-+  Standard_Integer x, y, HalfY ;
-   Standard_Integer UpX = UpperX() ;
- 
--  HalfX = Width()  / 2 ;
-   HalfY = Height() / 2 ;
- 
- 	for ( x = LowerX() ; x <= UpX ; x++ ){
-@@ -336,11 +335,10 @@ void Image_GImage::FlipHorizontal()
- void Image_GImage::FlipVertical()
- 
- { anyPixel P ;
--  Standard_Integer x, y, HalfX, HalfY ;
-+  Standard_Integer x, y, HalfX ;
-   Standard_Integer UpY = UpperY() ;
- 
-   HalfX = Width()  / 2 ;
--  HalfY = Height() / 2 ;
- 
- 	for ( y = LowerY() ; y <= UpY ; y++ ){
-           for ( x = 0 ; x < HalfX ; x++ ) {
-Index: oce/src/IntCurve/IntCurve_IntPolyPolyGen.gxx
-===================================================================
---- oce.orig/src/IntCurve/IntCurve_IntPolyPolyGen.gxx
-+++ oce/src/IntCurve/IntCurve_IntPolyPolyGen.gxx
-@@ -272,13 +272,6 @@ void IntCurve_IntPolyPolyGen::Perform( c
-   Standard_Real Tl=(TheTol < TOL_MINI)? TOL_MINI : TheTol;
-   Standard_Real TlConf=(TheTolConf < TOL_CONF_MINI)? TOL_CONF_MINI : TheTolConf;
-   Perform(C1,D1,TlConf,Tl,0,DU,DU);
--  //----------------------------------------------------------------------
--  //-- Traitement des points en bouts 
--  //----------------------------------------------------------------------
--  Standard_Boolean HeadOn1 = Standard_False;
--  Standard_Boolean HeadOn2 = Standard_False;
--  Standard_Boolean EndOn1  = Standard_False;
--  Standard_Boolean EndOn2  = Standard_False;
-   Standard_Integer i;
-   Standard_Integer n=this->NbPoints();
- 
-@@ -299,12 +292,7 @@ void IntCurve_IntPolyPolyGen::Perform( c
- 
-   for(i=1;i<=n;i++) { 
-     IntRes2d_Position Pos1 = this->Point(i).TransitionOfFirst().PositionOnCurve();
--    if(Pos1 == IntRes2d_Head) HeadOn1 = Standard_True;
--    else if(Pos1 == IntRes2d_End) EndOn1 = Standard_True;
--
-     IntRes2d_Position Pos2 =  this->Point(i).TransitionOfSecond().PositionOnCurve();
--    if(Pos2 == IntRes2d_Head) HeadOn2 = Standard_True;
--    else if(Pos2 == IntRes2d_End) EndOn2 = Standard_True;
- 
-     if(Pos1 == IntRes2d_Head) { 
-       if(Pos2 == IntRes2d_Head)     PosSegment|=1;
-@@ -319,12 +307,7 @@ void IntCurve_IntPolyPolyGen::Perform( c
-   n=this->NbSegments();
-   for(i=1;i<=n;i++) { 
-     IntRes2d_Position Pos1 = this->Segment(i).FirstPoint().TransitionOfFirst().PositionOnCurve();
--    if(Pos1 == IntRes2d_Head)     HeadOn1 = Standard_True;
--    else if(Pos1 == IntRes2d_End) EndOn1  = Standard_True;
--    
-     IntRes2d_Position Pos2 =  this->Segment(i).FirstPoint().TransitionOfSecond().PositionOnCurve();
--    if(Pos2 == IntRes2d_Head)      HeadOn2 = Standard_True;
--    else if(Pos2 == IntRes2d_End)  EndOn2  = Standard_True;
- 
-     if(Pos1 == IntRes2d_Head) { 
-       if(Pos2 == IntRes2d_Head)     PosSegment|=1;
-@@ -336,12 +319,7 @@ void IntCurve_IntPolyPolyGen::Perform( c
-     }
- 
-     Pos1 = this->Segment(i).LastPoint().TransitionOfFirst().PositionOnCurve();
--    if(Pos1 == IntRes2d_Head)     HeadOn1 = Standard_True;
--    else if(Pos1 == IntRes2d_End) EndOn1  = Standard_True;
--    
-     Pos2 =  this->Segment(i).LastPoint().TransitionOfSecond().PositionOnCurve();
--    if(Pos2 == IntRes2d_Head)     HeadOn2 = Standard_True;
--    else if(Pos2 == IntRes2d_End) EndOn2  = Standard_True;
- 
-     if(Pos1 == IntRes2d_Head) { 
-       if(Pos2 == IntRes2d_Head)     PosSegment|=1;
-Index: oce/src/IntCurve/IntCurve_Polygon2dGen.gxx
-===================================================================
---- oce.orig/src/IntCurve/IntCurve_Polygon2dGen.gxx
-+++ oce/src/IntCurve/IntCurve_Polygon2dGen.gxx
-@@ -325,17 +325,9 @@ void IntCurve_Polygon2dGen::ComputeWithB
- 		Standard_Real u1m = 0.5*(u+TheParams.Value(TheIndex.Value(i-1)));
- 		Standard_Real um2 = 0.5*(u+TheParams.Value(TheIndex.Value(i+1)));
- 		gp_Pnt2d P1m = TheCurveTool::Value(C,u1m);
--#ifdef DEB
--		gp_Pnt2d Pm2 = TheCurveTool::Value(C,um2);
--#else
--                TheCurveTool::Value(C,um2);
--#endif
-+        TheCurveTool::Value(C,um2);
- 		gp_Lin2d L1m(P1,gp_Dir2d(gp_Vec2d(P1,Pm)));
--#ifdef DEB
--		gp_Lin2d Lm2(Pm,gp_Dir2d(gp_Vec2d(Pm,ThePnts.Value(TheIndex.Value(i+1)))));
--#else
--                ThePnts.Value(TheIndex.Value(i+1));
--#endif
-+        ThePnts.Value(TheIndex.Value(i+1));
- 		t = L1m.Distance(P1m);
- 		i--; 
- 	      }
-Index: oce/src/IntImpParGen/IntImpParGen_Intersector.gxx
-===================================================================
---- oce.orig/src/IntImpParGen/IntImpParGen_Intersector.gxx
-+++ oce/src/IntImpParGen/IntImpParGen_Intersector.gxx
-@@ -65,7 +65,6 @@ void IntImpParGen_Intersector::And_Domai
-   NbResultats=0;
-   
-   for(Standard_Integer i=1; i<=Nb_Bornes_Intersection; i+=2) {
--    Standard_Boolean reverse=Standard_False;
-     
-     Standard_Real param1=Inter1.Value(i);
-     Standard_Real param2=Inter1.Value(i+1);
-@@ -77,7 +76,6 @@ void IntImpParGen_Intersector::And_Domai
-       Standard_Real t=param1; param1=param2; param2=t;
-       indice_1=i+1;
-       indice_2=i;
--      reverse=Standard_True;
-     }
- 
-     gp_Pnt2d Pt1=TheImpTool.Value(param1);
-@@ -85,10 +83,8 @@ void IntImpParGen_Intersector::And_Domai
-     gp_Pnt2d Pt;
- 
-     Standard_Boolean IsOnTheImpCurveDomain1=Standard_True;
--    Standard_Boolean IsOnABoundary1=Standard_False;
- 
-     Standard_Boolean IsOnTheImpCurveDomain2=Standard_True;
--    Standard_Boolean IsOnABoundary2=Standard_False;
-     //--------------------------------------------------------------------
-     if(TheImpCurveDomain.HasFirstPoint()) { 
-       if(param1<TheImpCurveDomain.FirstParameter()) {             
-@@ -96,7 +92,6 @@ void IntImpParGen_Intersector::And_Domai
- 	   > TheImpCurveDomain.FirstTolerance()) {
- 	  IsOnTheImpCurveDomain1=Standard_False; 
- 	}
--	else { 	  IsOnABoundary1=Standard_True; 	}
-       }
-     }
-     if(IsOnTheImpCurveDomain1 && TheImpCurveDomain.HasLastPoint()) {
-@@ -105,7 +100,6 @@ void IntImpParGen_Intersector::And_Domai
- 	   > TheImpCurveDomain.FirstTolerance()) {
- 	  IsOnTheImpCurveDomain1=Standard_False; 
- 	}
--	else {	  IsOnABoundary1=Standard_True; 	}
-       }
-     }
-     //--------------------------------------------------------------------
-@@ -115,7 +109,6 @@ void IntImpParGen_Intersector::And_Domai
- 	   > TheImpCurveDomain.FirstTolerance()) {
- 	  IsOnTheImpCurveDomain2=Standard_False; 
- 	}
--	else { 	  IsOnABoundary2=Standard_True; 	}
-       }
-     }
-     if(IsOnTheImpCurveDomain2 && TheImpCurveDomain.HasLastPoint()) {
-@@ -124,7 +117,6 @@ void IntImpParGen_Intersector::And_Domai
- 	   > TheImpCurveDomain.FirstTolerance()) {
- 	  IsOnTheImpCurveDomain2=Standard_False; 
- 	}
--	else {	  IsOnABoundary2=Standard_True; 	}
-       }
-     }
- 
-Index: oce/src/IntPatch/IntPatch_ImpImpIntersection_2.gxx
-===================================================================
---- oce.orig/src/IntPatch/IntPatch_ImpImpIntersection_2.gxx
-+++ oce/src/IntPatch/IntPatch_ImpImpIntersection_2.gxx
-@@ -555,10 +555,8 @@ void IntPatch_ImpImpIntersection::Perfor
-     gp_Pnt P;
-     IntPatch_Point point;
-     Standard_Real u1,v1,u2,v2; 
--    Standard_Integer nbv;
-     if(slin.Value(i)->ArcType() == IntPatch_Circle) { 
-       const Handle(IntPatch_GLine)& glin = *((Handle(IntPatch_GLine)*)&slin.Value(i));
--      nbv = glin->NbVertex();
-       if(glin->NbVertex() == 0) { 
- 	gp_Circ Circ = glin->Circle();
- 	P=ElCLib::Value(0.0,Circ);
-@@ -581,7 +579,6 @@ void IntPatch_ImpImpIntersection::Perfor
-     
-     else if(slin.Value(i)->ArcType() == IntPatch_Ellipse) { 
-       const Handle(IntPatch_GLine)& glin = *((Handle(IntPatch_GLine)*)&slin.Value(i));
--      nbv = glin->NbVertex();
-       if(glin->NbVertex() == 0) { 
- 	gp_Elips Elips = glin->Ellipse();
- 	P=ElCLib::Value(0.0,Elips);
-Index: oce/src/IntPatch/IntPatch_ImpImpIntersection_4.gxx
-===================================================================
---- oce.orig/src/IntPatch/IntPatch_ImpImpIntersection_4.gxx
-+++ oce/src/IntPatch/IntPatch_ImpImpIntersection_4.gxx
-@@ -911,7 +911,6 @@ Standard_Boolean IntCyCo(const IntSurf_Q
-       IntAna_Curve aC;
-       IntAna_ListOfCurve aLC;
-       IntAna_ListIteratorOfListOfCurve aIt;
--      Standard_Boolean bToSplit;
-       
-       //
-       NbSol = anaint.NbCurve();
-@@ -920,7 +919,7 @@ Standard_Boolean IntCyCo(const IntSurf_Q
- 	//curvsol = anaint.Curve(i);
- 	aC=anaint.Curve(i);
- 	aLC.Clear();
--	bToSplit=ExploreCurve(Cy, Co, aC, 10.*Tol, aLC);
-+	ExploreCurve(Cy, Co, aC, 10.*Tol, aLC);
- 	//
- 	aIt.Initialize(aLC);
- 	for (; aIt.More(); aIt.Next()) {
-Index: oce/src/IntPatch/IntPatch_ImpImpIntersection_5.gxx
-===================================================================
---- oce.orig/src/IntPatch/IntPatch_ImpImpIntersection_5.gxx
-+++ oce/src/IntPatch/IntPatch_ImpImpIntersection_5.gxx
-@@ -208,7 +207,6 @@ Standard_Boolean IntCoCo(const IntSurf_Q
- 
-   case IntAna_Circle:
-     {
--      Standard_Real para;
-       IntPatch_Point aPtsol;
-       gp_Vec Tgt;
-       gp_Pnt ptref;
-@@ -234,7 +232,7 @@ Standard_Boolean IntCoCo(const IntSurf_Q
- 	  Quad2.Parameters(aPChar, U2, V2);
- 	  aPtsol.SetValue(aPChar, Tol, Standard_False);
- 	  aPtsol.SetParameters(U1, V1, U2, V2);
--	  para = ElCLib::Parameter(cirsol, aPChar);
-+	  ElCLib::Parameter(cirsol, aPChar);
- 	  aPtsol.SetParameter(0.);
- 	  glig->AddVertex(aPtsol);
- 	}
-@@ -246,7 +244,6 @@ Standard_Boolean IntCoCo(const IntSurf_Q
- 
-   case IntAna_Ellipse:
-     {
--      Standard_Real para;
-       IntPatch_Point aPtsol;
-       gp_Elips elipsol = inter.Ellipse(1);
-       
-@@ -273,7 +270,7 @@ Standard_Boolean IntCoCo(const IntSurf_Q
- 	Quad2.Parameters(aPChar, U2, V2);
- 	aPtsol.SetValue(aPChar, Tol, Standard_False);
- 	aPtsol.SetParameters(U1, V1, U2, V2);
--	para = ElCLib::Parameter(elipsol, aPChar);
-+	ElCLib::Parameter(elipsol, aPChar);
- 	aPtsol.SetParameter(0.);
- 	glig->AddVertex(aPtsol);
-       }
-@@ -285,7 +282,6 @@ Standard_Boolean IntCoCo(const IntSurf_Q
- 
-   case IntAna_Hyperbola:
-     {
--      Standard_Real para;
-       IntPatch_Point aPtsol;
-       gp_Vec Tgt;
-       gp_Pnt ptref;
-@@ -311,7 +307,7 @@ Standard_Boolean IntCoCo(const IntSurf_Q
- 	  Quad2.Parameters(aPChar, U2, V2);
- 	  aPtsol.SetValue(aPChar, Tol, Standard_False);
- 	  aPtsol.SetParameters(U1, V1, U2, V2);
--	  para = ElCLib::Parameter(hyprsol, aPChar);
-+	  ElCLib::Parameter(hyprsol, aPChar);
- 	  aPtsol.SetParameter(0.);
- 	  glig->AddVertex(aPtsol);
- 	}
-@@ -322,7 +318,6 @@ Standard_Boolean IntCoCo(const IntSurf_Q
-     
-   case IntAna_Parabola:
-     {
--      Standard_Real para;
-       IntPatch_Point aPtsol;
-       gp_Parab parabsol = inter.Parabola(1);
-       
-@@ -348,7 +343,7 @@ Standard_Boolean IntCoCo(const IntSurf_Q
- 	Quad2.Parameters(aPChar, U2, V2);
- 	aPtsol.SetValue(aPChar, Tol, Standard_False);
- 	aPtsol.SetParameters(U1, V1, U2, V2);
--	para = ElCLib::Parameter(parabsol, aPChar);
-+	ElCLib::Parameter(parabsol, aPChar);
- 	aPtsol.SetParameter(0.);
- 	glig->AddVertex(aPtsol);
-       }
-@@ -568,13 +563,6 @@ Standard_Boolean IntCoSp(const IntSurf_Q
-     {
-       gp_Vec Tgt;
-       gp_Pnt ptref;
--#ifndef DEB
--      Co.Apex();
--#else
--      gp_Pnt apex(Co.Apex());
--      //Standard_Real param;
--      Standard_Real paramapex   =  ElCLib::LineParameter(Co.Axis(),apex);
--#endif
- 
-       for (i=1; i<=NbSol; i++) {
- 	gp_Circ cirsol = inter.Circle(i);
-@@ -669,11 +657,6 @@ Standard_Boolean IntCoSp(const IntSurf_Q
- 
- 	gp_Pnt ptvalid, ptf, ptl;
- 	gp_Vec tgvalid;
--#ifdef DEB
--	Standard_Real paramapex   = 
--#endif
--	  ElCLib::LineParameter(Co.Axis(),
--				Co.Apex());
- 	Standard_Real first,last,para;
- 	Standard_Boolean tgfound,firstp,lastp,kept;
- 	Standard_Integer kount;
-Index: oce/src/IntWalk/IntWalk_PWalking_1.gxx
-===================================================================
---- oce.orig/src/IntWalk/IntWalk_PWalking_1.gxx
-+++ oce/src/IntWalk/IntWalk_PWalking_1.gxx
-@@ -375,11 +375,9 @@ Standard_Boolean IntWalk_PWalking::Perfo
-   close = Standard_False;
-   //
-   Standard_Integer i;
--  Standard_Real aTmp;
-   TColStd_Array1OfReal Param(1,4);
-   //
-   for (i=1; i<=4; ++i) {
--    aTmp = ParDep(i);
-     Param(i) = ParDep(i);
-   }
-   //-- calcul du premier point solution
-@@ -468,13 +466,12 @@ void IntWalk_PWalking::Perform(const TCo
-   line = new IntSurf_LineOn2S ();
-   //
-   for (i=1; i<=4; ++i) {
--    aTmp=ParDep(i);
-     Param(i)=ParDep(i);
-   }
-   //-- reprise des pas uv lies aux surfaces Caro1 et Caro2
-   //-- pasuv[] et pasSav[] sont modifies lors du cheminement
-   for(i = 0; i < 4; ++i) { 
--    pasMaxSV[i] = pasSav[i] = pasuv[i] = pasInit[i]; 
-+    pasSav[i] = pasuv[i] = pasInit[i]; 
-   }
- 
-   //-- calcul du premier point solution
-Index: oce/src/Intf/Intf_InterferencePolygonPolyhedron.gxx
-===================================================================
---- oce.orig/src/Intf/Intf_InterferencePolygonPolyhedron.gxx
-+++ oce/src/Intf/Intf_InterferencePolygonPolyhedron.gxx
-@@ -784,7 +784,6 @@ void Intf_InterferencePolygonPolyhedron:
-   gp_XYZ segO=EndO.XYZ()-BegO.XYZ();
-   segO.Normalize();
-   Standard_Boolean NoIntersectionWithTriangle = Standard_False;
--  Standard_Boolean PolygonCutsPlane           = Standard_True;
- 
-   Standard_Real param;
-   t = dBegTri-dEndTri;
-@@ -804,7 +803,6 @@ void Intf_InterferencePolygonPolyhedron:
-       NoIntersectionWithTriangle = Standard_False;
-     }
-     if (param<0. || param>1.) {
--      PolygonCutsPlane = Standard_False;
-       NoIntersectionWithTriangle = Standard_True;
-     }
-   }
-@@ -1081,7 +1079,6 @@ void Intf_InterferencePolygonPolyhedron:
-       NoIntersectionWithTriangle = Standard_False;
-     }
-     if (param<0. || param>1.) {
--      PolygonCutsPlane = Standard_False;
-       NoIntersectionWithTriangle = Standard_True;
-     }
-   }
-Index: oce/src/Intf/Intf_InterferencePolyhedron.gxx
-===================================================================
---- oce.orig/src/Intf/Intf_InterferencePolyhedron.gxx
-+++ oce/src/Intf/Intf_InterferencePolyhedron.gxx
-@@ -748,8 +748,6 @@ Standard_Boolean Intf_InterferencePolyhe
-     tOP[nou]= Intf_EXTERNAL;
-     tTP[nou]= Intf_EXTERNAL;
-   }
--  Standard_Integer iOP[4];
--  Standard_Integer iTP[4];
- 
-   Standard_Integer nbpInt=0;
-   Intf_SeqOfSectionPoint Tpi;
-@@ -764,8 +762,8 @@ Standard_Boolean Intf_InterferencePolyhe
- 				     Intf_VERTEX, OI[nob], 0, 0., 
- 				     Intf_VERTEX, TI[nou], 0, 0.,
- 				     1.));
--	tOP[nob]=Intf_VERTEX; iOP[nob]=nbpInt;
--	tTP[nou]=Intf_VERTEX; iTP[nou]=nbpInt;
-+	tOP[nob]=Intf_VERTEX;
-+	tTP[nou]=Intf_VERTEX;
- 	nbpInt++;
- 	break;
-       }
-@@ -778,7 +776,7 @@ Standard_Boolean Intf_InterferencePolyhe
- 					Intf_EDGE, Min(TI[nou], TI[nou2]),
- 					Max(TI[nou], TI[nou2]), par,
- 					1.));
--	  tOP[nob]=Intf_EDGE; iOP[nob]=nbpInt;
-+	  tOP[nob]=Intf_EDGE;
- 	  nbpInt++;
- 	  break;
- 	}
-@@ -793,7 +791,7 @@ Standard_Boolean Intf_InterferencePolyhe
- 				     Intf_VERTEX, OI[nob],  0, 0., 
- 				     Intf_FACE,   Tri2, 0, 0.,
- 				     1.));
--	tOP[nob]=Intf_FACE; iOP[nob]=nbpInt;
-+	tOP[nob]=Intf_FACE;
- 	nbpInt++;
-       }
-     }
-@@ -816,7 +814,7 @@ Standard_Boolean Intf_InterferencePolyhe
- 					   Intf_EDGE, Min(OI[nob], OI[nob2]),
- 					   Max(OI[nob], OI[nob2]), par, 
- 					   Intf_VERTEX, TI[nou], 0, 0., 1.));
--	      tTP[nou]=Intf_EDGE;iTP[nou]=nbpInt;
-+	      tTP[nou]=Intf_EDGE;
- 	      nbpInt++;
- 	      break;
- 	    }
-@@ -831,7 +829,7 @@ Standard_Boolean Intf_InterferencePolyhe
- 					 Intf_FACE,   Tri1, 0, 0.,
- 					 Intf_VERTEX, TI[nou], 0, 0., 
- 					 1.));
--	    tTP[nou]=Intf_FACE; iTP[nou]=nbpInt;
-+	    tTP[nou]=Intf_FACE;
- 	    nbpInt++;
- 	  }
- 	}
-Index: oce/src/Primitives/Primitives_Wedge.gxx
-===================================================================
---- oce.orig/src/Primitives/Primitives_Wedge.gxx
-+++ oce/src/Primitives/Primitives_Wedge.gxx
-@@ -684,26 +684,19 @@ gp_Lin Primitives_Wedge::Line
-   gp_Vec VX = myAxes.XDirection();
-   gp_Vec VY = myAxes.YDirection();
-   gp_Vec VZ = myAxes.Direction();
--  Primitives_Direction dd1,dd2;
-   
-   switch (i/4) {
-     
-   case 0 :
-     D = myAxes.Direction();
--    dd1 = Primitives_ZMin;
--    dd2 = Primitives_ZMax;
-     break;
-     
-   case 1 :
-     D = myAxes.XDirection();
--    dd1 = Primitives_XMin;
--    dd2 = Primitives_XMax;
-     break;
-     
-   case 2 :
-     D = myAxes.YDirection();
--    dd1 = Primitives_YMin;
--    dd2 = Primitives_YMax;
-     break;
-     
-   };
-Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_SplitEdge.hxx
-===================================================================
---- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_SplitEdge.hxx
-+++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_SplitEdge.hxx
-@@ -52,26 +52,6 @@ void TopOpeBRepBuild_Builder::SplitEdge1
- {
-   // work on a FORWARD edge <Eforward>
- 
--#ifdef DEB
--  TopAbs_Orientation Eori =
--#endif
--                            Eoriented.Orientation();
--#ifdef DEB
--  Standard_Integer io = 0;
--  if      ( Eori == TopAbs_FORWARD  ) {
--    io = 1;
--  }
--  else if ( Eori == TopAbs_REVERSED ) {
--    io = 2;
--  }
--  else if ( Eori == TopAbs_INTERNAL ) {
--    io = 3;
--  }
--  else if ( Eori == TopAbs_EXTERNAL ) {
--    io = 4;
--  }
--#endif
--
-   TopoDS_Shape Eforward = Eoriented; 
-   Eforward.Orientation(TopAbs_FORWARD);
- 
-@@ -88,8 +68,8 @@ void TopOpeBRepBuild_Builder::SplitEdge1
-   
-   if ( ! tosplit ) return;
- 
--  Standard_Boolean RevOri1 = Reverse(ToBuild1,ToBuild2);
--  Standard_Boolean RevOri2 = Reverse(ToBuild2,ToBuild1);
-+  Reverse(ToBuild1,ToBuild2);
-+  Reverse(ToBuild2,ToBuild1);
-   Standard_Boolean ConnectTo1 = Standard_True;
-   Standard_Boolean ConnectTo2 = Standard_False;
-   
-@@ -97,8 +77,6 @@ void TopOpeBRepBuild_Builder::SplitEdge1
-   TopTools_ListOfShape LE1,LE2;
-   LE1.Append(Eforward);
-   FindSameDomain(LE1,LE2);
--  Standard_Integer n1 = LE1.Extent();
--  Standard_Integer n2 = LE2.Extent();
- 
- #ifdef DEB
-   if(tSPS){GdumpSAMDOM(LE1, (char *) "1 : ");}
-@@ -111,8 +89,6 @@ void TopOpeBRepBuild_Builder::SplitEdge1
-   
-   // SplitEdge on a edge having other same domained edges on the
-   // other shape : do not reverse orientation of edges in FillEdge
--  if (!n2) RevOri1 = Standard_False;
--  if (!n1) RevOri2 = Standard_False;
-     
-   // Make a PaveSet <PVS> on edge <Eforward>
-   TopOpeBRepBuild_PaveSet PVS(Eforward);
-Index: oce/src/Transfer/Transfer_TransferProcess.gxx
-===================================================================
---- oce.orig/src/Transfer/Transfer_TransferProcess.gxx
-+++ oce/src/Transfer/Transfer_TransferProcess.gxx
-@@ -1253,7 +1253,7 @@ void Transfer_TransferProcess::StartTrac
- 
-   if (!binder.IsNull()) {   // old: if IsNull sout <<endl<< "  ---  Not Bound";
-     Handle(Transfer_Binder) bnd = binder;
--    Standard_Boolean hasres = Standard_False, isused = Standard_False;
-+    Standard_Boolean hasres = Standard_False;
-     while (!bnd.IsNull()) {
-       if (bnd->Status() != Transfer_StatusVoid) {
- // ---  Result Type: binder->ResultType()  ---  Binder : binder->DynamicType();
-@@ -1267,7 +1267,6 @@ void Transfer_TransferProcess::StartTrac
-           Msg2075.AddString(bnd->ResultTypeName());
-           Msg2075.TraceEver();  */
- 	hasres = Standard_True;
--	if (bnd->Status() == Transfer_StatusUsed) isused = Standard_True;
-       }
-       bnd = bnd->NextResult();
-     }
-Index: oce/src/AIS/AIS_AngleDimension.cxx
-===================================================================
---- oce.orig/src/AIS/AIS_AngleDimension.cxx
-+++ oce/src/AIS/AIS_AngleDimension.cxx
-@@ -932,7 +932,6 @@ void AIS_AngleDimension::ComputeTwoEdges
-   else d2 = l2->Lin().Direction();
-   if (!isInfinite1) {
-     Standard_Boolean In1(Standard_False);
--    Standard_Boolean In2(Standard_False);
-     if ( !(Abs(d1.Angle(d2) - Abs(myVal)) <= Precision::Confusion())
- 	 &&  (Abs(myVal) <  M_PI) ) {
-       Standard_Real parcent1 = ElCLib::Parameter(l1->Lin(), myCenter);
-@@ -951,7 +950,6 @@ void AIS_AngleDimension::ComputeTwoEdges
-       }
-       }
-       if ( !In1) {
--	In2 = Standard_True;
- 	d2.Reverse();
-       }
-     }
-@@ -1270,11 +1268,6 @@ void AIS_AngleDimension::ComputeTwoEdges
-       tabdist(3) = tabdist(4) = 0.;
-     }
-     if ( SameLines ) {
--      Standard_Real dist1(RealLast());
--      if (!isInfinite1) dist1 = Max(tabdist(1),tabdist(2));
--      Standard_Real dist2(RealLast());
--      if (!isInfinite2) dist2 = Max(tabdist(3),tabdist(4));      
--      
-       myFAttach = myCenter;
-       mySAttach = myCenter;
-       P1 = myFAttach;
-@@ -1956,9 +1949,6 @@ void AIS_AngleDimension::ComputeConeAngl
-  
-   Standard_Boolean IsArrowOut = Standard_True;    //Is arrows inside or outside of the cone
-   //Standard_Real PntOnMainAxis = 0;   //Is projection of aPosition inside of the cone = 0, above = 1, or below = -1
--  Standard_Boolean IsConeTrimmed = Standard_False; 
--
--  if( CircVmin.Radius() > 0.01 ) IsConeTrimmed = Standard_True;
- 
-   gp_Pnt AttachmentPnt;
-   gp_Pnt OppositePnt;
-Index: oce/src/AIS/AIS_DiameterDimension.cxx
-===================================================================
---- oce.orig/src/AIS/AIS_DiameterDimension.cxx
-+++ oce/src/AIS/AIS_DiameterDimension.cxx
-@@ -198,13 +198,11 @@ void AIS_DiameterDimension::ComputeSelec
-     
-     Standard_Real dist    = center.Distance(AttachmentPoint);
-     Standard_Real aRadius = myCircle.Radius();
--    Standard_Real inside  = Standard_False;
-     
-     gp_Pnt pt1 = AttachmentPoint;
-     if (dist < aRadius) {
-       pt1 = ptoncirc;
-       dist = aRadius;
--      inside = Standard_True;
-     }
-     vecrap.Normalize();
-     vecrap *= (dist+aRadius);
-Index: oce/src/AIS/AIS_EqualDistanceRelation.cxx
-===================================================================
---- oce.orig/src/AIS/AIS_EqualDistanceRelation.cxx
-+++ oce/src/AIS/AIS_EqualDistanceRelation.cxx
-@@ -618,8 +618,6 @@ void AIS_EqualDistanceRelation::ComputeT
-   AIS::ComputeGeometry( FirstVertex, FirstAttach, Plane, isOnPlane1);
-   AIS::ComputeGeometry( SecondVertex, SecondAttach, Plane, isOnPlane2);
- 
--  //Computation of Val
--  Standard_Real Val = FirstAttach.Distance( SecondAttach );
-   Standard_Real confusion(Precision::Confusion());
-   Standard_Boolean samePoint(FirstAttach.IsEqual(SecondAttach,confusion));
- 
-@@ -633,9 +631,6 @@ void AIS_EqualDistanceRelation::ComputeT
-   }
-   
-   // size
--  Standard_Real arrsize = ArrowSize;
--  if (Abs(Val) <= confusion) arrsize =0.;
--
-   if (AutomaticPos) {
-    if (!samePoint) {
-      gp_Pnt curpos((FirstAttach.XYZ()+SecondAttach.XYZ())*0.5);
-Index: oce/src/AIS/AIS_InteractiveContext.cxx
-===================================================================
---- oce.orig/src/AIS/AIS_InteractiveContext.cxx
-+++ oce/src/AIS/AIS_InteractiveContext.cxx
-@@ -963,11 +963,11 @@ void AIS_InteractiveContext::Remove(cons
-   }
-   else
-     {
--      Standard_Boolean  WasInCtx = myLocalContexts(myCurLocalIndex)->Remove(anIObj);
-+      myLocalContexts(myCurLocalIndex)->Remove(anIObj);
-       AIS_DataMapIteratorOfDataMapOfILC It(myLocalContexts);
-       for (;It.More() ;It.Next()){
-         if(It.Value()->AcceptErase())
--          WasInCtx = It.Value()->Remove(anIObj);
-+          It.Value()->Remove(anIObj);
-         
-       }
-       //      if(!WasInCtx)
-Index: oce/src/AIS/AIS_LocalContext.cxx
-===================================================================
---- oce.orig/src/AIS/AIS_LocalContext.cxx
-+++ oce/src/AIS/AIS_LocalContext.cxx
-@@ -449,7 +449,6 @@ Standard_Boolean AIS_LocalContext::Remov
-   const Handle(AIS_LocalStatus)& Att = myActiveObjects(aSelectable);
-   
-   TColStd_ListIteratorOfListOfInteger It;
--  Standard_Boolean jobdone(Standard_False);
-   // it is checked which were the temporary attributes 
-   // and they are set to 0
- 
-@@ -472,7 +471,6 @@ Standard_Boolean AIS_LocalContext::Remov
-       if(myMainPM->IsDisplayed(aSelectable,Att->HilightMode()))
- 	myMainPM->Erase(aSelectable,Att->HilightMode());
-       //	myMainPM->Clear(aSelectable,Att->HilightMode());
--      jobdone = Standard_True;
-     }
-   // if below intensity
-   else
-Index: oce/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
-===================================================================
---- oce.orig/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
-+++ oce/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
-@@ -456,7 +456,6 @@ static void Locate2Coord(const Standard_
- {
-   Standard_Real Tol=Precision::PConfusion()/10;
-   Standard_Real Comp1=0,DComp1=0;
--  Standard_Boolean DIsNull = Standard_False;
-   if(Index==1)   {   Comp1=UV.X();
- 		     DComp1=DUV.X();} 
-   else
-@@ -483,10 +482,9 @@ static void Locate2Coord(const Standard_
- 		 if(Index==2) { LeftBot.SetY(I1);
- 				RightTop.SetY(I2);}
- 	       }
--	   DIsNull=Standard_False;
- 	 }
-     else 
--      if(Abs(DComp1)<=Tol) {  DIsNull = Standard_True;
-+      if(Abs(DComp1)<=Tol) {
- 			      if(Index==1) { LeftBot.SetX(I1) ;
- 					     RightTop.SetX(I2);}
- 			      if(Index==2) { LeftBot.SetY(I1) ;
-Index: oce/src/AdvApp2Var/AdvApp2Var_ApproxAFunc2Var.cxx
-===================================================================
---- oce.orig/src/AdvApp2Var/AdvApp2Var_ApproxAFunc2Var.cxx
-+++ oce/src/AdvApp2Var/AdvApp2Var_ApproxAFunc2Var.cxx
-@@ -439,7 +439,7 @@ void AdvApp2Var_ApproxAFunc2Var::Compute
- 					 const AdvApp2Var_EvaluatorFunc2Var& Func,
- 					 const AdvApp2Var_Criterion& Crit)
- {
--  Standard_Real Udec, Vdec, CritValue, m0=0., m1=0.;
-+  Standard_Real Udec, Vdec, CritValue, m1=0.;
-   Standard_Boolean Umore, Vmore, CritAbs = (Crit.Type() == AdvApp2Var_Absolute);
-   Standard_Integer NbPatch, NbU, NbV, NbInt, NumDec;
-   Standard_Integer FirstNA, decision=0;
-@@ -449,7 +449,6 @@ void AdvApp2Var_ApproxAFunc2Var::Compute
- // complete the set of constraints 
-     ComputeConstraints(UChoice, VChoice, Func, Crit);
-     if (decision>0) {
--      m0 = m1;
-       m1 = 0.;
-     }
- 
-Index: oce/src/AdvApp2Var/AdvApp2Var_ApproxF2var.cxx
-===================================================================
---- oce.orig/src/AdvApp2Var/AdvApp2Var_ApproxF2var.cxx
-+++ oce/src/AdvApp2Var/AdvApp2Var_ApproxF2var.cxx
-@@ -1393,7 +1393,6 @@ int mma1jak_(integer *ndimen,
-     crvjac_dim1 = *ndgjac + 1;
-     crvjac_offset = crvjac_dim1;
-     crvjac -= crvjac_offset;
--    cgauss_dim1 = *nbroot / 2 + 1;
- 
-     /* Function Body */
-     ibb = AdvApp2Var_SysBase::mnfndeb_();
-Index: oce/src/AdvApp2Var/AdvApp2Var_MathBase.cxx
-===================================================================
---- oce.orig/src/AdvApp2Var/AdvApp2Var_MathBase.cxx
-+++ oce/src/AdvApp2Var/AdvApp2Var_MathBase.cxx
-@@ -7100,8 +7100,6 @@ int mmpojac_(doublereal *tparam,
-   
-     /* Initialized data */
- 
--    static integer nbcof = -1;
--
-     /* System generated locals */
-     integer valjac_dim1, i__1, i__2;
- 
-@@ -7213,8 +7211,6 @@ int mmpojac_(doublereal *tparam,
- 		c__2, &i__2));
-     }
- 
--    nbcof = *ncoeff;
--
- /*      END IF */
- 
- /*  --- Trivial Positions ----- */
-@@ -9885,7 +9881,6 @@ L9999:
-   static logical colin;
-   static doublereal valaux;
-   static integer aux;
--  static logical nul;
-  
- /* ***********************************************************************
-  */
-@@ -9953,7 +9948,6 @@ L9999:
-     if (*ndimen <= 1 || *ndimen > 3) {
- 	goto L9101;
-     }
--    nul = FALSE_;
-     d__ = 1;
-     aux = 0;
-     while(d__ <= *ndimen) {
-Index: oce/src/AdvApp2Var/AdvApp2Var_SysBase.cxx
-===================================================================
---- oce.orig/src/AdvApp2Var/AdvApp2Var_SysBase.cxx
-+++ oce/src/AdvApp2Var/AdvApp2Var_SysBase.cxx
-@@ -155,9 +155,6 @@ int AdvApp2Var_SysBase::macinit_(integer
- 
- {
-  
--  /* Fortran I/O blocks */
--  static cilist io______1 = { 0, 0, 0, (char*) "(' --- Debug-mode : ',I10,' ---')", 0 };
--  
-   /* ************************************************************************/
-   /*     FUNCTION : */
-   /*     ---------- */
-@@ -217,13 +214,6 @@ int AdvApp2Var_SysBase::macinit_(integer
-     mblank__.imp = *ival;
-   } else if (*imode == 2) {
-     mblank__.ibb = *ival;
--    io______1.ciunit = mblank__.imp;
--    /*
--    s__wsfe(&io______1);
--    */
--    /*
--    do__fio(&c____1, (char *)&mblank__.ibb, (ftnlen)sizeof(integer));
--    */
-     AdvApp2Var_SysBase::e__wsfe();
-   } else if (*imode == 3) {
-     mblank__.lec = *ival;
-@@ -889,14 +879,9 @@ int macrmsg_(const char *,//crout,
- {
-   
-   /* Local variables */
--  static integer inum, iunite;
--  static char cfm[80], cln[3];
-+  static integer inum;
-+  static char cln[3];
-   
--  /* Fortran I/O blocks */
--  static cilist io___5 = { 0, 0, 0, cfm, 0 };
--  static cilist io___6 = { 0, 0, 0, cfm, 0 };
--  static cilist io___7 = { 0, 0, 0, cfm, 0 };
-- 
- 
- /* ***********************************************************************
-  */
-@@ -1132,15 +1117,12 @@ t !! ')", 80L, 54L);
-    */
-   /*  iMPLEMENTATION OF WRITE , WITH OR WITHOUT DATA : */
-   
--  iunite = AdvApp2Var_SysBase::mnfnimp_();
-   if (inum == 0) {
--    io___5.ciunit = iunite;
-     /*
-     s__wsfe(&io___5);
-     */
-     AdvApp2Var_SysBase::e__wsfe();
-   } else if (inum == 1) {
--    io___6.ciunit = iunite;
-     /*
-     s__wsfe(&io___6);
-     */
-@@ -1150,7 +1132,6 @@ t !! ')", 80L, 54L);
-     AdvApp2Var_SysBase::e__wsfe();
-   } else {
-     /*  MESSAGE DOES NOT EXIST ... */
--    io___7.ciunit = iunite;
-     /*
-     s__wsfe(&io___7);
-     */
-@@ -2959,7 +2940,6 @@ int AdvApp2Var_SysBase::mcrrqst_(integer
- 
- /* DEMAND OF ALLOCATION */
- 
--    isyst = 0;
- /* L1001: */
- /*      IF ( ISYST.EQ.0.AND.IBYTE .LE. 100 * 1024 ) THEN */
- /*        ALLOCATION SUR TABLE */
-@@ -3141,8 +3121,6 @@ void AdvApp2Var_SysBase::miraz_(integer
- 				void *adt)
- 
- {
--  integer offset;
--  offset = *taille;
-   memset(adt , '\0' , *taille) ;
- }
- //=======================================================================
-@@ -3287,9 +3265,6 @@ int AdvApp2Var_SysBase::mswrdbg_(const c
- 
- {
- 
--  static cilist io___1 = { 0, 0, 0, 0, 0 };
--  
--
- /* ***********************************************************************
-  */
- 
-@@ -3334,8 +3309,6 @@ int AdvApp2Var_SysBase::mswrdbg_(const c
-  */
- 
-     if (AdvApp2Var_SysBase::mnfndeb_() >= 1) {
--	io___1.ciunit = AdvApp2Var_SysBase::mnfnimp_();
--	//s__wsle(&io___1);
- 	//do__lio(&c__9, &c__1, "Dbg ", 4L);
- 	//do__lio(&c__9, &c__1, ctexte, ctexte_len);
- 	AdvApp2Var_SysBase::e__wsle();
-Index: oce/src/AlienImage/AlienImage_SunRFAlienData.cxx
-===================================================================
---- oce.orig/src/AlienImage/AlienImage_SunRFAlienData.cxx
-+++ oce/src/AlienImage/AlienImage_SunRFAlienData.cxx
-@@ -127,7 +127,7 @@ void AlienImage_SunRFAlienData::Clear()
- 
- Standard_Boolean AlienImage_SunRFAlienData::Write( OSD_File& file ) const
- 
--{ Standard_Integer  size;
-+{
-   AlienImage_SUNRFFileHeader TheHeader = myHeader ;
- 
-   // Write out TheHeader information
-@@ -154,8 +154,6 @@ Standard_Boolean AlienImage_SunRFAlienDa
- 	}
-   }
- 
--  size = ( Standard_Integer ) sizeof( TheHeader ) ;
--
-   const Standard_Address pHeader = ( Standard_Address ) &TheHeader ;
- 
-   file.Write( pHeader,  sizeof( TheHeader ) ) ;
-Index: oce/src/AlienImage/AlienImage_X11XWDAlienData.cxx
-===================================================================
---- oce.orig/src/AlienImage/AlienImage_X11XWDAlienData.cxx
-+++ oce/src/AlienImage/AlienImage_X11XWDAlienData.cxx
-@@ -64,7 +64,7 @@ const TCollection_AsciiString&  AlienIma
- 
- void AlienImage_X11XWDAlienData::Clear()
- 
--{ Standard_Integer size ;
-+{
- 
-   myHeader.header_size	= sizeof( myHeader ) ; 
- 				/* Size of the entire file header (bytes).*/
-@@ -102,8 +102,6 @@ void AlienImage_X11XWDAlienData::Clear()
-   }
- 
-   if ( myColors ) {
--	size = ( Standard_Integer ) 
--			myHeader.ncolors * sizeof( AlienImage_X11XColor ) ;
- 	//Free all allocated memory
- 	Standard::Free(myColors);
- 	myColors = NULL ;
-Index: oce/src/AppParCurves/AppParCurves.cxx
-===================================================================
---- oce.orig/src/AppParCurves/AppParCurves.cxx
-+++ oce/src/AppParCurves/AppParCurves.cxx
-@@ -109,8 +109,8 @@ void AppParCurves::SecondDerivativeBerns
- //  Standard_Real U1 = 1-U, Y0, Y1, Xs;
-   Standard_Real Y0, Y1, Xs;
-   Standard_Integer NbPoles = DDA.Length();
--  Standard_Integer id, j, N2, N3, N4, deg = NbPoles-1;
--  N2 = deg-1; N3 = deg-2, N4 = deg*(deg-1);
-+  Standard_Integer id, j, N4, deg = NbPoles-1;
-+  N4 = deg*(deg-1);
-   math_Vector B(1, deg-1);
-   B(1) = 1.;
-   
 Index: oce/src/Aspect/Aspect_ColorScale.cxx
 ===================================================================
 --- oce.orig/src/Aspect/Aspect_ColorScale.cxx
@@ -4167,6 +3304,49 @@ Index: oce/src/Bisector/Bisector_Inter.cxx
  static Standard_Boolean Affich = Standard_False;
  #endif
  
+Index: oce/src/Blend/Blend_CSWalking_2.gxx
+===================================================================
+--- oce.orig/src/Blend/Blend_CSWalking_2.gxx
++++ oce/src/Blend/Blend_CSWalking_2.gxx
+@@ -173,7 +173,7 @@ Blend_Status Blend_CSWalking::CheckDefle
+ 
+   Standard_Real Norme, prevNorme, Cosi, Cosi2; // JAG MODIF 25.04.94
+   Standard_Real FlecheCourante;
+-  Standard_Real Du,Dv,Duv,SqrtDuv;
++  Standard_Real Du,Dv,Duv;
+   Standard_Real paramu,paramv,tolu,tolv;
+ //  TColgp_Array1OfPnt Poles(1,4);
+ //  gp_Pnt POnCurv,Milieu;
+@@ -211,7 +211,6 @@ Blend_Status Blend_CSWalking::CheckDefle
+   Du = Ponsurf.X() - paramu;
+   Dv = Ponsurf.Y() - paramv;
+   Duv = Du * Du + Dv * Dv;
+-  SqrtDuv = Sqrt(Duv);
+   if ((Abs(Du) < tolu && Abs(Dv) < tolv) ||  // JAG MODIF 25.04.94
+       (Abs(previousd2d.X()) < tolu && Abs(previousd2d.Y()) < tolv)){
+     // il faudra peut etre  forcer meme point   JAG MODIF 25.04.94
+Index: oce/src/Blend/Blend_Walking_1.gxx
+===================================================================
+--- oce.orig/src/Blend/Blend_Walking_1.gxx
++++ oce/src/Blend/Blend_Walking_1.gxx
+@@ -186,8 +186,6 @@ Standard_Boolean Blend_Walking::PerformF
+ 
+   Pos1 = Pos2 = TopAbs_UNKNOWN;
+ 
+-  Blend_Status State;
+-
+   param = Pdep;
+   Func.Set(param);
+ 
+@@ -211,7 +209,7 @@ Standard_Boolean Blend_Walking::PerformF
+     return Standard_False;
+   }
+ 
+-  State = TestArret(Func, Blend_OK, Standard_False);
++  TestArret(Func, Blend_OK, Standard_False);
+ #ifdef DEB
+   if (Blend_GettraceDRAWSECT()){
+     Drawsect(surf1,surf2,sol,param,Func);
 Index: oce/src/BlendFunc/BlendFunc_Chamfer.cxx
 ===================================================================
 --- oce.orig/src/BlendFunc/BlendFunc_Chamfer.cxx
@@ -4362,7 +3542,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_C2.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder_C2.cxx
 +++ oce/src/ChFi3d/ChFi3d_Builder_C2.cxx
-@@ -178,11 +178,8 @@ Standard_Integer ChFi3d_Builder::Perform
+@@ -178,11 +178,8 @@ Standard_Boolean ChFi3d_Builder::Perform
    // Otherwise the opposite face  
    // and the eventual intersection of 2 pcurves on this face are found.
  
@@ -4813,6 +3993,71 @@ Index: oce/src/Extrema/Extrema_ExtElC2d.cxx
    
    if (Abs(Dy) <= RealEpsilon()) {
      teta[0] = M_PI/2.0;
+Index: oce/src/Extrema/Extrema_GLocateExtCC.gxx
+===================================================================
+--- oce.orig/src/Extrema/Extrema_GLocateExtCC.gxx
++++ oce/src/Extrema/Extrema_GLocateExtCC.gxx
+@@ -31,13 +31,6 @@ Extrema_GLocateExtCC::Extrema_GLocateExt
+ 					    const Standard_Real V0)
+ {
+ 
+-#ifdef DEB
+-  GeomAbs_CurveType type1 = Tool1::GetType(C1);
+-  GeomAbs_CurveType type2 = Tool2::GetType(C2);
+-#else
+-  Tool1::GetType(C1);
+-  Tool2::GetType(C2);
+-#endif
+   Standard_Real TolU = C1.Resolution(Precision::Confusion());
+   Standard_Real TolV = C2.Resolution(Precision::Confusion());
+   Extrema_POnCurv P1, P2;
+Index: oce/src/Extrema/Extrema_GLocateExtCC2d.gxx
+===================================================================
+--- oce.orig/src/Extrema/Extrema_GLocateExtCC2d.gxx
++++ oce/src/Extrema/Extrema_GLocateExtCC2d.gxx
+@@ -37,13 +37,6 @@ Extrema_GLocateExtCC2d::Extrema_GLocateE
+ 						const Standard_Real U0,
+ 						const Standard_Real V0)
+ {
+-#ifdef DEB
+-  GeomAbs_CurveType type1 = Tool1::GetType(C1);
+-  GeomAbs_CurveType type2 = Tool2::GetType(C2);
+-#else
+-  Tool1::GetType(C1);
+-  Tool2::GetType(C2);
+-#endif
+   Standard_Real TolU = Tool1::Resolution(C1, Precision::Confusion());
+   Standard_Real TolV = Tool2::Resolution(C2, Precision::Confusion());
+   Extrema_POnCurv2d P1, P2;
+Index: oce/src/Extrema/Extrema_GLocateExtPC.gxx
+===================================================================
+--- oce.orig/src/Extrema/Extrema_GLocateExtPC.gxx
++++ oce/src/Extrema/Extrema_GLocateExtPC.gxx
+@@ -113,11 +113,6 @@ void Extrema_GLocateExtPC::Perform(const
+ 				   const Standard_Real U0)
+ {
+   Standard_Integer i, i1, i2, inter;
+-#ifdef DEB
+-  Standard_Real Tol = TheCurveTool::Resolution(*((TheCurve*)myC), Precision::Confusion());
+-#else
+-  TheCurveTool::Resolution(*((TheCurve*)myC), Precision::Confusion());
+-#endif
+   Standard_Real Par, valU, valU2 = RealLast(),
+   local_u0 ;
+   Standard_Real myintuinf=0, myintusup=0;
+Index: oce/src/Extrema/Extrema_GenExtCC.gxx
+===================================================================
+--- oce.orig/src/Extrema/Extrema_GenExtCC.gxx
++++ oce/src/Extrema/Extrema_GenExtCC.gxx
+@@ -156,8 +156,6 @@ a- Constitution du tableau des distances
+   U0 = aCache1->TrimFirstParameter() + (U0/2.);
+   V0 = aCache2->TrimFirstParameter() + (V0/2.);
+ 
+-  const Curve1& aCurve1 = *((Curve1*)(myF.CurvePtr (1)));
+-  const Curve2& aCurve2 = *((Curve1*)(myF.CurvePtr (2)));
+   const Handle(ArrayOfPnt)& aPntArray1 = aCache1->Points();
+   const Handle(ArrayOfPnt)& aPntArray2 = aCache2->Points();
+   Standard_Integer NoU, NoV;
 Index: oce/src/Extrema/Extrema_GenExtPS.cxx
 ===================================================================
 --- oce.orig/src/Extrema/Extrema_GenExtPS.cxx
@@ -4835,6 +4080,62 @@ Index: oce/src/Extrema/Extrema_GenExtPS.cxx
        //TODO: check if no solution in binary tree
        Bnd_Sphere& aSph = aSelector.Sphere();
        Standard_Real aU = myUParams->Value(aSph.U());
+Index: oce/src/GCPnts/GCPnts_TangentialDeflection.gxx
+===================================================================
+--- oce.orig/src/GCPnts/GCPnts_TangentialDeflection.gxx
++++ oce/src/GCPnts/GCPnts_TangentialDeflection.gxx
+@@ -371,8 +371,6 @@ void GCPnts_TangentialDeflection::Perfor
+     TooSmall   = Standard_False;
+     Correction = Standard_True;
+ 
+-    Standard_Real lastCoef = 0;
+-     
+     while (Correction) {                     //Ajustement Du
+       MiddleU = (U1+U2)*0.5;                 //Verif / au point milieu
+       D0 (C, MiddleU, MiddlePoint);
+@@ -417,7 +415,6 @@ void GCPnts_TangentialDeflection::Perfor
+           }
+           else {
+             TooSmall = Standard_True;
+-            lastCoef = Coef;
+             //Standard_Real UUU2 = U2;
+             Du += Min((U2-U1)*(1.-Coef), Du*Us3);
+ 
+Index: oce/src/GCPnts/GCPnts_UniformAbscissa.gxx
+===================================================================
+--- oce.orig/src/GCPnts/GCPnts_UniformAbscissa.gxx
++++ oce/src/GCPnts/GCPnts_UniformAbscissa.gxx
+@@ -188,7 +188,6 @@ PerformLengthParametrized( Handle(TColSt
+ 
+ 
+   if (Abscissa < 0.0e0)    {
+-    Forward = Standard_False ;
+     UU2 = Min(U1, U2);
+     UU1 = Max(U1, U2);
+   }
+Index: oce/src/GProp/GProp_SGProps.gxx
+===================================================================
+--- oce.orig/src/GProp/GProp_SGProps.gxx
++++ oce/src/GProp/GProp_SGProps.gxx
+@@ -438,7 +438,7 @@ static void Compute(Face& S, Domain& D,
+    Standard_Integer NbCGaussgp_Pnts = 0;
+ 
+    Standard_Real l1, l2, lm, lr, l;   //boundary curve parametrization
+-   Standard_Real v1, v2, vm, vr, v;   //Face parametrization in v direction
++   Standard_Real v1, v2, v;   //Face parametrization in v direction
+    Standard_Real u1, u2, um, ur, u;
+    Standard_Real ds;                  //Jacobien (x, y, z) -> (u, v) = ||n||
+ 
+@@ -492,9 +492,7 @@ static void Compute(Face& S, Domain& D,
+       lr = 0.5 * (l2 - l1);
+ 
+       Puv = S.Value2d (lm);
+-      vm  = Puv.Y();
+       Puv = S.Value2d (lr);
+-      vr  = Puv.Y();
+ 
+       for (Standard_Integer i = 1; i <= NbCGaussgp_Pnts; i++) {
+         l = lm + lr * GaussCP (i);
 Index: oce/src/GccAna/GccAna_Circ2d3Tan_2.cxx
 ===================================================================
 --- oce.orig/src/GccAna/GccAna_Circ2d3Tan_2.cxx
@@ -5014,6 +4315,159 @@ Index: oce/src/GccAna/GccAna_Lin2dTanPer.cxx
       signe = -1;
       qualifier1(1) = GccEnt_enclosing;
       qualifier1(2) = GccEnt_outside;
+Index: oce/src/GccGeo/GccGeo_Circ2d2TanOn.gxx
+===================================================================
+--- oce.orig/src/GccGeo/GccGeo_Circ2d2TanOn.gxx
++++ oce/src/GccGeo/GccGeo_Circ2d2TanOn.gxx
+@@ -157,7 +157,6 @@ GccGeo_Circ2d2TanOn::
+ 	    Standard_Real dist1 = Center.Distance(C1.Location());
+ 	    Standard_Real dist2 = Center.Distance(C2.Location());
+ 	    Standard_Integer nbsol = 0;
+-	    Standard_Integer nsol = 0;
+ 	    Standard_Integer nnsol = 0;
+ 	    R1 = C1.Radius();
+ 	    R2 = C2.Radius();
+@@ -184,22 +183,18 @@ GccGeo_Circ2d2TanOn::
+ 	    }
+ 	    if (Qualified2.IsEnclosed() && nbsol != 0) {
+ 	      if (dist2-R2 < Tol) {
+-		nsol = 1;
+ 		RBid(1) = Abs(R2-dist2);
+ 	      }
+ 	    }
+ 	    else if (Qualified2.IsOutside() && nbsol != 0) {
+ 	      if (R2-dist2 < Tol) {
+-		nsol = 1;
+ 		RBid(1) = Abs(R2-dist2);
+ 	      }
+ 	    }
+ 	    else if (Qualified2.IsEnclosing() && nbsol != 0) {
+-	      nsol = 1;
+ 	      RBid(1) = dist2+R2;
+ 	    }
+ 	    else if (Qualified2.IsUnqualified() && nbsol != 0) {
+-	      nsol = 1;
+ 	      RBid(1) = dist2+R2;
+ 	      RBid(2) = Abs(R2-dist2);
+ 	    }
+Index: oce/src/GccIter/GccIter_Circ2d2TanOn.gxx
+===================================================================
+--- oce.orig/src/GccIter/GccIter_Circ2d2TanOn.gxx
++++ oce/src/GccIter/GccIter_Circ2d2TanOn.gxx
+@@ -105,17 +105,11 @@ GccIter_Circ2d2TanOn::
+      Standard_Real dist2 = point3.Distance(point2);
+      if ( Abs(dist1-dist2)/2. <= Tol) {
+        cirsol = gp_Circ2d(gp_Ax2d(point3,dirx),(dist1+dist2)/2.);
+-       Standard_Real normetan1 = Tan1.Magnitude();
+        Standard_Real normetan2 = Tan2.Magnitude();
+        gp_Vec2d Vec1(point1,point3);
+        gp_Vec2d Vec2(point2,point3);
+-       Standard_Real normevec1 = Vec1.Magnitude();
+        Standard_Real normevec2 = Vec2.Magnitude();
+-       Standard_Real angle1,angle2;
+-       if (normevec1 >= gp::Resolution() && normetan1 >= gp::Resolution()) {
+-	 angle1 = Vec1.Angle(Tan1);
+-       }
+-       else { angle1 = 0.; }
++       Standard_Real angle2;
+        if (normevec2 >= gp::Resolution() && normetan2 >= gp::Resolution()) {
+ 	 angle2 = Vec2.Angle(Tan2);
+        }
+@@ -405,17 +399,11 @@ GccIter_Circ2d2TanOn::
+      Standard_Real dist2 = point3.Distance(point2);
+      if ( Abs(dist1-dist2)/2. <= Tol) {
+        cirsol = gp_Circ2d(gp_Ax2d(point3,dirx),(dist1+dist2)/2.);
+-       Standard_Real normetan1 = Tan1.Magnitude();
+        Standard_Real normetan2 = Tan2.Magnitude();
+        gp_Vec2d Vec1(point1,point3);
+        gp_Vec2d Vec2(point2,point3);
+-       Standard_Real normevec1 = Vec1.Magnitude();
+        Standard_Real normevec2 = Vec2.Magnitude();
+-       Standard_Real angle1,angle2;
+-       if (normevec1 >= gp::Resolution() && normetan1 >= gp::Resolution()) {
+-	 angle1 = Vec1.Angle(Tan1);
+-       }
+-       else { angle1 = 0.; }
++       Standard_Real angle2;
+        if (normevec2 >= gp::Resolution() && normetan2 >= gp::Resolution()) {
+ 	 angle2 = Vec2.Angle(Tan2);
+        }
+@@ -516,17 +504,11 @@ GccIter_Circ2d2TanOn::
+      Standard_Real dist2 = point3.Distance(point2);
+      if ( Abs(dist1-dist2)/2. <= Tol) {
+        cirsol = gp_Circ2d(gp_Ax2d(point3,dirx),(dist1+dist2)/2.);
+-       Standard_Real normetan1 = Tan1.Magnitude();
+        Standard_Real normetan2 = Tan2.Magnitude();
+        gp_Vec2d Vec1(point1,point3);
+        gp_Vec2d Vec2(point2,point3);
+-       Standard_Real normevec1 = Vec1.Magnitude();
+        Standard_Real normevec2 = Vec2.Magnitude();
+-       Standard_Real angle1,angle2;
+-       if (normevec1 >= gp::Resolution() && normetan1 >= gp::Resolution()) {
+-	 angle1 = Vec1.Angle(Tan1);
+-       }
+-       else { angle1 = 0.; }
++       Standard_Real angle2;
+        if (normevec2 >= gp::Resolution() && normetan2 >= gp::Resolution()) {
+ 	 angle2 = Vec2.Angle(Tan2);
+        }
+@@ -626,17 +608,11 @@ GccIter_Circ2d2TanOn::
+      Standard_Real dist2 = point3.Distance(point2);
+      if ( Abs(dist1-dist2)/2. <= Tol) {
+        cirsol = gp_Circ2d(gp_Ax2d(point3,dirx),(dist1+dist2)/2.);
+-       Standard_Real normetan1 = Tan1.Magnitude();
+        Standard_Real normetan2 = Tan2.Magnitude();
+        gp_Vec2d Vec1(point1,point3);
+        gp_Vec2d Vec2(point2,point3);
+-       Standard_Real normevec1 = Vec1.Magnitude();
+        Standard_Real normevec2 = Vec2.Magnitude();
+-       Standard_Real angle1,angle2;
+-       if (normevec1 >= gp::Resolution() && normetan1 >= gp::Resolution()) {
+-	 angle1 = Vec1.Angle(Tan1);
+-       }
+-       else { angle1 = 0.; }
++       Standard_Real angle2;
+        if (normevec2 >= gp::Resolution() && normetan2 >= gp::Resolution()) {
+ 	 angle2 = Vec2.Angle(Tan2);
+        }
+@@ -1031,17 +1007,11 @@ GccIter_Circ2d2TanOn::
+      if ( Abs(dist1-dist2)/2. <= Tol) {
+        gp_Dir2d dirx(1.,0.);
+        cirsol = gp_Circ2d(gp_Ax2d(point3,dirx),(dist1+dist2)/2.);
+-       Standard_Real normetan1 = Tan1.Magnitude();
+        Standard_Real normetan2 = Tan2.Magnitude();
+        gp_Vec2d Vec1(point1.XY(),point3.XY());
+        gp_Vec2d Vec2(point2.XY(),point3.XY());
+-       Standard_Real normevec1 = Vec1.Magnitude();
+        Standard_Real normevec2 = Vec2.Magnitude();
+-       Standard_Real angle1,angle2;
+-       if (normevec1 >= gp::Resolution() && normetan1 >= gp::Resolution()) {
+-	 angle1 = Vec1.Angle(Tan1);
+-       }
+-       else { angle1 = 0.; }
++       Standard_Real angle2;
+        if (normevec2 >= gp::Resolution() && normetan2 >= gp::Resolution()) {
+ 	 angle2 = Vec2.Angle(Tan2);
+        }
+@@ -1137,17 +1107,11 @@ GccIter_Circ2d2TanOn::
+      Standard_Real dist2 = point3.Distance(point2);
+      if ( Abs(dist1-dist2)/2. <= Tol) {
+        cirsol = gp_Circ2d(gp_Ax2d(point3,dirx),(dist1+dist2)/2.);
+-       Standard_Real normetan1 = Tan1.Magnitude();
+        Standard_Real normetan2 = Tan2.Magnitude();
+        gp_Vec2d Vec1(point1,point3);
+        gp_Vec2d Vec2(point2,point3);
+-       Standard_Real normevec1 = Vec1.Magnitude();
+        Standard_Real normevec2 = Vec2.Magnitude();
+-       Standard_Real angle1,angle2;
+-       if (normevec1 >= gp::Resolution() && normetan1 >= gp::Resolution()) {
+-	 angle1 = Vec1.Angle(Tan1);
+-       }
+-       else { angle1 = 0.; }
++       Standard_Real angle2;
+        if (normevec2 >= gp::Resolution() && normetan2 >= gp::Resolution()) {
+ 	 angle2 = Vec2.Angle(Tan2);
+        }
 Index: oce/src/Geom/Geom_BSplineSurface.cxx
 ===================================================================
 --- oce.orig/src/Geom/Geom_BSplineSurface.cxx
@@ -5594,6 +5048,35 @@ Index: oce/src/Image/Image_BilinearPixelInterpolation.cxx
  
    	// R = M * V ;
  	R (1)	= M (1, 1) * V (1) + M (1, 2) * V (2)
+Index: oce/src/Image/Image_GImage.gxx
+===================================================================
+--- oce.orig/src/Image/Image_GImage.gxx
++++ oce/src/Image/Image_GImage.gxx
+@@ -318,10 +318,9 @@ void Image_GImage::Rotate180()
+ void Image_GImage::FlipHorizontal()
+ 
+ { anyPixel P ;
+-  Standard_Integer x, y, HalfX, HalfY ;
++  Standard_Integer x, y, HalfY ;
+   Standard_Integer UpX = UpperX() ;
+ 
+-  HalfX = Width()  / 2 ;
+   HalfY = Height() / 2 ;
+ 
+ 	for ( x = LowerX() ; x <= UpX ; x++ ){
+@@ -336,11 +335,10 @@ void Image_GImage::FlipHorizontal()
+ void Image_GImage::FlipVertical()
+ 
+ { anyPixel P ;
+-  Standard_Integer x, y, HalfX, HalfY ;
++  Standard_Integer x, y, HalfX ;
+   Standard_Integer UpY = UpperY() ;
+ 
+   HalfX = Width()  / 2 ;
+-  HalfY = Height() / 2 ;
+ 
+ 	for ( y = LowerY() ; y <= UpY ; y++ ){
+           for ( x = 0 ; x < HalfX ; x++ ) {
 Index: oce/src/IntAna/IntAna_IntQuadQuad.cxx
 ===================================================================
 --- oce.orig/src/IntAna/IntAna_IntQuadQuad.cxx
@@ -5649,6 +5132,150 @@ Index: oce/src/IntAna/IntAna_Quadric.cxx
    
    gp_Trsf Trans;
    
+Index: oce/src/IntCurve/IntCurve_IntPolyPolyGen.gxx
+===================================================================
+--- oce.orig/src/IntCurve/IntCurve_IntPolyPolyGen.gxx
++++ oce/src/IntCurve/IntCurve_IntPolyPolyGen.gxx
+@@ -272,13 +272,6 @@ void IntCurve_IntPolyPolyGen::Perform( c
+   Standard_Real Tl=(TheTol < TOL_MINI)? TOL_MINI : TheTol;
+   Standard_Real TlConf=(TheTolConf < TOL_CONF_MINI)? TOL_CONF_MINI : TheTolConf;
+   Perform(C1,D1,TlConf,Tl,0,DU,DU);
+-  //----------------------------------------------------------------------
+-  //-- Traitement des points en bouts 
+-  //----------------------------------------------------------------------
+-  Standard_Boolean HeadOn1 = Standard_False;
+-  Standard_Boolean HeadOn2 = Standard_False;
+-  Standard_Boolean EndOn1  = Standard_False;
+-  Standard_Boolean EndOn2  = Standard_False;
+   Standard_Integer i;
+   Standard_Integer n=this->NbPoints();
+ 
+@@ -299,12 +292,7 @@ void IntCurve_IntPolyPolyGen::Perform( c
+ 
+   for(i=1;i<=n;i++) { 
+     IntRes2d_Position Pos1 = this->Point(i).TransitionOfFirst().PositionOnCurve();
+-    if(Pos1 == IntRes2d_Head) HeadOn1 = Standard_True;
+-    else if(Pos1 == IntRes2d_End) EndOn1 = Standard_True;
+-
+     IntRes2d_Position Pos2 =  this->Point(i).TransitionOfSecond().PositionOnCurve();
+-    if(Pos2 == IntRes2d_Head) HeadOn2 = Standard_True;
+-    else if(Pos2 == IntRes2d_End) EndOn2 = Standard_True;
+ 
+     if(Pos1 == IntRes2d_Head) { 
+       if(Pos2 == IntRes2d_Head)     PosSegment|=1;
+@@ -319,12 +307,7 @@ void IntCurve_IntPolyPolyGen::Perform( c
+   n=this->NbSegments();
+   for(i=1;i<=n;i++) { 
+     IntRes2d_Position Pos1 = this->Segment(i).FirstPoint().TransitionOfFirst().PositionOnCurve();
+-    if(Pos1 == IntRes2d_Head)     HeadOn1 = Standard_True;
+-    else if(Pos1 == IntRes2d_End) EndOn1  = Standard_True;
+-    
+     IntRes2d_Position Pos2 =  this->Segment(i).FirstPoint().TransitionOfSecond().PositionOnCurve();
+-    if(Pos2 == IntRes2d_Head)      HeadOn2 = Standard_True;
+-    else if(Pos2 == IntRes2d_End)  EndOn2  = Standard_True;
+ 
+     if(Pos1 == IntRes2d_Head) { 
+       if(Pos2 == IntRes2d_Head)     PosSegment|=1;
+@@ -336,12 +319,7 @@ void IntCurve_IntPolyPolyGen::Perform( c
+     }
+ 
+     Pos1 = this->Segment(i).LastPoint().TransitionOfFirst().PositionOnCurve();
+-    if(Pos1 == IntRes2d_Head)     HeadOn1 = Standard_True;
+-    else if(Pos1 == IntRes2d_End) EndOn1  = Standard_True;
+-    
+     Pos2 =  this->Segment(i).LastPoint().TransitionOfSecond().PositionOnCurve();
+-    if(Pos2 == IntRes2d_Head)     HeadOn2 = Standard_True;
+-    else if(Pos2 == IntRes2d_End) EndOn2  = Standard_True;
+ 
+     if(Pos1 == IntRes2d_Head) { 
+       if(Pos2 == IntRes2d_Head)     PosSegment|=1;
+Index: oce/src/IntCurve/IntCurve_Polygon2dGen.gxx
+===================================================================
+--- oce.orig/src/IntCurve/IntCurve_Polygon2dGen.gxx
++++ oce/src/IntCurve/IntCurve_Polygon2dGen.gxx
+@@ -325,17 +325,9 @@ void IntCurve_Polygon2dGen::ComputeWithB
+ 		Standard_Real u1m = 0.5*(u+TheParams.Value(TheIndex.Value(i-1)));
+ 		Standard_Real um2 = 0.5*(u+TheParams.Value(TheIndex.Value(i+1)));
+ 		gp_Pnt2d P1m = TheCurveTool::Value(C,u1m);
+-#ifdef DEB
+-		gp_Pnt2d Pm2 = TheCurveTool::Value(C,um2);
+-#else
+-                TheCurveTool::Value(C,um2);
+-#endif
++        TheCurveTool::Value(C,um2);
+ 		gp_Lin2d L1m(P1,gp_Dir2d(gp_Vec2d(P1,Pm)));
+-#ifdef DEB
+-		gp_Lin2d Lm2(Pm,gp_Dir2d(gp_Vec2d(Pm,ThePnts.Value(TheIndex.Value(i+1)))));
+-#else
+-                ThePnts.Value(TheIndex.Value(i+1));
+-#endif
++        ThePnts.Value(TheIndex.Value(i+1));
+ 		t = L1m.Distance(P1m);
+ 		i--; 
+ 	      }
+Index: oce/src/IntImpParGen/IntImpParGen_Intersector.gxx
+===================================================================
+--- oce.orig/src/IntImpParGen/IntImpParGen_Intersector.gxx
++++ oce/src/IntImpParGen/IntImpParGen_Intersector.gxx
+@@ -65,7 +65,6 @@ void IntImpParGen_Intersector::And_Domai
+   NbResultats=0;
+   
+   for(Standard_Integer i=1; i<=Nb_Bornes_Intersection; i+=2) {
+-    Standard_Boolean reverse=Standard_False;
+     
+     Standard_Real param1=Inter1.Value(i);
+     Standard_Real param2=Inter1.Value(i+1);
+@@ -77,7 +76,6 @@ void IntImpParGen_Intersector::And_Domai
+       Standard_Real t=param1; param1=param2; param2=t;
+       indice_1=i+1;
+       indice_2=i;
+-      reverse=Standard_True;
+     }
+ 
+     gp_Pnt2d Pt1=TheImpTool.Value(param1);
+@@ -85,10 +83,8 @@ void IntImpParGen_Intersector::And_Domai
+     gp_Pnt2d Pt;
+ 
+     Standard_Boolean IsOnTheImpCurveDomain1=Standard_True;
+-    Standard_Boolean IsOnABoundary1=Standard_False;
+ 
+     Standard_Boolean IsOnTheImpCurveDomain2=Standard_True;
+-    Standard_Boolean IsOnABoundary2=Standard_False;
+     //--------------------------------------------------------------------
+     if(TheImpCurveDomain.HasFirstPoint()) { 
+       if(param1<TheImpCurveDomain.FirstParameter()) {             
+@@ -96,7 +92,6 @@ void IntImpParGen_Intersector::And_Domai
+ 	   > TheImpCurveDomain.FirstTolerance()) {
+ 	  IsOnTheImpCurveDomain1=Standard_False; 
+ 	}
+-	else { 	  IsOnABoundary1=Standard_True; 	}
+       }
+     }
+     if(IsOnTheImpCurveDomain1 && TheImpCurveDomain.HasLastPoint()) {
+@@ -105,7 +100,6 @@ void IntImpParGen_Intersector::And_Domai
+ 	   > TheImpCurveDomain.FirstTolerance()) {
+ 	  IsOnTheImpCurveDomain1=Standard_False; 
+ 	}
+-	else {	  IsOnABoundary1=Standard_True; 	}
+       }
+     }
+     //--------------------------------------------------------------------
+@@ -115,7 +109,6 @@ void IntImpParGen_Intersector::And_Domai
+ 	   > TheImpCurveDomain.FirstTolerance()) {
+ 	  IsOnTheImpCurveDomain2=Standard_False; 
+ 	}
+-	else { 	  IsOnABoundary2=Standard_True; 	}
+       }
+     }
+     if(IsOnTheImpCurveDomain2 && TheImpCurveDomain.HasLastPoint()) {
+@@ -124,7 +117,6 @@ void IntImpParGen_Intersector::And_Domai
+ 	   > TheImpCurveDomain.FirstTolerance()) {
+ 	  IsOnTheImpCurveDomain2=Standard_False; 
+ 	}
+-	else {	  IsOnABoundary2=Standard_True; 	}
+       }
+     }
+ 
 Index: oce/src/IntPatch/IntPatch_ALineToWLine.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_ALineToWLine.cxx
@@ -5683,6 +5310,148 @@ Index: oce/src/IntPatch/IntPatch_ALineToWLine.cxx
    //
    while(anu1-u1 > 5.0) {
      u1+=M_PI+M_PI;
+Index: oce/src/IntPatch/IntPatch_ImpImpIntersection_2.gxx
+===================================================================
+--- oce.orig/src/IntPatch/IntPatch_ImpImpIntersection_2.gxx
++++ oce/src/IntPatch/IntPatch_ImpImpIntersection_2.gxx
+@@ -555,10 +555,8 @@ void IntPatch_ImpImpIntersection::Perfor
+     gp_Pnt P;
+     IntPatch_Point point;
+     Standard_Real u1,v1,u2,v2; 
+-    Standard_Integer nbv;
+     if(slin.Value(i)->ArcType() == IntPatch_Circle) { 
+       const Handle(IntPatch_GLine)& glin = *((Handle(IntPatch_GLine)*)&slin.Value(i));
+-      nbv = glin->NbVertex();
+       if(glin->NbVertex() == 0) { 
+ 	gp_Circ Circ = glin->Circle();
+ 	P=ElCLib::Value(0.0,Circ);
+@@ -581,7 +579,6 @@ void IntPatch_ImpImpIntersection::Perfor
+     
+     else if(slin.Value(i)->ArcType() == IntPatch_Ellipse) { 
+       const Handle(IntPatch_GLine)& glin = *((Handle(IntPatch_GLine)*)&slin.Value(i));
+-      nbv = glin->NbVertex();
+       if(glin->NbVertex() == 0) { 
+ 	gp_Elips Elips = glin->Ellipse();
+ 	P=ElCLib::Value(0.0,Elips);
+Index: oce/src/IntPatch/IntPatch_ImpImpIntersection_4.gxx
+===================================================================
+--- oce.orig/src/IntPatch/IntPatch_ImpImpIntersection_4.gxx
++++ oce/src/IntPatch/IntPatch_ImpImpIntersection_4.gxx
+@@ -911,7 +911,6 @@ Standard_Boolean IntCyCo(const IntSurf_Q
+       IntAna_Curve aC;
+       IntAna_ListOfCurve aLC;
+       IntAna_ListIteratorOfListOfCurve aIt;
+-      Standard_Boolean bToSplit;
+       
+       //
+       NbSol = anaint.NbCurve();
+@@ -920,7 +919,7 @@ Standard_Boolean IntCyCo(const IntSurf_Q
+ 	//curvsol = anaint.Curve(i);
+ 	aC=anaint.Curve(i);
+ 	aLC.Clear();
+-	bToSplit=ExploreCurve(Cy, Co, aC, 10.*Tol, aLC);
++	ExploreCurve(Cy, Co, aC, 10.*Tol, aLC);
+ 	//
+ 	aIt.Initialize(aLC);
+ 	for (; aIt.More(); aIt.Next()) {
+Index: oce/src/IntPatch/IntPatch_ImpImpIntersection_5.gxx
+===================================================================
+--- oce.orig/src/IntPatch/IntPatch_ImpImpIntersection_5.gxx
++++ oce/src/IntPatch/IntPatch_ImpImpIntersection_5.gxx
+@@ -208,7 +208,6 @@ Standard_Boolean IntCoCo(const IntSurf_Q
+ 
+   case IntAna_Circle:
+     {
+-      Standard_Real para;
+       IntPatch_Point aPtsol;
+       gp_Vec Tgt;
+       gp_Pnt ptref;
+@@ -234,7 +233,7 @@ Standard_Boolean IntCoCo(const IntSurf_Q
+ 	  Quad2.Parameters(aPChar, U2, V2);
+ 	  aPtsol.SetValue(aPChar, Tol, Standard_False);
+ 	  aPtsol.SetParameters(U1, V1, U2, V2);
+-	  para = ElCLib::Parameter(cirsol, aPChar);
++	  ElCLib::Parameter(cirsol, aPChar);
+ 	  aPtsol.SetParameter(0.);
+ 	  glig->AddVertex(aPtsol);
+ 	}
+@@ -246,7 +245,6 @@ Standard_Boolean IntCoCo(const IntSurf_Q
+ 
+   case IntAna_Ellipse:
+     {
+-      Standard_Real para;
+       IntPatch_Point aPtsol;
+       gp_Elips elipsol = inter.Ellipse(1);
+       
+@@ -273,7 +271,7 @@ Standard_Boolean IntCoCo(const IntSurf_Q
+ 	Quad2.Parameters(aPChar, U2, V2);
+ 	aPtsol.SetValue(aPChar, Tol, Standard_False);
+ 	aPtsol.SetParameters(U1, V1, U2, V2);
+-	para = ElCLib::Parameter(elipsol, aPChar);
++	ElCLib::Parameter(elipsol, aPChar);
+ 	aPtsol.SetParameter(0.);
+ 	glig->AddVertex(aPtsol);
+       }
+@@ -285,7 +283,6 @@ Standard_Boolean IntCoCo(const IntSurf_Q
+ 
+   case IntAna_Hyperbola:
+     {
+-      Standard_Real para;
+       IntPatch_Point aPtsol;
+       gp_Vec Tgt;
+       gp_Pnt ptref;
+@@ -311,7 +308,7 @@ Standard_Boolean IntCoCo(const IntSurf_Q
+ 	  Quad2.Parameters(aPChar, U2, V2);
+ 	  aPtsol.SetValue(aPChar, Tol, Standard_False);
+ 	  aPtsol.SetParameters(U1, V1, U2, V2);
+-	  para = ElCLib::Parameter(hyprsol, aPChar);
++	  ElCLib::Parameter(hyprsol, aPChar);
+ 	  aPtsol.SetParameter(0.);
+ 	  glig->AddVertex(aPtsol);
+ 	}
+@@ -322,7 +319,6 @@ Standard_Boolean IntCoCo(const IntSurf_Q
+     
+   case IntAna_Parabola:
+     {
+-      Standard_Real para;
+       IntPatch_Point aPtsol;
+       gp_Parab parabsol = inter.Parabola(1);
+       
+@@ -348,7 +344,7 @@ Standard_Boolean IntCoCo(const IntSurf_Q
+ 	Quad2.Parameters(aPChar, U2, V2);
+ 	aPtsol.SetValue(aPChar, Tol, Standard_False);
+ 	aPtsol.SetParameters(U1, V1, U2, V2);
+-	para = ElCLib::Parameter(parabsol, aPChar);
++	ElCLib::Parameter(parabsol, aPChar);
+ 	aPtsol.SetParameter(0.);
+ 	glig->AddVertex(aPtsol);
+       }
+@@ -568,13 +564,6 @@ Standard_Boolean IntCoSp(const IntSurf_Q
+     {
+       gp_Vec Tgt;
+       gp_Pnt ptref;
+-#ifndef DEB
+-      Co.Apex();
+-#else
+-      gp_Pnt apex(Co.Apex());
+-      //Standard_Real param;
+-      Standard_Real paramapex   =  ElCLib::LineParameter(Co.Axis(),apex);
+-#endif
+ 
+       for (i=1; i<=NbSol; i++) {
+ 	gp_Circ cirsol = inter.Circle(i);
+@@ -669,11 +658,6 @@ Standard_Boolean IntCoSp(const IntSurf_Q
+ 
+ 	gp_Pnt ptvalid, ptf, ptl;
+ 	gp_Vec tgvalid;
+-#ifdef DEB
+-	Standard_Real paramapex   = 
+-#endif
+-	  ElCLib::LineParameter(Co.Axis(),
+-				Co.Apex());
+ 	Standard_Real first,last,para;
+ 	Standard_Boolean tgfound,firstp,lastp,kept;
+ 	Standard_Integer kount;
 Index: oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
@@ -6106,6 +5875,125 @@ Index: oce/src/IntTools/IntTools_FaceFace.cxx
  
      BRepTools::UVBounds(myFace1, umin, umax, vmin, vmax);
      myHS1->ChangeSurface().Load(S1, umin, umax, vmin, vmax);
+Index: oce/src/IntWalk/IntWalk_PWalking_1.gxx
+===================================================================
+--- oce.orig/src/IntWalk/IntWalk_PWalking_1.gxx
++++ oce/src/IntWalk/IntWalk_PWalking_1.gxx
+@@ -375,11 +375,9 @@ Standard_Boolean IntWalk_PWalking::Perfo
+   close = Standard_False;
+   //
+   Standard_Integer i;
+-  Standard_Real aTmp;
+   TColStd_Array1OfReal Param(1,4);
+   //
+   for (i=1; i<=4; ++i) {
+-    aTmp = ParDep(i);
+     Param(i) = ParDep(i);
+   }
+   //-- calcul du premier point solution
+@@ -468,13 +466,12 @@ void IntWalk_PWalking::Perform(const TCo
+   line = new IntSurf_LineOn2S ();
+   //
+   for (i=1; i<=4; ++i) {
+-    aTmp=ParDep(i);
+     Param(i)=ParDep(i);
+   }
+   //-- reprise des pas uv lies aux surfaces Caro1 et Caro2
+   //-- pasuv[] et pasSav[] sont modifies lors du cheminement
+   for(i = 0; i < 4; ++i) { 
+-    pasMaxSV[i] = pasSav[i] = pasuv[i] = pasInit[i]; 
++    pasSav[i] = pasuv[i] = pasInit[i]; 
+   }
+ 
+   //-- calcul du premier point solution
+Index: oce/src/Intf/Intf_InterferencePolygonPolyhedron.gxx
+===================================================================
+--- oce.orig/src/Intf/Intf_InterferencePolygonPolyhedron.gxx
++++ oce/src/Intf/Intf_InterferencePolygonPolyhedron.gxx
+@@ -784,7 +784,6 @@ void Intf_InterferencePolygonPolyhedron:
+   gp_XYZ segO=EndO.XYZ()-BegO.XYZ();
+   segO.Normalize();
+   Standard_Boolean NoIntersectionWithTriangle = Standard_False;
+-  Standard_Boolean PolygonCutsPlane           = Standard_True;
+ 
+   Standard_Real param;
+   t = dBegTri-dEndTri;
+@@ -804,7 +803,6 @@ void Intf_InterferencePolygonPolyhedron:
+       NoIntersectionWithTriangle = Standard_False;
+     }
+     if (param<0. || param>1.) {
+-      PolygonCutsPlane = Standard_False;
+       NoIntersectionWithTriangle = Standard_True;
+     }
+   }
+@@ -1081,7 +1079,6 @@ void Intf_InterferencePolygonPolyhedron:
+       NoIntersectionWithTriangle = Standard_False;
+     }
+     if (param<0. || param>1.) {
+-      PolygonCutsPlane = Standard_False;
+       NoIntersectionWithTriangle = Standard_True;
+     }
+   }
+Index: oce/src/Intf/Intf_InterferencePolyhedron.gxx
+===================================================================
+--- oce.orig/src/Intf/Intf_InterferencePolyhedron.gxx
++++ oce/src/Intf/Intf_InterferencePolyhedron.gxx
+@@ -748,8 +748,6 @@ Standard_Boolean Intf_InterferencePolyhe
+     tOP[nou]= Intf_EXTERNAL;
+     tTP[nou]= Intf_EXTERNAL;
+   }
+-  Standard_Integer iOP[4];
+-  Standard_Integer iTP[4];
+ 
+   Standard_Integer nbpInt=0;
+   Intf_SeqOfSectionPoint Tpi;
+@@ -764,8 +762,8 @@ Standard_Boolean Intf_InterferencePolyhe
+ 				     Intf_VERTEX, OI[nob], 0, 0., 
+ 				     Intf_VERTEX, TI[nou], 0, 0.,
+ 				     1.));
+-	tOP[nob]=Intf_VERTEX; iOP[nob]=nbpInt;
+-	tTP[nou]=Intf_VERTEX; iTP[nou]=nbpInt;
++	tOP[nob]=Intf_VERTEX;
++	tTP[nou]=Intf_VERTEX;
+ 	nbpInt++;
+ 	break;
+       }
+@@ -778,7 +776,7 @@ Standard_Boolean Intf_InterferencePolyhe
+ 					Intf_EDGE, Min(TI[nou], TI[nou2]),
+ 					Max(TI[nou], TI[nou2]), par,
+ 					1.));
+-	  tOP[nob]=Intf_EDGE; iOP[nob]=nbpInt;
++	  tOP[nob]=Intf_EDGE;
+ 	  nbpInt++;
+ 	  break;
+ 	}
+@@ -793,7 +791,7 @@ Standard_Boolean Intf_InterferencePolyhe
+ 				     Intf_VERTEX, OI[nob],  0, 0., 
+ 				     Intf_FACE,   Tri2, 0, 0.,
+ 				     1.));
+-	tOP[nob]=Intf_FACE; iOP[nob]=nbpInt;
++	tOP[nob]=Intf_FACE;
+ 	nbpInt++;
+       }
+     }
+@@ -816,7 +814,7 @@ Standard_Boolean Intf_InterferencePolyhe
+ 					   Intf_EDGE, Min(OI[nob], OI[nob2]),
+ 					   Max(OI[nob], OI[nob2]), par, 
+ 					   Intf_VERTEX, TI[nou], 0, 0., 1.));
+-	      tTP[nou]=Intf_EDGE;iTP[nou]=nbpInt;
++	      tTP[nou]=Intf_EDGE;
+ 	      nbpInt++;
+ 	      break;
+ 	    }
+@@ -831,7 +829,7 @@ Standard_Boolean Intf_InterferencePolyhe
+ 					 Intf_FACE,   Tri1, 0, 0.,
+ 					 Intf_VERTEX, TI[nou], 0, 0., 
+ 					 1.));
+-	    tTP[nou]=Intf_FACE; iTP[nou]=nbpInt;
++	    tTP[nou]=Intf_FACE;
+ 	    nbpInt++;
+ 	  }
+ 	}
 Index: oce/src/LDOM/LDOMParser.cxx
 ===================================================================
 --- oce.orig/src/LDOM/LDOMParser.cxx
@@ -6466,6 +6354,37 @@ Index: oce/src/OSD/OSD_MAllocHook.cxx
    if (theSize > 0)
    {
      myMutex.Lock();
+Index: oce/src/Primitives/Primitives_Wedge.gxx
+===================================================================
+--- oce.orig/src/Primitives/Primitives_Wedge.gxx
++++ oce/src/Primitives/Primitives_Wedge.gxx
+@@ -680,26 +680,19 @@ gp_Lin Primitives_Wedge::Line
+   gp_Vec VX = myAxes.XDirection();
+   gp_Vec VY = myAxes.YDirection();
+   gp_Vec VZ = myAxes.Direction();
+-  Primitives_Direction dd1,dd2;
+   
+   switch (i/4) {
+     
+   case 0 :
+     D = myAxes.Direction();
+-    dd1 = Primitives_ZMin;
+-    dd2 = Primitives_ZMax;
+     break;
+     
+   case 1 :
+     D = myAxes.XDirection();
+-    dd1 = Primitives_XMin;
+-    dd2 = Primitives_XMax;
+     break;
+     
+   case 2 :
+     D = myAxes.YDirection();
+-    dd1 = Primitives_YMin;
+-    dd2 = Primitives_YMax;
+     break;
+     
+   };
 Index: oce/src/ProjLib/ProjLib_ComputeApproxOnPolarSurface.cxx
 ===================================================================
 --- oce.orig/src/ProjLib/ProjLib_ComputeApproxOnPolarSurface.cxx
@@ -7118,7 +7037,7 @@ Index: oce/src/TDF/TDF_CopyLabel.cxx
    for (TDF_AttributeIterator itr(aLabel); itr.More(); itr.Next()) {
      itr.Value()->References(ds);
      const TDF_AttributeMap& attMap = ds->Attributes(); //attMap
-@@ -101,7 +101,6 @@ void TDF_CopyLabel::ExternalReferences(const TDF_Label& aRefLabel, const TDF_Lab
+@@ -102,7 +101,6 @@ void TDF_CopyLabel::ExternalReferences(c
          if (aFilter.IsKept(att) && att->Label().IsDifferent(aRefLabel) &&
  	    !att->Label().IsDescendant(aRefLabel)) {
            aExternals.Add(att);
@@ -7126,7 +7045,7 @@ Index: oce/src/TDF/TDF_CopyLabel.cxx
          }
        }
      }
-@@ -123,7 +122,6 @@ void TDF_CopyLabel::ExternalReferences(c
+@@ -123,7 +121,6 @@ void TDF_CopyLabel::ExternalReferences(c
  //       }
  //     }
  
@@ -7274,7 +7193,7 @@ Index: oce/src/TestTopOpe/TestTopOpe_HDSCommands.cxx
    if ( Tpar.isshap() ) {
      is = Draw::Atoi(a[i1arg + 1]);
      const TopoDS_Shape& s = GetShape(is,Tpar.TS()); if (s.IsNull()) return 0;
-@@ -1404,9 +1404,6 @@ Standard_Integer tdsri(Draw_Interpretor& di,Standard_Integer na_in,const char**
+@@ -1412,9 +1404,6 @@ Standard_Integer tdsri(Draw_Interpretor&
        else it.Next();
      }
    }
@@ -7870,6 +7789,66 @@ Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_SREGU.cxx
  	}	
        } // lspssdSSf.More()
      } // explore(ssdSS,TopAbs_FACE)
+Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_SplitEdge.hxx
+===================================================================
+--- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_SplitEdge.hxx
++++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_SplitEdge.hxx
+@@ -52,26 +52,6 @@ void TopOpeBRepBuild_Builder::SplitEdge1
+ {
+   // work on a FORWARD edge <Eforward>
+ 
+-#ifdef DEB
+-  TopAbs_Orientation Eori =
+-#endif
+-                            Eoriented.Orientation();
+-#ifdef DEB
+-  Standard_Integer io = 0;
+-  if      ( Eori == TopAbs_FORWARD  ) {
+-    io = 1;
+-  }
+-  else if ( Eori == TopAbs_REVERSED ) {
+-    io = 2;
+-  }
+-  else if ( Eori == TopAbs_INTERNAL ) {
+-    io = 3;
+-  }
+-  else if ( Eori == TopAbs_EXTERNAL ) {
+-    io = 4;
+-  }
+-#endif
+-
+   TopoDS_Shape Eforward = Eoriented; 
+   Eforward.Orientation(TopAbs_FORWARD);
+ 
+@@ -88,8 +68,8 @@ void TopOpeBRepBuild_Builder::SplitEdge1
+   
+   if ( ! tosplit ) return;
+ 
+-  Standard_Boolean RevOri1 = Reverse(ToBuild1,ToBuild2);
+-  Standard_Boolean RevOri2 = Reverse(ToBuild2,ToBuild1);
++  Reverse(ToBuild1,ToBuild2);
++  Reverse(ToBuild2,ToBuild1);
+   Standard_Boolean ConnectTo1 = Standard_True;
+   Standard_Boolean ConnectTo2 = Standard_False;
+   
+@@ -97,8 +77,6 @@ void TopOpeBRepBuild_Builder::SplitEdge1
+   TopTools_ListOfShape LE1,LE2;
+   LE1.Append(Eforward);
+   FindSameDomain(LE1,LE2);
+-  Standard_Integer n1 = LE1.Extent();
+-  Standard_Integer n2 = LE2.Extent();
+ 
+ #ifdef DEB
+   if(tSPS){GdumpSAMDOM(LE1, (char *) "1 : ");}
+@@ -111,8 +89,6 @@ void TopOpeBRepBuild_Builder::SplitEdge1
+   
+   // SplitEdge on a edge having other same domained edges on the
+   // other shape : do not reverse orientation of edges in FillEdge
+-  if (!n2) RevOri1 = Standard_False;
+-  if (!n1) RevOri2 = Standard_False;
+     
+   // Make a PaveSet <PVS> on edge <Eforward>
+   TopOpeBRepBuild_PaveSet PVS(Eforward);
 Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Tools.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_Tools.cxx
@@ -8240,6 +8219,27 @@ Index: oce/src/Transfer/Transfer_TransferInput.cxx
        if (transb->HasResult()) iter.AddItem(transb->Result());
      }
      else if (!multi.IsNull()) {
+Index: oce/src/Transfer/Transfer_TransferProcess.gxx
+===================================================================
+--- oce.orig/src/Transfer/Transfer_TransferProcess.gxx
++++ oce/src/Transfer/Transfer_TransferProcess.gxx
+@@ -1253,7 +1253,7 @@ void Transfer_TransferProcess::StartTrac
+ 
+   if (!binder.IsNull()) {   // old: if IsNull sout <<endl<< "  ---  Not Bound";
+     Handle(Transfer_Binder) bnd = binder;
+-    Standard_Boolean hasres = Standard_False, isused = Standard_False;
++    Standard_Boolean hasres = Standard_False;
+     while (!bnd.IsNull()) {
+       if (bnd->Status() != Transfer_StatusVoid) {
+ // ---  Result Type: binder->ResultType()  ---  Binder : binder->DynamicType();
+@@ -1267,7 +1267,6 @@ void Transfer_TransferProcess::StartTrac
+           Msg2075.AddString(bnd->ResultTypeName());
+           Msg2075.TraceEver();  */
+ 	hasres = Standard_True;
+-	if (bnd->Status() == Transfer_StatusUsed) isused = Standard_True;
+       }
+       bnd = bnd->NextResult();
+     }
 Index: oce/src/Units/Units_Sentence.cxx
 ===================================================================
 --- oce.orig/src/Units/Units_Sentence.cxx

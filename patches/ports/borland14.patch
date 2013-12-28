@@ -61,6 +61,19 @@ Index: oce/src/BRepBuilderAPI/BRepBuilderAPI_CellFilter.hxx
 +#endif
 +
  #endif
+Index: oce/src/DDF/DDF_BrowserCommands.cxx
+===================================================================
+--- oce.orig/src/DDF/DDF_BrowserCommands.cxx
++++ oce/src/DDF/DDF_BrowserCommands.cxx
+@@ -113,7 +113,7 @@ static Standard_Integer DFOpenLabel (Dra
+   TDF_Label lab;
+   if (n == 3) TDF_Tool::Label(browser->Data(),a[2],lab);
+ 
+-  TCollection_AsciiString list(lab.IsNull()? browser->OpenRoot() : browser->OpenLabel(lab));
++  TCollection_AsciiString list = lab.IsNull() ? browser->OpenRoot() : browser->OpenLabel(lab);
+   di<<list.ToCString();
+   return 0;
+ }
 Index: oce/src/NCollection/NCollection_Array1.hxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_Array1.hxx
@@ -151,24 +164,11 @@ Index: oce/src/NCollection/NCollection_UBTreeFiller.hxx
  /**
   * This class is used to fill an UBTree in a random order.
   * The quality of a tree is much better (from the point of view of
-Index: oce/src/DDF/DDF_BrowserCommands.cxx
-===================================================================
---- oce.orig/src/DDF/DDF_BrowserCommands.cxx
-+++ oce/src/DDF/DDF_BrowserCommands.cxx
-@@ -113,7 +113,7 @@ static Standard_Integer DFOpenLabel (Dra
-   TDF_Label lab;
-   if (n == 3) TDF_Tool::Label(browser->Data(),a[2],lab);
- 
--  TCollection_AsciiString list(lab.IsNull()? browser->OpenRoot() : browser->OpenLabel(lab));
-+  TCollection_AsciiString list = lab.IsNull() ? browser->OpenRoot() : browser->OpenLabel(lab);
-   di<<list.ToCString();
-   return 0;
- }
 Index: oce/src/OSD/OSD_signal_WNT.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_signal_WNT.cxx
 +++ oce/src/OSD/OSD_signal_WNT.cxx
-@@ -189,6 +189,10 @@ int _resetstkoflw(void)
+@@ -183,6 +183,10 @@ int _resetstkoflw(void)
  
  typedef void (*_se_translator_function)(unsigned int, EXCEPTION_POINTERS*);
  
@@ -183,7 +183,7 @@ Index: oce/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
 +++ oce/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
-@@ -157,7 +157,11 @@ static void drawText(const Handle(OpenGl
+@@ -135,7 +135,11 @@ static char getFarestCorner(float d000,
  }
  
  #ifdef __BORLANDC__
@@ -200,7 +200,7 @@ Index: oce/src/QABugs/QABugs_3.cxx
 ===================================================================
 --- oce.orig/src/QABugs/QABugs_3.cxx
 +++ oce/src/QABugs/QABugs_3.cxx
-@@ -1819,7 +1819,7 @@ static int BUC60831_1(Draw_Interpretor&
+@@ -1818,7 +1818,7 @@ static int BUC60831_1(Draw_Interpretor&
      L.Root().AddAttribute(MDF);
    }
  
@@ -264,7 +264,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
-@@ -1787,7 +1787,7 @@ class FilledCircle : public AIS_Interact
+@@ -1788,7 +1788,7 @@ class FilledCircle : public AIS_Interact
  {
  public:
      // CASCADE RTTI
@@ -282,7 +282,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
  
    MyTextClass(){};
  
-@@ -3173,7 +3173,7 @@ public:
+@@ -3169,7 +3169,7 @@ public:
      myArray = theArray;
    }
  
@@ -291,7 +291,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
  
  private:
  
-@@ -3827,7 +3827,7 @@ class Triangle: public AIS_InteractiveOb
+@@ -4016,7 +4016,7 @@ class Triangle: public AIS_InteractiveOb
  {
  public: 
    // CASCADE RTTI
@@ -300,7 +300,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
    Triangle (const gp_Pnt& theP1, 
              const gp_Pnt& theP2, 
              const gp_Pnt& theP3);
-@@ -4022,7 +4022,7 @@ class SegmentObject: public AIS_Interact
+@@ -4211,7 +4211,7 @@ class SegmentObject: public AIS_Interact
  {
  public:
    // CASCADE RTTI

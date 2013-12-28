@@ -60,7 +60,7 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-@@ -1525,7 +1525,7 @@ static int VSetBgMode(Draw_Interpretor&
+@@ -1686,7 +1686,7 @@ static int VSetBgMode(Draw_Interpretor&
      return 1;
    }
  

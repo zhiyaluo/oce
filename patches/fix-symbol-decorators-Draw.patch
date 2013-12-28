@@ -65,7 +65,7 @@ Index: oce/src/Draw/Draw_Window.hxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.hxx
 +++ oce/src/Draw/Draw_Window.hxx
-@@ -198,11 +198,15 @@ void GetNextEvent(Event&);
+@@ -325,11 +325,15 @@ void GetNextEvent (Standard_Boolean  the
  #define DRAWTITLE "Draw View"
  #define MAXCOLOR  15
  

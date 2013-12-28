@@ -83,7 +83,7 @@ Index: oce/src/BRepLib/BRepLib_FindSurface.cxx
 ===================================================================
 --- oce.orig/src/BRepLib/BRepLib_FindSurface.cxx
 +++ oce/src/BRepLib/BRepLib_FindSurface.cxx
-@@ -203,7 +203,7 @@ void BRepLib_FindSurface::Init(const Top
+@@ -204,7 +204,7 @@ void BRepLib_FindSurface::Init(const Top
  
    TopoDS_Edge E = TopoDS::Edge(ex.Current());
    Standard_Real f,l,ff,ll;
@@ -92,7 +92,7 @@ Index: oce/src/BRepLib/BRepLib_FindSurface.cxx
    Handle(Geom_Surface) SS;
    TopLoc_Location L;
    Standard_Integer i = 0,j;
-@@ -222,7 +222,7 @@ void BRepLib_FindSurface::Init(const Top
+@@ -223,7 +223,7 @@ void BRepLib_FindSurface::Init(const Top
  	while (Standard_True) {
  	  j++;
  	  BRep_Tool::CurveOnSurface(TopoDS::Edge(ex.Current()),
@@ -105,7 +105,7 @@ Index: oce/src/Bisector/Bisector_BisecPC.cxx
 ===================================================================
 --- oce.orig/src/Bisector/Bisector_BisecPC.cxx
 +++ oce/src/Bisector/Bisector_BisecPC.cxx
-@@ -390,11 +390,11 @@ void Bisector_BisecPC::Values(const Stan
+@@ -386,11 +386,11 @@ void Bisector_BisecPC::Values(const Stan
    case 2 :  {curve->D3(UOnCurve,PC,Tu,Tuu,T3u);break;}
    }
    
@@ -120,7 +120,7 @@ Index: oce/src/Bisector/Bisector_BisecPC.cxx
    Standard_Real A1;
  
    if (Abs(NorPPC) > gp::Resolution() && (NorPPC*sign) < 0.) {
-@@ -406,8 +406,8 @@ void Bisector_BisecPC::Values(const Stan
+@@ -402,8 +402,8 @@ void Bisector_BisecPC::Values(const Stan
    if (N == 0) return;                                 // End Calculation Point;
  
    gp_Vec2d      Nu ( - Tuu.Y() , Tuu.X());            // derivative of the normal by U.
@@ -131,7 +131,7 @@ Index: oce/src/Bisector/Bisector_BisecPC.cxx
    Standard_Real NorPPCE2  = NorPPC*NorPPC;
    Standard_Real A2        = TuPPC/NorPPC - 0.5*NuPPC*SquarePPC/NorPPCE2;
  
-@@ -419,8 +419,8 @@ void Bisector_BisecPC::Values(const Stan
+@@ -415,8 +415,8 @@ void Bisector_BisecPC::Values(const Stan
    gp_Vec2d Nuu ( - T3u.Y() , T3u.X());
    
    Standard_Real NorPPCE4 = NorPPCE2*NorPPCE2;
@@ -142,7 +142,7 @@ Index: oce/src/Bisector/Bisector_BisecPC.cxx
    
    Standard_Real A21 = TuuPPC/NorPPC - TuPPC*NuPPC/NorPPCE2;
    Standard_Real A22 = (0.5*NuuPPC*SquarePPC + NuPPC*TuPPC)/NorPPCE2 - 
-@@ -474,12 +474,12 @@ Standard_Real Bisector_BisecPC::Distance
+@@ -470,12 +470,12 @@ Standard_Real Bisector_BisecPC::Distance
    Standard_Real UOnCurve = LinkBisCurve(U);
    
    curve->D1(UOnCurve,PC,Tan);

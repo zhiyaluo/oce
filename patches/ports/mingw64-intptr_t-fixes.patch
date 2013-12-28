@@ -204,31 +204,6 @@ Index: oce/inc/OSD_SharedMemory.hxx
  Standard_Address myAddress;
  TCollection_AsciiString myName;
  Standard_Integer mySize;
-Index: oce/src/TDF/TDF_LabelMapHasher.lxx
-===================================================================
---- oce.orig/src/TDF/TDF_LabelMapHasher.lxx
-+++ oce/src/TDF/TDF_LabelMapHasher.lxx
-@@ -23,6 +23,11 @@
- //Version	Date		Purpose
- //		0.0	Feb 13 1997	Creation
- 
-+#ifdef _MSC_VER
-+#include <stddef.h>
-+#else
-+#include <stdint.h>
-+#endif
- 
- //=======================================================================
- //function : HashCode
-@@ -35,7 +40,7 @@
- inline         Standard_Integer TDF_LabelMapHasher::HashCode
- //#endif
- (const TDF_Label& aLab, const Standard_Integer Upper) 
--{ return 1 + ( (int) (labs((long int) aLab.myLabelNode) % Upper) ); }
-+{ return 1 + ( (Standard_Integer) (uintptr_t(aLab.myLabelNode) % Upper) ); }
- 
-  
- //=======================================================================
 Index: oce/src/OSD/OSD_DirectoryIterator.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_DirectoryIterator.cxx
@@ -339,7 +314,7 @@ Index: oce/src/OSD/OSD_File.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_File.cxx
 +++ oce/src/OSD/OSD_File.cxx
-@@ -845,13 +845,16 @@ Standard_Boolean OSD_File::IsExecutable(
+@@ -846,13 +846,16 @@ Standard_Boolean OSD_File::IsExecutable(
  
  #include <stdio.h>
  #include <io.h>
@@ -355,9 +330,9 @@ Index: oce/src/OSD/OSD_File.cxx
 -#if defined(__CYGWIN32__) || defined(__MINGW32__)
 +#if defined(__CYGWIN32__) || defined(__MINGW32__) || defined(__BORLANDC__)
  #define VAC
- #define _int64 int
+ #define _int64 int64_t
  #endif
-@@ -875,7 +878,7 @@ BOOL                 __fastcall _osd_wnt
+@@ -876,7 +879,7 @@ BOOL                 __fastcall _osd_wnt
                                  );
  BOOL                 __fastcall _osd_print (const Standard_PCharacter, Standard_CString );
  
@@ -366,7 +341,7 @@ Index: oce/src/OSD/OSD_File.cxx
  static DWORDLONG __fastcall _get_line   ( Standard_PCharacter&, DWORD );
  static int       __fastcall _get_buffer ( HANDLE, Standard_PCharacter&, DWORD, BOOL, BOOL );
  static DWORD     __fastcall _get_access_mask ( OSD_SingleProtection );
-@@ -887,7 +890,7 @@ static OSD_SingleProtection __fastcall _
+@@ -888,7 +891,7 @@ static OSD_SingleProtection __fastcall _
  
  typedef OSD_SingleProtection ( __fastcall *GET_PROT_FUNC ) ( DWORD );
  
@@ -375,7 +350,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
  // ---------------------------------------------------------------------
  // Create an empty file object
-@@ -928,7 +931,7 @@ void OSD_File :: Build (
+@@ -929,7 +932,7 @@ void OSD_File :: Build (
     Standard_ProgramError::Raise("OSD_File::Read : it is a directory");
   }
                                          
@@ -384,7 +359,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
    RAISE(  TEXT( "OSD_File :: Build (): incorrect call - file already opened" )  );
  
-@@ -939,9 +942,9 @@ void OSD_File :: Build (
+@@ -940,9 +943,9 @@ void OSD_File :: Build (
  
    RAISE(  TEXT( "OSD_File :: Build (): incorrent call - no filename given" )  );
  
@@ -396,7 +371,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
    _osd_wnt_set_error ( myError, OSD_WFile );
  
-@@ -967,7 +970,7 @@ void OSD_File :: Open (
+@@ -968,7 +971,7 @@ void OSD_File :: Open (
   TCollection_AsciiString fName;
  
  
@@ -405,7 +380,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
    RAISE(  TEXT( "OSD_File :: Open (): incorrect call - file already opened" )  );
  
-@@ -978,9 +981,9 @@ void OSD_File :: Open (
+@@ -979,9 +982,9 @@ void OSD_File :: Open (
  
    RAISE(  TEXT( "OSD_File :: Open (): incorrent call - no filename given" )  );
  
@@ -417,7 +392,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
     _osd_wnt_set_error ( myError, OSD_WFile );
   }
-@@ -1001,7 +1004,7 @@ void OSD_File :: Append (
+@@ -1002,7 +1005,7 @@ void OSD_File :: Append (
   BOOL                    fNew = FALSE;
   TCollection_AsciiString fName;
  
@@ -426,7 +401,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
    RAISE(  TEXT( "OSD_File :: Append (): incorrect call - file already opened" )  );
  
-@@ -1012,9 +1015,9 @@ void OSD_File :: Append (
+@@ -1013,9 +1016,9 @@ void OSD_File :: Append (
  
    RAISE(  TEXT( "OSD_File :: Append (): incorrent call - no filename given" )  );
  
@@ -438,7 +413,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
    _osd_wnt_set_error ( myError, OSD_WFile );
  
-@@ -1119,7 +1122,7 @@ void OSD_File :: ReadLine (
+@@ -1120,7 +1123,7 @@ void OSD_File :: ReadLine (
   if ( myIO & FLAG_FILE ) {
   
    if (  !ReadFile (
@@ -447,7 +422,7 @@ Index: oce/src/OSD/OSD_File.cxx
           )
    ) {  // an error occured
  
-@@ -1146,7 +1149,7 @@ void OSD_File :: ReadLine (
+@@ -1147,7 +1150,7 @@ void OSD_File :: ReadLine (
                                            // peek next character to see if it is a <LF>
  #endif
      if (  !ReadFile (
@@ -456,7 +431,7 @@ Index: oce/src/OSD/OSD_File.cxx
             )
      ) {
      
-@@ -1158,7 +1161,7 @@ void OSD_File :: ReadLine (
+@@ -1159,7 +1162,7 @@ void OSD_File :: ReadLine (
      
       // adjust file position
  
@@ -465,7 +440,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
      } else
       myIO |= FLAG_EOF;
-@@ -1168,7 +1171,7 @@ void OSD_File :: ReadLine (
+@@ -1169,7 +1172,7 @@ void OSD_File :: ReadLine (
     } else {
  
      if ( dwSeekPos != 0 )
@@ -474,7 +449,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
      NbyteRead = ( Standard_Integer )( eos - cBuffer );
  
-@@ -1179,7 +1182,7 @@ void OSD_File :: ReadLine (
+@@ -1180,7 +1183,7 @@ void OSD_File :: ReadLine (
   } else if ( myIO & FLAG_SOCKET || myIO & FLAG_PIPE || myIO & FLAG_NAMED_PIPE ) {
  
    dwBytesRead = ( DWORD )_get_buffer (
@@ -483,7 +458,7 @@ Index: oce/src/OSD/OSD_File.cxx
                            TRUE, myIO & FLAG_SOCKET
                           );
  
-@@ -1212,7 +1215,7 @@ void OSD_File :: ReadLine (
+@@ -1213,7 +1216,7 @@ void OSD_File :: ReadLine (
      NbyteRead = dwBytesRead; // (LD) always fits this case.
  
      dwDummy = _get_buffer (
@@ -492,7 +467,7 @@ Index: oce/src/OSD/OSD_File.cxx
                );
      if (  ( int )dwDummy == -1  ) {  // an error occured
     
-@@ -1241,7 +1244,7 @@ void OSD_File :: ReadLine (
+@@ -1242,7 +1245,7 @@ void OSD_File :: ReadLine (
     Standard_PCharacter cDummyBuffer = new Standard_Character[ NByte + 3 ];
  
     _get_buffer (  // remove pending input
@@ -501,7 +476,7 @@ Index: oce/src/OSD/OSD_File.cxx
     );
     delete [] cDummyBuffer ;
  
-@@ -1293,7 +1296,7 @@ void OSD_File :: ReadLine (
+@@ -1294,7 +1297,7 @@ void OSD_File :: ReadLine (
   if ( myIO & FLAG_FILE ) {
   
    if (  !ReadFile (
@@ -510,7 +485,7 @@ Index: oce/src/OSD/OSD_File.cxx
           )
    ) {  // an error occured
  
-@@ -1320,7 +1323,7 @@ void OSD_File :: ReadLine (
+@@ -1321,7 +1324,7 @@ void OSD_File :: ReadLine (
                                            // peek next character to see if it is a <LF>
  #endif
      if (  !ReadFile (
@@ -519,7 +494,7 @@ Index: oce/src/OSD/OSD_File.cxx
             )
      ) {
      
-@@ -1335,7 +1338,7 @@ void OSD_File :: ReadLine (
+@@ -1336,7 +1339,7 @@ void OSD_File :: ReadLine (
      
       else  // adjust file position
  
@@ -528,7 +503,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
      } else
           
-@@ -1345,7 +1348,7 @@ void OSD_File :: ReadLine (
+@@ -1346,7 +1349,7 @@ void OSD_File :: ReadLine (
  
     } else if ( dwSeekPos != 0 ) {
     
@@ -537,7 +512,7 @@ Index: oce/src/OSD/OSD_File.cxx
      NbyteRead = ( Standard_Integer )( eos - cBuffer );
  
     } else
-@@ -1357,7 +1360,7 @@ void OSD_File :: ReadLine (
+@@ -1358,7 +1361,7 @@ void OSD_File :: ReadLine (
   } else if ( myIO & FLAG_SOCKET || myIO & FLAG_PIPE || myIO & FLAG_NAMED_PIPE ) {
  
    dwBytesRead = ( DWORD )_get_buffer (
@@ -546,7 +521,7 @@ Index: oce/src/OSD/OSD_File.cxx
                            TRUE, myIO & FLAG_SOCKET
                           );
  
-@@ -1385,7 +1388,7 @@ void OSD_File :: ReadLine (
+@@ -1386,7 +1389,7 @@ void OSD_File :: ReadLine (
                                            // peek next character to see if it is a <LF>
  #endif
      dwDummy = _get_buffer (
@@ -555,7 +530,7 @@ Index: oce/src/OSD/OSD_File.cxx
                );
      eos     = cBuffer + dwBytesRead;
  
-@@ -1416,7 +1419,7 @@ void OSD_File :: ReadLine (
+@@ -1417,7 +1420,7 @@ void OSD_File :: ReadLine (
      NbyteRead = ( Standard_Integer )( eos - cBuffer );
  
     _get_buffer (  // remove pending input
@@ -564,7 +539,7 @@ Index: oce/src/OSD/OSD_File.cxx
     );
     *eos = 0;
  
-@@ -1458,7 +1461,7 @@ void OSD_File :: Read (
+@@ -1459,7 +1462,7 @@ void OSD_File :: Read (
    RAISE(  TEXT( "OSD_File :: Read (): attempt to read from write only pipe" )  );
  
   if (  !ReadFile (
@@ -573,7 +548,7 @@ Index: oce/src/OSD/OSD_File.cxx
          )
   ) {
   
-@@ -1504,7 +1507,7 @@ void OSD_File :: Write (
+@@ -1505,7 +1508,7 @@ void OSD_File :: Write (
    RAISE(  TEXT( "OSD_File :: Write (): attempt to write to read only pipe" )  );
  
   if (  !WriteFile (
@@ -582,7 +557,7 @@ Index: oce/src/OSD/OSD_File.cxx
          ) || dwBytesWritten != ( DWORD )Nbyte
   )
  
-@@ -1549,7 +1552,7 @@ void OSD_File :: Seek (
+@@ -1550,7 +1553,7 @@ void OSD_File :: Seek (
    }  // end switch
  
    if (  SetFilePointer (
@@ -591,7 +566,7 @@ Index: oce/src/OSD/OSD_File.cxx
          ) == 0xFFFFFFFF
    )
  
-@@ -1569,9 +1572,9 @@ void OSD_File :: Close () {
+@@ -1570,9 +1573,9 @@ void OSD_File :: Close () {
  
   TEST_RAISE(  TEXT( "Close" )  );
  
@@ -603,7 +578,7 @@ Index: oce/src/OSD/OSD_File.cxx
   myIO          = 0;
  
  }  // end OSD_File :: Close
-@@ -1595,7 +1598,7 @@ OSD_KindFile OSD_File :: KindOfFile () c
+@@ -1596,7 +1599,7 @@ OSD_KindFile OSD_File :: KindOfFile () c
   OSD_KindFile     retVal;
   Standard_Integer flags;
  
@@ -612,7 +587,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
    TCollection_AsciiString fName;
  
-@@ -1606,7 +1609,7 @@ OSD_KindFile OSD_File :: KindOfFile () c
+@@ -1607,7 +1610,7 @@ OSD_KindFile OSD_File :: KindOfFile () c
     RAISE(  TEXT( "OSD_File :: KindOfFile (): incorrent call - no filename given" )  );
  
    flags = _get_file_type (
@@ -621,7 +596,7 @@ Index: oce/src/OSD/OSD_File.cxx
             );
  
   } else
-@@ -1795,7 +1798,7 @@ void OSD_File :: SetLock ( const OSD_Loc
+@@ -1796,7 +1799,7 @@ void OSD_File :: SetLock ( const OSD_Loc
   if (Ret)
   {
    if (  !LockFileEx (
@@ -630,7 +605,7 @@ Index: oce/src/OSD/OSD_File.cxx
           )
    ) {
  
-@@ -1819,7 +1822,7 @@ void OSD_File :: UnLock () {
+@@ -1820,7 +1823,7 @@ void OSD_File :: UnLock () {
   if ( ImperativeFlag ) {
   
    if (  !UnlockFile (
@@ -639,7 +614,7 @@ Index: oce/src/OSD/OSD_File.cxx
           )
    )
     
-@@ -1857,7 +1860,7 @@ Standard_Integer OSD_File :: Size () {
+@@ -1858,7 +1861,7 @@ Standard_Integer OSD_File :: Size () {
   TEST_RAISE(  TEXT( "Size" )  );
  
   retVal = ( Standard_Integer )GetFileSize (
@@ -648,7 +623,7 @@ Index: oce/src/OSD/OSD_File.cxx
                                );
  
   if (  retVal == ( Standard_Integer )0xFFFFFFFF  )
-@@ -1874,7 +1877,7 @@ Standard_Integer OSD_File :: Size () {
+@@ -1875,7 +1878,7 @@ Standard_Integer OSD_File :: Size () {
  
  void OSD_File :: Print ( const OSD_Printer& WhichPrinter ) {
  
@@ -657,7 +632,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
    RAISE(  TEXT( "OSD_File :: Print (): incorrect call - file opened" )  );
  
-@@ -1895,7 +1898,7 @@ void OSD_File :: Print ( const OSD_Print
+@@ -1896,7 +1899,7 @@ void OSD_File :: Print ( const OSD_Print
  
  Standard_Boolean OSD_File :: IsOpen () const {
  
@@ -666,7 +641,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
  }  // end OSD_File :: IsOpen
  
-@@ -2170,11 +2173,11 @@ retry:
+@@ -2171,11 +2174,11 @@ retry:
  }  // end _osd_wnt_protection_to_sd */
  
  
@@ -680,7 +655,7 @@ Index: oce/src/OSD/OSD_File.cxx
   
    _tcscpy (  buff, TEXT( "OSD_File :: " )  );
    _tcscat (  buff, str );
-@@ -2241,7 +2244,7 @@ static DWORDLONG __fastcall _get_line (
+@@ -2242,7 +2245,7 @@ static DWORDLONG __fastcall _get_line (
   }  // end while
  
  #ifdef VAC
@@ -689,7 +664,7 @@ Index: oce/src/OSD/OSD_File.cxx
   retVal = (DWORDLONG) ( (unsigned __int64) retVal & (((unsigned __int64) 0xFFFFFFFF) << 32) );
  #else
   retVal  = (   (  ( DWORDLONG )( ( DWORD )buffer + dwBuffSize )  ) << 32   );
-@@ -2667,16 +2670,16 @@ static HANDLE __fastcall _open_file (
+@@ -2668,16 +2671,16 @@ static HANDLE __fastcall _open_file (
  }  // end _open_file
  
  Standard_Integer __fastcall _get_file_type (
@@ -892,7 +867,7 @@ Index: oce/src/OSD/OSD_Process.cxx
  # include <time.h>
  #endif
  
-@@ -235,6 +235,9 @@ Standard_Integer OSD_Process::Error()con
+@@ -236,6 +236,9 @@ Standard_Integer OSD_Process::Error()con
  
  #include <OSD_WNT_1.hxx>
  #include <lmcons.h> /// pour UNLEN  ( see MSDN about GetUserName() )
@@ -902,7 +877,7 @@ Index: oce/src/OSD/OSD_Process.cxx
  
  #ifdef _MSC_VER
  #pragma warning( disable : 4700 )
-@@ -328,7 +331,7 @@ Standard_Integer OSD_Process :: UserId (
+@@ -329,7 +332,7 @@ Standard_Integer OSD_Process :: UserId (
   if ( hProcessToken != INVALID_HANDLE_VALUE ) CloseHandle ( hProcessToken );
   if ( pTKowner      != NULL                 ) FreeTokenInformation ( pTKowner );
  
@@ -1071,6 +1046,31 @@ Index: oce/src/OpenGl/OpenGl_Context.cxx
  #elif defined(__APPLE__) && !defined(MACOSX_USE_GLX)
    return (myGlLibHandle != NULL) ? dlsym (myGlLibHandle, theFuncName) : NULL;
  #else
+Index: oce/src/TDF/TDF_LabelMapHasher.lxx
+===================================================================
+--- oce.orig/src/TDF/TDF_LabelMapHasher.lxx
++++ oce/src/TDF/TDF_LabelMapHasher.lxx
+@@ -23,6 +23,11 @@
+ //Version	Date		Purpose
+ //		0.0	Feb 13 1997	Creation
+ 
++#ifdef _MSC_VER
++#include <stddef.h>
++#else
++#include <stdint.h>
++#endif
+ 
+ //=======================================================================
+ //function : HashCode
+@@ -35,7 +40,7 @@
+ inline         Standard_Integer TDF_LabelMapHasher::HashCode
+ //#endif
+ (const TDF_Label& aLab, const Standard_Integer Upper) 
+-{ return 1 + ( (int) (labs((long int) aLab.myLabelNode) % Upper) ); }
++{ return 1 + ( (Standard_Integer) (uintptr_t(aLab.myLabelNode) % Upper) ); }
+ 
+  
+ //=======================================================================
 Index: oce/src/Units/Units_Token.cxx
 ===================================================================
 --- oce.orig/src/Units/Units_Token.cxx

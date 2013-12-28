@@ -11,6 +11,28 @@ Subject: [PATCH] Fixed linker errors in static build
  src/Standard/Standard_symlink.c                 |    3 ++-
  5 files changed, 16 insertions(+), 12 deletions(-)
 
+Index: oce/src/InterfaceGraphic/InterfaceGraphic_Palette.c
+===================================================================
+--- oce.orig/src/InterfaceGraphic/InterfaceGraphic_Palette.c
++++ oce/src/InterfaceGraphic/InterfaceGraphic_Palette.c
+@@ -40,6 +40,8 @@ int _a_horreur_du_vide_a_la_compilation;
+ #define BLACK RGB(   0,   0,   0 )
+ #define WHITE RGB( 255, 255, 255 )
+ 
++#include <Standard_Macro.hxx>
++
+ static int s_sysPalIdx[ NB_STATIC_COLORS ] = {
+ 
+             COLOR_SCROLLBAR, 
+@@ -105,7 +107,7 @@ static COLORREF s_sysPalBW[ NB_STATIC_CO
+ static BOOL     s_sysUse;
+ static COLORREF s_sysPal[ NB_STATIC_COLORS ];
+ 
+-__declspec( dllexport ) long InterfaceGraphic_RealizePalette ( HDC hdc, HPALETTE hPal, BOOL fBkg, BOOL fUseStatic ) {
++Standard_EXPORTEXTERN long InterfaceGraphic_RealizePalette ( HDC hdc, HPALETTE hPal, BOOL fBkg, BOOL fUseStatic ) {
+ 
+  int i;
+  long retVal = 0;
 Index: oce/src/InterfaceGraphic/InterfaceGraphic_WNT.hxx
 ===================================================================
 --- oce.orig/src/InterfaceGraphic/InterfaceGraphic_WNT.hxx
@@ -57,28 +79,6 @@ Index: oce/src/Standard/Standard_Atomic.hxx
      }
      #define _InterlockedIncrement InterlockedIncrement
      #define _InterlockedDecrement InterlockedDecrement
-Index: oce/src/InterfaceGraphic/InterfaceGraphic_Palette.c
-===================================================================
---- oce.orig/src/InterfaceGraphic/InterfaceGraphic_Palette.c
-+++ oce/src/InterfaceGraphic/InterfaceGraphic_Palette.c
-@@ -40,6 +40,8 @@ int _a_horreur_du_vide_a_la_compilation;
- #define BLACK RGB(   0,   0,   0 )
- #define WHITE RGB( 255, 255, 255 )
- 
-+#include <Standard_Macro.hxx>
-+
- static int s_sysPalIdx[ NB_STATIC_COLORS ] = {
- 
-             COLOR_SCROLLBAR, 
-@@ -105,7 +107,7 @@ static COLORREF s_sysPalBW[ NB_STATIC_CO
- static BOOL     s_sysUse;
- static COLORREF s_sysPal[ NB_STATIC_COLORS ];
- 
--__declspec( dllexport ) long InterfaceGraphic_RealizePalette ( HDC hdc, HPALETTE hPal, BOOL fBkg, BOOL fUseStatic ) {
-+Standard_EXPORTEXTERN long InterfaceGraphic_RealizePalette ( HDC hdc, HPALETTE hPal, BOOL fBkg, BOOL fUseStatic ) {
- 
-  int i;
-  long retVal = 0;
 Index: oce/src/Standard/Standard_symlink.c
 ===================================================================
 --- oce.orig/src/Standard/Standard_symlink.c

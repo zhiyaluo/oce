@@ -14,18 +14,6 @@ Closes issue #36.
  src/AlienImage/AlienImage_X11XWDFileHeader.cxx |    4 +---
  4 files changed, 4 insertions(+), 7 deletions(-)
 
-Index: oce/src/Aspect/Aspect_XWD.hxx
-===================================================================
---- oce.orig/src/Aspect/Aspect_XWD.hxx
-+++ oce/src/Aspect/Aspect_XWD.hxx
-@@ -20,6 +20,7 @@
- 
- # ifndef WNT
- #  include <X11/XWDFile.h>
-+#  include <X11/X.h>
- # else
- 
- # ifdef WORD64
 Index: oce/src/AlienImage/AlienImage_X11XWDAlienData.cxx
 ===================================================================
 --- oce.orig/src/AlienImage/AlienImage_X11XWDAlienData.cxx
@@ -56,3 +44,15 @@ Index: oce/src/AlienImage/AlienImage_X11XWDFileHeader.cxx
  #include <AlienImage_X11XWDFileHeader.hxx>
  
  const Handle(Standard_Type)& STANDARD_TYPE(AlienImage_X11XWDFileHeader)
+Index: oce/src/Aspect/Aspect_XWD.hxx
+===================================================================
+--- oce.orig/src/Aspect/Aspect_XWD.hxx
++++ oce/src/Aspect/Aspect_XWD.hxx
+@@ -20,6 +20,7 @@
+ 
+ #if !defined(_WIN32) && !defined(__WIN32__) && (!defined(__APPLE__) || defined(MACOSX_USE_GLX))
+ #  include <X11/XWDFile.h>
++#  include <X11/X.h>
+ # else
+ 
+ # ifdef WORD64

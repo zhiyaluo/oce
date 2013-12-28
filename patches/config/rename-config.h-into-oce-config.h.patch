@@ -17,41 +17,6 @@ Date:   Mon Apr 11 22:17:41 2011 +0200
      * Ideally, installed header files should not rely on
        config.h header file at all.
 
-Index: oce/src/Standard/Standard_Macro.hxx
-===================================================================
---- oce.orig/src/Standard/Standard_Macro.hxx
-+++ oce/src/Standard/Standard_Macro.hxx
-@@ -23,7 +23,7 @@
- #ifndef _Standard_Macro_HeaderFile
- # define _Standard_Macro_HeaderFile
- 
--# include <config.h>
-+# include <oce-config.h>
- 
- // Standard OCC macros: Handle(), STANDARD_TYPE()
- # define   Handle(ClassName)      Handle_##ClassName
-Index: oce/src/Standard/Standard_values.h
-===================================================================
---- oce.orig/src/Standard/Standard_values.h
-+++ oce/src/Standard/Standard_values.h
-@@ -26,7 +26,7 @@
- #error "Wrong compiler options has been detected. Add /DWNT option for proper compilation!!!!!"
- #endif
- 
--#include <config.h>
-+#include <oce-config.h>
- 
- #ifndef WNT
- #ifdef HAVE_LIMITS
-@@ -34,7 +34,7 @@
- #elif defined (HAVE_LIMITS_H)
- # include <limits.h>
- #else
--#error "check config.h file or compilation options: either HAVE_LIMITS or HAVE_LIMITS_H should be defined"
-+#error "check oce-config.h file or compilation options: either HAVE_LIMITS or HAVE_LIMITS_H should be defined"
- #endif
- #endif
- 
 Index: oce/src/BRepTest/BRepTest_ChamferCommands.cxx
 ===================================================================
 --- oce.orig/src/BRepTest/BRepTest_ChamferCommands.cxx
@@ -802,6 +767,19 @@ Index: oce/src/Standard/Standard_MMgrOpt.cxx
  #endif
  
  #include <stdio.h>
+Index: oce/src/Standard/Standard_Macro.hxx
+===================================================================
+--- oce.orig/src/Standard/Standard_Macro.hxx
++++ oce/src/Standard/Standard_Macro.hxx
+@@ -23,7 +23,7 @@
+ #ifndef _Standard_Macro_HeaderFile
+ # define _Standard_Macro_HeaderFile
+ 
+-# include <config.h>
++# include <oce-config.h>
+ 
+ // Standard OCC macros: Handle(), STANDARD_TYPE()
+ # define   Handle(ClassName)      Handle_##ClassName
 Index: oce/src/Standard/Standard_Type.cxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_Type.cxx
@@ -828,6 +806,28 @@ Index: oce/src/Standard/Standard_osd_ffi.c
  #endif
  
  /* This hack is required to get HP's c89 to include a definition for DIR */
+Index: oce/src/Standard/Standard_values.h
+===================================================================
+--- oce.orig/src/Standard/Standard_values.h
++++ oce/src/Standard/Standard_values.h
+@@ -26,7 +26,7 @@
+ #error "Wrong compiler options has been detected. Add /DWNT option for proper compilation!!!!!"
+ #endif
+ 
+-#include <config.h>
++#include <oce-config.h>
+ 
+ #ifndef WNT
+ #ifdef HAVE_LIMITS
+@@ -34,7 +34,7 @@
+ #elif defined (HAVE_LIMITS_H)
+ # include <limits.h>
+ #else
+-#error "check config.h file or compilation options: either HAVE_LIMITS or HAVE_LIMITS_H should be defined"
++#error "check oce-config.h file or compilation options: either HAVE_LIMITS or HAVE_LIMITS_H should be defined"
+ #endif
+ #endif
+ 
 Index: oce/src/Storage/Storage_Schema.cxx
 ===================================================================
 --- oce.orig/src/Storage/Storage_Schema.cxx

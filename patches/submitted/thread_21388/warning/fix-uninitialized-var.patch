@@ -344,236 +344,6 @@ Subject: [PATCH 10/11] [warning-fix][uninitialized-var] Fixes warnings like :
  src/OSD/OSD_Process.cxx |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
-Index: oce/src/AppParCurves/AppParCurves_ResolConstraint.gxx
-===================================================================
---- oce.orig/src/AppParCurves/AppParCurves_ResolConstraint.gxx
-+++ oce/src/AppParCurves/AppParCurves_ResolConstraint.gxx
-@@ -79,7 +79,7 @@ AppParCurves_ResolConstraint::
-   Standard_Integer Inc3, IncSec, IncCol, IP, CCol;
-   Standard_Integer myindex, Def = SCurv.NbPoles()-1;    
-   Standard_Integer nb3d, nb2d, Npol= Def+1, Npol2 = 2*Npol;
--  Standard_Real T1, T2, T3, Tmax, Daij;
-+  Standard_Real T1 = 0, T2, T3, Tmax, Daij;
-   Standard_Boolean Ok;
-   gp_Vec V;
-   gp_Vec2d V2d;
-Index: oce/src/AppParCurves/AppParCurves_Variational_1.gxx
-===================================================================
---- oce.orig/src/AppParCurves/AppParCurves_Variational_1.gxx
-+++ oce/src/AppParCurves/AppParCurves_Variational_1.gxx
-@@ -60,7 +60,7 @@ void AppParCurves_Variational::TheMotor(
-   Standard_Integer NbrPnt = myLastPoint - myFirstPoint + 1;
-   Standard_Integer NbrConstraint = myNbPassPoints + myNbTangPoints + myNbCurvPoints;
-   Handle(FEmTool_Curve) CCurrent, COld, CNew;
--  Standard_Real EpsLength;// = 1.e-6 * CBLONG / NbrPnt;
-+  Standard_Real EpsLength = Precision::Confusion();// = 1.e-6 * CBLONG / NbrPnt;
-   Standard_Real EpsDeg; // = Min(WQuality * .1, CBLONG * .001);
- 
-   Standard_Real e1, e2, e3;
-Index: oce/src/Approx/Approx_ComputeCLine.gxx
-===================================================================
---- oce.orig/src/Approx/Approx_ComputeCLine.gxx
-+++ oce/src/Approx/Approx_ComputeCLine.gxx
-@@ -28,6 +28,7 @@
- #include <TColStd_Array1OfReal.hxx>
- #include <AppParCurves_Constraint.hxx>
- #include <Approx_Status.hxx>
-+#include <Precision.hxx>
- 
- //=======================================================================
- //function : Approx_ComputeCLine
-@@ -94,7 +95,7 @@ void Approx_ComputeCLine::Perform(const
-   Standard_Real UFirst, ULast;
-   Standard_Boolean Finish = Standard_False, 
-           begin = Standard_True, Ok = Standard_False;
--  Standard_Real thetol3d, thetol2d;
-+  Standard_Real thetol3d = Precision::Confusion(), thetol2d = Precision::Confusion();
-   UFirst = LineTool::FirstParameter(Line);
-   ULast  = LineTool::LastParameter(Line);
-   Standard_Real TolU = (ULast-UFirst)*1.e-05;
-@@ -116,7 +117,7 @@ void Approx_ComputeCLine::Perform(const
- 
-     // previous decision to be taken if we get worse with next cut (eap)
-     AppParCurves_MultiCurve KeptMultiCurve;
--    Standard_Real KeptUfirst, KeptUlast, KeptT3d, KeptT2d;
-+    Standard_Real KeptUfirst, KeptUlast = RealLast(), KeptT3d, KeptT2d;
-     Standard_Integer NbWorseDecis = 0, NbAllowedBadDecis = 10;
-     
-     KeptT3d = RealLast(); KeptT2d = 0;
-Index: oce/src/Blend/Blend_Walking_1.gxx
-===================================================================
---- oce.orig/src/Blend/Blend_Walking_1.gxx
-+++ oce/src/Blend/Blend_Walking_1.gxx
-@@ -260,8 +260,8 @@ Standard_Boolean Blend_Walking::PerformF
-   math_Vector tolerance(1,4),infbound(1,4),supbound(1,4);
-   math_Vector solrst1(1,4),solrst2(1,4);
-   TheExtremity Ext1,Ext2;
--  Standard_Integer Index1,Index2,nbarc;
--  Standard_Boolean Isvtx1,Isvtx2;
-+  Standard_Integer Index1 = -1,Index2 = -1,nbarc = 0;
-+  Standard_Boolean Isvtx1 = false,Isvtx2 = false;
-   TheVertex Vtx1,Vtx2;
-   gp_Pnt2d p2d;
- 
-Index: oce/src/Blend/Blend_Walking_3.gxx
-===================================================================
---- oce.orig/src/Blend/Blend_Walking_3.gxx
-+++ oce/src/Blend/Blend_Walking_3.gxx
-@@ -29,7 +29,7 @@ Standard_Integer Blend_Walking::ArcToRec
-   Standard_Boolean ok = Standard_False;
-   Standard_Boolean byinter = (line->NbPoints() != 0), okinter = 0;
-   Standard_Real distmin = RealLast();
--  Standard_Real uprev,vprev, prm, dist;
-+  Standard_Real uprev = 0,vprev = 0, prm = 0.0, dist = 0.0;
-   Handle(TheTopolTool) Iter;
- 
-   if (OnFirst) {
-Index: oce/src/Blend/Blend_Walking_4.gxx
-===================================================================
---- oce.orig/src/Blend/Blend_Walking_4.gxx
-+++ oce/src/Blend/Blend_Walking_4.gxx
-@@ -91,9 +91,9 @@ void Blend_Walking::InternalPerform(Blen
-   Blend_Status State = Blend_OnRst12;
-   TopAbs_State situ1 =TopAbs_IN,situ2=TopAbs_IN;
-   Standard_Real w1,w2;
--  Standard_Integer Index1,Index2,nbarc;
--  Standard_Boolean Arrive,recad1,recad2, control;
--  Standard_Boolean Isvtx1,Isvtx2,echecrecad;
-+  Standard_Integer Index1 = 0,Index2 = 0,nbarc = 0;
-+  Standard_Boolean Arrive = false ,recad1 = false ,recad2 = false , control = false;
-+  Standard_Boolean Isvtx1 = false ,Isvtx2 = false ,echecrecad = false;
-   gp_Pnt2d p2d;
-   math_Vector tolerance(1,4),infbound(1,4),supbound(1,4),parinit(1,4);
-   math_Vector solrst1(1,4),solrst2(1,4);
-Index: oce/src/Contap/Contap_ContourGen_3.gxx
-===================================================================
---- oce.orig/src/Contap/Contap_ContourGen_3.gxx
-+++ oce/src/Contap/Contap_ContourGen_3.gxx
-@@ -86,7 +86,7 @@ static void PutPointsOnLine (const Conta
- 
-   gp_Pnt ptonsurf;
-   gp_Vec vectg,normale,tgtrst;
--  Standard_Real paramlin;
-+  Standard_Real paramlin = 0;
- 
-   
-   Standard_Integer nbLin = slin.Length();
-@@ -156,7 +156,7 @@ IntSurf_TypeTrans ComputeTransitionOngpL
-   gp_Pnt P;
-   gp_Vec T;
-   ElCLib::D1(0.0,L,P,T);
--  Standard_Real u,v;
-+  Standard_Real u = 0.0,v= 0.0;
-   switch (typS) {
-   case GeomAbs_Cylinder: {
-     ElSLib::Parameters(TheSurfaceTool::Cylinder(Surf),P,u,v);
-@@ -186,7 +186,7 @@ IntSurf_TypeTrans ComputeTransitionOngpC
-   gp_Pnt P;
-   gp_Vec T;
-   ElCLib::D1(0.0,C,P,T);
--  Standard_Real u,v;
-+  Standard_Real u= 0.0,v= 0.0;
-   switch (typS) {
-   case GeomAbs_Cylinder: {
-     ElSLib::Parameters(TheSurfaceTool::Cylinder(Surf),P,u,v);
-Index: oce/src/GCPnts/GCPnts_TangentialDeflection.gxx
-===================================================================
---- oce.orig/src/GCPnts/GCPnts_TangentialDeflection.gxx
-+++ oce/src/GCPnts/GCPnts_TangentialDeflection.gxx
-@@ -252,7 +252,7 @@ void GCPnts_TangentialDeflection::Perfor
-   Standard_Integer i;       
-   gp_XYZ V1, V2;
-   gp_Pnt MiddlePoint, CurrentPoint, LastPoint;   
--  Standard_Real Du, Dusave, MiddleU, L1, L2;
-+  Standard_Real Du, Dusave, MiddleU = 0.0, L1 = 0.0, L2 = 0.0;
- 
-   Standard_Real U1       = firstu;   
-   Standard_Real LTol     = Precision::Confusion ();  //protection longueur nulle
-Index: oce/src/GProp/GProp_UFunction.gxx
-===================================================================
---- oce.orig/src/GProp/GProp_UFunction.gxx
-+++ oce/src/GProp/GProp_UFunction.gxx
-@@ -115,7 +115,7 @@ Standard_Boolean GProp_UFunction::Center
- {
-   gp_XYZ        aPmP0;
-   Standard_Real aS;
--  Standard_Real aD1;
-+  Standard_Real aD1 = 0;
- 
-   F = VolumeValue(X, aPmP0, aS, aD1);
- 
-@@ -155,8 +155,8 @@ Standard_Boolean GProp_UFunction::Inerti
- 					             Standard_Real &F)
- {
-   gp_XYZ        aPmP0;
--  Standard_Real aS;
--  Standard_Real aD1;
-+  Standard_Real aS = 0;
-+  Standard_Real aD1 = 0;
-   Standard_Real aParam1;
-   Standard_Real aParam2;
-   Standard_Real *aCoeffs = (Standard_Real *)myCoeffs;
-Index: oce/src/IntCurveSurface/IntCurveSurface_Inter.gxx
-===================================================================
---- oce.orig/src/IntCurveSurface/IntCurveSurface_Inter.gxx
-+++ oce/src/IntCurveSurface/IntCurveSurface_Inter.gxx
-@@ -1587,7 +1587,7 @@ void SectionPointToParameters(const Intf
-   gp_Pnt P(Sp.Pnt());
-   
-   Standard_Integer Pt1,Pt2,Pt3;
--  Standard_Real u1,v1,param;
-+  Standard_Real u1 = 0,v1 = 0,param = 0;
-   //----------------------------------------------------------------------
-   //--          Calcul des parametres approches sur la surface          --
-   //----------------------------------------------------------------------
-Index: oce/src/IntPatch/IntPatch_ImpImpIntersection_0.gxx
-===================================================================
---- oce.orig/src/IntPatch/IntPatch_ImpImpIntersection_0.gxx
-+++ oce/src/IntPatch/IntPatch_ImpImpIntersection_0.gxx
-@@ -1232,7 +1232,7 @@ Standard_Boolean  SingleLine (const gp_P
- 
-   IntPatch_IType typarc = lin->ArcType();
- 
--  Standard_Real parproj;
-+  Standard_Real parproj = 0.0;
-   gp_Vec tgint;
-   gp_Pnt ptproj;
-   Standard_Boolean retvalue;
-Index: oce/src/IntStart/IntStart_SearchOnBoundaries_1.gxx
-===================================================================
---- oce.orig/src/IntStart/IntStart_SearchOnBoundaries_1.gxx
-+++ oce/src/IntStart/IntStart_SearchOnBoundaries_1.gxx
-@@ -143,7 +143,7 @@ void BoundedArc (const TheArc& A,
-   Standard_Integer i,Nbi,Nbp;
- 
-   gp_Pnt ptdeb,ptfin;
--  Standard_Real pardeb,parfin;
-+  Standard_Real pardeb = 0,parfin = 0;
-   Standard_Integer ideb,ifin,range,ranged,rangef;
-   
- 
-@@ -524,7 +524,7 @@ void InfiniteArc (const TheArc& A,
-   Standard_Integer i,Nbi,Nbp;
- 
-   gp_Pnt ptdeb,ptfin;
--  Standard_Real pardeb,parfin;
-+  Standard_Real pardeb = 0.0,parfin = 0.0;
-   Standard_Integer ideb,ifin,range,ranged,rangef;
-   
- 
-Index: oce/src/IntWalk/IntWalk_IWalking_4.gxx
-===================================================================
---- oce.orig/src/IntWalk/IntWalk_IWalking_4.gxx
-+++ oce/src/IntWalk/IntWalk_IWalking_4.gxx
-@@ -51,7 +51,7 @@ void IntWalk_IWalking::ComputeCloseLine(
- // ******************************************************************** 
- {
- 
--  Standard_Integer I,N;
-+  Standard_Integer I,N = 0;
-   static math_Vector BornInf(1,2),BornSup(1,2);
-   static math_Vector Uvap(1,2);// parameters of current approach
-   Standard_Real PasC;  // rate of advancement on the tangent
 Index: oce/src/AIS/AIS_Axis.cxx
 ===================================================================
 --- oce.orig/src/AIS/AIS_Axis.cxx
@@ -765,6 +535,62 @@ Index: oce/src/AdvApprox/AdvApprox_SimpleApprox.cxx
    for (k=0; k<=DegreeQ; k+=2) {
      for (idim=1; idim<=myTotalDimension; idim++) {
        Sum=0.;
+Index: oce/src/AppParCurves/AppParCurves_ResolConstraint.gxx
+===================================================================
+--- oce.orig/src/AppParCurves/AppParCurves_ResolConstraint.gxx
++++ oce/src/AppParCurves/AppParCurves_ResolConstraint.gxx
+@@ -79,7 +79,7 @@ AppParCurves_ResolConstraint::
+   Standard_Integer Inc3, IncSec, IncCol, IP, CCol;
+   Standard_Integer myindex, Def = SCurv.NbPoles()-1;    
+   Standard_Integer nb3d, nb2d, Npol= Def+1, Npol2 = 2*Npol;
+-  Standard_Real T1, T2, T3, Tmax, Daij;
++  Standard_Real T1 = 0, T2, T3, Tmax, Daij;
+   Standard_Boolean Ok;
+   gp_Vec V;
+   gp_Vec2d V2d;
+Index: oce/src/AppParCurves/AppParCurves_Variational_1.gxx
+===================================================================
+--- oce.orig/src/AppParCurves/AppParCurves_Variational_1.gxx
++++ oce/src/AppParCurves/AppParCurves_Variational_1.gxx
+@@ -60,7 +60,7 @@ void AppParCurves_Variational::TheMotor(
+   Standard_Integer NbrPnt = myLastPoint - myFirstPoint + 1;
+   Standard_Integer NbrConstraint = myNbPassPoints + myNbTangPoints + myNbCurvPoints;
+   Handle(FEmTool_Curve) CCurrent, COld, CNew;
+-  Standard_Real EpsLength;// = 1.e-6 * CBLONG / NbrPnt;
++  Standard_Real EpsLength = Precision::Confusion();// = 1.e-6 * CBLONG / NbrPnt;
+   Standard_Real EpsDeg; // = Min(WQuality * .1, CBLONG * .001);
+ 
+   Standard_Real e1, e2, e3;
+Index: oce/src/Approx/Approx_ComputeCLine.gxx
+===================================================================
+--- oce.orig/src/Approx/Approx_ComputeCLine.gxx
++++ oce/src/Approx/Approx_ComputeCLine.gxx
+@@ -28,6 +28,7 @@
+ #include <TColStd_Array1OfReal.hxx>
+ #include <AppParCurves_Constraint.hxx>
+ #include <Approx_Status.hxx>
++#include <Precision.hxx>
+ 
+ //=======================================================================
+ //function : Approx_ComputeCLine
+@@ -94,7 +95,7 @@ void Approx_ComputeCLine::Perform(const
+   Standard_Real UFirst, ULast;
+   Standard_Boolean Finish = Standard_False, 
+           begin = Standard_True, Ok = Standard_False;
+-  Standard_Real thetol3d, thetol2d;
++  Standard_Real thetol3d = Precision::Confusion(), thetol2d = Precision::Confusion();
+   UFirst = LineTool::FirstParameter(Line);
+   ULast  = LineTool::LastParameter(Line);
+   Standard_Real TolU = (ULast-UFirst)*1.e-05;
+@@ -116,7 +117,7 @@ void Approx_ComputeCLine::Perform(const
+ 
+     // previous decision to be taken if we get worse with next cut (eap)
+     AppParCurves_MultiCurve KeptMultiCurve;
+-    Standard_Real KeptUfirst, KeptUlast, KeptT3d, KeptT2d;
++    Standard_Real KeptUfirst, KeptUlast = RealLast(), KeptT3d, KeptT2d;
+     Standard_Integer NbWorseDecis = 0, NbAllowedBadDecis = 10;
+     
+     KeptT3d = RealLast(); KeptT2d = 0;
 Index: oce/src/Approx/Approx_SameParameter.cxx
 ===================================================================
 --- oce.orig/src/Approx/Approx_SameParameter.cxx
@@ -1034,6 +860,51 @@ Index: oce/src/BinTools/BinTools_ShapeSet.cxx
    Standard_Real PfX,PfY,PlX,PlY;
    gp_Pnt2d aPf, aPl;
    Standard_Boolean closed, bval;
+Index: oce/src/Blend/Blend_Walking_1.gxx
+===================================================================
+--- oce.orig/src/Blend/Blend_Walking_1.gxx
++++ oce/src/Blend/Blend_Walking_1.gxx
+@@ -260,8 +260,8 @@ Standard_Boolean Blend_Walking::PerformF
+   math_Vector tolerance(1,4),infbound(1,4),supbound(1,4);
+   math_Vector solrst1(1,4),solrst2(1,4);
+   TheExtremity Ext1,Ext2;
+-  Standard_Integer Index1,Index2,nbarc;
+-  Standard_Boolean Isvtx1,Isvtx2;
++  Standard_Integer Index1 = -1,Index2 = -1,nbarc = 0;
++  Standard_Boolean Isvtx1 = false,Isvtx2 = false;
+   TheVertex Vtx1,Vtx2;
+   gp_Pnt2d p2d;
+ 
+Index: oce/src/Blend/Blend_Walking_3.gxx
+===================================================================
+--- oce.orig/src/Blend/Blend_Walking_3.gxx
++++ oce/src/Blend/Blend_Walking_3.gxx
+@@ -29,7 +29,7 @@ Standard_Integer Blend_Walking::ArcToRec
+   Standard_Boolean ok = Standard_False;
+   Standard_Boolean byinter = (line->NbPoints() != 0), okinter = 0;
+   Standard_Real distmin = RealLast();
+-  Standard_Real uprev,vprev, prm, dist;
++  Standard_Real uprev = 0,vprev = 0, prm = 0.0, dist = 0.0;
+   Handle(TheTopolTool) Iter;
+ 
+   if (OnFirst) {
+Index: oce/src/Blend/Blend_Walking_4.gxx
+===================================================================
+--- oce.orig/src/Blend/Blend_Walking_4.gxx
++++ oce/src/Blend/Blend_Walking_4.gxx
+@@ -91,9 +91,9 @@ void Blend_Walking::InternalPerform(Blen
+   Blend_Status State = Blend_OnRst12;
+   TopAbs_State situ1 =TopAbs_IN,situ2=TopAbs_IN;
+   Standard_Real w1,w2;
+-  Standard_Integer Index1,Index2,nbarc;
+-  Standard_Boolean Arrive,recad1,recad2, control;
+-  Standard_Boolean Isvtx1,Isvtx2,echecrecad;
++  Standard_Integer Index1 = 0,Index2 = 0,nbarc = 0;
++  Standard_Boolean Arrive = false ,recad1 = false ,recad2 = false , control = false;
++  Standard_Boolean Isvtx1 = false ,Isvtx2 = false ,echecrecad = false;
+   gp_Pnt2d p2d;
+   math_Vector tolerance(1,4),infbound(1,4),supbound(1,4),parinit(1,4);
+   math_Vector solrst1(1,4),solrst2(1,4);
 Index: oce/src/ChFi3d/ChFi3d_Builder_0.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder_0.cxx
@@ -1103,7 +974,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_C2.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder_C2.cxx
 +++ oce/src/ChFi3d/ChFi3d_Builder_C2.cxx
-@@ -327,7 +327,7 @@ Standard_Integer ChFi3d_Builder::Perform
+@@ -327,7 +327,7 @@ Standard_Boolean ChFi3d_Builder::Perform
        Reduce(UIntPC1,UIntPC2,HS1,HS2);
      }
      
@@ -1205,6 +1076,37 @@ Index: oce/src/ChFiDS/ChFiDS_FilSpine.cxx
    Standard_Integer i;
    for (i = 1; i < parandrad.Length(); i++)
      {
+Index: oce/src/Contap/Contap_ContourGen_3.gxx
+===================================================================
+--- oce.orig/src/Contap/Contap_ContourGen_3.gxx
++++ oce/src/Contap/Contap_ContourGen_3.gxx
+@@ -86,7 +86,7 @@ static void PutPointsOnLine (const Conta
+ 
+   gp_Pnt ptonsurf;
+   gp_Vec vectg,normale,tgtrst;
+-  Standard_Real paramlin;
++  Standard_Real paramlin = 0;
+ 
+   
+   Standard_Integer nbLin = slin.Length();
+@@ -156,7 +156,7 @@ IntSurf_TypeTrans ComputeTransitionOngpL
+   gp_Pnt P;
+   gp_Vec T;
+   ElCLib::D1(0.0,L,P,T);
+-  Standard_Real u,v;
++  Standard_Real u = 0.0,v= 0.0;
+   switch (typS) {
+   case GeomAbs_Cylinder: {
+     ElSLib::Parameters(TheSurfaceTool::Cylinder(Surf),P,u,v);
+@@ -186,7 +186,7 @@ IntSurf_TypeTrans ComputeTransitionOngpC
+   gp_Pnt P;
+   gp_Vec T;
+   ElCLib::D1(0.0,C,P,T);
+-  Standard_Real u,v;
++  Standard_Real u= 0.0,v= 0.0;
+   switch (typS) {
+   case GeomAbs_Cylinder: {
+     ElSLib::Parameters(TheSurfaceTool::Cylinder(Surf),P,u,v);
 Index: oce/src/Convert/Convert_ConicToBSplineCurve.cxx
 ===================================================================
 --- oce.orig/src/Convert/Convert_ConicToBSplineCurve.cxx
@@ -1290,6 +1192,43 @@ Index: oce/src/DrawTrSurf/DrawTrSurf.cxx
    if (is3d)
      is >> x >> y >> z;
    else
+Index: oce/src/GCPnts/GCPnts_TangentialDeflection.gxx
+===================================================================
+--- oce.orig/src/GCPnts/GCPnts_TangentialDeflection.gxx
++++ oce/src/GCPnts/GCPnts_TangentialDeflection.gxx
+@@ -252,7 +252,7 @@ void GCPnts_TangentialDeflection::Perfor
+   Standard_Integer i;       
+   gp_XYZ V1, V2;
+   gp_Pnt MiddlePoint, CurrentPoint, LastPoint;   
+-  Standard_Real Du, Dusave, MiddleU, L1, L2;
++  Standard_Real Du, Dusave, MiddleU = 0.0, L1 = 0.0, L2 = 0.0;
+ 
+   Standard_Real U1       = firstu;   
+   Standard_Real LTol     = Precision::Confusion ();  //protection longueur nulle
+Index: oce/src/GProp/GProp_UFunction.gxx
+===================================================================
+--- oce.orig/src/GProp/GProp_UFunction.gxx
++++ oce/src/GProp/GProp_UFunction.gxx
+@@ -115,7 +115,7 @@ Standard_Boolean GProp_UFunction::Center
+ {
+   gp_XYZ        aPmP0;
+   Standard_Real aS;
+-  Standard_Real aD1;
++  Standard_Real aD1 = 0;
+ 
+   F = VolumeValue(X, aPmP0, aS, aD1);
+ 
+@@ -155,8 +155,8 @@ Standard_Boolean GProp_UFunction::Inerti
+ 					             Standard_Real &F)
+ {
+   gp_XYZ        aPmP0;
+-  Standard_Real aS;
+-  Standard_Real aD1;
++  Standard_Real aS = 0;
++  Standard_Real aD1 = 0;
+   Standard_Real aParam1;
+   Standard_Real aParam2;
+   Standard_Real *aCoeffs = (Standard_Real *)myCoeffs;
 Index: oce/src/Geom/Geom_OffsetSurface.cxx
 ===================================================================
 --- oce.orig/src/Geom/Geom_OffsetSurface.cxx
@@ -1696,6 +1635,19 @@ Index: oce/src/IntCurve/IntCurve_IntConicConic_Tool.cxx
  
  Interval::Interval(const Standard_Real a,const Standard_Real b) { 
    HasFirstBound=HasLastBound=Standard_True;
+Index: oce/src/IntCurveSurface/IntCurveSurface_Inter.gxx
+===================================================================
+--- oce.orig/src/IntCurveSurface/IntCurveSurface_Inter.gxx
++++ oce/src/IntCurveSurface/IntCurveSurface_Inter.gxx
+@@ -1587,7 +1587,7 @@ void SectionPointToParameters(const Intf
+   gp_Pnt P(Sp.Pnt());
+   
+   Standard_Integer Pt1,Pt2,Pt3;
+-  Standard_Real u1,v1,param;
++  Standard_Real u1 = 0,v1 = 0,param = 0;
+   //----------------------------------------------------------------------
+   //--          Calcul des parametres approches sur la surface          --
+   //----------------------------------------------------------------------
 Index: oce/src/IntPatch/IntPatch_ALineToWLine.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_ALineToWLine.cxx
@@ -1718,6 +1670,19 @@ Index: oce/src/IntPatch/IntPatch_ALineToWLine.cxx
    Standard_Real aU1, aV1, aU2, aV2;
    gp_Pnt aP1, aP2, aPx;
    gp_Pnt2d  aP2D1, aP2D2, aPLim(0., 0.);
+Index: oce/src/IntPatch/IntPatch_ImpImpIntersection_0.gxx
+===================================================================
+--- oce.orig/src/IntPatch/IntPatch_ImpImpIntersection_0.gxx
++++ oce/src/IntPatch/IntPatch_ImpImpIntersection_0.gxx
+@@ -1232,7 +1232,7 @@ Standard_Boolean  SingleLine (const gp_P
+ 
+   IntPatch_IType typarc = lin->ArcType();
+ 
+-  Standard_Real parproj;
++  Standard_Real parproj = 0.0;
+   gp_Vec tgint;
+   gp_Pnt ptproj;
+   Standard_Boolean retvalue;
 Index: oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
@@ -1744,6 +1709,28 @@ Index: oce/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
  	for(U=resu0,i=0; i<SU1; i++,U+=du1) { 
  	  for(V=resv0,j=0; j<SV1; V+=dv1,j++) {       
  	    //-- On place les 3 meilleures valeurs dans Dist1,Dist2,Dist3
+Index: oce/src/IntStart/IntStart_SearchOnBoundaries_1.gxx
+===================================================================
+--- oce.orig/src/IntStart/IntStart_SearchOnBoundaries_1.gxx
++++ oce/src/IntStart/IntStart_SearchOnBoundaries_1.gxx
+@@ -143,7 +143,7 @@ void BoundedArc (const TheArc& A,
+   Standard_Integer i,Nbi,Nbp;
+ 
+   gp_Pnt ptdeb,ptfin;
+-  Standard_Real pardeb,parfin;
++  Standard_Real pardeb = 0,parfin = 0;
+   Standard_Integer ideb,ifin,range,ranged,rangef;
+   
+ 
+@@ -524,7 +524,7 @@ void InfiniteArc (const TheArc& A,
+   Standard_Integer i,Nbi,Nbp;
+ 
+   gp_Pnt ptdeb,ptfin;
+-  Standard_Real pardeb,parfin;
++  Standard_Real pardeb = 0.0,parfin = 0.0;
+   Standard_Integer ideb,ifin,range,ranged,rangef;
+   
+ 
 Index: oce/src/IntTools/IntTools_EdgeFace.cxx
 ===================================================================
 --- oce.orig/src/IntTools/IntTools_EdgeFace.cxx
@@ -1757,6 +1744,19 @@ Index: oce/src/IntTools/IntTools_EdgeFace.cxx
  
    GeomAPI_ProjectPointOnSurf& aLocProj = myContext->ProjPS(myFace);
    aLocProj.Perform(P);
+Index: oce/src/IntWalk/IntWalk_IWalking_4.gxx
+===================================================================
+--- oce.orig/src/IntWalk/IntWalk_IWalking_4.gxx
++++ oce/src/IntWalk/IntWalk_IWalking_4.gxx
+@@ -51,7 +51,7 @@ void IntWalk_IWalking::ComputeCloseLine(
+ // ******************************************************************** 
+ {
+ 
+-  Standard_Integer I,N;
++  Standard_Integer I,N = 0;
+   static math_Vector BornInf(1,2),BornSup(1,2);
+   static math_Vector Uvap(1,2);// parameters of current approach
+   Standard_Real PasC;  // rate of advancement on the tangent
 Index: oce/src/Interface/Interface_FloatWriter.cxx
 ===================================================================
 --- oce.orig/src/Interface/Interface_FloatWriter.cxx

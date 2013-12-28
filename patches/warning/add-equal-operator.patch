@@ -15,6 +15,33 @@ is required.
  src/LDOM/LDOM_CharReference.cxx  |    3 +++
  6 files changed, 20 insertions(+), 1 deletions(-)
 
+Index: oce/src/Extrema/Extrema_GenExtPS.cxx
+===================================================================
+--- oce.orig/src/Extrema/Extrema_GenExtPS.cxx
++++ oce/src/Extrema/Extrema_GenExtPS.cxx
+@@ -52,6 +52,8 @@
+ 
+ class Bnd_SphereUBTreeSelector : public Extrema_UBTreeOfSphere::Selector
+ {
++  // Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
++  Bnd_SphereUBTreeSelector & operator=( const Bnd_SphereUBTreeSelector & ) { return *this; }
+  public:
+ 
+   Bnd_SphereUBTreeSelector (const Handle(Bnd_HArray1OfSphere)& theSphereArray,
+Index: oce/src/LDOM/LDOM_CharReference.cxx
+===================================================================
+--- oce.orig/src/LDOM/LDOM_CharReference.cxx
++++ oce/src/LDOM/LDOM_CharReference.cxx
+@@ -40,6 +40,9 @@ struct entityRef {
+   const char * name;
+   const int    length;
+   entityRef (const char * aName, const int aLen) : name(aName), length(aLen) {}
++private:
++  // Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
++  entityRef & operator = (const entityRef & ) { return *this; }
+ };
+ 
+ //=======================================================================
 Index: oce/src/LDOM/LDOM_MemManager.hxx
 ===================================================================
 --- oce.orig/src/LDOM/LDOM_MemManager.hxx
@@ -82,30 +109,3 @@ Index: oce/src/VrmlData/VrmlData_ShapeConvert.hxx
  
    typedef struct {
      TCollection_AsciiString Name;
-Index: oce/src/Extrema/Extrema_GenExtPS.cxx
-===================================================================
---- oce.orig/src/Extrema/Extrema_GenExtPS.cxx
-+++ oce/src/Extrema/Extrema_GenExtPS.cxx
-@@ -52,6 +52,8 @@
- 
- class Bnd_SphereUBTreeSelector : public Extrema_UBTreeOfSphere::Selector
- {
-+  // Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
-+  Bnd_SphereUBTreeSelector & operator=( const Bnd_SphereUBTreeSelector & ) { return *this; }
-  public:
- 
-   Bnd_SphereUBTreeSelector (const Handle(Bnd_HArray1OfSphere)& theSphereArray,
-Index: oce/src/LDOM/LDOM_CharReference.cxx
-===================================================================
---- oce.orig/src/LDOM/LDOM_CharReference.cxx
-+++ oce/src/LDOM/LDOM_CharReference.cxx
-@@ -40,6 +40,9 @@ struct entityRef {
-   const char * name;
-   const int    length;
-   entityRef (const char * aName, const int aLen) : name(aName), length(aLen) {}
-+private:
-+  // Note : This operator must be implemented on first use. It is currently defined to avoid compiler warnings
-+  entityRef & operator = (const entityRef & ) { return *this; }
- };
- 
- //=======================================================================

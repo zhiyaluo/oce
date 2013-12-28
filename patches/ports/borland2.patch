@@ -91,7 +91,7 @@ Index: oce/src/NCollection/NCollection_Vector.hxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_Vector.hxx
 +++ oce/src/NCollection/NCollection_Vector.hxx
-@@ -99,7 +99,11 @@ template <class TheItemType> class NColl
+@@ -301,7 +301,11 @@ private: //! @name private methods
      {
        for (Standard_Integer anItemIter = 0; anItemIter < theBlock.Size; ++anItemIter)
        {

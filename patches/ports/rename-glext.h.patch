@@ -11,6 +11,19 @@ Subject: [PATCH] Rename glext.h into OpenGl_glext.h
  create mode 100644 inc/OpenGl_glext.h
  delete mode 100644 inc/glext.h
 
+Index: oce/src/OpenGl/FILES
+===================================================================
+--- oce.orig/src/OpenGl/FILES
++++ oce/src/OpenGl/FILES
+@@ -96,7 +96,7 @@ OpenGl_ArbTBO.hxx
+ OpenGl_ArbVBO.hxx
+ OpenGl_ExtFBO.hxx
+ OpenGl_ExtGS.hxx
+-glext.h
++OpenGl_glext.h
+ OpenGl_GlCore11.hxx
+ OpenGl_GlCore12.hxx
+ OpenGl_GlCore13.hxx
 Index: oce/src/OpenGl/OpenGl_GlCore12.hxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_GlCore12.hxx
@@ -23537,16 +23550,3 @@ Index: oce/src/OpenGl/glext.h
 -#endif
 -
 -#endif
-Index: oce/src/OpenGl/FILES
-===================================================================
---- oce.orig/src/OpenGl/FILES
-+++ oce/src/OpenGl/FILES
-@@ -108,7 +108,7 @@ OpenGl_ArbTBO.hxx
- OpenGl_ArbVBO.hxx
- OpenGl_ExtFBO.hxx
- OpenGl_ExtGS.hxx
--glext.h
-+OpenGl_glext.h
- OpenGl_GlCore11.hxx
- OpenGl_GlCore12.hxx
- OpenGl_GlCore13.hxx

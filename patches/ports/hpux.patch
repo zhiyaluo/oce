@@ -15,6 +15,19 @@ Index: oce/src/AdvApp2Var/AdvApp2Var_SysBase.hxx
  
  class AdvApp2Var_SysBase {
   public: 
+Index: oce/src/BOPCol/BOPCol_Array1.hxx
+===================================================================
+--- oce.orig/src/BOPCol/BOPCol_Array1.hxx
++++ oce/src/BOPCol/BOPCol_Array1.hxx
+@@ -182,7 +182,7 @@ template <class Type> class BOPCol_Array
+       pNext=pBlock->Next();
+       //
+       //pBlock->~BOPCol_MemBlock<Type> ();
+-#if defined(__BORLANDC__)
++#if defined(__BORLANDC__) || defined(__hpux)
+       pBlock->~BOPCol_MemBlock<Type>();
+ #else
+       pBlock->~BOPCol_XMemBlock();
 Index: oce/src/BRepMesh/BRepMesh_CellFilter.hxx
 ===================================================================
 --- oce.orig/src/BRepMesh/BRepMesh_CellFilter.hxx
@@ -112,6 +125,19 @@ Index: oce/src/Draw/Draw_Window.cxx
        numfd = select(count+1,(Integer*)&readset,NULL,NULL,NULL);
  #else
        numfd = select(count+1,&readset,NULL,NULL,NULL);
+Index: oce/src/FSD/FSD_FileHeader.hxx
+===================================================================
+--- oce.orig/src/FSD/FSD_FileHeader.hxx
++++ oce/src/FSD/FSD_FileHeader.hxx
+@@ -38,7 +38,7 @@ struct FSD_FileHeader {
+ };
+ 
+ #ifndef DO_INVERSE
+-#if defined ( SOLARIS ) || defined ( IRIX )
++#if defined ( SOLARIS ) || defined ( IRIX ) || defined(__hpux)
+ #define DO_INVERSE 1
+ #else
+ #define DO_INVERSE 0
 Index: oce/src/IGESData/IGESData.cxx
 ===================================================================
 --- oce.orig/src/IGESData/IGESData.cxx
@@ -223,6 +249,19 @@ Index: oce/src/NCollection/NCollection_Array1.hxx
      }
      //! Check end
      virtual Standard_Boolean More (void) const
+Index: oce/src/NCollection/NCollection_Array2.hxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_Array2.hxx
++++ oce/src/NCollection/NCollection_Array2.hxx
+@@ -65,7 +65,7 @@ template <class TheItemType> class NColl
+     { 
+       myCurrent = 0;
+       mySize    = theArray.Length();
+-      myArray   = (NCollection_Array2 *) &theArray; 
++      myArray   = (NCollection_Array2<TheItemType> *) &theArray; 
+     }
+     //! Check end
+     virtual Standard_Boolean More (void) const
 Index: oce/src/NCollection/NCollection_DefaultHasher.hxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_DefaultHasher.hxx
@@ -248,6 +287,40 @@ Index: oce/src/NCollection/NCollection_DefaultHasher.hxx
    }
  };
  
+Index: oce/src/NCollection/NCollection_IncAllocator.hxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_IncAllocator.hxx
++++ oce/src/NCollection/NCollection_IncAllocator.hxx
+@@ -24,6 +24,15 @@
+ 
+ #include <NCollection_BaseAllocator.hxx>
+ 
++#ifdef __hpux
++# ifdef __GNUC__
++#  include <stdint.h>
++# else
++#  include <inttypes.h>
++# endif
++#endif
++
++
+ /**
+  *  Class NCollection_IncAllocator - incremental memory  allocator. This class
+  *  allocates  memory  on  request  returning  the  pointer  to  an  allocated
+@@ -43,8 +52,12 @@ class NCollection_IncAllocator : public
+ {
+  public:
+   // The type defining the alignement of allocated objects
++#if defined(__hpux)
++  typedef uint64_t aligned_t;
++#else
+   typedef void * aligned_t;
+-
++#endif
++  
+   // ---------- PUBLIC METHODS ----------
+ 
+   //! Constructor
 Index: oce/src/NCollection/NCollection_IndexedDataMap.hxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_IndexedDataMap.hxx
@@ -408,6 +481,28 @@ Index: oce/src/Standard/Standard_Integer.hxx
  // ------------------------------------------------------------------
  // Hascode : Computes a hascoding value for a given unsigned integer
  // ------------------------------------------------------------------
+Index: oce/src/Standard/Standard_MMgrOpt.cxx
+===================================================================
+--- oce.orig/src/Standard/Standard_MMgrOpt.cxx
++++ oce/src/Standard/Standard_MMgrOpt.cxx
+@@ -166,7 +166,7 @@ extern "C" int getpagesize() ;
+    So, BLOCK_SHIFT is formed as macro for support on other possible platforms.
+ */
+ 
+-#if defined(IRIX) || defined(SOLARIS)
++#if defined(IRIX) || defined(SOLARIS) || defined(__hpux)
+ #define BLOCK_SHIFT 2
+ #else
+ #define BLOCK_SHIFT 1
+@@ -298,7 +298,7 @@ void Standard_MMgrOpt::Initialize()
+       perror("ERR_MEMRY_FAIL");
+ #endif
+     
+-#if defined(IRIX) || defined(__sgi) || defined(SOLARIS) || defined(__sun) || defined(LIN) || defined(linux) || defined(__FreeBSD__)
++#if defined(IRIX) || defined(__sgi) || defined(SOLARIS) || defined(__sun) || defined(LIN) || defined(linux) || defined(__FreeBSD__) || defined(__hpux)
+     if ((myMMap = open ("/dev/zero", O_RDWR)) < 0) {
+       if ((myMMap = open ("/dev/null", O_RDWR)) < 0){
+         myMMap = 0;
 Index: oce/src/Standard/Standard_TypeDef.hxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_TypeDef.hxx
@@ -453,98 +548,3 @@ Index: oce/src/V3d/V3d_Viewer.cxx
 -}
 \ No newline at end of file
 +}
-Index: oce/src/BOPCol/BOPCol_Array1.hxx
-===================================================================
---- oce.orig/src/BOPCol/BOPCol_Array1.hxx
-+++ oce/src/BOPCol/BOPCol_Array1.hxx
-@@ -182,7 +182,7 @@ template <class Type> class BOPCol_Array
-       pNext=pBlock->Next();
-       //
-       //pBlock->~BOPCol_MemBlock<Type> ();
--#if defined(__BORLANDC__)
-+#if defined(__BORLANDC__) || defined(__hpux)
-       pBlock->~BOPCol_MemBlock<Type>();
- #else
-       pBlock->~BOPCol_XMemBlock();
-Index: oce/src/FSD/FSD_FileHeader.hxx
-===================================================================
---- oce.orig/src/FSD/FSD_FileHeader.hxx
-+++ oce/src/FSD/FSD_FileHeader.hxx
-@@ -38,7 +38,7 @@ struct FSD_FileHeader {
- };
- 
- #ifndef DO_INVERSE
--#if defined ( SOLARIS ) || defined ( IRIX )
-+#if defined ( SOLARIS ) || defined ( IRIX ) || defined(__hpux)
- #define DO_INVERSE 1
- #else
- #define DO_INVERSE 0
-Index: oce/src/Standard/Standard_MMgrOpt.cxx
-===================================================================
---- oce.orig/src/Standard/Standard_MMgrOpt.cxx
-+++ oce/src/Standard/Standard_MMgrOpt.cxx
-@@ -166,7 +166,7 @@ extern "C" int getpagesize() ;
-    So, BLOCK_SHIFT is formed as macro for support on other possible platforms.
- */
- 
--#if defined(IRIX) || defined(SOLARIS)
-+#if defined(IRIX) || defined(SOLARIS) || defined(__hpux)
- #define BLOCK_SHIFT 2
- #else
- #define BLOCK_SHIFT 1
-@@ -298,7 +298,7 @@ void Standard_MMgrOpt::Initialize()
-       perror("ERR_MEMRY_FAIL");
- #endif
-     
--#if defined(IRIX) || defined(__sgi) || defined(SOLARIS) || defined(__sun) || defined(LIN) || defined(linux) || defined(__FreeBSD__)
-+#if defined(IRIX) || defined(__sgi) || defined(SOLARIS) || defined(__sun) || defined(LIN) || defined(linux) || defined(__FreeBSD__) || defined(__hpux)
-     if ((myMMap = open ("/dev/zero", O_RDWR)) < 0) {
-       if ((myMMap = open ("/dev/null", O_RDWR)) < 0){
-         myMMap = 0;
-Index: oce/src/NCollection/NCollection_Array2.hxx
-===================================================================
---- oce.orig/src/NCollection/NCollection_Array2.hxx
-+++ oce/src/NCollection/NCollection_Array2.hxx
-@@ -65,7 +65,7 @@ template <class TheItemType> class NColl
-     { 
-       myCurrent = 0;
-       mySize    = theArray.Length();
--      myArray   = (NCollection_Array2 *) &theArray; 
-+      myArray   = (NCollection_Array2<TheItemType> *) &theArray; 
-     }
-     //! Check end
-     virtual Standard_Boolean More (void) const
-Index: oce/src/NCollection/NCollection_IncAllocator.hxx
-===================================================================
---- oce.orig/src/NCollection/NCollection_IncAllocator.hxx
-+++ oce/src/NCollection/NCollection_IncAllocator.hxx
-@@ -24,6 +24,15 @@
- 
- #include <NCollection_BaseAllocator.hxx>
- 
-+#ifdef __hpux
-+# ifdef __GNUC__
-+#  include <stdint.h>
-+# else
-+#  include <inttypes.h>
-+# endif
-+#endif
-+
-+
- /**
-  *  Class NCollection_IncAllocator - incremental memory  allocator. This class
-  *  allocates  memory  on  request  returning  the  pointer  to  an  allocated
-@@ -43,8 +52,12 @@ class NCollection_IncAllocator : public
- {
-  public:
-   // The type defining the alignement of allocated objects
-+#if defined(__hpux)
-+  typedef uint64_t aligned_t;
-+#else
-   typedef void * aligned_t;
--
-+#endif
-+  
-   // ---------- PUBLIC METHODS ----------
- 
-   //! Constructor

@@ -8,19 +8,6 @@ Fixes -Wwrite-strings warning about implicit conversion from string literal to _
  src/OSD/OSD_WNT_1.hxx | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-Index: oce/src/OSD/OSD_WNT_1.hxx
-===================================================================
---- oce.orig/src/OSD/OSD_WNT_1.hxx
-+++ oce/src/OSD/OSD_WNT_1.hxx
-@@ -83,7 +83,7 @@ typedef struct _MB_DESC {
- 
-                 MB_ITEMTYPE   itemType;
-                 _TINT         itemId;
--                _TCHAR*       buttonLabel;
-+                const _TCHAR* buttonLabel;
- 
-                } MB_DESC, *LPMB_DESC;
- 
 Index: oce/src/OSD/OSD_File.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_File.cxx
@@ -42,4 +29,17 @@ Index: oce/src/OSD/OSD_File.cxx
 +                LPCTSTR keyPath;
  
                 } OSD_WNT_KEY;
+ 
+Index: oce/src/OSD/OSD_WNT_1.hxx
+===================================================================
+--- oce.orig/src/OSD/OSD_WNT_1.hxx
++++ oce/src/OSD/OSD_WNT_1.hxx
+@@ -83,7 +83,7 @@ typedef struct _MB_DESC {
+ 
+                 MB_ITEMTYPE   itemType;
+                 _TINT         itemId;
+-                _TCHAR*       buttonLabel;
++                const _TCHAR* buttonLabel;
+ 
+                } MB_DESC, *LPMB_DESC;
  

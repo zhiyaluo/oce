@@ -7,10 +7,10 @@ Date:   Tue Mar 26 16:13:01 2013 -0600
     In every case the problem was two double-quotes toget '""' in string literals which
     is no longer valid in C++ 2011.
 
-diff --git a/src/Interface/Interface_Version.hxx b/src/Interface/Interface_Version.hxx
-index 71a64c2..0de5ef9 100644
---- a/src/Interface/Interface_Version.hxx
-+++ b/src/Interface/Interface_Version.hxx
+Index: oce/src/Interface/Interface_Version.hxx
+===================================================================
+--- oce.orig/src/Interface/Interface_Version.hxx
++++ oce/src/Interface/Interface_Version.hxx
 @@ -16,8 +16,8 @@
  // and conditions governing the rights and limitations under the License.
  
@@ -22,11 +22,11 @@ index 71a64c2..0de5ef9 100644
  #define XSTEP_Config            OCC_VERSION_STRING
  #define XSTEP_ULNames           OCC_VERSION_STRING
  
-diff --git a/src/NCollection/NCollection_BaseAllocator.cxx b/src/NCollection/NCollection_BaseAllocator.cxx
-index 253a859..9806725 100644
---- a/src/NCollection/NCollection_BaseAllocator.cxx
-+++ b/src/NCollection/NCollection_BaseAllocator.cxx
-@@ -281,20 +281,20 @@ void NCollection_BaseAllocator::PrintMemUsageStatistics()
+Index: oce/src/NCollection/NCollection_BaseAllocator.cxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_BaseAllocator.cxx
++++ oce/src/NCollection/NCollection_BaseAllocator.cxx
+@@ -281,20 +281,20 @@ void NCollection_BaseAllocator::PrintMem
      Standard_Integer nbLeft = aInfo.nbAlloc - aInfo.nbFree;
      Standard_Size aSizeAlloc = aInfo.nbAlloc * aInfo.roundSize;
      Standard_Size aSizeLeft = nbLeft * aInfo.roundSize;
@@ -51,11 +51,11 @@ index 253a859..9806725 100644
    }
    fclose(ff);
  }
-diff --git a/src/NCollection/NCollection_HeapAllocator.cxx b/src/NCollection/NCollection_HeapAllocator.cxx
-index a968af9..623f811 100644
---- a/src/NCollection/NCollection_HeapAllocator.cxx
-+++ b/src/NCollection/NCollection_HeapAllocator.cxx
-@@ -50,7 +50,7 @@ void * NCollection_HeapAllocator::Allocate (const Standard_Size theSize)
+Index: oce/src/NCollection/NCollection_HeapAllocator.cxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_HeapAllocator.cxx
++++ oce/src/NCollection/NCollection_HeapAllocator.cxx
+@@ -50,7 +50,7 @@ void * NCollection_HeapAllocator::Alloca
    void * pResult = malloc(aRoundSize);
    if (!pResult) {
      char buf[128];
@@ -64,11 +64,11 @@ index a968af9..623f811 100644
      Standard_OutOfMemory::Raise(&buf[0]);
    }
    return pResult;
-diff --git a/src/NCollection/NCollection_IncAllocator.cxx b/src/NCollection/NCollection_IncAllocator.cxx
-index e41e309..fd368af 100644
---- a/src/NCollection/NCollection_IncAllocator.cxx
-+++ b/src/NCollection/NCollection_IncAllocator.cxx
-@@ -170,7 +170,7 @@ Standard_EXPORT void IncAllocator_PrintAlive()
+Index: oce/src/NCollection/NCollection_IncAllocator.cxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_IncAllocator.cxx
++++ oce/src/NCollection/NCollection_IncAllocator.cxx
+@@ -170,7 +170,7 @@ Standard_EXPORT void IncAllocator_PrintA
          Standard_Size aSize = anAlloc->GetMemSize();
          aTotSize += aSize;
          nbAlloc++;
@@ -77,11 +77,11 @@ index e41e309..fd368af 100644
        }
        fprintf(ff, "Total:\n%-8d %8.1f\n", nbAlloc, double(aTotSize)/1024);
        fclose(ff);
-diff --git a/src/OSD/OSD_MAllocHook.cxx b/src/OSD/OSD_MAllocHook.cxx
-index 2de5ee8..4c88263 100644
---- a/src/OSD/OSD_MAllocHook.cxx
-+++ b/src/OSD/OSD_MAllocHook.cxx
-@@ -367,7 +367,7 @@ Standard_Boolean OSD_MAllocHook::LogFileHandler::MakeReport
+Index: oce/src/OSD/OSD_MAllocHook.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_MAllocHook.cxx
++++ oce/src/OSD/OSD_MAllocHook.cxx
+@@ -375,7 +375,7 @@ Standard_Boolean OSD_MAllocHook::LogFile
      Standard_Size aSizeAlloc = aInfo.nbAlloc * aInfo.size;
      Standard_Size aSizeLeft = nbLeft * aInfo.size;
      Standard_Size aSizePeak = aInfo.nbLeftPeak * aInfo.size;
@@ -90,7 +90,7 @@ index 2de5ee8..4c88263 100644
              aInfo.nbAlloc, nbLeft, aInfo.nbLeftPeak,
              aSizeAlloc, aSizeLeft, aSizePeak);
      if (aTotAlloc + aSizeAlloc < aTotAlloc) // overflow ?
-@@ -381,7 +381,7 @@ Standard_Boolean OSD_MAllocHook::LogFileHandler::MakeReport
+@@ -389,7 +389,7 @@ Standard_Boolean OSD_MAllocHook::LogFile
          fprintf(aRepFile, "%10lu\n", *it1);
      }
    }
@@ -99,7 +99,7 @@ index 2de5ee8..4c88263 100644
            "", "", "", (aTotAlloc == SIZE_MAX ? '>' : ' '), aTotAlloc,
            aTotalLeftSize, aTotalPeakSize);
    fclose(aRepFile);
-@@ -505,7 +505,7 @@ Standard_Boolean OSD_MAllocHook::CollectBySize::MakeReport(const char* theOutFil
+@@ -513,7 +513,7 @@ Standard_Boolean OSD_MAllocHook::Collect
        Standard_Size aSizeAlloc = myArray[i].nbAlloc * aSize;
        ptrdiff_t     aSizeLeft = nbLeft * aSize;
        Standard_Size aSizePeak = myArray[i].nbLeftPeak * aSize;
@@ -108,7 +108,7 @@ index 2de5ee8..4c88263 100644
                myArray[i].nbAlloc, nbLeft, myArray[i].nbLeftPeak,
                aSizeAlloc, aSizeLeft, aSizePeak);
        if (aTotAlloc + aSizeAlloc < aTotAlloc) // overflow ?
-@@ -514,7 +514,7 @@ Standard_Boolean OSD_MAllocHook::CollectBySize::MakeReport(const char* theOutFil
+@@ -522,7 +522,7 @@ Standard_Boolean OSD_MAllocHook::Collect
          aTotAlloc += aSizeAlloc;
      }
    }
@@ -117,11 +117,11 @@ index 2de5ee8..4c88263 100644
            "", "", "", (aTotAlloc == SIZE_MAX ? '>' : ' '), aTotAlloc,
            myTotalLeftSize, myTotalPeakSize);
    fclose(aRepFile);
-diff --git a/src/STEPControl/STEPControl_Controller.cxx b/src/STEPControl/STEPControl_Controller.cxx
-index 0e448fe..0764226 100644
---- a/src/STEPControl/STEPControl_Controller.cxx
-+++ b/src/STEPControl/STEPControl_Controller.cxx
-@@ -68,7 +68,7 @@ STEPControl_Controller::STEPControl_Controller ()
+Index: oce/src/STEPControl/STEPControl_Controller.cxx
+===================================================================
+--- oce.orig/src/STEPControl/STEPControl_Controller.cxx
++++ oce/src/STEPControl/STEPControl_Controller.cxx
+@@ -68,7 +68,7 @@ STEPControl_Controller::STEPControl_Cont
    if (!init) {
      RWHeaderSection::Init();  RWStepAP214::Init();
  
@@ -130,11 +130,11 @@ index 0e448fe..0764226 100644
      Interface_Static::Init ("step","write.step.assembly",'e',"");
      Interface_Static::Init ("step","write.step.assembly",'&',"enum 0");
      Interface_Static::Init ("step","write.step.assembly",'&',"eval Off");
-diff --git a/src/VrmlData/VrmlData_Scene.cxx b/src/VrmlData/VrmlData_Scene.cxx
-index 70385c1..9c5ee1d 100644
---- a/src/VrmlData/VrmlData_Scene.cxx
-+++ b/src/VrmlData/VrmlData_Scene.cxx
-@@ -1156,7 +1156,7 @@ void dumpNode (Standard_OStream&                theStream,
+Index: oce/src/VrmlData/VrmlData_Scene.cxx
+===================================================================
+--- oce.orig/src/VrmlData/VrmlData_Scene.cxx
++++ oce/src/VrmlData/VrmlData_Scene.cxx
+@@ -1156,7 +1156,7 @@ void dumpNode (Standard_OStream&
      const Standard_Size nCoord = aNode->Coordinates()->Length();
      const Standard_Size nPoly  = aNode->Polygons (ppDummy);
      char buf[64];
@@ -143,7 +143,7 @@ index 70385c1..9c5ee1d 100644
      dumpNodeHeader (theStream, theIndent, buf, theNode->Name());
    } else if (theNode->IsKind(STANDARD_TYPE(VrmlData_IndexedLineSet))) {
      const Handle(VrmlData_IndexedLineSet) aNode =
-@@ -1165,7 +1165,7 @@ void dumpNode (Standard_OStream&                theStream,
+@@ -1165,7 +1165,7 @@ void dumpNode (Standard_OStream&
      const Standard_Size nCoord = aNode->Coordinates()->Length();
      const Standard_Size nPoly  = aNode->Polygons (ppDummy);
      char buf[64];

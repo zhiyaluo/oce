@@ -29,19 +29,6 @@ Subject: [PATCH] Fix OSX conflict return type in LDOM_SBuffer::xsputn
  src/LDOM/LDOM_OSStream.cxx |    2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
-Index: oce/src/LDOM/LDOM_OSStream.hxx
-===================================================================
---- oce.orig/src/LDOM/LDOM_OSStream.hxx
-+++ oce/src/LDOM/LDOM_OSStream.hxx
-@@ -71,7 +71,7 @@ class LDOM_SBuffer : public streambuf
-     Standard_EXPORT virtual int underflow();
-     //virtual int uflow();
- 
--    Standard_EXPORT virtual int xsputn(const char* s, int n);
-+    Standard_EXPORT virtual std::streamsize xsputn(const char* s, std::streamsize n);
-     //virtual int xsgetn(char* s, int n);
-     //virtual int sync();
- 
 Index: oce/src/LDOM/LDOM_OSStream.cxx
 ===================================================================
 --- oce.orig/src/LDOM/LDOM_OSStream.cxx
@@ -55,3 +42,16 @@ Index: oce/src/LDOM/LDOM_OSStream.cxx
  {
    int aLen = n + 1;
    int freeLen = myMaxBuf - myCurString->len - 1;
+Index: oce/src/LDOM/LDOM_OSStream.hxx
+===================================================================
+--- oce.orig/src/LDOM/LDOM_OSStream.hxx
++++ oce/src/LDOM/LDOM_OSStream.hxx
+@@ -71,7 +71,7 @@ class LDOM_SBuffer : public streambuf
+     Standard_EXPORT virtual int underflow();
+     //virtual int uflow();
+ 
+-    Standard_EXPORT virtual int xsputn(const char* s, int n);
++    Standard_EXPORT virtual std::streamsize xsputn(const char* s, std::streamsize n);
+     //virtual int xsgetn(char* s, int n);
+     //virtual int sync();
+ 

@@ -17,6 +17,15 @@ Subject: [PATCH 3/5] Fixed Standard_StdAllocator class for gcc-4.2.1
  inc/Standard_StdAllocator.hxx |    2 +-
  1 files changed, 1 insertions(+), 1 deletions(-)
 
+Index: oce/src/Standard/FILES
+===================================================================
+--- oce.orig/src/Standard/FILES
++++ oce/src/Standard/FILES
+@@ -77,3 +77,4 @@ Standard_MMgrTBBalloc.cxx
+ Standard_MMgrTBBalloc.hxx
+ Standard_Assert.hxx
+ Standard_DefineAlloc.hxx
++Standard_StdAllocator.hxx
 Index: oce/src/Standard/Standard_StdAllocator.hxx
 ===================================================================
 --- /dev/null
@@ -147,12 +156,3 @@ Index: oce/src/Standard/Standard_StdAllocator.hxx
 +
 +
 +#endif
-Index: oce/src/Standard/FILES
-===================================================================
---- oce.orig/src/Standard/FILES
-+++ oce/src/Standard/FILES
-@@ -73,3 +73,4 @@ Standard_MMgrTBBalloc.cxx
- Standard_MMgrTBBalloc.hxx
- Standard_Assert.hxx
- Standard_DefineAlloc.hxx
-+Standard_StdAllocator.hxx

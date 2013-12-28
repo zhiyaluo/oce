@@ -1,8 +1,7 @@
-diff --git a/BUILD.MINGWw64 b/BUILD.MINGWw64
-new file mode 100644
-index 0000000..51ec3b7
+Index: oce/BUILD.MINGWw64
+===================================================================
 --- /dev/null
-+++ b/BUILD.MINGWw64
++++ oce/BUILD.MINGWw64
 @@ -0,0 +1,57 @@
 +This will help you build OCE with MinGW w64/MSYS using the Oce-Win-Bundle sources:
 +
@@ -62,10 +61,10 @@ index 0000000..51ec3b7
 +
 +Check for an updated Version of this File on the OCE Wiki on Github.
 \ No newline at end of file
-diff --git a/src/BRepMesh/BRepMesh_DiscretFactory.cxx b/src/BRepMesh/BRepMesh_DiscretFactory.cxx
-index e5e36cd..ec02c62 100644
---- a/src/BRepMesh/BRepMesh_DiscretFactory.cxx
-+++ b/src/BRepMesh/BRepMesh_DiscretFactory.cxx
+Index: oce/src/BRepMesh/BRepMesh_DiscretFactory.cxx
+===================================================================
+--- oce.orig/src/BRepMesh/BRepMesh_DiscretFactory.cxx
++++ oce/src/BRepMesh/BRepMesh_DiscretFactory.cxx
 @@ -25,6 +25,10 @@
  #include <BRepMesh_IncrementalMesh.hxx>
  #include <BRepMesh_PDiscretRoot.hxx>
@@ -104,11 +103,11 @@ index e5e36cd..ec02c62 100644
    }
  };
  
-diff --git a/src/Draw/Draw.cxx b/src/Draw/Draw.cxx
-index 81d716a..7adeaa8 100644
---- a/src/Draw/Draw.cxx
-+++ b/src/Draw/Draw.cxx
-@@ -518,19 +518,13 @@ void Draw::Load(Draw_Interpretor& theDI, const TCollection_AsciiString& theKey,
+Index: oce/src/Draw/Draw.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw.cxx
++++ oce/src/Draw/Draw.cxx
+@@ -518,19 +518,13 @@ void Draw::Load(Draw_Interpretor& theDI,
      }
  
      TCollection_AsciiString aPluginLibrary("");
@@ -135,7 +134,7 @@ index 81d716a..7adeaa8 100644
      OSD_SharedLibrary aSharedLibrary(aPluginLibrary.ToCString());
      if(!aSharedLibrary.DlOpen(OSD_RTLD_LAZY)) {
        TCollection_AsciiString error(aSharedLibrary.DlError());
-@@ -590,24 +584,13 @@ void Draw::Load(Draw_Interpretor& theDI, const TCollection_AsciiString& theKey,
+@@ -590,24 +584,13 @@ void Draw::Load(Draw_Interpretor& theDI,
        Draw_Failure::Raise(aMsg);
      }
  
@@ -166,11 +165,11 @@ index 81d716a..7adeaa8 100644
      OSD_SharedLibrary aSharedLibrary(aPluginLibrary.ToCString());
      if(!aSharedLibrary.DlOpen(OSD_RTLD_LAZY)) {
        TCollection_AsciiString error(aSharedLibrary.DlError());
-diff --git a/src/Graphic3d/Graphic3d.cxx b/src/Graphic3d/Graphic3d.cxx
-index 49f1dc1..904403f 100644
---- a/src/Graphic3d/Graphic3d.cxx
-+++ b/src/Graphic3d/Graphic3d.cxx
-@@ -47,16 +47,11 @@ Handle(Graphic3d_GraphicDriver) Graphic3d::InitGraphicDriver (const Handle(Aspec
+Index: oce/src/Graphic3d/Graphic3d.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d.cxx
++++ oce/src/Graphic3d/Graphic3d.cxx
+@@ -47,16 +47,11 @@ Handle(Graphic3d_GraphicDriver) Graphic3
  #ifdef OCE_DEFAULT_CSF_GraphicShr
    aGraphicLibName = OCE_DEFAULT_CSF_GraphicShr;
  #else
@@ -192,10 +191,10 @@ index 49f1dc1..904403f 100644
  #endif
    }
  
-diff --git a/src/NCollection/NCollection_UtfString.lxx b/src/NCollection/NCollection_UtfString.lxx
-index 8dc250f..138d92c 100644
---- a/src/NCollection/NCollection_UtfString.lxx
-+++ b/src/NCollection/NCollection_UtfString.lxx
+Index: oce/src/NCollection/NCollection_UtfString.lxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_UtfString.lxx
++++ oce/src/NCollection/NCollection_UtfString.lxx
 @@ -284,7 +284,7 @@ template<typename Type> inline
  void NCollection_UtfString<Type>::FromLocale (const char*            theString,
                                                const Standard_Integer theLength)
@@ -205,7 +204,7 @@ index 8dc250f..138d92c 100644
    // use WinAPI
    int aWideSize = MultiByteToWideChar (CP_ACP, MB_PRECOMPOSED, theString, -1, NULL, 0);
    if (aWideSize <= 0)
-@@ -323,7 +323,7 @@ bool NCollection_UtfString<Type>::ToLocale (char*                  theBuffer,
+@@ -323,7 +323,7 @@ bool NCollection_UtfString<Type>::ToLoca
                                              const Standard_Integer theSizeBytes) const
  {
    NCollection_UtfString<wchar_t> aWideCopy (myString, myLength);
@@ -214,11 +213,11 @@ index 8dc250f..138d92c 100644
    int aMbBytes = WideCharToMultiByte (CP_ACP, 0, aWideCopy.ToCString(), -1, theBuffer, theSizeBytes, NULL, NULL);
  #else
    std::size_t aMbBytes = std::wcstombs (theBuffer, aWideCopy.ToCString(), theSizeBytes);
-diff --git a/src/Plugin/Plugin.cxx b/src/Plugin/Plugin.cxx
-index 8baed8b..8ec0973 100644
---- a/src/Plugin/Plugin.cxx
-+++ b/src/Plugin/Plugin.cxx
-@@ -62,23 +62,13 @@ Handle(Standard_Transient) Plugin::Load(const Standard_GUID& aGUID)
+Index: oce/src/Plugin/Plugin.cxx
+===================================================================
+--- oce.orig/src/Plugin/Plugin.cxx
++++ oce/src/Plugin/Plugin.cxx
+@@ -62,23 +62,13 @@ Handle(Standard_Transient) Plugin::Load(
      }
      
      TCollection_AsciiString thePluginLibrary("");

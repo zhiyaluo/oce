@@ -66,19 +66,6 @@ Subject: [PATCH 23/82] [warning-fix][assignment-in-conditional-expression]
  src/Visual3d/Visual3d_View.cxx                 |    2 +-
  15 files changed, 32 insertions(+), 36 deletions(-)
 
-Index: oce/src/Extrema/Extrema_GExtCC.gxx
-===================================================================
---- oce.orig/src/Extrema/Extrema_GExtCC.gxx
-+++ oce/src/Extrema/Extrema_GExtCC.gxx
-@@ -206,7 +206,7 @@ void Extrema_GExtCC::Perform()
-     //analytical case - one curve is always a line
-     Standard_Integer anInd1 = 0, anInd2 = 1;
-     GeomAbs_CurveType aType2 = type2;
--    if (inverse = (type1 > type2)) {
-+    if ((inverse = (type1 > type2)) == Standard_True ) {
-       //algorithm uses inverse order of arguments
-       anInd1 = 1;
-       anInd2 = 0;
 Index: oce/src/AlienImage/AlienImage_SGIRGBAlienData.cxx
 ===================================================================
 --- oce.orig/src/AlienImage/AlienImage_SGIRGBAlienData.cxx
@@ -112,7 +99,7 @@ Index: oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_TrimShellCorner.cxx
 +++ oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
-@@ -915,8 +915,8 @@ Standard_Boolean SplitUEdges(const Handl
+@@ -883,8 +883,8 @@ Standard_Boolean SplitUEdges(const Handl
          //const BOPTools_VVInterference& aVV = aVVs(vvit);
          const BOPDS_InterfVV& aVV = aVVs(vvit);
  
@@ -168,7 +155,7 @@ Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx
 +++ oce/src/Draw/Draw_Window.cxx
-@@ -1989,7 +1989,7 @@ Standard_Boolean Init_Appli(HINSTANCE hI
+@@ -2022,7 +2022,7 @@ Standard_Boolean Init_Appli(HINSTANCE hI
  
      hWndFrame = NULL;
  
@@ -211,6 +198,19 @@ Index: oce/src/Draw/MainWindow.cxx
  						SendMessage(hWndClient, WM_MDITILE, MDITILE_VERTICAL, 0l);
  					break;
  		
+Index: oce/src/Extrema/Extrema_GExtCC.gxx
+===================================================================
+--- oce.orig/src/Extrema/Extrema_GExtCC.gxx
++++ oce/src/Extrema/Extrema_GExtCC.gxx
+@@ -206,7 +206,7 @@ void Extrema_GExtCC::Perform()
+     //analytical case - one curve is always a line
+     Standard_Integer anInd1 = 0, anInd2 = 1;
+     GeomAbs_CurveType aType2 = type2;
+-    if (inverse = (type1 > type2)) {
++    if ((inverse = (type1 > type2)) == Standard_True ) {
+       //algorithm uses inverse order of arguments
+       anInd1 = 1;
+       anInd2 = 0;
 Index: oce/src/Geom2dGcc/Geom2dGcc_Lin2dTanObl.cxx
 ===================================================================
 --- oce.orig/src/Geom2dGcc/Geom2dGcc_Lin2dTanObl.cxx
@@ -275,7 +275,7 @@ Index: oce/src/OSD/OSD.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD.cxx
 +++ oce/src/OSD/OSD.cxx
-@@ -59,7 +59,7 @@ Standard_Boolean OSD::RealToCString(cons
+@@ -42,7 +42,7 @@ Standard_Boolean OSD::RealToCString(cons
  
    // Suppress "e+00" and unsignificant 0's 
  
@@ -288,7 +288,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_WNT.cxx
 +++ oce/src/OSD/OSD_WNT.cxx
-@@ -1142,11 +1142,11 @@ retry:
+@@ -995,11 +995,11 @@ retry:
  
       if ( pFD -> dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ) {
  
@@ -302,7 +302,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
                             pFullNameSrc, pFullNameDst,
                             MOVEFILE_REPLACE_EXISTING | MOVEFILE_COPY_ALLOWED
                            )
-@@ -1302,11 +1302,11 @@ BOOL CopyDirectory ( LPCTSTR dirSrc, LPC
+@@ -1155,11 +1155,11 @@ BOOL CopyDirectory ( LPCTSTR dirSrc, LPC
  
       if ( pFD -> dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY ) {
  
@@ -346,7 +346,7 @@ Index: oce/src/TestTopOpe/TestTopOpe_BOOP.cxx
 ===================================================================
 --- oce.orig/src/TestTopOpe/TestTopOpe_BOOP.cxx
 +++ oce/src/TestTopOpe/TestTopOpe_BOOP.cxx
-@@ -64,11 +64,11 @@ Standard_IMPORT void PrintKRO_PREPA();
+@@ -64,11 +64,11 @@ extern void PrintKRO_PREPA();
  Standard_Integer TestTopOpe_BOOP::Prepare(const char* ns1,const char* ns2)
  {
    Standard_Integer err = 0;
@@ -367,8 +367,8 @@ Index: oce/src/Visual3d/Visual3d_View.cxx
 ===================================================================
 --- oce.orig/src/Visual3d/Visual3d_View.cxx
 +++ oce/src/Visual3d/Visual3d_View.cxx
-@@ -1178,7 +1178,7 @@ Standard_Real Sx, Sy, Sz;
-         MyCView.Orientation.ViewScaleZ                  = float (Sz);
+@@ -1137,7 +1137,7 @@ void Visual3d_View::SetViewOrientation (
+         MyCView.Orientation.ViewScaleZ                  = float (Z);
  
          CustomIsModified =
 -        MyCView.Orientation.IsCustomMatrix != MyViewOrientation.IsCustomMatrix();
@@ -376,8 +376,8 @@ Index: oce/src/Visual3d/Visual3d_View.cxx
          MyCView.Orientation.IsCustomMatrix = MyViewOrientation.IsCustomMatrix();
          if ( MyViewOrientation.IsCustomMatrix() ) {
            Standard_Integer i, j;
-@@ -1288,7 +1288,7 @@ Standard_Real Sx, Sy, Sz;
-         MyCView.Orientation.ViewScaleZ                  = float (Sz);
+@@ -1249,7 +1249,7 @@ void Visual3d_View::ViewOrientationReset
+         MyCView.Orientation.ViewScaleZ                  = float (Z);
  
          CustomIsModified =
 -        MyCView.Orientation.IsCustomMatrix != MyViewOrientation.IsCustomMatrix();
@@ -385,7 +385,7 @@ Index: oce/src/Visual3d/Visual3d_View.cxx
          MyCView.Orientation.IsCustomMatrix = MyViewOrientation.IsCustomMatrix();
          if ( MyViewOrientation.IsCustomMatrix() ) {
            Standard_Integer i, j;
-@@ -3973,7 +3973,7 @@ void Visual3d_View :: SetComputedMode (
+@@ -3582,7 +3582,7 @@ void Visual3d_View :: SetComputedMode (
   Standard_Integer                      StructId;
   Standard_Integer                      i = MyDisplayedStructure.Extent ();
  

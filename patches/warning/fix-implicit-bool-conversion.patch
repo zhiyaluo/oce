@@ -30,20 +30,19 @@ Index: oce/src/Standard/Standard.cxx
 ===================================================================
 --- oce.orig/src/Standard/Standard.cxx
 +++ oce/src/Standard/Standard.cxx
-@@ -82,9 +82,9 @@ Standard_MMgrFactory::Standard_MMgrFacto
+@@ -99,9 +99,9 @@ Standard_MMgrFactory::Standard_MMgrFacto
  #endif*/
  
    char* aVar;
 -  Standard_Integer anAllocId   = (aVar = getenv ("MMGT_OPT"      )) ?  atoi (aVar)       :
--    (MMGT_OPT_DEFAULT);
--  Standard_Boolean toClear     = (aVar = getenv ("MMGT_CLEAR"    )) ? (atoi (aVar) != 0) : (MMGT_CLEAR_DEFAULT != 0);
 +  Standard_Integer anAllocId   = ((aVar = getenv ("MMGT_OPT"      )) != NULL) ?  atoi (aVar)       :
-+    (MMGT_OPT_DEFAULT);
+     (MMGT_OPT_DEFAULT);
+-  Standard_Boolean toClear     = (aVar = getenv ("MMGT_CLEAR"    )) ? (atoi (aVar) != 0) : (MMGT_CLEAR_DEFAULT != 0);
 +  Standard_Boolean toClear     = ((aVar = getenv ("MMGT_CLEAR"    )) != NULL) ? (atoi (aVar) != 0) : (MMGT_CLEAR_DEFAULT != 0);
  
    // on Windows (actual for XP and 2000) activate low fragmentation heap
    // for CRT heap in order to get best performance.
-@@ -109,10 +109,10 @@ Standard_MMgrFactory::Standard_MMgrFacto
+@@ -126,10 +126,10 @@ Standard_MMgrFactory::Standard_MMgrFacto
    {
      case 1:  // OCCT optimized memory allocator
      {

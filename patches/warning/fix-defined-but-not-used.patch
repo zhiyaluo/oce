@@ -10,18 +10,6 @@ Subject: [PATCH] [clang-warning-fix][defined-but-not-used]
  src/PLib/PLib.cxx                         |    2 -
  4 files changed, 1 insertion(+), 174 deletions(-)
 
-Index: oce/src/IntImpParGen/IntImpParGen_Intersector.gxx
-===================================================================
---- oce.orig/src/IntImpParGen/IntImpParGen_Intersector.gxx
-+++ oce/src/IntImpParGen/IntImpParGen_Intersector.gxx
-@@ -44,7 +44,6 @@
- #define EPSX    ParTool::EpsX(TheParCurve)
- #define NB_ECHANTILLONS 
- 
--static Standard_Real PIpPI = M_PI + M_PI;
- 
- 
- 
 Index: oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_TrimShellCorner.cxx
@@ -213,6 +201,18 @@ Index: oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
 -  //Temporary
 -  return Standard_True;
 -}
+Index: oce/src/IntImpParGen/IntImpParGen_Intersector.gxx
+===================================================================
+--- oce.orig/src/IntImpParGen/IntImpParGen_Intersector.gxx
++++ oce/src/IntImpParGen/IntImpParGen_Intersector.gxx
+@@ -44,7 +44,6 @@
+ #define EPSX    ParTool::EpsX(TheParCurve)
+ #define NB_ECHANTILLONS 
+ 
+-static Standard_Real PIpPI = M_PI + M_PI;
+ 
+ 
+ 
 Index: oce/src/OpenGl/OpenGl_Workspace_2.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_Workspace_2.cxx

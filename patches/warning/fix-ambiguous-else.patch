@@ -54,36 +54,6 @@ Subject: [PATCH] [warning-fix][ambiguous-else]
  src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx                |    6 ++-
  48 files changed, 178 insertions(+), 91 deletions(-)
 
-Index: oce/src/GProp/GProp_SGProps.gxx
-===================================================================
---- oce.orig/src/GProp/GProp_SGProps.gxx
-+++ oce/src/GProp/GProp_SGProps.gxx
-@@ -112,8 +112,9 @@ static Standard_Integer FillIntervalBoun
-   VA(j++) = A;
-   for(; i <= iEnd; i++){
-     Standard_Real kn = Knots(i);
--    if(A < kn)
-+    if(A < kn) {
-       if(kn < B) VA(j++) = VB(k++) = kn; else break;
-+    }
-   }
-   VB(k) = B;
-   return k;
-Index: oce/src/GProp/GProp_VGProps.gxx
-===================================================================
---- oce.orig/src/GProp/GProp_VGProps.gxx
-+++ oce/src/GProp/GProp_VGProps.gxx
-@@ -81,8 +81,9 @@ static Standard_Integer FillIntervalBoun
-   VA(j++) = A;
-   for(; i <= iEnd; i++){
-     Standard_Real kn = Knots(i);
--    if(A < kn)
-+    if(A < kn) {
-       if(kn < B) VA(j++) = VB(k++) = kn; else break;
-+    }
-   }
-   VB(k) = B;
-   return k;
 Index: oce/src/AIS/AIS_InteractiveContext_1.cxx
 ===================================================================
 --- oce.orig/src/AIS/AIS_InteractiveContext_1.cxx
@@ -289,6 +259,36 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_6.cxx
        if (forwContinueFailed) {
  	// if we leave forwContinueFailed as is, we will stop in this direction
  	// but we are to continue if there are no more faces on the side with arc
+Index: oce/src/GProp/GProp_SGProps.gxx
+===================================================================
+--- oce.orig/src/GProp/GProp_SGProps.gxx
++++ oce/src/GProp/GProp_SGProps.gxx
+@@ -112,8 +112,9 @@ static Standard_Integer FillIntervalBoun
+   VA(j++) = A;
+   for(; i <= iEnd; i++){
+     Standard_Real kn = Knots(i);
+-    if(A < kn)
++    if(A < kn) {
+       if(kn < B) VA(j++) = VB(k++) = kn; else break;
++    }
+   }
+   VB(k) = B;
+   return k;
+Index: oce/src/GProp/GProp_VGProps.gxx
+===================================================================
+--- oce.orig/src/GProp/GProp_VGProps.gxx
++++ oce/src/GProp/GProp_VGProps.gxx
+@@ -81,8 +81,9 @@ static Standard_Integer FillIntervalBoun
+   VA(j++) = A;
+   for(; i <= iEnd; i++){
+     Standard_Real kn = Knots(i);
+-    if(A < kn)
++    if(A < kn) {
+       if(kn < B) VA(j++) = VB(k++) = kn; else break;
++    }
+   }
+   VB(k) = B;
+   return k;
 Index: oce/src/GeomPlate/GeomPlate_BuildPlateSurface.cxx
 ===================================================================
 --- oce.orig/src/GeomPlate/GeomPlate_BuildPlateSurface.cxx
@@ -528,6 +528,28 @@ Index: oce/src/NIS/NIS_InteractiveObject.cxx
  
    Standard_NullValue_Raise_if
      (aCtx == 0L, "NIS_InteractiveObject::SetDrawer: NULL drawer context");
+Index: oce/src/OSD/OSD_Disk.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_Disk.cxx
++++ oce/src/OSD/OSD_Disk.cxx
+@@ -414,7 +414,7 @@ static void __fastcall _osd_wnt_set_disk
+      
+     }  /* end if */
+ 
+-    if ( k == 0 )
++    if ( k == 0 ) {
+ 
+      if (  path.Name ().UsefullLength () == 0 && path.Extension ().UsefullLength () == 0  )
+      
+@@ -428,6 +428,8 @@ static void __fastcall _osd_wnt_set_disk
+       
+      }  // end else    
+ 
++    }
++
+     if (   dir.Value (  dir.UsefullLength ()  ) != TEXT( '\\' )   ) dir += TEXT( "\\" );
+ 
+     result = dir;
 Index: oce/src/ProjLib/ProjLib_ComputeApproxOnPolarSurface.cxx
 ===================================================================
 --- oce.orig/src/ProjLib/ProjLib_ComputeApproxOnPolarSurface.cxx
@@ -1218,25 +1240,3 @@ Index: oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
      }
      aMesh->SetHiddenNodes( aHiddenNodes );
      aMesh->SetHiddenElems( aHiddenElements );
-Index: oce/src/OSD/OSD_Disk.cxx
-===================================================================
---- oce.orig/src/OSD/OSD_Disk.cxx
-+++ oce/src/OSD/OSD_Disk.cxx
-@@ -414,7 +414,7 @@ static void __fastcall _osd_wnt_set_disk
-      
-     }  /* end if */
- 
--    if ( k == 0 )
-+    if ( k == 0 ) {
- 
-      if (  path.Name ().UsefullLength () == 0 && path.Extension ().UsefullLength () == 0  )
-      
-@@ -428,6 +428,8 @@ static void __fastcall _osd_wnt_set_disk
-       
-      }  // end else    
- 
-+    }
-+
-     if (   dir.Value (  dir.UsefullLength ()  ) != TEXT( '\\' )   ) dir += TEXT( "\\" );
- 
-     result = dir;

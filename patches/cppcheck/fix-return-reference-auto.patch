@@ -19,20 +19,6 @@ Subject: [PATCH] Fix cppcheck-1.53 report error 'Returning reference to auto
  src/TopOpeBRepTool/TopOpeBRepTool_box.cxx          |    3 +-
  12 files changed, 24 insertions(+), 48 deletions(-)
 
-Index: oce/src/HatchGen/HatchGen_Hatcher.lxx
-===================================================================
---- oce.orig/src/HatchGen/HatchGen_Hatcher.lxx
-+++ oce/src/HatchGen/HatchGen_Hatcher.lxx
-@@ -188,8 +188,7 @@ inline const HatchGen_PointOnHatching& H
- #if RAISE_IF_NOSUCHOBJECT
-   Standard_OutOfRange_Raise_if (IndP < 0 || IndP > Hatching.NbPoints(), "") ;
- #endif
--  const HatchGen_PointOnHatching& PntH = Hatching.Point (IndP) ;
--  return PntH ;
-+  return Hatching.Point(IndP);
- }
- 
- //=======================================================================
 Index: oce/src/BRepFilletAPI/BRepFilletAPI_MakeChamfer.cxx
 ===================================================================
 --- oce.orig/src/BRepFilletAPI/BRepFilletAPI_MakeChamfer.cxx
@@ -61,6 +47,20 @@ Index: oce/src/BRepFilletAPI/BRepFilletAPI_MakeFillet.cxx
  }
  
  
+Index: oce/src/HatchGen/HatchGen_Hatcher.lxx
+===================================================================
+--- oce.orig/src/HatchGen/HatchGen_Hatcher.lxx
++++ oce/src/HatchGen/HatchGen_Hatcher.lxx
+@@ -188,8 +188,7 @@ inline const HatchGen_PointOnHatching& H
+ #if RAISE_IF_NOSUCHOBJECT
+   Standard_OutOfRange_Raise_if (IndP < 0 || IndP > Hatching.NbPoints(), "") ;
+ #endif
+-  const HatchGen_PointOnHatching& PntH = Hatching.Point (IndP) ;
+-  return PntH ;
++  return Hatching.Point(IndP);
+ }
+ 
+ //=======================================================================
 Index: oce/src/TopOpeBRep/TopOpeBRep_LineInter.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRep/TopOpeBRep_LineInter.cxx
@@ -152,7 +152,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_DataStructure.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS_DataStructure.cxx
 +++ oce/src/TopOpeBRepDS/TopOpeBRepDS_DataStructure.cxx
-@@ -449,8 +449,7 @@ const TopOpeBRepDS_ListOfInterference& T
+@@ -446,8 +446,7 @@ const TopOpeBRepDS_ListOfInterference& T
      return myEmptyListOfInterference;
    }
    const TopOpeBRepDS_SurfaceData& SD = mySurfaces.Find(I);
@@ -162,7 +162,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_DataStructure.cxx
  }
  
  
-@@ -465,8 +464,7 @@ TopOpeBRepDS_ListOfInterference& TopOpeB
+@@ -462,8 +461,7 @@ TopOpeBRepDS_ListOfInterference& TopOpeB
      return myEmptyListOfInterference;
    }
    TopOpeBRepDS_SurfaceData& SD = mySurfaces.ChangeFind(I);
@@ -172,7 +172,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_DataStructure.cxx
  }
  
  //=======================================================================
-@@ -480,8 +478,7 @@ const TopOpeBRepDS_ListOfInterference& T
+@@ -477,8 +475,7 @@ const TopOpeBRepDS_ListOfInterference& T
      return myEmptyListOfInterference;
    }
    const TopOpeBRepDS_CurveData& CD = myCurves.Find(I);
@@ -182,7 +182,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_DataStructure.cxx
  }
  
  
-@@ -496,8 +493,7 @@ TopOpeBRepDS_ListOfInterference& TopOpeB
+@@ -493,8 +490,7 @@ TopOpeBRepDS_ListOfInterference& TopOpeB
      return myEmptyListOfInterference;
    }
    TopOpeBRepDS_CurveData& CD = myCurves.ChangeFind(I);
@@ -192,7 +192,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_DataStructure.cxx
  }
  
  
-@@ -512,8 +508,7 @@ const TopOpeBRepDS_ListOfInterference& T
+@@ -509,8 +505,7 @@ const TopOpeBRepDS_ListOfInterference& T
      return myEmptyListOfInterference;
    }
    const TopOpeBRepDS_PointData& PD = myPoints.Find(I);
@@ -202,7 +202,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_DataStructure.cxx
  }
  
  
-@@ -528,8 +523,7 @@ TopOpeBRepDS_ListOfInterference& TopOpeB
+@@ -525,8 +520,7 @@ TopOpeBRepDS_ListOfInterference& TopOpeB
      return myEmptyListOfInterference;
    }
    TopOpeBRepDS_PointData& PD = myPoints.ChangeFind(I);
@@ -212,7 +212,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_DataStructure.cxx
  }
  
  
-@@ -589,8 +583,7 @@ const TopTools_ListOfShape& TopOpeBRepDS
+@@ -586,8 +580,7 @@ const TopTools_ListOfShape& TopOpeBRepDS
    if(!S.IsNull())
      if (myShapes.Contains(S)) {
        const TopOpeBRepDS_ShapeData& SD = myShapes.FindFromKey(S);
@@ -222,7 +222,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_DataStructure.cxx
      }
    return myEmptyListOfShape;
  }
-@@ -615,8 +608,7 @@ const TopTools_ListOfShape& TopOpeBRepDS
+@@ -612,8 +605,7 @@ const TopTools_ListOfShape& TopOpeBRepDS
  {
    if (I >= 1 && I <= myShapes.Extent()) {
      const TopOpeBRepDS_ShapeData& SD = myShapes.FindFromIndex(I);
@@ -232,7 +232,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_DataStructure.cxx
    }
    else {
      return myEmptyListOfShape;
-@@ -1159,8 +1151,7 @@ const TopOpeBRepDS_Curve& TopOpeBRepDS_D
+@@ -1156,8 +1148,7 @@ const TopOpeBRepDS_Curve& TopOpeBRepDS_D
  {
    if ( myCurves.IsBound(I) ) {
      const TopOpeBRepDS_CurveData& CD = myCurves(I);
@@ -242,7 +242,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_DataStructure.cxx
    }
    else
      return myEmptyCurve;
-@@ -1174,8 +1165,7 @@ TopOpeBRepDS_Curve& TopOpeBRepDS_DataStr
+@@ -1171,8 +1162,7 @@ TopOpeBRepDS_Curve& TopOpeBRepDS_DataStr
  {
    if ( myCurves.IsBound(I) ) {
      TopOpeBRepDS_CurveData& CD = myCurves.ChangeFind(I);

@@ -1,52 +1,3 @@
-Index: oce/src/GCPnts/GCPnts_UniformAbscissa.gxx
-===================================================================
---- oce.orig/src/GCPnts/GCPnts_UniformAbscissa.gxx
-+++ oce/src/GCPnts/GCPnts_UniformAbscissa.gxx
-@@ -174,7 +174,7 @@ PerformLengthParametrized( Handle(TColSt
- {
-   Standard_Boolean NotDone = Standard_True;
- //  Standard_Boolean LocalDone = Standard_True;
--  Standard_Boolean Forward = Standard_True  ;
-+//  Standard_Boolean Forward = Standard_True  ;
-   Standard_Real UU1 = Min(U1, U2);
- //  Standard_Real UCurrent;
-   Standard_Real Delta, Ui;
-Index: oce/src/IntCurveSurface/IntCurveSurface_Inter.gxx
-===================================================================
---- oce.orig/src/IntCurveSurface/IntCurveSurface_Inter.gxx
-+++ oce/src/IntCurveSurface/IntCurveSurface_Inter.gxx
-@@ -419,7 +419,6 @@ void IntCurveSurface_Inter::Perform(cons
-   done = Standard_True;
-   Standard_Integer NbUOnS = TheSurfaceTool::NbUIntervals(surface,GeomAbs_C2);
-   Standard_Integer NbVOnS = TheSurfaceTool::NbVIntervals(surface,GeomAbs_C2);
--  Standard_Integer NbOnC  = TheCurveTool::NbIntervals(curve,GeomAbs_C2);
-   Standard_Real U0,U1,V0,V1; 
-   
-   if(NbUOnS > 1) { 
-Index: oce/src/IntWalk/IntWalk_PWalking_1.gxx
-===================================================================
---- oce.orig/src/IntWalk/IntWalk_PWalking_1.gxx
-+++ oce/src/IntWalk/IntWalk_PWalking_1.gxx
-@@ -418,7 +418,6 @@ void IntWalk_PWalking::Perform(const TCo
-   //xf
-   Standard_Integer i, NbPasOKConseq;
-   Standard_Real UFirst1, VFirst1, ULast1, VLast1, UFirst2, VFirst2, ULast2, VLast2;
--  Standard_Real pasMaxSV[4], aTmp;
-   TColStd_Array1OfReal Param(1,4);
-   IntImp_ConstIsoparametric ChoixIso;
-   //xt
-Index: oce/src/Intf/Intf_InterferencePolygonPolyhedron.gxx
-===================================================================
---- oce.orig/src/Intf/Intf_InterferencePolygonPolyhedron.gxx
-+++ oce/src/Intf/Intf_InterferencePolygonPolyhedron.gxx
-@@ -1059,7 +1059,6 @@ void Intf_InterferencePolygonPolyhedron:
- //   Standard_Real dEndTri=(triNor*EndO.XYZ())-triDp; // Distance <EndO> plan
- 
-   Standard_Boolean NoIntersectionWithTriangle = Standard_False;
--  Standard_Boolean PolygonCutsPlane           = Standard_True;
- 
-   Standard_Real param;
-   t = dBegTri-dEndTri;
 Index: oce/src/AdvApp2Var/AdvApp2Var_ApproxF2var.cxx
 ===================================================================
 --- oce.orig/src/AdvApp2Var/AdvApp2Var_ApproxF2var.cxx
@@ -96,7 +47,7 @@ Index: oce/src/BiTgte/BiTgte_Blend.cxx
 ===================================================================
 --- oce.orig/src/BiTgte/BiTgte_Blend.cxx
 +++ oce/src/BiTgte/BiTgte_Blend.cxx
-@@ -237,8 +237,6 @@ static void KPartCurve3d(TopoDS_Edge
+@@ -234,8 +234,6 @@ static void KPartCurve3d(TopoDS_Edge
    TopLoc_Location Loc;
    Standard_Real Tol = Precision::Confusion();
  
@@ -125,6 +76,19 @@ Index: oce/src/Extrema/Extrema_FuncExtPS.cxx
    mySinit = Standard_True;
    myPoint.Clear();
    mySqDist.Clear();
+Index: oce/src/GCPnts/GCPnts_UniformAbscissa.gxx
+===================================================================
+--- oce.orig/src/GCPnts/GCPnts_UniformAbscissa.gxx
++++ oce/src/GCPnts/GCPnts_UniformAbscissa.gxx
+@@ -174,7 +174,7 @@ PerformLengthParametrized( Handle(TColSt
+ {
+   Standard_Boolean NotDone = Standard_True;
+ //  Standard_Boolean LocalDone = Standard_True;
+-  Standard_Boolean Forward = Standard_True  ;
++//  Standard_Boolean Forward = Standard_True  ;
+   Standard_Real UU1 = Min(U1, U2);
+ //  Standard_Real UCurrent;
+   Standard_Real Delta, Ui;
 Index: oce/src/GccAna/GccAna_Circ2d3Tan_8.cxx
 ===================================================================
 --- oce.orig/src/GccAna/GccAna_Circ2d3Tan_8.cxx
@@ -137,8 +101,8 @@ Index: oce/src/GccAna/GccAna_Circ2d3Tan_8.cxx
 -//	   Standard_Integer nbsol2 = 0;
  	   Standard_Integer nbsol3 = 0;
  	   Standard_Boolean ok = Standard_False;
- 	   if (Qualified1.IsEnclosed()) {
-@@ -122,7 +122,6 @@ GccAna_Circ2d3Tan::
+      Standard_Real  difference = (((origin1.X()-Center.X())*(-dir1.Y())) + ((origin1.Y()-Center.Y())*(dir1.X())));
+@@ -124,7 +122,6 @@ GccAna_Circ2d3Tan::
           (Qualified1.IsUnqualified()))
       {
         ok = Standard_True;
@@ -160,11 +124,23 @@ Index: oce/src/GeometryTest/GeometryTest_CurveCommands.cxx
    //take knots
    Standard_Integer nbp = thePnts->NbKnots();
    TColStd_Array1OfReal aKnots(1, nbp);
+Index: oce/src/IntCurveSurface/IntCurveSurface_Inter.gxx
+===================================================================
+--- oce.orig/src/IntCurveSurface/IntCurveSurface_Inter.gxx
++++ oce/src/IntCurveSurface/IntCurveSurface_Inter.gxx
+@@ -419,7 +419,6 @@ void IntCurveSurface_Inter::Perform(cons
+   done = Standard_True;
+   Standard_Integer NbUOnS = TheSurfaceTool::NbUIntervals(surface,GeomAbs_C2);
+   Standard_Integer NbVOnS = TheSurfaceTool::NbVIntervals(surface,GeomAbs_C2);
+-  Standard_Integer NbOnC  = TheCurveTool::NbIntervals(curve,GeomAbs_C2);
+   Standard_Real U0,U1,V0,V1; 
+   
+   if(NbUOnS > 1) { 
 Index: oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
 +++ oce/src/IntPatch/IntPatch_ImpPrmIntersection.cxx
-@@ -2351,7 +2351,7 @@ void DecomposeResult(Handle(IntPatch_Lin
+@@ -2343,7 +2343,7 @@ void DecomposeResult(Handle(IntPatch_Lin
    Standard_Real BAPEX = M_PI/16.;  // delta U crossing apex
    
    Standard_Integer k = 0;
@@ -177,7 +153,7 @@ Index: oce/src/IntTools/IntTools_BeanFaceIntersector.cxx
 ===================================================================
 --- oce.orig/src/IntTools/IntTools_BeanFaceIntersector.cxx
 +++ oce/src/IntTools/IntTools_BeanFaceIntersector.cxx
-@@ -894,7 +894,7 @@ Standard_Boolean IntTools_BeanFaceInters
+@@ -901,7 +901,7 @@ Standard_Integer IntTools_BeanFaceInters
        aTolang2=1.e-16;
        aLin=myCurve.Line();
        const gp_Dir& aDirL=aLin.Direction();
@@ -186,6 +162,30 @@ Index: oce/src/IntTools/IntTools_BeanFaceIntersector.cxx
        //
        aCos=aDirC.Dot(aDirL);
        if(aCos >= 0.) {
+Index: oce/src/IntWalk/IntWalk_PWalking_1.gxx
+===================================================================
+--- oce.orig/src/IntWalk/IntWalk_PWalking_1.gxx
++++ oce/src/IntWalk/IntWalk_PWalking_1.gxx
+@@ -418,7 +418,6 @@ void IntWalk_PWalking::Perform(const TCo
+   //xf
+   Standard_Integer i, NbPasOKConseq;
+   Standard_Real UFirst1, VFirst1, ULast1, VLast1, UFirst2, VFirst2, ULast2, VLast2;
+-  Standard_Real pasMaxSV[4], aTmp;
+   TColStd_Array1OfReal Param(1,4);
+   IntImp_ConstIsoparametric ChoixIso;
+   //xt
+Index: oce/src/Intf/Intf_InterferencePolygonPolyhedron.gxx
+===================================================================
+--- oce.orig/src/Intf/Intf_InterferencePolygonPolyhedron.gxx
++++ oce/src/Intf/Intf_InterferencePolygonPolyhedron.gxx
+@@ -1059,7 +1059,6 @@ void Intf_InterferencePolygonPolyhedron:
+ //   Standard_Real dEndTri=(triNor*EndO.XYZ())-triDp; // Distance <EndO> plan
+ 
+   Standard_Boolean NoIntersectionWithTriangle = Standard_False;
+-  Standard_Boolean PolygonCutsPlane           = Standard_True;
+ 
+   Standard_Real param;
+   t = dBegTri-dEndTri;
 Index: oce/src/OpenGl/OpenGl_LayerList.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_LayerList.cxx
@@ -203,15 +203,15 @@ Index: oce/src/OpenGl/OpenGl_Trihedron.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_Trihedron.cxx
 +++ oce/src/OpenGl/OpenGl_Trihedron.cxx
-@@ -161,7 +161,7 @@ void OpenGl_Trihedron::Redraw (const Han
-   /* 
-   * Creation du triedre 
+@@ -158,7 +158,7 @@ void OpenGl_Trihedron::redraw (const Han
+   /*
+   * Creation du triedre
    */
 -  const OpenGl_AspectLine *AspectLine = theWorkspace->AspectLine( Standard_True );
 +  /* const OpenGl_AspectLine *AspectLine = */ theWorkspace->AspectLine( Standard_True );
  
-   /* Fotis Sioutis 2007-11-14 15:06 
-   I have also seen in previous posts that the view trihedron in V3d_WIREFRAME mode 
+   /* Fotis Sioutis 2007-11-14 15:06
+   I have also seen in previous posts that the view trihedron in V3d_WIREFRAME mode
 Index: oce/src/StlTransfer/StlTransfer.cxx
 ===================================================================
 --- oce.orig/src/StlTransfer/StlTransfer.cxx
@@ -244,7 +244,7 @@ Index: oce/src/XSDRAWSTEP/XSDRAWSTEP.cxx
 ===================================================================
 --- oce.orig/src/XSDRAWSTEP/XSDRAWSTEP.cxx
 +++ oce/src/XSDRAWSTEP/XSDRAWSTEP.cxx
-@@ -574,7 +574,7 @@ static Standard_Integer stepfileunits (D
+@@ -571,7 +571,7 @@ static Standard_Integer stepfileunits (D
    TColStd_SequenceOfAsciiString anUnitSolidAngleNames;
    aStepReader.FileUnits( anUnitLengthNames,anUnitAngleNames,anUnitSolidAngleNames);
                                     

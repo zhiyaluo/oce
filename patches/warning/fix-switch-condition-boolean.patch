@@ -12,11 +12,11 @@ Fix following OSX 10.9 compiler warning:
  src/TopOpeBRepBuild/TopOpeBRepBuild_Builder.cxx | 8 +++++---
  1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder.cxx b/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder.cxx
-index 8d63681..49c77c0 100644
---- a/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder.cxx
-+++ b/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder.cxx
-@@ -493,9 +493,11 @@ TopAbs_Orientation TopOpeBRepBuild_Builder::Orient(const TopAbs_Orientation Ori,
+Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder.cxx
++++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder.cxx
+@@ -493,9 +493,11 @@ TopAbs_Orientation TopOpeBRepBuild_Build
  {
    TopAbs_Orientation result=TopAbs_FORWARD;
  
@@ -31,6 +31,3 @@ index 8d63681..49c77c0 100644
    }
    return result;
  }
--- 
-1.8.4.rc1
-

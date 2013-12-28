@@ -29,24 +29,11 @@ Subject: [PATCH 3/3] Reflect type changes in wok build system
  src/OSD/OSD_SharedMemory.cdl        |    2 +-
  5 files changed, 5 insertions(+), 5 deletions(-)
 
-Index: oce/src/OpenGl/OpenGl_GraphicDriver.hxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_GraphicDriver.hxx
-+++ oce/src/OpenGl/OpenGl_GraphicDriver.hxx
-@@ -23,6 +23,8 @@
- 
- #include <Graphic3d_GraphicDriver.hxx>
- #include <Handle_OpenGl_GraphicDriver.hxx>
-+#include <Handle_OpenGl_View.hxx>
-+#include <Handle_OpenGl_Workspace.hxx>
- #include <OpenGl_Context.hxx>
- 
- #include <Standard_CString.hxx>
 Index: oce/src/Draw/Draw_Interpretor.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Interpretor.cxx
 +++ oce/src/Draw/Draw_Interpretor.cxx
-@@ -35,7 +35,7 @@
+@@ -36,7 +36,7 @@
  #include <tcl.h>
  
  // for capturing of cout and cerr (dup(), dup2())
@@ -132,3 +119,16 @@ Index: oce/src/OSD/OSD_SharedMemory.cdl
     myAddress    : Address;
     myName : AsciiString;   
     mySize : Integer;
+Index: oce/src/OpenGl/OpenGl_GraphicDriver.hxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_GraphicDriver.hxx
++++ oce/src/OpenGl/OpenGl_GraphicDriver.hxx
+@@ -22,6 +22,8 @@
+ 
+ #include <Graphic3d_GraphicDriver.hxx>
+ #include <Handle_OpenGl_GraphicDriver.hxx>
++#include <Handle_OpenGl_View.hxx>
++#include <Handle_OpenGl_Workspace.hxx>
+ #include <OpenGl_Context.hxx>
+ #include <OpenGl_PrinterContext.hxx>
+ 

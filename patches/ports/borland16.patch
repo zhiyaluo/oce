@@ -193,6 +193,32 @@ Index: oce/src/NCollection/NCollection_UtfString.lxx
    {
      case sizeof(Standard_Utf8Char):
      {
+Index: oce/src/OSD/OSD_File.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_File.cxx
++++ oce/src/OSD/OSD_File.cxx
+@@ -860,7 +860,7 @@ Standard_Boolean OSD_File::IsExecutable(
+ #define _int64 int64_t
+ #endif
+ 
+-#ifdef _MSC_VER
++#if defined(_MSC_VER) || defined(__BORLANDC__)
+ #pragma comment( lib, "WSOCK32.LIB"  )
+ #pragma comment( lib, "WINSPOOL.LIB" )
+ #endif
+Index: oce/src/OSD/OSD_Host.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_Host.cxx
++++ oce/src/OSD/OSD_Host.cxx
+@@ -232,7 +232,7 @@ Standard_Integer OSD_Host::Error()const{
+ 
+ #include <OSD_Host.hxx>
+ 
+-#ifdef _MSC_VER
++#if defined(_MSC_VER) || defined(__BORLANDC__)
+ #pragma comment( lib, "WSOCK32.LIB" )
+ #endif
+ 
 Index: oce/src/OpenGl/OpenGl_AspectFace.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_AspectFace.cxx
@@ -302,30 +328,4 @@ Index: oce/src/Standard/Standard_TypeDef.hxx
 +
  #define Standard_False false
  #define Standard_True  true
- 
-Index: oce/src/OSD/OSD_File.cxx
-===================================================================
---- oce.orig/src/OSD/OSD_File.cxx
-+++ oce/src/OSD/OSD_File.cxx
-@@ -860,7 +860,7 @@ Standard_Boolean OSD_File::IsExecutable(
- #define _int64 int
- #endif
- 
--#ifdef _MSC_VER
-+#if defined(_MSC_VER) || defined(__BORLANDC__)
- #pragma comment( lib, "WSOCK32.LIB"  )
- #pragma comment( lib, "WINSPOOL.LIB" )
- #endif
-Index: oce/src/OSD/OSD_Host.cxx
-===================================================================
---- oce.orig/src/OSD/OSD_Host.cxx
-+++ oce/src/OSD/OSD_Host.cxx
-@@ -232,7 +232,7 @@ Standard_Integer OSD_Host::Error()const{
- 
- #include <OSD_Host.hxx>
- 
--#ifdef _MSC_VER
-+#if defined(_MSC_VER) || defined(__BORLANDC__)
- #pragma comment( lib, "WSOCK32.LIB" )
- #endif
  

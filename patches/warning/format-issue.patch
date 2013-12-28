@@ -9,6 +9,28 @@ Subject: [PATCH 6/9] [warning-fix][formati-issue]
  src/OpenGl/OpenGl_degmodel.cxx         |    2 +-
  3 files changed, 7 insertions(+), 7 deletions(-)
 
+Index: oce/src/AlienImage/AlienImage_SGIRGBAlienData.cxx
+===================================================================
+--- oce.orig/src/AlienImage/AlienImage_SGIRGBAlienData.cxx
++++ oce/src/AlienImage/AlienImage_SGIRGBAlienData.cxx
+@@ -1145,7 +1145,7 @@ Standard_Boolean AlienImage_SGIRGBAlienD
+     printf("Image x and y size in pixels: %d %d\n",
+ 			myHeader.xsize,myHeader.ysize);
+     printf("Image zsize in channels: %d\n",myHeader.zsize);
+-    printf("Image pixel min and max: %d %d\n",myHeader.min,myHeader.max);
++    printf("Image pixel min and max: %u %u\n",myHeader.min,myHeader.max);
+   }
+ #endif
+ 
+@@ -1221,7 +1221,7 @@ Standard_Boolean AlienImage_SGIRGBAlienD
+     printf("Image x and y size in pixels: %d %d\n",
+ 			WritedHeader.xsize,WritedHeader.ysize);
+     printf("Image zsize in channels: %d\n",WritedHeader.zsize);
+-    printf("Image pixel min and max: %d %d\n",
++    printf("Image pixel min and max: %u %u\n",
+ 			WritedHeader.min,WritedHeader.max);
+   }
+ #endif
 Index: oce/src/BOPTest/BOPTest_LowCommands.cxx
 ===================================================================
 --- oce.orig/src/BOPTest/BOPTest_LowCommands.cxx
@@ -51,25 +73,3 @@ Index: oce/src/IFSelect/IFSelect_SessionPilot.cxx
      ligne[0] = '\0';
      fgets(ligne,100,fic);
      if (feof(fic)) break;
-Index: oce/src/AlienImage/AlienImage_SGIRGBAlienData.cxx
-===================================================================
---- oce.orig/src/AlienImage/AlienImage_SGIRGBAlienData.cxx
-+++ oce/src/AlienImage/AlienImage_SGIRGBAlienData.cxx
-@@ -1145,7 +1145,7 @@ Standard_Boolean AlienImage_SGIRGBAlienD
-     printf("Image x and y size in pixels: %d %d\n",
- 			myHeader.xsize,myHeader.ysize);
-     printf("Image zsize in channels: %d\n",myHeader.zsize);
--    printf("Image pixel min and max: %d %d\n",myHeader.min,myHeader.max);
-+    printf("Image pixel min and max: %u %u\n",myHeader.min,myHeader.max);
-   }
- #endif
- 
-@@ -1221,7 +1221,7 @@ Standard_Boolean AlienImage_SGIRGBAlienD
-     printf("Image x and y size in pixels: %d %d\n",
- 			WritedHeader.xsize,WritedHeader.ysize);
-     printf("Image zsize in channels: %d\n",WritedHeader.zsize);
--    printf("Image pixel min and max: %d %d\n",
-+    printf("Image pixel min and max: %u %u\n",
- 			WritedHeader.min,WritedHeader.max);
-   }
- #endif

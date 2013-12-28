@@ -51,7 +51,7 @@ Index: oce/src/AIS/AIS_ParallelRelation.cxx
 ===================================================================
 --- oce.orig/src/AIS/AIS_ParallelRelation.cxx
 +++ oce/src/AIS/AIS_ParallelRelation.cxx
-@@ -308,8 +308,8 @@ void AIS_ParallelRelation::ComputeTwoEdg
+@@ -296,8 +296,8 @@ void AIS_ParallelRelation::ComputeTwoEdg
      }
    else return;
  
@@ -67,7 +67,7 @@ Index: oce/src/DDataStd/DDataStd_BasicCommands.cxx
 --- oce.orig/src/DDataStd/DDataStd_BasicCommands.cxx
 +++ oce/src/DDataStd/DDataStd_BasicCommands.cxx
 @@ -1291,7 +1291,7 @@ static Standard_Integer DDataStd_SetIntP
-       aMap.Add (atoi(arg[j]));
+       aMap.Add (Draw::Atoi(arg[j]));
        j++;
      }
 -    const Handle(TColStd_HPackedMapOfInteger)& aHMap = new TColStd_HPackedMapOfInteger(aMap);

@@ -8,19 +8,6 @@ Subject: [PATCH] [clang-warning-fix][unused-value]
  src/AdvApp2Var/AdvApp2Var_Iso.cxx |    2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
-Index: oce/src/OpenGl/OpenGl_telem_util.hxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_telem_util.hxx
-+++ oce/src/OpenGl/OpenGl_telem_util.hxx
-@@ -87,7 +87,7 @@ xx-xx-xx : xxx ; Creation.
- /* normalize */
- #define  vecnrmd(a,d)    ( d = (Tfloat)vecmag(a), \
-   ( d > 1e-10 ? (a[0] /= d, a[1] /= d, a[2] /= d, d) : (Tfloat)0. ) )
--#define  vecnrm(a)       { Tfloat d; vecnrmd(a,d); }
-+#define  vecnrm(a)       { Tfloat d; (void) vecnrmd(a,d); }
- 
- /* angle between two vectors */
- #define  vecang(a,b,d)   { d = (Tfloat)(vecmag(a)*vecmag(b)); \
 Index: oce/src/AdvApp2Var/AdvApp2Var_Iso.cxx
 ===================================================================
 --- oce.orig/src/AdvApp2Var/AdvApp2Var_Iso.cxx
@@ -34,3 +21,16 @@ Index: oce/src/AdvApp2Var/AdvApp2Var_Iso.cxx
                                  (HERRMOY ->LowerRow(),HERRMOY ->LowerCol());
    Standard_Real *EMYAPP = new Standard_Real[NBSESP];
  //
+Index: oce/src/OpenGl/OpenGl_telem_util.hxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_telem_util.hxx
++++ oce/src/OpenGl/OpenGl_telem_util.hxx
+@@ -87,7 +87,7 @@ xx-xx-xx : xxx ; Creation.
+ /* normalize */
+ #define  vecnrmd(a,d)    ( d = (Tfloat)vecmag(a), \
+   ( d > 1e-10 ? (a[0] /= d, a[1] /= d, a[2] /= d, d) : (Tfloat)0. ) )
+-#define  vecnrm(a)       { Tfloat d; vecnrmd(a,d); }
++#define  vecnrm(a)       { Tfloat d; (void) vecnrmd(a,d); }
+ 
+ /* angle between two vectors */
+ #define  vecang(a,b,d)   { d = (Tfloat)(vecmag(a)*vecmag(b)); \

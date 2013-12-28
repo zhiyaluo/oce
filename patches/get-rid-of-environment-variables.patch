@@ -90,7 +90,7 @@ Index: oce/src/Draw/Draw.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw.cxx
 +++ oce/src/Draw/Draw.cxx
-@@ -304,6 +304,8 @@ void Draw_Appli(Standard_Integer argc, c
+@@ -333,6 +333,8 @@ void Draw_Appli(Standard_Integer argc, c
      {
  #ifdef WNT
        ReadInitFile ("ddefault");
@@ -210,7 +210,7 @@ Index: oce/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
 ===================================================================
 --- oce.orig/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
 +++ oce/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
-@@ -196,6 +196,11 @@ Standard_Boolean XmlLDrivers_DocumentSto
+@@ -191,6 +191,11 @@ Standard_Boolean XmlLDrivers_DocumentSto
    if (aResourceDir.IsEmpty()) {
      // now try by CASROOT
      aResourceDir = getenv (aCSFVariable[1]);

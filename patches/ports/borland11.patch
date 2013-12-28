@@ -195,7 +195,7 @@ Index: oce/src/AIS/AIS_Point.cxx
 +  return (TopoDS_Vertex) BRepBuilderAPI_MakeVertex(P);
  }
  
- //=======================================================================
+ 
 Index: oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
 ===================================================================
 --- oce.orig/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
@@ -420,7 +420,7 @@ Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
  	      BB.Add( Base, NewEdge );
  	      Base.Closed( Standard_True );
  	    }
-@@ -1808,7 +1808,7 @@ void MakeCircle (const TopoDS_Edge&
+@@ -1777,7 +1777,7 @@ void MakeCircle (const TopoDS_Edge&
      = new  Geom2d_Circle(Axis, Abs(Offset), Offset < 0.);
  
    // Bind the edges in my Map.
@@ -429,7 +429,7 @@ Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
    TopTools_ListOfShape LL;
  
    LL.Append(OE);
-@@ -1884,7 +1884,7 @@ void MakeOffset (const TopoDS_Edge&
+@@ -1853,7 +1853,7 @@ void MakeOffset (const TopoDS_Edge&
  
    // Bind the edges in my Map.
    if (!G2dOC.IsNull()) {
@@ -455,16 +455,16 @@ Index: oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_TrimShellCorner.cxx
 +++ oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
-@@ -2141,7 +2141,7 @@ static Standard_Boolean ChooseSection(co
+@@ -2105,7 +2105,7 @@ static Standard_Boolean ChooseSection(co
        if (!explo.More())
- 	break;
+         break;
        TopoDS_Edge FirstEdge = TopoDS::Edge( explo.Current() );
 -      TopoDS_Wire NewWire = BRepLib_MakeWire( FirstEdge );
 +      TopoDS_Wire NewWire = (TopoDS_Wire) BRepLib_MakeWire( FirstEdge );
        B.Remove( OldComp, FirstEdge );
        if (NewWire.Closed())
- 	{
-@@ -2189,7 +2189,7 @@ static Standard_Boolean ChooseSection(co
+         {
+@@ -2153,7 +2153,7 @@ static Standard_Boolean ChooseSection(co
                Standard_Real MinDeviation = RealLast();
                for (j = 1; j <= Edges.Length(); j++)
                  {
@@ -567,7 +567,7 @@ Index: oce/src/BRepOffset/BRepOffset_Tool.cxx
 ===================================================================
 --- oce.orig/src/BRepOffset/BRepOffset_Tool.cxx
 +++ oce/src/BRepOffset/BRepOffset_Tool.cxx
-@@ -391,7 +391,7 @@ static void BuildPCurves (const TopoDS_E
+@@ -379,7 +379,7 @@ static void BuildPCurves (const TopoDS_E
      {
        gp_Pnt fpoint = AC.Value( AC.FirstParameter() );
        gp_Pnt lpoint = AC.Value( AC.LastParameter() );
@@ -576,16 +576,16 @@ Index: oce/src/BRepOffset/BRepOffset_Tool.cxx
        Standard_Real U1 = 0., U2 = 0., TolProj = 1.e-4; //1.e-5;
        TopoDS_Edge theEdge;
        TopExp_Explorer Explo;
-@@ -767,7 +767,7 @@ void BRepOffset_Tool::PipeInter(const To
+@@ -756,7 +756,7 @@ void BRepOffset_Tool::PipeInter(const To
      for (Standard_Integer i = 1; i <= Inter.NbLines(); i++) {
        CI = Inter.Line(i);
        if (ToSmall(CI)) continue;
 -      TopoDS_Edge E = BRepLib_MakeEdge(CI);
 +      TopoDS_Edge E = (TopoDS_Edge) BRepLib_MakeEdge(CI);
        if (Inter.HasLineOnS1(i)) {
- 	Handle(Geom2d_Curve) C2 = Inter.LineOnS1(i);
- 	PutInBounds  (F1,E,C2);
-@@ -1769,7 +1769,7 @@ void BRepOffset_Tool::Inter3D(const Topo
+         Handle(Geom2d_Curve) C2 = Inter.LineOnS1(i);
+         PutInBounds  (F1,E,C2);
+@@ -1757,7 +1757,7 @@ void BRepOffset_Tool::Inter3D(const Topo
          while (!edges.IsEmpty())
            {
              TopoDS_Edge anEdge = TopoDS::Edge( edges.First() );
@@ -594,7 +594,7 @@ Index: oce/src/BRepOffset/BRepOffset_Tool.cxx
              TColStd_SequenceOfInteger Candidates;
              for (k = 1; k <= wseq.Length(); k++)
                {
-@@ -1811,7 +1811,7 @@ void BRepOffset_Tool::Inter3D(const Topo
+@@ -1799,7 +1799,7 @@ void BRepOffset_Tool::Inter3D(const Topo
                            }
                        }
                    }
@@ -603,7 +603,7 @@ Index: oce/src/BRepOffset/BRepOffset_Tool.cxx
                  wseq(k) = NewWire;
                  edges.Remove(Candidates(minind));
                }
-@@ -2074,7 +2074,7 @@ void BRepOffset_Tool::InterOrExtent(cons
+@@ -2062,7 +2062,7 @@ void BRepOffset_Tool::InterOrExtent(cons
        CI = Inter.Line(i);
        
        if (ToSmall(CI)) continue;
@@ -612,7 +612,7 @@ Index: oce/src/BRepOffset/BRepOffset_Tool.cxx
        BuildPCurves (E,F1);
        BuildPCurves (E,F2);
        OrientSection (E,F1,F2,O1,O2);
-@@ -2484,7 +2484,7 @@ void BRepOffset_Tool::Inter2d (const Top
+@@ -2464,7 +2464,7 @@ void BRepOffset_Tool::Inter2d (const Top
          }
          if (YaSol) {
            gp_Pnt        P   = S->Value(P2d.X(),P2d.Y());
@@ -663,7 +663,7 @@ Index: oce/src/BRepTest/BRepTest_CurveCommands.cxx
 -    TopoDS_Vertex    V    = BRepLib_MakeVertex(P);
 +    TopoDS_Vertex    V    = (TopoDS_Vertex) BRepLib_MakeVertex(P);
      NbV ++;
-     sprintf(name,"%s_%d",a[1],NbV);
+     Sprintf(name,"%s_%d",a[1],NbV);
      DBRep::Set(name,V);
 Index: oce/src/BRepTest/BRepTest_ExtremaCommands.cxx
 ===================================================================
@@ -686,7 +686,7 @@ Index: oce/src/BRepTest/BRepTest_ExtremaCommands.cxx
 +              TopoDS_Vertex V = (TopoDS_Vertex) BRepLib_MakeVertex(P1);
                char namev[100];
                if (i1==1) 
- 	      sprintf(namev, "%s" ,ns0);
+ 	      Sprintf(namev, "%s" ,ns0);
 @@ -107,7 +107,7 @@ static Standard_Integer distmini(Draw_In
                }
               else
@@ -694,8 +694,8 @@ Index: oce/src/BRepTest/BRepTest_ExtremaCommands.cxx
 -              TopoDS_Edge E = BRepLib_MakeEdge (P1, P2);
 +              TopoDS_Edge E = (TopoDS_Edge) BRepLib_MakeEdge (P1, P2);
  	      if (i1==1)
-               {sprintf(name,"%s",ns0);}
-               else {sprintf(name,"%s%d",ns0,i1);}
+               {Sprintf(name,"%s",ns0);}
+               else {Sprintf(name,"%s%d",ns0,i1);}
 Index: oce/src/BRepTest/BRepTest_SurfaceCommands.cxx
 ===================================================================
 --- oce.orig/src/BRepTest/BRepTest_SurfaceCommands.cxx
@@ -726,7 +726,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_2.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder_2.cxx
 +++ oce/src/ChFi3d/ChFi3d_Builder_2.cxx
-@@ -1013,7 +1013,7 @@ static void  ChFi3d_BuildPlane (TopOpeBR
+@@ -995,7 +995,7 @@ static void  ChFi3d_BuildPlane (TopOpeBR
      if  (theProp.IsNormalDefined()) {
        P =  theProp.Value();
        Handle(Geom_Plane) Pln  = new Geom_Plane(P, theProp.Normal());

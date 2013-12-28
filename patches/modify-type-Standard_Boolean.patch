@@ -1,66 +1,3 @@
-Index: oce/src/BOPDS/BOPDS_IndexRange.lxx
-===================================================================
---- oce.orig/src/BOPDS/BOPDS_IndexRange.lxx
-+++ oce/src/BOPDS/BOPDS_IndexRange.lxx
-@@ -93,5 +93,5 @@
- //=======================================================================
-   inline Standard_Boolean BOPDS_IndexRange::Contains(const Standard_Integer aIndex)const
- {
--  return (Standard_Boolean)(aIndex>=myFirst && aIndex<=myLast);
-+  return (aIndex>=myFirst && aIndex<=myLast);
- }
-Index: oce/src/BinObjMgt/BinObjMgt_Persistent.lxx
-===================================================================
---- oce.orig/src/BinObjMgt/BinObjMgt_Persistent.lxx
-+++ oce/src/BinObjMgt/BinObjMgt_Persistent.lxx
-@@ -232,6 +232,6 @@ inline const BinObjMgt_Persistent& BinOb
- //  Standard_Integer anIntVal = (Standard_Integer) theValue;
-   Standard_Integer anIntVal;
-   GetInteger (anIntVal);
--  theValue = (Standard_Boolean) anIntVal;
-+  theValue = (0 != anIntVal);
-   return *this;
- }
-Index: oce/src/Bnd/Bnd_Box2d.lxx
-===================================================================
---- oce.orig/src/Bnd/Bnd_Box2d.lxx
-+++ oce/src/Bnd/Bnd_Box2d.lxx
-@@ -151,7 +151,7 @@ inline void Bnd_Box2d::OpenYmax ()
- //=======================================================================
- 
- inline Standard_Boolean Bnd_Box2d::IsOpenXmin () const
--{ return Flags & XminMask; }
-+{ return 0 != (Flags & XminMask); }
- 
- //=======================================================================
- //function : IsOpenXmax
-@@ -159,7 +159,7 @@ inline Standard_Boolean Bnd_Box2d::IsOpe
- //=======================================================================
- 
- inline Standard_Boolean Bnd_Box2d::IsOpenXmax () const
--{ return Flags & XmaxMask; }
-+{ return 0 != (Flags & XmaxMask); }
- 
- //=======================================================================
- //function : IsOpenYmin
-@@ -167,7 +167,7 @@ inline Standard_Boolean Bnd_Box2d::IsOpe
- //=======================================================================
- 
- inline Standard_Boolean Bnd_Box2d::IsOpenYmin () const
--{ return Flags & YminMask; }
-+{ return 0 != (Flags & YminMask); }
- 
- //=======================================================================
- //function : IsOpenYmax
-@@ -175,7 +175,7 @@ inline Standard_Boolean Bnd_Box2d::IsOpe
- //=======================================================================
- 
- inline Standard_Boolean Bnd_Box2d::IsOpenYmax () const
--{ return Flags & YmaxMask; }
-+{ return 0 != (Flags & YmaxMask); }
- 
- //=======================================================================
- //function : IsWhole
 Index: oce/inc/ChFi3d_Builder.hxx
 ===================================================================
 --- oce.orig/inc/ChFi3d_Builder.hxx
@@ -150,43 +87,19 @@ Index: oce/inc/ChFi3d_FilBuilder.hxx
    
    Standard_EXPORT   virtual  void PerformSurf(ChFiDS_SequenceOfSurfData& SeqData,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Choix,const Handle(BRepAdaptor_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HCurve2d)& PC1,const Handle(BRepAdaptor_HSurface)& Sref1,const Handle(BRepAdaptor_HCurve2d)& PCref1,Standard_Boolean& Decroch1,const Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,const TopAbs_Orientation Or2,const Standard_Real MaxStep,const Standard_Real Fleche,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecP,const Standard_Boolean RecS,const Standard_Boolean RecRst,const math_Vector& Soldep) ;
    
-Index: oce/src/ChFiDS/ChFiDS_SurfData.lxx
+Index: oce/inc/FilletSurf_InternalBuilder.hxx
 ===================================================================
---- oce.orig/src/ChFiDS/ChFiDS_SurfData.lxx
-+++ oce/src/ChFiDS/ChFiDS_SurfData.lxx
-@@ -58,7 +58,8 @@ inline Standard_Integer  ChFiDS_SurfData
- 
- inline void ChFiDS_SurfData::SetIndexOfC1(const Standard_Integer Index)
- {
--  indexOfC1 = isoncurv1 = Index;
-+  indexOfC1 = Index;
-+  isoncurv1 = (0 != Index);
- }
- 
- //=======================================================================
-@@ -99,7 +100,8 @@ inline Standard_Integer  ChFiDS_SurfData
- 
- inline void ChFiDS_SurfData::SetIndexOfC2(const Standard_Integer Index)
- {
--  indexOfC2 = isoncurv2 = Index;
-+  indexOfC2 = Index;
-+  isoncurv2 = (0 != Index);
- }
- 
- //=======================================================================
-Index: oce/src/Extrema/Extrema_Curve2dTool.lxx
-===================================================================
---- oce.orig/src/Extrema/Extrema_Curve2dTool.lxx
-+++ oce/src/Extrema/Extrema_Curve2dTool.lxx
-@@ -286,7 +286,7 @@ inline void Extrema_Curve2dTool::D2(cons
- 
-  inline Standard_Boolean Extrema_Curve2dTool::IsRational(const Adaptor2d_Curve2d& C)
- {
--  return C.Degree();
-+  return 0 != C.Degree();
- }
- 
- 
+--- oce.orig/inc/FilletSurf_InternalBuilder.hxx
++++ oce/inc/FilletSurf_InternalBuilder.hxx
+@@ -152,7 +152,7 @@ protected:
+   //! This  method calculates the elements of construction of the <br>
+ //!          fillet (constant or evolutive). <br>
+ //! <br>
+-  Standard_EXPORT   virtual  Standard_Boolean PerformSurf(ChFiDS_SequenceOfSurfData& SeqData,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Choix,const Handle(BRepAdaptor_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,const Standard_Real MaxStep,const Standard_Real Fleche,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecOnS1,const Standard_Boolean RecOnS2,const math_Vector& Soldep,Standard_Boolean& Intf,Standard_Boolean& Intl) ;
++  Standard_EXPORT   virtual  Standard_Boolean PerformSurf(ChFiDS_SequenceOfSurfData& SeqData,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Choix,const Handle(BRepAdaptor_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,const Standard_Real MaxStep,const Standard_Real Fleche,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecOnS1,const Standard_Boolean RecOnS2,const math_Vector& Soldep,Standard_Integer& Intf,Standard_Integer& Intl) ;
+   
+   Standard_EXPORT   virtual  void PerformSurf(ChFiDS_SequenceOfSurfData& SeqData,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Choix,const Handle(BRepAdaptor_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HCurve2d)& PC1,const Handle(BRepAdaptor_HSurface)& Sref1,const Handle(BRepAdaptor_HCurve2d)& PCref1,Standard_Boolean& Decroch1,const Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,const TopAbs_Orientation Or2,const Standard_Real MaxStep,const Standard_Real Fleche,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecP,const Standard_Boolean RecS,const Standard_Boolean RecRst,const math_Vector& Soldep) ;
+   
 Index: oce/inc/HLRAlgo_BiPoint.hxx
 ===================================================================
 --- oce.orig/inc/HLRAlgo_BiPoint.hxx
@@ -210,27 +123,6 @@ Index: oce/inc/HLRAlgo_BiPoint.hxx
    
          Standard_Boolean Rg1Line() const;
    
-Index: oce/src/HLRAlgo/HLRAlgo_BiPoint.lxx
-===================================================================
---- oce.orig/src/HLRAlgo/HLRAlgo_BiPoint.lxx
-+++ oce/src/HLRAlgo/HLRAlgo_BiPoint.lxx
-@@ -19,11 +19,11 @@
- // and conditions governing the rights and limitations under the License.
- 
- 
--#define EMskRg1Line  ((Standard_Boolean)1)
--#define EMskRgNLine  ((Standard_Boolean)2)
--#define EMskOutLine  ((Standard_Boolean)4)
--#define EMskIntLine  ((Standard_Boolean)8)
--#define EMskHidden   ((Standard_Boolean)16)
-+#define EMskRg1Line  0x01u
-+#define EMskRgNLine  0x02u
-+#define EMskOutLine  0x04u
-+#define EMskIntLine  0x08u
-+#define EMskHidden   0x10u
- 
- //=======================================================================
- //function : HLRAlgo_BiPoint
 Index: oce/inc/HLRAlgo_EdgeStatus.hxx
 ===================================================================
 --- oce.orig/inc/HLRAlgo_EdgeStatus.hxx
@@ -244,21 +136,6 @@ Index: oce/inc/HLRAlgo_EdgeStatus.hxx
  Intrv_Intervals myVisibles;
  
  
-Index: oce/src/HLRAlgo/HLRAlgo_EdgeStatus.lxx
-===================================================================
---- oce.orig/src/HLRAlgo/HLRAlgo_EdgeStatus.lxx
-+++ oce/src/HLRAlgo/HLRAlgo_EdgeStatus.lxx
-@@ -19,8 +19,8 @@
- // and conditions governing the rights and limitations under the License.
- 
- 
--#define EMaskAllHidden  ((Standard_Boolean)1)
--#define EMaskAllVisible ((Standard_Boolean)2)
-+#define EMaskAllHidden    0x01u
-+#define EMaskAllVisible   0x02u
- 
- //=======================================================================
- //function : Bounds
 Index: oce/inc/HLRAlgo_EdgesBlock.hxx
 ===================================================================
 --- oce.orig/inc/HLRAlgo_EdgesBlock.hxx
@@ -272,36 +149,6 @@ Index: oce/inc/HLRAlgo_EdgesBlock.hxx
  Standard_Integer myMinMax[16];
  
  
-Index: oce/src/HLRAlgo/HLRAlgo_EdgesBlock.lxx
-===================================================================
---- oce.orig/src/HLRAlgo/HLRAlgo_EdgesBlock.lxx
-+++ oce/src/HLRAlgo/HLRAlgo_EdgesBlock.lxx
-@@ -19,11 +19,11 @@
- // and conditions governing the rights and limitations under the License.
- 
- 
--#define EMaskOrient   ((Standard_Boolean)15)
--#define EMaskOutLine  ((Standard_Boolean)16)
--#define EMaskInternal ((Standard_Boolean)32)
--#define EMaskDouble   ((Standard_Boolean)64)
--#define EMaskIsoLine  ((Standard_Boolean)128)
-+#define EMaskOrient    0x0fu
-+#define EMaskOutLine   0x10u
-+#define EMaskInternal  0x20u
-+#define EMaskDouble    0x40u
-+#define EMaskIsoLine   0x80u
- 
- //=======================================================================
- //function : NbEdges
-@@ -78,7 +78,7 @@ HLRAlgo_EdgesBlock::Orientation (const S
- 				 const TopAbs_Orientation Or)
- {
-   myFlags(I) &= ~EMaskOrient;
--  myFlags(I) |= (((Standard_Boolean)Or) & EMaskOrient);
-+  myFlags(I) |= (0 != (Or & EMaskOrient));
- }
- 
- //=======================================================================
 Index: oce/inc/HLRAlgo_PolyData.hxx
 ===================================================================
 --- oce.orig/inc/HLRAlgo_PolyData.hxx
@@ -328,25 +175,6 @@ Index: oce/inc/HLRBRep_BiPnt2D.hxx
  
  
  };
-Index: oce/src/HLRBRep/HLRBRep_BiPnt2D.lxx
-===================================================================
---- oce.orig/src/HLRBRep/HLRBRep_BiPnt2D.lxx
-+++ oce/src/HLRBRep/HLRBRep_BiPnt2D.lxx
-@@ -19,10 +19,10 @@
- // and conditions governing the rights and limitations under the License.
- 
- 
--#define EMskRg1Line  ((Standard_Boolean)1)
--#define EMskRgNLine  ((Standard_Boolean)2)
--#define EMskOutLine  ((Standard_Boolean)4)
--#define EMskIntLine  ((Standard_Boolean)8)
-+#define EMskRg1Line    0x01u
-+#define EMskRgNLine    0x02u
-+#define EMskOutLine    0x04u
-+#define EMskIntLine    0x08u
- 
- //=======================================================================
- //function : P1
 Index: oce/inc/HLRBRep_BiPoint.hxx
 ===================================================================
 --- oce.orig/inc/HLRBRep_BiPoint.hxx
@@ -360,25 +188,6 @@ Index: oce/inc/HLRBRep_BiPoint.hxx
  
  
  };
-Index: oce/src/HLRBRep/HLRBRep_BiPoint.lxx
-===================================================================
---- oce.orig/src/HLRBRep/HLRBRep_BiPoint.lxx
-+++ oce/src/HLRBRep/HLRBRep_BiPoint.lxx
-@@ -19,10 +19,10 @@
- // and conditions governing the rights and limitations under the License.
- 
- 
--#define EMskRg1Line  ((Standard_Boolean)1)
--#define EMskRgNLine  ((Standard_Boolean)2)
--#define EMskOutLine  ((Standard_Boolean)4)
--#define EMskIntLine  ((Standard_Boolean)8)
-+#define EMskRg1Line    0x01u
-+#define EMskRgNLine    0x02u
-+#define EMskOutLine    0x04u
-+#define EMskIntLine    0x08u
- 
- //=======================================================================
- //function : P1
 Index: oce/inc/HLRBRep_EdgeData.hxx
 ===================================================================
 --- oce.orig/inc/HLRBRep_EdgeData.hxx
@@ -392,43 +201,6 @@ Index: oce/inc/HLRBRep_EdgeData.hxx
  Standard_Integer myHideCount;
  Standard_Integer myVSta;
  Standard_Integer myVEnd;
-Index: oce/src/HLRBRep/HLRBRep_EdgeData.lxx
-===================================================================
---- oce.orig/src/HLRBRep/HLRBRep_EdgeData.lxx
-+++ oce/src/HLRBRep/HLRBRep_EdgeData.lxx
-@@ -19,19 +19,19 @@
- // and conditions governing the rights and limitations under the License.
- 
- 
--#define EMaskSelected ((Standard_Boolean)1)
--#define EMaskUsed     ((Standard_Boolean)2)
--#define EMaskRg1Line  ((Standard_Boolean)4)
--#define EMaskVertical ((Standard_Boolean)8)
--#define EMaskSimple   ((Standard_Boolean)16)
--#define EMaskOutLVSta ((Standard_Boolean)32)
--#define EMaskOutLVEnd ((Standard_Boolean)64)
--#define EMaskIntDone  ((Standard_Boolean)128)
--#define EMaskCutAtSta ((Standard_Boolean)256)
--#define EMaskCutAtEnd ((Standard_Boolean)512)
--#define EMaskVerAtSta ((Standard_Boolean)1024)
--#define EMaskVerAtEnd ((Standard_Boolean)2048)
--#define EMaskRgNLine  ((Standard_Boolean)4096)
-+#define EMaskSelected   0x0001u
-+#define EMaskUsed       0x0002u
-+#define EMaskRg1Line    0x0004u
-+#define EMaskVertical   0x0008u
-+#define EMaskSimple     0x0010u
-+#define EMaskOutLVSta   0x0020u
-+#define EMaskOutLVEnd   0x0040u
-+#define EMaskIntDone    0x0080u
-+#define EMaskCutAtSta   0x0100u
-+#define EMaskCutAtEnd   0x0200u
-+#define EMaskVerAtSta   0x0400u
-+#define EMaskVerAtEnd   0x0800u
-+#define EMaskRgNLine    0x1000u
- 
- //=======================================================================
- //function : Selected
 Index: oce/inc/HLRBRep_FaceData.hxx
 ===================================================================
 --- oce.orig/inc/HLRBRep_FaceData.hxx
@@ -442,54 +214,6 @@ Index: oce/inc/HLRBRep_FaceData.hxx
  Handle_HLRAlgo_WiresBlock myWires;
  HLRBRep_Surface myGeometry;
  Standard_Real mySize;
-Index: oce/src/HLRBRep/HLRBRep_FaceData.lxx
-===================================================================
---- oce.orig/src/HLRBRep/HLRBRep_FaceData.lxx
-+++ oce/src/HLRBRep/HLRBRep_FaceData.lxx
-@@ -19,20 +19,20 @@
- // and conditions governing the rights and limitations under the License.
- 
- 
--#define EMaskOrient   ((Standard_Boolean)15)
--#define FMaskSelected ((Standard_Boolean)16)
--#define FMaskBack     ((Standard_Boolean)32)
--#define FMaskSide     ((Standard_Boolean)64)
--#define FMaskClosed   ((Standard_Boolean)128)
--#define FMaskHiding   ((Standard_Boolean)256)
--#define FMaskSimple   ((Standard_Boolean)512)
--#define FMaskCut      ((Standard_Boolean)1024)
--#define FMaskWithOutL ((Standard_Boolean)2048)
--#define FMaskPlane    ((Standard_Boolean)4096)
--#define FMaskCylinder ((Standard_Boolean)8192)
--#define FMaskCone     ((Standard_Boolean)16384)
--#define FMaskSphere   ((Standard_Boolean)32768)
--#define FMaskTorus    ((Standard_Boolean)65536)
-+#define EMaskOrient     0x0000fu
-+#define FMaskSelected   0x00010u
-+#define FMaskBack       0x00020u
-+#define FMaskSide       0x00040u
-+#define FMaskClosed     0x00080u
-+#define FMaskHiding     0x00100u
-+#define FMaskSimple     0x00200u
-+#define FMaskCut        0x00400u
-+#define FMaskWithOutL   0x00800u
-+#define FMaskPlane      0x01000u
-+#define FMaskCylinder   0x02000u
-+#define FMaskCone       0x04000u
-+#define FMaskSphere     0x08000u
-+#define FMaskTorus      0x10000u
- 
- //=======================================================================
- //function : Selected
-@@ -313,7 +313,7 @@ inline TopAbs_Orientation HLRBRep_FaceDa
- inline void HLRBRep_FaceData::Orientation(const TopAbs_Orientation O)
- {
-   myFlags &= ~EMaskOrient;
--  myFlags |= (((Standard_Boolean)O) & EMaskOrient);
-+  myFlags |= (0 != (O & EMaskOrient));
- }
- 
- //=======================================================================
 Index: oce/inc/HLRBRep_PolyAlgo.hxx
 ===================================================================
 --- oce.orig/inc/HLRBRep_PolyAlgo.hxx
@@ -600,72 +324,6 @@ Index: oce/inc/OSD_FileIterator.hxx
  TCollection_AsciiString myMask;
  TCollection_AsciiString myPlace;
  Standard_Address myDescr;
-Index: oce/src/Primitives/Primitives_OneAxis.gxx
-===================================================================
---- oce.orig/src/Primitives/Primitives_OneAxis.gxx
-+++ oce/src/Primitives/Primitives_OneAxis.gxx
-@@ -31,12 +31,7 @@
- #include <Standard_DomainError.hxx>
- #include <Standard_OutOfRange.hxx>
- 
--#undef Standard_True
--#undef Standard_False
--
--#define Standard_True ((Standard_Boolean) 1)
--#define Standard_False ((Standard_Boolean) 0)
--
-+#include <Standard_TypeDef.hxx>
- 
- #define NBVERTICES 6
- #define VAXISTOP    0
-Index: oce/src/Primitives/Primitives_Wedge.gxx
-===================================================================
---- oce.orig/src/Primitives/Primitives_Wedge.gxx
-+++ oce/src/Primitives/Primitives_Wedge.gxx
-@@ -29,11 +29,7 @@
- #include <Standard_DomainError.hxx>
- #include <Standard_OutOfRange.hxx>
- 
--#undef Standard_True
--#undef Standard_False
--
--#define Standard_True ((Standard_Boolean) 1)
--#define Standard_False ((Standard_Boolean) 0)
-+#include <Standard_TypeDef.hxx>
- 
- #define NBFACES 6
- #define NBWIRES 6
-Index: oce/src/Prs3d/Prs3d_WFShape.gxx
-===================================================================
---- oce.orig/src/Prs3d/Prs3d_WFShape.gxx
-+++ oce/src/Prs3d/Prs3d_WFShape.gxx
-@@ -195,7 +195,7 @@ void Prs3d_WFShape::Add(const Handle (Pr
- 	      OCC_CATCH_SIGNALS
- 	      Prs3d_NListOfSequenceOfPnt CurUIsoCurves;
- 	      FacePresentation::Add(aPresentation, HS,
--				    isoU, isoV,
-+				    0 != isoU,0 !=  isoV,
- 				    aDeflection,
- 				    isoU, isoV,
- 				    aDrawer,
-@@ -232,7 +232,7 @@ void Prs3d_WFShape::Add(const Handle (Pr
- 	      OCC_CATCH_SIGNALS
- 	      Prs3d_NListOfSequenceOfPnt CurUIsoCurves;
- 	      FacePresentation::Add(aPresentation, HS,
--				    isoU, Standard_False,
-+				    0 != isoU, Standard_False,
- 				    aDeflection,
- 				    isoU, 0,
- 				    aDrawer,
-@@ -265,7 +265,7 @@ void Prs3d_WFShape::Add(const Handle (Pr
- 	      OCC_CATCH_SIGNALS
- 	      Prs3d_NListOfSequenceOfPnt CurUIsoCurves;
- 	      FacePresentation::Add(aPresentation, HS,
--				    Standard_False, isoV,
-+				    Standard_False, 0 != isoV,
- 				    aDeflection,
- 				    0, isoV,
- 				    aDrawer,
 Index: oce/inc/ShapeAnalysis_Surface.hxx
 ===================================================================
 --- oce.orig/inc/ShapeAnalysis_Surface.hxx
@@ -692,19 +350,6 @@ Index: oce/inc/ShapeFix_Solid.hxx
    //! Returns resulting solid. <br>
    Standard_EXPORT     TopoDS_Shape Solid() const;
    //! Returns tool for fixing shells. <br>
-Index: oce/src/TFunction/TFunction_Function.lxx
-===================================================================
---- oce.orig/src/TFunction/TFunction_Function.lxx
-+++ oce/src/TFunction/TFunction_Function.lxx
-@@ -26,7 +26,7 @@ inline const Standard_GUID& TFunction_Fu
- 
- inline Standard_Boolean TFunction_Function::Failed() const
- {
--  return myFailure;
-+  return 0 != myFailure;
- }
- 
- inline Standard_Integer TFunction_Function::GetFailure() const
 Index: oce/inc/TopOpeBRep_FacesFiller.hxx
 ===================================================================
 --- oce.orig/inc/TopOpeBRep_FacesFiller.hxx
@@ -753,6 +398,17 @@ Index: oce/src/Adaptor3d/Adaptor3d_IsoCurve.cxx
    GeomAbs_SurfaceType type = mySurface->GetType() ;
    switch(type) {
    case GeomAbs_BezierSurface:
+Index: oce/src/BOPDS/BOPDS_IndexRange.lxx
+===================================================================
+--- oce.orig/src/BOPDS/BOPDS_IndexRange.lxx
++++ oce/src/BOPDS/BOPDS_IndexRange.lxx
+@@ -93,5 +93,5 @@
+ //=======================================================================
+   inline Standard_Boolean BOPDS_IndexRange::Contains(const Standard_Integer aIndex)const
+ {
+-  return (Standard_Boolean)(aIndex>=myFirst && aIndex<=myLast);
++  return (aIndex>=myFirst && aIndex<=myLast);
+ }
 Index: oce/src/BOPTools/BOPTools_AlgoTools.cxx
 ===================================================================
 --- oce.orig/src/BOPTools/BOPTools_AlgoTools.cxx
@@ -1197,6 +853,18 @@ Index: oce/src/BinMPrsStd/BinMPrsStd_AISPresentationDriver.cxx
  
  //GUID
    Standard_GUID aGUID;
+Index: oce/src/BinObjMgt/BinObjMgt_Persistent.lxx
+===================================================================
+--- oce.orig/src/BinObjMgt/BinObjMgt_Persistent.lxx
++++ oce/src/BinObjMgt/BinObjMgt_Persistent.lxx
+@@ -232,6 +232,6 @@ inline const BinObjMgt_Persistent& BinOb
+ //  Standard_Integer anIntVal = (Standard_Integer) theValue;
+   Standard_Integer anIntVal;
+   GetInteger (anIntVal);
+-  theValue = (Standard_Boolean) anIntVal;
++  theValue = (0 != anIntVal);
+   return *this;
+ }
 Index: oce/src/BinTools/BinTools.cxx
 ===================================================================
 --- oce.orig/src/BinTools/BinTools.cxx
@@ -1267,6 +935,46 @@ Index: oce/src/Bnd/Bnd_Box.cxx
  }
  
  //=======================================================================
+Index: oce/src/Bnd/Bnd_Box2d.lxx
+===================================================================
+--- oce.orig/src/Bnd/Bnd_Box2d.lxx
++++ oce/src/Bnd/Bnd_Box2d.lxx
+@@ -151,7 +151,7 @@ inline void Bnd_Box2d::OpenYmax ()
+ //=======================================================================
+ 
+ inline Standard_Boolean Bnd_Box2d::IsOpenXmin () const
+-{ return Flags & XminMask; }
++{ return 0 != (Flags & XminMask); }
+ 
+ //=======================================================================
+ //function : IsOpenXmax
+@@ -159,7 +159,7 @@ inline Standard_Boolean Bnd_Box2d::IsOpe
+ //=======================================================================
+ 
+ inline Standard_Boolean Bnd_Box2d::IsOpenXmax () const
+-{ return Flags & XmaxMask; }
++{ return 0 != (Flags & XmaxMask); }
+ 
+ //=======================================================================
+ //function : IsOpenYmin
+@@ -167,7 +167,7 @@ inline Standard_Boolean Bnd_Box2d::IsOpe
+ //=======================================================================
+ 
+ inline Standard_Boolean Bnd_Box2d::IsOpenYmin () const
+-{ return Flags & YminMask; }
++{ return 0 != (Flags & YminMask); }
+ 
+ //=======================================================================
+ //function : IsOpenYmax
+@@ -175,7 +175,7 @@ inline Standard_Boolean Bnd_Box2d::IsOpe
+ //=======================================================================
+ 
+ inline Standard_Boolean Bnd_Box2d::IsOpenYmax () const
+-{ return Flags & YmaxMask; }
++{ return 0 != (Flags & YmaxMask); }
+ 
+ //=======================================================================
+ //function : IsWhole
 Index: oce/src/ChFi3d/ChFi3d_Builder.cdl
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder.cdl
@@ -1532,6 +1240,30 @@ Index: oce/src/ChFi3d/ChFi3d_FilBuilder_C3.cxx
  	done = ComputeData(coin,cornerspine,NullSpine,lin,Fac,IFac,Surf,ISurf,
  			   func,finv,ffi,pasmax,locfleche,TolGuide,ffi,lla,
  			   0,0,1,Soldep,intf,intl,Gd1,Gd2,Gf1,Gf2,0,1);
+Index: oce/src/ChFiDS/ChFiDS_SurfData.lxx
+===================================================================
+--- oce.orig/src/ChFiDS/ChFiDS_SurfData.lxx
++++ oce/src/ChFiDS/ChFiDS_SurfData.lxx
+@@ -58,7 +58,8 @@ inline Standard_Integer  ChFiDS_SurfData
+ 
+ inline void ChFiDS_SurfData::SetIndexOfC1(const Standard_Integer Index)
+ {
+-  indexOfC1 = isoncurv1 = Index;
++  indexOfC1 = Index;
++  isoncurv1 = (0 != Index);
+ }
+ 
+ //=======================================================================
+@@ -99,7 +100,8 @@ inline Standard_Integer  ChFiDS_SurfData
+ 
+ inline void ChFiDS_SurfData::SetIndexOfC2(const Standard_Integer Index)
+ {
+-  indexOfC2 = isoncurv2 = Index;
++  indexOfC2 = Index;
++  isoncurv2 = (0 != Index);
+ }
+ 
+ //=======================================================================
 Index: oce/src/DDataStd/DDataStd_BasicCommands.cxx
 ===================================================================
 --- oce.orig/src/DDataStd/DDataStd_BasicCommands.cxx
@@ -1805,6 +1537,19 @@ Index: oce/src/Draw/Draw_Viewer.cxx
      myViews[id]->ResetFrame();
      if ((D->Is3D() && !view2d) ||
  	(!D->Is3D() && view2d)) {
+Index: oce/src/Extrema/Extrema_Curve2dTool.lxx
+===================================================================
+--- oce.orig/src/Extrema/Extrema_Curve2dTool.lxx
++++ oce/src/Extrema/Extrema_Curve2dTool.lxx
+@@ -286,7 +286,7 @@ inline void Extrema_Curve2dTool::D2(cons
+ 
+  inline Standard_Boolean Extrema_Curve2dTool::IsRational(const Adaptor2d_Curve2d& C)
+ {
+-  return C.Degree();
++  return 0 != C.Degree();
+ }
+ 
+ 
 Index: oce/src/Extrema/Extrema_GenExtCS.cxx
 ===================================================================
 --- oce.orig/src/Extrema/Extrema_GenExtCS.cxx
@@ -1856,6 +1601,19 @@ Index: oce/src/FSD/FSD_BinaryFile.cxx
    return *this;
  }
  
+Index: oce/src/FilletSurf/FilletSurf_InternalBuilder.cdl
+===================================================================
+--- oce.orig/src/FilletSurf/FilletSurf_InternalBuilder.cdl
++++ oce/src/FilletSurf/FilletSurf_InternalBuilder.cdl
+@@ -92,7 +92,7 @@ is
+                 Forward         : Boolean from Standard;
+ 	        RecOnS1,RecOnS2 : Boolean from Standard;
+ 		Soldep          : Vector from math;
+-    	    	Intf,Intl       : in out Boolean from Standard) 
++    	    	Intf,Intl       : in out Integer from Standard) 
+     returns  Boolean
+     is redefined protected;
+     ---Purpose: This  method calculates the elements of construction of the
 Index: oce/src/FilletSurf/FilletSurf_InternalBuilder.cxx
 ===================================================================
 --- oce.orig/src/FilletSurf/FilletSurf_InternalBuilder.cxx
@@ -2041,6 +1799,27 @@ Index: oce/src/HLRAlgo/HLRAlgo_BiPoint.cxx
  {
    PntX1 = X1;
    PntY1 = Y1;
+Index: oce/src/HLRAlgo/HLRAlgo_BiPoint.lxx
+===================================================================
+--- oce.orig/src/HLRAlgo/HLRAlgo_BiPoint.lxx
++++ oce/src/HLRAlgo/HLRAlgo_BiPoint.lxx
+@@ -19,11 +19,11 @@
+ // and conditions governing the rights and limitations under the License.
+ 
+ 
+-#define EMskRg1Line  ((Standard_Boolean)1)
+-#define EMskRgNLine  ((Standard_Boolean)2)
+-#define EMskOutLine  ((Standard_Boolean)4)
+-#define EMskIntLine  ((Standard_Boolean)8)
+-#define EMskHidden   ((Standard_Boolean)16)
++#define EMskRg1Line  0x01u
++#define EMskRgNLine  0x02u
++#define EMskOutLine  0x04u
++#define EMskIntLine  0x08u
++#define EMskHidden   0x10u
+ 
+ //=======================================================================
+ //function : HLRAlgo_BiPoint
 Index: oce/src/HLRAlgo/HLRAlgo_EdgeStatus.cdl
 ===================================================================
 --- oce.orig/src/HLRAlgo/HLRAlgo_EdgeStatus.cdl
@@ -2054,6 +1833,21 @@ Index: oce/src/HLRAlgo/HLRAlgo_EdgeStatus.cdl
      myVisibles    : Intervals from Intrv;
  
  end EdgeStatus;
+Index: oce/src/HLRAlgo/HLRAlgo_EdgeStatus.lxx
+===================================================================
+--- oce.orig/src/HLRAlgo/HLRAlgo_EdgeStatus.lxx
++++ oce/src/HLRAlgo/HLRAlgo_EdgeStatus.lxx
+@@ -19,8 +19,8 @@
+ // and conditions governing the rights and limitations under the License.
+ 
+ 
+-#define EMaskAllHidden  ((Standard_Boolean)1)
+-#define EMaskAllVisible ((Standard_Boolean)2)
++#define EMaskAllHidden    0x01u
++#define EMaskAllVisible   0x02u
+ 
+ //=======================================================================
+ //function : Bounds
 Index: oce/src/HLRAlgo/HLRAlgo_EdgesBlock.cdl
 ===================================================================
 --- oce.orig/src/HLRAlgo/HLRAlgo_EdgesBlock.cdl
@@ -2067,6 +1861,36 @@ Index: oce/src/HLRAlgo/HLRAlgo_EdgesBlock.cdl
      myMinMax : Integer         from Standard[16];
  
  end EdgesBlock;
+Index: oce/src/HLRAlgo/HLRAlgo_EdgesBlock.lxx
+===================================================================
+--- oce.orig/src/HLRAlgo/HLRAlgo_EdgesBlock.lxx
++++ oce/src/HLRAlgo/HLRAlgo_EdgesBlock.lxx
+@@ -19,11 +19,11 @@
+ // and conditions governing the rights and limitations under the License.
+ 
+ 
+-#define EMaskOrient   ((Standard_Boolean)15)
+-#define EMaskOutLine  ((Standard_Boolean)16)
+-#define EMaskInternal ((Standard_Boolean)32)
+-#define EMaskDouble   ((Standard_Boolean)64)
+-#define EMaskIsoLine  ((Standard_Boolean)128)
++#define EMaskOrient    0x0fu
++#define EMaskOutLine   0x10u
++#define EMaskInternal  0x20u
++#define EMaskDouble    0x40u
++#define EMaskIsoLine   0x80u
+ 
+ //=======================================================================
+ //function : NbEdges
+@@ -78,7 +78,7 @@ HLRAlgo_EdgesBlock::Orientation (const S
+ 				 const TopAbs_Orientation Or)
+ {
+   myFlags(I) &= ~EMaskOrient;
+-  myFlags(I) |= (((Standard_Boolean)Or) & EMaskOrient);
++  myFlags(I) |= (0 != (Or & EMaskOrient));
+ }
+ 
+ //=======================================================================
 Index: oce/src/HLRAlgo/HLRAlgo_PolyAlgo.cxx
 ===================================================================
 --- oce.orig/src/HLRAlgo/HLRAlgo_PolyAlgo.cxx
@@ -2270,6 +2094,25 @@ Index: oce/src/HLRBRep/HLRBRep_BiPnt2D.cdl
 +    myFlags : Integer from Standard;
  
  end BiPnt2D;
+Index: oce/src/HLRBRep/HLRBRep_BiPnt2D.lxx
+===================================================================
+--- oce.orig/src/HLRBRep/HLRBRep_BiPnt2D.lxx
++++ oce/src/HLRBRep/HLRBRep_BiPnt2D.lxx
+@@ -19,10 +19,10 @@
+ // and conditions governing the rights and limitations under the License.
+ 
+ 
+-#define EMskRg1Line  ((Standard_Boolean)1)
+-#define EMskRgNLine  ((Standard_Boolean)2)
+-#define EMskOutLine  ((Standard_Boolean)4)
+-#define EMskIntLine  ((Standard_Boolean)8)
++#define EMskRg1Line    0x01u
++#define EMskRgNLine    0x02u
++#define EMskOutLine    0x04u
++#define EMskIntLine    0x08u
+ 
+ //=======================================================================
+ //function : P1
 Index: oce/src/HLRBRep/HLRBRep_BiPoint.cdl
 ===================================================================
 --- oce.orig/src/HLRBRep/HLRBRep_BiPoint.cdl
@@ -2282,6 +2125,25 @@ Index: oce/src/HLRBRep/HLRBRep_BiPoint.cdl
 +    myFlags : Integer from Standard;
  
  end BiPoint;
+Index: oce/src/HLRBRep/HLRBRep_BiPoint.lxx
+===================================================================
+--- oce.orig/src/HLRBRep/HLRBRep_BiPoint.lxx
++++ oce/src/HLRBRep/HLRBRep_BiPoint.lxx
+@@ -19,10 +19,10 @@
+ // and conditions governing the rights and limitations under the License.
+ 
+ 
+-#define EMskRg1Line  ((Standard_Boolean)1)
+-#define EMskRgNLine  ((Standard_Boolean)2)
+-#define EMskOutLine  ((Standard_Boolean)4)
+-#define EMskIntLine  ((Standard_Boolean)8)
++#define EMskRg1Line    0x01u
++#define EMskRgNLine    0x02u
++#define EMskOutLine    0x04u
++#define EMskIntLine    0x08u
+ 
+ //=======================================================================
+ //function : P1
 Index: oce/src/HLRBRep/HLRBRep_EdgeData.cdl
 ===================================================================
 --- oce.orig/src/HLRBRep/HLRBRep_EdgeData.cdl
@@ -2295,6 +2157,43 @@ Index: oce/src/HLRBRep/HLRBRep_EdgeData.cdl
      myHideCount : Integer    from Standard;
      myVSta      : Integer    from Standard;
      myVEnd      : Integer    from Standard;
+Index: oce/src/HLRBRep/HLRBRep_EdgeData.lxx
+===================================================================
+--- oce.orig/src/HLRBRep/HLRBRep_EdgeData.lxx
++++ oce/src/HLRBRep/HLRBRep_EdgeData.lxx
+@@ -19,19 +19,19 @@
+ // and conditions governing the rights and limitations under the License.
+ 
+ 
+-#define EMaskSelected ((Standard_Boolean)1)
+-#define EMaskUsed     ((Standard_Boolean)2)
+-#define EMaskRg1Line  ((Standard_Boolean)4)
+-#define EMaskVertical ((Standard_Boolean)8)
+-#define EMaskSimple   ((Standard_Boolean)16)
+-#define EMaskOutLVSta ((Standard_Boolean)32)
+-#define EMaskOutLVEnd ((Standard_Boolean)64)
+-#define EMaskIntDone  ((Standard_Boolean)128)
+-#define EMaskCutAtSta ((Standard_Boolean)256)
+-#define EMaskCutAtEnd ((Standard_Boolean)512)
+-#define EMaskVerAtSta ((Standard_Boolean)1024)
+-#define EMaskVerAtEnd ((Standard_Boolean)2048)
+-#define EMaskRgNLine  ((Standard_Boolean)4096)
++#define EMaskSelected   0x0001u
++#define EMaskUsed       0x0002u
++#define EMaskRg1Line    0x0004u
++#define EMaskVertical   0x0008u
++#define EMaskSimple     0x0010u
++#define EMaskOutLVSta   0x0020u
++#define EMaskOutLVEnd   0x0040u
++#define EMaskIntDone    0x0080u
++#define EMaskCutAtSta   0x0100u
++#define EMaskCutAtEnd   0x0200u
++#define EMaskVerAtSta   0x0400u
++#define EMaskVerAtEnd   0x0800u
++#define EMaskRgNLine    0x1000u
+ 
+ //=======================================================================
+ //function : Selected
 Index: oce/src/HLRBRep/HLRBRep_FaceData.cdl
 ===================================================================
 --- oce.orig/src/HLRBRep/HLRBRep_FaceData.cdl
@@ -2308,6 +2207,54 @@ Index: oce/src/HLRBRep/HLRBRep_FaceData.cdl
      myWires       : WiresBlock from HLRAlgo;
      myGeometry    : Surface    from HLRBRep;
      mySize        : Real       from Standard;
+Index: oce/src/HLRBRep/HLRBRep_FaceData.lxx
+===================================================================
+--- oce.orig/src/HLRBRep/HLRBRep_FaceData.lxx
++++ oce/src/HLRBRep/HLRBRep_FaceData.lxx
+@@ -19,20 +19,20 @@
+ // and conditions governing the rights and limitations under the License.
+ 
+ 
+-#define EMaskOrient   ((Standard_Boolean)15)
+-#define FMaskSelected ((Standard_Boolean)16)
+-#define FMaskBack     ((Standard_Boolean)32)
+-#define FMaskSide     ((Standard_Boolean)64)
+-#define FMaskClosed   ((Standard_Boolean)128)
+-#define FMaskHiding   ((Standard_Boolean)256)
+-#define FMaskSimple   ((Standard_Boolean)512)
+-#define FMaskCut      ((Standard_Boolean)1024)
+-#define FMaskWithOutL ((Standard_Boolean)2048)
+-#define FMaskPlane    ((Standard_Boolean)4096)
+-#define FMaskCylinder ((Standard_Boolean)8192)
+-#define FMaskCone     ((Standard_Boolean)16384)
+-#define FMaskSphere   ((Standard_Boolean)32768)
+-#define FMaskTorus    ((Standard_Boolean)65536)
++#define EMaskOrient     0x0000fu
++#define FMaskSelected   0x00010u
++#define FMaskBack       0x00020u
++#define FMaskSide       0x00040u
++#define FMaskClosed     0x00080u
++#define FMaskHiding     0x00100u
++#define FMaskSimple     0x00200u
++#define FMaskCut        0x00400u
++#define FMaskWithOutL   0x00800u
++#define FMaskPlane      0x01000u
++#define FMaskCylinder   0x02000u
++#define FMaskCone       0x04000u
++#define FMaskSphere     0x08000u
++#define FMaskTorus      0x10000u
+ 
+ //=======================================================================
+ //function : Selected
+@@ -313,7 +313,7 @@ inline TopAbs_Orientation HLRBRep_FaceDa
+ inline void HLRBRep_FaceData::Orientation(const TopAbs_Orientation O)
+ {
+   myFlags &= ~EMaskOrient;
+-  myFlags |= (((Standard_Boolean)O) & EMaskOrient);
++  myFlags |= (0 != (O & EMaskOrient));
+ }
+ 
+ //=======================================================================
 Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cdl
 ===================================================================
 --- oce.orig/src/HLRBRep/HLRBRep_PolyAlgo.cdl
@@ -3630,6 +3577,72 @@ Index: oce/src/Poly/Poly_MakeLoops.hxx
      }
  
      void Nullify()
+Index: oce/src/Primitives/Primitives_OneAxis.gxx
+===================================================================
+--- oce.orig/src/Primitives/Primitives_OneAxis.gxx
++++ oce/src/Primitives/Primitives_OneAxis.gxx
+@@ -31,12 +31,7 @@
+ #include <Standard_DomainError.hxx>
+ #include <Standard_OutOfRange.hxx>
+ 
+-#undef Standard_True
+-#undef Standard_False
+-
+-#define Standard_True ((Standard_Boolean) 1)
+-#define Standard_False ((Standard_Boolean) 0)
+-
++#include <Standard_TypeDef.hxx>
+ 
+ #define NBVERTICES 6
+ #define VAXISTOP    0
+Index: oce/src/Primitives/Primitives_Wedge.gxx
+===================================================================
+--- oce.orig/src/Primitives/Primitives_Wedge.gxx
++++ oce/src/Primitives/Primitives_Wedge.gxx
+@@ -29,11 +29,7 @@
+ #include <Standard_DomainError.hxx>
+ #include <Standard_OutOfRange.hxx>
+ 
+-#undef Standard_True
+-#undef Standard_False
+-
+-#define Standard_True ((Standard_Boolean) 1)
+-#define Standard_False ((Standard_Boolean) 0)
++#include <Standard_TypeDef.hxx>
+ 
+ #define NBFACES 6
+ #define NBWIRES 6
+Index: oce/src/Prs3d/Prs3d_WFShape.gxx
+===================================================================
+--- oce.orig/src/Prs3d/Prs3d_WFShape.gxx
++++ oce/src/Prs3d/Prs3d_WFShape.gxx
+@@ -195,7 +195,7 @@ void Prs3d_WFShape::Add(const Handle (Pr
+ 	      OCC_CATCH_SIGNALS
+ 	      Prs3d_NListOfSequenceOfPnt CurUIsoCurves;
+ 	      FacePresentation::Add(aPresentation, HS,
+-				    isoU, isoV,
++				    0 != isoU,0 !=  isoV,
+ 				    aDeflection,
+ 				    isoU, isoV,
+ 				    aDrawer,
+@@ -232,7 +232,7 @@ void Prs3d_WFShape::Add(const Handle (Pr
+ 	      OCC_CATCH_SIGNALS
+ 	      Prs3d_NListOfSequenceOfPnt CurUIsoCurves;
+ 	      FacePresentation::Add(aPresentation, HS,
+-				    isoU, Standard_False,
++				    0 != isoU, Standard_False,
+ 				    aDeflection,
+ 				    isoU, 0,
+ 				    aDrawer,
+@@ -265,7 +265,7 @@ void Prs3d_WFShape::Add(const Handle (Pr
+ 	      OCC_CATCH_SIGNALS
+ 	      Prs3d_NListOfSequenceOfPnt CurUIsoCurves;
+ 	      FacePresentation::Add(aPresentation, HS,
+-				    Standard_False, isoV,
++				    Standard_False, 0 != isoV,
+ 				    aDeflection,
+ 				    0, isoV,
+ 				    aDrawer,
 Index: oce/src/QABugs/QABugs_3.cxx
 ===================================================================
 --- oce.orig/src/QABugs/QABugs_3.cxx
@@ -4421,6 +4434,19 @@ Index: oce/src/TDataStd/TDataStd_BooleanList.cxx
    }
  }
  
+Index: oce/src/TFunction/TFunction_Function.lxx
+===================================================================
+--- oce.orig/src/TFunction/TFunction_Function.lxx
++++ oce/src/TFunction/TFunction_Function.lxx
+@@ -26,7 +26,7 @@ inline const Standard_GUID& TFunction_Fu
+ 
+ inline Standard_Boolean TFunction_Function::Failed() const
+ {
+-  return myFailure;
++  return 0 != myFailure;
+ }
+ 
+ inline Standard_Integer TFunction_Function::GetFailure() const
 Index: oce/src/TObj/TObj_Object.cxx
 ===================================================================
 --- oce.orig/src/TObj/TObj_Object.cxx
@@ -4955,29 +4981,3 @@ Index: oce/src/XmlMDataStd/XmlMDataStd_RealArrayDriver.cxx
    }
  #ifdef DEB
    else if(XmlMDataStd::DocumentVersion() == -1)
-Index: oce/src/FilletSurf/FilletSurf_InternalBuilder.cdl
-===================================================================
---- oce.orig/src/FilletSurf/FilletSurf_InternalBuilder.cdl
-+++ oce/src/FilletSurf/FilletSurf_InternalBuilder.cdl
-@@ -92,7 +92,7 @@ is
-                 Forward         : Boolean from Standard;
- 	        RecOnS1,RecOnS2 : Boolean from Standard;
- 		Soldep          : Vector from math;
--    	    	Intf,Intl       : in out Boolean from Standard) 
-+    	    	Intf,Intl       : in out Integer from Standard) 
-     returns  Boolean
-     is redefined protected;
-     ---Purpose: This  method calculates the elements of construction of the
-Index: oce/inc/FilletSurf_InternalBuilder.hxx
-===================================================================
---- oce.orig/inc/FilletSurf_InternalBuilder.hxx
-+++ oce/inc/FilletSurf_InternalBuilder.hxx
-@@ -152,7 +152,7 @@ protected:
-   //! This  method calculates the elements of construction of the <br>
- //!          fillet (constant or evolutive). <br>
- //! <br>
--  Standard_EXPORT   virtual  Standard_Boolean PerformSurf(ChFiDS_SequenceOfSurfData& SeqData,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Choix,const Handle(BRepAdaptor_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,const Standard_Real MaxStep,const Standard_Real Fleche,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecOnS1,const Standard_Boolean RecOnS2,const math_Vector& Soldep,Standard_Boolean& Intf,Standard_Boolean& Intl) ;
-+  Standard_EXPORT   virtual  Standard_Boolean PerformSurf(ChFiDS_SequenceOfSurfData& SeqData,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Choix,const Handle(BRepAdaptor_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,const Standard_Real MaxStep,const Standard_Real Fleche,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecOnS1,const Standard_Boolean RecOnS2,const math_Vector& Soldep,Standard_Integer& Intf,Standard_Integer& Intl) ;
-   
-   Standard_EXPORT   virtual  void PerformSurf(ChFiDS_SequenceOfSurfData& SeqData,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Choix,const Handle(BRepAdaptor_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HCurve2d)& PC1,const Handle(BRepAdaptor_HSurface)& Sref1,const Handle(BRepAdaptor_HCurve2d)& PCref1,Standard_Boolean& Decroch1,const Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,const TopAbs_Orientation Or2,const Standard_Real MaxStep,const Standard_Real Fleche,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecP,const Standard_Boolean RecS,const Standard_Boolean RecRst,const math_Vector& Soldep) ;
-   

@@ -37,72 +37,6 @@ Subject: [PATCH] [warning-fix][empty-body]
  src/StepData/StepData_StepWriter.cxx         |    6 +++---
  19 files changed, 32 insertions(+), 37 deletions(-)
 
-Index: oce/src/LDOM/LDOM_DeclareSequence.hxx
-===================================================================
---- oce.orig/src/LDOM/LDOM_DeclareSequence.hxx
-+++ oce/src/LDOM/LDOM_DeclareSequence.hxx
-@@ -217,7 +217,7 @@ void ClassName::InsertAt (const Standard
-       if (anItem -> myPrev) anItem -> myPrev -> myNext = anItem;              \
-       myLength++;                                                             \
-       myICur++;                                                               \
--   } else ;                                                                   \
-+   }                                                                          \
- }                                                                             \
-                                                                               \
- void ClassName::Clear ()                                                      \
-Index: oce/src/Standard/Standard_String.hxx
-===================================================================
---- oce.orig/src/Standard/Standard_String.hxx
-+++ oce/src/Standard/Standard_String.hxx
-@@ -28,8 +28,8 @@
- 
- # if OptJr
- 
--#define STRLEN(s,i) {(i) = 0;while((s)[(i)++] != '\0');(i)--;}
--#define EXTSTRLEN(s,i) {(i) = 0;while((s)[(i)++] != 0);(i)--;}
-+#define STRLEN(s,i) {(i) = 0;while((s)[(i)++] != '\0') {} (i)--;}
-+#define EXTSTRLEN(s,i) {(i) = 0;while((s)[(i)++] != 0) {} (i)--;}
- #define STRCPY(s1,s2,i) {for(LoopIndex=0; LoopIndex<(i); LoopIndex++)(s1)[LoopIndex] = (s2)[LoopIndex];}
- #define STRCAT(s1,i,s2,j) {for(LoopIndex=0; LoopIndex<(j); LoopIndex++) (s1)[(i)+LoopIndex] = (s2)[LoopIndex];}
- 
-@@ -86,14 +86,14 @@ inline Standard_Boolean ExtStringTestOfZ
-  if ((ptrdiff_t(aString) & 1) == 0) { \
-    LoopIndex = 0 ; \
-    if ((ptrdiff_t(aString) & 3) == 0) { \
--     while (CStringTestOfZero(((Standard_Integer *)aString)[LoopIndex++])); \
-+     while (CStringTestOfZero(((Standard_Integer *)aString)[LoopIndex++])) {} \
-      LoopIndex = ( LoopIndex << 2 ) - 4 ; \
-    } \
-    else { \
--     while (HalfCStringTestOfZero(((Standard_ExtCharacter *)aString)[LoopIndex++])); \
-+     while (HalfCStringTestOfZero(((Standard_ExtCharacter *)aString)[LoopIndex++])) {} \
-      LoopIndex = ( LoopIndex << 1 ) - 2 ; \
-    } \
--   while (aString[LoopIndex++] != '\0'); \
-+   while (aString[LoopIndex++] != '\0') {} \
-    LoopIndex -= 1 ; \
-  } \
-  else \
-@@ -103,7 +103,7 @@ inline Standard_Boolean ExtStringTestOfZ
- #define EXTSTRINGLEN( anExtString , LoopIndex ) { \
-  if ((ptrdiff_t(anExtString) & 3) == 0) { \
-    LoopIndex = 0 ; \
--   while (ExtStringTestOfZero(((Standard_Integer *)anExtString)[LoopIndex++]));\
-+   while (ExtStringTestOfZero(((Standard_Integer *)anExtString)[LoopIndex++])) {} \
-    LoopIndex = ( LoopIndex << 1 ) - 2 ; \
-    if ( anExtString[ LoopIndex ] != 0 ) \
-      LoopIndex += 1 ; \
-@@ -896,8 +896,8 @@ inline Standard_Boolean ExtStringTestOfZ
- 
- #  else
- 
--#define STRLEN(s,i) {(i) = 0;while((s)[(i)++] != '\0');(i)--;}
--#define EXTSTRLEN(s,i) {(i) = 0;while((s)[(i)++] != 0);(i)--;}
-+#define STRLEN(s,i) {(i) = 0;while((s)[(i)++] != '\0') {} (i)--;}
-+#define EXTSTRLEN(s,i) {(i) = 0;while((s)[(i)++] != 0) {}} (i)--;}
- #define STRCPY(s1,s2,i) {for(int j=0; j<(i); j++)(s1)[j] = (s2)[j];}
- #define STRCAT(s1,i,s2,j) {for(int k=0; k<(j); k++) (s1)[(i)+k] = (s2)[k];}
- 
 Index: oce/src/Adaptor3d/Adaptor3d_TopolTool.cxx
 ===================================================================
 --- oce.orig/src/Adaptor3d/Adaptor3d_TopolTool.cxx
@@ -226,6 +160,19 @@ Index: oce/src/IGESDefs/IGESDefs_ToolMacroDef.cxx
  
    PR.SetCurrentNumber(tempCurrent);
    if (nbval > 0) langStatements =
+Index: oce/src/LDOM/LDOM_DeclareSequence.hxx
+===================================================================
+--- oce.orig/src/LDOM/LDOM_DeclareSequence.hxx
++++ oce/src/LDOM/LDOM_DeclareSequence.hxx
+@@ -217,7 +217,7 @@ void ClassName::InsertAt (const Standard
+       if (anItem -> myPrev) anItem -> myPrev -> myNext = anItem;              \
+       myLength++;                                                             \
+       myICur++;                                                               \
+-   } else ;                                                                   \
++   }                                                                          \
+ }                                                                             \
+                                                                               \
+ void ClassName::Clear ()                                                      \
 Index: oce/src/LDOM/LDOM_XmlWriter.cxx
 ===================================================================
 --- oce.orig/src/LDOM/LDOM_XmlWriter.cxx
@@ -289,7 +236,7 @@ Index: oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
 -  for ( i=1; i <= indexes.Length() && indexes(i) < index; i++ );
 +  for ( i=1; i <= indexes.Length() && indexes(i) < index; i++ ) {}
    for ( Standard_Integer shift = 1; i <= indexes.Length() && indexes(i) == index; i++ ) {
-     while (  shift < nsplit  && isreversed != (Standard_Boolean) ( values(i) > params(shift) ) ) shift++;
+     while (  shift < nsplit  && isreversed != ( values(i) > params(shift) ) ) shift++;
      indexes.SetValue ( i, index + shift - 1 );
 Index: oce/src/ShapeUpgrade/ShapeUpgrade_WireDivide.cxx
 ===================================================================
@@ -313,6 +260,59 @@ Index: oce/src/ShapeUpgrade/ShapeUpgrade_WireDivide.cxx
      Standard_Real lastFix = new3d->Value(ind);
      for(i = len2d; i >= ind; i--) { 
        new3d->SetValue(i,lastFix);
+Index: oce/src/Standard/Standard_String.hxx
+===================================================================
+--- oce.orig/src/Standard/Standard_String.hxx
++++ oce/src/Standard/Standard_String.hxx
+@@ -28,8 +28,8 @@
+ 
+ # if OptJr
+ 
+-#define STRLEN(s,i) {(i) = 0;while((s)[(i)++] != '\0');(i)--;}
+-#define EXTSTRLEN(s,i) {(i) = 0;while((s)[(i)++] != 0);(i)--;}
++#define STRLEN(s,i) {(i) = 0;while((s)[(i)++] != '\0') {} (i)--;}
++#define EXTSTRLEN(s,i) {(i) = 0;while((s)[(i)++] != 0) {} (i)--;}
+ #define STRCPY(s1,s2,i) {for(LoopIndex=0; LoopIndex<(i); LoopIndex++)(s1)[LoopIndex] = (s2)[LoopIndex];}
+ #define STRCAT(s1,i,s2,j) {for(LoopIndex=0; LoopIndex<(j); LoopIndex++) (s1)[(i)+LoopIndex] = (s2)[LoopIndex];}
+ 
+@@ -86,14 +86,14 @@ inline Standard_Boolean ExtStringTestOfZ
+  if ((ptrdiff_t(aString) & 1) == 0) { \
+    LoopIndex = 0 ; \
+    if ((ptrdiff_t(aString) & 3) == 0) { \
+-     while (CStringTestOfZero(((Standard_Integer *)aString)[LoopIndex++])); \
++     while (CStringTestOfZero(((Standard_Integer *)aString)[LoopIndex++])) {} \
+      LoopIndex = ( LoopIndex << 2 ) - 4 ; \
+    } \
+    else { \
+-     while (HalfCStringTestOfZero(((Standard_ExtCharacter *)aString)[LoopIndex++])); \
++     while (HalfCStringTestOfZero(((Standard_ExtCharacter *)aString)[LoopIndex++])) {} \
+      LoopIndex = ( LoopIndex << 1 ) - 2 ; \
+    } \
+-   while (aString[LoopIndex++] != '\0'); \
++   while (aString[LoopIndex++] != '\0') {} \
+    LoopIndex -= 1 ; \
+  } \
+  else \
+@@ -103,7 +103,7 @@ inline Standard_Boolean ExtStringTestOfZ
+ #define EXTSTRINGLEN( anExtString , LoopIndex ) { \
+  if ((ptrdiff_t(anExtString) & 3) == 0) { \
+    LoopIndex = 0 ; \
+-   while (ExtStringTestOfZero(((Standard_Integer *)anExtString)[LoopIndex++]));\
++   while (ExtStringTestOfZero(((Standard_Integer *)anExtString)[LoopIndex++])) {} \
+    LoopIndex = ( LoopIndex << 1 ) - 2 ; \
+    if ( anExtString[ LoopIndex ] != 0 ) \
+      LoopIndex += 1 ; \
+@@ -896,8 +896,8 @@ inline Standard_Boolean ExtStringTestOfZ
+ 
+ #  else
+ 
+-#define STRLEN(s,i) {(i) = 0;while((s)[(i)++] != '\0');(i)--;}
+-#define EXTSTRLEN(s,i) {(i) = 0;while((s)[(i)++] != 0);(i)--;}
++#define STRLEN(s,i) {(i) = 0;while((s)[(i)++] != '\0') {} (i)--;}
++#define EXTSTRLEN(s,i) {(i) = 0;while((s)[(i)++] != 0) {}} (i)--;}
+ #define STRCPY(s1,s2,i) {for(int j=0; j<(i); j++)(s1)[j] = (s2)[j];}
+ #define STRCAT(s1,i,s2,j) {for(int k=0; k<(j); k++) (s1)[(i)+k] = (s2)[k];}
+ 
 Index: oce/src/StepData/StepData_StepWriter.cxx
 ===================================================================
 --- oce.orig/src/StepData/StepData_StepWriter.cxx

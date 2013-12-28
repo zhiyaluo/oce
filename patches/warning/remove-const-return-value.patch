@@ -45,7 +45,7 @@ Index: oce/src/FSD/FSD_File.cxx
 ===================================================================
 --- oce.orig/src/FSD/FSD_File.cxx
 +++ oce/src/FSD/FSD_File.cxx
-@@ -136,7 +136,7 @@ Storage_Error FSD_File::Close()
+@@ -137,7 +137,7 @@ Storage_Error FSD_File::Close()
  //purpose  : ------------------ PROTECTED
  //=======================================================================
  
@@ -58,7 +58,7 @@ Index: oce/src/TCollection/TCollection_ExtendedString.cxx
 ===================================================================
 --- oce.orig/src/TCollection/TCollection_ExtendedString.cxx
 +++ oce/src/TCollection/TCollection_ExtendedString.cxx
-@@ -974,7 +974,7 @@ TCollection_ExtendedString TCollection_E
+@@ -975,7 +975,7 @@ TCollection_ExtendedString TCollection_E
  // ----------------------------------------------------------------------------
  // ToExtString
  // ----------------------------------------------------------------------------

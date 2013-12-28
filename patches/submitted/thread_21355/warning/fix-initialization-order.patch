@@ -30,36 +30,6 @@ Subject: [PATCH 10/26] [warning-fix][initialization-order]
  src/NIS/NIS_TriangulatedDrawer.cxx |    6 +++---
  2 files changed, 5 insertions(+), 7 deletions(-)
 
-Index: oce/src/ShapeAnalysis/ShapeAnalysis_BoxBndTree.hxx
-===================================================================
---- oce.orig/src/ShapeAnalysis/ShapeAnalysis_BoxBndTree.hxx
-+++ oce/src/ShapeAnalysis/ShapeAnalysis_BoxBndTree.hxx
-@@ -42,8 +42,8 @@ class ShapeAnalysis_BoxBndTreeSelector
-   ShapeAnalysis_BoxBndTreeSelector
-     (Handle (TopTools_HArray1OfShape) theSeq,
-      Standard_Boolean theShared)
--    :  mySeq(theSeq), myShared(theShared), myNb(0), myTol(1e-7), myMin3d(1e-7),myArrIndices(1,2),
--      myStatus(ShapeExtend::EncodeStatus (ShapeExtend_OK))
-+    :  mySeq(theSeq), myShared(theShared), myStatus(ShapeExtend::EncodeStatus (ShapeExtend_OK)),
-+      myNb(0), myTol(1e-7), myMin3d(1e-7),myArrIndices(1,2)
-       {
-         myArrIndices.Init(0);
-       }
-Index: oce/src/TopClass/TopClass_Classifier2d.gxx
-===================================================================
---- oce.orig/src/TopClass/TopClass_Classifier2d.gxx
-+++ oce/src/TopClass/TopClass_Classifier2d.gxx
-@@ -37,8 +37,8 @@
- TopClass_Classifier2d::TopClass_Classifier2d() :
-        myIsSet(Standard_False),
-        myFirstCompare(Standard_True),
--       myIsHeadOrEnd(Standard_False), // skv OCC12627
--       myState(TopAbs_UNKNOWN)        // skv OCC12627
-+       myState(TopAbs_UNKNOWN),       // skv OCC12627
-+       myIsHeadOrEnd(Standard_False)  // skv OCC12627
- 
- {
- }
 Index: oce/src/Adaptor3d/Adaptor3d_TopolTool.cxx
 ===================================================================
 --- oce.orig/src/Adaptor3d/Adaptor3d_TopolTool.cxx
@@ -145,11 +115,41 @@ Index: oce/src/IntSurf/IntSurf_Quadric.cxx
  {}
  // ============================================================
  IntSurf_Quadric::IntSurf_Quadric (const gp_Pln& P):
+Index: oce/src/ShapeAnalysis/ShapeAnalysis_BoxBndTree.hxx
+===================================================================
+--- oce.orig/src/ShapeAnalysis/ShapeAnalysis_BoxBndTree.hxx
++++ oce/src/ShapeAnalysis/ShapeAnalysis_BoxBndTree.hxx
+@@ -42,8 +42,8 @@ class ShapeAnalysis_BoxBndTreeSelector
+   ShapeAnalysis_BoxBndTreeSelector
+     (Handle (TopTools_HArray1OfShape) theSeq,
+      Standard_Boolean theShared)
+-    :  mySeq(theSeq), myShared(theShared), myNb(0), myTol(1e-7), myMin3d(1e-7),myArrIndices(1,2),
+-      myStatus(ShapeExtend::EncodeStatus (ShapeExtend_OK))
++    :  mySeq(theSeq), myShared(theShared), myStatus(ShapeExtend::EncodeStatus (ShapeExtend_OK)),
++      myNb(0), myTol(1e-7), myMin3d(1e-7),myArrIndices(1,2)
+       {
+         myArrIndices.Init(0);
+       }
+Index: oce/src/TopClass/TopClass_Classifier2d.gxx
+===================================================================
+--- oce.orig/src/TopClass/TopClass_Classifier2d.gxx
++++ oce/src/TopClass/TopClass_Classifier2d.gxx
+@@ -37,8 +37,8 @@
+ TopClass_Classifier2d::TopClass_Classifier2d() :
+        myIsSet(Standard_False),
+        myFirstCompare(Standard_True),
+-       myIsHeadOrEnd(Standard_False), // skv OCC12627
+-       myState(TopAbs_UNKNOWN)        // skv OCC12627
++       myState(TopAbs_UNKNOWN),       // skv OCC12627
++       myIsHeadOrEnd(Standard_False)  // skv OCC12627
+ 
+ {
+ }
 Index: oce/src/V3d/V3d_View.cxx
 ===================================================================
 --- oce.orig/src/V3d/V3d_View.cxx
 +++ oce/src/V3d/V3d_View.cxx
-@@ -294,6 +294,7 @@ static Graphic3d_Vertex& _MyProjReferenc
+@@ -267,6 +267,7 @@ static Graphic3d_Vertex& _MyProjReferenc
  
  V3d_View::V3d_View(const Handle(V3d_Viewer)& VM, const V3d_TypeOfView Type ) :
  MyType ( Type ),
@@ -157,7 +157,7 @@ Index: oce/src/V3d/V3d_View.cxx
  MyViewer(VM.operator->()),
  MyActiveLights(),
  MyActivePlanes(),
-@@ -301,8 +302,7 @@ MyViewContext (),
+@@ -274,8 +275,7 @@ MyViewContext (),
  myActiveLightsIterator(),
  myActivePlanesIterator(),
  SwitchSetFront(Standard_False),
@@ -167,7 +167,7 @@ Index: oce/src/V3d/V3d_View.cxx
  {
    myImmediateUpdate = Standard_False;
    MyView = new Visual3d_View(MyViewer->Viewer());
-@@ -414,6 +414,7 @@ MyGridEchoGroup (new Graphic3d_Group (My
+@@ -370,6 +370,7 @@ MyProjModel(V3d_TPM_SCREEN)
  
  V3d_View::V3d_View(const Handle(V3d_Viewer)& VM,const Handle(V3d_View)& V, const V3d_TypeOfView Type ) :
  MyType ( Type ),
@@ -175,7 +175,7 @@ Index: oce/src/V3d/V3d_View.cxx
  MyViewer(VM.operator->()),
  MyActiveLights(),
  MyActivePlanes(),
-@@ -421,8 +422,7 @@ MyViewContext (),
+@@ -377,8 +378,7 @@ MyViewContext (),
  myActiveLightsIterator(),
  myActivePlanesIterator(),
  SwitchSetFront(Standard_False),

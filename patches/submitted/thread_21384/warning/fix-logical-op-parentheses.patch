@@ -62,6 +62,56 @@ GCC emits warnings:
  src/Xw/Xw_load_image.cxx                           |    4 +-
  49 files changed, 131 insertions(+), 136 deletions(-)
 
+Index: oce/src/AIS/AIS_LengthDimension.cxx
+===================================================================
+--- oce.orig/src/AIS/AIS_LengthDimension.cxx
++++ oce/src/AIS/AIS_LengthDimension.cxx
+@@ -1094,7 +1094,7 @@ void AIS_LengthDimension::ComputeFaceSel
+       gp_Lin LengthLine( myPosition, DirOfArrow1 );
+       Standard_Real Par1 = ElCLib::Parameter( LengthLine, EndOfArrow1 );
+       Standard_Real Par2 = ElCLib::Parameter( LengthLine, EndOfArrow2 );
+-      if (Par1 > 0.0 && Par2 > 0.0 || Par1 < 0.0 && Par2 < 0.0)
++      if ((Par1 > 0.0 && Par2 > 0.0) || (Par1 < 0.0 && Par2 < 0.0))
+         {
+           FirstPoint = myPosition;
+           LastPoint  = (Abs( Par1 ) > Abs( Par2 ))? EndOfArrow1 : EndOfArrow2;
+Index: oce/src/AlienImage/AlienImage_BMPAlienData.cxx
+===================================================================
+--- oce.orig/src/AlienImage/AlienImage_BMPAlienData.cxx
++++ oce/src/AlienImage/AlienImage_BMPAlienData.cxx
+@@ -148,7 +148,7 @@ Standard_Boolean AlienImage_BMPAlienData
+   nBitCount = _TestSwapWORD (isOS2Format ? bmch.bcBitCount: bmih.biBitCount);
+   if ((nBitCount != 1 &&  nBitCount != 4 && nBitCount != 8 &&
+        nBitCount != 16 && nBitCount != 24 && nBitCount != 32) ||
+-       isOS2Format && (nBitCount == 16 || nBitCount == 32)) {
++       (isOS2Format && (nBitCount == 16 || nBitCount == 32))) {
+     cout << "AlienImage_BMPAlienData::Read() : Bad <nBitCount> value :"
+          << nBitCount << " " << isOS2Format << endl << flush;
+     goto _ExitReadError;
+@@ -306,8 +306,8 @@ Standard_Boolean AlienImage_BMPAlienData
+                                              : (*ptrByte++ & 0xf0) >> 4;
+         }
+         // each run must aligned on a word boundary
+-        if (iCompression == BI_RLE8 && (bCode & 1) ||
+-            iCompression == BI_RLE4 && (bCode & 3))
++        if ((iCompression == BI_RLE8 && (bCode & 1)) ||
++            (iCompression == BI_RLE4 && (bCode & 3)))
+           ptrByte ++;
+       }
+     }
+Index: oce/src/AlienImage/AlienImage_GIFLZWDict.cxx
+===================================================================
+--- oce.orig/src/AlienImage/AlienImage_GIFLZWDict.cxx
++++ oce/src/AlienImage/AlienImage_GIFLZWDict.cxx
+@@ -154,7 +154,7 @@ static int _find_child (int prntCode, in
+   for (;;) {
+ 
+     if (dict[ idx ].code == UNUSED ||
+-        dict[ idx ].prnt == prntCode && dict[ idx ].byte == ( BYTE )chr)
++       (dict[ idx ].prnt == prntCode && dict[ idx ].byte == ( BYTE )chr))
+       return idx;
+ 
+     idx = ( idx >= offset ) ? idx - offset : idx + TBL_SIZE - offset;
 Index: oce/src/AppParCurves/AppParCurves_Variational_7.gxx
 ===================================================================
 --- oce.orig/src/AppParCurves/AppParCurves_Variational_7.gxx
@@ -84,6 +134,80 @@ Index: oce/src/AppParCurves/AppParCurves_Variational_7.gxx
        loptim = Standard_False;
      }
      
+Index: oce/src/BRepLib/BRepLib_FindSurface.cxx
+===================================================================
+--- oce.orig/src/BRepLib/BRepLib_FindSurface.cxx
++++ oce/src/BRepLib/BRepLib_FindSurface.cxx
+@@ -483,7 +483,7 @@ void BRepLib_FindSurface::Init(const Top
+   //static Standard_Real weakness = 5.0;
+   Standard_Real weakness = 5.0;
+   //XXf
+-  if(dfDist <= myTolerance || dfDist < myTolerance*weakness && Tol<0) { 
++  if(dfDist <= myTolerance || (dfDist < myTolerance*weakness && Tol<0)) { 
+     //XXf 
+     //myTolReached = dfDist;
+     //XXt
+Index: oce/src/BRepOffset/BRepOffset_Tool.cxx
+===================================================================
+--- oce.orig/src/BRepOffset/BRepOffset_Tool.cxx
++++ oce/src/BRepOffset/BRepOffset_Tool.cxx
+@@ -946,8 +946,8 @@ static Standard_Boolean AreClosed(const
+   TopExp::Vertices( E1, V11, V12 );
+   TopExp::Vertices( E2, V21, V22 );
+ 
+-  if (V11.IsSame(V21) && V12.IsSame(V22) ||
+-      V11.IsSame(V22) && V12.IsSame(V21))
++  if ((V11.IsSame(V21) && V12.IsSame(V22)) ||
++      (V11.IsSame(V22) && V12.IsSame(V21)))
+     return Standard_True;
+ 
+   return Standard_False;
+@@ -1413,8 +1413,8 @@ static Standard_Boolean CheckIntersFF(co
+ 
+   if (V1onBound && V2onBound)
+     {
+-      if (TangFirst.IsParallel(RefTangFirst,AngTol) && TangLast.IsParallel(RefTangLast,AngTol) ||
+-          TangFirst.IsParallel(RefTangLast,AngTol)  && TangLast.IsParallel(RefTangFirst,AngTol))
++      if ((TangFirst.IsParallel(RefTangFirst,AngTol) && TangLast.IsParallel(RefTangLast,AngTol)) ||
++          (TangFirst.IsParallel(RefTangLast,AngTol)  && TangLast.IsParallel(RefTangFirst,AngTol)))
+         {
+           TrueEdges.Add( Edges(i) );
+           return Standard_True;
+Index: oce/src/BRepTest/BRepTest_GPropCommands.cxx
+===================================================================
+--- oce.orig/src/BRepTest/BRepTest_GPropCommands.cxx
++++ oce/src/BRepTest/BRepTest_GPropCommands.cxx
+@@ -62,7 +62,7 @@ Standard_Integer props(Draw_Interpretor&
+   Standard_Boolean onlyClosed = Standard_False;
+   Standard_Real eps = 1.0;
+   Standard_Boolean witheps = Standard_False;
+-  if(n > 2 && *a[2]=='c' || n > 3 && *a[3]=='c') onlyClosed = Standard_True;
++  if((n > 2 && *a[2]=='c') || (n > 3 && *a[3]=='c')) onlyClosed = Standard_True;
+   if(n > 2 && *a[2]!='c' && n != 5) {eps = Draw::Atof (a[2]); witheps = Standard_True;}
+ 
+   if (witheps){
+Index: oce/src/BRepTopAdaptor/BRepTopAdaptor_FClass2d.cxx
+===================================================================
+--- oce.orig/src/BRepTopAdaptor/BRepTopAdaptor_FClass2d.cxx
++++ oce/src/BRepTopAdaptor/BRepTopAdaptor_FClass2d.cxx
+@@ -507,7 +507,7 @@ TopAbs_State BRepTopAdaptor_FClass2d::Pe
+ 	Status = aClassifier.State();
+       }
+ 
+-      if (!RecadreOnPeriodic || !IsUPer && !IsVPer)
++      if (!RecadreOnPeriodic || (!IsUPer && !IsVPer))
+ 	return Status;
+       if (Status == TopAbs_IN || Status == TopAbs_ON)
+ 	return Status;
+@@ -639,7 +639,7 @@ TopAbs_State BRepTopAdaptor_FClass2d::Te
+ 	Status = aClassifier.State();
+       }
+       
+-      if (!RecadreOnPeriodic || !IsUPer && !IsVPer)
++      if (!RecadreOnPeriodic || (!IsUPer && !IsVPer))
+ 	return Status;
+       if (Status == TopAbs_IN || Status == TopAbs_ON)
+ 	return Status;
 Index: oce/src/Blend/Blend_Walking_1.gxx
 ===================================================================
 --- oce.orig/src/Blend/Blend_Walking_1.gxx
@@ -131,187 +255,6 @@ Index: oce/src/Blend/Blend_Walking_1.gxx
        line->Remove(length,newlength);
        line->SetEndPoints(Ext1,Ext2);
        return Standard_False;
-Index: oce/src/Contap/Contap_ContourGen_2.gxx
-===================================================================
---- oce.orig/src/Contap/Contap_ContourGen_2.gxx
-+++ oce/src/Contap/Contap_ContourGen_2.gxx
-@@ -502,8 +502,8 @@ static void ComputeTangency (const Conta
- 		  LocTrans = TopAbs_EXTERNAL; // et pourquoi pas INTERNAL
- 		}
- 		else {
--		  if ((test > 0.)&& arcorien == TopAbs_FORWARD ||
--		      (test < 0.)&& arcorien == TopAbs_REVERSED){
-+		  if (((test > 0.)&& arcorien == TopAbs_FORWARD) ||
-+		      ((test < 0.)&& arcorien == TopAbs_REVERSED)){
- 		    LocTrans = TopAbs_FORWARD;
- 		  }
- 		  else {
-@@ -544,8 +544,8 @@ static void ComputeTangency (const Conta
- 			  LocTrans = TopAbs_EXTERNAL; // et pourquoi pas INTERNAL
- 			}
- 			else {
--			  if ((test > 0.)&& arcorien == TopAbs_FORWARD ||
--			      (test < 0.)&& arcorien == TopAbs_REVERSED){
-+			  if (((test > 0.)&& arcorien == TopAbs_FORWARD) ||
-+			      ((test < 0.)&& arcorien == TopAbs_REVERSED)){
- 			    LocTrans = TopAbs_FORWARD;
- 			  }
- 			  else {
-Index: oce/src/Poly/Poly_MakeLoops.hxx
-===================================================================
---- oce.orig/src/Poly/Poly_MakeLoops.hxx
-+++ oce/src/Poly/Poly_MakeLoops.hxx
-@@ -271,10 +271,10 @@ inline Standard_Integer HashCode(const P
- inline Standard_Boolean IsEqual(const Poly_MakeLoops::Link& theKey1,
-                                 const Poly_MakeLoops::Link& theKey2)
- {
--  return (theKey1.node1 == theKey2.node1 &&
--          theKey1.node2 == theKey2.node2 ||
--          theKey1.node1 == theKey2.node2 &&
--          theKey1.node2 == theKey2.node1);
-+  return ((theKey1.node1 == theKey2.node1 &&
-+           theKey1.node2 == theKey2.node2) ||
-+          (theKey1.node1 == theKey2.node2 &&
-+           theKey1.node2 == theKey2.node1));
- }
- 
- /**
-Index: oce/src/Quantity/Quantity_Date.lxx
-===================================================================
---- oce.orig/src/Quantity/Quantity_Date.lxx
-+++ oce/src/Quantity/Quantity_Date.lxx
-@@ -18,6 +18,6 @@
- 
- inline Standard_Boolean Quantity_Date::IsLeap (const Standard_Integer yy){
- 
--return ( ( yy % 4 == 0 && yy % 100 != 0 || yy % 400 == 0) 
-+return ( ( (yy % 4 == 0 && yy % 100 != 0) || yy % 400 == 0) 
-          ? Standard_True : Standard_False );
- }
-Index: oce/src/AIS/AIS_LengthDimension.cxx
-===================================================================
---- oce.orig/src/AIS/AIS_LengthDimension.cxx
-+++ oce/src/AIS/AIS_LengthDimension.cxx
-@@ -1107,7 +1107,7 @@ void AIS_LengthDimension::ComputeFaceSel
-       gp_Lin LengthLine( myPosition, DirOfArrow1 );
-       Standard_Real Par1 = ElCLib::Parameter( LengthLine, EndOfArrow1 );
-       Standard_Real Par2 = ElCLib::Parameter( LengthLine, EndOfArrow2 );
--      if (Par1 > 0.0 && Par2 > 0.0 || Par1 < 0.0 && Par2 < 0.0)
-+      if ((Par1 > 0.0 && Par2 > 0.0) || (Par1 < 0.0 && Par2 < 0.0))
-         {
-           FirstPoint = myPosition;
-           LastPoint  = (Abs( Par1 ) > Abs( Par2 ))? EndOfArrow1 : EndOfArrow2;
-Index: oce/src/AlienImage/AlienImage_BMPAlienData.cxx
-===================================================================
---- oce.orig/src/AlienImage/AlienImage_BMPAlienData.cxx
-+++ oce/src/AlienImage/AlienImage_BMPAlienData.cxx
-@@ -148,7 +148,7 @@ Standard_Boolean AlienImage_BMPAlienData
-   nBitCount = _TestSwapWORD (isOS2Format ? bmch.bcBitCount: bmih.biBitCount);
-   if ((nBitCount != 1 &&  nBitCount != 4 && nBitCount != 8 &&
-        nBitCount != 16 && nBitCount != 24 && nBitCount != 32) ||
--       isOS2Format && (nBitCount == 16 || nBitCount == 32)) {
-+       (isOS2Format && (nBitCount == 16 || nBitCount == 32))) {
-     cout << "AlienImage_BMPAlienData::Read() : Bad <nBitCount> value :"
-          << nBitCount << " " << isOS2Format << endl << flush;
-     goto _ExitReadError;
-@@ -306,8 +306,8 @@ Standard_Boolean AlienImage_BMPAlienData
-                                              : (*ptrByte++ & 0xf0) >> 4;
-         }
-         // each run must aligned on a word boundary
--        if (iCompression == BI_RLE8 && (bCode & 1) ||
--            iCompression == BI_RLE4 && (bCode & 3))
-+        if ((iCompression == BI_RLE8 && (bCode & 1)) ||
-+            (iCompression == BI_RLE4 && (bCode & 3)))
-           ptrByte ++;
-       }
-     }
-Index: oce/src/AlienImage/AlienImage_GIFLZWDict.cxx
-===================================================================
---- oce.orig/src/AlienImage/AlienImage_GIFLZWDict.cxx
-+++ oce/src/AlienImage/AlienImage_GIFLZWDict.cxx
-@@ -154,7 +154,7 @@ static int _find_child (int prntCode, in
-   for (;;) {
- 
-     if (dict[ idx ].code == UNUSED ||
--        dict[ idx ].prnt == prntCode && dict[ idx ].byte == ( BYTE )chr)
-+       (dict[ idx ].prnt == prntCode && dict[ idx ].byte == ( BYTE )chr))
-       return idx;
- 
-     idx = ( idx >= offset ) ? idx - offset : idx + TBL_SIZE - offset;
-Index: oce/src/BRepLib/BRepLib_FindSurface.cxx
-===================================================================
---- oce.orig/src/BRepLib/BRepLib_FindSurface.cxx
-+++ oce/src/BRepLib/BRepLib_FindSurface.cxx
-@@ -482,7 +482,7 @@ void BRepLib_FindSurface::Init(const Top
-   //static Standard_Real weakness = 5.0;
-   Standard_Real weakness = 5.0;
-   //XXf
--  if(dfDist <= myTolerance || dfDist < myTolerance*weakness && Tol<0) { 
-+  if(dfDist <= myTolerance || (dfDist < myTolerance*weakness && Tol<0)) { 
-     //XXf 
-     //myTolReached = dfDist;
-     //XXt
-Index: oce/src/BRepOffset/BRepOffset_Tool.cxx
-===================================================================
---- oce.orig/src/BRepOffset/BRepOffset_Tool.cxx
-+++ oce/src/BRepOffset/BRepOffset_Tool.cxx
-@@ -964,8 +964,8 @@ static Standard_Boolean AreClosed(const
-   TopExp::Vertices( E1, V11, V12 );
-   TopExp::Vertices( E2, V21, V22 );
- 
--  if (V11.IsSame(V21) && V12.IsSame(V22) ||
--      V11.IsSame(V22) && V12.IsSame(V21))
-+  if ((V11.IsSame(V21) && V12.IsSame(V22)) ||
-+      (V11.IsSame(V22) && V12.IsSame(V21)))
-     return Standard_True;
- 
-   return Standard_False;
-@@ -1432,8 +1432,8 @@ static Standard_Boolean CheckIntersFF(co
- 
-   if (V1onBound && V2onBound)
-     {
--      if (TangFirst.IsParallel(RefTangFirst,AngTol) && TangLast.IsParallel(RefTangLast,AngTol) ||
--          TangFirst.IsParallel(RefTangLast,AngTol)  && TangLast.IsParallel(RefTangFirst,AngTol))
-+      if ((TangFirst.IsParallel(RefTangFirst,AngTol) && TangLast.IsParallel(RefTangLast,AngTol)) ||
-+          (TangFirst.IsParallel(RefTangLast,AngTol)  && TangLast.IsParallel(RefTangFirst,AngTol)))
-         {
-           TrueEdges.Add( Edges(i) );
-           return Standard_True;
-Index: oce/src/BRepTest/BRepTest_GPropCommands.cxx
-===================================================================
---- oce.orig/src/BRepTest/BRepTest_GPropCommands.cxx
-+++ oce/src/BRepTest/BRepTest_GPropCommands.cxx
-@@ -62,7 +62,7 @@ Standard_Integer props(Draw_Interpretor&
-   Standard_Boolean onlyClosed = Standard_False;
-   Standard_Real eps = 1.0;
-   Standard_Boolean witheps = Standard_False;
--  if(n > 2 && *a[2]=='c' || n > 3 && *a[3]=='c') onlyClosed = Standard_True;
-+  if((n > 2 && *a[2]=='c') || (n > 3 && *a[3]=='c')) onlyClosed = Standard_True;
-   if(n > 2 && *a[2]!='c' && n != 5) {eps = Draw::Atof (a[2]); witheps = Standard_True;}
- 
-   if (witheps){
-Index: oce/src/BRepTopAdaptor/BRepTopAdaptor_FClass2d.cxx
-===================================================================
---- oce.orig/src/BRepTopAdaptor/BRepTopAdaptor_FClass2d.cxx
-+++ oce/src/BRepTopAdaptor/BRepTopAdaptor_FClass2d.cxx
-@@ -507,7 +507,7 @@ TopAbs_State BRepTopAdaptor_FClass2d::Pe
- 	Status = aClassifier.State();
-       }
- 
--      if (!RecadreOnPeriodic || !IsUPer && !IsVPer)
-+      if (!RecadreOnPeriodic || (!IsUPer && !IsVPer))
- 	return Status;
-       if (Status == TopAbs_IN || Status == TopAbs_ON)
- 	return Status;
-@@ -639,7 +639,7 @@ TopAbs_State BRepTopAdaptor_FClass2d::Te
- 	Status = aClassifier.State();
-       }
-       
--      if (!RecadreOnPeriodic || !IsUPer && !IsVPer)
-+      if (!RecadreOnPeriodic || (!IsUPer && !IsVPer))
- 	return Status;
-       if (Status == TopAbs_IN || Status == TopAbs_ON)
- 	return Status;
 Index: oce/src/Bnd/Bnd_Box.cxx
 ===================================================================
 --- oce.orig/src/Bnd/Bnd_Box.cxx
@@ -396,11 +339,37 @@ Index: oce/src/ChFiDS/ChFiDS_FilSpine.cxx
  	{
  	  StartRad = rad;
  	  break;
+Index: oce/src/Contap/Contap_ContourGen_2.gxx
+===================================================================
+--- oce.orig/src/Contap/Contap_ContourGen_2.gxx
++++ oce/src/Contap/Contap_ContourGen_2.gxx
+@@ -502,8 +502,8 @@ static void ComputeTangency (const Conta
+ 		  LocTrans = TopAbs_EXTERNAL; // et pourquoi pas INTERNAL
+ 		}
+ 		else {
+-		  if ((test > 0.)&& arcorien == TopAbs_FORWARD ||
+-		      (test < 0.)&& arcorien == TopAbs_REVERSED){
++		  if (((test > 0.)&& arcorien == TopAbs_FORWARD) ||
++		      ((test < 0.)&& arcorien == TopAbs_REVERSED)){
+ 		    LocTrans = TopAbs_FORWARD;
+ 		  }
+ 		  else {
+@@ -544,8 +544,8 @@ static void ComputeTangency (const Conta
+ 			  LocTrans = TopAbs_EXTERNAL; // et pourquoi pas INTERNAL
+ 			}
+ 			else {
+-			  if ((test > 0.)&& arcorien == TopAbs_FORWARD ||
+-			      (test < 0.)&& arcorien == TopAbs_REVERSED){
++			  if (((test > 0.)&& arcorien == TopAbs_FORWARD) ||
++			      ((test < 0.)&& arcorien == TopAbs_REVERSED)){
+ 			    LocTrans = TopAbs_FORWARD;
+ 			  }
+ 			  else {
 Index: oce/src/DsgPrs/DsgPrs_LengthPresentation.cxx
 ===================================================================
 --- oce.orig/src/DsgPrs/DsgPrs_LengthPresentation.cxx
 +++ oce/src/DsgPrs/DsgPrs_LengthPresentation.cxx
-@@ -188,7 +188,7 @@ void DsgPrs_LengthPresentation::Add( con
+@@ -159,7 +159,7 @@ void DsgPrs_LengthPresentation::Add( con
    Standard_Real Par1 = ElCLib::Parameter( LengthLine, EndOfArrow1 );
    Standard_Real Par2 = ElCLib::Parameter( LengthLine, EndOfArrow2 );
    gp_Pnt FirstPoint, LastPoint;
@@ -409,7 +378,7 @@ Index: oce/src/DsgPrs/DsgPrs_LengthPresentation.cxx
    {
      FirstPoint = OffsetPoint;
      LastPoint  = (Abs( Par1 ) > Abs( Par2 ))? EndOfArrow1 : EndOfArrow2;
-@@ -371,7 +371,7 @@ void DsgPrs_LengthPresentation::Add( con
+@@ -310,7 +310,7 @@ void DsgPrs_LengthPresentation::Add( con
    Standard_Real Par1 = ElCLib::Parameter( LengthLine, AttachmentPoint1 );
    Standard_Real Par2 = ElCLib::Parameter( LengthLine, EndOfArrow2 );
    gp_Pnt FirstPoint, LastPoint;
@@ -422,7 +391,7 @@ Index: oce/src/DsgPrs/DsgPrs_ShapeDirPresentation.cxx
 ===================================================================
 --- oce.orig/src/DsgPrs/DsgPrs_ShapeDirPresentation.cxx
 +++ oce/src/DsgPrs/DsgPrs_ShapeDirPresentation.cxx
-@@ -192,8 +192,8 @@ static Standard_Boolean ComputeDir(const
+@@ -178,8 +178,8 @@ static Standard_Boolean ComputeDir(const
      pt = lProps.Value();
      dir = lProps.Normal();
    }
@@ -662,7 +631,7 @@ Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
 ===================================================================
 --- oce.orig/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
 +++ oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
-@@ -2700,7 +2700,7 @@ Standard_Integer IntPolyh_MaillageAffina
+@@ -2625,7 +2625,7 @@ Standard_Integer IntPolyh_MaillageAffina
  	  &&(Abs(SP1.V1()-SP2.V1())<MyConfusionPrecision) ) NbPoints=1;
        if (NbPoints>=2) return(NbPoints);
                       //= remove
@@ -671,7 +640,7 @@ Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
  	       && (NbPoints<2) ) {
  	//there are two sides (common top PT3) that can cut the edge
  	
-@@ -2985,7 +2985,7 @@ Standard_Integer IntPolyh_MaillageAffina
+@@ -2910,7 +2910,7 @@ Standard_Integer IntPolyh_MaillageAffina
  	    &&(Abs(SP1.V1()-SP2.V1())<MyConfusionPrecision) ) NbPoints=1;
  	if (NbPoints>=2) return(NbPoints);
  	
@@ -777,7 +746,7 @@ Index: oce/src/MeshVS/MeshVS_NodalColorPrsBuilder.cxx
 ===================================================================
 --- oce.orig/src/MeshVS/MeshVS_NodalColorPrsBuilder.cxx
 +++ oce/src/MeshVS/MeshVS_NodalColorPrsBuilder.cxx
-@@ -177,8 +177,8 @@ void MeshVS_NodalColorPrsBuilder::Build
+@@ -170,8 +170,8 @@ void MeshVS_NodalColorPrsBuilder::Build
    if ( !( DisplayMode & GetFlags() ) || !IsElement )
      return;
  
@@ -845,11 +814,30 @@ Index: oce/src/Poly/Poly_MakeLoops.cxx
          aInd = -aInd;
        if (canLinkBeTaken(aInd))
        {
+Index: oce/src/Poly/Poly_MakeLoops.hxx
+===================================================================
+--- oce.orig/src/Poly/Poly_MakeLoops.hxx
++++ oce/src/Poly/Poly_MakeLoops.hxx
+@@ -271,10 +271,10 @@ inline Standard_Integer HashCode(const P
+ inline Standard_Boolean IsEqual(const Poly_MakeLoops::Link& theKey1,
+                                 const Poly_MakeLoops::Link& theKey2)
+ {
+-  return (theKey1.node1 == theKey2.node1 &&
+-          theKey1.node2 == theKey2.node2 ||
+-          theKey1.node1 == theKey2.node2 &&
+-          theKey1.node2 == theKey2.node1);
++  return ((theKey1.node1 == theKey2.node1 &&
++           theKey1.node2 == theKey2.node2) ||
++          (theKey1.node1 == theKey2.node2 &&
++           theKey1.node2 == theKey2.node1));
+ }
+ 
+ /**
 Index: oce/src/ProjLib/ProjLib_CompProjectedCurve.cxx
 ===================================================================
 --- oce.orig/src/ProjLib/ProjLib_CompProjectedCurve.cxx
 +++ oce/src/ProjLib/ProjLib_CompProjectedCurve.cxx
-@@ -1381,8 +1381,8 @@ gp_Vec2d ProjLib_CompProjectedCurve::DN(
+@@ -1386,8 +1386,8 @@ gp_Vec2d ProjLib_CompProjectedCurve::DN(
             TUdisc.Append(mySequence->Value(i)->Value(j).X());
  	else if(Abs(Ur - CutPntsU(k)) <= myTolU) 
             TUdisc.Append(mySequence->Value(i)->Value(j + 1).X());
@@ -860,7 +848,7 @@ Index: oce/src/ProjLib/ProjLib_CompProjectedCurve.cxx
          {
  	  Standard_Real V;
  	  V = (mySequence->Value(i)->Value(j).Z() 
-@@ -1435,8 +1435,8 @@ gp_Vec2d ProjLib_CompProjectedCurve::DN(
+@@ -1440,8 +1440,8 @@ gp_Vec2d ProjLib_CompProjectedCurve::DN(
             TVdisc.Append(mySequence->Value(i)->Value(j).X());
  	else if (Abs(Vr - CutPntsV(k)) <= myTolV) 
             TVdisc.Append(mySequence->Value(i)->Value(j + 1).X());
@@ -884,6 +872,18 @@ Index: oce/src/ProjLib/ProjLib_ComputeApprox.cxx
        {
  	gp_Pnt2d P2d = F.Value( UFirst );
  	number = (Standard_Integer) (Floor((P2d.X()-u)/M_PI + Epsilon(M_PI)));
+Index: oce/src/Quantity/Quantity_Date.lxx
+===================================================================
+--- oce.orig/src/Quantity/Quantity_Date.lxx
++++ oce/src/Quantity/Quantity_Date.lxx
+@@ -18,6 +18,6 @@
+ 
+ inline Standard_Boolean Quantity_Date::IsLeap (const Standard_Integer yy){
+ 
+-return ( ( yy % 4 == 0 && yy % 100 != 0 || yy % 400 == 0) 
++return ( ( (yy % 4 == 0 && yy % 100 != 0) || yy % 400 == 0) 
+          ? Standard_True : Standard_False );
+ }
 Index: oce/src/ShapeCustom/ShapeCustom_BSplineRestriction.cxx
 ===================================================================
 --- oce.orig/src/ShapeCustom/ShapeCustom_BSplineRestriction.cxx

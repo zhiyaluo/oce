@@ -12,7 +12,7 @@ Index: oce/src/QABugs/QABugs_11.cxx
 ===================================================================
 --- oce.orig/src/QABugs/QABugs_11.cxx
 +++ oce/src/QABugs/QABugs_11.cxx
-@@ -933,19 +933,19 @@ Standard_Integer OCC299bug (Draw_Interpr
+@@ -934,19 +934,19 @@ Standard_Integer OCC299bug (Draw_Interpr
    //
    switch (aState) {
    case TopAbs_IN:
