@@ -718,7 +718,7 @@ Index: oce/src/OSD/OSD_Process.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Process.cxx
 +++ oce/src/OSD/OSD_Process.cxx
-@@ -234,7 +234,7 @@ Standard_Integer OSD_Process::Error()con
+@@ -235,7 +235,7 @@ Standard_Integer OSD_Process::Error()con
  #include <Quantity_Date.hxx>
  
  #include <OSD_WNT_1.hxx>
@@ -1106,8 +1106,8 @@ Index: oce/src/Voxel/Voxel_Reader.cxx
  
 +#include <stdio.h>
 +
- Voxel_Reader::Voxel_Reader():myBoolVoxels(0),myColorVoxels(0),myFloatVoxels(0)
- {
+ #define CATCH_FREAD_1_ERR(stmt) if (1 != (stmt)) { fclose(f); return Standard_False; }
+ #define CATCH_FGETS_ERR(stmt) if (NULL == (stmt)) { fclose(f); return Standard_False; }
  
 Index: oce/src/Voxel/Voxel_Writer.cxx
 ===================================================================

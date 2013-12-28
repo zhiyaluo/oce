@@ -18,10 +18,10 @@ our changes, but this time against Graphic3d::InitGraphicDriver.
  src/Graphic3d/Graphic3d.cxx | 8 ++++++++
  1 file changed, 8 insertions(+)
 
-diff --git a/src/Graphic3d/Graphic3d.cxx b/src/Graphic3d/Graphic3d.cxx
-index 8b493ac..db2ceee 100644
---- a/src/Graphic3d/Graphic3d.cxx
-+++ b/src/Graphic3d/Graphic3d.cxx
+Index: oce/src/Graphic3d/Graphic3d.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d.cxx
++++ oce/src/Graphic3d/Graphic3d.cxx
 @@ -21,6 +21,10 @@
  #include <Aspect_DriverDefinitionError.hxx>
  #include <OSD_Environment.hxx>
@@ -33,24 +33,26 @@ index 8b493ac..db2ceee 100644
  //=======================================================================
  //function : InitGraphicDriver
  //purpose  :
-@@ -36,6 +40,9 @@ Handle(Graphic3d_GraphicDriver) Graphic3d::InitGraphicDriver (const Handle(Aspec
+@@ -36,6 +40,13 @@ Handle(Graphic3d_GraphicDriver) Graphic3
  
    TCollection_AsciiString aGraphicLibName;
  
++  const char *shr = getenv("CSF_GraphicShr");
++  if (shr != NULL) {
++    aGraphicLibName = shr;
++  } else {
 +#ifdef OCE_DEFAULT_CSF_GraphicShr
 +  aGraphicLibName = OCE_DEFAULT_CSF_GraphicShr;
 +#else
    // Setting the library name. Depends on the platform.
  #if defined(_WIN32) || defined(__WIN32__)
    aGraphicLibName = "TKOpenGl.dll";
-@@ -46,6 +53,7 @@ Handle(Graphic3d_GraphicDriver) Graphic3d::InitGraphicDriver (const Handle(Aspec
+@@ -46,6 +57,8 @@ Handle(Graphic3d_GraphicDriver) Graphic3
  #else
    aGraphicLibName = "libTKOpenGl.so";
  #endif
 +#endif
++  }
  
    // Loading the library.
    OSD_SharedLibrary aSharedLibrary (aGraphicLibName.ToCString());
--- 
-1.8.4.rc1
-

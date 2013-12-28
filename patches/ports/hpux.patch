@@ -1,0 +1,550 @@
+Index: oce/src/AdvApp2Var/AdvApp2Var_SysBase.hxx
+===================================================================
+--- oce.orig/src/AdvApp2Var/AdvApp2Var_SysBase.hxx
++++ oce/src/AdvApp2Var/AdvApp2Var_SysBase.hxx
+@@ -24,8 +24,12 @@
+ #if _MSC_VER
+ #include <stddef.h>
+ #else
++#if defined(__hpux) && !defined(__GNUC__)
++#include <inttypes.h>
++#else
+ #include <stdint.h>
+ #endif
++#endif
+ 
+ class AdvApp2Var_SysBase {
+  public: 
+Index: oce/src/BRepMesh/BRepMesh_CellFilter.hxx
+===================================================================
+--- oce.orig/src/BRepMesh/BRepMesh_CellFilter.hxx
++++ oce/src/BRepMesh/BRepMesh_CellFilter.hxx
+@@ -32,4 +32,4 @@ typedef NCollection_CellFilter<BRepMesh_
+   { return aCell.HashCode(theUpper); }
+   Standard_Boolean IsEqual (const NCollection_CellFilter<BRepMesh_CircleInspector>::Cell &aCell1, const NCollection_CellFilter<BRepMesh_CircleInspector>::Cell &aCell2)
+   { return aCell1.IsEqual(aCell2); }
+-#endif
+\ No newline at end of file
++#endif
+Index: oce/src/BRepMesh/BRepMesh_DiscretFactory.cxx
+===================================================================
+--- oce.orig/src/BRepMesh/BRepMesh_DiscretFactory.cxx
++++ oce/src/BRepMesh/BRepMesh_DiscretFactory.cxx
+@@ -44,7 +44,7 @@ namespace
+     theLibName += ".dll";
+   #elif __APPLE__
+     theLibName += ".dylib";
+-  #elif defined (HPUX) || defined(_hpux)
++  #elif defined (HPUX) || defined(__hpux)
+     theLibName += ".sl";
+   #else
+     theLibName += ".so";
+Index: oce/src/BRepMesh/BRepMesh_FastDiscret.cxx
+===================================================================
+--- oce.orig/src/BRepMesh/BRepMesh_FastDiscret.cxx
++++ oce/src/BRepMesh/BRepMesh_FastDiscret.cxx
+@@ -1755,4 +1755,4 @@ void BRepMesh_FastDiscret::CreateMutexes
+ void BRepMesh_FastDiscret::RemoveAllMutexes()
+ {
+   myMutexProvider.RemoveAllMutexes();
+-}
+\ No newline at end of file
++}
+Index: oce/src/Draw/Draw.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw.cxx
++++ oce/src/Draw/Draw.cxx
+@@ -526,7 +526,7 @@ void Draw::Load(Draw_Interpretor& theDI,
+     aPluginLibrary += ".dll";
+ #elif __APPLE__
+     aPluginLibrary += ".dylib";
+-#elif defined (HPUX) || defined(_hpux)
++#elif defined (HPUX) || defined(__hpux)
+     aPluginLibrary += ".sl";
+ #else
+     aPluginLibrary += ".so";
+@@ -603,7 +603,7 @@ void Draw::Load(Draw_Interpretor& theDI,
+ #endif /* OCE_DEBUG_POSTFIX */
+ #elif __APPLE__
+     aPluginLibrary += ".dylib";
+-#elif defined (HPUX) || defined(_hpux)
++#elif defined (HPUX) || defined(__hpux)
+     aPluginLibrary += ".sl";
+ #else
+     aPluginLibrary += ".so";
+Index: oce/src/Draw/Draw_BasicCommands.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw_BasicCommands.cxx
++++ oce/src/Draw/Draw_BasicCommands.cxx
+@@ -77,7 +77,9 @@ static clock_t CPU_CURRENT; // cpu time
+ #endif
+ 
+ #if defined (__hpux) || defined ( HPUX )
++#ifndef RLIM_INFINITY
+ #define RLIM_INFINITY   0x7fffffff
++#endif
+ #define	RLIMIT_CPU	0
+ #endif
+ 
+Index: oce/src/Draw/Draw_GraphicCommands.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw_GraphicCommands.cxx
++++ oce/src/Draw/Draw_GraphicCommands.cxx
+@@ -891,7 +891,7 @@ static Standard_Integer grid (Draw_Inter
+       return 1 ;
+   }
+ 
+-#ifdef HPUX
++#if defined(HPUX) || defined(__hpux)
+   const char *temp = "grid";
+ #else
+   char temp1[] = "grid";
+Index: oce/src/Draw/Draw_Window.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw_Window.cxx
++++ oce/src/Draw/Draw_Window.cxx
+@@ -1055,7 +1055,7 @@ void Run_Appli(Standard_Boolean (*interp
+       FD_ZERO(&readset);
+       FD_SET(0,&readset);
+       FD_SET(count,&readset);
+-#ifdef HPUX
++#if defined(HPUX) || defined(__hpux)
+       numfd = select(count+1,(Integer*)&readset,NULL,NULL,NULL);
+ #else
+       numfd = select(count+1,&readset,NULL,NULL,NULL);
+Index: oce/src/IGESData/IGESData.cxx
+===================================================================
+--- oce.orig/src/IGESData/IGESData.cxx
++++ oce/src/IGESData/IGESData.cxx
+@@ -151,7 +151,7 @@ static Handle(IGESData_DefaultSpecific)
+     (XSTEP_VERSION);
+   gsys->AssignCat(" on ");
+   gsys->AssignCat
+-#ifdef HPUX
++#if defined(HPUX) || defined(__hpux)
+     ("HP-UX");
+   cout<<"--  OSD_Path::SystemVersion, does not work well on HP-UX"<<endl;
+ #endif
+Index: oce/src/Image/Image_Diff.cxx
+===================================================================
+--- oce.orig/src/Image/Image_Diff.cxx
++++ oce/src/Image/Image_Diff.cxx
+@@ -178,8 +178,13 @@ Standard_Boolean Image_Diff::Init (const
+   {
+     // Convert the images to white/black
+     const Image_ColorRGB aWhite = {{255, 255, 255}};
++#ifdef __hpux
++    Image_PixMapData<Image_ColorRGB>& aDataRef = *(Image_PixMapData<Image_ColorRGB>* )myImageRef->Data();
++    Image_PixMapData<Image_ColorRGB>& aDataNew = *(Image_PixMapData<Image_ColorRGB>* )myImageNew->Data();
++#else
+     Image_PixMapData<Image_ColorRGB>& aDataRef = myImageRef->EditData<Image_ColorRGB>();
+     Image_PixMapData<Image_ColorRGB>& aDataNew = myImageNew->EditData<Image_ColorRGB>();
++#endif
+     for (Standard_Size aRow = 0; aRow < aDataRef.SizeY(); ++aRow)
+     {
+       for (Standard_Size aCol = 0; aCol < aDataRef.SizeY(); ++aCol)
+@@ -280,8 +285,13 @@ Standard_Integer Image_Diff::Compare()
+ 
+   // we don't care about RGB/BGR/RGBA/BGRA/RGB32/BGR32 differences
+   // because we just compute summ of r g b components
++#ifdef __hpux
++  Image_PixMapData<Image_ColorRGB>& aDataRef = *(Image_PixMapData<Image_ColorRGB>* )myImageRef->Data();
++  Image_PixMapData<Image_ColorRGB>& aDataNew = *(Image_PixMapData<Image_ColorRGB>* )myImageNew->Data();
++#else
+   const Image_PixMapData<Image_ColorRGB>& aDataRef = myImageRef->ReadData<Image_ColorRGB>();
+   const Image_PixMapData<Image_ColorRGB>& aDataNew = myImageNew->ReadData<Image_ColorRGB>();
++#endif
+ 
+   // compare colors of each pixel
+   for (Standard_Size aRow = 0; aRow < myImageRef->SizeY(); ++aRow)
+@@ -405,7 +415,11 @@ Standard_Integer Image_Diff::ignoreBorde
+     return 0;
+   }
+ 
++#ifdef __hpux
++  const Image_PixMapData<Image_ColorRGB>& aDataRef = *(Image_PixMapData<Image_ColorRGB>* )myImageRef->Data();
++#else
+   const Image_PixMapData<Image_ColorRGB>& aDataRef = myImageRef->ReadData<Image_ColorRGB>();
++#endif
+ 
+   // allocate groups of different pixels
+   releaseGroupsOfDiffPixels();
+Index: oce/src/Interface/Interface_BitMap.cxx
+===================================================================
+--- oce.orig/src/Interface/Interface_BitMap.cxx
++++ oce/src/Interface/Interface_BitMap.cxx
+@@ -268,4 +268,4 @@ void Interface_BitMap::Clear()
+ {
+   theflags.Nullify();
+   Initialize(0);
+-}
+\ No newline at end of file
++}
+Index: oce/src/Interface/Interface_FileReaderTool.cxx
+===================================================================
+--- oce.orig/src/Interface/Interface_FileReaderTool.cxx
++++ oce/src/Interface/Interface_FileReaderTool.cxx
+@@ -573,4 +573,4 @@ void Interface_FileReaderTool::Clear()
+   thereader.Nullify();
+   themodel.Nullify();
+   thereports.Nullify();
+-}
+\ No newline at end of file
++}
+Index: oce/src/MeshVS/MeshVS_NodalColorPrsBuilder.cxx
+===================================================================
+--- oce.orig/src/MeshVS/MeshVS_NodalColorPrsBuilder.cxx
++++ oce/src/MeshVS/MeshVS_NodalColorPrsBuilder.cxx
+@@ -723,7 +723,11 @@ Handle(Graphic3d_Texture2D) MeshVS_Nodal
+   }
+ 
+   anImage->SetTopDown (false);
++#ifdef __hpux
++  Image_PixMapData<Image_ColorRGBA>& aData = *(Image_PixMapData<Image_ColorRGBA>* )anImage->Data();
++#else
+   Image_PixMapData<Image_ColorRGBA>& aData = anImage->EditData<Image_ColorRGBA>();
++#endif
+   for (Standard_Size aCol = 0; aCol < Standard_Size(aColorsNb); ++aCol)
+   {
+     const Quantity_Color& aSrcColor = myTextureColorMap.Value (Standard_Integer(aCol) + 1);
+Index: oce/src/NCollection/NCollection_Array1.hxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_Array1.hxx
++++ oce/src/NCollection/NCollection_Array1.hxx
+@@ -80,7 +80,11 @@ template <class TheItemType> class NColl
+     void Init (const NCollection_Array1& theArray)
+     { 
+       myCurrent = theArray.Lower();
++#ifdef __hpux
++      myArray   = (NCollection_Array1<TheItemType> *) &theArray;
++#else
+       myArray   = (NCollection_Array1 *) &theArray; 
++#endif
+     }
+     //! Check end
+     virtual Standard_Boolean More (void) const
+Index: oce/src/NCollection/NCollection_DefaultHasher.hxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_DefaultHasher.hxx
++++ oce/src/NCollection/NCollection_DefaultHasher.hxx
+@@ -58,12 +58,20 @@ public:
+   //
+   static Standard_Integer HashCode(const TheKeyType& theKey, 
+                                    const Standard_Integer Upper) {
++#ifdef __hpux
++    return HashCode_Proxy<TheKeyType>(theKey, Upper);
++#else
+     return HashCode_Proxy(theKey, Upper);
++#endif
+   }
+   //
+   static Standard_Boolean IsEqual(const TheKeyType& theKey1, 
+                                   const TheKeyType& theKey2) {
++#ifdef __hpux
++    return IsEqual_Proxy<TheKeyType>(theKey1, theKey2);
++#else
+     return IsEqual_Proxy(theKey1, theKey2);
++#endif
+   }
+ };
+ 
+Index: oce/src/NCollection/NCollection_IndexedDataMap.hxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_IndexedDataMap.hxx
++++ oce/src/NCollection/NCollection_IndexedDataMap.hxx
+@@ -110,7 +110,7 @@ template < class TheKeyType,
+       myIndex(0) {}
+     //! Constructor
+     Iterator (const NCollection_IndexedDataMap& theMap) :
+-#ifdef __BORLANDC__
++#if defined(__BORLANDC__) || defined(__hpux)
+       myMap((NCollection_IndexedDataMap <TheKeyType, TheItemType, Hasher> *) &theMap),
+ #else
+       myMap((NCollection_IndexedDataMap *) &theMap),
+Index: oce/src/NCollection/NCollection_IndexedMap.hxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_IndexedMap.hxx
++++ oce/src/NCollection/NCollection_IndexedMap.hxx
+@@ -100,7 +100,7 @@ template < class TheKeyType,
+       myIndex(0) {}
+     //! Constructor
+     Iterator (const NCollection_IndexedMap& theMap) :
+-#ifdef __BORLANDC__
++#if defined(__BORLANDC__) || defined(__hpux)
+       myMap((NCollection_IndexedMap <TheKeyType, Hasher> *) &theMap),
+ #else
+       myMap((NCollection_IndexedMap *) &theMap),
+Index: oce/src/OSD/OSD_Chronometer.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_Chronometer.cxx
++++ oce/src/OSD/OSD_Chronometer.cxx
+@@ -118,7 +118,11 @@ void OSD_Chronometer::GetThreadCPU (Stan
+ #elif defined(_POSIX_TIMERS) && defined(_POSIX_THREAD_CPUTIME)
+   // on Linux, only user times are available for threads via clock_gettime()
+   struct timespec t;
++#if defined(__hpux) && !defined(CLOCK_THREAD_CPUTIME_ID)
++  if (!clock_gettime (CLOCK_VIRTUAL, &t))
++#else
+   if (!clock_gettime (CLOCK_THREAD_CPUTIME_ID, &t))
++#endif
+   {
+     theUserSeconds = t.tv_sec + 0.000000001 * t.tv_nsec;
+   }
+Index: oce/src/OSD/OSD_MAllocHook.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_MAllocHook.cxx
++++ oce/src/OSD/OSD_MAllocHook.cxx
+@@ -24,8 +24,12 @@
+ #if !defined __STDC_LIMIT_MACROS
+ #define __STDC_LIMIT_MACROS
+ #endif
++#if defined(__hpux) && !defined(__GNUC__)
++#include <inttypes.h>
++#else
+ #include <stdint.h>
+ #endif
++#endif
+ 
+ #include <set>
+ #include <map>
+Index: oce/src/OSD/OSD_signal.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_signal.cxx
++++ oce/src/OSD/OSD_signal.cxx
+@@ -646,41 +646,6 @@ void OSD::SegvHandler(const OSD_Signals,
+     cout << "Wrong undefined address." << endl ;
+   exit(SIGSEGV);
+ }
+-
+-#if defined (_hpux) || defined(HPUX)
+-//============================================================================
+-//==== SegvHandler 
+-//============================================================================
+-
+-// Not ACTIVE ? SA_SIGINFO is defined on SUN, OSF, SGI and HP (and Linux) !
+-// pour version 09.07
+-void OSD::SegvHandler(const OSD_Signals aSig, const Standard_Address code,
+-                      const Standard_Address scp)
+-//void OSD::SegvHandler(const OSD_Signals aSig, int code, const Standard_Address scp)
+-{
+-  unsigned long Space  ;
+-  unsigned long Offset ;
+-  char Msg[100] ;
+-
+-  if ( scp != NULL ) {
+-    Space = ((struct sigcontext *)scp)->sc_sl.sl_ss.ss_cr20 ;
+-    Offset = ((struct sigcontext *)scp)->sc_sl.sl_ss.ss_cr21 ;
+-//    cout << "Wrong address = " << hex(Offset) << endl ;
+-    if ((Offset & ~0xffff) == (long)UndefinedHandleAddress)
+-	Standard_NullObject::Jump("Attempt to access to null object") ;
+-    else {
+-       sprintf(Msg,"SIGSEGV 'segmentation violation' detected. Address %lx",Offset) ;
+-       OSD_SIGSEGV::Jump(Msg);
+-//    scp->sc_pcoq_head = scp->sc_pcoq_tail ;       Permettrait de continuer a
+-//    scp->sc_pcoq_tail = scp->sc_pcoq_tail + 0x4 ; l'intruction suivant le segv.
+-    }
+-  }
+-  else
+-    cout << "Wrong undefined address." << endl ;
+-  exit(SIGSEGV);
+-} 
+-
+-#endif
+ #else
+ // Must be there for compatibility with Windows NT system ---------------
+ 
+Index: oce/src/OpenGl/OpenGl_AspectFace.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_AspectFace.cxx
++++ oce/src/OpenGl/OpenGl_AspectFace.cxx
+@@ -231,7 +231,11 @@ void OpenGl_AspectFace::Init (const Hand
+ 
+     if (!aNewTexture.IsNull())
+     {
++#ifdef __hpux
++      if (aNewKey.IsEmpty() || !theContext->GetResource(aNewKey, TextureRes))
++#else
+       if (aNewKey.IsEmpty() || !theContext->GetResource<Handle(OpenGl_Texture)> (aNewKey, TextureRes))
++#endif
+       {
+         TextureRes = new OpenGl_Texture (TextureParams);
+         Handle(Image_PixMap) anImage = aNewTexture->GetImage();
+Index: oce/src/Plugin/Plugin.cxx
+===================================================================
+--- oce.orig/src/Plugin/Plugin.cxx
++++ oce/src/Plugin/Plugin.cxx
+@@ -74,7 +74,7 @@ Handle(Standard_Transient) Plugin::Load(
+ #endif /* OCE_DEBUG_POSTFIX */
+ #elif defined(__APPLE__)
+     thePluginLibrary += ".dylib";
+-#elif defined (HPUX) || defined(_hpux)
++#elif defined (HPUX) || defined(__hpux)
+     thePluginLibrary += ".sl";
+ #else
+     thePluginLibrary += ".so";
+Index: oce/src/Standard/Standard_Atomic.hxx
+===================================================================
+--- oce.orig/src/Standard/Standard_Atomic.hxx
++++ oce/src/Standard/Standard_Atomic.hxx
+@@ -135,7 +135,7 @@ int Standard_Atomic_Decrement (volatile
+ #else
+ 
+ #ifndef IGNORE_NO_ATOMICS
+-  #error "Atomic operation isn't implemented for current platform!"
++  #warning "Atomic operation isn't implemented for current platform!"
+ #endif
+ int Standard_Atomic_Increment (volatile int* theValue)
+ {
+Index: oce/src/Standard/Standard_Integer.hxx
+===================================================================
+--- oce.orig/src/Standard/Standard_Integer.hxx
++++ oce/src/Standard/Standard_Integer.hxx
+@@ -83,7 +83,7 @@ inline Standard_Boolean IsEqual (const S
+   return theOne == theTwo;
+ }
+ 
+-#ifdef OCE_HAVE_DIFFERENT_SIZEOF_INT_SIZE_T
++#ifndef OCE_IS_DUPLICATE_UINT32_T
+ // ------------------------------------------------------------------
+ // Hascode : Computes a hascoding value for a given unsigned integer
+ // ------------------------------------------------------------------
+Index: oce/src/Standard/Standard_TypeDef.hxx
+===================================================================
+--- oce.orig/src/Standard/Standard_TypeDef.hxx
++++ oce/src/Standard/Standard_TypeDef.hxx
+@@ -27,8 +27,12 @@
+   typedef unsigned __int16  uint16_t;
+   typedef unsigned __int32  uint32_t;
+ #else
++#if defined(__hpux) && !defined(__GNUC__)
++  #include <inttypes.h>
++#else
+   #include <stdint.h>
+ #endif
++#endif
+ 
+ #if defined(__BORLANDC__)
+ using std::size_t;
+Index: oce/src/TDF/TDF_LabelMapHasher.lxx
+===================================================================
+--- oce.orig/src/TDF/TDF_LabelMapHasher.lxx
++++ oce/src/TDF/TDF_LabelMapHasher.lxx
+@@ -26,8 +26,12 @@
+ #ifdef _MSC_VER
+ #include <stddef.h>
+ #else
++#if defined(__hpux) && !defined(__GNUC__)
++#include <inttypes.h>
++#else
+ #include <stdint.h>
+ #endif
++#endif
+ 
+ //=======================================================================
+ //function : HashCode
+Index: oce/src/V3d/V3d_Viewer.cxx
+===================================================================
+--- oce.orig/src/V3d/V3d_Viewer.cxx
++++ oce/src/V3d/V3d_Viewer.cxx
+@@ -450,4 +450,4 @@ Standard_ExtString V3d_Viewer::NextName(
+ void V3d_Viewer::IncrCount()
+ {
+   myNextCount++;
+-}
+\ No newline at end of file
++}
+Index: oce/src/BOPCol/BOPCol_Array1.hxx
+===================================================================
+--- oce.orig/src/BOPCol/BOPCol_Array1.hxx
++++ oce/src/BOPCol/BOPCol_Array1.hxx
+@@ -182,7 +182,7 @@ template <class Type> class BOPCol_Array
+       pNext=pBlock->Next();
+       //
+       //pBlock->~BOPCol_MemBlock<Type> ();
+-#if defined(__BORLANDC__)
++#if defined(__BORLANDC__) || defined(__hpux)
+       pBlock->~BOPCol_MemBlock<Type>();
+ #else
+       pBlock->~BOPCol_XMemBlock();
+Index: oce/src/FSD/FSD_FileHeader.hxx
+===================================================================
+--- oce.orig/src/FSD/FSD_FileHeader.hxx
++++ oce/src/FSD/FSD_FileHeader.hxx
+@@ -38,7 +38,7 @@ struct FSD_FileHeader {
+ };
+ 
+ #ifndef DO_INVERSE
+-#if defined ( SOLARIS ) || defined ( IRIX )
++#if defined ( SOLARIS ) || defined ( IRIX ) || defined(__hpux)
+ #define DO_INVERSE 1
+ #else
+ #define DO_INVERSE 0
+Index: oce/src/Standard/Standard_MMgrOpt.cxx
+===================================================================
+--- oce.orig/src/Standard/Standard_MMgrOpt.cxx
++++ oce/src/Standard/Standard_MMgrOpt.cxx
+@@ -166,7 +166,7 @@ extern "C" int getpagesize() ;
+    So, BLOCK_SHIFT is formed as macro for support on other possible platforms.
+ */
+ 
+-#if defined(IRIX) || defined(SOLARIS)
++#if defined(IRIX) || defined(SOLARIS) || defined(__hpux)
+ #define BLOCK_SHIFT 2
+ #else
+ #define BLOCK_SHIFT 1
+@@ -298,7 +298,7 @@ void Standard_MMgrOpt::Initialize()
+       perror("ERR_MEMRY_FAIL");
+ #endif
+     
+-#if defined(IRIX) || defined(__sgi) || defined(SOLARIS) || defined(__sun) || defined(LIN) || defined(linux) || defined(__FreeBSD__)
++#if defined(IRIX) || defined(__sgi) || defined(SOLARIS) || defined(__sun) || defined(LIN) || defined(linux) || defined(__FreeBSD__) || defined(__hpux)
+     if ((myMMap = open ("/dev/zero", O_RDWR)) < 0) {
+       if ((myMMap = open ("/dev/null", O_RDWR)) < 0){
+         myMMap = 0;
+Index: oce/src/NCollection/NCollection_Array2.hxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_Array2.hxx
++++ oce/src/NCollection/NCollection_Array2.hxx
+@@ -65,7 +65,7 @@ template <class TheItemType> class NColl
+     { 
+       myCurrent = 0;
+       mySize    = theArray.Length();
+-      myArray   = (NCollection_Array2 *) &theArray; 
++      myArray   = (NCollection_Array2<TheItemType> *) &theArray; 
+     }
+     //! Check end
+     virtual Standard_Boolean More (void) const
+Index: oce/src/NCollection/NCollection_IncAllocator.hxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_IncAllocator.hxx
++++ oce/src/NCollection/NCollection_IncAllocator.hxx
+@@ -24,6 +24,15 @@
+ 
+ #include <NCollection_BaseAllocator.hxx>
+ 
++#ifdef __hpux
++# ifdef __GNUC__
++#  include <stdint.h>
++# else
++#  include <inttypes.h>
++# endif
++#endif
++
++
+ /**
+  *  Class NCollection_IncAllocator - incremental memory  allocator. This class
+  *  allocates  memory  on  request  returning  the  pointer  to  an  allocated
+@@ -43,8 +52,12 @@ class NCollection_IncAllocator : public
+ {
+  public:
+   // The type defining the alignement of allocated objects
++#if defined(__hpux)
++  typedef uint64_t aligned_t;
++#else
+   typedef void * aligned_t;
+-
++#endif
++  
+   // ---------- PUBLIC METHODS ----------
+ 
+   //! Constructor

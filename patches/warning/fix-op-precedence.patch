@@ -1,0 +1,47 @@
+From 8b8f4fbc871e531fcdaab16b29d2bf6badbe4117 Mon Sep 17 00:00:00 2001
+From: Jacob Abel <thatcadguy@users.noreply.github.com>
+Date: Thu, 3 Oct 2013 08:42:22 -0700
+Subject: [PATCH] [mingw-warning-fix][op-precedence]
+
+Fixes -Wparentheses warning.
+
+(nbSel1 == nbSel2 == 1) is evaluated as ((nbSel1 == nbSel2) == 1), so I'm not sure why that 1 is there in the first place.
+---
+ src/StepToGeom/StepToGeom_MakeTrimmedCurve2d.cxx | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: oce/src/StepToGeom/StepToGeom_MakeTrimmedCurve2d.cxx
+===================================================================
+--- oce.orig/src/StepToGeom/StepToGeom_MakeTrimmedCurve2d.cxx
++++ oce/src/StepToGeom/StepToGeom_MakeTrimmedCurve2d.cxx
+@@ -65,7 +65,7 @@ Standard_Boolean StepToGeom_MakeTrimmedC
+   const Handle(StepGeom_HArray1OfTrimmingSelect)& theTrimSel2 = SC->Trim2();
+   const Standard_Integer nbSel1 = SC->NbTrim1();
+   const Standard_Integer nbSel2 = SC->NbTrim2();
+-  if ((nbSel1 == nbSel2 == 1) &&
++  if ((nbSel1 == nbSel2) &&
+       (theTrimSel1->Value(1).CaseMember() > 0) &&
+       (theTrimSel2->Value(1).CaseMember() > 0))
+   {
+Index: oce/src/TDataStd/TDataStd_NamedData.cxx
+===================================================================
+--- oce.orig/src/TDataStd/TDataStd_NamedData.cxx
++++ oce/src/TDataStd/TDataStd_NamedData.cxx
+@@ -793,11 +793,11 @@ void TDataStd_NamedData::Paste (const Ha
+ Standard_OStream& TDataStd_NamedData::Dump (Standard_OStream& anOS) const
+ {  
+   anOS << "NamedData: ";
+-  anOS << "\tIntegers = " << HasIntegers() ? myIntegers->Map().Extent() : 0;
+-  anOS << "\tReals = " << HasReals() ? myReals->Map().Extent() : 0;
+-  anOS << "\tStrings = " << HasStrings() ? myStrings->Map().Extent() : 0;
+-  anOS << "\tBytes = " << HasBytes() ? myBytes->Map().Extent() : 0;
+-  anOS << "\tArraysOfIntegers = " << HasArraysOfIntegers() ? myArraysOfIntegers->Map().Extent() : 0;
+-  anOS << "\tArraysOfReals = " << HasArraysOfReals() ? myArraysOfReals->Map().Extent() : 0;
++  anOS << "\tIntegers = " << (HasIntegers() ? myIntegers->Map().Extent() : 0);
++  anOS << "\tReals = " << (HasReals() ? myReals->Map().Extent() : 0);
++  anOS << "\tStrings = " << (HasStrings() ? myStrings->Map().Extent() : 0);
++  anOS << "\tBytes = " << (HasBytes() ? myBytes->Map().Extent() : 0);
++  anOS << "\tArraysOfIntegers = " << (HasArraysOfIntegers() ? myArraysOfIntegers->Map().Extent() : 0);
++  anOS << "\tArraysOfReals = " << (HasArraysOfReals() ? myArraysOfReals->Map().Extent() : 0);
+   return anOS;
+ }

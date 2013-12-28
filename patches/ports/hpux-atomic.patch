@@ -1,0 +1,40 @@
+From 9958719c0bbe79ee83399d4bd3203e481cd36c7d Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Tue, 15 Oct 2013 09:45:16 +0300
+Subject: [PATCH] Implement HPUX platform specific atomic API
+
+---
+ src/Standard/Standard_Atomic.hxx | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
+
+Index: oce/src/Standard/Standard_Atomic.hxx
+===================================================================
+--- oce.orig/src/Standard/Standard_Atomic.hxx
++++ oce/src/Standard/Standard_Atomic.hxx
+@@ -132,10 +132,25 @@ int Standard_Atomic_Decrement (volatile
+   return Standard_Atomic_Add (theValue, -1);
+ }
+ 
++#elif defined(__hpux) && defined(HAVE_ATOMIC_H)
++//on hpux please install 'HP-UX Atomic APIs' bundle
++
++#include <atomic.h>
++
++int Standard_Atomic_Increment (volatile int* theValue)
++{
++  return atomic_inc_32(theValue);
++}
++
++int Standard_Atomic_Decrement (volatile int* theValue)
++{
++  return atomic_dec_32 (theValue);
++}
++
+ #else
+ 
+ #ifndef IGNORE_NO_ATOMICS
+-  #warning "Atomic operation isn't implemented for current platform!"
++  #error "Atomic operation isn't implemented for current platform!"
+ #endif
+ int Standard_Atomic_Increment (volatile int* theValue)
+ {

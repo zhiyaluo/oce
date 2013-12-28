@@ -1218,3 +1218,25 @@ Index: oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
      }
      aMesh->SetHiddenNodes( aHiddenNodes );
      aMesh->SetHiddenElems( aHiddenElements );
+Index: oce/src/OSD/OSD_Disk.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_Disk.cxx
++++ oce/src/OSD/OSD_Disk.cxx
+@@ -414,7 +414,7 @@ static void __fastcall _osd_wnt_set_disk
+      
+     }  /* end if */
+ 
+-    if ( k == 0 )
++    if ( k == 0 ) {
+ 
+      if (  path.Name ().UsefullLength () == 0 && path.Extension ().UsefullLength () == 0  )
+      
+@@ -428,6 +428,8 @@ static void __fastcall _osd_wnt_set_disk
+       
+      }  // end else    
+ 
++    }
++
+     if (   dir.Value (  dir.UsefullLength ()  ) != TEXT( '\\' )   ) dir += TEXT( "\\" );
+ 
+     result = dir;

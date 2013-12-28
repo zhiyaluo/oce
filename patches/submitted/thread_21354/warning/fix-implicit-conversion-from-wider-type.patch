@@ -154,19 +154,6 @@ Changed some of the interface types (inc files) to correct some implicit casts.
  src/PlotMgt/PlotMgt_TextManager.cxx   |   20 ++++++++++----------
  5 files changed, 18 insertions(+), 20 deletions(-)
 
-Index: oce/src/LDOM/LDOM_OSStream.hxx
-===================================================================
---- oce.orig/src/LDOM/LDOM_OSStream.hxx
-+++ oce/src/LDOM/LDOM_OSStream.hxx
-@@ -67,7 +67,7 @@ class LDOM_SBuffer : public streambuf
- 
-     // Methods of streambuf
- 
--    Standard_EXPORT virtual int overflow(int c = EOF);
-+    Standard_EXPORT virtual int overflow(signed char c = EOF);
-     Standard_EXPORT virtual int underflow();
-     //virtual int uflow();
- 
 Index: oce/src/AlienImage/AlienImage_BMPAlienData.cxx
 ===================================================================
 --- oce.orig/src/AlienImage/AlienImage_BMPAlienData.cxx
@@ -378,13 +365,11 @@ Index: oce/src/DDataStd/DDataStd_BasicCommands.cxx
 ===================================================================
 --- oce.orig/src/DDataStd/DDataStd_BasicCommands.cxx
 +++ oce/src/DDataStd/DDataStd_BasicCommands.cxx
-@@ -1122,12 +1122,12 @@ static Standard_Integer DDataStd_GetUTFt
-       cout << "Error: problem with the file stream, rdstate = " <<anOS.rdstate() <<endl;
+@@ -1123,11 +1123,11 @@ static Standard_Integer DDataStd_GetUTFt
  #endif
      }
--    unsigned char prefix[4] = {0xEF,0xBB,0xBF, 0x00};
+     unsigned char prefix[4] = {0xEF,0xBB,0xBF, 0x00};
 -    anOS.write( (char*)&prefix[0], 3); 
-+    unsigned char prefix[4] = {0xEF,0xBB,0xBF, 0x00};
 +    anOS.write( reinterpret_cast<const char*>(&prefix[0]), 3); 
      Standard_Integer  n = aES.LengthOfCString();
      Standard_PCharacter aCstr = (Standard_PCharacter) Standard::Allocate(ROUNDMEM(n+1));
@@ -512,7 +497,7 @@ Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx
 +++ oce/src/Draw/Draw_Window.cxx
-@@ -1344,9 +1344,9 @@ LONG APIENTRY DrawWindow::DrawProc(HWND
+@@ -1371,9 +1371,9 @@ LONG APIENTRY DrawWindow::DrawProc(HWND
    if (!localObjet)
      {
        if (Draw_IsConsoleSubsystem)
@@ -524,7 +509,7 @@ Index: oce/src/Draw/Draw_Window.cxx
      }
  
    PAINTSTRUCT ps;
-@@ -1374,9 +1374,9 @@ LONG APIENTRY DrawWindow::DrawProc(HWND
+@@ -1401,9 +1401,9 @@ LONG APIENTRY DrawWindow::DrawProc(HWND
  
    default:
      if (Draw_IsConsoleSubsystem)
@@ -553,7 +538,7 @@ Index: oce/src/Graphic3d/Graphic3d_Group_8.cxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_Group_8.cxx
 +++ oce/src/Graphic3d/Graphic3d_Group_8.cxx
-@@ -281,8 +281,8 @@ void Graphic3d_Group::SetGroupPrimitives
+@@ -273,8 +273,8 @@ void Graphic3d_Group::SetGroupPrimitives
    Standard_ShortReal    aPolyFactor, aPolyUnits;
    CTX->PolygonOffsets(aPolyMode, aPolyFactor, aPolyUnits);
    MyCGroup.ContextFillArea.PolygonOffsetMode   = aPolyMode;
@@ -568,7 +553,7 @@ Index: oce/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
 +++ oce/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
-@@ -3165,7 +3165,7 @@ void IntPatch_PrmPrmIntersection::PointD
+@@ -2919,7 +2919,7 @@ void IntPatch_PrmPrmIntersection::PointD
      for(j=0;j<SV1;j++) { 
        aIPD.xIP1(i, j)=-1;
        const gp_Pnt& P=aIPD.xP1(i, j);
@@ -577,7 +562,7 @@ Index: oce/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
        int ix = (int)((P.X()-x0  + dx2 )/dx);
        if(DansGrille(ix)) { 
  	int iy = (int)((P.Y()-y0 + dy2)/dy);
-@@ -3183,7 +3183,7 @@ void IntPatch_PrmPrmIntersection::PointD
+@@ -2937,7 +2937,7 @@ void IntPatch_PrmPrmIntersection::PointD
      for(j=0;j<SV2;j++) { 
        aIPD.xIP2(i, j)=-1;
        const gp_Pnt& P=aIPD.xP2(i, j);
@@ -603,12 +588,9 @@ Index: oce/src/LDOM/LDOM_OSStream.cxx
 ===================================================================
 --- oce.orig/src/LDOM/LDOM_OSStream.cxx
 +++ oce/src/LDOM/LDOM_OSStream.cxx
-@@ -102,9 +102,9 @@ Standard_CString LDOM_SBuffer::str () co
- //function : overflow()
- //purpose  : redefined virtual
+@@ -104,7 +104,7 @@ Standard_CString LDOM_SBuffer::str () co
  //=======================================================================
--int LDOM_SBuffer::overflow(int c)
-+int LDOM_SBuffer::overflow(signed char c)
+ int LDOM_SBuffer::overflow(int c)
  {
 -  char cc = c;
 +  char cc = (char)c;
@@ -705,7 +687,7 @@ Index: oce/src/TCollection/TCollection_AsciiString.cxx
      for (int i=0; i < mylength; i++)
        if (toupper(mystring[i]) == anUpperChar) mystring[i] = NewChar;
    }
-@@ -1142,7 +1142,7 @@ Standard_Integer TCollection_AsciiString
+@@ -1138,7 +1138,7 @@ Standard_Integer TCollection_AsciiString
  void TCollection_AsciiString::LowerCase()
  {
    for (int i=0; i < mylength; i++)
@@ -714,7 +696,7 @@ Index: oce/src/TCollection/TCollection_AsciiString.cxx
  }
  
  //------------------------------------------------------------------------
-@@ -1244,7 +1244,7 @@ void TCollection_AsciiString::RemoveAll(
+@@ -1240,7 +1240,7 @@ void TCollection_AsciiString::RemoveAll(
        if (mystring[i] != what) mystring[c++] = mystring[i];
    }
    else {
@@ -723,7 +705,7 @@ Index: oce/src/TCollection/TCollection_AsciiString.cxx
      for (int i=0; i < mylength; i++) { 
        if (toupper(mystring[i]) != upperwhat) mystring[c++] = mystring[i];
      }
-@@ -1837,7 +1837,7 @@ void TCollection_AsciiString::Trunc(cons
+@@ -1831,7 +1831,7 @@ void TCollection_AsciiString::Trunc(cons
  void TCollection_AsciiString::UpperCase()
  {
    for (int i=0; i < mylength; i++)
@@ -736,7 +718,7 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-@@ -1981,7 +1981,7 @@ static int VColorScale (Draw_Interpretor
+@@ -2148,7 +2148,7 @@ static int VColorScale (Draw_Interpretor
    {
      aCS->SetPosition( X , Y );
      aCS->SetHeight( 0.95) ;

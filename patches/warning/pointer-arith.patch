@@ -1,0 +1,26 @@
+Index: oce/src/FWOSDriver/FWOSDriver_Driver.cxx
+===================================================================
+--- oce.orig/src/FWOSDriver/FWOSDriver_Driver.cxx
++++ oce/src/FWOSDriver/FWOSDriver_Driver.cxx
+@@ -172,7 +172,7 @@ TCollection_ExtendedString FWOSDriver_Dr
+     
+ #ifdef WNT
+     TCollection_ExtendedString hd=UTL::xgetenv("HOMEDRIVE");
+-    if(hd.Length() != NULL) {
++    if(hd.Length() != 0) {
+       theDefaultFolder=hd;
+       theDefaultFolder+=UTL::xgetenv("HOMEPATH");
+     }
+Index: oce/src/OSD/OSD_Process.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_Process.cxx
++++ oce/src/OSD/OSD_Process.cxx
+@@ -396,7 +396,7 @@ OSD_Path OSD_Process :: CurrentDirectory
+  dwSize = GetCurrentDirectory ( dwSize, pBuff );
+  pBuff  = new Standard_Character[ dwSize ];
+ 
+- if (   (  dwSize = GetCurrentDirectory ( dwSize, pBuff )  ) == NULL   )
++ if (   (  dwSize = GetCurrentDirectory ( dwSize, pBuff )  ) == 0   )
+ 
+   _osd_wnt_set_error ( myError, OSD_WProcess );
+ 

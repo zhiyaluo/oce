@@ -1,0 +1,31 @@
+From bd2ca2bc46f8af24e2fea117ac1550dc889e631a Mon Sep 17 00:00:00 2001
+From: Jacob Abel <thatcadguy@users.noreply.github.com>
+Date: Thu, 24 Oct 2013 17:13:30 -0700
+Subject: [PATCH] [intel-warning-fix][format-specifier-mismatch]
+
+---
+ src/OSD/OSD_MAllocHook.cxx | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+Index: oce/src/OSD/OSD_MAllocHook.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_MAllocHook.cxx
++++ oce/src/OSD/OSD_MAllocHook.cxx
+@@ -400,7 +400,7 @@ void OSD_MAllocHook::LogFileHandler::All
+   if (myLogFile != NULL)
+   {
+     myMutex.Lock();
+-    fprintf(myLogFile, "alloc %10lu %10"FMT_SZ_Q"u\n", theRequestNum, theSize);
++    fprintf(myLogFile, "alloc %10ld %10" FMT_SZ_Q "u\n", theRequestNum, theSize);
+     myMutex.Unlock();
+ #ifdef DEBUG
+     if (myBreakSize == theSize)
+@@ -424,7 +424,7 @@ void OSD_MAllocHook::LogFileHandler::Fre
+   if (myLogFile != NULL)
+   {
+     myMutex.Lock();
+-    fprintf(myLogFile, "free  %10lu %10"FMT_SZ_Q"u\n", theRequestNum, theSize);
++    fprintf(myLogFile, "free  %10ld %10" FMT_SZ_Q "u\n", theRequestNum, theSize);
+     myMutex.Unlock();
+   }
+ }

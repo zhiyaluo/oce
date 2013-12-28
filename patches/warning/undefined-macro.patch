@@ -1,0 +1,22 @@
+From e3a8e35eb9b2994ae2a0e565de915eb21d14cb7e Mon Sep 17 00:00:00 2001
+From: Jacob Abel <thatcadguy@users.noreply.github.com>
+Date: Tue, 1 Oct 2013 06:33:16 -0700
+Subject: [PATCH] [clang-warning-fix][undefined-macro]
+
+---
+ src/Standard/Standard_Macro.hxx | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Index: oce/src/Standard/Standard_Macro.hxx
+===================================================================
+--- oce.orig/src/Standard/Standard_Macro.hxx
++++ oce/src/Standard/Standard_Macro.hxx
+@@ -121,7 +121,7 @@
+ // /usr/include/memory.h file from being #included
+ // with an incompatible extern "C" definition of memchr
+ // October 18, 2000  <rboehne@ricardo-us.com>
+-#if __SUNPRO_CC_COMPAT == 5
++#if defined(__SUNPRO_CC_COMPAT) && (__SUNPRO_CC_COMPAT == 5)
+ #define	_MEMORY_H
+ #endif
+ 

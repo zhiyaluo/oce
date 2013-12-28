@@ -1,0 +1,32 @@
+From d064a171615dae3a679ad23adbf0be35adff2d64 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Wed, 28 Aug 2013 23:23:36 +0200
+Subject: [PATCH] In Standard_MMgrFactory class, make myFMMgr private, it does
+ not have to be public
+
+Fixes issue #62.
+---
+ src/Standard/Standard.cxx | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+Index: oce/src/Standard/Standard.cxx
+===================================================================
+--- oce.orig/src/Standard/Standard.cxx
++++ oce/src/Standard/Standard.cxx
+@@ -70,12 +70,15 @@ static Standard_Boolean Standard_IsReent
+ //           to environment settings, and to ensure destruction upon exit
+ //=======================================================================
+ 
++static Standard_MMgrRoot* GetMMgr();
++
+ class Standard_MMgrFactory {
+  public:
+   Standard_MMgrFactory();
+   ~Standard_MMgrFactory();
+- public:
++ private:
+   Standard_MMgrRoot* myFMMgr;
++  friend Standard_MMgrRoot* GetMMgr();
+ };
+ 
+ //=======================================================================

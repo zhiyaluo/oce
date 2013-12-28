@@ -1,0 +1,25 @@
+From 8f54bbbea4bf7654723e61a8d830967f726b8b66 Mon Sep 17 00:00:00 2001
+From: Jacob Abel <thatcadguy@users.noreply.github.com>
+Date: Thu, 3 Oct 2013 17:12:35 -0700
+Subject: [PATCH] [mingw-warning-fix][unknown-format-specifier]
+
+MinGW links against the old MSVCRT.dll which doesn't support C99, in this case the %z format specifier. As far as I can tell there isn't a format specifier macro for size_t in inttypes.h so this is the best I could come up with. Without this fix, all those fprintf calls will simply print z's. I also tried enabling the MinGW stdio implementation through compiler defines (_GNU_SOURCE, __USE_MINGW_ANSI_STDIO, etc.) but these don't seem to work as is the general consensus from searching as well.
+---
+ src/OSD/OSD_MAllocHook.cxx | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+Index: oce/src/OSD/OSD_MAllocHook.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_MAllocHook.cxx
++++ oce/src/OSD/OSD_MAllocHook.cxx
+@@ -47,6 +47,10 @@
+ # define FMT_SZ_Q ""
+ #endif
+ 
++#ifdef __MINGW32__
++# define fprintf __mingw_fprintf
++#endif
++
+ static OSD_MAllocHook::Callback* MypCurrentCallback = NULL;
+ 
+ //=======================================================================

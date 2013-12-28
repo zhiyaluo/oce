@@ -1,0 +1,70 @@
+From 29bd96245d31ca16f9a3d54bc60808ad9ef5998d Mon Sep 17 00:00:00 2001
+From: Jacob Abel <thatcadguy@users.noreply.github.com>
+Date: Fri, 27 Sep 2013 21:04:43 -0700
+Subject: [PATCH] [intel-warning-fix][invalid-narrowing-conversion]
+
+Fixes icpc warning about invalid narrowing in initializer lists (struct members are supposed to be Standard_Bytes, i.e. unsigned chars)
+---
+ src/MeshVS/MeshVS_NodalColorPrsBuilder.cxx | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
+
+Index: oce/src/MeshVS/MeshVS_NodalColorPrsBuilder.cxx
+===================================================================
+--- oce.orig/src/MeshVS/MeshVS_NodalColorPrsBuilder.cxx
++++ oce/src/MeshVS/MeshVS_NodalColorPrsBuilder.cxx
+@@ -728,9 +728,9 @@ Handle(Graphic3d_Texture2D) MeshVS_Nodal
+   {
+     const Quantity_Color& aSrcColor = myTextureColorMap.Value (Standard_Integer(aCol) + 1);
+     Image_ColorRGBA& aColor = aData.ChangeValue (0, aCol);
+-    aColor.r() = int(255.0 * aSrcColor.Red());
+-    aColor.g() = int(255.0 * aSrcColor.Green());
+-    aColor.b() = int(255.0 * aSrcColor.Blue());
++    aColor.r() = Standard_Byte(255.0 * aSrcColor.Red());
++    aColor.g() = Standard_Byte(255.0 * aSrcColor.Green());
++    aColor.b() = Standard_Byte(255.0 * aSrcColor.Blue());
+     aColor.a() = 0xFF;
+   }
+ 
+@@ -738,9 +738,9 @@ Handle(Graphic3d_Texture2D) MeshVS_Nodal
+   const Quantity_Color& aLastColorSrc = myTextureColorMap.Last();
+   const Image_ColorRGBA aLastColor =
+   {{
+-    int(255.0 * aLastColorSrc.Red()),
+-    int(255.0 * aLastColorSrc.Green()),
+-    int(255.0 * aLastColorSrc.Blue()),
++    Standard_Byte(255.0 * aLastColorSrc.Red()),
++    Standard_Byte(255.0 * aLastColorSrc.Green()),
++    Standard_Byte(255.0 * aLastColorSrc.Blue()),
+     0xFF
+   }};
+ 
+@@ -752,9 +752,9 @@ Handle(Graphic3d_Texture2D) MeshVS_Nodal
+ 
+   const Image_ColorRGBA anInvalidColor =
+   {{
+-    int(255.0 * myInvalidColor.Red()),
+-    int(255.0 * myInvalidColor.Green()),
+-    int(255.0 * myInvalidColor.Blue()),
++    Standard_Byte(255.0 * myInvalidColor.Red()),
++    Standard_Byte(255.0 * myInvalidColor.Green()),
++    Standard_Byte(255.0 * myInvalidColor.Blue()),
+     0xFF
+   }};
+   for (Standard_Size aCol = 0; aCol < anImage->SizeX(); ++aCol)
+Index: oce/src/Standard/Standard_CString.cxx
+===================================================================
+--- oce.orig/src/Standard/Standard_CString.cxx
++++ oce/src/Standard/Standard_CString.cxx
+@@ -166,10 +166,10 @@ Standard_Integer HashCodes (const Standa
+ 
+ # if defined(WORDS_BIGENDIAN)
+  static Standard_Integer Standard_Mask_Upper_Lower[5] =
+-                 { 0 , 0xdf000000 , 0xdfdf0000 , 0xdfdfdf00 , 0xdfdfdfdf } ;
++                 { 0 , (Standard_Integer) 0xdf000000 , (Standard_Integer) 0xdfdf0000 , (Standard_Integer) 0xdfdfdf00 , (Standard_Integer) 0xdfdfdfdf } ;
+ #else
+  static Standard_Integer Standard_Mask_Upper_Lower[5] =
+-                 { 0 , 0xdf , 0xdfdf , 0xdfdfdf , 0xdfdfdfdf } ;
++                 { 0 , (Standard_Integer) 0x000000df , (Standard_Integer) 0x0000dfdf , (Standard_Integer) 0x00dfdfdf , (Standard_Integer) 0xdfdfdfdf } ;
+ #endif
+ 
+ //============================================================================

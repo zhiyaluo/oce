@@ -69,7 +69,7 @@ Index: oce/src/StepFile/recfile.pc
  /*   ENREGISTRER UN RECORD (deja pret)    */
 -void static rec_new(newrec)
 -struct rec* newrec ;    /*  nouveau record a enregistrer  */
-+void static rec_new(struct rec* newrec )
++static void rec_new(struct rec* newrec )
 +/* newrec : nouveau record a enregistrer  */
  {
   nbrec ++ ;
@@ -156,3 +156,75 @@ Index: oce/src/StepFile/recfile.pc
  {
    struct rec* lerec ; struct unarg* larg ; int nr,na ;
    lerec = firstrec ;
+Index: oce/src/AlienImage/AlienImage_BMPAlienData.cxx
+===================================================================
+--- oce.orig/src/AlienImage/AlienImage_BMPAlienData.cxx
++++ oce/src/AlienImage/AlienImage_BMPAlienData.cxx
+@@ -37,13 +37,13 @@
+ 
+ static unsigned long __swaptest = 1;
+ 
+-WORD static _TestSwapWORD (WORD __w)
++static WORD _TestSwapWORD (WORD __w)
+ {
+   return LOW_VAL_AT_LOW_ADDR ? __w:
+   ((__w&0xFF) << 8) | ((__w&0xFF00) >> 8);
+ }
+ 
+-DWORD static _TestSwapDWORD (DWORD __dw)
++static DWORD _TestSwapDWORD (DWORD __dw)
+ {
+   return LOW_VAL_AT_LOW_ADDR ? __dw:
+   ((__dw&0x000000FF) << 24) | ((__dw&0x0000FF00) << 8)
+Index: oce/src/OSD/OSD_FileNode.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_FileNode.cxx
++++ oce/src/OSD/OSD_FileNode.cxx
+@@ -200,7 +200,7 @@ TCollection_AsciiString thisPath;
+ 
+ #ifndef WNT
+ 
+-int static copy_file( const char* src, const char* trg )
++static int copy_file( const char* src, const char* trg )
+ {
+   int err=0;
+   errno=0;
+Index: oce/src/TNaming/TNaming.cxx
+===================================================================
+--- oce.orig/src/TNaming/TNaming.cxx
++++ oce/src/TNaming/TNaming.cxx
+@@ -144,7 +144,7 @@ static void MapShapes(const TDF_Label& L
+ //purpose  : TNaming
+ //=======================================================================
+ 
+-void static SubstituteShape(const TopoDS_Shape& oldShape,
++static void SubstituteShape(const TopoDS_Shape& oldShape,
+ 			    const TopoDS_Shape& newShape,
+ 			    TNaming_DataMapOfShapePtrRefShape& amap) 
+ {
+Index: oce/src/TopLoc/TopLoc_Location.cxx
+===================================================================
+--- oce.orig/src/TopLoc/TopLoc_Location.cxx
++++ oce/src/TopLoc/TopLoc_Location.cxx
+@@ -29,7 +29,7 @@
+ #include <gp_Trsf.hxx>
+ #include <TopLoc_TrsfPtr.hxx>
+ 
+-const static gp_Trsf TheIdentity;
++static const gp_Trsf TheIdentity;
+ 
+ 
+ static Standard_Boolean IsInternalIdentity(const TopLoc_Location& loc)
+Index: oce/src/CDF/CDF.cxx
+===================================================================
+--- oce.orig/src/CDF/CDF.cxx
++++ oce/src/CDF/CDF.cxx
+@@ -45,7 +45,7 @@ static void CDF_CheckStatus(int LicenseS
+   }
+ }
+ #endif
+-void static CDF_InitApplication () {
++static void CDF_InitApplication () {
+ 
+   static Standard_Boolean FirstApplication = Standard_True;
+ 

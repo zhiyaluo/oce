@@ -1,0 +1,470 @@
+From 49c2c0acdd181c853f2d4c5f58b24083b0fac413 Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Fri, 6 Sep 2013 13:52:26 +0300
+Subject: [PATCH] Disambiguations needed for RAD Studio xe4.
+
+These fixes are needed in order to succesfully compile oce under
+bcc32 compiler version 6.6 which comes bundled with RAD studio
+xe4.
+---
+ src/BRepFill/BRepFill.cxx                      |  8 +++---
+ src/BRepLib/BRepLib_FindSurface.cxx            |  2 +-
+ src/BRepOffsetAPI/BRepOffsetAPI_MiddlePath.cxx |  8 +++---
+ src/QABugs/QABugs_10.cxx                       | 34 +++++++++++++-------------
+ src/QABugs/QABugs_11.cxx                       |  4 +--
+ src/QABugs/QABugs_13.cxx                       | 28 ++++++++++-----------
+ src/QABugs/QABugs_14.cxx                       |  4 +--
+ src/QABugs/QABugs_16.cxx                       |  6 ++---
+ src/QABugs/QABugs_17.cxx                       | 30 +++++++++++------------
+ src/QABugs/QABugs_3.cxx                        |  4 +--
+ src/QABugs/QABugs_5.cxx                        |  4 +--
+ src/ShapeFix/ShapeFix_Face.cxx                 |  4 +--
+ 12 files changed, 68 insertions(+), 68 deletions(-)
+
+Index: oce/src/BRepFill/BRepFill.cxx
+===================================================================
+--- oce.orig/src/BRepFill/BRepFill.cxx
++++ oce/src/BRepFill/BRepFill.cxx
+@@ -175,14 +175,14 @@ static void TrimEdge (const TopoDS_Edge&
+     for (j=1; j<=ndec; j++) {
+       // piece of edge  
+       m1 = (CutValues.Value(j)-t0)*(last-first)/(t1-t0)+first;
+-      TopoDS_Edge CutE = BRepLib_MakeEdge(C,V0,Vbid,m0,m1);
++      TopoDS_Edge CutE = (TopoDS_Edge) BRepLib_MakeEdge(C,V0,Vbid,m0,m1);
+       CutE.Orientation(CurrentOrient);
+       S.Append(CutE);
+       m0 = m1;
+       V0 = TopExp::LastVertex(CutE);
+       if (j==ndec) {
+ 	// last piece
+-	TopoDS_Edge LastE = BRepLib_MakeEdge(C,V0,Vl,m0,last);
++	TopoDS_Edge LastE = (TopoDS_Edge) BRepLib_MakeEdge(C,V0,Vl,m0,last);
+ 	LastE.Orientation(CurrentOrient);
+ 	S.Append(LastE);
+       }
+@@ -195,14 +195,14 @@ static void TrimEdge (const TopoDS_Edge&
+     for (j=ndec; j>=1; j--) {
+       // piece of edge  
+       m0 = (CutValues.Value(j)-t0)*(last-first)/(t1-t0)+first;
+-      TopoDS_Edge CutE = BRepLib_MakeEdge(C,Vbid,V1,m0,m1);
++      TopoDS_Edge CutE = (TopoDS_Edge) BRepLib_MakeEdge(C,Vbid,V1,m0,m1);
+       CutE.Orientation(CurrentOrient);
+       S.Append(CutE);
+       m1 = m0;
+       V1 = TopExp::FirstVertex(CutE);
+       if (j==1) {
+ 	// last piece
+-	TopoDS_Edge LastE = BRepLib_MakeEdge(C,Vf,V1,first,m1);
++	TopoDS_Edge LastE = (TopoDS_Edge) BRepLib_MakeEdge(C,Vf,V1,first,m1);
+ 	LastE.Orientation(CurrentOrient);
+ 	S.Append(LastE);
+       }
+Index: oce/src/BRepLib/BRepLib_FindSurface.cxx
+===================================================================
+--- oce.orig/src/BRepLib/BRepLib_FindSurface.cxx
++++ oce/src/BRepLib/BRepLib_FindSurface.cxx
+@@ -127,7 +127,7 @@ static Standard_Boolean Is2DClosed(const
+     }
+     TopoDS_Wire aWire = TopoDS::Wire( aWireExp.Current() );
+     // a tmp face
+-    TopoDS_Face aTmpFace = BRepLib_MakeFace( theSurface, Precision::PConfusion() );
++    TopoDS_Face aTmpFace = (TopoDS_Face) BRepLib_MakeFace( theSurface, Precision::PConfusion() );
+ 
+     // check topological closeness using wire explorer, if the wire is not closed
+     // the 1st and the last vertices of wire are different
+Index: oce/src/BRepOffsetAPI/BRepOffsetAPI_MiddlePath.cxx
+===================================================================
+--- oce.orig/src/BRepOffsetAPI/BRepOffsetAPI_MiddlePath.cxx
++++ oce/src/BRepOffsetAPI/BRepOffsetAPI_MiddlePath.cxx
+@@ -617,7 +617,7 @@ void BRepOffsetAPI_MiddlePath::Build()
+           Handle(Geom_Surface) theSurf = BRep_Tool::Surface(theFace);
+           Handle(Geom2d_Line) theLine = GCE2d_MakeLine(FirstPnt2d, LastPnt2d);
+           Standard_Real len_ne = FirstPnt2d.Distance(LastPnt2d);
+-          TopoDS_Edge NewEdge = BRepLib_MakeEdge(theLine, theSurf,
++          TopoDS_Edge NewEdge = (TopoDS_Edge) BRepLib_MakeEdge(theLine, theSurf,
+                                                  PrevVertex, CurVertex,
+                                                  0., len_ne);
+           BRepLib::BuildCurve3d(NewEdge);
+@@ -644,7 +644,7 @@ void BRepOffsetAPI_MiddlePath::Build()
+           Handle(Geom_Surface) theSurf = BRep_Tool::Surface(theFace);
+           Handle(Geom2d_Line) theLine = GCE2d_MakeLine(FirstPnt2d, LastPnt2d);
+           Standard_Real len_ne = FirstPnt2d.Distance(LastPnt2d);
+-          TopoDS_Edge NewEdge = BRepLib_MakeEdge(theLine, theSurf,
++          TopoDS_Edge NewEdge = (TopoDS_Edge) BRepLib_MakeEdge(theLine, theSurf,
+                                                  PrevVertex, CurVertex,
+                                                  0., len_ne);
+           BRepLib::BuildCurve3d(NewEdge);
+@@ -653,12 +653,12 @@ void BRepOffsetAPI_MiddlePath::Build()
+           Handle(Geom2d_Line) Line1 = GCE2d_MakeLine(PrevFirstPnt2d, LastPnt2d);
+           Handle(Geom2d_Line) Line2 = GCE2d_MakeLine(FirstPnt2d, PrevLastPnt2d);
+           Standard_Real len_ne1 = PrevFirstPnt2d.Distance(LastPnt2d);
+-          TopoDS_Edge NewEdge1 = BRepLib_MakeEdge(Line1, theSurf,
++          TopoDS_Edge NewEdge1 = (TopoDS_Edge) BRepLib_MakeEdge(Line1, theSurf,
+                                                   PrevPrevVer, CurVertex,
+                                                   0., len_ne1);
+           BRepLib::BuildCurve3d(NewEdge1);
+           Standard_Real len_ne2 = FirstPnt2d.Distance(PrevLastPnt2d);
+-          TopoDS_Edge NewEdge2 = BRepLib_MakeEdge(Line2, theSurf,
++          TopoDS_Edge NewEdge2 = (TopoDS_Edge) BRepLib_MakeEdge(Line2, theSurf,
+                                                   PrevVertex, PrevCurVer,
+                                                   0., len_ne2);
+           BRepLib::BuildCurve3d(NewEdge2);
+Index: oce/src/QABugs/QABugs_10.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_10.cxx
++++ oce/src/QABugs/QABugs_10.cxx
+@@ -77,7 +77,7 @@ static Standard_Integer OCC426 (Draw_Int
+   W1.Add(gp_Pnt(10, 0, 0));
+ 
+   Standard_Boolean OnlyPlane1 = Standard_False;
+-  TopoDS_Face F1 = BRepBuilderAPI_MakeFace(W1.Wire(), OnlyPlane1);
++  TopoDS_Face F1 = (TopoDS_Face) BRepBuilderAPI_MakeFace(W1.Wire(), OnlyPlane1);
+ 
+   gp_Pnt P1(0, 0, 0);
+   gp_Dir D1(0, 0, 30);
+@@ -95,7 +95,7 @@ static Standard_Integer OCC426 (Draw_Int
+   W2.Add(gp_Pnt(f1, f1, 10));
+ 
+   Standard_Boolean OnlyPlane2 = Standard_False;
+-  TopoDS_Face F2 = BRepBuilderAPI_MakeFace(W2.Wire(), OnlyPlane2);
++  TopoDS_Face F2 = (TopoDS_Face) BRepBuilderAPI_MakeFace(W2.Wire(), OnlyPlane2);
+ 
+   gp_Pnt P2(0, 0, 0);
+   gp_Dir D2(0, 0, 30);
+@@ -111,7 +111,7 @@ static Standard_Integer OCC426 (Draw_Int
+   W3.Add(gp_Pnt(10, 0, 20));
+ 
+   Standard_Boolean OnlyPlane3 = Standard_False;
+-  TopoDS_Face F3 = BRepBuilderAPI_MakeFace(W3.Wire(), OnlyPlane3);
++  TopoDS_Face F3 = (TopoDS_Face) BRepBuilderAPI_MakeFace(W3.Wire(), OnlyPlane3);
+ 
+   gp_Pnt P3(0, 0, 0);
+   gp_Dir D3(0, 0, 30);
+@@ -325,10 +325,10 @@ static Standard_Integer OCC712 (Draw_Int
+   GC_MakeArcOfCircle arc3(p5, p6, p7);
+   GC_MakeArcOfCircle arc4(p7, p8, p1);
+ 
+-  TopoDS_Edge e1 = BRepBuilderAPI_MakeEdge(arc1.Value());
+-  TopoDS_Edge e2 = BRepBuilderAPI_MakeEdge(arc2.Value());
+-  TopoDS_Edge e3 = BRepBuilderAPI_MakeEdge(arc3.Value());
+-  TopoDS_Edge e4 = BRepBuilderAPI_MakeEdge(arc4.Value());
++  TopoDS_Edge e1 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(arc1.Value());
++  TopoDS_Edge e2 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(arc2.Value());
++  TopoDS_Edge e3 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(arc3.Value());
++  TopoDS_Edge e4 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(arc4.Value());
+ 
+   BRepBuilderAPI_MakeWire MW;
+   MW.Add(e1);
+@@ -343,7 +343,7 @@ static Standard_Integer OCC712 (Draw_Int
+     }
+   TopoDS_Wire W = MW.Wire();
+ 
+-  TopoDS_Face F = BRepBuilderAPI_MakeFace(W);
++  TopoDS_Face F = (TopoDS_Face) BRepBuilderAPI_MakeFace(W);
+   if ( F.IsNull())
+     {
+       di << " Error in Face creation " << "\n";
+@@ -889,7 +889,7 @@ static Standard_Integer OCC826 (Draw_Int
+   W1.Add(gp_Pnt(x1, y1, 0));
+ 
+   Standard_Boolean myFalse = Standard_False;
+-  TopoDS_Face F1 = BRepBuilderAPI_MakeFace(W1.Wire(), myFalse);
++  TopoDS_Face F1 = (TopoDS_Face) BRepBuilderAPI_MakeFace(W1.Wire(), myFalse);
+ 
+   gp_Pnt P1(0, 0, 0);
+   gp_Dir D1(0, 30, 0);
+@@ -963,7 +963,7 @@ static Standard_Integer OCC827 (Draw_Int
+   W1.Add(gp_Pnt(10, 0, 0));
+ 
+   Standard_Boolean myFalse = Standard_False;
+-  TopoDS_Face F1 = BRepBuilderAPI_MakeFace(W1.Wire(), myFalse);
++  TopoDS_Face F1 = (TopoDS_Face) BRepBuilderAPI_MakeFace(W1.Wire(), myFalse);
+ 
+   gp_Pnt P1(0, 0, 0);
+   gp_Dir D1(0, 0, 30);
+@@ -1105,13 +1105,13 @@ static Standard_Integer OCC828 (Draw_Int
+   GC_MakeSegment ln2(p23, p31);
+   GC_MakeSegment ln3(p33, p11);
+ 
+-  TopoDS_Edge e1 = BRepBuilderAPI_MakeEdge(arc1.Value());
+-  TopoDS_Edge e2 = BRepBuilderAPI_MakeEdge(arc2.Value());
+-  TopoDS_Edge e3 = BRepBuilderAPI_MakeEdge(arc3.Value());
+-
+-  TopoDS_Edge e4 = BRepBuilderAPI_MakeEdge(ln1.Value());
+-  TopoDS_Edge e5 = BRepBuilderAPI_MakeEdge(ln2.Value());
+-  TopoDS_Edge e6 = BRepBuilderAPI_MakeEdge(ln3.Value());
++  TopoDS_Edge e1 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(arc1.Value());
++  TopoDS_Edge e2 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(arc2.Value());
++  TopoDS_Edge e3 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(arc3.Value());
++
++  TopoDS_Edge e4 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(ln1.Value());
++  TopoDS_Edge e5 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(ln2.Value());
++  TopoDS_Edge e6 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(ln3.Value());
+ 
+   BRepBuilderAPI_MakeWire MW;
+   MW.Add(e1);
+@@ -1128,7 +1128,7 @@ static Standard_Integer OCC828 (Draw_Int
+     }
+ 
+   TopoDS_Wire W = MW.Wire();
+-  TopoDS_Face F = BRepBuilderAPI_MakeFace(W);
++  TopoDS_Face F = (TopoDS_Face) BRepBuilderAPI_MakeFace(W);
+   if ( F.IsNull())
+     {
+       di << " Error in Face creation " << "\n";
+Index: oce/src/QABugs/QABugs_11.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_11.cxx
++++ oce/src/QABugs/QABugs_11.cxx
+@@ -203,7 +203,7 @@ static Standard_Integer OCC136 (Draw_Int
+   Standard_Real Size=100;
+   gp_Pnt P0(0,0,0), P1(Size,Size,Size);
+   //box
+-  TopoDS_Solid aBox = BRepPrimAPI_MakeBox(P0,P1);
++  TopoDS_Solid aBox = (TopoDS_Solid) BRepPrimAPI_MakeBox(P0,P1);
+   //sphere
+   TopoDS_Solid aSphere = BRepPrimAPI_MakeSphere (Size*0.5);
+   //cone
+@@ -3146,7 +3146,7 @@ static Standard_Integer OCC8797 (Draw_In
+   cout<<"Length Spline(abcissa_Pnt): "<<l_abcissa<<endl;
+ 
+   //length!! 2.
+-  TopoDS_Edge edge = BRepBuilderAPI_MakeEdge (spline);
++  TopoDS_Edge edge = (TopoDS_Edge) BRepBuilderAPI_MakeEdge (spline);
+   GProp_GProps prop;
+   BRepGProp::LinearProperties(edge,prop);
+   l_gprop=prop.Mass();
+Index: oce/src/QABugs/QABugs_13.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_13.cxx
++++ oce/src/QABugs/QABugs_13.cxx
+@@ -140,11 +140,11 @@ static Standard_Integer OCC332bug (Draw_
+   //gp_Circ faceCircle2(circ2axis,radius_r);
+   //gp_Circ outFaceCircle2(circ2axis,radius_r+wall_thickness);
+ 
+-  TopoDS_Edge E1 = BRepBuilderAPI_MakeEdge(faceCircle);
++  TopoDS_Edge E1 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(faceCircle);
+   TopoDS_Wire Wire1_ = BRepBuilderAPI_MakeWire(E1).Wire();
+   
+   // Create the face at the near end for the wall solid, an annular ring.
+-  TopoDS_Edge Eout1 = BRepBuilderAPI_MakeEdge(outFaceCircle);
++  TopoDS_Edge Eout1 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(outFaceCircle);
+   TopoDS_Wire outerWire1_ = BRepBuilderAPI_MakeWire(Eout1).Wire();
+ 
+   // SUPPORT:
+@@ -487,23 +487,23 @@ static Standard_Integer OCC544 (Draw_Int
+   gp_Circ faceCircle2(circ2axis,radius_r);
+   gp_Circ outFaceCircle2(circ2axis,radius_r+wall_thickness);
+ 
+-  TopoDS_Edge E1_1 = BRepBuilderAPI_MakeEdge(faceCircle, 0, M_PI);
+-  TopoDS_Edge E1_2 = BRepBuilderAPI_MakeEdge(faceCircle, M_PI, 2.*M_PI);
+-  TopoDS_Wire Wire1_ = BRepBuilderAPI_MakeWire(E1_1, E1_2);
++  TopoDS_Edge E1_1 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(faceCircle, 0, M_PI);
++  TopoDS_Edge E1_2 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(faceCircle, M_PI, 2.*M_PI);
++  TopoDS_Wire Wire1_ = (TopoDS_Wire) BRepBuilderAPI_MakeWire(E1_1, E1_2);
+   
+   // Create the face at the near end for the wall solid, an annular ring.
+-  TopoDS_Edge Eout1_1 = BRepBuilderAPI_MakeEdge(outFaceCircle, 0, M_PI);
+-  TopoDS_Edge Eout1_2 = BRepBuilderAPI_MakeEdge(outFaceCircle, M_PI, 2.*M_PI);
+-  TopoDS_Wire outerWire1_ = BRepBuilderAPI_MakeWire(Eout1_1, Eout1_2);
++  TopoDS_Edge Eout1_1 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(outFaceCircle, 0, M_PI);
++  TopoDS_Edge Eout1_2 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(outFaceCircle, M_PI, 2.*M_PI);
++  TopoDS_Wire outerWire1_ = (TopoDS_Wire) BRepBuilderAPI_MakeWire(Eout1_1, Eout1_2);
+  
+-  TopoDS_Edge E2_1 = BRepBuilderAPI_MakeEdge(faceCircle2, 0, M_PI);
+-  TopoDS_Edge E2_2 = BRepBuilderAPI_MakeEdge(faceCircle2, M_PI, 2.*M_PI);
+-  TopoDS_Wire Wire2_ = BRepBuilderAPI_MakeWire(E2_1, E2_2);
++  TopoDS_Edge E2_1 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(faceCircle2, 0, M_PI);
++  TopoDS_Edge E2_2 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(faceCircle2, M_PI, 2.*M_PI);
++  TopoDS_Wire Wire2_ = (TopoDS_Wire) BRepBuilderAPI_MakeWire(E2_1, E2_2);
+   
+   // Create the face at the far end for the wall solid, an annular ring.
+-  TopoDS_Edge Eout2_1 = BRepBuilderAPI_MakeEdge(outFaceCircle2, 0, M_PI);
+-  TopoDS_Edge Eout2_2 = BRepBuilderAPI_MakeEdge(outFaceCircle2, M_PI, 2.*M_PI);
+-  TopoDS_Wire outerWire2_ = BRepBuilderAPI_MakeWire(Eout2_1, Eout2_2);
++  TopoDS_Edge Eout2_1 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(outFaceCircle2, 0, M_PI);
++  TopoDS_Edge Eout2_2 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(outFaceCircle2, M_PI, 2.*M_PI);
++  TopoDS_Wire outerWire2_ = (TopoDS_Wire) BRepBuilderAPI_MakeWire(Eout2_1, Eout2_2);
+ 
+   BRepBuilderAPI_MakeFace mkFace;
+ 
+Index: oce/src/QABugs/QABugs_14.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_14.cxx
++++ oce/src/QABugs/QABugs_14.cxx
+@@ -291,7 +291,7 @@ static Standard_Integer BUC60870 (Draw_I
+       P1 = (dst.PointOnShape1(i1));
+       P2 = (dst.PointOnShape2(i1));
+       if (dst.Value()<=1.e-9) {
+-	TopoDS_Vertex V =BRepLib_MakeVertex(P1);
++	TopoDS_Vertex V = (TopoDS_Vertex) BRepLib_MakeVertex(P1);
+ 	char namev[100];
+ 	if (i1==1) {
+ 	  Sprintf(namev, "%s" ,ns0);
+@@ -303,7 +303,7 @@ static Standard_Integer BUC60870 (Draw_I
+ 	di << namev << " ";
+       } else {
+ 	char name[100];
+-	TopoDS_Edge E = BRepLib_MakeEdge (P1, P2);
++	TopoDS_Edge E = (TopoDS_Edge) BRepLib_MakeEdge (P1, P2);
+ 	if (i1==1) {
+ 	  Sprintf(name,"%s",ns0);
+ 	} else {
+Index: oce/src/QABugs/QABugs_16.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_16.cxx
++++ oce/src/QABugs/QABugs_16.cxx
+@@ -116,7 +116,7 @@ static Standard_Integer BUC60848 (Draw_I
+ 
+ static Standard_Integer BUC60828 (Draw_Interpretor& di, Standard_Integer /*argc*/, const char ** /*argv*/)
+ {
+-  TopoDS_Edge anEdge = BRepBuilderAPI_MakeEdge(gp_Pnt(0.,0.,0.), gp_Pnt(0.,0.,1.)); 
++  TopoDS_Edge anEdge = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(gp_Pnt(0.,0.,0.), gp_Pnt(0.,0.,1.)); 
+   Standard_Boolean aValue; 
+   aValue=anEdge.Infinite(); 
+   di << "Initial flag : " << (Standard_Integer) aValue << "\n";
+@@ -697,8 +697,8 @@ static Standard_Integer OCC301 (Draw_Int
+   gp_Pnt p2 = gp_Pnt(50.,10.,0.);
+   gp_Pnt p3 = gp_Pnt(50.,50.,0.);
+ 
+-  TopoDS_Edge E1 = BRepBuilderAPI_MakeEdge(p1, p2);
+-  TopoDS_Edge E2 = BRepBuilderAPI_MakeEdge(p2, p3);
++  TopoDS_Edge E1 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(p1, p2);
++  TopoDS_Edge E2 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(p2, p3);
+ 
+   context->Display(new AIS_Shape(E1)); 
+   context->Display(new AIS_Shape(E2)); 
+Index: oce/src/QABugs/QABugs_17.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_17.cxx
++++ oce/src/QABugs/QABugs_17.cxx
+@@ -314,14 +314,14 @@ static Standard_Integer BUC60915_1(Draw_
+   gp_Pnt p6 = gp_Pnt(502.51,80.,0.);
+   gp_Pnt p7 = gp_Pnt(102.51,80.,0.);
+   gp_Pnt p8 = gp_Pnt(102.51,50.,0.);
+-  TopoDS_Vertex V1 = BRepBuilderAPI_MakeVertex(p1);
+-  TopoDS_Vertex V2 = BRepBuilderAPI_MakeVertex(p2);
+-  TopoDS_Vertex V3 = BRepBuilderAPI_MakeVertex(p3);
+-  TopoDS_Vertex V4 = BRepBuilderAPI_MakeVertex(p4);
+-  TopoDS_Vertex V5 = BRepBuilderAPI_MakeVertex(p5);
+-  TopoDS_Vertex V6 = BRepBuilderAPI_MakeVertex(p6);
+-  TopoDS_Vertex V7 = BRepBuilderAPI_MakeVertex(p7);
+-  TopoDS_Vertex V8 = BRepBuilderAPI_MakeVertex(p8);
++  TopoDS_Vertex V1 = (TopoDS_Vertex) BRepBuilderAPI_MakeVertex(p1);
++  TopoDS_Vertex V2 = (TopoDS_Vertex) BRepBuilderAPI_MakeVertex(p2);
++  TopoDS_Vertex V3 = (TopoDS_Vertex) BRepBuilderAPI_MakeVertex(p3);
++  TopoDS_Vertex V4 = (TopoDS_Vertex) BRepBuilderAPI_MakeVertex(p4);
++  TopoDS_Vertex V5 = (TopoDS_Vertex) BRepBuilderAPI_MakeVertex(p5);
++  TopoDS_Vertex V6 = (TopoDS_Vertex) BRepBuilderAPI_MakeVertex(p6);
++  TopoDS_Vertex V7 = (TopoDS_Vertex) BRepBuilderAPI_MakeVertex(p7);
++  TopoDS_Vertex V8 = (TopoDS_Vertex) BRepBuilderAPI_MakeVertex(p8);
+   gp_Pnt plnpt(0, 0, 0);
+   gp_Dir plndir(0, 0, 1);
+   Handle(Geom_Plane) pln = new Geom_Plane(plnpt,plndir);
+@@ -354,7 +354,7 @@ static Standard_Integer BUC60915_1(Draw_
+   //dimension "R 88.58"
+   /***************************************/
+   gp_Circ cir = gp_Circ(gp_Ax2(gp_Pnt(191.09, -88.58, 0), gp_Dir(0, 0, 1)), 88.58);
+-  TopoDS_Edge E1 = BRepBuilderAPI_MakeEdge(cir,gp_Pnt(191.09,0,0.),gp_Pnt(191.09,-177.16,0.) );
++  TopoDS_Edge E1 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(cir,gp_Pnt(191.09,0,0.),gp_Pnt(191.09,-177.16,0.) );
+   Handle(AIS_RadiusDimension) dim1 = new AIS_RadiusDimension(E1,88.58, "R 88.58",gp_Pnt(-30.0, -80.0, 0.0),DsgPrs_AS_BOTHAR,
+     100.0 );
+   context->Display(dim1);
+@@ -362,14 +362,14 @@ static Standard_Integer BUC60915_1(Draw_
+   //dimension "R 43.80"
+   /***************************************/
+   gp_Circ cir1 = gp_Circ(gp_Ax2(gp_Pnt(191.09, -88.58, 0), gp_Dir(0, 0, 1)), 43.80);
+-  TopoDS_Edge E_cir1 = BRepBuilderAPI_MakeEdge(cir1);
++  TopoDS_Edge E_cir1 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(cir1);
+   dim1 = new AIS_RadiusDimension(E_cir1,43.80, "R 43.80",gp_Pnt(0.0, -50.0, 0.0),DsgPrs_AS_LASTAR, 60.0 );
+   context->Display(dim1);
+   /***************************************/
+   //dimension "R 17.86"
+   /***************************************/
+   gp_Circ cir2 = gp_Circ(gp_Ax2(gp_Pnt(566.11, -88.58, 0), gp_Dir(0, 0, -1)), 17.86);
+-  TopoDS_Edge E_cir2 = BRepBuilderAPI_MakeEdge(cir2);
++  TopoDS_Edge E_cir2 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(cir2);
+   dim1 = new AIS_RadiusDimension(E_cir2,17.86, "R 17.86",gp_Pnt(600.0, -50.0, 0.0),DsgPrs_AS_LASTAR, 40.0 );
+   context->Display(dim1);
+ 
+@@ -1172,7 +1172,7 @@ static Standard_Integer OCC884 (Draw_Int
+   builder.Add(wire, TopoDS::Edge(exp.Current()));
+ 
+   // HelpDesk: Create planar face if possible
+-  TopoDS_Face face = BRepBuilderAPI_MakeFace(wire,Standard_True);
++  TopoDS_Face face = (TopoDS_Face) BRepBuilderAPI_MakeFace(wire,Standard_True);
+ 
+   Handle(ShapeAnalysis_Wire) advWA = new ShapeAnalysis_Wire;
+   advWA->Load(wire);
+@@ -1605,8 +1605,8 @@ static Standard_Integer OCC1642 (Draw_In
+ 
+   DBRep::Set(argv[3],wire);
+ 
+-  TopoDS_Face face =
+-    BRepBuilderAPI_MakeFace(TopoDS::Wire(wire),Standard_True);
++  TopoDS_Face face = 
++    (TopoDS_Face) BRepBuilderAPI_MakeFace(TopoDS::Wire(wire),Standard_True);
+ 
+   DBRep::Set(argv[4],face);
+ 
+@@ -1732,7 +1732,7 @@ static Standard_Integer OCC1642 (Draw_In
+   advWA->Load(TopoDS::Wire(finalwire));
+ 
+   TopoDS_Face fface =
+-    BRepBuilderAPI_MakeFace(TopoDS::Wire(finalwire),Standard_True);
++    (TopoDS_Face) BRepBuilderAPI_MakeFace(TopoDS::Wire(finalwire),Standard_True);
+ 
+   DBRep::Set(argv[2],fface);
+ 
+Index: oce/src/QABugs/QABugs_3.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_3.cxx
++++ oce/src/QABugs/QABugs_3.cxx
+@@ -572,8 +572,8 @@ static Standard_Integer BUC60632(Draw_In
+   }
+   myAIScontext->EraseAll();
+   
+-  TopoDS_Vertex V1 = BRepBuilderAPI_MakeVertex(gp_Pnt(0,0,0)); 
+-  TopoDS_Vertex V2 = BRepBuilderAPI_MakeVertex(gp_Pnt(10,10,0)); 
++  TopoDS_Vertex V1 = (TopoDS_Vertex) BRepBuilderAPI_MakeVertex(gp_Pnt(0,0,0)); 
++  TopoDS_Vertex V2 = (TopoDS_Vertex) BRepBuilderAPI_MakeVertex(gp_Pnt(10,10,0)); 
+   
+   Handle(AIS_Shape) Ve1 = new AIS_Shape(V1);
+   Handle(AIS_Shape) Ve2 = new AIS_Shape(V2);
+Index: oce/src/QABugs/QABugs_5.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_5.cxx
++++ oce/src/QABugs/QABugs_5.cxx
+@@ -98,8 +98,8 @@ static Standard_Integer OCC5696 (Draw_In
+     di << "Usage : " << argv[0] << "\n";
+     return 1;
+   }
+-  TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(gp_Pnt(0,0,0),gp_Pnt(2,0,0));
+-  TopoDS_Wire wire = BRepBuilderAPI_MakeWire(edge);
++  TopoDS_Edge edge = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(gp_Pnt(0,0,0),gp_Pnt(2,0,0));
++  TopoDS_Wire wire = (TopoDS_Wire) BRepBuilderAPI_MakeWire(edge);
+   BRepAdaptor_CompCurve curve(wire);
+   Standard_Real first = curve.FirstParameter();
+   Standard_Real last = curve.LastParameter();
+Index: oce/src/ShapeFix/ShapeFix_Face.cxx
+===================================================================
+--- oce.orig/src/ShapeFix/ShapeFix_Face.cxx
++++ oce/src/ShapeFix/ShapeFix_Face.cxx
+@@ -2409,7 +2409,7 @@ Standard_Boolean ShapeFix_Face::FixPerio
+   Standard_Real anApexV = -aConeBaseH;
+ 
+   // Get apex vertex
+-  TopoDS_Vertex anApex = BRepBuilderAPI_MakeVertex( aConeSurf->Apex() );
++  TopoDS_Vertex anApex = (TopoDS_Vertex) BRepBuilderAPI_MakeVertex( aConeSurf->Apex() );
+ 
+   // ====================================
+   //  Build degenerated edge in the apex
+@@ -2450,7 +2450,7 @@ Standard_Boolean ShapeFix_Face::FixPerio
+   aBuilder.Add( anApexEdge, anApex.Reversed() );
+   aBuilder.Degenerated(anApexEdge, Standard_True);
+   aBuilder.Range( anApexEdge, 0, fabs(aMaxLoopU - aMinLoopU) );
+-  TopoDS_Wire anApexWire = BRepBuilderAPI_MakeWire(anApexEdge);
++  TopoDS_Wire anApexWire = (TopoDS_Wire) BRepBuilderAPI_MakeWire(anApexEdge);
+ 
+   // ===============================================================
+   //  Finalize the fix building new face and setting up the results

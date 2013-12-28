@@ -391,7 +391,7 @@ Index: oce/src/IntTools/IntTools_EdgeFace.cxx
  static
    Standard_Boolean IsCoplanar (const BRepAdaptor_Curve&  ,
  			       const BRepAdaptor_Surface& );
-@@ -1567,7 +1563,3 @@ Standard_Integer AdaptiveDiscret (const
+@@ -1566,7 +1562,3 @@ Standard_Integer AdaptiveDiscret (const
    return iDiscretNew;
  }
  
@@ -433,7 +433,7 @@ Index: oce/src/OSD/OSD_Process.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Process.cxx
 +++ oce/src/OSD/OSD_Process.cxx
-@@ -239,10 +239,6 @@ Standard_Integer OSD_Process::Error()con
+@@ -240,10 +240,6 @@ Standard_Integer OSD_Process::Error()con
  #include <stdint.h>
  #endif
  
@@ -708,3 +708,80 @@ Index: oce/src/XmlXCAFDrivers/XmlXCAFDrivers.cxx
  #endif
  
  static Standard_GUID XSStorageDriver  ("f78ff496-a779-11d5-aab4-0050044b1af1");
+Index: oce/src/BOPDS/BOPDS_PassKey.cxx
+===================================================================
+--- oce.orig/src/BOPDS/BOPDS_PassKey.cxx
++++ oce/src/BOPDS/BOPDS_PassKey.cxx
+@@ -24,7 +24,7 @@
+ 
+ #include <stdio.h>
+ 
+-#ifdef WNT
++#ifdef _MSC_VER
+ #pragma warning( disable : 4101) 
+ #endif
+ 
+Index: oce/src/BOPDS/BOPDS_PaveBlock.cxx
+===================================================================
+--- oce.orig/src/BOPDS/BOPDS_PaveBlock.cxx
++++ oce/src/BOPDS/BOPDS_PaveBlock.cxx
+@@ -23,7 +23,7 @@
+ #include <NCollection_BaseAllocator.hxx>
+ 
+ 
+-#ifdef WNT
++#ifdef _MSC_VER
+ #pragma warning ( disable : 4291 )
+ #endif
+ 
+Index: oce/src/OSD/OSD_File.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_File.cxx
++++ oce/src/OSD/OSD_File.cxx
+@@ -860,8 +860,10 @@ Standard_Boolean OSD_File::IsExecutable(
+ #define _int64 int
+ #endif
+ 
++#ifdef _MSC_VER
+ #pragma comment( lib, "WSOCK32.LIB"  )
+ #pragma comment( lib, "WINSPOOL.LIB" )
++#endif
+ 
+ #define ACE_HEADER_SIZE (  sizeof ( ACCESS_ALLOWED_ACE ) - sizeof ( DWORD )  )
+ 
+Index: oce/src/OSD/OSD_Host.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_Host.cxx
++++ oce/src/OSD/OSD_Host.cxx
+@@ -232,7 +232,9 @@ Standard_Integer OSD_Host::Error()const{
+ 
+ #include <OSD_Host.hxx>
+ 
++#ifdef _MSC_VER
+ #pragma comment( lib, "WSOCK32.LIB" )
++#endif
+ 
+ void _osd_wnt_set_error ( OSD_Error&, OSD_WhoAmI, ... );
+ 
+Index: oce/src/Poly/Poly_CoherentTriPtr.hxx
+===================================================================
+--- oce.orig/src/Poly/Poly_CoherentTriPtr.hxx
++++ oce/src/Poly/Poly_CoherentTriPtr.hxx
+@@ -27,7 +27,7 @@
+ 
+ class Poly_CoherentTriangle;
+ 
+-#ifdef WNT
++#ifdef _MSC_VER
+ #pragma warning (push)
+ #pragma warning(disable:4355) //'this' : used in base member initializer list
+ #endif
+@@ -183,7 +183,7 @@ class Poly_CoherentTriPtr
+   friend class Iterator;
+ };
+ 
+-#ifdef WNT
++#ifdef _MSC_VER
+ #pragma warning (pop)
+ #endif
+ 

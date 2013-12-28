@@ -1,0 +1,27 @@
+From cbb77ced77b32cac58d84226f461cbfa4c985416 Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Wed, 4 Dec 2013 09:19:54 +0100
+Subject: [PATCH] Changed aCode type to fix clang shift sanitizer issue report
+ (see Issue #435)
+
+---
+ src/NCollection/NCollection_CellFilter.hxx | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+Index: oce/src/NCollection/NCollection_CellFilter.hxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_CellFilter.hxx
++++ oce/src/NCollection/NCollection_CellFilter.hxx
+@@ -311,10 +311,10 @@ protected:
+     {
+       // number of bits per each dimension in the hash code
+       const Standard_Size aShiftBits = (BITS(long)-1) / Inspector::Dimension;
+-      long aCode=0;
++      unsigned long aCode=0;
+       for (int i=0; i < Inspector::Dimension; i++)
+         aCode = ( aCode << aShiftBits ) ^ index[i];
+-      return (unsigned)aCode % theUpper;
++      return aCode % theUpper;
+     }
+ 
+   public:

@@ -1,0 +1,251 @@
+diff --git a/BUILD.MINGWw64 b/BUILD.MINGWw64
+new file mode 100644
+index 0000000..51ec3b7
+--- /dev/null
++++ b/BUILD.MINGWw64
+@@ -0,0 +1,57 @@
++This will help you build OCE with MinGW w64/MSYS using the Oce-Win-Bundle sources:
++
++1) MinGW w64
++	Download MinGW w64 from http://mingw-w64.sourceforge.net/
++	Choose Mingw-builds Project, online Installer. (You can try others as well, but this one works...)
++	When Installing use POSIX as Threading Model and SEH as Exception Model (others might work too, but are untested)
++	Add the /bin directory of your MinGW install to your system's PATH-Variable (e.g. C:\mingw-builds\x64-4.8.1-posix-seh-rev5\mingw64\bin)
++	
++2) MSYS
++	Download MSYS from Mingw-builds Sourceforge Repository: 
++	http://sourceforge.net/projects/mingwbuilds/files/external-binary-packages/
++	Does not need installation, just extract into its own directory
++	
++3) CMake
++	Install CMake >2.8
++
++4) Open Cascade Community Edition
++	Obtain a local copy of the current OCE repository 
++		git clone git://github.com/tpaviot/oce.git
++			
++5) Oce-Win-Bundle
++	To obtain the FreeImage, FreeType and gl2ps libraries clone the oce-win-bundle repository into its own directory:
++		git clone https://github.com/QbProg/oce-win-bundle.git
++
++6) Run CMake
++    Point "Where is the source code:" to your local copy of OCE
++    Build the binaries in a new specific build folder within OCE
++    Hit Configure
++    Choose "MSYS Makefiles" (NOT "MinGW Makefiles"!) with default native compilers
++    When required: Point CMAKE_MAKE_PROGRAM to /bin/make.exe in your MSYS directory and configure again.
++    Check OCE_USE_BUNDLE_SOURCE
++    Check OCE_WITH_FREEIMAGE
++    Check OCE_WITH_GL2PS
++    Check OCE_VISUALISATION
++    Use OPENMP as OCE_MULTITHREAD_LIBRARY
++    Select your Installation directory with OCE_INSTALL_PREFIX
++    Configure
++    Select the directory of your oce-win-bundle clone with OCE_BUNDLE_ROOT_PATH
++    Select your required build type (RELEASE,DEBUG..)
++    Configure (and no entries should be red afterwards..)
++    and Generate.
++
++	
++7) Run MSYS and make
++	Start msys.bat in your MSYS-Directory (as an Administrator)
++	cd into your build directory
++	run 'make'
++	
++	Compilation is now running. It can take several hours, depending on your machine.
++	
++8) Install
++	run 'make install'
++	
++If you want to compile as DEBUG, you might have to compile twice, once as RELEASE and once as DEBUG to obtain the required release and debug libraries.
++If you do not need Visualisation, GL2PS etc. just uncheck them.
++
++Check for an updated Version of this File on the OCE Wiki on Github.
+\ No newline at end of file
+diff --git a/src/BRepMesh/BRepMesh_DiscretFactory.cxx b/src/BRepMesh/BRepMesh_DiscretFactory.cxx
+index e5e36cd..ec02c62 100644
+--- a/src/BRepMesh/BRepMesh_DiscretFactory.cxx
++++ b/src/BRepMesh/BRepMesh_DiscretFactory.cxx
+@@ -25,6 +25,10 @@
+ #include <BRepMesh_IncrementalMesh.hxx>
+ #include <BRepMesh_PDiscretRoot.hxx>
+ 
++#ifdef HAVE_OCE_PATHS_H
++# include "oce-paths.h"
++#endif
++
+ namespace
+ {
+   //! Embedded triangulation tool(s)
+@@ -35,20 +39,12 @@ namespace
+   static void MakeLibName (const TCollection_AsciiString& theDefaultName,
+                                  TCollection_AsciiString& theLibName)
+   {
+-    theLibName = "";
+-  #ifndef WNT
+-    theLibName += "lib";
+-  #endif
+-    theLibName += theDefaultName;
+-  #ifdef WNT
+-    theLibName += ".dll";
+-  #elif __APPLE__
+-    theLibName += ".dylib";
+-  #elif defined (HPUX) || defined(__hpux)
+-    theLibName += ".sl";
+-  #else
+-    theLibName += ".so";
+-  #endif
++    // Assemble library name according to the variables defined by CMAKE
++  	theLibName = "";
++  	theLibName += OCE_LIBRARY_PREFIX;
++  	theLibName += theDefaultName;
++  	theLibName += OCE_LIBRARY_DEBUG_POSTFIX;
++  	theLibName += OCE_LIBRARY_EXTENSION;
+   }
+ };
+ 
+diff --git a/src/Draw/Draw.cxx b/src/Draw/Draw.cxx
+index 81d716a..7adeaa8 100644
+--- a/src/Draw/Draw.cxx
++++ b/src/Draw/Draw.cxx
+@@ -518,19 +518,13 @@ void Draw::Load(Draw_Interpretor& theDI, const TCollection_AsciiString& theKey,
+     }
+ 
+     TCollection_AsciiString aPluginLibrary("");
+-#ifndef WNT
+-    aPluginLibrary += "lib";
+-#endif
+-    aPluginLibrary +=  aPluginResource->Value(theKey.ToCString());
+-#ifdef WNT
+-    aPluginLibrary += ".dll";
+-#elif __APPLE__
+-    aPluginLibrary += ".dylib";
+-#elif defined (HPUX) || defined(__hpux)
+-    aPluginLibrary += ".sl";
+-#else
+-    aPluginLibrary += ".so";
+-#endif
++
++    // Assemble library name according to the variables defined by CMAKE
++    aPluginLibrary += OCE_LIBRARY_PREFIX;
++    aPluginLibrary += aPluginResource->Value(theKey.ToCString());
++    aPluginLibrary += OCE_LIBRARY_DEBUG_POSTFIX;
++    aPluginLibrary += OCE_LIBRARY_EXTENSION;
++
+     OSD_SharedLibrary aSharedLibrary(aPluginLibrary.ToCString());
+     if(!aSharedLibrary.DlOpen(OSD_RTLD_LAZY)) {
+       TCollection_AsciiString error(aSharedLibrary.DlError());
+@@ -590,24 +584,13 @@ void Draw::Load(Draw_Interpretor& theDI, const TCollection_AsciiString& theKey,
+       Draw_Failure::Raise(aMsg);
+     }
+ 
++    // Assemble library name according to the variables defined by CMAKE
+     TCollection_AsciiString aPluginLibrary("");
+-#ifndef WNT
+-    aPluginLibrary += "lib";
+-#endif
+-    aPluginLibrary +=  aPluginResource->Value(theKey.ToCString());
+-#ifdef WNT
+-#ifdef OCE_DEBUG_POSTFIX 
+-	aPluginLibrary += OCE_DEBUG_POSTFIX ".dll";
+-#else
+-	aPluginLibrary += ".dll";
+-#endif /* OCE_DEBUG_POSTFIX */
+-#elif __APPLE__
+-    aPluginLibrary += ".dylib";
+-#elif defined (HPUX) || defined(__hpux)
+-    aPluginLibrary += ".sl";
+-#else
+-    aPluginLibrary += ".so";
+-#endif
++    aPluginLibrary += OCE_LIBRARY_PREFIX;
++    aPluginLibrary += aPluginResource->Value(theKey.ToCString());
++    aPluginLibrary += OCE_LIBRARY_DEBUG_POSTFIX;
++    aPluginLibrary += OCE_LIBRARY_EXTENSION;
++
+     OSD_SharedLibrary aSharedLibrary(aPluginLibrary.ToCString());
+     if(!aSharedLibrary.DlOpen(OSD_RTLD_LAZY)) {
+       TCollection_AsciiString error(aSharedLibrary.DlError());
+diff --git a/src/Graphic3d/Graphic3d.cxx b/src/Graphic3d/Graphic3d.cxx
+index 49f1dc1..904403f 100644
+--- a/src/Graphic3d/Graphic3d.cxx
++++ b/src/Graphic3d/Graphic3d.cxx
+@@ -47,16 +47,11 @@ Handle(Graphic3d_GraphicDriver) Graphic3d::InitGraphicDriver (const Handle(Aspec
+ #ifdef OCE_DEFAULT_CSF_GraphicShr
+   aGraphicLibName = OCE_DEFAULT_CSF_GraphicShr;
+ #else
+-  // Setting the library name. Depends on the platform.
+-#if defined(_WIN32) || defined(__WIN32__)
+-  aGraphicLibName = "TKOpenGl.dll";
+-#elif defined(__hpux) || defined(HPUX)
+-  aGraphicLibName = "libTKOpenGl.sl";
+-#elif defined(__APPLE__)
+-  aGraphicLibName = "libTKOpenGl.dylib";
+-#else
+-  aGraphicLibName = "libTKOpenGl.so";
+-#endif
++  // Assemble library name according to the variables defined by CMAKE
++  aGraphicLibName += OCE_LIBRARY_PREFIX;
++  aGraphicLibName += "TKOpenGl";
++  aGraphicLibName += OCE_LIBRARY_DEBUG_POSTFIX;
++  aGraphicLibName += OCE_LIBRARY_EXTENSION;
+ #endif
+   }
+ 
+diff --git a/src/NCollection/NCollection_UtfString.lxx b/src/NCollection/NCollection_UtfString.lxx
+index 8dc250f..138d92c 100644
+--- a/src/NCollection/NCollection_UtfString.lxx
++++ b/src/NCollection/NCollection_UtfString.lxx
+@@ -284,7 +284,7 @@ template<typename Type> inline
+ void NCollection_UtfString<Type>::FromLocale (const char*            theString,
+                                               const Standard_Integer theLength)
+ {
+-#if(defined(_WIN32) || defined(__WIN32__))
++  #ifdef _MSC_VER 
+   // use WinAPI
+   int aWideSize = MultiByteToWideChar (CP_ACP, MB_PRECOMPOSED, theString, -1, NULL, 0);
+   if (aWideSize <= 0)
+@@ -323,7 +323,7 @@ bool NCollection_UtfString<Type>::ToLocale (char*                  theBuffer,
+                                             const Standard_Integer theSizeBytes) const
+ {
+   NCollection_UtfString<wchar_t> aWideCopy (myString, myLength);
+-#if(defined(_WIN32) || defined(__WIN32__))
++#ifdef _MSC_VER 
+   int aMbBytes = WideCharToMultiByte (CP_ACP, 0, aWideCopy.ToCString(), -1, theBuffer, theSizeBytes, NULL, NULL);
+ #else
+   std::size_t aMbBytes = std::wcstombs (theBuffer, aWideCopy.ToCString(), theSizeBytes);
+diff --git a/src/Plugin/Plugin.cxx b/src/Plugin/Plugin.cxx
+index 8baed8b..8ec0973 100644
+--- a/src/Plugin/Plugin.cxx
++++ b/src/Plugin/Plugin.cxx
+@@ -62,23 +62,13 @@ Handle(Standard_Transient) Plugin::Load(const Standard_GUID& aGUID)
+     }
+     
+     TCollection_AsciiString thePluginLibrary("");
+-#ifndef WNT
+-    thePluginLibrary += "lib";
+-#endif
+-    thePluginLibrary +=  PluginResource->Value(theResource.ToCString());
+-#ifdef WNT
+-#ifdef OCE_DEBUG_POSTFIX
+-	thePluginLibrary += OCE_DEBUG_POSTFIX ".dll";
+-#else
+-	thePluginLibrary += ".dll";
+-#endif /* OCE_DEBUG_POSTFIX */
+-#elif defined(__APPLE__)
+-    thePluginLibrary += ".dylib";
+-#elif defined (HPUX) || defined(__hpux)
+-    thePluginLibrary += ".sl";
+-#else
+-    thePluginLibrary += ".so";
+-#endif  
++
++    // Assemble library name according to the variables defined by CMAKE
++    thePluginLibrary += OCE_LIBRARY_PREFIX;
++    thePluginLibrary += PluginResource->Value(theResource.ToCString());
++    thePluginLibrary += OCE_LIBRARY_DEBUG_POSTFIX;
++    thePluginLibrary += OCE_LIBRARY_EXTENSION;
++
+     OSD_SharedLibrary theSharedLibrary(thePluginLibrary.ToCString());
+     if(!theSharedLibrary.DlOpen(OSD_RTLD_LAZY)) {
+       TCollection_AsciiString error(theSharedLibrary.DlError());

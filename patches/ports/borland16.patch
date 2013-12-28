@@ -1,0 +1,331 @@
+Index: oce/src/BOPCol/BOPCol_Array1.hxx
+===================================================================
+--- oce.orig/src/BOPCol/BOPCol_Array1.hxx
++++ oce/src/BOPCol/BOPCol_Array1.hxx
+@@ -182,7 +182,11 @@ template <class Type> class BOPCol_Array
+       pNext=pBlock->Next();
+       //
+       //pBlock->~BOPCol_MemBlock<Type> ();
++#if defined(__BORLANDC__)
++      pBlock->~BOPCol_MemBlock<Type>();
++#else
+       pBlock->~BOPCol_XMemBlock();
++#endif
+       //pBlock->Clear();
+       myAllocator->Free((Standard_Address&)pBlock);
+       //
+Index: oce/src/DsgPrs/DsgPrs_LengthPresentation.cxx
+===================================================================
+--- oce.orig/src/DsgPrs/DsgPrs_LengthPresentation.cxx
++++ oce/src/DsgPrs/DsgPrs_LengthPresentation.cxx
+@@ -59,7 +59,7 @@ void DsgPrs_LengthPresentation::Add (con
+   gp_Lin L2 (AttachmentPoint2,aDirection);
+   gp_Pnt Proj1 = ElCLib::Value(ElCLib::Parameter(L1,OffsetPoint),L1);
+   gp_Pnt Proj2 = ElCLib::Value(ElCLib::Parameter(L2,OffsetPoint),L2);
+-  gp_Lin L3 = Proj1.IsEqual(Proj2,Precision::Confusion())? gp_Lin(Proj1,aDirection) : gce_MakeLin(Proj1,Proj2);
++  gp_Lin L3 = Proj1.IsEqual(Proj2,Precision::Confusion())? gp_Lin(Proj1,aDirection) : (gp_Lin) gce_MakeLin(Proj1,Proj2);
+   Standard_Real parmin,parmax,parcur;
+   parmin = ElCLib::Parameter(L3,Proj1);
+   parmax = parmin;
+@@ -215,7 +215,7 @@ void DsgPrs_LengthPresentation::Add (con
+   gp_Lin L2 (AttachmentPoint2,aDirection);
+   gp_Pnt Proj1 = ElCLib::Value(ElCLib::Parameter(L1,OffsetPoint),L1);
+   gp_Pnt Proj2 = ElCLib::Value(ElCLib::Parameter(L2,OffsetPoint),L2);
+-  gp_Lin L3 = Proj1.IsEqual(Proj2,Precision::Confusion())? gp_Lin(Proj1,aDirection) : gce_MakeLin(Proj1,Proj2);
++  gp_Lin L3 = Proj1.IsEqual(Proj2,Precision::Confusion())? gp_Lin(Proj1,aDirection) : (gp_Lin) gce_MakeLin(Proj1,Proj2);
+   Standard_Real parmin,parmax,parcur;
+   parmin = ElCLib::Parameter(L3,Proj1);
+   parmax = parmin;
+Index: oce/src/Font/FILES
+===================================================================
+--- oce.orig/src/Font/FILES
++++ oce/src/Font/FILES
+@@ -1,4 +1,5 @@
+ EXTERNLIB
++Font_CMPLRS.edl
+ Font_FTFont.hxx
+ Font_FTFont.cxx
+ Font_FTLibrary.hxx
+Index: oce/src/Font/Font_CMPLRS.edl
+===================================================================
+--- /dev/null
++++ oce/src/Font/Font_CMPLRS.edl
+@@ -0,0 +1,28 @@
++-- Created by: Fotios Sioutis
++--
++-- The content of this file is subject to the Open CASCADE Technology Public
++-- License Version 6.5 (the "License"). You may not use the content of this file
++-- except in compliance with the License. Please obtain a copy of the License
++-- at http://www.opencascade.org and read it completely before using this file.
++--
++-- The Initial Developer of the Original Code is Open CASCADE S.A.S., having its
++-- main offices at: 1, place des Freres Montgolfier, 78280 Guyancourt, France.
++--
++-- The Original Code and all software distributed under the License is
++-- distributed on an "AS IS" basis, without warranty of any kind, and the
++-- Initial Developer hereby disclaims all such warranties, including without
++-- limitation, any warranties of merchantability, fitness for a particular
++-- purpose or non-infringement. Please see the License for the specific terms
++-- and conditions governing the rights and limitations under the License.
++
++
++@ifnotdefined ( %Font_CMPLRS_EDL) then
++
++  @set %Font_CMPLRS_EDL = "";
++
++  @uses "CSF.edl";
++
++  @string %CMPLRS_CXX_Options += %CSF_FREETYPE_INCLUDES " ";
++  @string %CMPLRS_C_Options   += %CSF_FREETYPE_INCLUDES " ";
++
++@endif;
+Index: oce/src/Image/Image_Color.hxx
+===================================================================
+--- oce.orig/src/Image/Image_Color.hxx
++++ oce/src/Image/Image_Color.hxx
+@@ -434,9 +434,15 @@ public:
+ template<typename ColorType_t>
+ inline ColorType_t Image_ColorSumm3 (const ColorType_t& theA, const ColorType_t& theB)
+ {
++#ifdef __BORLANDC__
++  ColorType_t aRes = {{ColorType_t::ComponentType_t (theA.v[0] + theB.v[0]),
++                       ColorType_t::ComponentType_t (theA.v[1] + theB.v[1]),
++                       ColorType_t::ComponentType_t (theA.v[2] + theB.v[2])}};
++#else
+   ColorType_t aRes = {{typename ColorType_t::ComponentType_t (theA.v[0] + theB.v[0]),
+                        typename ColorType_t::ComponentType_t (theA.v[1] + theB.v[1]),
+                        typename ColorType_t::ComponentType_t (theA.v[2] + theB.v[2])}};
++#endif
+   return aRes;
+ }
+ 
+@@ -463,10 +469,17 @@ inline Image_ColorBGRF operator+ (const
+ template<typename ColorType_t>
+ inline ColorType_t Image_ColorSumm4 (const ColorType_t& theA, const ColorType_t& theB)
+ {
++#ifdef __BORLANDC__
++  ColorType_t aRes = {{ColorType_t::ComponentType_t (theA.v[0] + theB.v[0]),
++                       ColorType_t::ComponentType_t (theA.v[1] + theB.v[1]),
++                       ColorType_t::ComponentType_t (theA.v[2] + theB.v[2]),
++                       ColorType_t::ComponentType_t (theA.v[3] + theB.v[3])}};
++#else
+   ColorType_t aRes = {{typename ColorType_t::ComponentType_t (theA.v[0] + theB.v[0]),
+                        typename ColorType_t::ComponentType_t (theA.v[1] + theB.v[1]),
+                        typename ColorType_t::ComponentType_t (theA.v[2] + theB.v[2]),
+                        typename ColorType_t::ComponentType_t (theA.v[3] + theB.v[3])}};
++#endif
+   return aRes;
+ }
+ 
+@@ -504,9 +517,15 @@ inline Image_ColorBGRAF operator+ (const
+ template<typename ColorType_t>
+ inline ColorType_t Image_ColorSub3 (const ColorType_t& theA, const ColorType_t& theB)
+ {
++#ifdef __BORLANDC__
++  ColorType_t aRes = {{ColorType_t::ComponentType_t (theA.v[0] - theB.v[0]),
++                       ColorType_t::ComponentType_t (theA.v[1] - theB.v[1]),
++                       ColorType_t::ComponentType_t (theA.v[2] - theB.v[2])}};
++#else
+   ColorType_t aRes = {{typename ColorType_t::ComponentType_t (theA.v[0] - theB.v[0]),
+                        typename ColorType_t::ComponentType_t (theA.v[1] - theB.v[1]),
+                        typename ColorType_t::ComponentType_t (theA.v[2] - theB.v[2])}};
++#endif
+   return aRes;
+ }
+ 
+@@ -533,10 +552,17 @@ inline Image_ColorBGRF operator- (const
+ template<typename ColorType_t>
+ inline ColorType_t Image_ColorSub4 (const ColorType_t& theA, const ColorType_t& theB)
+ {
++#ifdef __BORLANDC__
++  ColorType_t aRes = {{ColorType_t::ComponentType_t (theA.v[0] - theB.v[0]),
++                       ColorType_t::ComponentType_t (theA.v[1] - theB.v[1]),
++                       ColorType_t::ComponentType_t (theA.v[2] - theB.v[2]),
++                       ColorType_t::ComponentType_t (theA.v[3] - theB.v[3])}};
++#else
+   ColorType_t aRes = {{typename ColorType_t::ComponentType_t (theA.v[0] - theB.v[0]),
+                        typename ColorType_t::ComponentType_t (theA.v[1] - theB.v[1]),
+                        typename ColorType_t::ComponentType_t (theA.v[2] - theB.v[2]),
+                        typename ColorType_t::ComponentType_t (theA.v[3] - theB.v[3])}};
++#endif
+   return aRes;
+ }
+ 
+Index: oce/src/NCollection/NCollection_StdAllocator.hxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_StdAllocator.hxx
++++ oce/src/NCollection/NCollection_StdAllocator.hxx
+@@ -102,8 +102,12 @@ public:
+ 
+   //! Destroys the object.
+   /*! Uses object destructor.*/
++#if defined(__BORLANDC__)
++  void destroy( pointer p ) { p->~T(); }
++#else
+   void destroy( pointer p ) { p->~value_type(); }
+-
++#endif
++  
+   //! Returns an underlying NCollection_BaseAllocator instance.
+   /*! Returns an object specified in the constructor.*/
+   const Handle(NCollection_BaseAllocator)& Allocator() const { return myAlloc; }
+Index: oce/src/NCollection/NCollection_UtfString.lxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_UtfString.lxx
++++ oce/src/NCollection/NCollection_UtfString.lxx
+@@ -21,8 +21,8 @@
+ // function : strGetAdvance
+ // purpose  : Compute advance for specified string.
+ // =======================================================================
+-template<typename TypeTo> template<typename TypeFrom> inline
+-void NCollection_UtfString<TypeTo>::strGetAdvance (const TypeFrom*        theStringUtf,
++template<typename Type> template<typename TypeFrom> inline
++void NCollection_UtfString<Type>::strGetAdvance (const TypeFrom*        theStringUtf,
+                                                    const Standard_Integer theLengthMax,
+                                                    Standard_Integer&      theSizeBytes,
+                                                    Standard_Integer&      theLength)
+@@ -31,7 +31,7 @@ void NCollection_UtfString<TypeTo>::strG
+   theLength    = 0;
+   NCollection_UtfIterator<TypeFrom> anIter (theStringUtf);
+   const Standard_Integer aLengthMax = (theLengthMax > 0) ? theLengthMax : IntegerLast();
+-  switch (sizeof(TypeTo))
++  switch (sizeof(Type))
+   {
+     case sizeof(Standard_Utf8Char):
+     {
+Index: oce/src/OpenGl/OpenGl_AspectFace.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_AspectFace.cxx
++++ oce/src/OpenGl/OpenGl_AspectFace.cxx
+@@ -205,7 +205,12 @@ void OpenGl_AspectFace::Init (const Hand
+   doTextureMap = theAspect.Texture.doTextureMap;
+   const Handle(Graphic3d_TextureMap)& aNewTexture = theAspect.Texture.TextureMap;
+   TCollection_AsciiString aNewKey = aNewTexture.IsNull() ? TCollection_AsciiString() : aNewTexture->GetId();
+-  TextureParams = aNewTexture.IsNull() ? NULL : aNewTexture->GetParams();
++  if (aNewTexture.IsNull()) {
++    TextureParams.Nullify();
++  }
++  else {
++    TextureParams = aNewTexture->GetParams(); 
++  }  
+   if (aNewKey.IsEmpty()
+    || myTextureId != aNewKey)
+   {
+Index: oce/src/Standard/Standard_CLocaleSentry.cxx
+===================================================================
+--- oce.orig/src/Standard/Standard_CLocaleSentry.cxx
++++ oce/src/Standard/Standard_CLocaleSentry.cxx
+@@ -27,6 +27,10 @@
+ 
+ #include <cstring>
+ 
++#if defined(__BORLANDC__)
++#include <mem.h>
++#endif
++
+ namespace
+ {
+ 
+@@ -38,7 +42,7 @@ namespace
+     CLocalePtr()
+     #ifdef HAVE_XLOCALE_H
+     : myLocale (newlocale (LC_ALL_MASK, "C", NULL))
+-    #elif defined(_WIN32)
++    #elif defined(_WIN32) && !defined(__BORLANDC__)
+     : myLocale (_create_locale (LC_ALL, "C"))
+     #else
+     : myLocale (NULL)
+@@ -49,7 +53,7 @@ namespace
+     {
+     #ifdef HAVE_XLOCALE_H
+       freelocale (myLocale);
+-    #elif defined(_WIN32)
++    #elif defined(_WIN32) && !defined(__BORLANDC__)
+       _free_locale (myLocale);
+     #endif
+     }
+Index: oce/src/Standard/Standard_CLocaleSentry.hxx
+===================================================================
+--- oce.orig/src/Standard/Standard_CLocaleSentry.hxx
++++ oce/src/Standard/Standard_CLocaleSentry.hxx
+@@ -60,7 +60,7 @@ public:
+ 
+ #ifdef HAVE_XLOCALE_H
+   typedef  locale_t clocale_t;
+-#elif defined(_WIN32)
++#elif defined(_WIN32) && !defined(__BORLANDC__)
+   typedef _locale_t clocale_t;
+ #else
+   typedef void*     clocale_t;
+@@ -73,7 +73,7 @@ public:
+ private:
+ 
+   void* myPrevLocale;       //!< previous locale, platform-dependent pointer!
+-#ifdef _WIN32
++#if defined(_WIN32) && !defined(__BORLANDC__)
+   int   myPrevTLocaleState; //!< previous thread-locale state, MSVCRT-specific
+ #endif
+ 
+Index: oce/src/Standard/Standard_CString.cxx
+===================================================================
+--- oce.orig/src/Standard/Standard_CString.cxx
++++ oce/src/Standard/Standard_CString.cxx
+@@ -260,7 +260,7 @@ Standard_Boolean ISSIMILAR(const Standar
+ #ifdef __APPLE__
+   // There are a lot of *_l functions availalbe on Mac OS X - we use them
+   #define SAVE_TL()
+-#elif defined(_WIN32)
++#elif defined(_WIN32) && !defined(__BORLANDC__)
+   // MSVCRT has equivalents with slightly different syntax
+   #define SAVE_TL()
+   #define strtod_l(thePtr, theNextPtr, theLocale)                _strtod_l(thePtr, theNextPtr, theLocale)
+@@ -274,7 +274,7 @@ Standard_Boolean ISSIMILAR(const Standar
+   // So we switch to C locale temporarily
+   #define SAVE_TL() Standard_CLocaleSentry aLocaleSentry;
+   #ifndef HAVE_XLOCALE_H
+-    #error System does not support xlocale. Import/export could be broken if C locale did not specified by application.
++    #warning System does not support xlocale. Import/export could be broken if C locale did not specified by application.
+     #define strtod_l(thePtr, theNextPtr, theLocale)              strtod(thePtr, theNextPtr)
+   #endif
+   #define vprintf_l(theLocale, theFormat, theArgPtr)             vprintf(theFormat, theArgPtr)
+Index: oce/src/Standard/Standard_TypeDef.hxx
+===================================================================
+--- oce.orig/src/Standard/Standard_TypeDef.hxx
++++ oce/src/Standard/Standard_TypeDef.hxx
+@@ -30,6 +30,10 @@
+   #include <stdint.h>
+ #endif
+ 
++#if defined(__BORLANDC__)
++using std::size_t;
++#endif
++
+ #define Standard_False false
+ #define Standard_True  true
+ 
+Index: oce/src/OSD/OSD_File.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_File.cxx
++++ oce/src/OSD/OSD_File.cxx
+@@ -860,7 +860,7 @@ Standard_Boolean OSD_File::IsExecutable(
+ #define _int64 int
+ #endif
+ 
+-#ifdef _MSC_VER
++#if defined(_MSC_VER) || defined(__BORLANDC__)
+ #pragma comment( lib, "WSOCK32.LIB"  )
+ #pragma comment( lib, "WINSPOOL.LIB" )
+ #endif
+Index: oce/src/OSD/OSD_Host.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_Host.cxx
++++ oce/src/OSD/OSD_Host.cxx
+@@ -232,7 +232,7 @@ Standard_Integer OSD_Host::Error()const{
+ 
+ #include <OSD_Host.hxx>
+ 
+-#ifdef _MSC_VER
++#if defined(_MSC_VER) || defined(__BORLANDC__)
+ #pragma comment( lib, "WSOCK32.LIB" )
+ #endif
+ 

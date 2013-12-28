@@ -17,6 +17,8 @@ fix-build-failure-error-format.patch
 fix-sorttools-quicksort.patch
 fix-bug-Draw-MainWindow.cxx
 
+modify-type-Standard_Boolean.patch
+
 submitted/thread_21346/ports/remove-__try-__finally.patch
 submitted/thread_21348/warning/fix-declared-but-never-defined.patch
 submitted/thread_21349/warning/fix-deprecated-conversion-from-string.patch
@@ -46,6 +48,7 @@ do-not-redefine-memmove.patch
 fix-symbol-decorators-Draw.patch
 drop-getGL2PSFontName.patch
 bugfix-points-swapped-in-BRepExtrema_DistanceSS.patch
+remove-Xmu.patch
 
 cppcheck/fix-unused-local-var.patch
 cppcheck/fix-return-reference-auto.patch
@@ -65,6 +68,7 @@ warning/fix-parentheses-equality.patch
 #  Do not submit, either needs to be reworked, or are unsuitable
 warning/fix-empty-conditional-body.patch
 warning/fix-invalid-enum-value-in-switch.patch
+warning/enum-value-not-in-switch.patch
 warning/fix-unhandled-enumeration-value.patch
 warning/fix-assignment-in-conditional-expression.patch
 warning/add-equal-operator.patch
@@ -80,6 +84,21 @@ warning/fix-initialization-order.patch
 warning/fix-unused-value.patch
 warning/fix-logical-op-parentheses.patch
 warning/fix-narrowing.patch
+warning/fix-unused-result.patch
+warning/deprecated-increment-bool.patch
+warning/pointer-arith.patch
+warning/macro-redefinition.patch
+warning/fix-intel-invalid-narrowing-conversion.patch
+warning/clang-sanitizer-shift-issue.patch
+warning/deprecated-declaration.patch
+warning/intel-fix-format-specifier-mismatch.patch
+warning/mingw-fix-unknown-format-specifier.patch
+warning/intel-write-strings.patch
+warning/undefined-macro.patch
+warning/fix-delete-void-pointer.patch
+warning/fix-op-precedence.patch
+warning/fix-switch-condition-boolean.patch
+warning/fix-unsequenced-modifications.patch
 
 improve-exception-message.patch
 
@@ -138,6 +157,7 @@ fix-non-ASCII-path.patch
 fix-loading-of-debug-TKOpenGl.patch
 
 get-rid-of-environment-variables.patch
+make-myFMMgr-private.patch
 
 TKService-depends-X11-only-if-needed.patch
 static-linking.patch
@@ -153,6 +173,14 @@ config/separate-installation-path.patch
 ports/borland11.patch
 ports/borland14.patch
 ports/borland15.patch
+ports/borland16.patch
+ports/hpux.patch
+ports/hpux-atomic.patch
+ports/rad-studio-xe4.patch
+ports/mingw-locale.patch
+ports/mingw64.patch
+
+Print-null-handle.patch
 
 fix-ftbfs-c++11.patch
 fix-ftbfs-Hurd.patch

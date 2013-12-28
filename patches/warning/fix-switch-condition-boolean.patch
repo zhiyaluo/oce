@@ -1,0 +1,36 @@
+From 865e49468f98348bd5834c4c974a8519785bec19 Mon Sep 17 00:00:00 2001
+From: tpaviot <tpaviot@gmail.com>
+Date: Mon, 11 Nov 2013 13:52:10 +0100
+Subject: [PATCH] [osx-maverick-warning-fix][switch-condition-boolean]
+
+Fix following OSX 10.9 compiler warning:
+/oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder.cxx:496:3: warning: switch condition has boolean value
+  switch (Reverse) {
+  ^       ~~~~~~~
+1 warning generated.
+---
+ src/TopOpeBRepBuild/TopOpeBRepBuild_Builder.cxx | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder.cxx b/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder.cxx
+index 8d63681..49c77c0 100644
+--- a/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder.cxx
++++ b/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder.cxx
+@@ -493,9 +493,11 @@ TopAbs_Orientation TopOpeBRepBuild_Builder::Orient(const TopAbs_Orientation Ori,
+ {
+   TopAbs_Orientation result=TopAbs_FORWARD;
+ 
+-  switch (Reverse) {
+-    case Standard_True  : result = TopAbs::Complement(Ori); break;
+-    case Standard_False : result = Ori; break;
++  if (Reverse) {
++    result = TopAbs::Complement(Ori);
++  }
++  else {
++    result = Ori;
+   }
+   return result;
+ }
+-- 
+1.8.4.rc1
+

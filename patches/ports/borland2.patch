@@ -64,7 +64,7 @@ Index: oce/src/NCollection/NCollection_IndexedDataMap.hxx
      //! Constructor
      Iterator (const NCollection_IndexedDataMap& theMap) :
 +#ifdef __BORLANDC__
-+      myMap((NCollection_IndexedDataMap <TheKeyType, TheItemType> *) &theMap),
++      myMap((NCollection_IndexedDataMap <TheKeyType, TheItemType, Hasher> *) &theMap),
 +#else
        myMap((NCollection_IndexedDataMap *) &theMap),
 +#endif
@@ -80,7 +80,7 @@ Index: oce/src/NCollection/NCollection_IndexedMap.hxx
      //! Constructor
      Iterator (const NCollection_IndexedMap& theMap) :
 +#ifdef __BORLANDC__
-+      myMap((NCollection_IndexedMap <TheKeyType> *) &theMap),
++      myMap((NCollection_IndexedMap <TheKeyType, Hasher> *) &theMap),
 +#else
        myMap((NCollection_IndexedMap *) &theMap),
 +#endif

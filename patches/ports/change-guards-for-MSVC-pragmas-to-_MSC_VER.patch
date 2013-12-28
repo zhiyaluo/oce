@@ -129,7 +129,7 @@ Index: oce/src/IntTools/IntTools_EdgeFace.cxx
  #pragma warning ( disable : 4101 )
  #endif
  
-@@ -1568,6 +1568,6 @@ Standard_Integer AdaptiveDiscret (const
+@@ -1567,6 +1567,6 @@ Standard_Integer AdaptiveDiscret (const
  }
  
  
@@ -155,7 +155,7 @@ Index: oce/src/OSD/OSD_MAllocHook.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_MAllocHook.cxx
 +++ oce/src/OSD/OSD_MAllocHook.cxx
-@@ -85,7 +85,7 @@ OSD_MAllocHook::CollectBySize* OSD_MAllo
+@@ -89,7 +89,7 @@ OSD_MAllocHook::CollectBySize* OSD_MAllo
  // Platform-dependent methods
  //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  
@@ -164,7 +164,7 @@ Index: oce/src/OSD/OSD_MAllocHook.cxx
  #include <crtdbg.h>
  
  static long getRequestNum(void* pvData, long lRequest, size_t& theSize)
-@@ -164,7 +164,7 @@ void OSD_MAllocHook::SetCallback(Callbac
+@@ -168,7 +168,7 @@ void OSD_MAllocHook::SetCallback(Callbac
      _CrtSetAllocHook(MyAllocHook);
  }
  
@@ -173,7 +173,7 @@ Index: oce/src/OSD/OSD_MAllocHook.cxx
  
  // Not yet implemented for non-WNT platform
  
-@@ -173,7 +173,7 @@ void OSD_MAllocHook::SetCallback(Callbac
+@@ -177,7 +177,7 @@ void OSD_MAllocHook::SetCallback(Callbac
    MypCurrentCallback = theCB;
  }
  
@@ -186,7 +186,7 @@ Index: oce/src/OSD/OSD_Process.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Process.cxx
 +++ oce/src/OSD/OSD_Process.cxx
-@@ -236,8 +236,9 @@ Standard_Integer OSD_Process::Error()con
+@@ -237,8 +237,9 @@ Standard_Integer OSD_Process::Error()con
  #include <OSD_WNT_1.hxx>
  #include <LMCONS.H> /// pour UNLEN  ( see MSDN about GetUserName() )
  
@@ -503,5 +503,27 @@ Index: oce/src/XmlXCAFDrivers/XmlXCAFDrivers.cxx
 -#ifdef WNT
 +#ifdef _MSC_VER
  #pragma warning(4:4190)
+ #endif
+ 
+Index: oce/src/Standard/Handle_Standard_Persistent.hxx
+===================================================================
+--- oce.orig/src/Standard/Handle_Standard_Persistent.hxx
++++ oce/src/Standard/Handle_Standard_Persistent.hxx
+@@ -37,7 +37,7 @@
+ #include <Standard_Persistent_proto.hxx>
+ #endif
+ 
+-#ifdef _WIN32
++#ifdef _MSC_VER
+ // Disable the warning "conversion from 'unsigned int' to Standard_Persistent *"
+ #pragma warning (push)
+ #pragma warning (disable:4312)
+@@ -216,7 +216,7 @@ class Handle(Standard_Persistent)
+ 
+ class Standard_Type;
+ 
+-#ifdef _WIN32
++#ifdef _MSC_VER
+ #pragma warning (pop)
  #endif
  
