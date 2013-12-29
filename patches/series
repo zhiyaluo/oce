@@ -114,7 +114,6 @@ cmake/precompiled-headers/add-the-effective-precompiled-headers.patch
 cmake/remove-pragmas.patch
 cmake/remove-RETSIGTYPE-in-Csemaphore.c.patch
 
-ports/drop-utsname-usage-for-unknown-architectures.patch
 ports/fix-OSD_Process-CurrentDirectory-on-the-Hurd.patch
 ports/rename-ED-variables-into-EData.patch
 ports/do-not-include-X11-bitmaps-icon.patch
