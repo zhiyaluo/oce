@@ -154,6 +154,38 @@ Changed some of the interface types (inc files) to correct some implicit casts.
  src/PlotMgt/PlotMgt_TextManager.cxx   |   20 ++++++++++----------
  5 files changed, 18 insertions(+), 20 deletions(-)
 
+From a19ab14176fffed0d79cc023b1836e3936f6a01c Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Sat, 19 May 2012 16:06:47 +0200
+Subject: [PATCH] [warning-fix][implicit-conversion-from-wider-type] Fixes
+ warnings like 'conversion' conversion from 'type1' to
+ 'type2', possible loss of data
+
+---
+ src/AlienImage/AlienImage_SGIRGBAlienData.cxx |    6 +++---
+ src/OpenGl/OpenGl_Window.cxx                  |    4 ++--
+ src/PlotMgt/PlotMgt_TextManager.cxx           |    2 +-
+ src/TopOpeBRep/TopOpeBRep_vpr.cxx             |    8 --------
+ src/WNT/WNT_ImageProcessor.cxx                |    2 +-
+ test/BRepExtrema_test/BRepExtrema_test.cpp    |    5 ++---
+ test/gp_test/gp_test.cpp                      |    2 +-
+ 7 files changed, 10 insertions(+), 19 deletions(-)
+
+From 647523e9b940558b575375a724601226b2b9d57b Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Sat, 19 May 2012 16:07:12 +0200
+Subject: [PATCH] [warning-fix][implicit-conversion-from-wider-type] Fixes
+ warnings like 'conversion' conversion from 'type1' to
+ 'type2', possible loss of data
+
+Since the class uses Standard_Integer and std::streambuf_size is usually 64bit,
+there can be problems with files > 2GB. This is a limit of the current implementation,
+which should be replaced for 64bit sized streams.
+The added casts will just make the warnings disappear.
+---
+ src/LDOM/LDOM_OSStream.cxx |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
+
 Index: oce/src/AlienImage/AlienImage_BMPAlienData.cxx
 ===================================================================
 --- oce.orig/src/AlienImage/AlienImage_BMPAlienData.cxx
@@ -302,6 +334,27 @@ Index: oce/src/AlienImage/AlienImage_SGIRGBAlienData.cxx
      if(ISVERBATIM(image->type)) {
  	switch(image->dim) {
  	    case 1:
+@@ -635,9 +635,9 @@ static void img_setrowsize( 	AlienImage_
+ 	    iptr -= 2;							\
+ 	    bblcount = iptr-sptr;					\
+ 	    while(bblcount) {						\
+-		todo = bblcount>126 ? 126:bblcount; 			\
++		todo = (bblcount>126) ? 126:(short)bblcount; 			\
+ 		bblcount -= todo;					\
+-		*optr++ = 0x80|todo;					\
++		*optr++ = (unsigned char)(0x80|todo);					\
+ 		while(todo--)						\
+ 		    *optr++ = (unsigned char)*sptr++;			\
+ 	    }								\
+@@ -647,7 +647,7 @@ static void img_setrowsize( 	AlienImage_
+ 		iptr++;							\
+ 	    bblcount = iptr-sptr;					\
+ 	    while(bblcount) {						\
+-		todo = bblcount>126 ? 126:bblcount; 			\
++		todo = (bblcount>126) ? 126:(short)bblcount; 			\
+ 		bblcount -= todo;					\
+ 		*optr++ = (unsigned char)todo;				\
+ 		*optr++ = (unsigned char)cc;				\
 @@ -895,7 +895,7 @@ static int getrow(	OSD_File& File,
      register short i;
      register unsigned char *cptr;
@@ -588,13 +641,33 @@ Index: oce/src/LDOM/LDOM_OSStream.cxx
 ===================================================================
 --- oce.orig/src/LDOM/LDOM_OSStream.cxx
 +++ oce/src/LDOM/LDOM_OSStream.cxx
-@@ -104,7 +104,7 @@ Standard_CString LDOM_SBuffer::str () co
+@@ -104,8 +104,8 @@ Standard_CString LDOM_SBuffer::str () co
  //=======================================================================
  int LDOM_SBuffer::overflow(int c)
  {
 -  char cc = c;
+-  return xsputn(&cc,1);
 +  char cc = (char)c;
-   return xsputn(&cc,1);
++  return (int)xsputn(&cc,1);
+ }
+ 
+ //=======================================================================
+@@ -127,7 +127,7 @@ int LDOM_SBuffer::underflow()
+ //=======================================================================
+ std::streamsize LDOM_SBuffer::xsputn(const char* aStr, std::streamsize n)
+ {
+-  int aLen = n + 1;
++  int aLen = (int)(n) + 1;
+   int freeLen = myMaxBuf - myCurString->len - 1;
+   if (freeLen >= n)
+   {
+@@ -155,7 +155,7 @@ std::streamsize LDOM_SBuffer::xsputn(con
+   myCurString->len += aLen - 1;
+   *(myCurString->buf + myCurString->len) = '\0';
+ 
+-  myLength += n;
++  myLength += (int)n;
+   return n;
  }
  
 Index: oce/src/LDOM/LDOM_XmlReader.cxx
@@ -793,3 +866,55 @@ Index: oce/src/VrmlData/VrmlData_ShapeConvert.cxx
        if (sym == '\0' || sym == '\n' || sym == '\r') {
          * optr = '\0';
          break;
+Index: oce/src/OpenGl/OpenGl_Window.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_Window.cxx
++++ oce/src/OpenGl/OpenGl_Window.cxx
+@@ -52,8 +52,8 @@ namespace
+     aPixelFrmtTmp.iLayerType = PFD_MAIN_PLANE;
+ 
+     const int BUFF_BITS_STENCIL[] = {  8,  1     };
+-    const int BUFF_BITS_COLOR[]   = { 32, 24     };
+-    const int BUFF_BITS_DEPTH[]   = { 32, 24, 16 };
++    const BYTE BUFF_BITS_COLOR[]  = { 32, 24     };
++    const BYTE BUFF_BITS_DEPTH[]  = { 32, 24, 16 };
+ 
+     int aGoodBits[] = { 0, 0, 0 };
+     int aPixelFrmtIdLast = 0;
+@@ -62,11 +62,11 @@ namespace
+     for (aStencilIter = 0; aStencilIter < sizeof(BUFF_BITS_STENCIL) / sizeof(int); ++aStencilIter)
+     {
+       aPixelFrmtTmp.cStencilBits = BUFF_BITS_STENCIL[aStencilIter];
+-      for (aDepthIter = 0; aDepthIter < sizeof(BUFF_BITS_DEPTH) / sizeof(int); ++aDepthIter)
++      for (aDepthIter = 0; aDepthIter < sizeof(BUFF_BITS_DEPTH) / sizeof(BYTE); ++aDepthIter)
+       {
+         aPixelFrmtTmp.cDepthBits = BUFF_BITS_DEPTH[aDepthIter];
+         aPixelFrmtIdGood = 0;
+-        for (aColorIter = 0; aColorIter < sizeof(BUFF_BITS_COLOR) / sizeof(int); ++aColorIter)
++        for (aColorIter = 0; aColorIter < sizeof(BUFF_BITS_COLOR) / sizeof(BYTE); ++aColorIter)
+         {
+           aPixelFrmtTmp.cColorBits = BUFF_BITS_COLOR[aColorIter];
+           aPixelFrmtIdLast = ChoosePixelFormat (theDevCtx, &aPixelFrmtTmp);
+Index: oce/src/TopOpeBRep/TopOpeBRep_vpr.cxx
+===================================================================
+--- oce.orig/src/TopOpeBRep/TopOpeBRep_vpr.cxx
++++ oce/src/TopOpeBRep/TopOpeBRep_vpr.cxx
+@@ -229,18 +229,10 @@ static void FUN_VPgeometryfound
+   else          hasOOedge = (VP.State(OOShapeIndex) == TopAbs_ON);
+   if ( hasOOedge ) {  
+     TopoDS_Shape OOedge;
+-#ifndef DEB
+     if (on2edges) OOedge = ((signed) rkErest == (signed) OOShapeIndex)? Erest : VP.Edge(OOShapeIndex);
+-#else
+-    if (on2edges) OOedge = (rkErest == OOShapeIndex)? Erest : VP.Edge(OOShapeIndex);
+-#endif
+     else          OOedge = VP.EdgeON(OOShapeIndex);    
+     Standard_Real OOpar = 0.;
+-#ifndef DEB
+     if (on2edges) OOpar = ((signed) rkErest == (signed) OOShapeIndex)? parErest : VP.EdgeParameter(OOShapeIndex);
+-#else
+-    if (on2edges) OOpar = (rkErest == OOShapeIndex)? parErest : VP.EdgeParameter(OOShapeIndex);
+-#endif
+     else          OOpar = VP.EdgeONParameter(OOShapeIndex); 
+     Standard_Real tolOOe = FUN_tool_maxtol(OOedge);
+     Standard_Real OOtolp = Precision::Parametric(tolOOe);
