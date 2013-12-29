@@ -1,3 +1,36 @@
+From d1210dbb39e725f82f298a0f3442bcc61b63f09f Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Tue, 22 Mar 2011 07:18:25 +0100
+Subject: [PATCH 8/9] Move code to work around a BCC bug
+
+For an unknown reason, BCC reports this error:
+  [C++ Error] Standard_ErrorHandler.cpp(48): E2092 Storage class 'static' is not allowed here
+which disappears when GetThreadID() is defined before static members.
+---
+ ros/src/Standard/Standard_ErrorHandler.cxx |   17 +++++++++--------
+ 1 files changed, 9 insertions(+), 8 deletions(-)
+
+From 63bfacb18355d6e03bc3098c50f25486e533acb1 Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Fri, 18 Nov 2011 12:03:23 +0200
+Subject: [PATCH] Fixed convertion from int to Handle under bcc32
+
+---
+ inc/AIS_InteractiveContext.lxx |    2 +-
+ 1 files changed, 1 insertions(+), 1 deletions(-)
+
+From 29c06652969463d012eb97990f07a8bf6feeae77 Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Fri, 11 Nov 2011 23:34:40 +0200
+Subject: [PATCH] Resolves a possible bcc32 compiler bug.
+
+For a strange reason this file must not have
+exception handling compiler option enabled,
+otherwise an internal compiler error occurs.
+---
+ src/ShapeFix/ShapeFix_ComposeShell.cxx |    4 ++++
+ 1 files changed, 4 insertions(+), 0 deletions(-)
+
 From 9e516481dcbaf52fcf92071e2344ab1ef28caee3 Mon Sep 17 00:00:00 2001
 From: davyw <davy.wouters@gmail.com>
 Date: Sun, 15 Jan 2012 14:06:32 +0100
@@ -183,6 +216,70 @@ Subject: [PATCH 12/12] Moved bcc32 specific scripts for TKService and
  adm/cmake/TKService/CMakeLists.txt |   10 ++++++++++
  3 files changed, 25 insertions(+), 31 deletions(-)
 
+Index: oce/src/AIS/AIS_InteractiveContext.lxx
+===================================================================
+--- oce.orig/src/AIS/AIS_InteractiveContext.lxx
++++ oce/src/AIS/AIS_InteractiveContext.lxx
+@@ -96,7 +96,7 @@ inline Standard_Boolean AIS_InteractiveC
+ {return myCurLocalIndex != 0;}
+ 
+ inline Handle_AIS_LocalContext AIS_InteractiveContext::LocalContext() const
+-{ return (myCurLocalIndex > 0) ? myLocalContexts(myCurLocalIndex) : NULL; }
++{ return (myCurLocalIndex > 0) ? myLocalContexts(myCurLocalIndex) : (Handle_AIS_LocalContext) NULL; }
+ 
+ inline const TCollection_AsciiString& AIS_InteractiveContext::CurrentName() const 
+ {return myCurrentName;} 
+Index: oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
+===================================================================
+--- oce.orig/src/ShapeFix/ShapeFix_ComposeShell.cxx
++++ oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
+@@ -22,6 +22,11 @@
+ //    abv  22.07.99 implementing patch indices
+ //    svv  10.01.00 porting on DEC
+ 
++/* Starting from bcc32 v6.40 this flag should be passed as a compiler option. */
++#if defined(__BORLANDC__) && __BORLANDC__ < 0x0640 /* bcc32 v6.40 */
++#pragma option -x-
++#endif
++
+ #include <ShapeFix_ComposeShell.ixx>
+ 
+ #include <Precision.hxx>
+Index: oce/src/Standard/Standard_ErrorHandler.cxx
+===================================================================
+--- oce.orig/src/Standard/Standard_ErrorHandler.cxx
++++ oce/src/Standard/Standard_ErrorHandler.cxx
+@@ -41,14 +41,7 @@
+ // request will be ignored. If the abort request do a raise during a setjmp
+ // or a longjmp, there will be a "terminating SEGV" impossible to handle.
+ 
+-//==== The top of the Errors Stack ===========================================
+-static Standard_ErrorHandler* Top = 0;
+-
+-// A mutex to protect from concurrent access to Top
+-// Note that we should NOT use Sentry while in this class, as Sentry
+-// would register mutex as callback in the current exception handler
+-static Standard_Mutex theMutex; 
+-
++//Somehow borland needs this inline global function to be declared first ... ??
+ static inline Standard_ThreadId GetThreadID()
+ {
+ #ifndef WNT
+@@ -58,6 +51,14 @@ static inline Standard_ThreadId GetThrea
+ #endif
+ }
+ 
++//==== The top of the Errors Stack ===========================================
++static Standard_ErrorHandler* Top = 0;
++
++// A mutex to protect from concurrent access to Top
++// Note that we should NOT use Sentry while in this class, as Sentry
++// would register mutex as callback in the current exception handler
++static Standard_Mutex theMutex; 
++
+ //============================================================================
+ //====  Constructor : Create a ErrorHandler structure. And add it at the 
+ //====                'Top' of "ErrorHandler's stack".
 Index: oce/src/AIS/AIS_Point.cxx
 ===================================================================
 --- oce.orig/src/AIS/AIS_Point.cxx
@@ -796,20 +893,6 @@ Index: oce/src/LocOpe/LocOpe_DPrism.cxx
    myProfile1 = BRepLib_MakeEdge(Vert4, Vert1);
    
    myProfile = BRepLib_MakeWire(myProfile1,myProfile2,myProfile3);
-Index: oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
-===================================================================
---- oce.orig/src/ShapeFix/ShapeFix_ComposeShell.cxx
-+++ oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
-@@ -22,7 +22,8 @@
- //    abv  22.07.99 implementing patch indices
- //    svv  10.01.00 porting on DEC
- 
--#ifdef __BORLANDC__
-+/* Starting from bcc32 v6.40 this flag should be passed as a compiler option. */
-+#if defined(__BORLANDC__) && __BORLANDC__ < 0x0640 /* bcc32 v6.40 */
- #pragma option -x-
- #endif
- 
 Index: oce/src/ShapeFix/ShapeFix_Wire.cxx
 ===================================================================
 --- oce.orig/src/ShapeFix/ShapeFix_Wire.cxx
@@ -836,33 +919,3 @@ Index: oce/src/VrmlData/VrmlData_Geometry.cxx
                               mySize.X(), mySize.Y(), mySize.Z());
        SetTShape (aShell.TShape());
        myIsModified = Standard_False;
-Index: oce/test/BRepAlgoAPI_test/boolean_ops.cpp
-===================================================================
---- oce.orig/test/BRepAlgoAPI_test/boolean_ops.cpp
-+++ oce/test/BRepAlgoAPI_test/boolean_ops.cpp
-@@ -8,10 +8,10 @@
- TEST(BRepAlgoAPITestSuite, testCutBox)
- {
-     // create the first shape: a cube, a corner at the origin
--    TopoDS_Solid box1 = BRepPrimAPI_MakeBox(10.,10.,10.);
-+    TopoDS_Solid box1 = (TopoDS_Solid) BRepPrimAPI_MakeBox(10.,10.,10.);
-     ASSERT_FALSE(box1.IsNull());
-     // the second shape: a smaller cube, a corner at the origin
--    TopoDS_Solid box2 = BRepPrimAPI_MakeBox(5.,5.,5.);
-+    TopoDS_Solid box2 = (TopoDS_Solid) BRepPrimAPI_MakeBox(5.,5.,5.);
-     ASSERT_FALSE(box2.IsNull());
-     // boolean cut
-     TopoDS_Shape shp_result = BRepAlgoAPI_Cut(box1,box2);
-Index: oce/test/Standard_StdAllocator_test/Standard_StdAllocator_test.cpp
-===================================================================
---- oce.orig/test/Standard_StdAllocator_test/Standard_StdAllocator_test.cpp
-+++ oce/test/Standard_StdAllocator_test/Standard_StdAllocator_test.cpp
-@@ -28,7 +28,7 @@ TEST(Standard_StdAllocatorTestSuite, tes
- {
-     //typed allocator
-     std::list<TopoDS_Shape, Standard_StdAllocator<TopoDS_Shape> > aL;
--    TopoDS_Solid aSolid = BRepPrimAPI_MakeBox (10., 20., 30.);
-+    TopoDS_Solid aSolid = (TopoDS_Solid) BRepPrimAPI_MakeBox (10., 20., 30.);
-     aL.push_back (aSolid);
-     ASSERT_EQ(aL.size(), size_t (1));
- 
