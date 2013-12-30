@@ -1,5 +1,7 @@
 Fix handling of non-ASCII characters in DRAW and paths on Unix
 
+See issue #363.
+
 Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx

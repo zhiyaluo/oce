@@ -16,6 +16,6 @@ Index: oce/src/Draw/Draw_Window.cxx
  #endif
  
 -#include <stdio.h>
- #include <tk.h>
  
- /*
+ #if defined(__APPLE__) && !defined(MACOSX_USE_GLX)
+   // use forward declaration for small subset of used Tk functions

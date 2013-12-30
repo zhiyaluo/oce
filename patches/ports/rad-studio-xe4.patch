@@ -367,24 +367,25 @@ Index: oce/src/QABugs/QABugs_17.cxx
    gp_Circ cir = gp_Circ(gp_Ax2(gp_Pnt(191.09, -88.58, 0), gp_Dir(0, 0, 1)), 88.58);
 -  TopoDS_Edge E1 = BRepBuilderAPI_MakeEdge(cir,gp_Pnt(191.09,0,0.),gp_Pnt(191.09,-177.16,0.) );
 +  TopoDS_Edge E1 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(cir,gp_Pnt(191.09,0,0.),gp_Pnt(191.09,-177.16,0.) );
-   Handle(AIS_RadiusDimension) dim1 = new AIS_RadiusDimension(E1,88.58, "R 88.58",gp_Pnt(-30.0, -80.0, 0.0),DsgPrs_AS_BOTHAR,
-     100.0 );
+   Handle(AIS_RadiusDimension) dim1 = new AIS_RadiusDimension(E1);
    context->Display(dim1);
-@@ -362,14 +362,14 @@ static Standard_Integer BUC60915_1(Draw_
+   /***************************************/
+@@ -362,7 +362,7 @@ static Standard_Integer BUC60915_1(Draw_
    //dimension "R 43.80"
    /***************************************/
    gp_Circ cir1 = gp_Circ(gp_Ax2(gp_Pnt(191.09, -88.58, 0), gp_Dir(0, 0, 1)), 43.80);
 -  TopoDS_Edge E_cir1 = BRepBuilderAPI_MakeEdge(cir1);
 +  TopoDS_Edge E_cir1 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(cir1);
-   dim1 = new AIS_RadiusDimension(E_cir1,43.80, "R 43.80",gp_Pnt(0.0, -50.0, 0.0),DsgPrs_AS_LASTAR, 60.0 );
-   context->Display(dim1);
-   /***************************************/
+   dim1 = new AIS_RadiusDimension(E_cir1);
+   anAspect->ArrowAspect()->SetLength (60.0);
+   dim1->SetDimensionAspect (anAspect);
+@@ -372,7 +372,7 @@ static Standard_Integer BUC60915_1(Draw_
    //dimension "R 17.86"
    /***************************************/
    gp_Circ cir2 = gp_Circ(gp_Ax2(gp_Pnt(566.11, -88.58, 0), gp_Dir(0, 0, -1)), 17.86);
 -  TopoDS_Edge E_cir2 = BRepBuilderAPI_MakeEdge(cir2);
 +  TopoDS_Edge E_cir2 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(cir2);
-   dim1 = new AIS_RadiusDimension(E_cir2,17.86, "R 17.86",gp_Pnt(600.0, -50.0, 0.0),DsgPrs_AS_LASTAR, 40.0 );
+   dim1 = new AIS_RadiusDimension(E_cir2);
    context->Display(dim1);
  
 @@ -1172,7 +1172,7 @@ static Standard_Integer OCC884 (Draw_Int

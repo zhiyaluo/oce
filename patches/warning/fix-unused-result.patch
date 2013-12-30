@@ -2,7 +2,7 @@ Index: oce/src/FSD/FSD_BinaryFile.cxx
 ===================================================================
 --- oce.orig/src/FSD/FSD_BinaryFile.cxx
 +++ oce/src/FSD/FSD_BinaryFile.cxx
-@@ -164,7 +164,8 @@ void FSD_BinaryFile::ReadChar(TCollectio
+@@ -158,7 +158,8 @@ void FSD_BinaryFile::ReadChar(TCollectio
    buffer.Clear();
  
    while (!IsEnd() && (ccount < rsize)) {
@@ -16,9 +16,9 @@ Index: oce/src/IFSelect/IFSelect_SessionFile.cxx
 ===================================================================
 --- oce.orig/src/IFSelect/IFSelect_SessionFile.cxx
 +++ oce/src/IFSelect/IFSelect_SessionFile.cxx
-@@ -116,7 +116,7 @@ static int deja = 0;
+@@ -112,7 +112,7 @@ static int deja = 0;
    Standard_Boolean header = Standard_False;
-   while (1) {
+   for(;;) {
      ligne[0] = '\0';
 -    fgets(ligne,200,lefic);
 +    if (fgets(ligne,200,lefic) == NULL) break;
@@ -29,9 +29,9 @@ Index: oce/src/IFSelect/IFSelect_SessionPilot.cxx
 ===================================================================
 --- oce.orig/src/IFSelect/IFSelect_SessionPilot.cxx
 +++ oce/src/IFSelect/IFSelect_SessionPilot.cxx
-@@ -241,7 +241,7 @@ static TCollection_AsciiString nulword;
+@@ -237,7 +237,7 @@ static TCollection_AsciiString nulword;
      char ligne[100];
-     if (!lefic) printf ("%s",theprompt.ToCString());
+     if (!lefic) std::cout << theprompt.ToCString();
      ligne[0] = '\0';
 -    fgets(ligne,100,fic);
 +    if (fgets(ligne,100,fic) == NULL) break;
@@ -42,7 +42,7 @@ Index: oce/src/IGESFile/liriges.c
 ===================================================================
 --- oce.orig/src/IGESFile/liriges.c
 +++ oce/src/IGESFile/liriges.c
-@@ -46,26 +46,26 @@ int  iges_lire (FILE* lefic, int *numsec
+@@ -41,26 +41,26 @@ int  iges_lire (FILE* lefic, int *numsec
      if (*numsec == 0) ligne[72] = ligne[79] = ' ';
      ligne[0] = '\0'; 
      if(modefnes)	
@@ -77,7 +77,7 @@ Index: oce/src/OSD/OSD_File.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_File.cxx
 +++ oce/src/OSD/OSD_File.cxx
-@@ -767,7 +767,8 @@ TCollection_AsciiString PrinterName;
+@@ -764,7 +764,8 @@ TCollection_AsciiString PrinterName;
   else
     sprintf(buffer,"lpr -P%s %s",PrinterName.ToCString(),aBuffer.ToCString());
  
@@ -91,7 +91,7 @@ Index: oce/src/OSD/OSD_Process.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Process.cxx
 +++ oce/src/OSD/OSD_Process.cxx
-@@ -60,7 +60,8 @@ OSD_Process::OSD_Process(){
+@@ -55,7 +55,8 @@ OSD_Process::OSD_Process(){
  void OSD_Process::Spawn (const TCollection_AsciiString& cmd,
  			 const Standard_Boolean /*ShowWindow*/)
  {
@@ -105,7 +105,7 @@ Index: oce/src/RWStl/RWStl.cxx
 ===================================================================
 --- oce.orig/src/RWStl/RWStl.cxx
 +++ oce/src/RWStl/RWStl.cxx
-@@ -460,7 +460,8 @@ Handle_StlMesh_Mesh RWStl::ReadAscii (co
+@@ -454,7 +454,8 @@ Handle_StlMesh_Mesh RWStl::ReadAscii (co
      gp_XYZ aN (Atof(x), Atof(y), Atof(z));
  
      // skip the keywords "outer loop"
@@ -115,7 +115,7 @@ Index: oce/src/RWStl/RWStl.cxx
  
      // reading vertex
      if (3 != fscanf(file,"%*s %80s %80s %80s\n", x, y, z))
-@@ -481,10 +482,12 @@ Handle_StlMesh_Mesh RWStl::ReadAscii (co
+@@ -475,10 +476,12 @@ Handle_StlMesh_Mesh RWStl::ReadAscii (co
      ReadMesh->AddTriangle (i1, i2, i3, aN.X(), aN.Y(), aN.Z());
  
      // skip the keywords "endloop"
@@ -134,7 +134,7 @@ Index: oce/src/Voxel/Voxel_Reader.cxx
 ===================================================================
 --- oce.orig/src/Voxel/Voxel_Reader.cxx
 +++ oce/src/Voxel/Voxel_Reader.cxx
-@@ -27,6 +27,9 @@
+@@ -22,6 +22,9 @@
  
  #include <TCollection_AsciiString.hxx>
  
@@ -144,21 +144,21 @@ Index: oce/src/Voxel/Voxel_Reader.cxx
  Voxel_Reader::Voxel_Reader():myBoolVoxels(0),myColorVoxels(0),myFloatVoxels(0)
  {
  
-@@ -43,8 +46,10 @@ Standard_Boolean Voxel_Reader::Read(cons
+@@ -38,8 +41,10 @@ Standard_Boolean Voxel_Reader::Read(cons
    Standard_Byte type; // 0 - bool, 1 - color, 2 - float
    Voxel_VoxelFileFormat format;
-   Standard_Character svoxels[8], sformat[8], stype[8];
--  fscanf(f, "%s %s %s\n", svoxels, sformat, stype);
+   Standard_Character svoxels[9], sformat[9], stype[9];
+-  fscanf(f, "%8s %8s %8s\n", svoxels, sformat, stype);
 -  fclose(f);
-+  int strings_read = fscanf(f, "%s %s %s\n", svoxels, sformat, stype);
++  int strings_read = fscanf(f, "%8s %8s %8s\n", svoxels, sformat, stype);
 +  fclose(f); // close file before aborting on error
 +  if (3 != strings_read)
 +    return Standard_False;
  
    // Take format, type of voxels.
    // Voxels
-@@ -151,7 +156,7 @@ Standard_Boolean Voxel_Reader::ReadBoolA
-   Standard_Character line[64], sx[32], sy[32], sz[32];
+@@ -146,7 +151,7 @@ Standard_Boolean Voxel_Reader::ReadBoolA
+   Standard_Character line[65], sx[33], sy[33], sz[33];
  
    // Header: skip it
 -  fgets(line, 64, f);
@@ -166,7 +166,7 @@ Index: oce/src/Voxel/Voxel_Reader.cxx
    
    // Location, size, number of splits
    Standard_Integer nbx = 0, nby = 0, nbz = 0;
-@@ -187,7 +192,7 @@ Standard_Boolean Voxel_Reader::ReadBoolA
+@@ -182,7 +187,7 @@ Standard_Boolean Voxel_Reader::ReadBoolA
      Standard_Integer i1 = 0, i2 = 0, value = 0;
      while (!feof(f))
      {
@@ -175,8 +175,8 @@ Index: oce/src/Voxel/Voxel_Reader.cxx
        if (has_slice(line))
        {
  	if (sscanf(line, "%d %d %d\n", &i1, &i2, &value) != 3)
-@@ -228,8 +233,8 @@ Standard_Boolean Voxel_Reader::ReadColor
-   Standard_Character line[64], sx[32], sy[32], sz[32];
+@@ -223,8 +228,8 @@ Standard_Boolean Voxel_Reader::ReadColor
+   Standard_Character line[65], sx[33], sy[33], sz[33];
  
    // Header: skip it
 -  fgets(line, 64, f);
@@ -186,7 +186,7 @@ Index: oce/src/Voxel/Voxel_Reader.cxx
    // Location, size, number of splits
    Standard_Integer nbx = 0, nby = 0, nbz = 0;
    Standard_Real x = 0.0, y = 0.0, z = 0.0, xlen = 0.0, ylen = 0.0, zlen = 0.0;
-@@ -264,7 +269,7 @@ Standard_Boolean Voxel_Reader::ReadColor
+@@ -259,7 +264,7 @@ Standard_Boolean Voxel_Reader::ReadColor
      Standard_Integer i1 = 0, i2 = 0, value = 0;
      while (!feof(f))
      {
@@ -195,8 +195,8 @@ Index: oce/src/Voxel/Voxel_Reader.cxx
        if (has_slice(line))
        {
  	if (sscanf(line, "%d %d %d\n", &i1, &i2, &value) != 3)
-@@ -305,7 +310,7 @@ Standard_Boolean Voxel_Reader::ReadFloat
-   Standard_Character line[64], sx[32], sy[32], sz[32];
+@@ -300,7 +305,7 @@ Standard_Boolean Voxel_Reader::ReadFloat
+   Standard_Character line[65], sx[33], sy[33], sz[33];
  
    // Header: skip it
 -  fgets(line, 64, f);
@@ -204,7 +204,7 @@ Index: oce/src/Voxel/Voxel_Reader.cxx
    
    // Location, size, number of splits
    Standard_Integer nbx = 0, nby = 0, nbz = 0;
-@@ -342,7 +347,7 @@ Standard_Boolean Voxel_Reader::ReadFloat
+@@ -337,7 +342,7 @@ Standard_Boolean Voxel_Reader::ReadFloat
      Standard_ShortReal value = 0.0;
      while (!feof(f))
      {
@@ -212,11 +212,11 @@ Index: oce/src/Voxel/Voxel_Reader.cxx
 +      CATCH_FGETS_ERR( fgets(line, 64, f) );
        if (has_slice(line))
        {
- 	if (sscanf(line, "%d %d %s\n", &i1, &i2, line) != 3)
-@@ -384,20 +389,20 @@ Standard_Boolean Voxel_Reader::ReadBoolB
+ 	if (sscanf(line, "%d %d %64s\n", &i1, &i2, line) != 3)
+@@ -379,20 +384,20 @@ Standard_Boolean Voxel_Reader::ReadBoolB
  
    // Header: skip it
-   Standard_Character line[64];
+   Standard_Character line[65];
 -  fgets(line, 64, f);
 +  CATCH_FGETS_ERR( fgets(line, 64, f) );
    
@@ -244,7 +244,7 @@ Index: oce/src/Voxel/Voxel_Reader.cxx
  
    // Allocate the voxels
    myBoolVoxels = (Standard_Address) new Voxel_BoolDS(x, y, z, xlen, ylen, zlen, nbx, nby, nbz);
-@@ -412,9 +417,9 @@ Standard_Boolean Voxel_Reader::ReadBoolB
+@@ -407,9 +412,9 @@ Standard_Boolean Voxel_Reader::ReadBoolB
      Standard_Integer i1 = 0, i2 = 0, value = 0;
      while (!feof(f))
      {
@@ -257,10 +257,10 @@ Index: oce/src/Voxel/Voxel_Reader.cxx
  
        // Set value
        if (!((Standard_Byte**)((Voxel_DS*)myBoolVoxels)->myData)[i1])
-@@ -439,20 +444,20 @@ Standard_Boolean Voxel_Reader::ReadColor
+@@ -434,20 +439,20 @@ Standard_Boolean Voxel_Reader::ReadColor
  
    // Header: skip it
-   Standard_Character line[64];
+   Standard_Character line[65];
 -  fgets(line, 64, f);
 +  CATCH_FGETS_ERR( fgets(line, 64, f) );
    
@@ -288,7 +288,7 @@ Index: oce/src/Voxel/Voxel_Reader.cxx
  
    // Allocate the voxels
    myColorVoxels = (Standard_Address) new Voxel_ColorDS(x, y, z, xlen, ylen, zlen, nbx, nby, nbz);
-@@ -467,9 +472,9 @@ Standard_Boolean Voxel_Reader::ReadColor
+@@ -462,9 +467,9 @@ Standard_Boolean Voxel_Reader::ReadColor
      Standard_Integer i1 = 0, i2 = 0, value = 0;
      while (!feof(f))
      {
@@ -301,10 +301,10 @@ Index: oce/src/Voxel/Voxel_Reader.cxx
  
        // Set value
        if (!((Standard_Byte**)((Voxel_DS*)myColorVoxels)->myData)[i1])
-@@ -494,20 +499,20 @@ Standard_Boolean Voxel_Reader::ReadFloat
+@@ -489,20 +494,20 @@ Standard_Boolean Voxel_Reader::ReadFloat
  
    // Header: skip it
-   Standard_Character line[64];
+   Standard_Character line[65];
 -  fgets(line, 64, f);
 +  CATCH_FGETS_ERR( fgets(line, 64, f) );
    
@@ -332,7 +332,7 @@ Index: oce/src/Voxel/Voxel_Reader.cxx
  
    // Allocate the voxels
    myFloatVoxels = (Standard_Address) new Voxel_FloatDS(x, y, z, xlen, ylen, zlen, nbx, nby, nbz);
-@@ -523,9 +528,9 @@ Standard_Boolean Voxel_Reader::ReadFloat
+@@ -518,9 +523,9 @@ Standard_Boolean Voxel_Reader::ReadFloat
      Standard_ShortReal value = 0.0;
      while (!feof(f))
      {

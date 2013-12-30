@@ -78,7 +78,7 @@ Index: oce/src/BinLDrivers/BinLDrivers_DocumentRetrievalDriver.cxx
    if(!IS.eof()) {
 -#if defined(WNT) || defined(HAVE_IOSTREAM)
 +#if defined(WNT) || defined(OCE_HAVE_IOSTREAM)
-     const Storage_Position endPos = IS.rdbuf()->pubseekoff(0L, std::ios_base::end, std::ios_base::in);
+     const std::streamoff endPos = IS.rdbuf()->pubseekoff(0L, std::ios_base::end, std::ios_base::in);
  #else
      const Storage_Position endPos = IS.rdbuf()->seekoff(0L, unsafe_ios::end, unsafe_ios::in);
 Index: oce/src/Graphic3d/Graphic3d_Structure.pxx
@@ -113,53 +113,6 @@ Index: oce/src/OSD/OSD_Chronometer.cxx
  # include <limits.h>
  #endif
  
-Index: oce/src/QABugs/QABugs_3.cxx
-===================================================================
---- oce.orig/src/QABugs/QABugs_3.cxx
-+++ oce/src/QABugs/QABugs_3.cxx
-@@ -18,10 +18,10 @@
- // and conditions governing the rights and limitations under the License.
- 
- 
--#include <QABugs.hxx>
- #ifdef HAVE_CONFIG_H
- #include <oce-config.h>
- #endif
-+#include <QABugs.hxx>
- #include <Draw.hxx>
- #include <Draw_Interpretor.hxx>
- #include <TopLoc_Location.hxx>
-@@ -247,15 +247,15 @@ void stringerror(int state)
- //#else
- //#include <strstream.h>
- //#endif
--#ifdef HAVE_IOSTREAM
-+#ifdef OCE_HAVE_IOSTREAM
- #include <iostream>
- #include <sstream>
- using namespace std;
--#elif defined (HAVE_IOSTREAM_H)
-+#elif defined (OCE_HAVE_IOSTREAM_H)
- #include <iostream.h>
- #include <strstream.h>
- #else
--#error "check oce-config.h file or compilation options: either HAVE_IOSTREAM or HAVE_IOSTREAM_H should be defined"
-+#error "check oce-config.h file or compilation options: either OCE_HAVE_IOSTREAM or OCE_HAVE_IOSTREAM_H should be defined"
- #endif
- static int UKI61075(Draw_Interpretor& /*di*/, Standard_Integer /*argc*/, const char ** /*argv*/) {
-  double da,db;
-@@ -1365,9 +1365,9 @@ static Standard_Integer BUC60856(Draw_In
- }
- 
- //#include <fstream.h>
--#ifdef HAVE_FSTREAM
-+#ifdef OCE_HAVE_FSTREAM
- # include <fstream>
--#elif defined (HAVE_FSTREAM_H)
-+#elif defined (OCE_HAVE_FSTREAM_H)
- # include <fstream.h> 
- #endif
- //#include <Standard_Stream.hxx>
 Index: oce/src/Standard/Standard_Stream.hxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_Stream.hxx

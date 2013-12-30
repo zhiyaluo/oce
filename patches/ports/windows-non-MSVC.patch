@@ -318,37 +318,23 @@ lost due to upstream changes.Corrects bcc compilation issue.
  src/BRepMesh/BRepMesh_CellFilter.hxx |    8 ++++++++
  1 files changed, 8 insertions(+), 0 deletions(-)
 
-Index: oce/src/Draw/CommandWindow.cxx
-===================================================================
---- oce.orig/src/Draw/CommandWindow.cxx
-+++ oce/src/Draw/CommandWindow.cxx
-@@ -33,7 +33,6 @@
- #include <Draw_Appli.hxx>
- 
- 
--
- /****************************************************\
- *  CommandWindow.cxx :
- *
 Index: oce/src/Draw/Draw.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw.cxx
 +++ oce/src/Draw/Draw.cxx
-@@ -68,6 +68,9 @@
- #include <Draw_Failure.hxx>
- #include <TCollection_AsciiString.hxx>
- #include <Standard_ErrorHandler.hxx>
-+
-+#include <stdio.h>
-+
- extern Standard_Boolean Draw_ParseFailed;
+@@ -45,6 +45,7 @@
+ # include <strings.h>
+ #endif
  
- Standard_EXPORT Draw_Viewer dout;
++#include <stdio.h>
+ 
+ #include <Draw_Window.hxx>
+ #include <gp_Pnt2d.hxx>
 Index: oce/src/Draw/Draw_Interpretor.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Interpretor.cxx
 +++ oce/src/Draw/Draw_Interpretor.cxx
-@@ -50,6 +50,8 @@
+@@ -45,6 +45,8 @@
  #define STDERR_FILENO fileno(stderr)
  #endif
  
@@ -361,7 +347,7 @@ Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx
 +++ oce/src/Draw/Draw_Window.cxx
-@@ -1286,7 +1286,9 @@ prompt:
+@@ -1298,7 +1298,9 @@ prompt:
  #include <Draw_Appli.hxx>
  #include <OSD.hxx>
  
@@ -376,7 +362,7 @@ Index: oce/src/Font/Font_SystemFont.cxx
 ===================================================================
 --- oce.orig/src/Font/Font_SystemFont.cxx
 +++ oce/src/Font/Font_SystemFont.cxx
-@@ -24,6 +24,7 @@
+@@ -19,6 +19,7 @@
  #include <OSD_Path.hxx>
  #include <TCollection_HAsciiString.hxx>
  
@@ -388,7 +374,7 @@ Index: oce/src/InterfaceGraphic/InterfaceGraphic_telem.hxx
 ===================================================================
 --- oce.orig/src/InterfaceGraphic/InterfaceGraphic_telem.hxx
 +++ oce/src/InterfaceGraphic/InterfaceGraphic_telem.hxx
-@@ -24,6 +24,10 @@
+@@ -20,6 +20,10 @@
  #include <InterfaceGraphic_tgl_all.hxx>
  #include <stdlib.h>
  
@@ -403,7 +389,7 @@ Index: oce/src/MeshTest/MeshTest_PluginCommands.cxx
 ===================================================================
 --- oce.orig/src/MeshTest/MeshTest_PluginCommands.cxx
 +++ oce/src/MeshTest/MeshTest_PluginCommands.cxx
-@@ -52,6 +52,8 @@
+@@ -47,6 +47,8 @@
  #include <BRepMesh_Edge.hxx>
  #include <NCollection_Map.hxx>
  
@@ -412,24 +398,11 @@ Index: oce/src/MeshTest/MeshTest_PluginCommands.cxx
  static Standard_Integer mpnames           (Draw_Interpretor& , Standard_Integer , const char** );
  static Standard_Integer mpsetdefaultname  (Draw_Interpretor& , Standard_Integer , const char** );
  static Standard_Integer mpgetdefaultname  (Draw_Interpretor& , Standard_Integer , const char** );
-Index: oce/src/NCollection/NCollection_BaseAllocator.cxx
-===================================================================
---- oce.orig/src/NCollection/NCollection_BaseAllocator.cxx
-+++ oce/src/NCollection/NCollection_BaseAllocator.cxx
-@@ -25,6 +25,8 @@
- #include <NCollection_List.hxx>
- #include <Standard_Mutex.hxx>
- 
-+#include <stdio.h>
-+
- #if defined(_MSC_VER)
- # define FMT_SZ_Q "I"
- #elif defined(__GNUC__)
 Index: oce/src/NCollection/NCollection_CellFilter.hxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_CellFilter.hxx
 +++ oce/src/NCollection/NCollection_CellFilter.hxx
-@@ -233,8 +233,9 @@ public:
+@@ -228,8 +228,9 @@ public:
      iterateInspect (Inspector::Dimension-1, aCell, 
                      aCellMin, aCellMax, theInspector);
    }
@@ -441,24 +414,11 @@ Index: oce/src/NCollection/NCollection_CellFilter.hxx
  public: // work-around against obsolete SUN WorkShop 5.3 compiler
  #else
  protected:
-Index: oce/src/NCollection/NCollection_HeapAllocator.cxx
-===================================================================
---- oce.orig/src/NCollection/NCollection_HeapAllocator.cxx
-+++ oce/src/NCollection/NCollection_HeapAllocator.cxx
-@@ -23,6 +23,8 @@
- #include <Standard_OutOfMemory.hxx>
- #include <Standard_Mutex.hxx>
- 
-+#include <stdio.h>
-+
- #if defined(_MSC_VER)
- # define FMT_SZ_Q "I"
- #elif defined(__GNUC__)
 Index: oce/src/OSD/OSD.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD.cxx
 +++ oce/src/OSD/OSD.cxx
-@@ -76,7 +76,7 @@ Standard_Boolean OSD::CStringToReal(cons
+@@ -72,7 +72,7 @@ Standard_Boolean OSD::CStringToReal(cons
  //=======================================================================
  
  #ifdef WNT
@@ -471,7 +431,7 @@ Index: oce/src/OSD/OSD_Environment.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Environment.cxx
 +++ oce/src/OSD/OSD_Environment.cxx
-@@ -243,6 +243,8 @@ Standard_Integer OSD_Environment::Error(
+@@ -238,6 +238,8 @@ Standard_Integer OSD_Environment::Error(
  
  #include <windows.h>
  
@@ -484,7 +444,7 @@ Index: oce/src/OSD/OSD_FileNode.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_FileNode.cxx
 +++ oce/src/OSD/OSD_FileNode.cxx
-@@ -459,6 +459,8 @@ Standard_Integer OSD_FileNode::Error()co
+@@ -445,6 +445,8 @@ Standard_Integer OSD_FileNode::Error()co
  # include <tchar.h>
  #endif  // _INC_TCHAR
  
@@ -497,7 +457,7 @@ Index: oce/src/OSD/OSD_MAllocHook.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_MAllocHook.cxx
 +++ oce/src/OSD/OSD_MAllocHook.cxx
-@@ -20,7 +20,7 @@
+@@ -15,7 +15,7 @@
  
  #include <OSD_MAllocHook.hxx>
  
@@ -510,7 +470,7 @@ Index: oce/src/OSD/OSD_MemInfo.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_MemInfo.cxx
 +++ oce/src/OSD/OSD_MemInfo.cxx
-@@ -22,8 +22,8 @@
+@@ -18,8 +18,8 @@
    #include <winbase.h>
    #include <process.h>
    #include <malloc.h>
@@ -521,7 +481,7 @@ Index: oce/src/OSD/OSD_MemInfo.cxx
      #pragma comment(lib, "Psapi.lib")
    #endif
  #elif (defined(__APPLE__))
-@@ -39,6 +39,18 @@
+@@ -35,6 +35,18 @@
  #include <sstream>
  #include <fstream>
  
@@ -544,7 +504,7 @@ Index: oce/src/OSD/OSD_Process.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Process.cxx
 +++ oce/src/OSD/OSD_Process.cxx
-@@ -235,7 +235,7 @@ Standard_Integer OSD_Process::Error()con
+@@ -230,7 +230,7 @@ Standard_Integer OSD_Process::Error()con
  #include <Quantity_Date.hxx>
  
  #include <OSD_WNT_1.hxx>
@@ -557,7 +517,7 @@ Index: oce/src/OSD/OSD_SharedLibrary.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_SharedLibrary.cxx
 +++ oce/src/OSD/OSD_SharedLibrary.cxx
-@@ -321,9 +321,18 @@ OSD_Function OSD_SharedLibrary :: DlSymb
+@@ -316,9 +316,18 @@ OSD_Function OSD_SharedLibrary :: DlSymb
  
   OSD_Function func = ( OSD_Function )GetProcAddress (  ( HMODULE )myHandle, Name  );
  
@@ -581,7 +541,7 @@ Index: oce/src/OSD/OSD_WNT_1.hxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_WNT_1.hxx
 +++ oce/src/OSD/OSD_WNT_1.hxx
-@@ -69,8 +69,13 @@ enum MB_ITEMTYPE { MBT_BUTTON, MBT_ICON
+@@ -65,8 +65,13 @@ enum MB_ITEMTYPE { MBT_BUTTON, MBT_ICON
  //#define LODWORD( a ) ( DWORD )(   ( ( DWORDLONG )( a ) ) & 0x00000000FFFFFFFF   )
  //#define HIDWORD( a ) ( DWORD )(   ( ( DWORDLONG )( a ) ) >> 32                  )
  
@@ -601,7 +561,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_signal_WNT.cxx
 +++ oce/src/OSD/OSD_signal_WNT.cxx
-@@ -26,6 +26,12 @@
+@@ -21,6 +21,12 @@
  #ifdef NOUSER
  #undef NOUSER
  #endif
@@ -614,7 +574,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
  #include <windows.h>
  
  #include <OSD_Exception_ACCESS_VIOLATION.hxx>
-@@ -55,6 +61,136 @@
+@@ -50,6 +56,136 @@
  #include <malloc.h>
  #endif
  
@@ -751,7 +711,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
  #include <process.h>
  #include <signal.h>
  #include <float.h>
-@@ -212,7 +348,7 @@ static LONG CallHandler (DWORD dwExcepti
+@@ -207,7 +343,7 @@ static LONG CallHandler (DWORD dwExcepti
  
    case EXCEPTION_STACK_OVERFLOW:
  //      cout << "CallHandler : EXCEPTION_STACK_OVERFLOW:" << endl ;
@@ -760,7 +720,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
      // try recovering from stack overflow: available in MS VC++ 7.0
      if (!_resetstkoflw())
        lstrcpy (  buffer, TEXT( "Unrecoverable STACK OVERFLOW" )  );
-@@ -340,7 +476,7 @@ Standard_Integer OSD::WntHandler (const
+@@ -317,7 +453,7 @@ static void SIGWntHandler (int signum, i
  //purpose  : Translate Structural Exceptions into C++ exceptions
  //           Will be used when user's code is compiled with /EHa option
  //=======================================================================
@@ -769,16 +729,16 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
  
  // If this file compiled with the default MSVC options for exception
  // handling (/GX or /EHsc) then the following warning is issued:
-@@ -402,7 +538,7 @@ void OSD::SetSignal (const Standard_Bool
+@@ -392,7 +528,7 @@ void OSD::SetSignal (const Standard_Bool
    fCtrlBrk = Standard_False;
    SetConsoleCtrlHandler (&_osd_ctrl_break_handler, TRUE);
  
 -#ifdef _MSC_VER
 +#if defined(_MSC_VER) || defined(__BORLANDC__)
-   _se_translator_function pOldSeFunc = _set_se_translator (TranslateSE);
+ //  _se_translator_function pOldSeFunc = 
+     _set_se_translator (TranslateSE);
  #endif
- 
-@@ -507,8 +643,10 @@ static LONG __fastcall _osd_raise ( DWOR
+@@ -498,8 +634,10 @@ static LONG __fastcall _osd_raise ( DWOR
      case EXCEPTION_FLT_INVALID_OPERATION:
      case EXCEPTION_FLT_DENORMAL_OPERAND:
      case EXCEPTION_FLT_INEXACT_RESULT:
@@ -793,7 +753,7 @@ Index: oce/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
 +++ oce/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
-@@ -134,6 +134,11 @@ static char getFarestCorner(float d000,
+@@ -130,6 +130,11 @@ static char getFarestCorner(float d000,
      return 8; /* d111 */
  }
  
@@ -809,7 +769,7 @@ Index: oce/src/Poly/Poly_CoherentNode.cxx
 ===================================================================
 --- oce.orig/src/Poly/Poly_CoherentNode.cxx
 +++ oce/src/Poly/Poly_CoherentNode.cxx
-@@ -26,6 +26,8 @@
+@@ -20,6 +20,8 @@
  #pragma warning(disable:4996)
  #endif
  
@@ -822,7 +782,7 @@ Index: oce/src/STEPConstruct/STEPConstruct_AP203Context.cxx
 ===================================================================
 --- oce.orig/src/STEPConstruct/STEPConstruct_AP203Context.cxx
 +++ oce/src/STEPConstruct/STEPConstruct_AP203Context.cxx
-@@ -64,6 +64,10 @@
+@@ -59,6 +59,10 @@
  #include <StepAP203_HArray1OfApprovedItem.hxx>
  #include <StepBasic_ProductCategory.hxx>
  
@@ -837,7 +797,7 @@ Index: oce/src/Standard/Handle_Standard_Transient.hxx
 ===================================================================
 --- oce.orig/src/Standard/Handle_Standard_Transient.hxx
 +++ oce/src/Standard/Handle_Standard_Transient.hxx
-@@ -34,7 +34,7 @@
+@@ -30,7 +30,7 @@
  #include <Standard_Transient_proto.hxx>
  #endif
  
@@ -846,7 +806,7 @@ Index: oce/src/Standard/Handle_Standard_Transient.hxx
  // Disable the warning "conversion from 'unsigned int' to Standard_Transient *"
  #pragma warning (push)
  #pragma warning (disable:4312)
-@@ -246,7 +246,7 @@ inline Standard_Boolean IsEqual (const H
+@@ -242,7 +242,7 @@ inline Standard_Boolean IsEqual (const H
    return theFirst == theSecond;
  }
  
@@ -859,7 +819,7 @@ Index: oce/src/Standard/Standard_Atomic.hxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_Atomic.hxx
 +++ oce/src/Standard/Standard_Atomic.hxx
-@@ -59,11 +59,18 @@ int Standard_Atomic_Decrement (volatile
+@@ -55,11 +55,18 @@ int Standard_Atomic_Decrement (volatile
    return __sync_sub_and_fetch (theValue, 1);
  }
  
@@ -883,7 +843,7 @@ Index: oce/src/Standard/Standard_CString.hxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_CString.hxx
 +++ oce/src/Standard/Standard_CString.hxx
-@@ -33,6 +33,8 @@
+@@ -29,6 +29,8 @@
  
  # ifdef _MSC_VER
  #  define strcasecmp _stricmp
@@ -896,7 +856,7 @@ Index: oce/src/Standard/Standard_MMgrOpt.cxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_MMgrOpt.cxx
 +++ oce/src/Standard/Standard_MMgrOpt.cxx
-@@ -866,7 +866,11 @@ void Standard_MMgrOpt::FreeMemory (Stand
+@@ -855,7 +855,11 @@ void Standard_MMgrOpt::FreeMemory (Stand
      // recover handle to the memory mapping stored just before the block
      const HANDLE * aMBlock = (const HANDLE *)aBlock;
      HANDLE hMap = *(--aMBlock);
@@ -912,7 +872,7 @@ Index: oce/src/Standard/Standard_Macro.hxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_Macro.hxx
 +++ oce/src/Standard/Standard_Macro.hxx
-@@ -35,9 +35,8 @@
+@@ -31,9 +31,8 @@
  // Windows-specific definitions
  //======================================================
  
@@ -924,7 +884,7 @@ Index: oce/src/Standard/Standard_Macro.hxx
  #endif
  
  # if defined(WNT) && !defined(HAVE_NO_DLL)
-@@ -66,7 +65,7 @@
+@@ -62,7 +61,7 @@
  #define WIN32_LEAN_AND_MEAN   /* exclude extra Windows stuff */
  #endif
  #ifndef NOMINMAX
@@ -933,7 +893,7 @@ Index: oce/src/Standard/Standard_Macro.hxx
  #endif
  #ifndef NOMSG
  #define NOMSG NOMSG           /* avoid #define SendMessage etc. */
-@@ -136,9 +135,15 @@
+@@ -132,9 +131,15 @@
  #   if !defined(WNT) || defined(__Standard_DLL) || defined(__FSD_DLL) || defined(__MMgt_DLL) || defined(__OSD_DLL) || defined(__Plugin_DLL) || defined(__Quantity_DLL) || defined(__Resource_DLL) || defined(__SortTools_DLL) || defined(__StdFail_DLL) || defined(__Storage_DLL) || defined(__TColStd_DLL) || defined(__TCollection_DLL) || defined(__TShort_DLL) || defined(__Units_DLL) || defined(__UnitsAPI_DLL) || defined(__Dico_DLL) || defined(__Message_DLL)
  #    define __Standard_API Standard_EXPORT
  #    define __Standard_APIEXTERN Standard_EXPORTEXTERN
@@ -953,7 +913,7 @@ Index: oce/src/Standard/Standard_osd_ffi.c
 ===================================================================
 --- oce.orig/src/Standard/Standard_osd_ffi.c
 +++ oce/src/Standard/Standard_osd_ffi.c
-@@ -94,7 +94,7 @@
+@@ -89,7 +89,7 @@
  /**
  */ 
  /*************************************************************/ 
@@ -966,7 +926,7 @@ Index: oce/src/Standard/Standard_values.h
 ===================================================================
 --- oce.orig/src/Standard/Standard_values.h
 +++ oce/src/Standard/Standard_values.h
-@@ -22,7 +22,7 @@
+@@ -17,7 +17,7 @@
  #ifndef _Standard_values_HeaderFile
  # define _Standard_values_HeaderFile
  
@@ -975,7 +935,7 @@ Index: oce/src/Standard/Standard_values.h
  #error "Wrong compiler options has been detected. Add /DWNT option for proper compilation!!!!!"
  #endif
  
-@@ -45,6 +45,10 @@
+@@ -40,6 +40,10 @@
  # include <limits>
  #endif
  
@@ -990,7 +950,7 @@ Index: oce/src/TObj/TObj_Model.cxx
 ===================================================================
 --- oce.orig/src/TObj/TObj_Model.cxx
 +++ oce/src/TObj/TObj_Model.cxx
-@@ -52,6 +52,8 @@
+@@ -48,6 +48,8 @@
    #include <unistd.h>
  #endif
  
@@ -1003,9 +963,9 @@ Index: oce/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
 ===================================================================
 --- oce.orig/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
 +++ oce/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
-@@ -327,7 +327,11 @@ Standard_Integer BOOPCHK(Draw_Interpreto
+@@ -322,7 +322,11 @@ Standard_Integer BOOPCHK(Draw_Interpreto
+ {
    if (!strcmp(a[0],"tchk")) { 
- #ifdef DEB
  //    Standard_IMPORT extern Standard_Integer TopOpeBRepTool_BOOOPE_CHECK_DEB;
 +#ifdef __BORLANDC__
 +    extern Standard_Integer TopOpeBRepTool_BOOOPE_CHECK_DEB;
@@ -1013,15 +973,15 @@ Index: oce/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
      Standard_IMPORT Standard_Integer TopOpeBRepTool_BOOOPE_CHECK_DEB;
 +#endif
      if ( na >= 2 ) TopOpeBRepTool_BOOOPE_CHECK_DEB = (Draw::Atoi(a[1])) ? 1 : 0;
- #endif
      return 0;
+   }
 Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-@@ -95,6 +95,12 @@
- #endif
- 
+@@ -105,6 +105,12 @@ static const char THE_KEY_DELETE = 127;
+ //==============================================================================
+ //  VIEWER GLOBAL VARIABLES
  //==============================================================================
 +#ifndef max
 +# define max(a, b)  (((a) > (b)) ? (a) : (b))
@@ -1030,20 +990,9 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 +# define min(a, b)  (((a) < (b)) ? (a) : (b)) 
 +#endif
  
- //==============================================================================
- //  VIEWER GLOBAL VARIABLES
-@@ -1196,9 +1202,7 @@ static LRESULT WINAPI ViewerWindowProc(
- //function : ViewerMainLoop
- //purpose  : Get a Event on the view and dispatch it
- //==============================================================================
--
--
--static int ViewerMainLoop(Standard_Integer argc, const char** argv)
-+int ViewerMainLoop(Standard_Integer argc, const char** argv)
- {
- 
-   //cout << "No yet implemented on WNT" << endl;
-@@ -1234,22 +1238,6 @@ static int ViewerMainLoop(Standard_Integ
+ Standard_IMPORT Standard_Boolean Draw_VirtualWindows;
+ Standard_IMPORT Standard_Boolean Draw_Interprete (const char* theCommand);
+@@ -2090,22 +2096,6 @@ int ViewerMainLoop(Standard_Integer argc
  
  #elif !defined(__APPLE__) || defined(MACOSX_USE_GLX)
  
@@ -1065,12 +1014,12 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 -
  int ViewerMainLoop(Standard_Integer argc, const char** argv)
  
- { Standard_Boolean pick = argc > 0;
+ {
 Index: oce/src/Voxel/Voxel_Reader.cxx
 ===================================================================
 --- oce.orig/src/Voxel/Voxel_Reader.cxx
 +++ oce/src/Voxel/Voxel_Reader.cxx
-@@ -27,6 +27,8 @@
+@@ -22,6 +22,8 @@
  
  #include <TCollection_AsciiString.hxx>
  
@@ -1083,7 +1032,7 @@ Index: oce/src/Voxel/Voxel_Writer.cxx
 ===================================================================
 --- oce.orig/src/Voxel/Voxel_Writer.cxx
 +++ oce/src/Voxel/Voxel_Writer.cxx
-@@ -24,6 +24,8 @@
+@@ -19,6 +19,8 @@
  #include <Precision.hxx>
  #include <TCollection_AsciiString.hxx>
  
@@ -1096,7 +1045,7 @@ Index: oce/src/VrmlData/VrmlData_Geometry.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_Geometry.cxx
 +++ oce/src/VrmlData/VrmlData_Geometry.cxx
-@@ -43,6 +43,8 @@
+@@ -37,6 +37,8 @@
  #pragma warning (disable:4996)
  #endif
  
@@ -1109,7 +1058,7 @@ Index: oce/src/VrmlData/VrmlData_Group.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_Group.cxx
 +++ oce/src/VrmlData/VrmlData_Group.cxx
-@@ -34,6 +34,8 @@
+@@ -28,6 +28,8 @@
  #pragma warning (disable:4996)
  #endif
  
@@ -1122,7 +1071,7 @@ Index: oce/src/VrmlData/VrmlData_IndexedFaceSet.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_IndexedFaceSet.cxx
 +++ oce/src/VrmlData/VrmlData_IndexedFaceSet.cxx
-@@ -40,6 +40,8 @@
+@@ -34,6 +34,8 @@
  #pragma warning (disable:4996)
  #endif
  
@@ -1135,7 +1084,7 @@ Index: oce/src/VrmlData/VrmlData_Material.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_Material.cxx
 +++ oce/src/VrmlData/VrmlData_Material.cxx
-@@ -29,6 +29,8 @@
+@@ -24,6 +24,8 @@
  #pragma warning (disable:4996)
  #endif
  
@@ -1148,16 +1097,7 @@ Index: oce/src/VrmlData/VrmlData_Scene.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_Scene.cxx
 +++ oce/src/VrmlData/VrmlData_Scene.cxx
-@@ -53,6 +53,8 @@
- #pragma warning (disable:4996)
- #endif
- 
-+#include <stdio.h>
-+
- #if defined(_MSC_VER)
- # define FMT_SZ_Q "I"
- #elif defined(__GNUC__)
-@@ -107,8 +109,12 @@ const Handle(VrmlData_Node)& VrmlData_Sc
+@@ -92,8 +92,12 @@ const Handle(VrmlData_Node)& VrmlData_Sc
    if (theN.IsNull() == Standard_False)
      if (theN->IsKind (STANDARD_TYPE(VrmlData_WorldInfo)) == Standard_False) {
        myMutex.Lock();
@@ -1176,7 +1116,7 @@ Index: oce/src/VrmlData/VrmlData_ShapeConvert.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_ShapeConvert.cxx
 +++ oce/src/VrmlData/VrmlData_ShapeConvert.cxx
-@@ -300,8 +300,12 @@ void VrmlData_ShapeConvert::Convert (con
+@@ -295,8 +295,12 @@ void VrmlData_ShapeConvert::Convert (con
          if (aTShapeNode.IsNull() == Standard_False) {
            const Handle(VrmlData_ShapeNode) aShapeNode =
              new VrmlData_ShapeNode (myScene, 0L);
@@ -1195,7 +1135,7 @@ Index: oce/src/VrmlData/VrmlData_WorldInfo.cxx
 ===================================================================
 --- oce.orig/src/VrmlData/VrmlData_WorldInfo.cxx
 +++ oce/src/VrmlData/VrmlData_WorldInfo.cxx
-@@ -28,6 +28,8 @@
+@@ -22,6 +22,8 @@
  #pragma warning (disable:4996)
  #endif
  
@@ -1204,100 +1144,11 @@ Index: oce/src/VrmlData/VrmlData_WorldInfo.cxx
  IMPLEMENT_STANDARD_HANDLE  (VrmlData_WorldInfo, VrmlData_Node)
  IMPLEMENT_STANDARD_RTTIEXT (VrmlData_WorldInfo, VrmlData_Node)
  
-Index: oce/src/WNT/EHDC.cxx
-===================================================================
---- oce.orig/src/WNT/EHDC.cxx
-+++ oce/src/WNT/EHDC.cxx
-@@ -23,9 +23,19 @@
- #include <math.h>
- #include <limits>
- 
-+#ifdef __MINGW32__
-+# include <stdlib.h>
-+# include <limits.h>
-+# define min(a,b) ((a)<(b)?(a):(b))
-+#endif
-+
- #define ROUNDL( d ) ( LONG )(  ( d ) + 0.5  )
- #define Y( y )      (  mySize.cy - ( y )  )
- 
-+#ifndef min
-+# define min(a, b)  (((a) < (b)) ? (a) : (b))
-+#endif
-+
- typedef struct _fpoint {
- 
-                 FLOAT x;
-@@ -47,6 +57,8 @@ static void WINAPI _XFORMApplyf  ( PFPOI
- static void WINAPI _RenderPath ( HDC, LPPOINT, PBYTE, int );
- static int  WINAPI _TextPath   ( HDC, int, int, void*, LPPOINT, PBYTE, int, PSIZE, BOOL );
- 
-+VOID CALLBACK ___auxDDAF ( int x, int y, LPARAM lpParam );
-+ 
- EHDC :: EHDC ( HDC hdc, PSIZE szClient ) {
- 
-  _Init ();
-Index: oce/src/WNT/W32_Allocator.hxx
-===================================================================
---- oce.orig/src/WNT/W32_Allocator.hxx
-+++ oce/src/WNT/W32_Allocator.hxx
-@@ -60,7 +60,9 @@
- # define W32F_POUTL 0x20000000
- # define W32F_DFONT 0x10000000
- 
--#define OCC5415 /* avoid warning C4291 in MS VC++ 6.0 */
-+# ifndef __MINGW32__
-+#  define OCC5415 /* avoid warning C4291 in MS VC++ 6.0 */
-+# endif
- 
- typedef enum {
- 
-Index: oce/src/WNT/W95_Allocator.cxx
-===================================================================
---- oce.orig/src/WNT/W95_Allocator.cxx
-+++ oce/src/WNT/W95_Allocator.cxx
-@@ -30,9 +30,21 @@
- #include <math.h>
- #include <limits>
- 
-+#ifdef __MINGW32__
-+# include <stdlib.h>
-+# include <limits.h>
-+#endif
-+
- #define SGN( x )  (   ( x ) > 0 ? 1 : (  ( x ) < 0 ? -1 : 0 )   )
- #define ALLOCATOR (   ( PW95_Allocator )myAllocator             )
- 
-+#ifndef min
-+# define min(a, b)  (((a) < (b)) ? (a) : (b))
-+#endif
-+#ifndef max
-+# define max(a, b)  (((a) > (b)) ? (a) : (b))
-+#endif
-+
- #define MIN4( a, b, c, d ) min(   min(  ( a ), ( b )  ), min(  ( c ), ( d )  )   )
- #define MAX4( a, b, c, d ) max(   max(                                       \
- (  ( a ) == INT_MAX ? INT_MIN : ( a )  ), \
-Index: oce/src/WNT/WNT_Allocator.cxx
-===================================================================
---- oce.orig/src/WNT/WNT_Allocator.cxx
-+++ oce/src/WNT/WNT_Allocator.cxx
-@@ -32,6 +32,10 @@
- #include <limits>
- #include <stdio.h>
- 
-+#ifndef max
-+# define max(a, b)  (((a) > (b)) ? (a) : (b))
-+#endif
-+
- #define ALLOCATOR ( ( PWNT_Allocator )myAllocator )
- 
- static XFORM xfmIdent = { ( FLOAT )0.8660,  ( FLOAT )0.5000,
 Index: oce/src/WNT/WNT_WClass.cxx
 ===================================================================
 --- oce.orig/src/WNT/WNT_WClass.cxx
 +++ oce/src/WNT/WNT_WClass.cxx
-@@ -64,7 +64,7 @@ WNT_WClass::WNT_WClass (
+@@ -59,7 +59,7 @@ WNT_WClass::WNT_WClass (
  
    lpszName = new char[ strlen ( aClassName ) + 1 ];
    strcpy ( (Standard_PCharacter)lpszName, aClassName );
@@ -1310,7 +1161,7 @@ Index: oce/src/WNT/WNT_Window.cxx
 ===================================================================
 --- oce.orig/src/WNT/WNT_Window.cxx
 +++ oce/src/WNT/WNT_Window.cxx
-@@ -231,10 +231,10 @@ Aspect_TypeOfResize WNT_Window :: DoResi
+@@ -227,10 +227,10 @@ Aspect_TypeOfResize WNT_Window :: DoResi
  
    if (wp.showCmd != SW_SHOWMINIMIZED)
    {
@@ -1329,7 +1180,7 @@ Index: oce/src/XmlMDataStd/XmlMDataStd_NamedDataDriver.cxx
 ===================================================================
 --- oce.orig/src/XmlMDataStd/XmlMDataStd_NamedDataDriver.cxx
 +++ oce/src/XmlMDataStd/XmlMDataStd_NamedDataDriver.cxx
-@@ -56,6 +56,8 @@ IMPLEMENT_DOMSTRING (LastRealArrIndex,
+@@ -51,6 +51,8 @@ IMPLEMENT_DOMSTRING (LastRealArrIndex,
  IMPLEMENT_DOMSTRING (ExtString, "string")
  IMPLEMENT_DOMSTRING (Value,     "value")
  
@@ -1342,7 +1193,7 @@ Index: oce/src/XmlMXCAFDoc/XmlMXCAFDoc_DimTolDriver.cxx
 ===================================================================
 --- oce.orig/src/XmlMXCAFDoc/XmlMXCAFDoc_DimTolDriver.cxx
 +++ oce/src/XmlMXCAFDoc/XmlMXCAFDoc_DimTolDriver.cxx
-@@ -24,6 +24,8 @@
+@@ -19,6 +19,8 @@
  #include <TCollection_HAsciiString.hxx>
  #include <TColStd_HArray1OfReal.hxx>
  
@@ -1355,7 +1206,7 @@ Index: oce/src/math/math_DoubleTab.lxx
 ===================================================================
 --- oce.orig/src/math/math_DoubleTab.lxx
 +++ oce/src/math/math_DoubleTab.lxx
-@@ -21,6 +21,10 @@
+@@ -17,6 +17,10 @@
  #include <Standard_OutOfRange.hxx>
  #include <cstring>
  

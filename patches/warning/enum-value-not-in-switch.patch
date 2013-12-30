@@ -14,50 +14,11 @@ Subject: [PATCH] [osx-maverick-warning-fix][switch] Fixes enumeration values
  src/TNaming/TNaming_NamedShape.cxx          | 2 ++
  7 files changed, 16 insertions(+)
 
-Index: oce/src/BRepAlgo/BRepAlgo.cxx
-===================================================================
---- oce.orig/src/BRepAlgo/BRepAlgo.cxx
-+++ oce/src/BRepAlgo/BRepAlgo.cxx
-@@ -464,6 +464,8 @@ TopoDS_Edge  BRepAlgo::ConcatenateWireC0
- 		    }
- 		  break;
- 		}
-+        default:
-+          break;
- 	      } //end of switch and else
- 	  if (Done)
- 	    {
-Index: oce/src/BRepFill/BRepFill_Pipe.cxx
-===================================================================
---- oce.orig/src/BRepFill/BRepFill_Pipe.cxx
-+++ oce/src/BRepFill/BRepFill_Pipe.cxx
-@@ -142,6 +142,8 @@ void BRepFill_Pipe::Perform(const TopoDS
-   case GeomFill_IsDiscreteTrihedron:
-     TLaw = new GeomFill_DiscreteTrihedron();
-     break;
-+  default:
-+    break;
-   }
-   Handle(GeomFill_CurveAndTrihedron) Loc = 
-     new (GeomFill_CurveAndTrihedron) (TLaw);
-Index: oce/src/Contap/Contap_HCurve2dToolGen.gxx
-===================================================================
---- oce.orig/src/Contap/Contap_HCurve2dToolGen.gxx
-+++ oce/src/Contap/Contap_HCurve2dToolGen.gxx
-@@ -48,6 +48,8 @@ Standard_Integer Contap_HCurve2dToolGen:
-       nbs/= U1-U0;
-       if(nbs < 2.0) nbs = 2.;
-       break;
-+    default:
-+      break;
-   }
-   if (nbs>50.)
-     nbs = 50.;
 Index: oce/src/HLRBRep/HLRBRep_Curve.cxx
 ===================================================================
 --- oce.orig/src/HLRBRep/HLRBRep_Curve.cxx
 +++ oce/src/HLRBRep/HLRBRep_Curve.cxx
-@@ -77,6 +77,8 @@ HLRBRep_Curve::Parameter2d (const Standa
+@@ -72,6 +72,8 @@ HLRBRep_Curve::Parameter2d (const Standa
  
      case GeomAbs_Ellipse:
        return P3d + myOX;
@@ -66,33 +27,11 @@ Index: oce/src/HLRBRep/HLRBRep_Curve.cxx
    }
    return P3d;
  }
-Index: oce/src/OpenGl/OpenGl_PrimitiveArray.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_PrimitiveArray.cxx
-+++ oce/src/OpenGl/OpenGl_PrimitiveArray.cxx
-@@ -176,6 +176,8 @@ void OpenGl_PrimitiveArray::DrawArray (T
-     case TelTriangleFansArrayType:
-       glColor3fv (theInteriorColour->rgb);
-       break;
-+    default:
-+      break;
-   }
- 
-   // Temporarily disable environment mapping
-@@ -553,6 +555,8 @@ OpenGl_PrimitiveArray::OpenGl_PrimitiveA
-     case TelTriangleFansArrayType:
-       myDrawMode = GL_TRIANGLE_FAN;
-       break;
-+    default:
-+      break;
-   }
- }
- 
 Index: oce/src/TNaming/TNaming_DeltaOnModification.cxx
 ===================================================================
 --- oce.orig/src/TNaming/TNaming_DeltaOnModification.cxx
 +++ oce/src/TNaming/TNaming_DeltaOnModification.cxx
-@@ -102,6 +102,8 @@ static void LoadNamedShape (TNaming_Buil
+@@ -96,6 +96,8 @@ static void LoadNamedShape (TNaming_Buil
        B.Select(NS,OS);
        break;
      }
@@ -101,16 +40,3 @@ Index: oce/src/TNaming/TNaming_DeltaOnModification.cxx
    }
  }
  
-Index: oce/src/TNaming/TNaming_NamedShape.cxx
-===================================================================
---- oce.orig/src/TNaming/TNaming_NamedShape.cxx
-+++ oce/src/TNaming/TNaming_NamedShape.cxx
-@@ -852,6 +852,8 @@ static const TopoDS_Shape& DummyShapeToS
-       aVRev.Orientation(TopAbs_REVERSED);
-     }
-     return aVRev;
-+  default:
-+    break;
-   }
-   return aVForward;
- }

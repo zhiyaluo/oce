@@ -77,18 +77,6 @@ Index: oce/src/Image/Image_PixMap.cxx
    _mm_free (thePtrAligned);
  #else
    free (thePtrAligned);
-Index: oce/src/InterfaceGraphic/InterfaceGraphic_Cocoa.hxx
-===================================================================
---- oce.orig/src/InterfaceGraphic/InterfaceGraphic_Cocoa.hxx
-+++ oce/src/InterfaceGraphic/InterfaceGraphic_Cocoa.hxx
-@@ -35,6 +35,6 @@
-   #define EXPORT
- #endif
- 
--#endif InterfaceGraphic_CocoaHeader
-+#endif // InterfaceGraphic_CocoaHeader
- 
- #endif // __APPLE__
 Index: oce/src/OpenGl/OpenGl_GlCore11.hxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_GlCore11.hxx
@@ -334,38 +322,6 @@ Index: oce/src/Standard/Standard_Integer.hxx
  
  // ------------------------------------------------------------------
  // IsSimilar : Returns Standard_True if two integers are equal
-Index: oce/src/V3d/V3d_PositionLight.cxx
-===================================================================
---- oce.orig/src/V3d/V3d_PositionLight.cxx
-+++ oce/src/V3d/V3d_PositionLight.cxx
-@@ -46,11 +46,6 @@
- #include <gp_Pnt.hxx>
- #include <gp_Trsf.hxx>
- #include <TCollection_AsciiString.hxx>
--#ifdef WNT
--# include <WNT_Window.hxx>
--#else
--# include <Xw_Window.hxx>
--#endif
- 
- V3d_PositionLight::V3d_PositionLight(const Handle(V3d_Viewer)& VM) : V3d_Light(VM) {
- }
-Index: oce/src/V3d/V3d_SpotLight.cxx
-===================================================================
---- oce.orig/src/V3d/V3d_SpotLight.cxx
-+++ oce/src/V3d/V3d_SpotLight.cxx
-@@ -58,11 +58,6 @@
- #include <gp_Trsf.hxx>
- #include <TCollection_AsciiString.hxx>
- 
--#ifdef WNT
--# include <WNT_Window.hxx>
--#else
--# include <Xw_Window.hxx>
--#endif
- 
- 
- V3d_SpotLight::V3d_SpotLight(const Handle(V3d_Viewer)& VM, const Standard_Real X, const Standard_Real Y, const Standard_Real Z, const V3d_TypeOfOrientation Direction, const Quantity_NameOfColor Name, const Standard_Real A1, const Standard_Real A2, const Standard_Real CN, const Standard_Real AN):V3d_PositionLight(VM) {
 Index: oce/src/ViewerTest/ViewerTest_ViewerCommands_1.mm
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands_1.mm

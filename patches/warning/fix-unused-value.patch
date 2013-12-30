@@ -8,19 +8,6 @@ Subject: [PATCH] [clang-warning-fix][unused-value]
  src/AdvApp2Var/AdvApp2Var_Iso.cxx |    2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
-Index: oce/src/AdvApp2Var/AdvApp2Var_Iso.cxx
-===================================================================
---- oce.orig/src/AdvApp2Var/AdvApp2Var_Iso.cxx
-+++ oce/src/AdvApp2Var/AdvApp2Var_Iso.cxx
-@@ -246,7 +246,7 @@ void AdvApp2Var_Iso::MakeApprox(const Ad
-   //#ifdef DEB
-   //Standard_Real *ERRMOY =
-   //#endif
--    (Standard_Real *) &HERRMOY->ChangeArray2()
-+    (void) &HERRMOY->ChangeArray2()
-                                 (HERRMOY ->LowerRow(),HERRMOY ->LowerCol());
-   Standard_Real *EMYAPP = new Standard_Real[NBSESP];
- //
 Index: oce/src/OpenGl/OpenGl_telem_util.hxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_telem_util.hxx

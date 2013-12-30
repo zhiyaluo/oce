@@ -58,7 +58,7 @@ Index: oce/drv/ExprIntrp/lex.ExprIntrp.c
 ===================================================================
 --- oce.orig/drv/ExprIntrp/lex.ExprIntrp.c
 +++ oce/drv/ExprIntrp/lex.ExprIntrp.c
-@@ -2101,10 +2101,6 @@ extern int yywrap YY_PROTO(( void ));
+@@ -2117,10 +2117,6 @@ extern int yywrap YY_PROTO(( void ));
  #endif
  #endif
  
@@ -69,7 +69,7 @@ Index: oce/drv/ExprIntrp/lex.ExprIntrp.c
  #ifndef yytext_ptr
  static void yy_flex_strncpy YY_PROTO(( char *, yyconst char *, int ));
  #endif
-@@ -2731,51 +2727,6 @@ yy_state_type yy_current_state;
+@@ -2747,51 +2743,6 @@ yy_state_type yy_current_state;
  	}
  
  
@@ -141,7 +141,7 @@ Index: oce/drv/StepFile/lex.step.c
  
  /* Done after the current pattern has been matched and before the
   * corresponding action - sets up yytext.
-@@ -557,10 +555,6 @@ extern int yywrap YY_PROTO(( void ));
+@@ -562,10 +560,6 @@ extern int yywrap YY_PROTO(( void ));
  #endif
  #endif
  
@@ -152,7 +152,7 @@ Index: oce/drv/StepFile/lex.step.c
  #ifndef yytext_ptr
  static void yy_flex_strncpy YY_PROTO(( char *, yyconst char *, int ));
  #endif
-@@ -1279,51 +1273,6 @@ yy_state_type yy_current_state;
+@@ -1284,51 +1278,6 @@ yy_state_type yy_current_state;
  	}
  
  
@@ -204,7 +204,7 @@ Index: oce/drv/StepFile/lex.step.c
  #ifdef __cplusplus
  static int yyinput()
  #else
-@@ -1719,17 +1668,6 @@ static int yy_top_state()
+@@ -1724,17 +1673,6 @@ static int yy_top_state()
  #define YY_EXIT_FAILURE 2
  #endif
  
@@ -222,7 +222,7 @@ Index: oce/drv/StepFile/lex.step.c
  
  
  /* Redefine yyless() so it works in section 3 code. */
-@@ -1794,24 +1732,6 @@ yy_size_t size;
+@@ -1799,24 +1737,6 @@ yy_size_t size;
  	}
  
  #ifdef YY_USE_PROTOS
@@ -247,26 +247,11 @@ Index: oce/drv/StepFile/lex.step.c
  static void yy_flex_free( void *ptr )
  #else
  static void yy_flex_free( ptr )
-Index: oce/src/Draw/Draw_Main.cxx
-===================================================================
---- oce.orig/src/Draw/Draw_Main.cxx
-+++ oce/src/Draw/Draw_Main.cxx
-@@ -91,10 +91,6 @@ Standard_IMPORT Standard_Boolean Draw_In
- 
- // necessary for WNT in C21 only
- static FDraw_InitAppli theDraw_InitAppli; //pointer to the Draw_InitAppli
--static void Draw_InitAppli(Draw_Interpretor& theCommands)
--{
--  theDraw_InitAppli (theCommands);
--}
- #endif
- 
- #ifdef WNT
 Index: oce/src/NCollection/NCollection_IncAllocator.cxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_IncAllocator.cxx
 +++ oce/src/NCollection/NCollection_IncAllocator.cxx
-@@ -97,6 +97,7 @@ Standard_EXPORT void IncAllocator_SetDeb
+@@ -90,6 +90,7 @@ Standard_EXPORT void IncAllocator_SetDeb
   * numbering of allocators.
   */
  //=======================================================================
@@ -274,7 +259,7 @@ Index: oce/src/NCollection/NCollection_IncAllocator.cxx
  static Standard_Size CurrentID = 0;
  static Standard_Size CATCH_ID = 0;
  
-@@ -104,7 +105,6 @@ static Standard_Size CATCH_ID = 0;
+@@ -97,7 +98,6 @@ static Standard_Size CATCH_ID = 0;
  //function : Debug_Create
  //purpose  : Store the allocator address in the internal maps
  //=======================================================================
@@ -282,7 +267,7 @@ Index: oce/src/NCollection/NCollection_IncAllocator.cxx
  static void Debug_Create(Standard_Address theAlloc)
  {
    static Standard_Mutex aMutex;
-@@ -126,7 +126,6 @@ static void Debug_Create(Standard_Addres
+@@ -113,7 +113,6 @@ static void Debug_Create(Standard_Addres
  //function : Debug_Destroy
  //purpose  : Forget the allocator address from the internal maps
  //=======================================================================
@@ -290,12 +275,12 @@ Index: oce/src/NCollection/NCollection_IncAllocator.cxx
  static void Debug_Destroy(Standard_Address theAlloc)
  {
    static Standard_Mutex aMutex;
-@@ -142,7 +141,7 @@ static void Debug_Destroy(Standard_Addre
-   if (isReentrant)
-     aMutex.Unlock();
+@@ -171,7 +170,7 @@ Standard_EXPORT void IncAllocator_PrintA
+            << '\n';
+   aFileOut.close();
  }
 -
 +#endif
  //=======================================================================
- //function : IncAllocator_PrintAlive
- //purpose  : Outputs the alive numbers to the file inc_alive.d
+ //function : NCollection_IncAllocator()
+ //purpose  : Constructor

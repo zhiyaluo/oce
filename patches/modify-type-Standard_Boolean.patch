@@ -389,7 +389,7 @@ Index: oce/src/Adaptor3d/Adaptor3d_IsoCurve.cxx
 ===================================================================
 --- oce.orig/src/Adaptor3d/Adaptor3d_IsoCurve.cxx
 +++ oce/src/Adaptor3d/Adaptor3d_IsoCurve.cxx
-@@ -898,7 +898,7 @@ Standard_Integer Adaptor3d_IsoCurve::Deg
+@@ -896,7 +896,7 @@ Standard_Integer Adaptor3d_IsoCurve::Deg
  
  Standard_Boolean Adaptor3d_IsoCurve::IsRational() const 
  {
@@ -402,31 +402,18 @@ Index: oce/src/BOPDS/BOPDS_IndexRange.lxx
 ===================================================================
 --- oce.orig/src/BOPDS/BOPDS_IndexRange.lxx
 +++ oce/src/BOPDS/BOPDS_IndexRange.lxx
-@@ -93,5 +93,5 @@
+@@ -88,5 +88,5 @@
  //=======================================================================
    inline Standard_Boolean BOPDS_IndexRange::Contains(const Standard_Integer aIndex)const
  {
 -  return (Standard_Boolean)(aIndex>=myFirst && aIndex<=myLast);
 +  return (aIndex>=myFirst && aIndex<=myLast);
  }
-Index: oce/src/BOPTools/BOPTools_AlgoTools.cxx
-===================================================================
---- oce.orig/src/BOPTools/BOPTools_AlgoTools.cxx
-+++ oce/src/BOPTools/BOPTools_AlgoTools.cxx
-@@ -662,7 +662,7 @@ static
-                                                       Handle(BOPInt_Context)& theContext)
- {
-   Standard_Boolean bRet;
--  Standard_Boolean aNbF;
-+  Standard_Integer aNbF;
-   //
-   bRet=Standard_False;
-   //
 Index: oce/src/BRep/BRep_TEdge.cxx
 ===================================================================
 --- oce.orig/src/BRep/BRep_TEdge.cxx
 +++ oce/src/BRep/BRep_TEdge.cxx
-@@ -76,7 +76,7 @@ BRep_TEdge::BRep_TEdge() :
+@@ -70,7 +70,7 @@ BRep_TEdge::BRep_TEdge() :
  
   Standard_Boolean  BRep_TEdge::SameRange()const 
  {
@@ -435,7 +422,7 @@ Index: oce/src/BRep/BRep_TEdge.cxx
  }
  
  
-@@ -99,7 +99,7 @@ BRep_TEdge::BRep_TEdge() :
+@@ -93,7 +93,7 @@ BRep_TEdge::BRep_TEdge() :
  
   Standard_Boolean  BRep_TEdge::Degenerated()const 
  {
@@ -448,7 +435,7 @@ Index: oce/src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx
 ===================================================================
 --- oce.orig/src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx
 +++ oce/src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx
-@@ -412,8 +412,8 @@ TopoDS_Edge BRepBuilderAPI_Sewing::SameP
+@@ -398,8 +398,8 @@ TopoDS_Edge BRepBuilderAPI_Sewing::SameP
        if (locReShape != myReShape) Edge2 = TopoDS::Edge(aTmpShape);
  
        // Calculate relative orientation
@@ -459,7 +446,7 @@ Index: oce/src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx
  
        // Retrieve faces information for the second edge
        TopoDS_Shape bnd2 = oedge2;
-@@ -3230,7 +3230,7 @@ void BRepBuilderAPI_Sewing::Merging(cons
+@@ -3228,7 +3228,7 @@ void BRepBuilderAPI_Sewing::Merging(cons
          if (!nbMerged) MergedWithBound.UnBind(bound);
        }
      }
@@ -468,7 +455,7 @@ Index: oce/src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx
  
      // Merge with cutting sections
      Handle(BRepTools_ReShape) SectionsReShape = new BRepTools_ReShape;
-@@ -3331,7 +3331,7 @@ void BRepBuilderAPI_Sewing::Merging(cons
+@@ -3329,7 +3329,7 @@ void BRepBuilderAPI_Sewing::Merging(cons
          }
        }
      }
@@ -477,7 +464,7 @@ Index: oce/src/BRepBuilderAPI/BRepBuilderAPI_Sewing.cxx
  
      if (!isMerged && !isMergedSplit) {
        // Nothing was merged in this iteration
-@@ -3582,7 +3582,7 @@ Standard_Boolean BRepBuilderAPI_Sewing::
+@@ -3580,7 +3580,7 @@ Standard_Boolean BRepBuilderAPI_Sewing::
          SeqMergedOri.Append(ori);
          if (!myNonmanifold) break;
        }
@@ -490,43 +477,43 @@ Index: oce/src/BRepFill/BRepFill_Sweep.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_Sweep.cxx
 +++ oce/src/BRepFill/BRepFill_Sweep.cxx
-@@ -2094,13 +2094,13 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
- 	// Return data
- 	if (isec >NbLaw) {
- 	  S = TabS(NbLaw, 1);
--	  ureverse = UReverse(NbLaw, 1);
--	  exuv = ExchUV(NbLaw, 1);
-+	  ureverse = (0 != UReverse(NbLaw, 1));
-+	  exuv = (0 != ExchUV(NbLaw, 1));
- 	}
- 	else  {
- 	  S = TabS(isec, 1);
--	  ureverse = UReverse(isec, 1);
--	  exuv = ExchUV(isec, 1);
-+	  ureverse = (0 != UReverse(isec, 1));
-+	  exuv = (0 != ExchUV(isec, 1));
- 	}
- 	S->Bounds(UFirst, ULast, VFirst, VLast);
+@@ -2088,13 +2088,13 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
+       // Return data
+       if (isec >NbLaw) {
+         S = TabS(NbLaw, 1);
+-        ureverse = UReverse(NbLaw, 1);
+-        exuv = ExchUV(NbLaw, 1);
++        ureverse = (0 != UReverse(NbLaw, 1));
++        exuv = (0 != ExchUV(NbLaw, 1));
+       }
+       else {
+         S = TabS(isec, 1);
+-        ureverse = UReverse(isec, 1);
+-        exuv = ExchUV(isec, 1);
++        ureverse = (0 != UReverse(isec, 1));
++        exuv = (0 != ExchUV(isec, 1));
+       }
+       S->Bounds(UFirst, ULast, VFirst, VLast);
  
-@@ -2163,13 +2163,13 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
- 	// Return data
- 	if (isec >NbLaw) {
- 	  S = TabS(NbLaw, NbPath);
--	  ureverse = UReverse(NbLaw, NbPath);
--	  exuv = ExchUV(NbLaw, NbPath);
-+	  ureverse = (0 != UReverse(NbLaw, NbPath));
-+	  exuv = (0 != ExchUV(NbLaw, NbPath));
- 	}
- 	else  {
- 	  S = TabS(isec, NbPath);
--	  ureverse = UReverse(isec, NbPath);
--	  exuv = ExchUV(isec, NbPath);
-+	  ureverse = (0 != UReverse(isec, NbPath));
-+	  exuv = (0 != ExchUV(isec, NbPath));
- 	}
- 	S->Bounds(UFirst, ULast, VFirst, VLast);
+@@ -2157,13 +2157,13 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
+       // Return data
+       if (isec >NbLaw) {
+         S = TabS(NbLaw, NbPath);
+-        ureverse = UReverse(NbLaw, NbPath);
+-        exuv = ExchUV(NbLaw, NbPath);
++        ureverse = (0 != UReverse(NbLaw, NbPath));
++        exuv = (0 != ExchUV(NbLaw, NbPath));
+       }
+       else {
+         S = TabS(isec, NbPath);
+-        ureverse = UReverse(isec, NbPath);
+-        exuv = ExchUV(isec, NbPath);
++        ureverse = (0 != UReverse(isec, NbPath));
++        exuv = (0 != ExchUV(isec, NbPath));
+       }
+       S->Bounds(UFirst, ULast, VFirst, VLast);
  
-@@ -2211,7 +2211,7 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
+@@ -2204,7 +2204,7 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
         ipath++, IPath++) {
      for (isec=1; isec <=NbLaw; isec++) {
        S = TabS(isec, ipath);
@@ -535,7 +522,7 @@ Index: oce/src/BRepFill/BRepFill_Sweep.cxx
        S->Bounds(UFirst, ULast, VFirst, VLast);
        if (UReverse(isec, ipath)) {
  	Standard_Real aux;
-@@ -2440,8 +2440,8 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
+@@ -2434,8 +2434,8 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
  		  TopoDS::Edge(UEdge(isec+1, ipath)),
  		  TopoDS::Edge(VEdge(isec, ipath+1)),
  		  myVEdgesModified,
@@ -550,7 +537,7 @@ Index: oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_TrimShellCorner.cxx
 +++ oce/src/BRepFill/BRepFill_TrimShellCorner.cxx
-@@ -454,7 +454,7 @@ Standard_Boolean MakeFacesNonSec(const S
+@@ -437,7 +437,7 @@ Standard_Boolean MakeFacesNonSec(const S
  
    // search common vertices between uedges. begin
    TopTools_ListOfShape aCommonVertices;
@@ -563,16 +550,16 @@ Index: oce/src/BRepMesh/BRepMesh_Delaun.cxx
 ===================================================================
 --- oce.orig/src/BRepMesh/BRepMesh_Delaun.cxx
 +++ oce/src/BRepMesh/BRepMesh_Delaun.cxx
-@@ -307,7 +307,7 @@ void BRepMesh_Delaun::CreateTriangles (
-     const BRepMesh_Edge& anEdge = GetEdge( anEdges.Key() );
-     Standard_Integer aFirstNode = anEdge.FirstNode();
-     Standard_Integer aLastNode  = anEdge.LastNode();
--    Standard_Boolean isPositive = (Standard_Boolean)thePoly( anEdges.Key() );
-+    Standard_Boolean isPositive = (0 != thePoly( anEdges.Key() ));
-     if ( !isPositive )
-     {
-       Standard_Integer aTmp;
-@@ -1383,7 +1383,7 @@ void  BRepMesh_Delaun::RemoveVertex( con
+@@ -309,7 +309,7 @@ void BRepMesh_Delaun::createTriangles (
+     Standard_Integer     anEdgeId = anEdges.Key();
+     const BRepMesh_Edge& anEdge   = GetEdge( anEdgeId );
+ 
+-    Standard_Boolean isPositive = (Standard_Boolean)thePoly( anEdgeId );
++    Standard_Boolean isPositive = (0 != thePoly( anEdgeId ));
+ 
+     Standard_Integer aNodes[3];
+     if ( isPositive )
+@@ -1961,7 +1961,7 @@ void  BRepMesh_Delaun::RemoveVertex( con
      Standard_Integer aPivotNode = anEdge.LastNode();
      Standard_Integer anEdgeId   = aLoopEdgesIt.Key();
      
@@ -585,7 +572,7 @@ Index: oce/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
 ===================================================================
 --- oce.orig/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
 +++ oce/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
-@@ -973,8 +973,8 @@ void BRepMesh_FastDiscretFace::InternalV
+@@ -969,8 +969,8 @@ void BRepMesh_FastDiscretFace::InternalV
          else {
            //put regular grig for normals
            gp_Dir N1(0,0,1),N2(0,0,1);
@@ -596,7 +583,7 @@ Index: oce/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
  
            Standard_Real anAngle1 = N2.Angle(N1);
  	  if(aSt1 < 1 && aSt2 < 1 && anAngle1 > myAngle ) {
-@@ -1018,8 +1018,8 @@ void BRepMesh_FastDiscretFace::InternalV
+@@ -1014,8 +1014,8 @@ void BRepMesh_FastDiscretFace::InternalV
            //check normal
            //put regular grig for normals
            gp_Dir N1(0,0,1),N2(0,0,1);
@@ -611,7 +598,7 @@ Index: oce/src/BRepTest/BRepTest_CheckCommands.cxx
 ===================================================================
 --- oce.orig/src/BRepTest/BRepTest_CheckCommands.cxx
 +++ oce/src/BRepTest/BRepTest_CheckCommands.cxx
-@@ -362,7 +362,7 @@ static Standard_Integer checkdiff(Draw_I
+@@ -352,7 +352,7 @@ static Standard_Integer checkdiff(Draw_I
        di << syntaxe << "\n";
        return 1;
      }
@@ -620,7 +607,7 @@ Index: oce/src/BRepTest/BRepTest_CheckCommands.cxx
      resu = DBRep::Get(a[narg-2]);
      lastArg=narg-3;
      if (resu.IsNull()) {
-@@ -372,7 +372,7 @@ static Standard_Integer checkdiff(Draw_I
+@@ -362,7 +362,7 @@ static Standard_Integer checkdiff(Draw_I
  	return 1;
        }
        geomCtrl=closedSolid;
@@ -633,20 +620,20 @@ Index: oce/src/BRepTest/BRepTest_CurveCommands.cxx
 ===================================================================
 --- oce.orig/src/BRepTest/BRepTest_CurveCommands.cxx
 +++ oce/src/BRepTest/BRepTest_CurveCommands.cxx
-@@ -1020,7 +1020,7 @@ static Standard_Integer bsplineprof(Draw
+@@ -1013,7 +1013,7 @@ static Standard_Integer bsplineprof(Draw
    not_done = 1 ;
    while (not_done) {
-    
--   dout.Select(id,X,Y,b,wait);
-+   dout.Select(id,X,Y,b,0 != wait);
-    Standard_Real z = dout.Zoom(id);
-    a_point.SetCoord(1,(Standard_Real)X /z) ;
-    a_point.SetCoord(2,(Standard_Real)Y /z) ;
+ 
+-    dout.Select(id,X,Y,b,wait);
++    dout.Select(id,X,Y,b,0 != wait);
+     Standard_Real z = dout.Zoom(id);
+     a_point.SetCoord(1,(Standard_Real)X /z) ;
+     a_point.SetCoord(2,(Standard_Real)Y /z) ;
 Index: oce/src/BRepTest/BRepTest_DraftAngleCommands.cxx
 ===================================================================
 --- oce.orig/src/BRepTest/BRepTest_DraftAngleCommands.cxx
 +++ oce/src/BRepTest/BRepTest_DraftAngleCommands.cxx
-@@ -136,7 +136,7 @@ static Standard_Integer NDEP(Draw_Interp
+@@ -130,7 +130,7 @@ static Standard_Integer NDEP(Draw_Interp
  //#ifdef DEB
  //    Flag = Draw::Atof(a[9*ii+7]); // BUG?? Real -> Boolean ???
  //#else
@@ -659,7 +646,7 @@ Index: oce/src/BRepTest/BRepTest_FeatureCommands.cxx
 ===================================================================
 --- oce.orig/src/BRepTest/BRepTest_FeatureCommands.cxx
 +++ oce/src/BRepTest/BRepTest_FeatureCommands.cxx
-@@ -342,7 +342,7 @@ static Standard_Integer CONTROL(Draw_Int
+@@ -337,7 +337,7 @@ static Standard_Integer CONTROL(Draw_Int
  				Standard_Integer narg, const char** a)
  {
    if (narg >= 2) {
@@ -668,7 +655,7 @@ Index: oce/src/BRepTest/BRepTest_FeatureCommands.cxx
    }
    if (WithControl) {
      theCommands << "Mode avec controle";
-@@ -957,7 +957,7 @@ Standard_Integer offsetparameter(Draw_In
+@@ -952,7 +952,7 @@ Standard_Integer offsetparameter(Draw_In
    if ( n < 4 ) return 1;
    
    TheTolerance = Draw::Atof(a[1]);
@@ -681,7 +668,7 @@ Index: oce/src/BRepTest/BRepTest_FillingCommands.cxx
 ===================================================================
 --- oce.orig/src/BRepTest/BRepTest_FillingCommands.cxx
 +++ oce/src/BRepTest/BRepTest_FillingCommands.cxx
-@@ -672,7 +672,7 @@ static Standard_Integer fillingparam( Dr
+@@ -668,7 +668,7 @@ static Standard_Integer fillingparam( Dr
  	  Degree      = Draw::Atoi( a[2] );
  	  NbPtsOnCur  = Draw::Atoi( a[3] );
  	  NbIter      = Draw::Atoi( a[4] );
@@ -694,20 +681,20 @@ Index: oce/src/BRepTest/BRepTest_SweepCommands.cxx
 ===================================================================
 --- oce.orig/src/BRepTest/BRepTest_SweepCommands.cxx
 +++ oce/src/BRepTest/BRepTest_SweepCommands.cxx
-@@ -534,7 +534,7 @@ static Standard_Integer setsweep(Draw_In
-      else
- 	{  
- 	  TopoDS_Shape Guide = DBRep::Get(a[2],TopAbs_WIRE);
--	  Sweep->SetMode(TopoDS::Wire(Guide), Draw::Atoi(a[3]), Draw::Atoi(a[4]));
-+	  Sweep->SetMode(TopoDS::Wire(Guide), 0 != Draw::Atoi(a[3]), 0 != Draw::Atoi(a[4]));
+@@ -531,7 +531,7 @@ static Standard_Integer setsweep(Draw_In
+           Standard_Integer CurvilinearEquivalence = Draw::Atoi(a[3]);
+           Standard_Integer KeepContact = Draw::Atoi(a[4]);
+           Sweep->SetMode(TopoDS::Wire(Guide),
+-                         CurvilinearEquivalence,
++                         0 != CurvilinearEquivalence,
+                          (BRepFill_TypeOfContact)KeepContact);
  	}
      }
-  
 Index: oce/src/BRepToIGES/BRepToIGES_BREntity.cxx
 ===================================================================
 --- oce.orig/src/BRepToIGES/BRepToIGES_BREntity.cxx
 +++ oce/src/BRepToIGES/BRepToIGES_BREntity.cxx
-@@ -80,8 +80,8 @@ void BRepToIGES_BREntity::Init()
+@@ -76,8 +76,8 @@ void BRepToIGES_BREntity::Init()
  {  
    TheMap = new Transfer_FinderProcess();
    TheUnitFactor = 1.;
@@ -722,7 +709,7 @@ Index: oce/src/BRepToIGESBRep/BRepToIGESBRep_Entity.cxx
 ===================================================================
 --- oce.orig/src/BRepToIGESBRep/BRepToIGESBRep_Entity.cxx
 +++ oce/src/BRepToIGESBRep/BRepToIGESBRep_Entity.cxx
-@@ -753,10 +753,10 @@ Handle(IGESSolid_ManifoldSolid) BRepToIG
+@@ -747,10 +747,10 @@ Handle(IGESSolid_ManifoldSolid) BRepToIG
      FirstShell = GetCasted(IGESSolid_Shell, Seq->Value(1));
      ShellFlag = SeqFlag.Value(1);
      Tab.Nullify();  TabFlag.Nullify();
@@ -739,7 +726,7 @@ Index: oce/src/BinLDrivers/BinLDrivers_DocumentSection.cxx
 ===================================================================
 --- oce.orig/src/BinLDrivers/BinLDrivers_DocumentSection.cxx
 +++ oce/src/BinLDrivers/BinLDrivers_DocumentSection.cxx
-@@ -209,6 +209,6 @@ void BinLDrivers_DocumentSection::ReadTO
+@@ -204,6 +204,6 @@ void BinLDrivers_DocumentSection::ReadTO
  #endif
      theSection.myValue[0] = (Standard_Size)aValue[0];
      theSection.myValue[1] = (Standard_Size)aValue[1];
@@ -751,7 +738,7 @@ Index: oce/src/BinMDataStd/BinMDataStd_ByteArrayDriver.cxx
 ===================================================================
 --- oce.orig/src/BinMDataStd/BinMDataStd_ByteArrayDriver.cxx
 +++ oce/src/BinMDataStd/BinMDataStd_ByteArrayDriver.cxx
-@@ -78,7 +78,7 @@ Standard_Boolean BinMDataStd_ByteArrayDr
+@@ -73,7 +73,7 @@ Standard_Boolean BinMDataStd_ByteArrayDr
      if (! (theSource >> aDeltaValue))
        return Standard_False;
      else
@@ -764,7 +751,7 @@ Index: oce/src/BinMDataStd/BinMDataStd_ExtStringArrayDriver.cxx
 ===================================================================
 --- oce.orig/src/BinMDataStd/BinMDataStd_ExtStringArrayDriver.cxx
 +++ oce/src/BinMDataStd/BinMDataStd_ExtStringArrayDriver.cxx
-@@ -92,7 +92,7 @@ Standard_Boolean BinMDataStd_ExtStringAr
+@@ -87,7 +87,7 @@ Standard_Boolean BinMDataStd_ExtStringAr
  	    return Standard_False;
  	  }
        else
@@ -777,7 +764,7 @@ Index: oce/src/BinMDataStd/BinMDataStd_IntPackedMapDriver.cxx
 ===================================================================
 --- oce.orig/src/BinMDataStd/BinMDataStd_IntPackedMapDriver.cxx
 +++ oce/src/BinMDataStd/BinMDataStd_IntPackedMapDriver.cxx
-@@ -96,7 +96,7 @@ Standard_Boolean BinMDataStd_IntPackedMa
+@@ -90,7 +90,7 @@ Standard_Boolean BinMDataStd_IntPackedMa
      if (! (Source >> aDeltaValue))
        return Standard_False;
      else
@@ -790,7 +777,7 @@ Index: oce/src/BinMDataStd/BinMDataStd_IntegerArrayDriver.cxx
 ===================================================================
 --- oce.orig/src/BinMDataStd/BinMDataStd_IntegerArrayDriver.cxx
 +++ oce/src/BinMDataStd/BinMDataStd_IntegerArrayDriver.cxx
-@@ -76,7 +76,7 @@ Standard_Boolean BinMDataStd_IntegerArra
+@@ -71,7 +71,7 @@ Standard_Boolean BinMDataStd_IntegerArra
      if (! (theSource >> aDeltaValue))
        return Standard_False;
      else
@@ -803,7 +790,7 @@ Index: oce/src/BinMDataStd/BinMDataStd_RealArrayDriver.cxx
 ===================================================================
 --- oce.orig/src/BinMDataStd/BinMDataStd_RealArrayDriver.cxx
 +++ oce/src/BinMDataStd/BinMDataStd_RealArrayDriver.cxx
-@@ -76,7 +76,7 @@ Standard_Boolean BinMDataStd_RealArrayDr
+@@ -71,7 +71,7 @@ Standard_Boolean BinMDataStd_RealArrayDr
      if (! (theSource >> aDeltaValue))
        return Standard_False;
      else
@@ -816,7 +803,7 @@ Index: oce/src/BinMDataXtd/BinMDataXtd_ConstraintDriver.cxx
 ===================================================================
 --- oce.orig/src/BinMDataXtd/BinMDataXtd_ConstraintDriver.cxx
 +++ oce/src/BinMDataXtd/BinMDataXtd_ConstraintDriver.cxx
-@@ -124,8 +124,8 @@ Standard_Boolean BinMDataXtd_ConstraintD
+@@ -120,8 +120,8 @@ Standard_Boolean BinMDataXtd_ConstraintD
    if (! (theSource >> flags))
      return Standard_False;
    aC->Verified( flags & 1);
@@ -831,7 +818,7 @@ Index: oce/src/BinMDataXtd/BinMDataXtd_PatternStdDriver.cxx
 ===================================================================
 --- oce.orig/src/BinMDataXtd/BinMDataXtd_PatternStdDriver.cxx
 +++ oce/src/BinMDataXtd/BinMDataXtd_PatternStdDriver.cxx
-@@ -69,7 +69,7 @@ Standard_Boolean BinMDataXtd_PatternStdD
+@@ -65,7 +65,7 @@ Standard_Boolean BinMDataXtd_PatternStdD
    if (! (theSource >> revFlags))
      return Standard_False;
    aP->Axis1Reversed( revFlags & 1 );
@@ -844,7 +831,7 @@ Index: oce/src/BinMPrsStd/BinMPrsStd_AISPresentationDriver.cxx
 ===================================================================
 --- oce.orig/src/BinMPrsStd/BinMPrsStd_AISPresentationDriver.cxx
 +++ oce/src/BinMPrsStd/BinMPrsStd_AISPresentationDriver.cxx
-@@ -60,7 +60,7 @@ Standard_Boolean BinMPrsStd_AISPresentat
+@@ -54,7 +54,7 @@ Standard_Boolean BinMPrsStd_AISPresentat
  //Display status
    Standard_Boolean ok = theSource >> aValue;
    if (!ok) return ok;
@@ -857,7 +844,7 @@ Index: oce/src/BinObjMgt/BinObjMgt_Persistent.lxx
 ===================================================================
 --- oce.orig/src/BinObjMgt/BinObjMgt_Persistent.lxx
 +++ oce/src/BinObjMgt/BinObjMgt_Persistent.lxx
-@@ -232,6 +232,6 @@ inline const BinObjMgt_Persistent& BinOb
+@@ -227,6 +227,6 @@ inline const BinObjMgt_Persistent& BinOb
  //  Standard_Integer anIntVal = (Standard_Integer) theValue;
    Standard_Integer anIntVal;
    GetInteger (anIntVal);
@@ -869,7 +856,7 @@ Index: oce/src/BinTools/BinTools.cxx
 ===================================================================
 --- oce.orig/src/BinTools/BinTools.cxx
 +++ oce/src/BinTools/BinTools.cxx
-@@ -131,6 +131,6 @@ Standard_IStream& BinTools::GetExtChar(S
+@@ -126,6 +126,6 @@ Standard_IStream& BinTools::GetExtChar(S
  
  Standard_IStream& BinTools::GetBool(Standard_IStream& IS, Standard_Boolean& aValue)
  {
@@ -881,7 +868,7 @@ Index: oce/src/Bnd/Bnd_Box.cxx
 ===================================================================
 --- oce.orig/src/Bnd/Bnd_Box.cxx
 +++ oce/src/Bnd/Bnd_Box.cxx
-@@ -295,7 +295,7 @@ void Bnd_Box::OpenZmax ()
+@@ -291,7 +291,7 @@ void Bnd_Box::OpenZmax ()
  
  Standard_Boolean Bnd_Box::IsOpenXmin () const
  {
@@ -890,7 +877,7 @@ Index: oce/src/Bnd/Bnd_Box.cxx
  }
  
  //=======================================================================
-@@ -305,7 +305,7 @@ Standard_Boolean Bnd_Box::IsOpenXmin ()
+@@ -301,7 +301,7 @@ Standard_Boolean Bnd_Box::IsOpenXmin ()
  
  Standard_Boolean Bnd_Box::IsOpenXmax () const
  {
@@ -899,7 +886,7 @@ Index: oce/src/Bnd/Bnd_Box.cxx
  }
  
  //=======================================================================
-@@ -315,7 +315,7 @@ Standard_Boolean Bnd_Box::IsOpenXmax ()
+@@ -311,7 +311,7 @@ Standard_Boolean Bnd_Box::IsOpenXmax ()
  
  Standard_Boolean Bnd_Box::IsOpenYmin () const
  {
@@ -908,7 +895,7 @@ Index: oce/src/Bnd/Bnd_Box.cxx
  }
  
  //=======================================================================
-@@ -325,7 +325,7 @@ Standard_Boolean Bnd_Box::IsOpenYmin ()
+@@ -321,7 +321,7 @@ Standard_Boolean Bnd_Box::IsOpenYmin ()
  
  Standard_Boolean Bnd_Box::IsOpenYmax () const
  {
@@ -917,7 +904,7 @@ Index: oce/src/Bnd/Bnd_Box.cxx
  }
  
  //=======================================================================
-@@ -335,7 +335,7 @@ Standard_Boolean Bnd_Box::IsOpenYmax ()
+@@ -331,7 +331,7 @@ Standard_Boolean Bnd_Box::IsOpenYmax ()
  
  Standard_Boolean Bnd_Box::IsOpenZmin () const
  {
@@ -926,7 +913,7 @@ Index: oce/src/Bnd/Bnd_Box.cxx
  }
  
  //=======================================================================
-@@ -345,7 +345,7 @@ Standard_Boolean Bnd_Box::IsOpenZmin ()
+@@ -341,7 +341,7 @@ Standard_Boolean Bnd_Box::IsOpenZmin ()
  
  Standard_Boolean Bnd_Box::IsOpenZmax () const
  {
@@ -939,7 +926,7 @@ Index: oce/src/Bnd/Bnd_Box2d.lxx
 ===================================================================
 --- oce.orig/src/Bnd/Bnd_Box2d.lxx
 +++ oce/src/Bnd/Bnd_Box2d.lxx
-@@ -151,7 +151,7 @@ inline void Bnd_Box2d::OpenYmax ()
+@@ -146,7 +146,7 @@ inline void Bnd_Box2d::OpenYmax ()
  //=======================================================================
  
  inline Standard_Boolean Bnd_Box2d::IsOpenXmin () const
@@ -948,7 +935,7 @@ Index: oce/src/Bnd/Bnd_Box2d.lxx
  
  //=======================================================================
  //function : IsOpenXmax
-@@ -159,7 +159,7 @@ inline Standard_Boolean Bnd_Box2d::IsOpe
+@@ -154,7 +154,7 @@ inline Standard_Boolean Bnd_Box2d::IsOpe
  //=======================================================================
  
  inline Standard_Boolean Bnd_Box2d::IsOpenXmax () const
@@ -957,7 +944,7 @@ Index: oce/src/Bnd/Bnd_Box2d.lxx
  
  //=======================================================================
  //function : IsOpenYmin
-@@ -167,7 +167,7 @@ inline Standard_Boolean Bnd_Box2d::IsOpe
+@@ -162,7 +162,7 @@ inline Standard_Boolean Bnd_Box2d::IsOpe
  //=======================================================================
  
  inline Standard_Boolean Bnd_Box2d::IsOpenYmin () const
@@ -966,7 +953,7 @@ Index: oce/src/Bnd/Bnd_Box2d.lxx
  
  //=======================================================================
  //function : IsOpenYmax
-@@ -175,7 +175,7 @@ inline Standard_Boolean Bnd_Box2d::IsOpe
+@@ -170,7 +170,7 @@ inline Standard_Boolean Bnd_Box2d::IsOpe
  //=======================================================================
  
  inline Standard_Boolean Bnd_Box2d::IsOpenYmax () const
@@ -979,7 +966,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder.cdl
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder.cdl
 +++ oce/src/ChFi3d/ChFi3d_Builder.cdl
-@@ -279,7 +279,7 @@ is
+@@ -272,7 +272,7 @@ is
  	      Forward         : Boolean from Standard;
                RecOnS1,RecOnS2 : Boolean from Standard;
                Soldep          : Vector from math;
@@ -988,7 +975,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder.cdl
      returns  Boolean
      is deferred protected;	
  
-@@ -525,7 +525,7 @@ is
+@@ -518,7 +518,7 @@ is
                  Forward         : Boolean from Standard;
                  RecOnS1,RecOnS2 : Boolean from Standard;
                  Soldep          : in  out  Vector from math;
@@ -997,7 +984,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder.cdl
                  Surf1,Surf2     : in  out  HSurface from BRepAdaptor)
      is protected;
       
-@@ -546,7 +546,7 @@ is
+@@ -539,7 +539,7 @@ is
                  Forward         : Boolean from Standard;
                  RecOnS1,RecOnS2 : Boolean from Standard;
                  Soldep          : Vector from math;
@@ -1006,7 +993,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder.cdl
      returns  Boolean
      is deferred protected;	
      ---Purpose: Method, implemented in the inheritants, calculating
-@@ -663,7 +663,7 @@ is
+@@ -656,7 +656,7 @@ is
      
      PerformTwoCornerbyInter(me    : in out ; 
                              Index : Integer from Standard)
@@ -1015,7 +1002,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder.cdl
      is static;
  
      PerformTwoCorner(me    : in out ; 
-@@ -805,7 +805,7 @@ is
+@@ -798,7 +798,7 @@ is
                  Inside,Appro    : Boolean from Standard;
                  Forward         : Boolean from Standard;
                  Soldep          : Vector from math;
@@ -1028,7 +1015,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_2.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder_2.cxx
 +++ oce/src/ChFi3d/ChFi3d_Builder_2.cxx
-@@ -608,8 +608,8 @@ CallPerformSurf(Handle(ChFiDS_Stripe)&
+@@ -603,8 +603,8 @@ CallPerformSurf(Handle(ChFiDS_Stripe)&
  		const Standard_Boolean              RecOnS1,
  		const Standard_Boolean              RecOnS2,
  		math_Vector&                        Soldep,
@@ -1039,7 +1026,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_2.cxx
                  Handle(BRepAdaptor_HSurface)&       Surf1,
  		Handle(BRepAdaptor_HSurface)&       Surf2) 
  {
-@@ -1741,8 +1741,8 @@ static void ChFi3d_Purge (Handle(ChFiDS_
+@@ -1736,8 +1736,8 @@ static void ChFi3d_Purge (Handle(ChFiDS_
  			  const ChFiDS_CommonPoint& VRef,
  			  const Standard_Boolean    isfirst,
  			  const Standard_Integer    ons,
@@ -1050,7 +1037,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_2.cxx
  {
    if (isfirst) intf = 1; else intl = 1; // End.
    Standard_Integer opp = 3-ons;
-@@ -1989,7 +1989,7 @@ void ChFi3d_Builder::PerformSetOfSurfOnE
+@@ -1984,7 +1984,7 @@ void ChFi3d_Builder::PerformSetOfSurfOnE
    }
    Standard_Real         MaxStep  = (bidl-bidf)*0.05/nbed;
    Standard_Real         Firstsov = 0.;
@@ -1063,7 +1050,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_6.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder_6.cxx
 +++ oce/src/ChFi3d/ChFi3d_Builder_6.cxx
-@@ -1454,8 +1454,8 @@ Standard_Boolean ChFi3d_Builder::Compute
+@@ -1450,8 +1450,8 @@ Standard_Boolean ChFi3d_Builder::Compute
   const Standard_Boolean Appro,
   const Standard_Boolean Forward,
   const math_Vector& Soldep,
@@ -1078,7 +1065,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_C1.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder_C1.cxx
 +++ oce/src/ChFi3d/ChFi3d_Builder_C1.cxx
-@@ -2636,7 +2636,7 @@ void ChFi3d_Builder::PerformIntersection
+@@ -2637,7 +2637,7 @@ void ChFi3d_Builder::PerformIntersection
                Pl=C1->Value(C1->LastParameter());
                //Standard_Boolean sens;
                sens=Pl.Distance(pext)<tolpt;
@@ -1087,7 +1074,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_C1.cxx
                csau=C1;
              }
            }
-@@ -2646,7 +2646,7 @@ void ChFi3d_Builder::PerformIntersection
+@@ -2647,7 +2647,7 @@ void ChFi3d_Builder::PerformIntersection
                Pl=C1->Value(C1->LastParameter());
                //Standard_Boolean sens;
                sens=Pl.Distance(pext)<tolpt;
@@ -1100,7 +1087,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_C2.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder_C2.cxx
 +++ oce/src/ChFi3d/ChFi3d_Builder_C2.cxx
-@@ -136,7 +136,7 @@ static void Reduce(const Standard_Real&
+@@ -131,7 +131,7 @@ static void Reduce(const Standard_Real&
  //           path is used; 3D curve and 2 pcurves are approximated.
  //=======================================================================
  
@@ -1113,7 +1100,7 @@ Index: oce/src/ChFi3d/ChFi3d_ChBuilder.cdl
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_ChBuilder.cdl
 +++ oce/src/ChFi3d/ChFi3d_ChBuilder.cdl
-@@ -204,7 +204,7 @@ is
+@@ -199,7 +199,7 @@ is
  		  Forward         : Boolean from Standard;
  	          RecOnS1,RecOnS2 : Boolean from Standard;
  		  Soldep          : Vector from math;
@@ -1122,7 +1109,7 @@ Index: oce/src/ChFi3d/ChFi3d_ChBuilder.cdl
  	returns  Boolean
      	is protected;
  
-@@ -314,7 +314,7 @@ is
+@@ -309,7 +309,7 @@ is
                  Forward         : Boolean from Standard;
                  RecOnS1,RecOnS2 : Boolean from Standard;
                  Soldep          : Vector from math;
@@ -1135,7 +1122,7 @@ Index: oce/src/ChFi3d/ChFi3d_ChBuilder.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_ChBuilder.cxx
 +++ oce/src/ChFi3d/ChFi3d_ChBuilder.cxx
-@@ -801,8 +801,8 @@ ChFi3d_ChBuilder::SimulSurf(Handle(ChFiD
+@@ -796,8 +796,8 @@ ChFi3d_ChBuilder::SimulSurf(Handle(ChFiD
  			    const Standard_Boolean              RecOnS1,
  			    const Standard_Boolean              RecOnS2,
  			    const math_Vector&                  Soldep,
@@ -1146,7 +1133,7 @@ Index: oce/src/ChFi3d/ChFi3d_ChBuilder.cxx
       
  {
    Handle(ChFiDS_ChamfSpine) 
-@@ -1575,8 +1575,8 @@ ChFi3d_ChBuilder::PerformSurf(ChFiDS_Seq
+@@ -1570,8 +1570,8 @@ ChFi3d_ChBuilder::PerformSurf(ChFiDS_Seq
  			      const Standard_Boolean              RecOnS1,
  			      const Standard_Boolean              RecOnS2,
  			      const math_Vector&                  Soldep,
@@ -1161,7 +1148,7 @@ Index: oce/src/ChFi3d/ChFi3d_ChBuilder_C3.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_ChBuilder_C3.cxx
 +++ oce/src/ChFi3d/ChFi3d_ChBuilder_C3.cxx
-@@ -95,7 +95,7 @@
+@@ -89,7 +89,7 @@
  //           points PntA, PntB, PntC
  //=======================================================================
  
@@ -1174,7 +1161,7 @@ Index: oce/src/ChFi3d/ChFi3d_FilBuilder.cdl
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_FilBuilder.cdl
 +++ oce/src/ChFi3d/ChFi3d_FilBuilder.cdl
-@@ -254,7 +254,7 @@ is
+@@ -248,7 +248,7 @@ is
  		  Forward         : Boolean from Standard;
  	          RecOnS1,RecOnS2 : Boolean from Standard;
  		  Soldep          : Vector from math;
@@ -1183,7 +1170,7 @@ Index: oce/src/ChFi3d/ChFi3d_FilBuilder.cdl
          returns  Boolean  is protected;
  
          SimulSurf(me                   : in out; 
-@@ -361,7 +361,7 @@ is
+@@ -355,7 +355,7 @@ is
                      Forward         : Boolean from Standard;
  	            RecOnS1,RecOnS2 : Boolean from Standard;
  		    Soldep          : Vector from math;
@@ -1196,7 +1183,7 @@ Index: oce/src/ChFi3d/ChFi3d_FilBuilder.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_FilBuilder.cxx
 +++ oce/src/ChFi3d/ChFi3d_FilBuilder.cxx
-@@ -612,8 +612,8 @@ ChFi3d_FilBuilder::SimulSurf(Handle(ChFi
+@@ -608,8 +608,8 @@ ChFi3d_FilBuilder::SimulSurf(Handle(ChFi
  			     const Standard_Boolean              RecOnS1,
  			     const Standard_Boolean              RecOnS2,
  			     const math_Vector&                  Soldep,
@@ -1207,7 +1194,7 @@ Index: oce/src/ChFi3d/ChFi3d_FilBuilder.cxx
  {
    Handle(ChFiDS_FilSpine) fsp = Handle(ChFiDS_FilSpine)::DownCast(Spine);
    if(fsp.IsNull()) Standard_ConstructionError::Raise
-@@ -1241,8 +1241,8 @@ ChFi3d_FilBuilder::PerformSurf(ChFiDS_Se
+@@ -1237,8 +1237,8 @@ ChFi3d_FilBuilder::PerformSurf(ChFiDS_Se
  			       const Standard_Boolean              RecOnS1,
  			       const Standard_Boolean              RecOnS2,
  			       const math_Vector&                  Soldep,
@@ -1222,7 +1209,7 @@ Index: oce/src/ChFi3d/ChFi3d_FilBuilder_C3.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_FilBuilder_C3.cxx
 +++ oce/src/ChFi3d/ChFi3d_FilBuilder_C3.cxx
-@@ -596,7 +596,7 @@ void ChFi3d_FilBuilder::PerformThreeCorn
+@@ -590,7 +590,7 @@ void ChFi3d_FilBuilder::PerformThreeCorn
  	finv.Set(Rdeb,choix);
  	Standard_Real TolGuide = cornerspine->Resolution(tolesp); 
  	
@@ -1231,7 +1218,7 @@ Index: oce/src/ChFi3d/ChFi3d_FilBuilder_C3.cxx
  	done = ComputeData(coin,cornerspine,NullSpine,lin,Fac,IFac,Surf,ISurf,
  			   func,finv,ffi,pasmax,locfleche,TolGuide,ffi,lla,
  			   0,0,1,Soldep,intf,intl,Gd1,Gd2,Gf1,Gf2,0,1);
-@@ -618,7 +618,7 @@ void ChFi3d_FilBuilder::PerformThreeCorn
+@@ -612,7 +612,7 @@ void ChFi3d_FilBuilder::PerformThreeCorn
  	func.Set(myShape);
  	finv.Set(choix);
  	Standard_Real TolGuide = cornerspine->Resolution(tolesp);
@@ -1244,7 +1231,7 @@ Index: oce/src/ChFiDS/ChFiDS_SurfData.lxx
 ===================================================================
 --- oce.orig/src/ChFiDS/ChFiDS_SurfData.lxx
 +++ oce/src/ChFiDS/ChFiDS_SurfData.lxx
-@@ -58,7 +58,8 @@ inline Standard_Integer  ChFiDS_SurfData
+@@ -52,7 +52,8 @@ inline Standard_Integer  ChFiDS_SurfData
  
  inline void ChFiDS_SurfData::SetIndexOfC1(const Standard_Integer Index)
  {
@@ -1254,7 +1241,7 @@ Index: oce/src/ChFiDS/ChFiDS_SurfData.lxx
  }
  
  //=======================================================================
-@@ -99,7 +100,8 @@ inline Standard_Integer  ChFiDS_SurfData
+@@ -93,7 +94,8 @@ inline Standard_Integer  ChFiDS_SurfData
  
  inline void ChFiDS_SurfData::SetIndexOfC2(const Standard_Integer Index)
  {
@@ -1268,7 +1255,7 @@ Index: oce/src/DDataStd/DDataStd_BasicCommands.cxx
 ===================================================================
 --- oce.orig/src/DDataStd/DDataStd_BasicCommands.cxx
 +++ oce/src/DDataStd/DDataStd_BasicCommands.cxx
-@@ -444,7 +444,7 @@ static Standard_Integer DDataStd_SetIntA
+@@ -440,7 +440,7 @@ static Standard_Integer DDataStd_SetIntA
    Standard_Integer isDelta = Draw::Atoi(arg[3]);
    Standard_Integer From = Draw::Atoi(arg[4]), To = Draw::Atoi( arg[5] ), j;
    di << "Array of Standard_Integer with bounds from = " << From  << " to = " << To  << "\n";
@@ -1277,7 +1264,7 @@ Index: oce/src/DDataStd/DDataStd_BasicCommands.cxx
    
    j = 6;
    for(Standard_Integer i = From; i<=To; i++) {
-@@ -562,7 +562,7 @@ static Standard_Integer DDataStd_SetIntA
+@@ -558,7 +558,7 @@ static Standard_Integer DDataStd_SetIntA
    Standard_Integer isDelta = Draw::Atoi(arg[3]);
    Standard_Integer From = Draw::Atoi(arg[4]), To = Draw::Atoi( arg[5] ), j;
    di << "Array of Standard_Integer with bounds from = " << From  << " to = " << To  << "\n";
@@ -1286,7 +1273,7 @@ Index: oce/src/DDataStd/DDataStd_BasicCommands.cxx
    
    j = 6;
    Standard_Integer k = 100;
-@@ -591,7 +591,7 @@ static Standard_Integer DDataStd_SetReal
+@@ -587,7 +587,7 @@ static Standard_Integer DDataStd_SetReal
   
    Standard_Integer From = Draw::Atoi(arg[4]), To = Draw::Atoi( arg[5] ), j;
    di << " Array of Standard_Real with bounds from = " << From  << " to = " << To  << "\n";
@@ -1295,7 +1282,7 @@ Index: oce/src/DDataStd/DDataStd_BasicCommands.cxx
    
    j = 6;
    for(Standard_Integer i = From; i<=To; i++) { 
-@@ -712,7 +712,7 @@ static Standard_Integer DDataStd_SetVari
+@@ -708,7 +708,7 @@ static Standard_Integer DDataStd_SetVari
      const char* aUnits = arg[4];
      aV->Unit(Standard_CString(aUnits));
  
@@ -1304,7 +1291,7 @@ Index: oce/src/DDataStd/DDataStd_BasicCommands.cxx
      return 0; 
    }
  
-@@ -918,7 +918,7 @@ static Standard_Integer DDataStd_SetExtS
+@@ -914,7 +914,7 @@ static Standard_Integer DDataStd_SetExtS
  
    Standard_Integer From = Draw::Atoi(arg[4]), To = Draw::Atoi( arg[5] ), j;
    di << "Array of ExtString with bounds from = " << From  << " to = " << To  << "\n";
@@ -1313,7 +1300,7 @@ Index: oce/src/DDataStd/DDataStd_BasicCommands.cxx
    
    j = 6;
    for(Standard_Integer i = From; i<=To; i++) {
-@@ -1151,7 +1151,7 @@ static Standard_Integer DDataStd_SetByte
+@@ -1143,7 +1143,7 @@ static Standard_Integer DDataStd_SetByte
      Standard_Integer isDelta = Draw::Atoi(arg[3]);
      Standard_Integer From = Draw::Atoi(arg[4]), To = Draw::Atoi( arg[5] ), j;
      di << "Array of Standard_Integer with bounds from = " << From  << " to = " << To  << "\n";
@@ -1321,8 +1308,8 @@ Index: oce/src/DDataStd/DDataStd_BasicCommands.cxx
 +    Handle(TDataStd_ByteArray) A = TDataStd_ByteArray::Set(label, From, To, 0 != isDelta);
      
      j = 6;
-     for(Standard_Integer i = From; i<=To; i++) {
-@@ -1280,7 +1280,7 @@ static Standard_Integer DDataStd_SetIntP
+     for(Standard_Integer i = From; i<=To; ++i) {
+@@ -1536,7 +1536,7 @@ static Standard_Integer DDataStd_SetIntP
      Standard_Integer aNum = nb - 4;
      Handle(TDataStd_IntPackedMap) anAtt;
      if(!aLabel.FindAttribute(TDataStd_IntPackedMap::GetID(), anAtt))
@@ -1331,7 +1318,7 @@ Index: oce/src/DDataStd/DDataStd_BasicCommands.cxx
      if(anAtt.IsNull()) {
        di << "IntPackedMap attribute is not found or not set"  << "\n";
        return 1;}
-@@ -1480,7 +1480,7 @@ static Standard_Integer DDataStd_SetIntP
+@@ -1736,7 +1736,7 @@ static Standard_Integer DDataStd_SetIntP
      Standard_Integer aNum = Draw::Atoi(arg[4]);
      Handle(TDataStd_IntPackedMap) anAtt;
      if(!aLabel.FindAttribute(TDataStd_IntPackedMap::GetID(), anAtt))
@@ -1344,7 +1331,7 @@ Index: oce/src/DDataStd/DDataStd_TreeCommands.cxx
 ===================================================================
 --- oce.orig/src/DDataStd/DDataStd_TreeCommands.cxx
 +++ oce/src/DDataStd/DDataStd_TreeCommands.cxx
-@@ -387,7 +387,7 @@ static Standard_Integer DDataStd_ChildNo
+@@ -381,7 +381,7 @@ static Standard_Integer DDataStd_ChildNo
    if (n >= 4) {
      Handle(TDF_Data) DF;
      if (!DDF::GetDF(a[1],DF)) return 1;
@@ -1353,7 +1340,7 @@ Index: oce/src/DDataStd/DDataStd_TreeCommands.cxx
      Handle(TDataStd_TreeNode) TN, Value;
  
      Standard_GUID ID;
-@@ -450,7 +450,7 @@ static Standard_Integer DDataStd_InitChi
+@@ -444,7 +444,7 @@ static Standard_Integer DDataStd_InitChi
      }
  
      if (!DDF::Find(DF, a[2], ID, TN)) return 1; 
@@ -1366,7 +1353,7 @@ Index: oce/src/DNaming/DNaming.cxx
 ===================================================================
 --- oce.orig/src/DNaming/DNaming.cxx
 +++ oce/src/DNaming/DNaming.cxx
-@@ -331,7 +331,7 @@ static Standard_Boolean GetDangleShapes(
+@@ -326,7 +326,7 @@ static Standard_Boolean GetDangleShapes(
      const TopTools_ListOfShape& ancestors = subShapeAndAncestors.FindFromIndex(i);
      if (ancestors.Extent() == 1) Dangles.Bind(ancestors.First(), mayBeDangle);
    }
@@ -1379,7 +1366,7 @@ Index: oce/src/DNaming/DNaming_BasicCommands.cxx
 ===================================================================
 --- oce.orig/src/DNaming/DNaming_BasicCommands.cxx
 +++ oce/src/DNaming/DNaming_BasicCommands.cxx
-@@ -388,7 +388,7 @@ static Standard_Integer Collect (Draw_In
+@@ -383,7 +383,7 @@ static Standard_Integer Collect (Draw_In
      if (!DDF::GetDF(arg[1],DF)) return 1;
      if (!DDF::Find(DF,arg[2],TNaming_NamedShape::GetID(),A)) return 1;
      if (nb >= 4) {
@@ -1388,18 +1375,11 @@ Index: oce/src/DNaming/DNaming_BasicCommands.cxx
      }
      TNaming_Tool::Collect(A,MNS,OnlyModif);
      for (TNaming_MapIteratorOfMapOfNamedShape it(MNS); it.More(); it.Next()) {
-@@ -497,4 +497,4 @@ void  DNaming::BasicCommands(Draw_Interp
-   theCommands.Add("Collect",     "Collect  df entry [onlymodif 0/1]",__FILE__,Collect ,        g);  
-   theCommands.Add ("GeneratedShape", "Generatedshape df shape Generationentry [drawname]", __FILE__,Generatedshape,g);
-   theCommands.Add("ImportShape", "ImportShape Doc Entry Shape [Name]",__FILE__,DNaming_ImportShape, g);  
--}
-\ No newline at end of file
-+}
 Index: oce/src/DNaming/DNaming_Line3DDriver.cxx
 ===================================================================
 --- oce.orig/src/DNaming/DNaming_Line3DDriver.cxx
 +++ oce/src/DNaming/DNaming_Line3DDriver.cxx
-@@ -123,7 +123,7 @@ Standard_Integer DNaming_Line3DDriver::E
+@@ -117,7 +117,7 @@ Standard_Integer DNaming_Line3DDriver::E
    }
  
    const Standard_Integer aType = DNaming::GetInteger(aFunction, LINE3D_TYPE)->Get();
@@ -1412,7 +1392,7 @@ Index: oce/src/DNaming/DNaming_ModelingCommands.cxx
 ===================================================================
 --- oce.orig/src/DNaming/DNaming_ModelingCommands.cxx
 +++ oce/src/DNaming/DNaming_ModelingCommands.cxx
-@@ -682,10 +682,10 @@ static Standard_Integer DNaming_AttachSh
+@@ -678,10 +678,10 @@ static Standard_Integer DNaming_AttachSh
  	  aResultLabel.ForgetAllAttributes(Standard_True);
  	  Standard_Boolean aKeepOrientation(Standard_False);
  	  if (nb >= 6) 
@@ -1425,7 +1405,7 @@ Index: oce/src/DNaming/DNaming_ModelingCommands.cxx
  	  Handle(TNaming_NamedShape) aCont =  DNaming::GetObjectValue(aContext);
  #ifdef DEBUG
  	  if(aCont.IsNull() || aCont->IsEmpty())
-@@ -758,10 +758,10 @@ static Standard_Integer DNaming_XAttachS
+@@ -754,10 +754,10 @@ static Standard_Integer DNaming_XAttachS
  	  aResultLabel.ForgetAllAttributes(Standard_True);
  	  Standard_Boolean aKeepOrientation(Standard_False);
  	  if (nb >= 5) 
@@ -1438,7 +1418,7 @@ Index: oce/src/DNaming/DNaming_ModelingCommands.cxx
  	  Handle(TNaming_NamedShape) aCont =  DNaming::GetObjectValue(aContext);
  
  	  if(aCont.IsNull() || aCont->IsEmpty())
-@@ -1502,17 +1502,17 @@ static Standard_Integer DNaming_PntOffse
+@@ -1498,17 +1498,17 @@ static Standard_Integer DNaming_PntOffse
      Handle(TFunction_Function) aFun = GetFunction(objLabel,funGUID);
      if(!aFun.IsNull()) {
        Standard_Real value(0.0);
@@ -1459,7 +1439,7 @@ Index: oce/src/DNaming/DNaming_ModelingCommands.cxx
        if(isDZ) {
  	value = Draw::Atof(theArg[5]);
  	DNaming::GetReal(aFun,PNT_DZ)->Set(value);
-@@ -1869,11 +1869,11 @@ static Standard_Integer DNaming_TestSing
+@@ -1865,11 +1865,11 @@ static Standard_Integer DNaming_TestSing
      Standard_Boolean XSelection(Standard_False);
      Standard_Boolean Geometry(Standard_False);
      if(theNb == 4)
@@ -1474,7 +1454,7 @@ Index: oce/src/DNaming/DNaming_ModelingCommands.cxx
      Handle(TNaming_NamedShape) aNS = DNaming::GetObjectValue( aCntObj);
  
      if(!aNS.IsNull() && !aNS->IsEmpty()) {
-@@ -2008,11 +2008,11 @@ static Standard_Integer DNaming_Multiple
+@@ -2004,11 +2004,11 @@ static Standard_Integer DNaming_Multiple
      Standard_Boolean XSelection(Standard_False);
      Standard_Boolean Geometry(Standard_False);
      if(theNb == 4)
@@ -1493,7 +1473,7 @@ Index: oce/src/DNaming/DNaming_SelectionCommands.cxx
 ===================================================================
 --- oce.orig/src/DNaming/DNaming_SelectionCommands.cxx
 +++ oce/src/DNaming/DNaming_SelectionCommands.cxx
-@@ -129,7 +129,7 @@ static Standard_Integer DNaming_Select (
+@@ -123,7 +123,7 @@ static Standard_Integer DNaming_Select (
      }
      if (n > 4) {  
        Standard_Boolean Orient(Standard_False);
@@ -1506,7 +1486,7 @@ Index: oce/src/Draw/Draw_Interpretor.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Interpretor.cxx
 +++ oce/src/Draw/Draw_Interpretor.cxx
-@@ -608,7 +608,7 @@ Standard_Boolean Draw_Interpretor::Compl
+@@ -626,7 +626,7 @@ Standard_Boolean Draw_Interpretor::Compl
    Standard_PCharacter pLine;
    //
    pLine=(Standard_PCharacter)line;
@@ -1519,7 +1499,7 @@ Index: oce/src/Draw/Draw_Viewer.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Viewer.cxx
 +++ oce/src/Draw/Draw_Viewer.cxx
-@@ -954,7 +954,7 @@ void Draw_Viewer::PostScriptView (const
+@@ -965,7 +965,7 @@ void Draw_Viewer::PostScriptView (const
      if (n == 0) return;
      CurrentMode = POSTSCRIPT;
      Draw_Display DF = MakeDisplay(id);
@@ -1528,7 +1508,7 @@ Index: oce/src/Draw/Draw_Viewer.cxx
      for (Standard_Integer i = 1; i <= n; i++)
        if (myDrawables(i)->Is3D()) {
  	if (!view2d) myDrawables(i)->DrawOn(DF);
-@@ -1163,7 +1163,7 @@ void Draw_Viewer::DrawOnView(const Stand
+@@ -1174,7 +1174,7 @@ void Draw_Viewer::DrawOnView(const Stand
      xmin = ymin = DRAWINFINITE;
      xmax = ymax = -DRAWINFINITE;
  
@@ -1541,7 +1521,7 @@ Index: oce/src/Extrema/Extrema_Curve2dTool.lxx
 ===================================================================
 --- oce.orig/src/Extrema/Extrema_Curve2dTool.lxx
 +++ oce/src/Extrema/Extrema_Curve2dTool.lxx
-@@ -286,7 +286,7 @@ inline void Extrema_Curve2dTool::D2(cons
+@@ -281,7 +281,7 @@ inline void Extrema_Curve2dTool::D2(cons
  
   inline Standard_Boolean Extrema_Curve2dTool::IsRational(const Adaptor2d_Curve2d& C)
  {
@@ -1554,7 +1534,7 @@ Index: oce/src/Extrema/Extrema_GenExtCS.cxx
 ===================================================================
 --- oce.orig/src/Extrema/Extrema_GenExtCS.cxx
 +++ oce/src/Extrema/Extrema_GenExtCS.cxx
-@@ -301,7 +301,7 @@ void Extrema_GenExtCS::Perform(const Ada
+@@ -295,7 +295,7 @@ void Extrema_GenExtCS::Perform(const Ada
        UV(1) = aMinCU;
        UV(2) = aMinSU;
        UV(3) = aMinSV;
@@ -1567,7 +1547,7 @@ Index: oce/src/FSD/FSD_BinaryFile.cxx
 ===================================================================
 --- oce.orig/src/FSD/FSD_BinaryFile.cxx
 +++ oce/src/FSD/FSD_BinaryFile.cxx
-@@ -250,12 +250,14 @@ Storage_BaseDriver& FSD_BinaryFile::PutI
+@@ -244,12 +244,14 @@ Storage_BaseDriver& FSD_BinaryFile::PutI
  
  Storage_BaseDriver& FSD_BinaryFile::PutBoolean(const Standard_Boolean aValue)
  {
@@ -1584,7 +1564,7 @@ Index: oce/src/FSD/FSD_BinaryFile.cxx
  #endif
    return *this;
  }
-@@ -358,11 +360,14 @@ Storage_BaseDriver& FSD_BinaryFile::GetI
+@@ -352,11 +354,14 @@ Storage_BaseDriver& FSD_BinaryFile::GetI
  
  Storage_BaseDriver& FSD_BinaryFile::GetBoolean(Standard_Boolean& aValue)
  {
@@ -1605,7 +1585,7 @@ Index: oce/src/FilletSurf/FilletSurf_InternalBuilder.cdl
 ===================================================================
 --- oce.orig/src/FilletSurf/FilletSurf_InternalBuilder.cdl
 +++ oce/src/FilletSurf/FilletSurf_InternalBuilder.cdl
-@@ -92,7 +92,7 @@ is
+@@ -88,7 +88,7 @@ is
                  Forward         : Boolean from Standard;
  	        RecOnS1,RecOnS2 : Boolean from Standard;
  		Soldep          : Vector from math;
@@ -1618,7 +1598,7 @@ Index: oce/src/FilletSurf/FilletSurf_InternalBuilder.cxx
 ===================================================================
 --- oce.orig/src/FilletSurf/FilletSurf_InternalBuilder.cxx
 +++ oce/src/FilletSurf/FilletSurf_InternalBuilder.cxx
-@@ -328,8 +328,8 @@ Standard_Boolean
+@@ -324,8 +324,8 @@ Standard_Boolean
  					 const Standard_Boolean RecOnS1, 
  					 const Standard_Boolean RecOnS2, 
  					 const math_Vector& Soldep, 
@@ -1629,7 +1609,7 @@ Index: oce/src/FilletSurf/FilletSurf_InternalBuilder.cxx
  {
    Handle(ChFiDS_SurfData) Data = SeqData(1);
    Handle(ChFiDS_FilSpine) fsp = Handle(ChFiDS_FilSpine)::DownCast(Spine);
-@@ -387,7 +387,7 @@ Standard_Boolean
+@@ -383,7 +383,7 @@ Standard_Boolean
      if(cpf1.IsOnArc()){
        TopoDS_Face F1 = S1->ChangeSurface().Face();
        TopoDS_Face bid;
@@ -1638,7 +1618,7 @@ Index: oce/src/FilletSurf/FilletSurf_InternalBuilder.cxx
      }
      const ChFiDS_CommonPoint& cpf2 = Data->VertexFirstOnS2();
      if(cpf2.IsOnArc() && !ok){
-@@ -402,7 +402,7 @@ Standard_Boolean
+@@ -398,7 +398,7 @@ Standard_Boolean
    if(cpl1.IsOnArc()){
      TopoDS_Face F1 = S1->ChangeSurface().Face();
      TopoDS_Face bid;
@@ -1647,7 +1627,7 @@ Index: oce/src/FilletSurf/FilletSurf_InternalBuilder.cxx
    }
    const ChFiDS_CommonPoint& cpl2 = Data->VertexLastOnS2();
    if(cpl2.IsOnArc() && !ok){
-@@ -418,17 +418,17 @@ Standard_Boolean
+@@ -414,17 +414,17 @@ Standard_Boolean
    return Standard_True;
  }
  
@@ -1672,7 +1652,7 @@ Index: oce/src/Geom2d/Geom2d_BezierCurve.cxx
 ===================================================================
 --- oce.orig/src/Geom2d/Geom2d_BezierCurve.cxx
 +++ oce/src/Geom2d/Geom2d_BezierCurve.cxx
-@@ -897,7 +897,7 @@ void Geom2d_BezierCurve::Init
+@@ -892,7 +892,7 @@ void Geom2d_BezierCurve::Init
  //Standard_Boolean Geom2d_BezierCurve::CoefficientsOK(const Standard_Real U)const
  Standard_Boolean Geom2d_BezierCurve::CoefficientsOK(const Standard_Real )const
  {
@@ -1685,7 +1665,7 @@ Index: oce/src/GeometryTest/GeometryTest_CurveCommands.cxx
 ===================================================================
 --- oce.orig/src/GeometryTest/GeometryTest_CurveCommands.cxx
 +++ oce/src/GeometryTest/GeometryTest_CurveCommands.cxx
-@@ -299,7 +299,7 @@ static Standard_Integer gproject(Draw_In
+@@ -295,7 +295,7 @@ static Standard_Integer gproject(Draw_In
  
    Standard_Integer k;
    Standard_Real Udeb, Ufin, UIso, VIso;
@@ -1694,33 +1674,11 @@ Index: oce/src/GeometryTest/GeometryTest_CurveCommands.cxx
    gp_Pnt2d P2d, Pdeb, Pfin;
    gp_Pnt P;
    Handle(Adaptor2d_HCurve2d) HPCur;
-Index: oce/src/Graphic3d/Graphic3d_GraphicDriver.cxx
-===================================================================
---- oce.orig/src/Graphic3d/Graphic3d_GraphicDriver.cxx
-+++ oce/src/Graphic3d/Graphic3d_GraphicDriver.cxx
-@@ -59,7 +59,7 @@ Graphic3d_GraphicDriver::Graphic3d_Graph
- Standard_Integer Graphic3d_GraphicDriver::Light (const Graphic3d_CLight& ACLight, const Standard_Boolean Update) {
- 
-   static Standard_Integer NbLights = 1;
--  Standard_Boolean Result;
-+  Standard_Integer Result;
- 
-   Result = Update ? ACLight.LightId : NbLights++;
-   return Result;
-@@ -69,7 +69,7 @@ Standard_Integer Graphic3d_GraphicDriver
- Standard_Integer Graphic3d_GraphicDriver::Plane (const Graphic3d_CPlane& ACPlane, const Standard_Boolean Update) {
- 
-   static Standard_Integer NbPlanes = 1;
--  Standard_Boolean Result;
-+  Standard_Integer Result;
- 
-   Result = Update ? ACPlane.PlaneId : NbPlanes++;
-   return Result;
 Index: oce/src/Graphic3d/Graphic3d_Group_8.cxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_Group_8.cxx
 +++ oce/src/Graphic3d/Graphic3d_Group_8.cxx
-@@ -683,10 +683,10 @@ void Graphic3d_Group::SetPrimitivesAspec
+@@ -675,10 +675,10 @@ void Graphic3d_Group::SetPrimitivesAspec
  
  Standard_Boolean Graphic3d_Group::IsGroupPrimitivesAspectSet (const Graphic3d_GroupAspect theAspect) const {
      switch (theAspect) {
@@ -1739,7 +1697,7 @@ Index: oce/src/HLRAlgo/HLRAlgo_BiPoint.cdl
 ===================================================================
 --- oce.orig/src/HLRAlgo/HLRAlgo_BiPoint.cdl
 +++ oce/src/HLRAlgo/HLRAlgo_BiPoint.cdl
-@@ -39,8 +39,7 @@ is
+@@ -34,8 +34,7 @@ is
      
      Create(X1,Y1,Z1,X2,Y2,Z2       : Real    from Standard;
             XT1,YT1,ZT1,XT2,YT2,ZT2 : Real    from Standard;
@@ -1749,7 +1707,7 @@ Index: oce/src/HLRAlgo/HLRAlgo_BiPoint.cdl
      returns BiPoint from HLRAlgo; 
      
      Create(X1,Y1,Z1,X2,Y2,Z2       : Real    from Standard;
-@@ -51,8 +50,7 @@ is
+@@ -46,8 +45,7 @@ is
      
      Create(X1,Y1,Z1,X2,Y2,Z2       : Real    from Standard;
             XT1,YT1,ZT1,XT2,YT2,ZT2 : Real    from Standard;
@@ -1759,7 +1717,7 @@ Index: oce/src/HLRAlgo/HLRAlgo_BiPoint.cdl
      returns BiPoint from HLRAlgo; 
      
      Create(X1,Y1,Z1,X2,Y2,Z2               : Real    from Standard;
-@@ -64,7 +62,7 @@ is
+@@ -59,7 +57,7 @@ is
      Create(X1,Y1,Z1,X2,Y2,Z2               : Real    from Standard;
             XT1,YT1,ZT1,XT2,YT2,ZT2         : Real    from Standard;
             Index,i1,i1p1,i1p2,i2,i2p1,i2p2 : Integer from Standard;
@@ -1772,7 +1730,7 @@ Index: oce/src/HLRAlgo/HLRAlgo_BiPoint.cxx
 ===================================================================
 --- oce.orig/src/HLRAlgo/HLRAlgo_BiPoint.cxx
 +++ oce/src/HLRAlgo/HLRAlgo_BiPoint.cxx
-@@ -112,7 +112,7 @@ HLRAlgo_BiPoint::HLRAlgo_BiPoint (const
+@@ -107,7 +107,7 @@ HLRAlgo_BiPoint::HLRAlgo_BiPoint (const
  				  const Standard_Real YT2,
  				  const Standard_Real ZT2,
  				  const Standard_Integer Index,
@@ -1781,7 +1739,7 @@ Index: oce/src/HLRAlgo/HLRAlgo_BiPoint.cxx
  {
    PntX1 = X1;
    PntY1 = Y1;
-@@ -205,7 +205,7 @@ HLRAlgo_BiPoint::HLRAlgo_BiPoint (const
+@@ -200,7 +200,7 @@ HLRAlgo_BiPoint::HLRAlgo_BiPoint (const
  				  const Standard_Integer i1,
  				  const Standard_Integer i1p1,
  				  const Standard_Integer i1p2,
@@ -1790,7 +1748,7 @@ Index: oce/src/HLRAlgo/HLRAlgo_BiPoint.cxx
  {
    PntX1 = X1;
    PntY1 = Y1;
-@@ -308,7 +308,7 @@ HLRAlgo_BiPoint::HLRAlgo_BiPoint (const
+@@ -303,7 +303,7 @@ HLRAlgo_BiPoint::HLRAlgo_BiPoint (const
  				  const Standard_Integer i2,
  				  const Standard_Integer i2p1,
  				  const Standard_Integer i2p2,
@@ -1803,9 +1761,9 @@ Index: oce/src/HLRAlgo/HLRAlgo_BiPoint.lxx
 ===================================================================
 --- oce.orig/src/HLRAlgo/HLRAlgo_BiPoint.lxx
 +++ oce/src/HLRAlgo/HLRAlgo_BiPoint.lxx
-@@ -19,11 +19,11 @@
- // and conditions governing the rights and limitations under the License.
- 
+@@ -14,11 +14,11 @@
+ // Alternatively, this file may be used under the terms of Open CASCADE
+ // commercial license or contractual agreement.
  
 -#define EMskRg1Line  ((Standard_Boolean)1)
 -#define EMskRgNLine  ((Standard_Boolean)2)
@@ -1824,7 +1782,7 @@ Index: oce/src/HLRAlgo/HLRAlgo_EdgeStatus.cdl
 ===================================================================
 --- oce.orig/src/HLRAlgo/HLRAlgo_EdgeStatus.cdl
 +++ oce/src/HLRAlgo/HLRAlgo_EdgeStatus.cdl
-@@ -126,7 +126,7 @@ fields
+@@ -121,7 +121,7 @@ fields
      myEnd         : Real      from Standard;
      myTolStart    : ShortReal from Standard;
      myTolEnd      : ShortReal from Standard;
@@ -1837,9 +1795,9 @@ Index: oce/src/HLRAlgo/HLRAlgo_EdgeStatus.lxx
 ===================================================================
 --- oce.orig/src/HLRAlgo/HLRAlgo_EdgeStatus.lxx
 +++ oce/src/HLRAlgo/HLRAlgo_EdgeStatus.lxx
-@@ -19,8 +19,8 @@
- // and conditions governing the rights and limitations under the License.
- 
+@@ -14,8 +14,8 @@
+ // Alternatively, this file may be used under the terms of Open CASCADE
+ // commercial license or contractual agreement.
  
 -#define EMaskAllHidden  ((Standard_Boolean)1)
 -#define EMaskAllVisible ((Standard_Boolean)2)
@@ -1852,7 +1810,7 @@ Index: oce/src/HLRAlgo/HLRAlgo_EdgesBlock.cdl
 ===================================================================
 --- oce.orig/src/HLRAlgo/HLRAlgo_EdgesBlock.cdl
 +++ oce/src/HLRAlgo/HLRAlgo_EdgesBlock.cdl
-@@ -120,7 +120,7 @@ is
+@@ -115,7 +115,7 @@ is
  
  fields
      myEdges  : Array1OfInteger from TColStd;
@@ -1865,9 +1823,9 @@ Index: oce/src/HLRAlgo/HLRAlgo_EdgesBlock.lxx
 ===================================================================
 --- oce.orig/src/HLRAlgo/HLRAlgo_EdgesBlock.lxx
 +++ oce/src/HLRAlgo/HLRAlgo_EdgesBlock.lxx
-@@ -19,11 +19,11 @@
- // and conditions governing the rights and limitations under the License.
- 
+@@ -14,11 +14,11 @@
+ // Alternatively, this file may be used under the terms of Open CASCADE
+ // commercial license or contractual agreement.
  
 -#define EMaskOrient   ((Standard_Boolean)15)
 -#define EMaskOutLine  ((Standard_Boolean)16)
@@ -1882,7 +1840,7 @@ Index: oce/src/HLRAlgo/HLRAlgo_EdgesBlock.lxx
  
  //=======================================================================
  //function : NbEdges
-@@ -78,7 +78,7 @@ HLRAlgo_EdgesBlock::Orientation (const S
+@@ -73,7 +73,7 @@ HLRAlgo_EdgesBlock::Orientation (const S
  				 const TopAbs_Orientation Or)
  {
    myFlags(I) &= ~EMaskOrient;
@@ -1895,7 +1853,7 @@ Index: oce/src/HLRAlgo/HLRAlgo_PolyAlgo.cxx
 ===================================================================
 --- oce.orig/src/HLRAlgo/HLRAlgo_PolyAlgo.cxx
 +++ oce/src/HLRAlgo/HLRAlgo_PolyAlgo.cxx
-@@ -29,15 +29,15 @@
+@@ -24,15 +24,15 @@
  #include <HLRAlgo_BiPoint.hxx>
  #include <Precision.hxx>
  
@@ -1920,7 +1878,7 @@ Index: oce/src/HLRAlgo/HLRAlgo_PolyData.cdl
 ===================================================================
 --- oce.orig/src/HLRAlgo/HLRAlgo_PolyData.cdl
 +++ oce/src/HLRAlgo/HLRAlgo_PolyData.cdl
-@@ -88,8 +88,9 @@ is
+@@ -83,8 +83,9 @@ is
      HideByOneTriangle(me          : mutable;
  		      Coordinates :     Address    from Standard;
                        RealPtr     :     Address    from Standard;
@@ -1936,7 +1894,7 @@ Index: oce/src/HLRAlgo/HLRAlgo_PolyData.cxx
 ===================================================================
 --- oce.orig/src/HLRAlgo/HLRAlgo_PolyData.cxx
 +++ oce/src/HLRAlgo/HLRAlgo_PolyData.cxx
-@@ -24,10 +24,10 @@
+@@ -19,10 +19,10 @@
  #endif
  #include <HLRAlgo_PolyData.ixx>
  
@@ -1951,7 +1909,7 @@ Index: oce/src/HLRAlgo/HLRAlgo_PolyData.cxx
  
  #define FIndex  myIndices[0]
  #define MinFac  myIndices[1]
-@@ -36,15 +36,7 @@
+@@ -31,15 +31,7 @@
  #define TriNode1   ((Standard_Integer*)TriIndices)[0]
  #define TriNode2   ((Standard_Integer*)TriIndices)[1]
  #define TriNode3   ((Standard_Integer*)TriIndices)[2]
@@ -1968,7 +1926,7 @@ Index: oce/src/HLRAlgo/HLRAlgo_PolyData.cxx
  
  #define PntX1  ((Standard_Real*)Coordinates)[ 0]
  #define PntY1  ((Standard_Real*)Coordinates)[ 1]
-@@ -200,7 +192,8 @@ void HLRAlgo_PolyData::HideByPolyData (c
+@@ -195,7 +187,8 @@ void HLRAlgo_PolyData::HideByPolyData (c
      HLRAlgo_Array1OfPHDat& PHDat = myHPHDat->ChangeArray1();
      const HLRAlgo_Array1OfTData& TData = myHTData->Array1();
      Standard_Real d1,d2;
@@ -1978,7 +1936,7 @@ Index: oce/src/HLRAlgo/HLRAlgo_PolyData.cxx
      Standard_Address PlanPtr,MinMaxPtr,TriIndices;
      Standard_Integer h,h2 = PHDat.Upper();
      HLRAlgo_PolyHidingData* PH = &(PHDat(1));
-@@ -251,8 +244,7 @@ void HLRAlgo_PolyData::HideByPolyData (c
+@@ -246,8 +239,7 @@ void HLRAlgo_PolyData::HideByPolyData (c
  	      YV3 = P3.Y();
  	      HideByOneTriangle(Coordinates,
  				RealPtr,
@@ -1988,7 +1946,7 @@ Index: oce/src/HLRAlgo/HLRAlgo_PolyData.cxx
  				status);
  	    }
  	  }
-@@ -274,8 +266,7 @@ void HLRAlgo_PolyData::HideByPolyData (c
+@@ -269,8 +261,7 @@ void HLRAlgo_PolyData::HideByPolyData (c
  	      YV3 = P3.Y();
  	      HideByOneTriangle(Coordinates,
  				RealPtr,
@@ -1998,7 +1956,7 @@ Index: oce/src/HLRAlgo/HLRAlgo_PolyData.cxx
  				status);
  	    }
  	    else {
-@@ -293,8 +284,7 @@ void HLRAlgo_PolyData::HideByPolyData (c
+@@ -288,8 +279,7 @@ void HLRAlgo_PolyData::HideByPolyData (c
  	      YV3 = P3.Y();
  	      HideByOneTriangle(Coordinates,
  				RealPtr,
@@ -2008,7 +1966,7 @@ Index: oce/src/HLRAlgo/HLRAlgo_PolyData.cxx
  				status);
  	    }
  	  }
-@@ -313,8 +303,7 @@ void HLRAlgo_PolyData::HideByPolyData (c
+@@ -308,8 +298,7 @@ void HLRAlgo_PolyData::HideByPolyData (c
  	    YV3 = P3.Y();
  	    HideByOneTriangle(Coordinates,
  			      RealPtr,
@@ -2018,7 +1976,7 @@ Index: oce/src/HLRAlgo/HLRAlgo_PolyData.cxx
  			      status);
  	  }
  	}
-@@ -332,8 +321,7 @@ void HLRAlgo_PolyData::HideByPolyData (c
+@@ -327,8 +316,7 @@ void HLRAlgo_PolyData::HideByPolyData (c
  void HLRAlgo_PolyData::
  HideByOneTriangle (const Standard_Address Coordinates,
  		   const Standard_Address RealPtr,
@@ -2028,7 +1986,7 @@ Index: oce/src/HLRAlgo/HLRAlgo_PolyData.cxx
  		   HLRAlgo_EdgeStatus& status)
  {
    Standard_Boolean o[2],m[2];
-@@ -438,7 +426,7 @@ HideByOneTriangle (const Standard_Addres
+@@ -433,7 +421,7 @@ HideByOneTriangle (const Standard_Addres
  	if (m[l]) {
  	  OutSideP = Standard_True;
  
@@ -2037,7 +1995,7 @@ Index: oce/src/HLRAlgo/HLRAlgo_PolyData.cxx
  	    if (l == 0 && npi == 1) {
  	      p[0] = p[1];
  	      o[0] = o[1];
-@@ -457,7 +445,7 @@ HideByOneTriangle (const Standard_Addres
+@@ -452,7 +440,7 @@ HideByOneTriangle (const Standard_Addres
        for (l = 0; l <= npi; l++) {
  	if (m[l]) {
  	  OutSideP = Standard_True;
@@ -2046,7 +2004,7 @@ Index: oce/src/HLRAlgo/HLRAlgo_PolyData.cxx
  	    if (l == 0 && npi == 1) {
  	      p[0] = p[1];
  	      o[0] = o[1];
-@@ -583,7 +571,7 @@ HideByOneTriangle (const Standard_Addres
+@@ -578,7 +566,7 @@ HideByOneTriangle (const Standard_Addres
        for (l = 0; l <= npi; l++) {
  	if (m[l]) {
  	  OutSideP = Standard_True;
@@ -2055,7 +2013,7 @@ Index: oce/src/HLRAlgo/HLRAlgo_PolyData.cxx
  	    if (l == 0 && npi == 1) {
  	      p[0] = p[1];
  	      o[0] = o[1];
-@@ -602,7 +590,7 @@ HideByOneTriangle (const Standard_Addres
+@@ -597,7 +585,7 @@ HideByOneTriangle (const Standard_Addres
        for (l = 0; l <= npi; l++) {
  	if (m[l]) {
  	  OutSideP = Standard_True;
@@ -2064,7 +2022,7 @@ Index: oce/src/HLRAlgo/HLRAlgo_PolyData.cxx
  	    if (l == 0 && npi == 1) {
  	      p[0] = p[1];
  	      o[0] = o[1];
-@@ -728,7 +716,7 @@ HideByOneTriangle (const Standard_Addres
+@@ -723,7 +711,7 @@ HideByOneTriangle (const Standard_Addres
        for (l = 0; l <= npi; l++) {
  	if (m[l]) {
  	  OutSideP = Standard_True;
@@ -2073,7 +2031,7 @@ Index: oce/src/HLRAlgo/HLRAlgo_PolyData.cxx
  	    if (l == 0 && npi == 1) {
  	      p[0] = p[1];
  	      o[0] = o[1];
-@@ -747,7 +735,7 @@ HideByOneTriangle (const Standard_Addres
+@@ -742,7 +730,7 @@ HideByOneTriangle (const Standard_Addres
        for (l = 0; l <= npi; l++) {
  	if (m[l]) {
  	  OutSideP = Standard_True;
@@ -2086,7 +2044,7 @@ Index: oce/src/HLRBRep/HLRBRep_BiPnt2D.cdl
 ===================================================================
 --- oce.orig/src/HLRBRep/HLRBRep_BiPnt2D.cdl
 +++ oce/src/HLRBRep/HLRBRep_BiPnt2D.cdl
-@@ -93,6 +93,6 @@ fields
+@@ -88,6 +88,6 @@ fields
      myP1    : Pnt2d   from gp;
      myP2    : Pnt2d   from gp;
      myShape : Shape   from TopoDS;
@@ -2098,9 +2056,9 @@ Index: oce/src/HLRBRep/HLRBRep_BiPnt2D.lxx
 ===================================================================
 --- oce.orig/src/HLRBRep/HLRBRep_BiPnt2D.lxx
 +++ oce/src/HLRBRep/HLRBRep_BiPnt2D.lxx
-@@ -19,10 +19,10 @@
- // and conditions governing the rights and limitations under the License.
- 
+@@ -14,10 +14,10 @@
+ // Alternatively, this file may be used under the terms of Open CASCADE
+ // commercial license or contractual agreement.
  
 -#define EMskRg1Line  ((Standard_Boolean)1)
 -#define EMskRgNLine  ((Standard_Boolean)2)
@@ -2117,7 +2075,7 @@ Index: oce/src/HLRBRep/HLRBRep_BiPoint.cdl
 ===================================================================
 --- oce.orig/src/HLRBRep/HLRBRep_BiPoint.cdl
 +++ oce/src/HLRBRep/HLRBRep_BiPoint.cdl
-@@ -93,6 +93,6 @@ fields
+@@ -88,6 +88,6 @@ fields
      myP1    : Pnt     from gp;
      myP2    : Pnt     from gp;
      myShape : Shape   from TopoDS;
@@ -2129,9 +2087,9 @@ Index: oce/src/HLRBRep/HLRBRep_BiPoint.lxx
 ===================================================================
 --- oce.orig/src/HLRBRep/HLRBRep_BiPoint.lxx
 +++ oce/src/HLRBRep/HLRBRep_BiPoint.lxx
-@@ -19,10 +19,10 @@
- // and conditions governing the rights and limitations under the License.
- 
+@@ -14,10 +14,10 @@
+ // Alternatively, this file may be used under the terms of Open CASCADE
+ // commercial license or contractual agreement.
  
 -#define EMskRg1Line  ((Standard_Boolean)1)
 -#define EMskRgNLine  ((Standard_Boolean)2)
@@ -2148,7 +2106,7 @@ Index: oce/src/HLRBRep/HLRBRep_EdgeData.cdl
 ===================================================================
 --- oce.orig/src/HLRBRep/HLRBRep_EdgeData.cdl
 +++ oce/src/HLRBRep/HLRBRep_EdgeData.cdl
-@@ -207,7 +207,7 @@ is
+@@ -202,7 +202,7 @@ is
      is static;
  
  fields
@@ -2161,9 +2119,9 @@ Index: oce/src/HLRBRep/HLRBRep_EdgeData.lxx
 ===================================================================
 --- oce.orig/src/HLRBRep/HLRBRep_EdgeData.lxx
 +++ oce/src/HLRBRep/HLRBRep_EdgeData.lxx
-@@ -19,19 +19,19 @@
- // and conditions governing the rights and limitations under the License.
- 
+@@ -14,19 +14,19 @@
+ // Alternatively, this file may be used under the terms of Open CASCADE
+ // commercial license or contractual agreement.
  
 -#define EMaskSelected ((Standard_Boolean)1)
 -#define EMaskUsed     ((Standard_Boolean)2)
@@ -2198,7 +2156,7 @@ Index: oce/src/HLRBRep/HLRBRep_FaceData.cdl
 ===================================================================
 --- oce.orig/src/HLRBRep/HLRBRep_FaceData.cdl
 +++ oce/src/HLRBRep/HLRBRep_FaceData.cdl
-@@ -189,7 +189,7 @@ is
+@@ -184,7 +184,7 @@ is
      is static;
  
  fields
@@ -2211,9 +2169,9 @@ Index: oce/src/HLRBRep/HLRBRep_FaceData.lxx
 ===================================================================
 --- oce.orig/src/HLRBRep/HLRBRep_FaceData.lxx
 +++ oce/src/HLRBRep/HLRBRep_FaceData.lxx
-@@ -19,20 +19,20 @@
- // and conditions governing the rights and limitations under the License.
- 
+@@ -14,20 +14,20 @@
+ // Alternatively, this file may be used under the terms of Open CASCADE
+ // commercial license or contractual agreement.
  
 -#define EMaskOrient   ((Standard_Boolean)15)
 -#define FMaskSelected ((Standard_Boolean)16)
@@ -2246,7 +2204,7 @@ Index: oce/src/HLRBRep/HLRBRep_FaceData.lxx
  
  //=======================================================================
  //function : Selected
-@@ -313,7 +313,7 @@ inline TopAbs_Orientation HLRBRep_FaceDa
+@@ -308,7 +308,7 @@ inline TopAbs_Orientation HLRBRep_FaceDa
  inline void HLRBRep_FaceData::Orientation(const TopAbs_Orientation O)
  {
    myFlags &= ~EMaskOrient;
@@ -2259,7 +2217,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cdl
 ===================================================================
 --- oce.orig/src/HLRBRep/HLRBRep_PolyAlgo.cdl
 +++ oce/src/HLRBRep/HLRBRep_PolyAlgo.cdl
-@@ -325,7 +325,7 @@ is
+@@ -320,7 +320,7 @@ is
  	              coef3          :     Real             from Standard;
  	              U3             :     Real             from Standard;
                        insP3,mP3P1    :     Boolean          from Standard; 
@@ -2268,7 +2226,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cdl
      is static private;
  
      MoveOrInsertPoint(me;
-@@ -359,7 +359,7 @@ is
+@@ -354,7 +354,7 @@ is
  	              coef3          :     Real             from Standard;
  	              U3             :     Real             from Standard;
                        insP3,mP3P1    :     Boolean          from Standard; 
@@ -2277,7 +2235,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cdl
      is static private;
  
      MoveOrInsertPoint(me;
-@@ -398,7 +398,7 @@ is
+@@ -393,7 +393,7 @@ is
  	              coef4          :     Real             from Standard;
  	              U4             :     Real             from Standard;
                        insP4,mP4P1    :     Boolean          from Standard; 
@@ -2290,7 +2248,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
 ===================================================================
 --- oce.orig/src/HLRBRep/HLRBRep_PolyAlgo.cxx
 +++ oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
-@@ -51,26 +51,26 @@
+@@ -46,26 +46,26 @@
  #include <Precision.hxx>
  #include <gp.hxx>
  
@@ -2337,7 +2295,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  
  #define PntXTI1 ((Standard_Real*)Coordinates)[ 0]
  #define PntYTI1 ((Standard_Real*)Coordinates)[ 1]
-@@ -101,17 +101,17 @@
+@@ -96,17 +96,17 @@
  #define Tri1Node1 ((Standard_Integer*)Tri1Indices)[0]
  #define Tri1Node2 ((Standard_Integer*)Tri1Indices)[1]
  #define Tri1Node3 ((Standard_Integer*)Tri1Indices)[2]
@@ -2358,7 +2316,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  
  #define Seg1LstSg1 ((Standard_Integer*)Seg1Indices)[0]
  #define Seg1LstSg2 ((Standard_Integer*)Seg1Indices)[1]
-@@ -128,9 +128,9 @@
+@@ -123,9 +123,9 @@
  #define Seg2Conex2 ((Standard_Integer*)Seg2Indices)[5]
  
  #define Nod1NdSg ((Standard_Integer*)Nod1Indices)[0]
@@ -2371,7 +2329,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  
  #define Nod1PntX ((Standard_Real*)Nod1RValues)[ 0]
  #define Nod1PntY ((Standard_Real*)Nod1RValues)[ 1]
-@@ -145,9 +145,9 @@
+@@ -140,9 +140,9 @@
  #define Nod1Scal ((Standard_Real*)Nod1RValues)[10]
  
  #define NodANdSg ((Standard_Integer*)NodAIndices)[0]
@@ -2384,7 +2342,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  
  #define NodAPntX ((Standard_Real*)NodARValues)[ 0]
  #define NodAPntY ((Standard_Real*)NodARValues)[ 1]
-@@ -162,9 +162,9 @@
+@@ -157,9 +157,9 @@
  #define NodAScal ((Standard_Real*)NodARValues)[10]
  
  #define NodBNdSg ((Standard_Integer*)NodBIndices)[0]
@@ -2397,7 +2355,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  
  #define NodBPntX ((Standard_Real*)NodBRValues)[ 0]
  #define NodBPntY ((Standard_Real*)NodBRValues)[ 1]
-@@ -179,9 +179,9 @@
+@@ -174,9 +174,9 @@
  #define NodBScal ((Standard_Real*)NodBRValues)[10]
  
  #define Nod2NdSg ((Standard_Integer*)Nod2Indices)[0]
@@ -2410,7 +2368,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  
  #define Nod2PntX ((Standard_Real*)Nod2RValues)[ 0]
  #define Nod2PntY ((Standard_Real*)Nod2RValues)[ 1]
-@@ -196,9 +196,9 @@
+@@ -191,9 +191,9 @@
  #define Nod2Scal ((Standard_Real*)Nod2RValues)[10]
  
  #define Nod3NdSg ((Standard_Integer*)Nod3Indices)[0]
@@ -2423,7 +2381,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  
  #define Nod3PntX ((Standard_Real*)Nod3RValues)[ 0]
  #define Nod3PntY ((Standard_Real*)Nod3RValues)[ 1]
-@@ -213,9 +213,9 @@
+@@ -208,9 +208,9 @@
  #define Nod3Scal ((Standard_Real*)Nod3RValues)[10]
  
  #define Nod4NdSg ((Standard_Integer*)Nod4Indices)[0]
@@ -2436,7 +2394,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  
  #define Nod4PntX ((Standard_Real*)Nod4RValues)[ 0]
  #define Nod4PntY ((Standard_Real*)Nod4RValues)[ 1]
-@@ -230,9 +230,9 @@
+@@ -225,9 +225,9 @@
  #define Nod4Scal ((Standard_Real*)Nod4RValues)[10]
  
  #define Nod11NdSg ((Standard_Integer*)Nod11Indices)[0]
@@ -2449,7 +2407,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  
  #define Nod11PntX ((Standard_Real*)Nod11RValues)[ 0]
  #define Nod11PntY ((Standard_Real*)Nod11RValues)[ 1]
-@@ -247,9 +247,9 @@
+@@ -242,9 +242,9 @@
  #define Nod11Scal ((Standard_Real*)Nod11RValues)[10]
  
  #define Nod1ANdSg ((Standard_Integer*)Nod1AIndices)[0]
@@ -2462,7 +2420,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  
  #define Nod1APntX ((Standard_Real*)Nod1ARValues)[ 0]
  #define Nod1APntY ((Standard_Real*)Nod1ARValues)[ 1]
-@@ -264,9 +264,9 @@
+@@ -259,9 +259,9 @@
  #define Nod1AScal ((Standard_Real*)Nod1ARValues)[10]
  
  #define Nod1BNdSg ((Standard_Integer*)Nod1BIndices)[0]
@@ -2475,7 +2433,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  
  #define Nod1BPntX ((Standard_Real*)Nod1BRValues)[ 0]
  #define Nod1BPntY ((Standard_Real*)Nod1BRValues)[ 1]
-@@ -281,9 +281,9 @@
+@@ -276,9 +276,9 @@
  #define Nod1BScal ((Standard_Real*)Nod1BRValues)[10]
  
  #define Nod12NdSg ((Standard_Integer*)Nod12Indices)[0]
@@ -2488,7 +2446,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  
  #define Nod12PntX ((Standard_Real*)Nod12RValues)[ 0]
  #define Nod12PntY ((Standard_Real*)Nod12RValues)[ 1]
-@@ -298,9 +298,9 @@
+@@ -293,9 +293,9 @@
  #define Nod12Scal ((Standard_Real*)Nod12RValues)[10]
  
  #define Nod13NdSg ((Standard_Integer*)Nod13Indices)[0]
@@ -2501,7 +2459,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  
  #define Nod13PntX ((Standard_Real*)Nod13RValues)[ 0]
  #define Nod13PntY ((Standard_Real*)Nod13RValues)[ 1]
-@@ -315,9 +315,9 @@
+@@ -310,9 +310,9 @@
  #define Nod13Scal ((Standard_Real*)Nod13RValues)[10]
  
  #define Nod14NdSg ((Standard_Integer*)Nod14Indices)[0]
@@ -2514,7 +2472,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  
  #define Nod14PntX ((Standard_Real*)Nod14RValues)[ 0]
  #define Nod14PntY ((Standard_Real*)Nod14RValues)[ 1]
-@@ -332,9 +332,9 @@
+@@ -327,9 +327,9 @@
  #define Nod14Scal ((Standard_Real*)Nod14RValues)[10]
  
  #define Nod21NdSg ((Standard_Integer*)Nod21Indices)[0]
@@ -2527,7 +2485,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  
  #define Nod21PntX ((Standard_Real*)Nod21RValues)[ 0]
  #define Nod21PntY ((Standard_Real*)Nod21RValues)[ 1]
-@@ -349,9 +349,9 @@
+@@ -344,9 +344,9 @@
  #define Nod21Scal ((Standard_Real*)Nod21RValues)[10]
  
  #define Nod2ANdSg ((Standard_Integer*)Nod2AIndices)[0]
@@ -2540,7 +2498,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  
  #define Nod2APntX ((Standard_Real*)Nod2ARValues)[ 0]
  #define Nod2APntY ((Standard_Real*)Nod2ARValues)[ 1]
-@@ -366,9 +366,9 @@
+@@ -361,9 +361,9 @@
  #define Nod2AScal ((Standard_Real*)Nod2ARValues)[10]
  
  #define Nod2BNdSg ((Standard_Integer*)Nod2BIndices)[0]
@@ -2553,7 +2511,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  
  #define Nod2BPntX ((Standard_Real*)Nod2BRValues)[ 0]
  #define Nod2BPntY ((Standard_Real*)Nod2BRValues)[ 1]
-@@ -383,9 +383,9 @@
+@@ -378,9 +378,9 @@
  #define Nod2BScal ((Standard_Real*)Nod2BRValues)[10]
  
  #define Nod22NdSg ((Standard_Integer*)Nod22Indices)[0]
@@ -2566,7 +2524,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  
  #define Nod22PntX ((Standard_Real*)Nod22RValues)[ 0]
  #define Nod22PntY ((Standard_Real*)Nod22RValues)[ 1]
-@@ -400,9 +400,9 @@
+@@ -395,9 +395,9 @@
  #define Nod22Scal ((Standard_Real*)Nod22RValues)[10]
  
  #define Nod23NdSg ((Standard_Integer*)Nod23Indices)[0]
@@ -2579,7 +2537,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  
  #define Nod23PntX ((Standard_Real*)Nod23RValues)[ 0]
  #define Nod23PntY ((Standard_Real*)Nod23RValues)[ 1]
-@@ -417,9 +417,9 @@
+@@ -412,9 +412,9 @@
  #define Nod23Scal ((Standard_Real*)Nod23RValues)[10]
  
  #define Nod24NdSg ((Standard_Integer*)Nod24Indices)[0]
@@ -2592,7 +2550,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  
  #define Nod24PntX ((Standard_Real*)Nod24RValues)[ 0]
  #define Nod24PntY ((Standard_Real*)Nod24RValues)[ 1]
-@@ -1268,7 +1268,7 @@ InitBiPointsWithConnexity (const Standar
+@@ -1263,7 +1263,7 @@ InitBiPointsWithConnexity (const Standar
  	    &(((HLRAlgo_Array1OfPINod*)PINod1)->ChangeValue(Pol1(iPol)));
  	  Standard_Address Nod1AIndices = (*pi1pA)->Indices();
  	  Standard_Address Nod1ARValues = (*pi1pA)->RValues();
@@ -2601,7 +2559,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  	    Nod1AEdg1 = e;
  	    Nod1APCu1 = par->Value(iPol);
  	  }
-@@ -1284,8 +1284,8 @@ InitBiPointsWithConnexity (const Standar
+@@ -1279,8 +1279,8 @@ InitBiPointsWithConnexity (const Standar
  	XTI2 = X2 = Nod12PntX;
  	YTI2 = Y2 = Nod12PntY;
  	ZTI2 = Z2 = Nod12PntZ;
@@ -2612,7 +2570,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
  	else {
  	  cout << " HLRBRep_PolyAlgo::InitBiPointsWithConnexity : ";
-@@ -1336,8 +1336,8 @@ InitBiPointsWithConnexity (const Standar
+@@ -1331,8 +1331,8 @@ InitBiPointsWithConnexity (const Standar
  	    XTI2 = X2 = Nod12PntX;
  	    YTI2 = Y2 = Nod12PntY;
  	    ZTI2 = Z2 = Nod12PntZ;
@@ -2623,7 +2581,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
  	    else {
  	      cout << " HLRBRep_PolyAlgo::InitBiPointsWithConnexity : ";
-@@ -1427,7 +1427,7 @@ InitBiPointsWithConnexity (const Standar
+@@ -1422,7 +1422,7 @@ InitBiPointsWithConnexity (const Standar
  	  Standard_Address Nod2AIndices = (*pi2pA)->Indices();
  	  Standard_Address Nod2ARValues = (*pi2pA)->RValues();
  	  Standard_Real PCu = par->Value(iPol);
@@ -2632,7 +2590,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  	    Nod1AEdg1 = e;
  	    Nod1APCu1 = PCu;
  	  }
-@@ -1435,7 +1435,7 @@ InitBiPointsWithConnexity (const Standar
+@@ -1430,7 +1430,7 @@ InitBiPointsWithConnexity (const Standar
  	    Nod1AEdg2 = e;
  	    Nod1APCu2 = PCu;
  	  }
@@ -2641,7 +2599,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  	    Nod2AEdg1 = e;
  	    Nod2APCu1 = PCu;
  	  }
-@@ -1454,8 +1454,8 @@ InitBiPointsWithConnexity (const Standar
+@@ -1449,8 +1449,8 @@ InitBiPointsWithConnexity (const Standar
  	XTI2 = X2 = Nod12PntX;
  	YTI2 = Y2 = Nod12PntY;
  	ZTI2 = Z2 = Nod12PntZ;
@@ -2652,7 +2610,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
  	else {
  	  cout << " HLRBRep_PolyAlgo::InitBiPointsWithConnexity : ";
-@@ -1527,8 +1527,8 @@ InitBiPointsWithConnexity (const Standar
+@@ -1522,8 +1522,8 @@ InitBiPointsWithConnexity (const Standar
  	    XTI2 = X2 = Nod12PntX;
  	    YTI2 = Y2 = Nod12PntY;
  	    ZTI2 = Z2 = Nod12PntZ;
@@ -2663,7 +2621,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
  	    else {
  	      cout << " HLRBRep_PolyAlgo::InitBiPointsWithConnexity : ";
-@@ -1723,7 +1723,7 @@ Interpolation (HLRAlgo_ListOfBPoint& Lis
+@@ -1718,7 +1718,7 @@ Interpolation (HLRAlgo_ListOfBPoint& Lis
    Standard_Real X3,Y3,Z3,XTI3,YTI3,ZTI3,coef3,U3;
    Standard_Real X4,Y4,Z4,XTI4,YTI4,ZTI4,coef4,U4;
  //  gp_Pnt P3,PT3,P4,PT4;
@@ -2672,7 +2630,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
    if (rg >= GeomAbs_G1) flag += 1;
    if (rg >= GeomAbs_G2) flag += 2;
    insP3 = Interpolation(U1,U2,Nod11RValues,Nod12RValues,
-@@ -1799,7 +1799,7 @@ Interpolation (HLRAlgo_ListOfBPoint& Lis
+@@ -1794,7 +1794,7 @@ Interpolation (HLRAlgo_ListOfBPoint& Lis
      List.Prepend(HLRAlgo_BiPoint
  		 (XTI1,YTI1,ZTI1,XTI2,YTI2,ZTI2,
  		  X1  ,Y1  ,Z1  ,X2  ,Y2  ,Z2  ,   e,
@@ -2681,7 +2639,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  }
  
  //=======================================================================
-@@ -1879,7 +1879,7 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -1874,7 +1874,7 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
  		   const Standard_Real U3,
  		   const Standard_Boolean insP3,
  		   const Standard_Boolean mP3P1,
@@ -2690,7 +2648,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  {
    Standard_Address TData2 = 0;
    Standard_Address PISeg2 = 0;
-@@ -1903,8 +1903,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -1898,8 +1898,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
        Nod11PntX = X3;
        Nod11PntY = Y3;
        Nod11PntZ = Z3;
@@ -2701,7 +2659,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
-@@ -1941,8 +1941,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -1936,8 +1936,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
        Nod12PntX = X3;
        Nod12PntY = Y3;
        Nod12PntZ = Z3;
@@ -2712,7 +2670,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
-@@ -1972,17 +1972,17 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -1967,17 +1967,17 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
      List.Prepend(HLRAlgo_BiPoint
  		 (XTI1,YTI1,ZTI1,XTI3,YTI3,ZTI3,
  		  X1  ,Y1  ,Z1  ,X3  ,Y3  ,Z3  ,   e,
@@ -2733,7 +2691,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  }
  
  //=======================================================================
-@@ -2040,7 +2040,7 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -2035,7 +2035,7 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
  		   const Standard_Real U3,
  		   const Standard_Boolean insP3,
  		   const Standard_Boolean mP3P1,
@@ -2742,7 +2700,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  {
    Standard_Boolean ins3 = insP3;
    if (ins3 && mP3P1) {                             // P1 ---> P3
-@@ -2066,8 +2066,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -2061,8 +2061,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
        Nod11PntX = X3;
        Nod11PntY = Y3;
        Nod11PntZ = Z3;
@@ -2753,7 +2711,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
-@@ -2080,8 +2080,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -2075,8 +2075,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
        Nod21PntX  = X3;
        Nod21PntY  = Y3;
        Nod21PntZ  = Z3;
@@ -2764,7 +2722,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
-@@ -2123,8 +2123,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -2118,8 +2118,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
        Nod12PntX = X3;
        Nod12PntY = Y3;
        Nod12PntZ = Z3;
@@ -2775,7 +2733,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
-@@ -2137,8 +2137,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -2132,8 +2132,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
        Nod22PntX  = X3;
        Nod22PntY  = Y3;
        Nod22PntZ  = Z3;
@@ -2786,7 +2744,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
-@@ -2182,17 +2182,17 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -2177,17 +2177,17 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
      List.Prepend(HLRAlgo_BiPoint
  		 (XTI1,YTI1,ZTI1,XTI3,YTI3,ZTI3,
  		  X1  ,Y1  ,Z1  ,X3  ,Y3  ,Z3  ,   e,
@@ -2807,7 +2765,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  }
  
  //=======================================================================
-@@ -2260,7 +2260,7 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -2255,7 +2255,7 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
  		   const Standard_Real U4,
  		   const Standard_Boolean insP4,
  		   const Standard_Boolean mP4P1,
@@ -2816,7 +2774,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  {
    Standard_Boolean ins3 = insP3;
    Standard_Boolean ins4 = insP4;
-@@ -2287,8 +2287,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -2282,8 +2282,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
        Nod11PntX = X3;
        Nod11PntY = Y3;
        Nod11PntZ = Z3;
@@ -2827,7 +2785,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
-@@ -2301,8 +2301,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -2296,8 +2296,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
        Nod21PntX  = X3;
        Nod21PntY  = Y3;
        Nod21PntZ  = Z3;
@@ -2838,7 +2796,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
-@@ -2344,8 +2344,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -2339,8 +2339,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
        Nod12PntX = X4;
        Nod12PntY = Y4;
        Nod12PntZ = Z4;
@@ -2849,7 +2807,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
-@@ -2358,8 +2358,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -2353,8 +2353,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
        Nod22PntX  = X4;
        Nod22PntY  = Y4;
        Nod22PntZ  = Z4;
@@ -2860,7 +2818,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
-@@ -2456,22 +2456,22 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -2451,22 +2451,22 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
        List.Prepend(HLRAlgo_BiPoint
  		   (XTI1,YTI1,ZTI1,XTI3,YTI3,ZTI3,
  		    X1  ,Y1  ,Z1  ,X3  ,Y3  ,Z3  ,   e,
@@ -2887,7 +2845,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  }
  
  //=======================================================================
-@@ -3159,9 +3159,9 @@ HLRBRep_PolyAlgo::OrientTriangle(const S
+@@ -3158,9 +3158,9 @@ HLRBRep_PolyAlgo::OrientTriangle(const S
  				 const Standard_Address Nod3Indices,
  				 const Standard_Address Nod3RValues) const
  {
@@ -2904,7 +2862,7 @@ Index: oce/src/IFSelect/IFSelect_DispGlobal.cdl
 ===================================================================
 --- oce.orig/src/IFSelect/IFSelect_DispGlobal.cdl
 +++ oce/src/IFSelect/IFSelect_DispGlobal.cdl
-@@ -41,7 +41,7 @@ is
+@@ -35,7 +35,7 @@ is
      	is redefined;
      ---Purpose : Returns True : maximum equates 1
  
@@ -2917,7 +2875,7 @@ Index: oce/src/IFSelect/IFSelect_DispGlobal.cxx
 ===================================================================
 --- oce.orig/src/IFSelect/IFSelect_DispGlobal.cxx
 +++ oce/src/IFSelect/IFSelect_DispGlobal.cxx
-@@ -31,7 +31,7 @@ IFSelect_DispGlobal::IFSelect_DispGlobal
+@@ -27,7 +27,7 @@ IFSelect_DispGlobal::IFSelect_DispGlobal
    (const Standard_Integer /* nbent */, Standard_Integer& pcount) const 
        {  pcount = 1;  return Standard_True;  }
  
@@ -2930,7 +2888,7 @@ Index: oce/src/IFSelect/IFSelect_DispPerCount.cdl
 ===================================================================
 --- oce.orig/src/IFSelect/IFSelect_DispPerCount.cdl
 +++ oce/src/IFSelect/IFSelect_DispPerCount.cdl
-@@ -55,7 +55,7 @@ is
+@@ -49,7 +49,7 @@ is
      	is redefined;
      ---Purpose : Returns True, maximum count is given as <nbent>
  
@@ -2943,7 +2901,7 @@ Index: oce/src/IFSelect/IFSelect_DispPerCount.cxx
 ===================================================================
 --- oce.orig/src/IFSelect/IFSelect_DispPerCount.cxx
 +++ oce/src/IFSelect/IFSelect_DispPerCount.cxx
-@@ -55,7 +55,7 @@ IFSelect_DispPerCount::IFSelect_DispPerC
+@@ -51,7 +51,7 @@ IFSelect_DispPerCount::IFSelect_DispPerC
    return Standard_True;
  }
  
@@ -2956,7 +2914,7 @@ Index: oce/src/IFSelect/IFSelect_DispPerFiles.cdl
 ===================================================================
 --- oce.orig/src/IFSelect/IFSelect_DispPerFiles.cdl
 +++ oce/src/IFSelect/IFSelect_DispPerFiles.cdl
-@@ -58,7 +58,7 @@ is
+@@ -52,7 +52,7 @@ is
      	is redefined;
      ---Purpose : Returns True, maximum count is given as CountValue
  
@@ -2969,7 +2927,7 @@ Index: oce/src/IFSelect/IFSelect_DispPerFiles.cxx
 ===================================================================
 --- oce.orig/src/IFSelect/IFSelect_DispPerFiles.cxx
 +++ oce/src/IFSelect/IFSelect_DispPerFiles.cxx
-@@ -55,7 +55,7 @@ IFSelect_DispPerFiles::IFSelect_DispPerF
+@@ -51,7 +51,7 @@ IFSelect_DispPerFiles::IFSelect_DispPerF
    return Standard_True;
  }
  
@@ -2982,7 +2940,7 @@ Index: oce/src/IFSelect/IFSelect_DispPerOne.cdl
 ===================================================================
 --- oce.orig/src/IFSelect/IFSelect_DispPerOne.cdl
 +++ oce/src/IFSelect/IFSelect_DispPerOne.cdl
-@@ -42,7 +42,7 @@ is
+@@ -36,7 +36,7 @@ is
      	is redefined;
      ---Purpose : Returns True, maximum limit is given as <nbent>
  
@@ -2995,7 +2953,7 @@ Index: oce/src/IFSelect/IFSelect_DispPerOne.cxx
 ===================================================================
 --- oce.orig/src/IFSelect/IFSelect_DispPerOne.cxx
 +++ oce/src/IFSelect/IFSelect_DispPerOne.cxx
-@@ -35,7 +35,7 @@ IFSelect_DispPerOne::IFSelect_DispPerOne
+@@ -31,7 +31,7 @@ IFSelect_DispPerOne::IFSelect_DispPerOne
    (const Standard_Integer nbent, Standard_Integer& pcount) const 
  {  pcount = nbent;  return Standard_True;  }
  
@@ -3008,7 +2966,7 @@ Index: oce/src/IFSelect/IFSelect_Dispatch.cdl
 ===================================================================
 --- oce.orig/src/IFSelect/IFSelect_Dispatch.cdl
 +++ oce/src/IFSelect/IFSelect_Dispatch.cdl
-@@ -99,7 +99,7 @@ is
+@@ -93,7 +93,7 @@ is
      --           input Graph
      --           This the starting step for an Evaluation (Packets - Remainder)
  
@@ -3021,7 +2979,7 @@ Index: oce/src/IFSelect/IFSelect_Dispatch.cxx
 ===================================================================
 --- oce.orig/src/IFSelect/IFSelect_Dispatch.cxx
 +++ oce/src/IFSelect/IFSelect_Dispatch.cxx
-@@ -60,7 +60,7 @@ void  IFSelect_Dispatch::SetRootName
+@@ -56,7 +56,7 @@ void  IFSelect_Dispatch::SetRootName
    (const Interface_Graph& G) const
        {  return thefinal->UniqueResult(G);  }
  
@@ -3034,7 +2992,7 @@ Index: oce/src/IFSelect/IFSelect_Functions.cxx
 ===================================================================
 --- oce.orig/src/IFSelect/IFSelect_Functions.cxx
 +++ oce/src/IFSelect/IFSelect_Functions.cxx
-@@ -132,7 +132,7 @@ static IFSelect_ReturnStatus fun1
+@@ -128,7 +128,7 @@ static IFSelect_ReturnStatus fun1
  {
    Handle(IFSelect_WorkSession) WS = pilot->Session();
  //        ****    ToggleHandler     ****
@@ -3047,7 +3005,7 @@ Index: oce/src/IFSelect/IFSelect_SelectRootComps.cxx
 ===================================================================
 --- oce.orig/src/IFSelect/IFSelect_SelectRootComps.cxx
 +++ oce/src/IFSelect/IFSelect_SelectRootComps.cxx
-@@ -52,7 +52,7 @@ IFSelect_SelectRootComps::IFSelect_Selec
+@@ -48,7 +48,7 @@ IFSelect_SelectRootComps::IFSelect_Selec
  //  (N.B.: on prend inp1, qui donne UNE entite par composant, simple ou cycle)
    for (inp1.Start(); inp1.More(); inp1.Next()) {
      Handle(Standard_Transient) ent = inp1.Value();
@@ -3060,7 +3018,7 @@ Index: oce/src/IFSelect/IFSelect_SelectRoots.cxx
 ===================================================================
 --- oce.orig/src/IFSelect/IFSelect_SelectRoots.cxx
 +++ oce/src/IFSelect/IFSelect_SelectRoots.cxx
-@@ -40,7 +40,7 @@ IFSelect_SelectRoots::IFSelect_SelectRoo
+@@ -36,7 +36,7 @@ IFSelect_SelectRoots::IFSelect_SelectRoo
  //  A present, on retient, parmi les inputs, celles comptees une seule fois
    for (input.Start(); input.More(); input.Next()) {
      Handle(Standard_Transient) ent = input.Value();
@@ -3073,7 +3031,7 @@ Index: oce/src/IFSelect/IFSelect_SessionPilot.cxx
 ===================================================================
 --- oce.orig/src/IFSelect/IFSelect_SessionPilot.cxx
 +++ oce/src/IFSelect/IFSelect_SessionPilot.cxx
-@@ -279,7 +279,7 @@ static TCollection_AsciiString nulword;
+@@ -275,7 +275,7 @@ static TCollection_AsciiString nulword;
  //  Ici, resultat non nomme;  Resultat nomme par commande x (plus loin)
      if (!theobjrec.IsNull()) {
        thesession->RemoveItem(theobjrec);  //// depannage ?
@@ -3082,7 +3040,7 @@ Index: oce/src/IFSelect/IFSelect_SessionPilot.cxx
        if (!addws) { cout<<"Could not add item to session, sorry"<<endl; return IFSelect_RetFail; }
      }
  
-@@ -491,8 +491,8 @@ static TCollection_AsciiString nulword;
+@@ -487,8 +487,8 @@ static TCollection_AsciiString nulword;
  //  Prise en compte des commandes a resultat
  	  if (!theobjrec.IsNull()) {
  	    thesession->RemoveItem(theobjrec);  //// depannage ?
@@ -3097,7 +3055,7 @@ Index: oce/src/IGESData/IGESData_IGESEntity.cxx
 ===================================================================
 --- oce.orig/src/IGESData/IGESData_IGESEntity.cxx
 +++ oce/src/IGESData/IGESData_IGESEntity.cxx
-@@ -379,7 +379,7 @@ Handle(TCollection_HAsciiString) IGESDat
+@@ -375,7 +375,7 @@ Handle(TCollection_HAsciiString) IGESDat
      Standard_Boolean IGESData_IGESEntity::ArePresentAssociativities () const
  {
    if (!theAssocs.IsEmpty()) return Standard_True;
@@ -3106,7 +3064,7 @@ Index: oce/src/IGESData/IGESData_IGESEntity.cxx
  }
  
      Standard_Integer IGESData_IGESEntity::NbAssociativities () const
-@@ -430,7 +430,7 @@ Handle(TCollection_HAsciiString) IGESDat
+@@ -426,7 +426,7 @@ Handle(TCollection_HAsciiString) IGESDat
      Standard_Boolean IGESData_IGESEntity::ArePresentProperties () const
  {
    if (!theProps.IsEmpty()) return Standard_True;
@@ -3119,7 +3077,7 @@ Index: oce/src/IGESDraw/IGESDraw_CircArraySubfigure.cxx
 ===================================================================
 --- oce.orig/src/IGESDraw/IGESDraw_CircArraySubfigure.cxx
 +++ oce/src/IGESDraw/IGESDraw_CircArraySubfigure.cxx
-@@ -117,15 +117,15 @@ IGESDraw_CircArraySubfigure::IGESDraw_Ci
+@@ -113,15 +113,15 @@ IGESDraw_CircArraySubfigure::IGESDraw_Ci
    //          else Search Index in to the Array. If 'Index' found in the
    //          array return theDoDontFlag else return !theDoDontFlag.
  
@@ -3142,7 +3100,7 @@ Index: oce/src/IGESDraw/IGESDraw_ConnectPoint.cxx
 ===================================================================
 --- oce.orig/src/IGESDraw/IGESDraw_ConnectPoint.cxx
 +++ oce/src/IGESDraw/IGESDraw_ConnectPoint.cxx
-@@ -136,7 +136,7 @@ IGESDraw_ConnectPoint::IGESDraw_ConnectP
+@@ -132,7 +132,7 @@ IGESDraw_ConnectPoint::IGESDraw_ConnectP
  
      Standard_Boolean IGESDraw_ConnectPoint::SwapFlag () const
  {
@@ -3155,7 +3113,7 @@ Index: oce/src/IGESDraw/IGESDraw_RectArraySubfigure.cxx
 ===================================================================
 --- oce.orig/src/IGESDraw/IGESDraw_RectArraySubfigure.cxx
 +++ oce/src/IGESDraw/IGESDraw_RectArraySubfigure.cxx
-@@ -119,7 +119,7 @@ IGESDraw_RectArraySubfigure::IGESDraw_Re
+@@ -115,7 +115,7 @@ IGESDraw_RectArraySubfigure::IGESDraw_Re
  
      Standard_Boolean IGESDraw_RectArraySubfigure::DoDontFlag () const
  {
@@ -3164,7 +3122,7 @@ Index: oce/src/IGESDraw/IGESDraw_RectArraySubfigure.cxx
  }
  
      Standard_Boolean IGESDraw_RectArraySubfigure::PositionNum
-@@ -129,14 +129,14 @@ IGESDraw_RectArraySubfigure::IGESDraw_Re
+@@ -125,14 +125,14 @@ IGESDraw_RectArraySubfigure::IGESDraw_Re
    //          else Search Index in to the Array. If 'Index' found in the
    //          array return theDoDontFlag else return !theDoDontFlag.
  
@@ -3186,7 +3144,7 @@ Index: oce/src/IGESSolid/IGESSolid_TopoBuilder.cxx
 ===================================================================
 --- oce.orig/src/IGESSolid/IGESSolid_TopoBuilder.cxx
 +++ oce/src/IGESSolid/IGESSolid_TopoBuilder.cxx
-@@ -252,7 +252,7 @@ IGESSolid_TopoBuilder::IGESSolid_TopoBui
+@@ -248,7 +248,7 @@ IGESSolid_TopoBuilder::IGESSolid_TopoBui
      for (i = 1; i <= nb; i ++) loops->SetValue
        (i, GetCasted(IGESSolid_Loop,theinner->Value(i)));
    }
@@ -3195,7 +3153,7 @@ Index: oce/src/IGESSolid/IGESSolid_TopoBuilder.cxx
    thefaces->Append(theface);
    thefflag->Append(orientation);
  }
-@@ -317,7 +317,7 @@ IGESSolid_TopoBuilder::IGESSolid_TopoBui
+@@ -313,7 +313,7 @@ IGESSolid_TopoBuilder::IGESSolid_TopoBui
        flags->SetValue  (i,thevflag->Value(i));
      }
    }
@@ -3221,7 +3179,7 @@ Index: oce/src/MDataStd/MDataStd_BooleanListRetrievalDriver.cxx
 ===================================================================
 --- oce.orig/src/MDataStd/MDataStd_BooleanListRetrievalDriver.cxx
 +++ oce/src/MDataStd/MDataStd_BooleanListRetrievalDriver.cxx
-@@ -75,6 +75,6 @@ void MDataStd_BooleanListRetrievalDriver
+@@ -70,6 +70,6 @@ void MDataStd_BooleanListRetrievalDriver
    Standard_Integer i, lower = S->Lower(), upper = S->Upper();
    for (i = lower; i <= upper; i++)
    {
@@ -3233,7 +3191,7 @@ Index: oce/src/MeshTest/MeshTest.cxx
 ===================================================================
 --- oce.orig/src/MeshTest/MeshTest.cxx
 +++ oce/src/MeshTest/MeshTest.cxx
-@@ -283,7 +283,7 @@ static Standard_Integer fastdiscret(Draw
+@@ -276,7 +276,7 @@ static Standard_Integer fastdiscret(Draw
    const Standard_Real d = Draw::Atof(argv[2]);
  
    Standard_Boolean WithShare = Standard_True;
@@ -3246,7 +3204,7 @@ Index: oce/src/NIS/NIS_Triangulated.cxx
 ===================================================================
 --- oce.orig/src/NIS/NIS_Triangulated.cxx
 +++ oce/src/NIS/NIS_Triangulated.cxx
-@@ -911,46 +911,46 @@ Standard_Real NIS_Triangulated::Intersec
+@@ -905,46 +905,46 @@ Standard_Real NIS_Triangulated::Intersec
          const unsigned char * pTri =
            reinterpret_cast<unsigned char *>(mypTriangles) + (3 * i);
          if (myNodeCoord > 2)
@@ -3309,7 +3267,7 @@ Index: oce/src/OSD/OSD_DirectoryIterator.cdl
 ===================================================================
 --- oce.orig/src/OSD/OSD_DirectoryIterator.cdl
 +++ oce/src/OSD/OSD_DirectoryIterator.cdl
-@@ -90,7 +90,7 @@ is
+@@ -84,7 +84,7 @@ is
  
   fields
        TheIterator  : Directory;     -- The iterator item
@@ -3322,7 +3280,7 @@ Index: oce/src/OSD/OSD_FileIterator.cdl
 ===================================================================
 --- oce.orig/src/OSD/OSD_FileIterator.cdl
 +++ oce/src/OSD/OSD_FileIterator.cdl
-@@ -89,7 +89,7 @@ is
+@@ -81,7 +81,7 @@ is
  
   fields
        TheIterator  : File;     -- The iterator item
@@ -3335,7 +3293,7 @@ Index: oce/src/OpenGl/OpenGl_GraphicDriver_2.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_GraphicDriver_2.cxx
 +++ oce/src/OpenGl/OpenGl_GraphicDriver_2.cxx
-@@ -34,7 +34,7 @@ void OpenGl_GraphicDriver::InquireMat (c
+@@ -29,7 +29,7 @@ void OpenGl_GraphicDriver::InquireMat (c
  {
    const OpenGl_CView *aCView = (const OpenGl_CView *)ACView.ptrView;
    if (aCView)
@@ -3348,16 +3306,7 @@ Index: oce/src/OpenGl/OpenGl_GraphicDriver_3.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_GraphicDriver_3.cxx
 +++ oce/src/OpenGl/OpenGl_GraphicDriver_3.cxx
-@@ -39,7 +39,7 @@ void OpenGl_GraphicDriver::FaceContextGr
-   if (!theCGroup.ContextFillArea.IsDef || theCGroup.ptrGroup == NULL)
-     return;
- 
--  ((OpenGl_Group* )theCGroup.ptrGroup)->SetAspectFace (GetSharedContext(), theCGroup.ContextFillArea, theNoInsert);
-+  ((OpenGl_Group* )theCGroup.ptrGroup)->SetAspectFace (GetSharedContext(), theCGroup.ContextFillArea, 0 != theNoInsert);
- }
- 
- void OpenGl_GraphicDriver::Group (Graphic3d_CGroup& theCGroup)
-@@ -56,7 +56,7 @@ void OpenGl_GraphicDriver::LineContextGr
+@@ -51,7 +51,7 @@ void OpenGl_GraphicDriver::LineContextGr
  {
    if (!theCGroup.ContextLine.IsDef || theCGroup.ptrGroup == NULL) return;
  
@@ -3366,7 +3315,7 @@ Index: oce/src/OpenGl/OpenGl_GraphicDriver_3.cxx
  }
  
  void OpenGl_GraphicDriver::MarkerContextGroup (const Graphic3d_CGroup& theCGroup,
-@@ -64,7 +64,7 @@ void OpenGl_GraphicDriver::MarkerContext
+@@ -59,7 +59,7 @@ void OpenGl_GraphicDriver::MarkerContext
  {
    if (!theCGroup.ContextMarker.IsDef || theCGroup.ptrGroup == NULL) return;
  
@@ -3374,17 +3323,8 @@ Index: oce/src/OpenGl/OpenGl_GraphicDriver_3.cxx
 +  ((OpenGl_Group* )theCGroup.ptrGroup)->SetAspectMarker (theCGroup.ContextMarker, 0 != theNoInsert);
  }
  
- void OpenGl_GraphicDriver::MarkerContextGroup (const Graphic3d_CGroup& theCGroup,
-@@ -81,7 +81,7 @@ void OpenGl_GraphicDriver::MarkerContext
- 
-   if (theCGroup.ptrGroup != NULL)
-   {
--    ((OpenGl_Group* )theCGroup.ptrGroup)->SetAspectMarker (theCGroup.ContextMarker, theNoInsert);
-+    ((OpenGl_Group* )theCGroup.ptrGroup)->SetAspectMarker (theCGroup.ContextMarker, 0 != theNoInsert);
-   }
- }
- 
-@@ -100,5 +100,5 @@ void OpenGl_GraphicDriver::TextContextGr
+ void OpenGl_GraphicDriver::RemoveGroup (const Graphic3d_CGroup& theCGroup)
+@@ -77,5 +77,5 @@ void OpenGl_GraphicDriver::TextContextGr
    if (!theCGroup.ContextText.IsDef || theCGroup.ptrGroup == NULL)
      return;
  
@@ -3395,20 +3335,20 @@ Index: oce/src/OpenGl/OpenGl_Workspace_2.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_Workspace_2.cxx
 +++ oce/src/OpenGl/OpenGl_Workspace_2.cxx
-@@ -784,7 +784,7 @@ Standard_Boolean OpenGl_Workspace::Print
+@@ -776,7 +776,7 @@ Standard_Boolean OpenGl_Workspace::Print
    NamedStatus &= ~OPENGL_NS_WHITEBACK;
  
    myPrintContext.Nullify();
 -  return (Standard_Boolean) isDone;
 +  return isDone;
  
- #else // not WNT
+ #else // not _WIN32
    myPrintContext.Nullify();
 Index: oce/src/PBRep/PBRep_TEdge.cxx
 ===================================================================
 --- oce.orig/src/PBRep/PBRep_TEdge.cxx
 +++ oce/src/PBRep/PBRep_TEdge.cxx
-@@ -87,7 +87,7 @@ void  PBRep_TEdge::SameParameter(const S
+@@ -83,7 +83,7 @@ void  PBRep_TEdge::SameParameter(const S
  
   Standard_Boolean  PBRep_TEdge::SameRange()const 
  {
@@ -3417,7 +3357,7 @@ Index: oce/src/PBRep/PBRep_TEdge.cxx
  }
  
  
-@@ -109,7 +109,7 @@ void  PBRep_TEdge::SameParameter(const S
+@@ -105,7 +105,7 @@ void  PBRep_TEdge::SameParameter(const S
  
  Standard_Boolean  PBRep_TEdge::Degenerated()const 
  {
@@ -3430,7 +3370,7 @@ Index: oce/src/PBRep/PBRep_TEdge1.cxx
 ===================================================================
 --- oce.orig/src/PBRep/PBRep_TEdge1.cxx
 +++ oce/src/PBRep/PBRep_TEdge1.cxx
-@@ -90,7 +90,7 @@ void  PBRep_TEdge1::SameParameter(const
+@@ -86,7 +86,7 @@ void  PBRep_TEdge1::SameParameter(const
  
   Standard_Boolean  PBRep_TEdge1::SameRange()const 
  {
@@ -3439,7 +3379,7 @@ Index: oce/src/PBRep/PBRep_TEdge1.cxx
  }
  
  
-@@ -112,7 +112,7 @@ void  PBRep_TEdge1::SameParameter(const
+@@ -108,7 +108,7 @@ void  PBRep_TEdge1::SameParameter(const
  
  Standard_Boolean  PBRep_TEdge1::Degenerated()const 
  {
@@ -3452,7 +3392,7 @@ Index: oce/src/PTopoDS/PTopoDS_TShape.cxx
 ===================================================================
 --- oce.orig/src/PTopoDS/PTopoDS_TShape.cxx
 +++ oce/src/PTopoDS/PTopoDS_TShape.cxx
-@@ -53,7 +53,7 @@ PTopoDS_TShape::PTopoDS_TShape() :
+@@ -47,7 +47,7 @@ PTopoDS_TShape::PTopoDS_TShape() : myFla
  
  Standard_Boolean  PTopoDS_TShape::Modified() const 
  {
@@ -3461,7 +3401,7 @@ Index: oce/src/PTopoDS/PTopoDS_TShape.cxx
  }
  
  //=======================================================================
-@@ -74,7 +74,7 @@ void  PTopoDS_TShape::Modified(const Sta
+@@ -68,7 +68,7 @@ void  PTopoDS_TShape::Modified(const Sta
  
  Standard_Boolean  PTopoDS_TShape::Checked() const 
  {
@@ -3470,7 +3410,7 @@ Index: oce/src/PTopoDS/PTopoDS_TShape.cxx
  }
  
  //=======================================================================
-@@ -95,7 +95,7 @@ void  PTopoDS_TShape::Checked(const Stan
+@@ -89,7 +89,7 @@ void  PTopoDS_TShape::Checked(const Stan
  
  Standard_Boolean  PTopoDS_TShape::Orientable() const 
  {
@@ -3479,7 +3419,7 @@ Index: oce/src/PTopoDS/PTopoDS_TShape.cxx
  }
  
  //=======================================================================
-@@ -116,7 +116,7 @@ void  PTopoDS_TShape::Orientable(const S
+@@ -110,7 +110,7 @@ void  PTopoDS_TShape::Orientable(const S
  
  Standard_Boolean  PTopoDS_TShape::Closed() const 
  {
@@ -3488,7 +3428,7 @@ Index: oce/src/PTopoDS/PTopoDS_TShape.cxx
  }
  
  //=======================================================================
-@@ -137,7 +137,7 @@ void  PTopoDS_TShape::Closed(const Stand
+@@ -131,7 +131,7 @@ void  PTopoDS_TShape::Closed(const Stand
  
  Standard_Boolean  PTopoDS_TShape::Infinite() const 
  {
@@ -3497,7 +3437,7 @@ Index: oce/src/PTopoDS/PTopoDS_TShape.cxx
  }
  
  //=======================================================================
-@@ -158,7 +158,7 @@ void  PTopoDS_TShape::Infinite(const Sta
+@@ -152,7 +152,7 @@ void  PTopoDS_TShape::Infinite(const Sta
  
  Standard_Boolean  PTopoDS_TShape::Convex() const 
  {
@@ -3510,7 +3450,7 @@ Index: oce/src/PTopoDS/PTopoDS_TShape1.cxx
 ===================================================================
 --- oce.orig/src/PTopoDS/PTopoDS_TShape1.cxx
 +++ oce/src/PTopoDS/PTopoDS_TShape1.cxx
-@@ -59,7 +59,7 @@ PTopoDS_TShape1::PTopoDS_TShape1()
+@@ -55,7 +55,7 @@ PTopoDS_TShape1::PTopoDS_TShape1()
  //=======================================================================
  
  Standard_Boolean  PTopoDS_TShape1::Modified() const 
@@ -3519,7 +3459,7 @@ Index: oce/src/PTopoDS/PTopoDS_TShape1.cxx
  
  //=======================================================================
  //function : Modified
-@@ -78,7 +78,7 @@ void  PTopoDS_TShape1::Modified(const St
+@@ -74,7 +74,7 @@ void  PTopoDS_TShape1::Modified(const St
  //=======================================================================
  
  Standard_Boolean  PTopoDS_TShape1::Checked() const 
@@ -3528,7 +3468,7 @@ Index: oce/src/PTopoDS/PTopoDS_TShape1.cxx
  
  //=======================================================================
  //function : Checked
-@@ -97,7 +97,7 @@ void  PTopoDS_TShape1::Checked(const Sta
+@@ -93,7 +93,7 @@ void  PTopoDS_TShape1::Checked(const Sta
  //=======================================================================
  
  Standard_Boolean  PTopoDS_TShape1::Orientable() const 
@@ -3537,7 +3477,7 @@ Index: oce/src/PTopoDS/PTopoDS_TShape1.cxx
  
  //=======================================================================
  //function : Orientable
-@@ -116,7 +116,7 @@ void  PTopoDS_TShape1::Orientable(const
+@@ -112,7 +112,7 @@ void  PTopoDS_TShape1::Orientable(const
  //=======================================================================
  
  Standard_Boolean  PTopoDS_TShape1::Closed() const 
@@ -3546,7 +3486,7 @@ Index: oce/src/PTopoDS/PTopoDS_TShape1.cxx
  
  //=======================================================================
  //function : Closed
-@@ -135,7 +135,7 @@ void  PTopoDS_TShape1::Closed(const Stan
+@@ -131,7 +131,7 @@ void  PTopoDS_TShape1::Closed(const Stan
  //=======================================================================
  
  Standard_Boolean  PTopoDS_TShape1::Infinite() const 
@@ -3555,7 +3495,7 @@ Index: oce/src/PTopoDS/PTopoDS_TShape1.cxx
  
  //=======================================================================
  //function : Infinite
-@@ -154,7 +154,7 @@ void  PTopoDS_TShape1::Infinite(const St
+@@ -150,7 +150,7 @@ void  PTopoDS_TShape1::Infinite(const St
  //=======================================================================
  
  Standard_Boolean  PTopoDS_TShape1::Convex() const 
@@ -3568,7 +3508,7 @@ Index: oce/src/Poly/Poly_MakeLoops.hxx
 ===================================================================
 --- oce.orig/src/Poly/Poly_MakeLoops.hxx
 +++ oce/src/Poly/Poly_MakeLoops.hxx
-@@ -65,7 +65,7 @@ public:
+@@ -60,7 +60,7 @@ public:
  
      Standard_Boolean IsReversed() const
      {
@@ -3581,7 +3521,7 @@ Index: oce/src/Primitives/Primitives_OneAxis.gxx
 ===================================================================
 --- oce.orig/src/Primitives/Primitives_OneAxis.gxx
 +++ oce/src/Primitives/Primitives_OneAxis.gxx
-@@ -31,12 +31,7 @@
+@@ -26,12 +26,7 @@
  #include <Standard_DomainError.hxx>
  #include <Standard_OutOfRange.hxx>
  
@@ -3599,7 +3539,7 @@ Index: oce/src/Primitives/Primitives_Wedge.gxx
 ===================================================================
 --- oce.orig/src/Primitives/Primitives_Wedge.gxx
 +++ oce/src/Primitives/Primitives_Wedge.gxx
-@@ -29,11 +29,7 @@
+@@ -24,11 +24,7 @@
  #include <Standard_DomainError.hxx>
  #include <Standard_OutOfRange.hxx>
  
@@ -3612,42 +3552,11 @@ Index: oce/src/Primitives/Primitives_Wedge.gxx
  
  #define NBFACES 6
  #define NBWIRES 6
-Index: oce/src/Prs3d/Prs3d_WFShape.gxx
-===================================================================
---- oce.orig/src/Prs3d/Prs3d_WFShape.gxx
-+++ oce/src/Prs3d/Prs3d_WFShape.gxx
-@@ -195,7 +195,7 @@ void Prs3d_WFShape::Add(const Handle (Pr
- 	      OCC_CATCH_SIGNALS
- 	      Prs3d_NListOfSequenceOfPnt CurUIsoCurves;
- 	      FacePresentation::Add(aPresentation, HS,
--				    isoU, isoV,
-+				    0 != isoU,0 !=  isoV,
- 				    aDeflection,
- 				    isoU, isoV,
- 				    aDrawer,
-@@ -232,7 +232,7 @@ void Prs3d_WFShape::Add(const Handle (Pr
- 	      OCC_CATCH_SIGNALS
- 	      Prs3d_NListOfSequenceOfPnt CurUIsoCurves;
- 	      FacePresentation::Add(aPresentation, HS,
--				    isoU, Standard_False,
-+				    0 != isoU, Standard_False,
- 				    aDeflection,
- 				    isoU, 0,
- 				    aDrawer,
-@@ -265,7 +265,7 @@ void Prs3d_WFShape::Add(const Handle (Pr
- 	      OCC_CATCH_SIGNALS
- 	      Prs3d_NListOfSequenceOfPnt CurUIsoCurves;
- 	      FacePresentation::Add(aPresentation, HS,
--				    Standard_False, isoV,
-+				    Standard_False, 0 != isoV,
- 				    aDeflection,
- 				    0, isoV,
- 				    aDrawer,
 Index: oce/src/QABugs/QABugs_3.cxx
 ===================================================================
 --- oce.orig/src/QABugs/QABugs_3.cxx
 +++ oce/src/QABugs/QABugs_3.cxx
-@@ -636,7 +636,7 @@ Standard_Integer ksection(Draw_Interpret
+@@ -315,7 +315,7 @@ Standard_Integer ksection(Draw_Interpret
    NbPntMax=Draw::Atoi(a[4]);
    Toler3d=Draw::Atof(a[5]);
    Toler2d=Draw::Atof(a[6]);
@@ -3660,7 +3569,7 @@ Index: oce/src/QADNaming/QADNaming_BasicCommands.cxx
 ===================================================================
 --- oce.orig/src/QADNaming/QADNaming_BasicCommands.cxx
 +++ oce/src/QADNaming/QADNaming_BasicCommands.cxx
-@@ -393,7 +393,7 @@ static Standard_Integer Collect (Draw_In
+@@ -388,7 +388,7 @@ static Standard_Integer Collect (Draw_In
      if (!DDF::GetDF(arg[1],DF)) return 1;
      if (!DDF::Find(DF,arg[2],TNaming_NamedShape::GetID(),A)) return 1;
      if (nb >= 4) {
@@ -3673,7 +3582,7 @@ Index: oce/src/QANewBRepNaming/QANewBRepNaming_Loader.cxx
 ===================================================================
 --- oce.orig/src/QANewBRepNaming/QANewBRepNaming_Loader.cxx
 +++ oce/src/QANewBRepNaming/QANewBRepNaming_Loader.cxx
-@@ -263,7 +263,7 @@ Standard_Boolean QANewBRepNaming_Loader:
+@@ -259,7 +259,7 @@ Standard_Boolean QANewBRepNaming_Loader:
      const TopTools_ListOfShape& ancestors = subShapeAndAncestors.FindFromIndex(i);
      if (ancestors.Extent() == 1) Dangles.Bind(ancestors.First(), mayBeDangle);
    }
@@ -3682,7 +3591,7 @@ Index: oce/src/QANewBRepNaming/QANewBRepNaming_Loader.cxx
  }
  
  //=======================================================================
-@@ -286,7 +286,7 @@ Standard_Boolean QANewBRepNaming_Loader:
+@@ -282,7 +282,7 @@ Standard_Boolean QANewBRepNaming_Loader:
      const TopTools_ListOfShape& ancestors = subShapeAndAncestors.FindFromIndex(i);
      if (ancestors.Extent() == 1) Dangles.Add(mayBeDangle);
    }
@@ -3695,7 +3604,7 @@ Index: oce/src/QANewBRepNaming/QANewBRepNaming_LoaderParent.cxx
 ===================================================================
 --- oce.orig/src/QANewBRepNaming/QANewBRepNaming_LoaderParent.cxx
 +++ oce/src/QANewBRepNaming/QANewBRepNaming_LoaderParent.cxx
-@@ -61,7 +61,7 @@ Standard_Boolean QANewBRepNaming_LoaderP
+@@ -56,7 +56,7 @@ Standard_Boolean QANewBRepNaming_LoaderP
      const TopTools_ListOfShape& ancestors = subShapeAndAncestors.FindFromIndex(i);
      if (ancestors.Extent() == 1) Dangles.Bind(ancestors.First(), mayBeDangle);
    }
@@ -3708,7 +3617,7 @@ Index: oce/src/QANewDBRepNaming/QANewDBRepNaming_PrimitiveCommands.cxx
 ===================================================================
 --- oce.orig/src/QANewDBRepNaming/QANewDBRepNaming_PrimitiveCommands.cxx
 +++ oce/src/QANewDBRepNaming/QANewDBRepNaming_PrimitiveCommands.cxx
-@@ -222,7 +222,7 @@ static Standard_Integer QANewDBRepNaming
+@@ -216,7 +216,7 @@ static Standard_Integer QANewDBRepNaming
        namePrism.Load(mkPrism, Basis);
      }      
      else if (nb == 9) {
@@ -3721,7 +3630,7 @@ Index: oce/src/QANewModTopOpe/QANewModTopOpe_Tools.cxx
 ===================================================================
 --- oce.orig/src/QANewModTopOpe/QANewModTopOpe_Tools.cxx
 +++ oce/src/QANewModTopOpe/QANewModTopOpe_Tools.cxx
-@@ -185,7 +185,7 @@ TopoDS_Shape QANewModTopOpe_Tools::NewVe
+@@ -178,7 +178,7 @@ TopoDS_Shape QANewModTopOpe_Tools::NewVe
  Standard_Boolean QANewModTopOpe_Tools::HasSameDomain(const BOPAlgo_PBOP& theBuilder, 
                                                       const TopoDS_Shape& theFace) 
  {
@@ -3734,7 +3643,7 @@ Index: oce/src/RWStl/RWStl.cxx
 ===================================================================
 --- oce.orig/src/RWStl/RWStl.cxx
 +++ oce/src/RWStl/RWStl.cxx
-@@ -101,7 +101,7 @@ inline static void WriteDouble2Float(OSD
+@@ -95,7 +95,7 @@ inline static void WriteDouble2Float(OSD
  inline static Standard_Real ReadFloat2Double(OSD_File &aFile)
  {
    union {
@@ -3747,7 +3656,7 @@ Index: oce/src/STEPControl/STEPControl_ActorRead.cxx
 ===================================================================
 --- oce.orig/src/STEPControl/STEPControl_ActorRead.cxx
 +++ oce/src/STEPControl/STEPControl_ActorRead.cxx
-@@ -771,7 +771,7 @@ Handle(TransferBRep_ShapeBinder) STEPCon
+@@ -768,7 +768,7 @@ Handle(TransferBRep_ShapeBinder) STEPCon
    Message_ProgressSentry PS ( TP->GetProgress(), "Sub-assembly", 0, nb, 1 );
  
    // [BEGIN] Proceed with non-manifold topology (ssv; 12.11.2010)
@@ -3760,7 +3669,7 @@ Index: oce/src/STEPControl/STEPControl_ActorWrite.cxx
 ===================================================================
 --- oce.orig/src/STEPControl/STEPControl_ActorWrite.cxx
 +++ oce/src/STEPControl/STEPControl_ActorWrite.cxx
-@@ -640,7 +640,7 @@ Handle(Transfer_Binder) STEPControl_Acto
+@@ -637,7 +637,7 @@ Handle(Transfer_Binder) STEPControl_Acto
      return TransferCompound(start, SDR0, FP);
  
    // [BEGIN] Separate manifold topology from non-manifold in group mode 0 (ssv; 18.11.2010)
@@ -3769,7 +3678,7 @@ Index: oce/src/STEPControl/STEPControl_ActorWrite.cxx
    Handle(Transfer_Binder) aNMBinder;
    if (isNMMode && !GroupMode() && theShape.ShapeType() == TopAbs_COMPOUND) {
      TopoDS_Compound aNMCompound;
-@@ -1259,7 +1259,7 @@ Handle(Transfer_Binder) STEPControl_Acto
+@@ -1256,7 +1256,7 @@ Handle(Transfer_Binder) STEPControl_Acto
    TopoDS_Shape theShape = mapper->Value();
  
    // Inspect non-manifold topology case (ssv; 10.11.2010)
@@ -3782,7 +3691,7 @@ Index: oce/src/STEPControl/STEPControl_Reader.cxx
 ===================================================================
 --- oce.orig/src/STEPControl/STEPControl_Reader.cxx
 +++ oce/src/STEPControl/STEPControl_Reader.cxx
-@@ -554,6 +554,6 @@ Standard_Boolean STEPControl_Reader::fin
+@@ -550,6 +550,6 @@ Standard_Boolean STEPControl_Reader::fin
         
     }
      
@@ -3794,7 +3703,7 @@ Index: oce/src/SWDRAW/SWDRAW_ShapeAnalysis.cxx
 ===================================================================
 --- oce.orig/src/SWDRAW/SWDRAW_ShapeAnalysis.cxx
 +++ oce/src/SWDRAW/SWDRAW_ShapeAnalysis.cxx
-@@ -625,8 +625,8 @@ static Standard_Integer freebounds (Draw
+@@ -621,8 +621,8 @@ static Standard_Integer freebounds (Draw
    if (shape.IsNull()) return 1;
    Standard_Real toler = Draw::Atof (a[2]);
    Standard_Boolean splitclosed = Standard_False, splitopen = Standard_False;
@@ -3805,7 +3714,7 @@ Index: oce/src/SWDRAW/SWDRAW_ShapeAnalysis.cxx
  
    ShapeAnalysis_FreeBounds F;
    if (toler <= 0)
-@@ -689,8 +689,8 @@ static Standard_Integer FreeBoundsProps(
+@@ -685,8 +685,8 @@ static Standard_Integer FreeBoundsProps(
    Standard_Real toler = 0.;
    Standard_Boolean splitclosed = Standard_False, splitopen = Standard_False;
    if (n > 2) toler =  Draw::Atof(a[2]);
@@ -3816,7 +3725,7 @@ Index: oce/src/SWDRAW/SWDRAW_ShapeAnalysis.cxx
    ShapeAnalysis_FreeBoundsProperties analyzer;
    if (toler > 0)
      analyzer.Init(source, toler, splitclosed, splitopen);
-@@ -747,8 +747,8 @@ static Standard_Integer closefreebounds
+@@ -743,8 +743,8 @@ static Standard_Integer closefreebounds
    if (shape.IsNull()) return 1;
    Standard_Real sewtoler = Draw::Atof (a[2]), closetoler = Draw::Atof (a[3]);
    Standard_Boolean splitclosed = Standard_False, splitopen = Standard_False;
@@ -3831,7 +3740,7 @@ Index: oce/src/SWDRAW/SWDRAW_ShapeCustom.cxx
 ===================================================================
 --- oce.orig/src/SWDRAW/SWDRAW_ShapeCustom.cxx
 +++ oce/src/SWDRAW/SWDRAW_ShapeCustom.cxx
-@@ -166,7 +166,7 @@ static void expcurv2d(const Handle(Geom2
+@@ -162,7 +162,7 @@ static void expcurv2d(const Handle(Geom2
    if (aCurve->IsKind(STANDARD_TYPE(Geom2d_BezierCurve))) {
      Handle(Geom2d_BezierCurve) Bs = Handle(Geom2d_BezierCurve)::DownCast(aCurve); 
      if(Bs->Degree() > Degree) Nb.ChangeValue(2,1)++;
@@ -3840,7 +3749,7 @@ Index: oce/src/SWDRAW/SWDRAW_ShapeCustom.cxx
      if(aCont < theCont)
      {
  
-@@ -218,7 +218,7 @@ static void expcurv(const Handle(Geom_Cu
+@@ -214,7 +214,7 @@ static void expcurv(const Handle(Geom_Cu
    if (aCurve->IsKind(STANDARD_TYPE(Geom_BezierCurve))) {
      Handle(Geom_BezierCurve) Bs = Handle(Geom_BezierCurve)::DownCast(aCurve); 
      if(Bs->Degree() > Degree) Nb.ChangeValue(2,1)++;
@@ -3849,7 +3758,7 @@ Index: oce/src/SWDRAW/SWDRAW_ShapeCustom.cxx
      if(aCont < theCont) 
        Nb.ChangeValue(2,4)++;
      return;
-@@ -444,7 +444,7 @@ static Standard_Integer BSplRes(Draw_Int
+@@ -440,7 +440,7 @@ static Standard_Integer BSplRes(Draw_Int
      di<< "Invalid argument Cont3e" << "\n"; return 1; }
  
    Handle(ShapeCustom_RestrictionParameters) aParameters = new ShapeCustom_RestrictionParameters;
@@ -3862,7 +3771,7 @@ Index: oce/src/SWDRAW/SWDRAW_ShapeExtend.cxx
 ===================================================================
 --- oce.orig/src/SWDRAW/SWDRAW_ShapeExtend.cxx
 +++ oce/src/SWDRAW/SWDRAW_ShapeExtend.cxx
-@@ -44,7 +44,7 @@ static Standard_Integer sortcompound (Dr
+@@ -38,7 +38,7 @@ static Standard_Integer sortcompound (Dr
    if (argc < 4) {
      ShapeExtend_Explorer sbx;
      for (int i = 0; i < 2; i ++) {
@@ -3875,7 +3784,7 @@ Index: oce/src/ShapeAnalysis/ShapeAnalysis_Surface.cdl
 ===================================================================
 --- oce.orig/src/ShapeAnalysis/ShapeAnalysis_Surface.cdl
 +++ oce/src/ShapeAnalysis/ShapeAnalysis_Surface.cdl
-@@ -362,7 +362,7 @@ is
+@@ -356,7 +356,7 @@ is
      	    	                P3D    : Pnt from gp;
                                  preci  : Real;
                                  sol    :in out Pnt2d from gp)
@@ -3888,7 +3797,7 @@ Index: oce/src/ShapeAnalysis/ShapeAnalysis_Surface.cxx
 ===================================================================
 --- oce.orig/src/ShapeAnalysis/ShapeAnalysis_Surface.cxx
 +++ oce/src/ShapeAnalysis/ShapeAnalysis_Surface.cxx
-@@ -784,7 +784,7 @@ Standard_Boolean ShapeAnalysis_Surface::
+@@ -780,7 +780,7 @@ Standard_Boolean ShapeAnalysis_Surface::
  //function : SurfaceNewton
  //purpose  : Newton algo (S4030)
  //=======================================================================
@@ -3897,7 +3806,7 @@ Index: oce/src/ShapeAnalysis/ShapeAnalysis_Surface.cxx
                                                        const gp_Pnt& P3D,
                                                        const Standard_Real preci,
                                                        gp_Pnt2d &sol)
-@@ -882,7 +882,7 @@ gp_Pnt2d ShapeAnalysis_Surface::NextValu
+@@ -878,7 +878,7 @@ gp_Pnt2d ShapeAnalysis_Surface::NextValu
  //    if ( ! mySurf->Continuity() == GeomAbs_C0 ) //: S4030: fix on BUC40132 8355 & PRO7978 1987: SI because of bad data
      {
        gp_Pnt2d sol;
@@ -3910,7 +3819,7 @@ Index: oce/src/ShapeCustom/ShapeCustom_DirectModification.cxx
 ===================================================================
 --- oce.orig/src/ShapeCustom/ShapeCustom_DirectModification.cxx
 +++ oce/src/ShapeCustom/ShapeCustom_DirectModification.cxx
-@@ -63,7 +63,7 @@ static Standard_Integer IsIndirectSurfac
+@@ -59,7 +59,7 @@ static Standard_Integer IsIndirectSurfac
      Standard_Boolean neg = t.IsNegative();
      Standard_Boolean det = ( t.VectorialPart().Determinant() < 0.0 );
      Standard_Boolean dir = ES->Position().Direct();
@@ -3923,7 +3832,7 @@ Index: oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
 ===================================================================
 --- oce.orig/src/ShapeFix/ShapeFix_ComposeShell.cxx
 +++ oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
-@@ -411,7 +411,7 @@ static Standard_Integer ApplyContext (Sh
+@@ -407,7 +407,7 @@ static Standard_Integer ApplyContext (Sh
  //purpose  : auxilary
  //=======================================================================
  // check points coincidence
@@ -3932,7 +3841,7 @@ Index: oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
  					    const Standard_Real UResolution,
  					    const Standard_Real VResolution,
  					    const Standard_Real tol)
-@@ -730,7 +730,7 @@ static void DistributeSplitPoints (const
+@@ -727,7 +727,7 @@ static void DistributeSplitPoints (const
    
    for ( i=1; i <= indexes.Length() && indexes(i) < index; i++ );
    for ( Standard_Integer shift = 1; i <= indexes.Length() && indexes(i) == index; i++ ) {
@@ -3941,7 +3850,7 @@ Index: oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
      indexes.SetValue ( i, index + shift - 1 );
    }
    for ( ; i <= indexes.Length(); i++ ) 
-@@ -1140,7 +1140,7 @@ ShapeFix_WireSegment ShapeFix_ComposeShe
+@@ -1137,7 +1137,7 @@ ShapeFix_WireSegment ShapeFix_ComposeShe
          B.SameRange(newEdge, Standard_False);
        //pdn take into account 0 codes (if ext)
        if(code == 0 && wire.Orientation()==TopAbs_EXTERNAL){
@@ -3950,7 +3859,7 @@ Index: oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
        }
        
        result.AddEdge ( 0, newEdge, iumin, iumax, ivmin, ivmax );
-@@ -1183,7 +1183,7 @@ ShapeFix_WireSegment ShapeFix_ComposeShe
+@@ -1180,7 +1180,7 @@ ShapeFix_WireSegment ShapeFix_ComposeShe
          result.AddEdge ( 0, edge, iumin, iumax, ivmin, ivmax );
        if(code == 0 && wire.Orientation()==TopAbs_EXTERNAL){
  	//pdn defining code for intersection of two isos
@@ -3959,7 +3868,7 @@ Index: oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
        }
        DefinePatch ( result, code, isCutByU, cutIndex );
      }
-@@ -1395,7 +1395,7 @@ Standard_Boolean ShapeFix_ComposeShell::
+@@ -1392,7 +1392,7 @@ Standard_Boolean ShapeFix_ComposeShell::
      // Sort by parameter on edge
      for ( i = IntEdgePar.Length(); i > start; i-- ) 
        for ( Standard_Integer j = start; j < i; j++ ) {
@@ -3968,8 +3877,8 @@ Index: oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
          IntLinePar.Exchange ( j, j+1 );
          IntEdgePar.Exchange ( j, j+1 );
        }
-@@ -2007,7 +2007,8 @@ void ShapeFix_ComposeShell::CollectWires
-   while ( 1 ) {
+@@ -2004,7 +2004,8 @@ void ShapeFix_ComposeShell::CollectWires
+   for(;;) {
      Standard_Integer index = 0;
      Standard_Boolean misoriented = Standard_True, samepatch = Standard_False;
 -    Standard_Boolean reverse = Standard_False, connected = Standard_False;
@@ -3978,7 +3887,7 @@ Index: oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
      Standard_Real angle = -M_PI, mindist = RealLast();
      Standard_Integer weigth = 0;
      Standard_Real shiftu=0., shiftv=0.;
-@@ -2033,7 +2034,7 @@ void ShapeFix_ComposeShell::CollectWires
+@@ -2030,7 +2031,7 @@ void ShapeFix_ComposeShell::CollectWires
        }
  
        // check whether current segment is on the same patch with previous
@@ -3987,7 +3896,7 @@ Index: oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
  			      IsSamePatch ( seg, myGrid->NbUPatches(), myGrid->NbVPatches(), 
  					    iumin, iumax, ivmin, ivmax ) );
  
-@@ -2055,7 +2056,7 @@ void ShapeFix_ComposeShell::CollectWires
+@@ -2052,7 +2053,7 @@ void ShapeFix_ComposeShell::CollectWires
          if ( ! endV.IsSame ( j ? seg.LastVertex() : seg.FirstVertex() ) ) continue;
  
  	// check for misorientation only if nothing better is found
@@ -3996,7 +3905,7 @@ Index: oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
  //	if ( misor ) continue; // temporarily, to be improved
  
  	// returning back by the same edge is lowest priority
-@@ -2231,7 +2232,7 @@ void ShapeFix_ComposeShell::CollectWires
+@@ -2228,7 +2229,7 @@ void ShapeFix_ComposeShell::CollectWires
        for ( Standard_Integer k=1; k <= sbwd->NbEdges(); k++ ) {
  	if ( !V.IsSame ( sae.FirstVertex ( sbwd->Edge(k) ) ) ) continue; //pdn I suppose that short segment should be inserted into the SAME vertex.
  	
@@ -4005,7 +3914,7 @@ Index: oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
  					   iumin, iumax, ivmin, ivmax );
  	if ( samepatch && !sp) continue;
  	gp_Pnt2d pp;
-@@ -2481,7 +2482,7 @@ void ShapeFix_ComposeShell::MakeFacesOnP
+@@ -2478,7 +2479,7 @@ void ShapeFix_ComposeShell::MakeFacesOnP
        else
          continue;
        TopAbs_State state = clas.Perform (unp,Standard_False);
@@ -4018,7 +3927,7 @@ Index: oce/src/ShapeFix/ShapeFix_Face.cxx
 ===================================================================
 --- oce.orig/src/ShapeFix/ShapeFix_Face.cxx
 +++ oce/src/ShapeFix/ShapeFix_Face.cxx
-@@ -1054,7 +1054,7 @@ Standard_Boolean ShapeFix_Face::FixOrien
+@@ -1070,7 +1070,7 @@ Standard_Boolean ShapeFix_Face::FixOrien
      TopoDS_Face af = TopoDS::Face ( dummy );
      af.Orientation ( TopAbs_FORWARD );
      B.Add (af,ws.Value(1));
@@ -4031,7 +3940,7 @@ Index: oce/src/ShapeFix/ShapeFix_Shape.cxx
 ===================================================================
 --- oce.orig/src/ShapeFix/ShapeFix_Shape.cxx
 +++ oce/src/ShapeFix/ShapeFix_Shape.cxx
-@@ -145,7 +145,7 @@ Standard_Boolean ShapeFix_Shape::Perform
+@@ -140,7 +140,7 @@ Standard_Boolean ShapeFix_Shape::Perform
    case TopAbs_COMPOUND:  
    case TopAbs_COMPSOLID: {
      TopoDS_Shape shape = myShape;
@@ -4040,7 +3949,7 @@ Index: oce/src/ShapeFix/ShapeFix_Shape.cxx
      myFixSameParameterMode = Standard_False;
  
      Standard_Integer aShapesNb = 0;
-@@ -195,7 +195,7 @@ Standard_Boolean ShapeFix_Shape::Perform
+@@ -190,7 +190,7 @@ Standard_Boolean ShapeFix_Shape::Perform
    case TopAbs_FACE: {
      if ( ! NeedFix ( myFixFaceMode ) ) break;
      Handle(ShapeFix_Face) sff = FixFaceTool();
@@ -4049,7 +3958,7 @@ Index: oce/src/ShapeFix/ShapeFix_Shape.cxx
      sff->FixWireTool()->ModifyTopologyMode() = Standard_True;
      sff->Init(TopoDS::Face(S)); 
      sff->SetContext(Context());
-@@ -210,8 +210,8 @@ Standard_Boolean ShapeFix_Shape::Perform
+@@ -205,8 +205,8 @@ Standard_Boolean ShapeFix_Shape::Perform
    case TopAbs_WIRE: {
      if ( ! NeedFix ( myFixWireMode ) ) break;
      Handle(ShapeFix_Wire) sfw = FixWireTool();
@@ -4064,7 +3973,7 @@ Index: oce/src/ShapeFix/ShapeFix_Shell.cxx
 ===================================================================
 --- oce.orig/src/ShapeFix/ShapeFix_Shell.cxx
 +++ oce/src/ShapeFix/ShapeFix_Shell.cxx
-@@ -189,7 +189,7 @@ static Standard_Boolean GetFreeEdges(con
+@@ -185,7 +185,7 @@ static Standard_Boolean GetFreeEdges(con
        else  MapEdges.Remove(edge);
      }
    }
@@ -4073,7 +3982,7 @@ Index: oce/src/ShapeFix/ShapeFix_Shell.cxx
  }
  //=======================================================================
  // function : GetShells
-@@ -659,7 +659,7 @@ static void GlueClosedCandidate(TopTools
+@@ -655,7 +655,7 @@ static void GlueClosedCandidate(TopTools
        for(Standard_Integer j1 = i+1 ; j1 <= OpenShells.Length();j1++ )  {
          if(!MapOtherShells.IsBound(OpenShells.Value(j1))) continue;
          addShell = OpenShells.Value(j1);
@@ -4086,7 +3995,7 @@ Index: oce/src/ShapeFix/ShapeFix_Solid.cdl
 ===================================================================
 --- oce.orig/src/ShapeFix/ShapeFix_Solid.cdl
 +++ oce/src/ShapeFix/ShapeFix_Solid.cdl
-@@ -56,7 +56,7 @@ is
+@@ -50,7 +50,7 @@ is
      returns Solid from TopoDS;
      	---Purpose: Calls MakeSolid and orients the solid to be "not infinite"
  	
@@ -4099,7 +4008,7 @@ Index: oce/src/ShapeFix/ShapeFix_Solid.cxx
 ===================================================================
 --- oce.orig/src/ShapeFix/ShapeFix_Solid.cxx
 +++ oce/src/ShapeFix/ShapeFix_Solid.cxx
-@@ -563,7 +563,7 @@ TopoDS_Solid ShapeFix_Solid::SolidFromSh
+@@ -567,7 +567,7 @@ TopoDS_Solid ShapeFix_Solid::SolidFromSh
  //purpose  : 
  //=======================================================================
  
@@ -4112,7 +4021,7 @@ Index: oce/src/ShapeFix/ShapeFix_Wire.cxx
 ===================================================================
 --- oce.orig/src/ShapeFix/ShapeFix_Wire.cxx
 +++ oce/src/ShapeFix/ShapeFix_Wire.cxx
-@@ -322,7 +322,7 @@ Standard_Boolean ShapeFix_Wire::Perform(
+@@ -318,7 +318,7 @@ Standard_Boolean ShapeFix_Wire::Perform(
    if ( ! IsLoaded() ) return Standard_False;
    
  
@@ -4125,7 +4034,7 @@ Index: oce/src/ShapeProcess/ShapeProcess_Context.cxx
 ===================================================================
 --- oce.orig/src/ShapeProcess/ShapeProcess_Context.cxx
 +++ oce/src/ShapeProcess/ShapeProcess_Context.cxx
-@@ -275,7 +275,7 @@ Standard_Boolean ShapeProcess_Context::G
+@@ -270,7 +270,7 @@ Standard_Boolean ShapeProcess_Context::G
    if ( myRC.IsNull() ) return Standard_False;
    try {
      OCC_CATCH_SIGNALS
@@ -4138,7 +4047,7 @@ Index: oce/src/ShapeProcess/ShapeProcess_OperLibrary.cxx
 ===================================================================
 --- oce.orig/src/ShapeProcess/ShapeProcess_OperLibrary.cxx
 +++ oce/src/ShapeProcess/ShapeProcess_OperLibrary.cxx
-@@ -140,7 +140,7 @@ static Standard_Boolean sameparam (const
+@@ -135,7 +135,7 @@ static Standard_Boolean sameparam (const
    Handle(ShapeProcess_ShapeContext) ctx = Handle(ShapeProcess_ShapeContext)::DownCast ( context );
    if ( ctx.IsNull() ) return Standard_False;
    ShapeFix::SameParameter ( ctx->Result(), 
@@ -4147,7 +4056,7 @@ Index: oce/src/ShapeProcess/ShapeProcess_OperLibrary.cxx
  			    ctx->RealVal ( "Tolerance3d", Precision::Confusion() /* -1 */) ); 
    // WARNING: no update of context yet!
    return Standard_True;
-@@ -213,9 +213,9 @@ static Standard_Boolean bsplinerestricti
+@@ -208,9 +208,9 @@ static Standard_Boolean bsplinerestricti
    Handle(ShapeProcess_ShapeContext) ctx = Handle(ShapeProcess_ShapeContext)::DownCast ( context );
    if ( ctx.IsNull() ) return Standard_False;
  
@@ -4160,7 +4069,7 @@ Index: oce/src/ShapeProcess/ShapeProcess_OperLibrary.cxx
  
    Standard_Real aTol3d = ctx->RealVal ( "Tolerance3d", 0.01 );
    Standard_Real aTol2d = ctx->RealVal ( "Tolerance2d", 1e-06 );
-@@ -226,8 +226,8 @@ static Standard_Boolean bsplinerestricti
+@@ -221,8 +221,8 @@ static Standard_Boolean bsplinerestricti
    Standard_Integer aMaxDeg = ctx->IntegerVal ( "RequiredDegree", 9 );
    Standard_Integer aMaxSeg = ctx->IntegerVal ( "RequiredNbSegments", 10000 );
    
@@ -4171,7 +4080,7 @@ Index: oce/src/ShapeProcess/ShapeProcess_OperLibrary.cxx
    
    Handle(ShapeCustom_RestrictionParameters)   aParameters = new ShapeCustom_RestrictionParameters;
    ctx->GetInteger ( "MaxDegree",          aParameters->GMaxDegree() );
-@@ -599,7 +599,7 @@ static Standard_Boolean fixshape (const
+@@ -594,7 +594,7 @@ static Standard_Boolean fixshape (const
    sfs->FixVertexPositionMode() = ctx->IntegerVal ( "FixVertexPositionMode", 0 );
  
    sfs->FixSolidTool()->FixShellMode() = ctx->IntegerVal ( "FixShellMode", -1 );
@@ -4184,7 +4093,7 @@ Index: oce/src/Standard/Handle_Standard_Persistent.hxx
 ===================================================================
 --- oce.orig/src/Standard/Handle_Standard_Persistent.hxx
 +++ oce/src/Standard/Handle_Standard_Persistent.hxx
-@@ -115,32 +115,32 @@ class Handle(Standard_Persistent)
+@@ -111,32 +111,32 @@ class Handle(Standard_Persistent)
  
       Standard_EXPORT void  ShallowDump(Standard_OStream&) const;
       
@@ -4227,7 +4136,7 @@ Index: oce/src/Standard/Handle_Standard_Transient.hxx
 ===================================================================
 --- oce.orig/src/Standard/Handle_Standard_Transient.hxx
 +++ oce/src/Standard/Handle_Standard_Transient.hxx
-@@ -161,37 +161,37 @@ public:
+@@ -157,37 +157,37 @@ public:
    }
  
    //! Check for equality
@@ -4275,7 +4184,7 @@ Index: oce/src/Standard/Standard_Character.hxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_Character.hxx
 +++ oce/src/Standard/Standard_Character.hxx
-@@ -95,19 +95,19 @@ inline Standard_Boolean IsSimilar(const
+@@ -91,19 +91,19 @@ inline Standard_Boolean IsSimilar(const
  // IsAlphabetic : Returns Standard_True if a character is alphabetic
  // ==================================================================
  inline Standard_Boolean IsAlphabetic(const Standard_Character me) 
@@ -4298,7 +4207,7 @@ Index: oce/src/Standard/Standard_Character.hxx
  
  // ==================================================================
  // IsAlphanumeric : Returns Standard_True if a character is alphanumeric
-@@ -119,26 +119,26 @@ inline Standard_Boolean IsAlphanumeric(c
+@@ -115,26 +115,26 @@ inline Standard_Boolean IsAlphanumeric(c
  // IsControl : Returns Standard_True if a character  is a control character
  // ==================================================================
  inline Standard_Boolean IsControl(const Standard_Character me) 
@@ -4329,7 +4238,7 @@ Index: oce/src/Standard/Standard_Character.hxx
  
  // ==================================================================
  // IsPunctuation : Returns Standard_True if a character is a graphic and 
-@@ -151,13 +151,13 @@ inline Standard_Boolean IsPunctuation(co
+@@ -147,13 +147,13 @@ inline Standard_Boolean IsPunctuation(co
  // IsSpace : Returns Standard_True if a character is a space
  // ==================================================================
  inline Standard_Boolean IsSpace(const Standard_Character me) 
@@ -4349,7 +4258,7 @@ Index: oce/src/Standard/Standard_Persistent.cxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_Persistent.cxx
 +++ oce/src/Standard/Standard_Persistent.cxx
-@@ -94,7 +94,7 @@ Standard_Persistent& Standard_Persistent
+@@ -89,7 +89,7 @@ Standard_Persistent& Standard_Persistent
  Standard_Boolean Standard_Persistent::IsInstance(const Handle(Standard_Type)
  						&AType) const
  {
@@ -4362,7 +4271,7 @@ Index: oce/src/Standard/Standard_Transient.cxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_Transient.cxx
 +++ oce/src/Standard/Standard_Transient.cxx
-@@ -47,7 +47,7 @@ Standard_Transient::~Standard_Transient(
+@@ -43,7 +43,7 @@ Standard_Transient::~Standard_Transient(
  //
  Standard_Boolean Standard_Transient::IsInstance(const Handle(Standard_Type) &AType) const
  {
@@ -4375,8 +4284,8 @@ Index: oce/src/Standard/Standard_TypeDef.hxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_TypeDef.hxx
 +++ oce/src/Standard/Standard_TypeDef.hxx
-@@ -30,8 +30,8 @@
-   #include <stdint.h>
+@@ -49,8 +49,8 @@
+   #include <inttypes.h>
  #endif
  
 -#define Standard_False (Standard_Boolean)0
@@ -4386,20 +4295,20 @@ Index: oce/src/Standard/Standard_TypeDef.hxx
  
  #ifndef _Standard_Macro_HeaderFile
  #include <Standard_Macro.hxx>
-@@ -39,7 +39,7 @@
+@@ -58,7 +58,7 @@
  
- typedef int Standard_Integer;
- typedef double Standard_Real;
--typedef unsigned int Standard_Boolean;
-+typedef bool Standard_Boolean;
- typedef float Standard_ShortReal;
- typedef char  Standard_Character;
- typedef short Standard_ExtCharacter;
+ typedef int           Standard_Integer;
+ typedef double        Standard_Real;
+-typedef unsigned int  Standard_Boolean;
++typedef bool          Standard_Boolean;
+ typedef float         Standard_ShortReal;
+ typedef char          Standard_Character;
+ typedef short         Standard_ExtCharacter;
 Index: oce/src/StepToTopoDS/StepToTopoDS_TranslateEdge.cxx
 ===================================================================
 --- oce.orig/src/StepToTopoDS/StepToTopoDS_TranslateEdge.cxx
 +++ oce/src/StepToTopoDS/StepToTopoDS_TranslateEdge.cxx
-@@ -372,7 +372,7 @@ static void GetCartesianPoints ( const H
+@@ -368,7 +368,7 @@ static void GetCartesianPoints ( const H
  				 gp_Pnt &P1, gp_Pnt &P2)
  {
    for ( Standard_Integer i=1; i<=2; i++ ) {
@@ -4412,7 +4321,7 @@ Index: oce/src/TColStd/TColStd_PackedMapOfInteger.hxx
 ===================================================================
 --- oce.orig/src/TColStd/TColStd_PackedMapOfInteger.hxx
 +++ oce/src/TColStd/TColStd_PackedMapOfInteger.hxx
-@@ -67,7 +67,7 @@ class TColStd_PackedMapOfInteger : priva
+@@ -61,7 +61,7 @@ class TColStd_PackedMapOfInteger : priva
    inline Standard_Integer Extent        () const
    { return Standard_Integer (myExtent); }
  
@@ -4425,7 +4334,7 @@ Index: oce/src/TDataStd/TDataStd_BooleanList.cxx
 ===================================================================
 --- oce.orig/src/TDataStd/TDataStd_BooleanList.cxx
 +++ oce/src/TDataStd/TDataStd_BooleanList.cxx
-@@ -175,7 +175,7 @@ void TDataStd_BooleanList::Paste (const
+@@ -170,7 +170,7 @@ void TDataStd_BooleanList::Paste (const
    TDataStd_ListIteratorOfListOfByte itr(myList);
    for (; itr.More(); itr.Next())
    {
@@ -4438,7 +4347,7 @@ Index: oce/src/TFunction/TFunction_Function.lxx
 ===================================================================
 --- oce.orig/src/TFunction/TFunction_Function.lxx
 +++ oce/src/TFunction/TFunction_Function.lxx
-@@ -26,7 +26,7 @@ inline const Standard_GUID& TFunction_Fu
+@@ -21,7 +21,7 @@ inline const Standard_GUID& TFunction_Fu
  
  inline Standard_Boolean TFunction_Function::Failed() const
  {
@@ -4451,7 +4360,7 @@ Index: oce/src/TObj/TObj_Object.cxx
 ===================================================================
 --- oce.orig/src/TObj/TObj_Object.cxx
 +++ oce/src/TObj/TObj_Object.cxx
-@@ -1400,7 +1400,7 @@ void TObj_Object::SetFlags(const Standar
+@@ -1396,7 +1396,7 @@ void TObj_Object::SetFlags(const Standar
  Standard_Boolean TObj_Object::TestFlags(const Standard_Integer theMask) const
  {
    Standard_Integer aFlags = getInteger(DataTag_Flags);
@@ -4464,7 +4373,7 @@ Index: oce/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
 ===================================================================
 --- oce.orig/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
 +++ oce/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
-@@ -468,7 +468,7 @@ Standard_Integer VARSTOPOARGS(TestTopOpe
+@@ -465,7 +465,7 @@ Standard_Integer VARSTOPOARGS(TestTopOpe
      else if (!strcmp(thea,"-c")) {
        suppressarg(na,a,ia);
        if (ia < na) {
@@ -4477,7 +4386,7 @@ Index: oce/src/TopOpeBRep/TopOpeBRep_FFTransitionTool.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRep/TopOpeBRep_FFTransitionTool.cxx
 +++ oce/src/TopOpeBRep/TopOpeBRep_FFTransitionTool.cxx
-@@ -296,7 +296,7 @@ static Standard_Boolean FUN_ProjectPoint
+@@ -288,7 +288,7 @@ static Standard_Boolean FUN_ProjectPoint
    if ( C2.IsNull() ) {
      return Standard_False;
    }
@@ -4486,7 +4395,7 @@ Index: oce/src/TopOpeBRep/TopOpeBRep_FFTransitionTool.cxx
    
    GeomAPI_ProjectPointOnCurve mydist(P1,C2,FC2,LC2);
    if ( mydist.Extrema().IsDone() ) {
-@@ -308,7 +308,7 @@ static Standard_Boolean FUN_ProjectPoint
+@@ -300,7 +300,7 @@ static Standard_Boolean FUN_ProjectPoint
  //#ifdef DEB
  //  return res; // BUG ???
  //#else
@@ -4499,7 +4408,7 @@ Index: oce/src/TopOpeBRep/TopOpeBRep_FacesFiller.cdl
 ===================================================================
 --- oce.orig/src/TopOpeBRep/TopOpeBRep_FacesFiller.cdl
 +++ oce/src/TopOpeBRep/TopOpeBRep_FacesFiller.cdl
-@@ -374,7 +374,7 @@ fields
+@@ -369,7 +369,7 @@ fields
          -- shape.
  
      myLastVPison0 : Boolean;-- only for walking.
@@ -4512,7 +4421,7 @@ Index: oce/src/TopOpeBRep/TopOpeBRep_FacesFiller_1.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRep/TopOpeBRep_FacesFiller_1.cxx
 +++ oce/src/TopOpeBRep/TopOpeBRep_FacesFiller_1.cxx
-@@ -1285,7 +1285,7 @@ Standard_Boolean TopOpeBRep_FacesFiller:
+@@ -1260,7 +1260,7 @@ Standard_Boolean TopOpeBRep_FacesFiller:
  Standard_Boolean TopOpeBRep_FacesFiller::GetFFGeometry(const TopOpeBRep_VPointInter& VP,TopOpeBRepDS_Kind& K,Standard_Integer& G) const 
  {
    TopOpeBRepDS_Point DSP = TopOpeBRep_PointGeomTool::MakePoint(VP);
@@ -4525,16 +4434,7 @@ Index: oce/src/TopOpeBRep/TopOpeBRep_vpr.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRep/TopOpeBRep_vpr.cxx
 +++ oce/src/TopOpeBRep/TopOpeBRep_vpr.cxx
-@@ -188,7 +188,7 @@ static void FUN_VPgeometryfound
-   
-   Standard_Integer absindex = VP.ShapeIndex();
-   Standard_Integer OOabsindex = (absindex == 1) ? 2 : 1; 
--  Standard_Boolean OOShapeIndex = (ShapeIndex == 1) ? 2 : 1;
-+  Standard_Integer OOShapeIndex = (ShapeIndex == 1) ? 2 : 1;
-   Standard_Boolean on2edges = (absindex == 3) || (Lrest && (rkErest == OOabsindex));
-   TopoDS_Shape edge = (rkErest == ShapeIndex)? Erest : VP.Edge(ShapeIndex);
- 
-@@ -624,7 +624,7 @@ void TopOpeBRep_FacesFiller::ProcessVPon
+@@ -614,7 +614,7 @@ void TopOpeBRep_FacesFiller::ProcessVPon
  {
    Standard_Integer absindex = VP.ShapeIndex(); // 0,1,2,3
    Standard_Integer iVP = VP.Index();
@@ -4547,7 +4447,7 @@ Index: oce/src/TopOpeBRep/TopOpeBRep_vprclo.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRep/TopOpeBRep_vprclo.cxx
 +++ oce/src/TopOpeBRep/TopOpeBRep_vprclo.cxx
-@@ -167,7 +167,7 @@ void TopOpeBRep_FacesFiller::ProcessVPon
+@@ -160,7 +160,7 @@ void TopOpeBRep_FacesFiller::ProcessVPon
  //  Standard_Boolean isvertex = VP.IsVertex(ShapeIndex);
    Standard_Boolean isvertex = (PVKind == TopOpeBRepDS_VERTEX);
    Standard_Integer absindex = VP.ShapeIndex(); // 0,1,2,3
@@ -4560,7 +4460,7 @@ Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
 +++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder1.cxx
-@@ -553,7 +553,7 @@ void TopOpeBRepBuild_Builder1::GFillFace
+@@ -547,7 +547,7 @@ void TopOpeBRepBuild_Builder1::GFillFace
      for(Standard_Integer i = 1; i <= aEM.Extent(); i++) {
        const TopoDS_Shape& anEdge = aEM(i);
        if(myMapOfEdgeWithFaceState.IsBound(anEdge)) {
@@ -4573,7 +4473,7 @@ Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_GTopo.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_GTopo.cxx
 +++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_GTopo.cxx
-@@ -49,9 +49,9 @@ TopOpeBRepBuild_GTopo::TopOpeBRepBuild_G
+@@ -44,9 +44,9 @@ TopOpeBRepBuild_GTopo::TopOpeBRepBuild_G
   const TopOpeBRepDS_Config C1, const TopOpeBRepDS_Config C2)
  {
    Reset();
@@ -4590,7 +4490,7 @@ Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_KPart.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_KPart.cxx
 +++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_KPart.cxx
-@@ -282,7 +282,7 @@ static Standard_Boolean FUN_changev(cons
+@@ -277,7 +277,7 @@ static Standard_Boolean FUN_changev(cons
    if (!changev) return Standard_False;
    changev = HDS->HasSameDomain(v);
    if (!changev) return Standard_False;
@@ -4599,7 +4499,7 @@ Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_KPart.cxx
    changev = (rankv == 2);
    return changev;
  }
-@@ -1103,11 +1103,9 @@ Standard_Integer TopOpeBRepBuild_Builder
+@@ -1098,11 +1098,9 @@ Standard_Integer TopOpeBRepBuild_Builder
    Standard_Boolean TKPB = TopOpeBRepBuild_GettraceKPB();
  #endif*/
    
@@ -4613,7 +4513,7 @@ Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_KPart.cxx
    
    return 1;
  }
-@@ -1123,11 +1121,9 @@ Standard_Integer TopOpeBRepBuild_Builder
+@@ -1118,11 +1116,9 @@ Standard_Integer TopOpeBRepBuild_Builder
    Standard_Boolean TKPB = TopOpeBRepBuild_GettraceKPB();
  #endif*/
    
@@ -4631,7 +4531,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_redu.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS_redu.cxx
 +++ oce/src/TopOpeBRepDS/TopOpeBRepDS_redu.cxx
-@@ -142,18 +142,18 @@ Standard_EXPORT Standard_Boolean FUN_ds_
+@@ -137,18 +137,18 @@ Standard_EXPORT Standard_Boolean FUN_ds_
    
    TopOpeBRepDS_ListOfInterference l1dFOR,l1dREV,l1dINT,l1dEXT; Standard_Integer FOR1d,REV1d,INT1d,EXT1d;
    ::FUN_scanloi(l1d, l1dFOR,FOR1d, l1dREV,REV1d, l1dINT,INT1d, l1dEXT,EXT1d);
@@ -4660,7 +4560,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_repvg.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS_repvg.cxx
 +++ oce/src/TopOpeBRepDS/TopOpeBRepDS_repvg.cxx
-@@ -68,7 +68,7 @@ Standard_EXPORT void FDS_repvg2
+@@ -63,7 +63,7 @@ Standard_EXPORT void FDS_repvg2
    Standard_Boolean ispoint  = (GT == TopOpeBRepDS_POINT);
    Standard_Boolean isvertex = (GT == TopOpeBRepDS_VERTEX);
  
@@ -4673,7 +4573,7 @@ Index: oce/src/TopoDSToStep/TopoDSToStep_MakeStepEdge.cxx
 ===================================================================
 --- oce.orig/src/TopoDSToStep/TopoDSToStep_MakeStepEdge.cxx
 +++ oce/src/TopoDSToStep/TopoDSToStep_MakeStepEdge.cxx
-@@ -100,7 +100,7 @@ void TopoDSToStep_MakeStepEdge::Init(con
+@@ -95,7 +95,7 @@ void TopoDSToStep_MakeStepEdge::Init(con
    aTool.SetCurrentEdge(aEdge);
  
    // [BEGIN] Processing non-manifold topology (ssv; 11.11.2010)
@@ -4686,7 +4586,7 @@ Index: oce/src/TopoDSToStep/TopoDSToStep_MakeStepFace.cxx
 ===================================================================
 --- oce.orig/src/TopoDSToStep/TopoDSToStep_MakeStepFace.cxx
 +++ oce/src/TopoDSToStep/TopoDSToStep_MakeStepFace.cxx
-@@ -136,7 +136,7 @@ void TopoDSToStep_MakeStepFace::Init(con
+@@ -132,7 +132,7 @@ void TopoDSToStep_MakeStepFace::Init(con
      new TransferBRep_ShapeMapper(aFace);  // on ne sait jamais
  
    // [BEGIN] Processing non-manifold topology (another approach) (ssv; 10.11.2010)
@@ -4699,7 +4599,7 @@ Index: oce/src/TopoDSToStep/TopoDSToStep_MakeStepVertex.cxx
 ===================================================================
 --- oce.orig/src/TopoDSToStep/TopoDSToStep_MakeStepVertex.cxx
 +++ oce/src/TopoDSToStep/TopoDSToStep_MakeStepVertex.cxx
-@@ -68,7 +68,7 @@ void TopoDSToStep_MakeStepVertex::Init(c
+@@ -63,7 +63,7 @@ void TopoDSToStep_MakeStepVertex::Init(c
    aTool.SetCurrentVertex(aVertex);
  
    // [BEGIN] Processing non-manifold topology (ssv; 11.11.2010)
@@ -4712,7 +4612,7 @@ Index: oce/src/V3d/V3d_View.cxx
 ===================================================================
 --- oce.orig/src/V3d/V3d_View.cxx
 +++ oce/src/V3d/V3d_View.cxx
-@@ -3092,7 +3092,7 @@ V3d_TypeOfBackfacingModel V3d_View :: Ba
+@@ -3080,7 +3080,7 @@ V3d_TypeOfBackfacingModel V3d_View :: Ba
  
  Standard_Boolean V3d_View::TransientManagerBeginDraw(const Standard_Boolean DoubleBuffer,const Standard_Boolean RetainMode) const
  {
@@ -4721,7 +4621,7 @@ Index: oce/src/V3d/V3d_View.cxx
  }
  
  void V3d_View::TransientManagerClearDraw() const
-@@ -3102,7 +3102,7 @@ void V3d_View::TransientManagerClearDraw
+@@ -3090,7 +3090,7 @@ void V3d_View::TransientManagerClearDraw
  
  Standard_Boolean V3d_View::TransientManagerBeginAddDraw() const
  {
@@ -4734,16 +4634,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest.cxx
 +++ oce/src/ViewerTest/ViewerTest.cxx
-@@ -907,7 +907,7 @@ static int VwrTst_DispErase(const Handle
-     Ctx->Display(IO,Mode,Upd);
-     break;
-   case 2:{
--    Ctx->Erase(IO,Mode,Upd);
-+    Ctx->Erase(IO,0 != Mode,Upd);
-     break;
-   }
-   case 3:{
-@@ -988,7 +988,7 @@ static int VDispMode (Draw_Interpretor&
+@@ -947,7 +947,7 @@ static int VDispMode (Draw_Interpretor&
      }
      else{
        for(Ctx->InitSelected();Ctx->MoreSelected();Ctx->NextSelected())
@@ -4752,7 +4643,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
      }
    }
    else{
-@@ -2711,7 +2711,7 @@ Standard_Boolean  ViewerTest::PickObject
+@@ -2678,7 +2678,7 @@ Standard_Boolean  ViewerTest::PickObject
    // step 2 : wait for the selection...
  //  Standard_Boolean IsGood (Standard_False);
  //  Standard_Integer NbPick(0);
@@ -4761,7 +4652,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
    Standard_Integer NbPickFail(0);
    Standard_Integer argccc = 5;
    const char *bufff[] = { "A", "B", "C","D", "E" };
-@@ -2884,7 +2884,7 @@ Standard_Boolean ViewerTest::PickShapes
+@@ -2851,7 +2851,7 @@ Standard_Boolean ViewerTest::PickShapes
  
    // step 2 : wait for the selection...
  
@@ -4774,7 +4665,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
-@@ -1927,7 +1927,7 @@ static int VCircleBuilder(Draw_Interpret
+@@ -1973,7 +1973,7 @@ static int VCircleBuilder(Draw_Interpret
    {
      // Get arguments
      TCollection_AsciiString aName(argv[1]);
@@ -4783,7 +4674,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
  
      Handle(AIS_InteractiveObject) theShapeA;
      Handle(AIS_InteractiveObject) theShapeB;
-@@ -2435,7 +2435,7 @@ static int VDrawText (Draw_Interpretor&
+@@ -2481,7 +2481,7 @@ static int VDrawText (Draw_Interpretor&
    const Standard_Real angle = Draw::Atof(argv[10]);
  
    // Text zooming
@@ -4792,7 +4683,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
  
    // Text height
    const Standard_Real height = Draw::Atof(argv[12]);
-@@ -2773,7 +2773,7 @@ static int VDrawSphere (Draw_Interpretor
+@@ -2819,7 +2819,7 @@ static int VDrawSphere (Draw_Interpretor
    Standard_Real aCenterY = (argc > 5) ? Draw::Atof (argv[4]) : 0.0;
    Standard_Real aCenterZ = (argc > 5) ? Draw::Atof (argv[5]) : 0.0;
    Standard_Real aRadius =  (argc > 6) ? Draw::Atof (argv[6]) : 100.0;
@@ -4801,29 +4692,20 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
  
    // remove AIS object with given name from map
    VDisplayAISObject (aShapeName, Handle(AIS_InteractiveObject)());
-@@ -3908,7 +3908,7 @@ static Standard_Integer VSetSelectionMod
-   {
-     // Get arguments 
-     Standard_Integer aMode = Draw::Atoi(argv[1]);
--    Standard_Boolean isTurnOn = Draw::Atoi(argv[2]); 
-+    Standard_Boolean isTurnOn = (0 != Draw::Atoi(argv[2]));
+@@ -3873,7 +3873,7 @@ static Standard_Integer VSetSelectionMod
+   }
  
-     // Get all displayed objects
-     AIS_ListOfInteractive anObjList;
-@@ -3963,7 +3963,7 @@ static Standard_Integer VSetSelectionMod
+   const Standard_Integer aSelectionMode = Draw::Atoi (theArgc == 3 ? theArgv[1] : theArgv[2]);
+-  const Standard_Boolean toTurnOn       = Draw::Atoi (theArgc == 3 ? theArgv[2] : theArgv[3]);
++  const Standard_Boolean toTurnOn       = (0 != Draw::Atoi (theArgc == 3 ? theArgv[2] : theArgv[3]));
+   if (aSelectionMode == 0 && anAISContext->HasOpenedContext())
    {
-     // Get argumnets 
-     Standard_Integer aMode = Draw::Atoi(argv[2]);
--    Standard_Boolean isTurnOn = Draw::Atoi(argv[3]);
-+    Standard_Boolean isTurnOn = (0 != Draw::Atoi(argv[3]));
-     TCollection_AsciiString aName(argv[1]); 
- 
-     // Check if there is an object with given name in context
+     anAISContext->CloseLocalContext();
 Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-@@ -1110,11 +1110,11 @@ static LRESULT WINAPI ViewerWindowProc(
+@@ -1972,11 +1972,11 @@ static LRESULT WINAPI ViewerWindowProc(
          {
            if (fwKeys & MK_CONTROL)
            {
@@ -4841,7 +4723,7 @@ Index: oce/src/Visual3d/Visual3d_TransientManager.cdl
 ===================================================================
 --- oce.orig/src/Visual3d/Visual3d_TransientManager.cdl
 +++ oce/src/Visual3d/Visual3d_TransientManager.cdl
-@@ -105,7 +105,7 @@ is
+@@ -101,7 +101,7 @@ is
             aView : View from Visual3d;
             DoubleBuffer: Boolean = Standard_False;
             RetainMode: Boolean = Standard_False)
@@ -4850,7 +4732,7 @@ Index: oce/src/Visual3d/Visual3d_TransientManager.cdl
      ---Level: Public
      ---Purpose: Begins any graphics in the view <aView>
      --      Redraw any structured graphics in the back buffer before
-@@ -158,7 +158,7 @@ is
+@@ -154,7 +154,7 @@ is
  
      BeginAddDraw (myclass;
             aView : View from Visual3d)
@@ -4863,7 +4745,7 @@ Index: oce/src/Visual3d/Visual3d_TransientManager.cxx
 ===================================================================
 --- oce.orig/src/Visual3d/Visual3d_TransientManager.cxx
 +++ oce/src/Visual3d/Visual3d_TransientManager.cxx
-@@ -98,7 +98,7 @@ void Visual3d_TransientManager::Destroy
+@@ -94,7 +94,7 @@ void Visual3d_TransientManager::Destroy
  
  //-Methods, in order
  
@@ -4872,7 +4754,7 @@ Index: oce/src/Visual3d/Visual3d_TransientManager.cxx
  
  	if (theDrawingState > 0) {
  	  Graphic3d_CView* pview = (Graphic3d_CView*) AView->CView();
-@@ -177,7 +177,7 @@ void Visual3d_TransientManager::ClearDra
+@@ -173,7 +173,7 @@ void Visual3d_TransientManager::ClearDra
  //-Mode Ajout
  //
  
@@ -4885,7 +4767,7 @@ Index: oce/src/Voxel/Voxel_FastConverter.cxx
 ===================================================================
 --- oce.orig/src/Voxel/Voxel_FastConverter.cxx
 +++ oce/src/Voxel/Voxel_FastConverter.cxx
-@@ -309,7 +309,7 @@ Standard_Boolean Voxel_FastConverter::Fi
+@@ -481,7 +481,7 @@ Standard_Boolean Voxel_FastConverter::Fi
  	  }
  	  if (volume && !surface)
  	  {
@@ -4894,7 +4776,7 @@ Index: oce/src/Voxel/Voxel_FastConverter.cxx
  	      ((Voxel_ColorDS*)myVoxels)->Set(ix, iy, iz, inner);
  	  }
  	  prev_surface = surface;
-@@ -346,7 +346,7 @@ Standard_Boolean Voxel_FastConverter::Fi
+@@ -518,7 +518,7 @@ Standard_Boolean Voxel_FastConverter::Fi
  	  }
  	  if (volume && prev_surface == surface && next_surface)
  	  {
@@ -4907,7 +4789,7 @@ Index: oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
 ===================================================================
 --- oce.orig/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
 +++ oce/src/XSDRAWSTLVRML/XSDRAWSTLVRML.cxx
-@@ -882,7 +882,7 @@ static Standard_Integer meshcolors( Draw
+@@ -905,7 +905,7 @@ static Standard_Integer meshcolors( Draw
                   aViewer->ActiveView()->SetSurfaceDetail(V3d_TEX_ALL);
            }
  
@@ -4920,7 +4802,7 @@ Index: oce/src/XmlMDataStd/XmlMDataStd_ByteArrayDriver.cxx
 ===================================================================
 --- oce.orig/src/XmlMDataStd/XmlMDataStd_ByteArrayDriver.cxx
 +++ oce/src/XmlMDataStd/XmlMDataStd_ByteArrayDriver.cxx
-@@ -129,7 +129,7 @@ Standard_Boolean XmlMDataStd_ByteArrayDr
+@@ -126,7 +126,7 @@ Standard_Boolean XmlMDataStd_ByteArrayDr
  	return Standard_False;
        } 
      else
@@ -4933,7 +4815,7 @@ Index: oce/src/XmlMDataStd/XmlMDataStd_ExtStringArrayDriver.cxx
 ===================================================================
 --- oce.orig/src/XmlMDataStd/XmlMDataStd_ExtStringArrayDriver.cxx
 +++ oce/src/XmlMDataStd/XmlMDataStd_ExtStringArrayDriver.cxx
-@@ -129,7 +129,7 @@ Standard_Boolean XmlMDataStd_ExtStringAr
+@@ -124,7 +124,7 @@ Standard_Boolean XmlMDataStd_ExtStringAr
  	return Standard_False;
        } 
      else
@@ -4946,7 +4828,7 @@ Index: oce/src/XmlMDataStd/XmlMDataStd_IntPackedMapDriver.cxx
 ===================================================================
 --- oce.orig/src/XmlMDataStd/XmlMDataStd_IntPackedMapDriver.cxx
 +++ oce/src/XmlMDataStd/XmlMDataStd_IntPackedMapDriver.cxx
-@@ -122,7 +122,7 @@ Standard_Boolean XmlMDataStd_IntPackedMa
+@@ -118,7 +118,7 @@ Standard_Boolean XmlMDataStd_IntPackedMa
  	    return Standard_False;
  	  } 
  	else
@@ -4959,7 +4841,7 @@ Index: oce/src/XmlMDataStd/XmlMDataStd_IntegerArrayDriver.cxx
 ===================================================================
 --- oce.orig/src/XmlMDataStd/XmlMDataStd_IntegerArrayDriver.cxx
 +++ oce/src/XmlMDataStd/XmlMDataStd_IntegerArrayDriver.cxx
-@@ -132,7 +132,7 @@ Standard_Boolean XmlMDataStd_IntegerArra
+@@ -129,7 +129,7 @@ Standard_Boolean XmlMDataStd_IntegerArra
  	return Standard_False;
        } 
      else
@@ -4972,7 +4854,7 @@ Index: oce/src/XmlMDataStd/XmlMDataStd_RealArrayDriver.cxx
 ===================================================================
 --- oce.orig/src/XmlMDataStd/XmlMDataStd_RealArrayDriver.cxx
 +++ oce/src/XmlMDataStd/XmlMDataStd_RealArrayDriver.cxx
-@@ -137,7 +137,7 @@ Standard_Boolean XmlMDataStd_RealArrayDr
+@@ -133,7 +133,7 @@ Standard_Boolean XmlMDataStd_RealArrayDr
  	return Standard_False;
        } 
      else

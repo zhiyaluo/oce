@@ -17,7 +17,7 @@ Index: oce/src/STEPCAFControl/STEPCAFControl_Reader.cxx
 ===================================================================
 --- oce.orig/src/STEPCAFControl/STEPCAFControl_Reader.cxx
 +++ oce/src/STEPCAFControl/STEPCAFControl_Reader.cxx
-@@ -941,7 +941,6 @@ static TDF_Label GetLabelFromPD (const H
+@@ -938,7 +938,6 @@ static TDF_Label GetLabelFromPD (const H
    S = TransferBRep::ShapeResult ( TP, binder );
    if ( S.IsNull() ) return L;
  
@@ -29,7 +29,7 @@ Index: oce/src/Standard/Standard_GUID.cxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_GUID.cxx
 +++ oce/src/Standard/Standard_GUID.cxx
-@@ -118,7 +118,7 @@ Standard_Boolean Standard_GUID::CheckGUI
+@@ -114,7 +114,7 @@ Standard_Boolean Standard_GUID::CheckGUI
    if (strlen(aGuid) == Standard_GUID_SIZE) {
      Standard_Integer i;
  
@@ -38,7 +38,7 @@ Index: oce/src/Standard/Standard_GUID.cxx
        if (!IsXDigit(aGuid[i])) {
  	return Standard_False;
        }
-@@ -126,7 +126,7 @@ Standard_Boolean Standard_GUID::CheckGUI
+@@ -122,7 +122,7 @@ Standard_Boolean Standard_GUID::CheckGUI
  
      if (aGuid[8] != '-') return Standard_False;
  
@@ -47,7 +47,7 @@ Index: oce/src/Standard/Standard_GUID.cxx
        if (!IsXDigit(aGuid[i])) {
  	return Standard_False;
        }
-@@ -134,7 +134,7 @@ Standard_Boolean Standard_GUID::CheckGUI
+@@ -130,7 +130,7 @@ Standard_Boolean Standard_GUID::CheckGUI
  
      if (aGuid[13] != '-') return Standard_False;
      
@@ -56,16 +56,3 @@ Index: oce/src/Standard/Standard_GUID.cxx
        if (!IsXDigit(aGuid[i])) {
  	return Standard_False;
        }
-Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-===================================================================
---- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-+++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-@@ -1686,7 +1686,7 @@ static int VSetBgMode(Draw_Interpretor&
-     return 1;
-   }
- 
--  Aspect_FillMethod aFillType;
-+  Aspect_FillMethod aFillType = Aspect_FM_NONE;
-   if (argc == 2)
-   {
-     const char* szType = argv[1];

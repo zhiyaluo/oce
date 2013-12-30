@@ -2,55 +2,57 @@ Index: oce/codeblocks.sh
 ===================================================================
 --- oce.orig/codeblocks.sh
 +++ /dev/null
-@@ -1,10 +0,0 @@
+@@ -1,11 +0,0 @@
 -#!/bin/bash
 -
 -export TARGET="cbp"
 -
--source ./env_cbp.sh "$TARGET" "$1"
+-source ./env.sh "$1" "$TARGET"
 -
--export CSF_OPT_LIB64="$CSF_OPT_LIB64:/usr/X11/lib"
--export CSF_OPT_LIB64D="$CSF_OPT_LIB64:/usr/X11/lib"
--
--/Applications/CodeBlocks.app/Contents/MacOS/CodeBlocks ./adm/mac/cbp/OCCT.workspace
+-if [ -e "/Applications/CodeBlocks.app/Contents/MacOS/CodeBlocks" ]; then
+-  /Applications/CodeBlocks.app/Contents/MacOS/CodeBlocks ./adm/$WOKSTATION/cbp/OCCT.workspace
+-else
+-  codeblocks ./adm/$WOKSTATION/cbp/OCCT.workspace
+-fi
 Index: oce/custom.bat
 ===================================================================
 --- oce.orig/custom.bat
 +++ /dev/null
-@@ -1,28 +0,0 @@
+@@ -1,29 +0,0 @@
 -@echo off
 -
 -set VCVER=vc9
 -set ARCH=32
 -set "VCVARS=%VS90COMNTOOLS%..\..\VC\vcvarsall.bat"
--set "PRODUCTS_PATH=%~dp0..\3rdparty"
+-set "PRODUCTS_PATH=%~dp0.."
 -
 -rem Optional 3rd-parties switches
 -set HAVE_FREEIMAGE=true
 -set HAVE_GL2PS=true
 -set HAVE_TBB=true
+-set HAVE_OPENCL=true
 -set CHECK_QT4=true
 -set CHECK_JDK=true
 -
 -rem Additional headers search paths
--set "CSF_OPT_INC=%PRODUCTS_PATH%\tcltk-85-32\include;%PRODUCTS_PATH%\freetype-2.4.10-vc9-32\include;%PRODUCTS_PATH%\freeimage-vc9-32\include;%PRODUCTS_PATH%\gl2ps-1.3.5-vc9-32\include;%PRODUCTS_PATH%\tbb30_018oss\include;%PRODUCTS_PATH%\qt462-vc9-32\include;%PRODUCTS_PATH%\qt462-vc9-32\include\Qt;%PRODUCTS_PATH%\qt462-vc9-32\include\QtGui;%PRODUCTS_PATH%\qt462-vc9-32\include\QtCore;%PRODUCTS_PATH%\jdk1.6.0-32\include;%PRODUCTS_PATH%\jdk1.6.0-32\include\win32"
+-set "CSF_OPT_INC=%PRODUCTS_PATH%\opencl-icd-1.2.11.0-%ARCH%\include;%PRODUCTS_PATH%\tcltk-86-%ARCH%\include;%PRODUCTS_PATH%\freetype-2.4.11-%VCVER%-%ARCH%\include;%PRODUCTS_PATH%\freeimage-3.15.4-%VCVER%-%ARCH%\include;%PRODUCTS_PATH%\gl2ps-1.3.8-%VCVER%-%ARCH%\include;%PRODUCTS_PATH%\tbb30_018oss\include;%PRODUCTS_PATH%\qt462-%VCVER%-%ARCH%\include;%PRODUCTS_PATH%\qt462-%VCVER%-%ARCH%\include\Qt;%PRODUCTS_PATH%\qt462-%VCVER%-%ARCH%\include\QtGui;%PRODUCTS_PATH%\qt462-%VCVER%-%ARCH%\include\QtCore;%PRODUCTS_PATH%\jdk1.6.0-%ARCH%\include;%PRODUCTS_PATH%\jdk1.6.0-%ARCH%\include\win32"
 -
 -rem Additional libraries (32-bit) search paths
--set "CSF_OPT_LIB32=%PRODUCTS_PATH%\tcltk-85-32\lib;%PRODUCTS_PATH%\freetype-2.4.10-vc9-32\lib;%PRODUCTS_PATH%\freeimage-vc9-32\lib;%PRODUCTS_PATH%\gl2ps-1.3.5-vc9-32\lib;%PRODUCTS_PATH%\tbb30_018oss\lib\ia32\vc9;%PRODUCTS_PATH%\qt462-vc9-32\lib"
+-set "CSF_OPT_LIB32=%PRODUCTS_PATH%\opencl-icd-1.2.11.0-32\lib;%PRODUCTS_PATH%\tcltk-86-32\lib;%PRODUCTS_PATH%\freetype-2.4.11-%VCVER%-32\lib;%PRODUCTS_PATH%\freeimage-3.15.4-%VCVER%-32\lib;%PRODUCTS_PATH%\gl2ps-1.3.8-%VCVER%-32\lib;%PRODUCTS_PATH%\tbb30_018oss\lib\ia32\%VCVER%;%PRODUCTS_PATH%\qt462-%VCVER%-32\lib"
 -
 -rem Additional libraries (64-bit) search paths
--set "CSF_OPT_LIB64=%PRODUCTS_PATH%\tcltk-85-64\lib;%PRODUCTS_PATH%\freetype-2.4.10-vc9-64\lib;%PRODUCTS_PATH%\freeimage-vc9-64\lib;%PRODUCTS_PATH%\gl2ps-1.3.5-vc9-64\lib;%PRODUCTS_PATH%\tbb30_018oss\lib\intel64\vc9;%PRODUCTS_PATH%\qt462-vc9-64\lib"
+-set "CSF_OPT_LIB64=%PRODUCTS_PATH%\opencl-icd-1.2.11.0-64\lib;%PRODUCTS_PATH%\tcltk-86-64\lib;%PRODUCTS_PATH%\freetype-2.4.11-%VCVER%-64\lib;%PRODUCTS_PATH%\freeimage-3.15.4-%VCVER%-64\lib;%PRODUCTS_PATH%\gl2ps-1.3.8-%VCVER%-64\lib;%PRODUCTS_PATH%\tbb30_018oss\lib\intel64\%VCVER%;%PRODUCTS_PATH%\qt462-%VCVER%-64\lib"
 -
 -rem Additional (32-bit) search paths
--set "CSF_OPT_BIN32=%PRODUCTS_PATH%\tcltk-85-32\bin;%PRODUCTS_PATH%\freetype-2.4.10-vc9-32\bin;%PRODUCTS_PATH%\freeimage-vc9-32\bin;%PRODUCTS_PATH%\gl2ps-1.3.5-vc9-32\bin;%PRODUCTS_PATH%\tbb30_018oss\bin\ia32\vc9;%PRODUCTS_PATH%\qt462-vc9-32\bin;%PRODUCTS_PATH%\jdk1.6.0-32\bin"
+-set "CSF_OPT_BIN32=%PRODUCTS_PATH%\opencl-icd-1.2.11.0-32\bin;%PRODUCTS_PATH%\tcltk-86-32\bin;%PRODUCTS_PATH%\freetype-2.4.11-%VCVER%-32\bin;%PRODUCTS_PATH%\freeimage-3.15.4-%VCVER%-32\bin;%PRODUCTS_PATH%\gl2ps-1.3.8-%VCVER%-32\bin;%PRODUCTS_PATH%\tbb30_018oss\bin\ia32\%VCVER%;%PRODUCTS_PATH%\qt462-%VCVER%-32\bin;%PRODUCTS_PATH%\jdk1.6.0-32\bin"
 -
 -rem Additional (64-bit) search paths
--set "CSF_OPT_BIN64=%PRODUCTS_PATH%\tcltk-85-64\bin;%PRODUCTS_PATH%\freetype-2.4.10-vc9-64\bin;%PRODUCTS_PATH%\freeimage-vc9-64\bin;%PRODUCTS_PATH%\gl2ps-1.3.5-vc9-64\bin;%PRODUCTS_PATH%\tbb30_018oss\bin\intel64\vc9;%PRODUCTS_PATH%\qt462-vc9-64\bin;%PRODUCTS_PATH%\jdk1.6.0-64\bin"
-Index: oce/custom_amk.sh.in
+-set "CSF_OPT_BIN64=%PRODUCTS_PATH%\opencl-icd-1.2.11.0-64\bin;%PRODUCTS_PATH%\tcltk-86-64\bin;%PRODUCTS_PATH%\freetype-2.4.11-%VCVER%-64\bin;%PRODUCTS_PATH%\freeimage-3.15.4-%VCVER%-64\bin;%PRODUCTS_PATH%\gl2ps-1.3.8-%VCVER%-64\bin;%PRODUCTS_PATH%\tbb30_018oss\bin\intel64\%VCVER%;%PRODUCTS_PATH%\qt462-%VCVER%-64\bin;%PRODUCTS_PATH%\jdk1.6.0-64\bin"
+Index: oce/custom.sh.in
 ===================================================================
---- oce.orig/custom_amk.sh.in
+--- oce.orig/custom.sh.in
 +++ /dev/null
-@@ -1,15 +0,0 @@
+@@ -1,16 +0,0 @@
 -#!/bin/bash
 -#
 -# Mandatory 3rd-parties switches
@@ -61,34 +63,12 @@ Index: oce/custom_amk.sh.in
 -export HAVE_FREEIMAGE=@HAVE_FREEIMAGE@
 -export HAVE_GL2PS=@HAVE_GL2PS@
 -export HAVE_TBB=@HAVE_TBB@
+-export HAVE_OPENCL=@HAVE_OPENCL@
 -export HAVE_QT=@HAVE_QT@
 -#
 -export CSF_OPT_INC="@CSF_OPT_INC@"
 -export CSF_OPT_LIB@ARCH@="@CSF_OPT_LIB@"
 -export CSF_OPT_BIN@ARCH@="@CSF_OPT_BIN@"
-Index: oce/custom_cbp.sh
-===================================================================
---- oce.orig/custom_cbp.sh
-+++ /dev/null
-@@ -1,18 +0,0 @@
--export PRODUCTS_PATH=""
--
--# Optional 3rd-parties switches
--export HAVE_FREEIMAGE=true
--export HAVE_GL2PS=true
--export HAVE_TBB=true
--export MACOSX_USE_GLX=false
--export CHECK_QT4=false
--export CHECK_JDK=false
--
--# Additional headers search paths
--export CSF_OPT_INC=""
--
--# Additional libraries (64-bit) search paths
--export CSF_OPT_LIB64=""
--
--# Additional (64-bit) search paths
--export CSF_OPT_BIN64=""
 Index: oce/draw.bat
 ===================================================================
 --- oce.orig/draw.bat
@@ -101,30 +81,16 @@ Index: oce/draw.bat
 -
 -echo Hint: use "pload ALL" command to load standard commands
 -DRAWEXE.exe
-Index: oce/draw_amk.sh
+Index: oce/draw.sh
 ===================================================================
---- oce.orig/draw_amk.sh
-+++ /dev/null
-@@ -1,9 +0,0 @@
--#!/bin/bash
--
--# go to the script directory
--aScriptPath=${BASH_SOURCE%/*}; if [ -d "${aScriptPath}" ]; then cd "$aScriptPath"; fi; aScriptPath="$PWD";
--
--source $aScriptPath/env_amk.sh "$1"
--
--echo 'Hint: use "pload ALL" command to load standard commands'
--DRAWEXE
-Index: oce/draw_cbp.sh
-===================================================================
---- oce.orig/draw_cbp.sh
+--- oce.orig/draw.sh
 +++ /dev/null
 @@ -1,8 +0,0 @@
 -#!/bin/bash
 -
 -aScriptPath=${BASH_SOURCE%/*}; if [ -d "${aScriptPath}" ]; then cd "$aScriptPath"; fi; aScriptPath="$PWD";
 -
--source "${aScriptPath}/env_cbp.sh" "$1" "$2"
+-source "${aScriptPath}/env.sh" "$1" "$2"
 -
 -echo 'Hint: use "pload ALL" command to load standard commands'
 -DRAWEXE
@@ -132,30 +98,32 @@ Index: oce/env.bat
 ===================================================================
 --- oce.orig/env.bat
 +++ /dev/null
-@@ -1,148 +0,0 @@
+@@ -1,153 +0,0 @@
 -@echo off
 -
 -rem Use:
--rem - first argument specifies version of Visual Studio (vc8, vc9, or vc10),
+-rem - first argument specifies version of Visual Studio (vc8, vc9, vc10, vc12 or vc13),
 -rem - second argument specifies architecture (win32 or win64),
 -rem - third argument specifies build mode (Debug or Release)
 -rem Default options are:
--rem   vc8 win32 Release
+-rem   vc9 win32 Release
 -
 -set "SCRIPTROOT=%~dp0"
 -set "SCRIPTROOT=%SCRIPTROOT:~0,-1%"
--set "CASROOT=%~dp0"
+-set "CASROOT=%SCRIPTROOT%"
 -if not ["%CASROOT%"] == [""] if exist "%SCRIPTROOT%\%CASROOT%" set "CASROOT=%SCRIPTROOT%\%CASROOT%"
 -if     ["%CASROOT%"] == [""] set "CASROOT=%SCRIPTROOT%"
 -
 -rem ----- Reset values to defaults -----
 -set "CASDEB="
--set "VCVER=vc8"
+-set "VCVER=vc9"
 -set "ARCH=32"
 -set "VCVARS="
 -set "HAVE_TBB=false"
+-set "HAVE_OPENCL=false"
 -set "HAVE_FREEIMAGE=false"
 -set "HAVE_GL2PS=false"
+-set "HAVE_OPENCL=false"
 -set "CSF_OPT_INC="
 -set "CSF_OPT_LIB32="
 -set "CSF_OPT_LIB64="
@@ -189,9 +157,11 @@ Index: oce/env.bat
 -set "CSF_OPT_CMPL="
 -set "PRODUCTS_DEFINES="
 -if ["%HAVE_TBB%"]       == ["true"] set "PRODUCTS_DEFINES=%PRODUCTS_DEFINES% -DHAVE_TBB"
+-if ["%HAVE_OPENCL%"]    == ["true"] set "PRODUCTS_DEFINES=%PRODUCTS_DEFINES% -DHAVE_OPENCL"
 -if ["%HAVE_GL2PS%"]     == ["true"] set "PRODUCTS_DEFINES=%PRODUCTS_DEFINES% -DHAVE_GL2PS"
 -if ["%HAVE_FREEIMAGE%"] == ["true"] set "PRODUCTS_DEFINES=%PRODUCTS_DEFINES% -DHAVE_FREEIMAGE"
 -if ["%HAVE_TBB%"]       == ["true"] set "CSF_DEFINES=HAVE_TBB;%CSF_DEFINES%"
+-if ["%HAVE_OPENCL%"]    == ["true"] set "CSF_DEFINES=HAVE_OPENCL;%CSF_DEFINES%"
 -if ["%HAVE_GL2PS%"]     == ["true"] set "CSF_DEFINES=HAVE_GL2PS;%CSF_DEFINES%"
 -if ["%HAVE_FREEIMAGE%"] == ["true"] set "CSF_DEFINES=HAVE_FREEIMAGE;%CSF_DEFINES%"
 -
@@ -245,6 +215,7 @@ Index: oce/env.bat
 -set CSF_EXCEPTION_PROMPT=1
 -set "CSF_SHMessage=%CASROOT%\src\SHMessage"
 -set "CSF_MDTVTexturesDirectory=%CASROOT%\src\Textures"
+-set "CSF_ShadersDirectory=%CASROOT%\src\Shaders"
 -set "CSF_XSMessage=%CASROOT%\src\XSMessage"
 -set "CSF_TObjMessage=%CASROOT%\src\TObj"
 -set "CSF_StandardDefaults=%CASROOT%\src\StdResource"
@@ -281,174 +252,17 @@ Index: oce/env.bat
 -:concatLib64
 -set "OPT_LIB64=%OPT_LIB64% /LIBPATH:%1"
 -goto :eof
-Index: oce/env_amk.sh
+Index: oce/env.sh
 ===================================================================
---- oce.orig/env_amk.sh
+--- oce.orig/env.sh
 +++ /dev/null
-@@ -1,152 +0,0 @@
+@@ -1,201 +0,0 @@
 -#!/bin/bash
 -
 -# go to the script directory
 -aScriptPath=${BASH_SOURCE%/*}; if [ -d "${aScriptPath}" ]; then cd "$aScriptPath"; fi; aScriptPath="$PWD";
 -
--export CASROOT="$aScriptPath"
--
--# Reset values
--export CASDEB=""
--export HAVE_TBB="false";
--export HAVE_FREEIMAGE="false";
--export HAVE_GL2PS="false";
--export MACOSX_USE_GLX="false";
--export CSF_OPT_INC=""
--export CSF_OPT_LIB32=""
--export CSF_OPT_LIB64=""
--export CSF_OPT_BIN32=""
--export CSF_OPT_BIN64=""
--
--# ----- Set local settings -----
--if [ -e "${aScriptPath}/custom_amk.sh" ]; then source "${aScriptPath}/custom_amk.sh"; fi
--
--# Read script arguments
--shopt -s nocasematch
--if [[ "$1" == "debug" ]]; then export CASDEB="d"; fi
--if [[ "$1" == "d" ]]; then export CASDEB="d"; fi
--shopt -u nocasematch
--
--export CSF_OPT_INC="${CSF_OPT_INC}:."
--export CSF_OPT_LIB32="${CSF_OPT_LIB32}:."
--export CSF_OPT_LIB64="${CSF_OPT_LIB64}:"
--export CSF_OPT_LIB32D=""
--export CSF_OPT_LIB64D=""
--
--# ----- Setup Environment Variables -----
--anArch=`uname -m`
--if [ "$anArch" != "x86_64" ] && [ "$anArch" != "ia64" ]; then
--  export ARCH="32";
--else
--  export ARCH="64";
--fi
--
--aSystem=`uname -s`
--if [ "$aSystem" == "Darwin" ]; then
--  export WOKSTATION="mac";
--  export ARCH="64";
--else
--  export WOKSTATION="lin";
--fi
--
--export CASBIN=""
--
--export CSF_OPT_CMPL=""
--
--# Optiona 3rd-parties should be enabled by HAVE macros
--if [ "$HAVE_TBB" == "true" ]; then
--  export CSF_OPT_CMPL="${CSF_OPT_CMPL} -DHAVE_TBB"
--fi
--if [ "$HAVE_FREEIMAGE" == "true" ]; then
--  export CSF_OPT_CMPL="${CSF_OPT_CMPL} -DHAVE_FREEIMAGE"
--fi
--if [ "$HAVE_GL2PS" == "true" ]; then
--  export CSF_OPT_CMPL="${CSF_OPT_CMPL} -DHAVE_GL2PS"
--fi
--
--# Option to compile OCCT with X11 libs on Mac OS X
--if [ "$MACOSX_USE_GLX" == "true" ]; then
--  export CSF_OPT_CMPL="${CSF_OPT_CMPL} -DMACOSX_USE_GLX"
--fi
--
--# To split string into array
--aDelimBack=$IFS
--IFS=":"
--
--# 3rd-parties additional include paths
--set -- "$CSF_OPT_INC"
--declare -a aPartiesIncs=($*)
--for anItem in ${aPartiesIncs[*]}
--do
--  export CSF_OPT_CMPL="${CSF_OPT_CMPL} -I${anItem}";
--done
--
--# Append 3rd-parties to LD_LIBRARY_PATH
--if [ "$ARCH" == "32" ]; then
--  set -- "$CSF_OPT_LIB32"
--  declare -a aPartiesLibs=($*)
--else
--  set -- "$CSF_OPT_LIB64"
--  declare -a aPartiesLibs=($*)
--fi
--
--# Turn back value
--IFS=$aDelimBack
--
--OPT_LINKER_OPTIONS=""
--for anItem in ${aPartiesLibs[*]}
--do
--  if [ "${LD_LIBRARY_PATH}" == "" ]; then
--    export LD_LIBRARY_PATH="${anItem}"
--  else
--    export LD_LIBRARY_PATH="${anItem}:${LD_LIBRARY_PATH}"
--  fi
--  OPT_LINKER_OPTIONS="${OPT_LINKER_OPTIONS} -L${anItem}"
--done
--
--if [ "$ARCH" == "64" ]; then
--  export CSF_OPT_LNK64="$OPT_LINKER_OPTIONS"
--  export CSF_OPT_LNK64D="$OPT_LINKER_OPTIONS"
--else
--  export CSF_OPT_LNK32="$OPT_LINKER_OPTIONS"
--  export CSF_OPT_LNK32D="$OPT_LINKER_OPTIONS"
--fi
--
--export PATH="${CASROOT}/${CASBIN}bin${CASDEB}:${PATH}"
--export LD_LIBRARY_PATH="${CASROOT}/${CASBIN}lib${CASDEB}:${LD_LIBRARY_PATH}"
--if [ "$WOKSTATION" == "mac" ]; then
--  export DYLD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${DYLD_LIBRARY_PATH}"
--fi
--
--# Set envoronment variables used by OCCT
--export CSF_LANGUAGE="us"
--export MMGT_CLEAR="1"
--export CSF_EXCEPTION_PROMPT="1"
--export CSF_SHMessage="${CASROOT}/src/SHMessage"
--export CSF_MDTVTexturesDirectory="${CASROOT}/src/Textures"
--export CSF_XSMessage="${CASROOT}/src/XSMessage"
--export CSF_TObjMessage="${CASROOT}/src/TObj"
--export CSF_StandardDefaults="${CASROOT}/src/StdResource"
--export CSF_PluginDefaults="${CASROOT}/src/StdResource"
--export CSF_XCAFDefaults="${CASROOT}/src/StdResource"
--export CSF_TObjDefaults="${CASROOT}/src/StdResource"
--export CSF_StandardLiteDefaults="${CASROOT}/src/StdResource"
--if [ "$WOKSTATION" == "mac" ]; then
--  export CSF_GraphicShr="libTKOpenGl.dylib"
--else
--  export CSF_GraphicShr="libTKOpenGl.so"
--fi
--export CSF_UnitsLexicon="${CASROOT}/src/UnitsAPI/Lexi_Expr.dat"
--export CSF_UnitsDefinition="${CASROOT}/src/UnitsAPI/Units.dat"
--export CSF_IGESDefaults="${CASROOT}/src/XSTEPResource"
--export CSF_STEPDefaults="${CASROOT}/src/XSTEPResource"
--export CSF_XmlOcafResource="${CASROOT}/src/XmlOcafResource"
--export CSF_MIGRATION_TYPES="${CASROOT}/src/StdResource/MigrationSheet.txt"
--
--# Draw Harness special stuff
--if [ -e "${CASROOT}/src/DrawResources" ]; then
--  export DRAWHOME="${CASROOT}/src/DrawResources"
--  export CSF_DrawPluginDefaults="${DRAWHOME}"
--fi
--if [ -e "${aScriptPath}/src/DrawResourcesProducts" ]; then
--  export CSF_DrawPluginProductsDefaults="${aScriptPath}/src/DrawResourcesProducts"
--fi
-Index: oce/env_cbp.sh
-===================================================================
---- oce.orig/env_cbp.sh
-+++ /dev/null
-@@ -1,193 +0,0 @@
--#!/bin/bash
--
--# go to the script directory
--aScriptPath=${BASH_SOURCE%/*}; if [ -d "${aScriptPath}" ]; then cd "$aScriptPath"; fi; aScriptPath="$PWD";
--
--export CASROOT=""
+-export CASROOT="${aScriptPath}"
 -
 -if [ "${CASROOT}" != "" ] && [ -d "${aScriptPath}/${CASROOT}" ]; then
 -  export CASROOT="${aScriptPath}/${CASROOT}"
@@ -460,6 +274,7 @@ Index: oce/env_cbp.sh
 -# Reset values
 -export CASDEB=""
 -export HAVE_TBB="false";
+-export HAVE_OPENCL="false";
 -export HAVE_FREEIMAGE="false";
 -export HAVE_GL2PS="false";
 -export MACOSX_USE_GLX="false";
@@ -470,20 +285,18 @@ Index: oce/env_cbp.sh
 -export CSF_OPT_BIN64=""
 -
 -# ----- Set local settings -----
--if [ -e "${aScriptPath}/custom_cbp.sh" ]; then source "${aScriptPath}/custom_cbp.sh"; fi
+-if [ -e "${aScriptPath}/custom.sh" ]; then source "${aScriptPath}/custom.sh"; fi
 -
 -# Read script arguments
 -shopt -s nocasematch
--if [[ "$1" == "cbp" ]]; then
+-export TARGET="";
+-if [[ "$2" == "cbp" ]]; then
 -  export TARGET="cbp";
--elif [[ "$1" == "xcd" ]]; then
+-elif [[ "$2" == "xcd" ]]; then
 -  export TARGET="xcd";
--else
--  echo "Error: wrong target identifier. Should be \"cbp\" (Code::Blocks) or \"xcd\" (Xcode)"
--  exit
 -fi
--if [[ "$2" == "debug" ]]; then export CASDEB="d"; fi
--if [[ "$2" == "d" ]]; then export CASDEB="d"; fi
+-if [[ "$1" == "debug" ]]; then export CASDEB="d"; fi
+-if [[ "$1" == "d" ]]; then export CASDEB="d"; fi
 -shopt -u nocasematch
 -
 -# ----- Setup Environment Variables -----
@@ -512,23 +325,25 @@ Index: oce/env_cbp.sh
 -export CSF_OPT_INC="${CSF_OPT_INC}:${CASROOT}/inc"
 -
 -if [ "${TARGET}" == "cbp" ]; then
--  export CSF_OPT_LIB32="${CSF_OPT_LIB32}:${CASROOT}/${CASBIN}/lib"
--  export CSF_OPT_LIB64="${CSF_OPT_LIB64}:${CASROOT}/${CASBIN}/lib"
 -  export CSF_OPT_LIB32D="${CSF_OPT_LIB32}:${CASROOT}/${CASBIN}/libd"
 -  export CSF_OPT_LIB64D="${CSF_OPT_LIB64}:${CASROOT}/${CASBIN}/libd"
+-  export CSF_OPT_LIB32="${CSF_OPT_LIB32}:${CASROOT}/${CASBIN}/lib"
+-  export CSF_OPT_LIB64="${CSF_OPT_LIB64}:${CASROOT}/${CASBIN}/lib"
 -elif [ "${TARGET}" == "xcd" ]; then
--  export CSF_OPT_LIB32="${CSF_OPT_LIB32}:${CASROOT}/${CASBIN}/Release"
--  export CSF_OPT_LIB64="${CSF_OPT_LIB64}:${CASROOT}/${CASBIN}/Release"
 -  export CSF_OPT_LIB32D="${CSF_OPT_LIB32}:${CASROOT}/${CASBIN}/Debug"
 -  export CSF_OPT_LIB64D="${CSF_OPT_LIB64}:${CASROOT}/${CASBIN}/Debug"
+-  export CSF_OPT_LIB32="${CSF_OPT_LIB32}:${CASROOT}/${CASBIN}/Release"
+-  export CSF_OPT_LIB64="${CSF_OPT_LIB64}:${CASROOT}/${CASBIN}/Release"
 -fi
--
 -
 -export CSF_OPT_CMPL=""
 -
 -# Optiona 3rd-parties should be enabled by HAVE macros
 -if [ "$HAVE_TBB" == "true" ]; then
 -  export CSF_OPT_CMPL="${CSF_OPT_CMPL} -DHAVE_TBB"
+-fi
+-if [ "$HAVE_OPENCL" == "true" ]; then
+-  export CSF_OPT_CMPL="${CSF_OPT_CMPL} -DHAVE_OPENCL"
 -fi
 -if [ "$HAVE_FREEIMAGE" == "true" ]; then
 -  export CSF_OPT_CMPL="${CSF_OPT_CMPL} -DHAVE_FREEIMAGE"
@@ -558,13 +373,23 @@ Index: oce/env_cbp.sh
 -if [ "$ARCH" == "32" ]; then
 -  set -- "$CSF_OPT_LIB32"
 -  declare -a aPartiesLibs=($*)
+-  set -- "$CSF_OPT_LIB32D"
+-  declare -a aPartiesLibsDeb=($*)
 -else
 -  set -- "$CSF_OPT_LIB64"
 -  declare -a aPartiesLibs=($*)
+-  set -- "$CSF_OPT_LIB64D"
+-  declare -a aPartiesLibsDeb=($*)
 -fi
 -
 -# Turn back value
 -IFS=$aDelimBack
+-
+-OPT_LINKER_OPTIONS_DEB=""
+-for anItem in ${aPartiesLibsDeb[*]}
+-do
+-  OPT_LINKER_OPTIONS_DEB="${OPT_LINKER_OPTIONS_DEB} -L${anItem}"
+-done
 -
 -OPT_LINKER_OPTIONS=""
 -for anItem in ${aPartiesLibs[*]}
@@ -572,26 +397,23 @@ Index: oce/env_cbp.sh
 -  if [ "${LD_LIBRARY_PATH}" == "" ]; then
 -    export LD_LIBRARY_PATH="${anItem}"
 -  else
--    export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${anItem}"
+-    export LD_LIBRARY_PATH="${anItem}:${LD_LIBRARY_PATH}"
 -  fi
 -  OPT_LINKER_OPTIONS="${OPT_LINKER_OPTIONS} -L${anItem}"
 -done
 -
 -if [ "$ARCH" == "64" ]; then
 -  export CSF_OPT_LNK64="$OPT_LINKER_OPTIONS"
--  export CSF_OPT_LNK64D="$OPT_LINKER_OPTIONS"
+-  export CSF_OPT_LNK64D="$OPT_LINKER_OPTIONS_DEB"
 -else
 -  export CSF_OPT_LNK32="$OPT_LINKER_OPTIONS"
--  export CSF_OPT_LNK32D="$OPT_LINKER_OPTIONS"
+-  export CSF_OPT_LNK32D="$OPT_LINKER_OPTIONS_DEB"
 -fi
 -
 -
--BIN_PATH=""
--LIBS_PATH=""
--if [ "${TARGET}" == "cbp" ]; then
--  BIN_PATH="${CASBIN}/bin${CASDEB}"
--  LIBS_PATH="${CASBIN}/lib${CASDEB}"
--elif [ "${TARGET}" == "xcd" ]; then
+-BIN_PATH="${CASBIN}/bin${CASDEB}"
+-LIBS_PATH="${CASBIN}/lib${CASDEB}"
+-if [ "${TARGET}" == "xcd" ]; then
 -  [[ "${CASDEB}" == "d" ]] && BIN_PATH="${CASBIN}/Debug" || BIN_PATH="${CASBIN}/Release"
 -  LIBS_PATH="$BIN_PATH"
 -fi
@@ -608,6 +430,7 @@ Index: oce/env_cbp.sh
 -export CSF_EXCEPTION_PROMPT="1"
 -export CSF_SHMessage="${CASROOT}/src/SHMessage"
 -export CSF_MDTVTexturesDirectory="${CASROOT}/src/Textures"
+-export CSF_ShadersDirectory="${CASROOT}/src/Shaders"
 -export CSF_XSMessage="${CASROOT}/src/XSMessage"
 -export CSF_TObjMessage="${CASROOT}/src/TObj"
 -export CSF_StandardDefaults="${CASROOT}/src/StdResource"
@@ -635,12 +458,54 @@ Index: oce/env_cbp.sh
 -if [ -e "${aScriptPath}/src/DrawResourcesProducts" ]; then
 -  export CSF_DrawPluginProductsDefaults="${aScriptPath}/src/DrawResourcesProducts"
 -fi
+Index: oce/gendoc.bat
+===================================================================
+--- oce.orig/gendoc.bat
++++ /dev/null
+@@ -1,14 +0,0 @@
+-@echo off
 -
+-rem Helper script to run generation of OCCT documentation on Windows.
+-rem Running it requires that Tcl, Doxygen, and MikTex (for PDF generation)
+-rem should be in the PATH
+-
+-SET "OLD_PATH=%PATH%"
+-
+-if exist "%~dp0env.bat" (
+-  call "%~dp0env.bat"
+-)
+-
+-tclsh.exe %~dp0dox/start.tcl  %*
+-SET "PATH=%OLD_PATH%"
+Index: oce/gendoc.sh
+===================================================================
+--- oce.orig/gendoc.sh
++++ /dev/null
+@@ -1,19 +0,0 @@
+-#!/bin/bash
+-
+-# Helper script to run generation of OCCT documentation on Linux.
+-# Running it requires that Tcl, Doxygen, and MikTex (for PDF generation) should be in the PATH
+-
+-anArgs=$*
+-anOldPath="$PATH"
+-anOldLd="$LD_LIBRARY_PATH"
+-anOldDyLd="$DYLD_LIBRARY_PATH"
+-
+-# go to the script directory
+-aScriptPath=${BASH_SOURCE%/*}; if [ -d "${aScriptPath}" ]; then cd "$aScriptPath"; fi; aScriptPath="$PWD";
+-if [ -e "${aScriptPath}/env.sh" ]; then source "${aScriptPath}/env.sh"; fi
+-
+-tclsh "${aScriptPath}/dox/start.tcl" $anArgs
+-
+-export PATH="$anOldPath"
+-export LD_LIBRARY_PATH="$anOldLd"
+-export DYLD_LIBRARY_PATH="$anOldDyLd"
 Index: oce/msvc.bat
 ===================================================================
 --- oce.orig/msvc.bat
 +++ /dev/null
-@@ -1,38 +0,0 @@
+@@ -1,42 +0,0 @@
 -@echo off
 -
 -rem Setup environment
@@ -665,6 +530,10 @@ Index: oce/msvc.bat
 -  set "DevEnvDir=%VS110COMNTOOLS%..\IDE"
 -  rem Visual Studio 2012 Express for Windows Desktop have a new name for executable - WDExpress
 -  set "VisualStudioExpressName=WDExpress"
+-) else if "%VCVER%" == "vc12" (
+-  set "DevEnvDir=%VS120COMNTOOLS%..\IDE"
+-  rem Visual Studio 2013 Express for Windows Desktop have a new name for executable - WDExpress
+-  set "VisualStudioExpressName=WDExpress"
 -) else (
 -  echo Error: wrong VS identifier
 -  exit /B
@@ -683,55 +552,57 @@ Index: oce/scripts/codeblocks.sh
 ===================================================================
 --- /dev/null
 +++ oce/scripts/codeblocks.sh
-@@ -0,0 +1,10 @@
+@@ -0,0 +1,11 @@
 +#!/bin/bash
 +
 +export TARGET="cbp"
 +
-+source ./env_cbp.sh "$TARGET" "$1"
++source ./env.sh "$1" "$TARGET"
 +
-+export CSF_OPT_LIB64="$CSF_OPT_LIB64:/usr/X11/lib"
-+export CSF_OPT_LIB64D="$CSF_OPT_LIB64:/usr/X11/lib"
-+
-+/Applications/CodeBlocks.app/Contents/MacOS/CodeBlocks ./adm/mac/cbp/OCCT.workspace
++if [ -e "/Applications/CodeBlocks.app/Contents/MacOS/CodeBlocks" ]; then
++  /Applications/CodeBlocks.app/Contents/MacOS/CodeBlocks ./adm/$WOKSTATION/cbp/OCCT.workspace
++else
++  codeblocks ./adm/$WOKSTATION/cbp/OCCT.workspace
++fi
 Index: oce/scripts/custom.bat
 ===================================================================
 --- /dev/null
 +++ oce/scripts/custom.bat
-@@ -0,0 +1,28 @@
+@@ -0,0 +1,29 @@
 +@echo off
 +
 +set VCVER=vc9
 +set ARCH=32
 +set "VCVARS=%VS90COMNTOOLS%..\..\VC\vcvarsall.bat"
-+set "PRODUCTS_PATH=%~dp0..\3rdparty"
++set "PRODUCTS_PATH=%~dp0.."
 +
 +rem Optional 3rd-parties switches
 +set HAVE_FREEIMAGE=true
 +set HAVE_GL2PS=true
 +set HAVE_TBB=true
++set HAVE_OPENCL=true
 +set CHECK_QT4=true
 +set CHECK_JDK=true
 +
 +rem Additional headers search paths
-+set "CSF_OPT_INC=%PRODUCTS_PATH%\tcltk-85-32\include;%PRODUCTS_PATH%\freetype-2.4.10-vc9-32\include;%PRODUCTS_PATH%\freeimage-vc9-32\include;%PRODUCTS_PATH%\gl2ps-1.3.5-vc9-32\include;%PRODUCTS_PATH%\tbb30_018oss\include;%PRODUCTS_PATH%\qt462-vc9-32\include;%PRODUCTS_PATH%\qt462-vc9-32\include\Qt;%PRODUCTS_PATH%\qt462-vc9-32\include\QtGui;%PRODUCTS_PATH%\qt462-vc9-32\include\QtCore;%PRODUCTS_PATH%\jdk1.6.0-32\include;%PRODUCTS_PATH%\jdk1.6.0-32\include\win32"
++set "CSF_OPT_INC=%PRODUCTS_PATH%\opencl-icd-1.2.11.0-%ARCH%\include;%PRODUCTS_PATH%\tcltk-86-%ARCH%\include;%PRODUCTS_PATH%\freetype-2.4.11-%VCVER%-%ARCH%\include;%PRODUCTS_PATH%\freeimage-3.15.4-%VCVER%-%ARCH%\include;%PRODUCTS_PATH%\gl2ps-1.3.8-%VCVER%-%ARCH%\include;%PRODUCTS_PATH%\tbb30_018oss\include;%PRODUCTS_PATH%\qt462-%VCVER%-%ARCH%\include;%PRODUCTS_PATH%\qt462-%VCVER%-%ARCH%\include\Qt;%PRODUCTS_PATH%\qt462-%VCVER%-%ARCH%\include\QtGui;%PRODUCTS_PATH%\qt462-%VCVER%-%ARCH%\include\QtCore;%PRODUCTS_PATH%\jdk1.6.0-%ARCH%\include;%PRODUCTS_PATH%\jdk1.6.0-%ARCH%\include\win32"
 +
 +rem Additional libraries (32-bit) search paths
-+set "CSF_OPT_LIB32=%PRODUCTS_PATH%\tcltk-85-32\lib;%PRODUCTS_PATH%\freetype-2.4.10-vc9-32\lib;%PRODUCTS_PATH%\freeimage-vc9-32\lib;%PRODUCTS_PATH%\gl2ps-1.3.5-vc9-32\lib;%PRODUCTS_PATH%\tbb30_018oss\lib\ia32\vc9;%PRODUCTS_PATH%\qt462-vc9-32\lib"
++set "CSF_OPT_LIB32=%PRODUCTS_PATH%\opencl-icd-1.2.11.0-32\lib;%PRODUCTS_PATH%\tcltk-86-32\lib;%PRODUCTS_PATH%\freetype-2.4.11-%VCVER%-32\lib;%PRODUCTS_PATH%\freeimage-3.15.4-%VCVER%-32\lib;%PRODUCTS_PATH%\gl2ps-1.3.8-%VCVER%-32\lib;%PRODUCTS_PATH%\tbb30_018oss\lib\ia32\%VCVER%;%PRODUCTS_PATH%\qt462-%VCVER%-32\lib"
 +
 +rem Additional libraries (64-bit) search paths
-+set "CSF_OPT_LIB64=%PRODUCTS_PATH%\tcltk-85-64\lib;%PRODUCTS_PATH%\freetype-2.4.10-vc9-64\lib;%PRODUCTS_PATH%\freeimage-vc9-64\lib;%PRODUCTS_PATH%\gl2ps-1.3.5-vc9-64\lib;%PRODUCTS_PATH%\tbb30_018oss\lib\intel64\vc9;%PRODUCTS_PATH%\qt462-vc9-64\lib"
++set "CSF_OPT_LIB64=%PRODUCTS_PATH%\opencl-icd-1.2.11.0-64\lib;%PRODUCTS_PATH%\tcltk-86-64\lib;%PRODUCTS_PATH%\freetype-2.4.11-%VCVER%-64\lib;%PRODUCTS_PATH%\freeimage-3.15.4-%VCVER%-64\lib;%PRODUCTS_PATH%\gl2ps-1.3.8-%VCVER%-64\lib;%PRODUCTS_PATH%\tbb30_018oss\lib\intel64\%VCVER%;%PRODUCTS_PATH%\qt462-%VCVER%-64\lib"
 +
 +rem Additional (32-bit) search paths
-+set "CSF_OPT_BIN32=%PRODUCTS_PATH%\tcltk-85-32\bin;%PRODUCTS_PATH%\freetype-2.4.10-vc9-32\bin;%PRODUCTS_PATH%\freeimage-vc9-32\bin;%PRODUCTS_PATH%\gl2ps-1.3.5-vc9-32\bin;%PRODUCTS_PATH%\tbb30_018oss\bin\ia32\vc9;%PRODUCTS_PATH%\qt462-vc9-32\bin;%PRODUCTS_PATH%\jdk1.6.0-32\bin"
++set "CSF_OPT_BIN32=%PRODUCTS_PATH%\opencl-icd-1.2.11.0-32\bin;%PRODUCTS_PATH%\tcltk-86-32\bin;%PRODUCTS_PATH%\freetype-2.4.11-%VCVER%-32\bin;%PRODUCTS_PATH%\freeimage-3.15.4-%VCVER%-32\bin;%PRODUCTS_PATH%\gl2ps-1.3.8-%VCVER%-32\bin;%PRODUCTS_PATH%\tbb30_018oss\bin\ia32\%VCVER%;%PRODUCTS_PATH%\qt462-%VCVER%-32\bin;%PRODUCTS_PATH%\jdk1.6.0-32\bin"
 +
 +rem Additional (64-bit) search paths
-+set "CSF_OPT_BIN64=%PRODUCTS_PATH%\tcltk-85-64\bin;%PRODUCTS_PATH%\freetype-2.4.10-vc9-64\bin;%PRODUCTS_PATH%\freeimage-vc9-64\bin;%PRODUCTS_PATH%\gl2ps-1.3.5-vc9-64\bin;%PRODUCTS_PATH%\tbb30_018oss\bin\intel64\vc9;%PRODUCTS_PATH%\qt462-vc9-64\bin;%PRODUCTS_PATH%\jdk1.6.0-64\bin"
-Index: oce/scripts/custom_amk.sh.in
++set "CSF_OPT_BIN64=%PRODUCTS_PATH%\opencl-icd-1.2.11.0-64\bin;%PRODUCTS_PATH%\tcltk-86-64\bin;%PRODUCTS_PATH%\freetype-2.4.11-%VCVER%-64\bin;%PRODUCTS_PATH%\freeimage-3.15.4-%VCVER%-64\bin;%PRODUCTS_PATH%\gl2ps-1.3.8-%VCVER%-64\bin;%PRODUCTS_PATH%\tbb30_018oss\bin\intel64\%VCVER%;%PRODUCTS_PATH%\qt462-%VCVER%-64\bin;%PRODUCTS_PATH%\jdk1.6.0-64\bin"
+Index: oce/scripts/custom.sh.in
 ===================================================================
 --- /dev/null
-+++ oce/scripts/custom_amk.sh.in
-@@ -0,0 +1,15 @@
++++ oce/scripts/custom.sh.in
+@@ -0,0 +1,16 @@
 +#!/bin/bash
 +#
 +# Mandatory 3rd-parties switches
@@ -742,34 +613,12 @@ Index: oce/scripts/custom_amk.sh.in
 +export HAVE_FREEIMAGE=@HAVE_FREEIMAGE@
 +export HAVE_GL2PS=@HAVE_GL2PS@
 +export HAVE_TBB=@HAVE_TBB@
++export HAVE_OPENCL=@HAVE_OPENCL@
 +export HAVE_QT=@HAVE_QT@
 +#
 +export CSF_OPT_INC="@CSF_OPT_INC@"
 +export CSF_OPT_LIB@ARCH@="@CSF_OPT_LIB@"
 +export CSF_OPT_BIN@ARCH@="@CSF_OPT_BIN@"
-Index: oce/scripts/custom_cbp.sh
-===================================================================
---- /dev/null
-+++ oce/scripts/custom_cbp.sh
-@@ -0,0 +1,18 @@
-+export PRODUCTS_PATH=""
-+
-+# Optional 3rd-parties switches
-+export HAVE_FREEIMAGE=true
-+export HAVE_GL2PS=true
-+export HAVE_TBB=true
-+export MACOSX_USE_GLX=false
-+export CHECK_QT4=false
-+export CHECK_JDK=false
-+
-+# Additional headers search paths
-+export CSF_OPT_INC=""
-+
-+# Additional libraries (64-bit) search paths
-+export CSF_OPT_LIB64=""
-+
-+# Additional (64-bit) search paths
-+export CSF_OPT_BIN64=""
 Index: oce/scripts/draw.bat
 ===================================================================
 --- /dev/null
@@ -782,30 +631,16 @@ Index: oce/scripts/draw.bat
 +
 +echo Hint: use "pload ALL" command to load standard commands
 +DRAWEXE.exe
-Index: oce/scripts/draw_amk.sh
+Index: oce/scripts/draw.sh
 ===================================================================
 --- /dev/null
-+++ oce/scripts/draw_amk.sh
-@@ -0,0 +1,9 @@
-+#!/bin/bash
-+
-+# go to the script directory
-+aScriptPath=${BASH_SOURCE%/*}; if [ -d "${aScriptPath}" ]; then cd "$aScriptPath"; fi; aScriptPath="$PWD";
-+
-+source $aScriptPath/env_amk.sh "$1"
-+
-+echo 'Hint: use "pload ALL" command to load standard commands'
-+DRAWEXE
-Index: oce/scripts/draw_cbp.sh
-===================================================================
---- /dev/null
-+++ oce/scripts/draw_cbp.sh
++++ oce/scripts/draw.sh
 @@ -0,0 +1,8 @@
 +#!/bin/bash
 +
 +aScriptPath=${BASH_SOURCE%/*}; if [ -d "${aScriptPath}" ]; then cd "$aScriptPath"; fi; aScriptPath="$PWD";
 +
-+source "${aScriptPath}/env_cbp.sh" "$1" "$2"
++source "${aScriptPath}/env.sh" "$1" "$2"
 +
 +echo 'Hint: use "pload ALL" command to load standard commands'
 +DRAWEXE
@@ -813,30 +648,32 @@ Index: oce/scripts/env.bat
 ===================================================================
 --- /dev/null
 +++ oce/scripts/env.bat
-@@ -0,0 +1,148 @@
+@@ -0,0 +1,153 @@
 +@echo off
 +
 +rem Use:
-+rem - first argument specifies version of Visual Studio (vc8, vc9, or vc10),
++rem - first argument specifies version of Visual Studio (vc8, vc9, vc10, vc12 or vc13),
 +rem - second argument specifies architecture (win32 or win64),
 +rem - third argument specifies build mode (Debug or Release)
 +rem Default options are:
-+rem   vc8 win32 Release
++rem   vc9 win32 Release
 +
 +set "SCRIPTROOT=%~dp0"
 +set "SCRIPTROOT=%SCRIPTROOT:~0,-1%"
-+set "CASROOT=%~dp0"
++set "CASROOT=%SCRIPTROOT%"
 +if not ["%CASROOT%"] == [""] if exist "%SCRIPTROOT%\%CASROOT%" set "CASROOT=%SCRIPTROOT%\%CASROOT%"
 +if     ["%CASROOT%"] == [""] set "CASROOT=%SCRIPTROOT%"
 +
 +rem ----- Reset values to defaults -----
 +set "CASDEB="
-+set "VCVER=vc8"
++set "VCVER=vc9"
 +set "ARCH=32"
 +set "VCVARS="
 +set "HAVE_TBB=false"
++set "HAVE_OPENCL=false"
 +set "HAVE_FREEIMAGE=false"
 +set "HAVE_GL2PS=false"
++set "HAVE_OPENCL=false"
 +set "CSF_OPT_INC="
 +set "CSF_OPT_LIB32="
 +set "CSF_OPT_LIB64="
@@ -870,9 +707,11 @@ Index: oce/scripts/env.bat
 +set "CSF_OPT_CMPL="
 +set "PRODUCTS_DEFINES="
 +if ["%HAVE_TBB%"]       == ["true"] set "PRODUCTS_DEFINES=%PRODUCTS_DEFINES% -DHAVE_TBB"
++if ["%HAVE_OPENCL%"]    == ["true"] set "PRODUCTS_DEFINES=%PRODUCTS_DEFINES% -DHAVE_OPENCL"
 +if ["%HAVE_GL2PS%"]     == ["true"] set "PRODUCTS_DEFINES=%PRODUCTS_DEFINES% -DHAVE_GL2PS"
 +if ["%HAVE_FREEIMAGE%"] == ["true"] set "PRODUCTS_DEFINES=%PRODUCTS_DEFINES% -DHAVE_FREEIMAGE"
 +if ["%HAVE_TBB%"]       == ["true"] set "CSF_DEFINES=HAVE_TBB;%CSF_DEFINES%"
++if ["%HAVE_OPENCL%"]    == ["true"] set "CSF_DEFINES=HAVE_OPENCL;%CSF_DEFINES%"
 +if ["%HAVE_GL2PS%"]     == ["true"] set "CSF_DEFINES=HAVE_GL2PS;%CSF_DEFINES%"
 +if ["%HAVE_FREEIMAGE%"] == ["true"] set "CSF_DEFINES=HAVE_FREEIMAGE;%CSF_DEFINES%"
 +
@@ -926,6 +765,7 @@ Index: oce/scripts/env.bat
 +set CSF_EXCEPTION_PROMPT=1
 +set "CSF_SHMessage=%CASROOT%\src\SHMessage"
 +set "CSF_MDTVTexturesDirectory=%CASROOT%\src\Textures"
++set "CSF_ShadersDirectory=%CASROOT%\src\Shaders"
 +set "CSF_XSMessage=%CASROOT%\src\XSMessage"
 +set "CSF_TObjMessage=%CASROOT%\src\TObj"
 +set "CSF_StandardDefaults=%CASROOT%\src\StdResource"
@@ -962,174 +802,17 @@ Index: oce/scripts/env.bat
 +:concatLib64
 +set "OPT_LIB64=%OPT_LIB64% /LIBPATH:%1"
 +goto :eof
-Index: oce/scripts/env_amk.sh
+Index: oce/scripts/env.sh
 ===================================================================
 --- /dev/null
-+++ oce/scripts/env_amk.sh
-@@ -0,0 +1,152 @@
++++ oce/scripts/env.sh
+@@ -0,0 +1,201 @@
 +#!/bin/bash
 +
 +# go to the script directory
 +aScriptPath=${BASH_SOURCE%/*}; if [ -d "${aScriptPath}" ]; then cd "$aScriptPath"; fi; aScriptPath="$PWD";
 +
-+export CASROOT="$aScriptPath"
-+
-+# Reset values
-+export CASDEB=""
-+export HAVE_TBB="false";
-+export HAVE_FREEIMAGE="false";
-+export HAVE_GL2PS="false";
-+export MACOSX_USE_GLX="false";
-+export CSF_OPT_INC=""
-+export CSF_OPT_LIB32=""
-+export CSF_OPT_LIB64=""
-+export CSF_OPT_BIN32=""
-+export CSF_OPT_BIN64=""
-+
-+# ----- Set local settings -----
-+if [ -e "${aScriptPath}/custom_amk.sh" ]; then source "${aScriptPath}/custom_amk.sh"; fi
-+
-+# Read script arguments
-+shopt -s nocasematch
-+if [[ "$1" == "debug" ]]; then export CASDEB="d"; fi
-+if [[ "$1" == "d" ]]; then export CASDEB="d"; fi
-+shopt -u nocasematch
-+
-+export CSF_OPT_INC="${CSF_OPT_INC}:."
-+export CSF_OPT_LIB32="${CSF_OPT_LIB32}:."
-+export CSF_OPT_LIB64="${CSF_OPT_LIB64}:"
-+export CSF_OPT_LIB32D=""
-+export CSF_OPT_LIB64D=""
-+
-+# ----- Setup Environment Variables -----
-+anArch=`uname -m`
-+if [ "$anArch" != "x86_64" ] && [ "$anArch" != "ia64" ]; then
-+  export ARCH="32";
-+else
-+  export ARCH="64";
-+fi
-+
-+aSystem=`uname -s`
-+if [ "$aSystem" == "Darwin" ]; then
-+  export WOKSTATION="mac";
-+  export ARCH="64";
-+else
-+  export WOKSTATION="lin";
-+fi
-+
-+export CASBIN=""
-+
-+export CSF_OPT_CMPL=""
-+
-+# Optiona 3rd-parties should be enabled by HAVE macros
-+if [ "$HAVE_TBB" == "true" ]; then
-+  export CSF_OPT_CMPL="${CSF_OPT_CMPL} -DHAVE_TBB"
-+fi
-+if [ "$HAVE_FREEIMAGE" == "true" ]; then
-+  export CSF_OPT_CMPL="${CSF_OPT_CMPL} -DHAVE_FREEIMAGE"
-+fi
-+if [ "$HAVE_GL2PS" == "true" ]; then
-+  export CSF_OPT_CMPL="${CSF_OPT_CMPL} -DHAVE_GL2PS"
-+fi
-+
-+# Option to compile OCCT with X11 libs on Mac OS X
-+if [ "$MACOSX_USE_GLX" == "true" ]; then
-+  export CSF_OPT_CMPL="${CSF_OPT_CMPL} -DMACOSX_USE_GLX"
-+fi
-+
-+# To split string into array
-+aDelimBack=$IFS
-+IFS=":"
-+
-+# 3rd-parties additional include paths
-+set -- "$CSF_OPT_INC"
-+declare -a aPartiesIncs=($*)
-+for anItem in ${aPartiesIncs[*]}
-+do
-+  export CSF_OPT_CMPL="${CSF_OPT_CMPL} -I${anItem}";
-+done
-+
-+# Append 3rd-parties to LD_LIBRARY_PATH
-+if [ "$ARCH" == "32" ]; then
-+  set -- "$CSF_OPT_LIB32"
-+  declare -a aPartiesLibs=($*)
-+else
-+  set -- "$CSF_OPT_LIB64"
-+  declare -a aPartiesLibs=($*)
-+fi
-+
-+# Turn back value
-+IFS=$aDelimBack
-+
-+OPT_LINKER_OPTIONS=""
-+for anItem in ${aPartiesLibs[*]}
-+do
-+  if [ "${LD_LIBRARY_PATH}" == "" ]; then
-+    export LD_LIBRARY_PATH="${anItem}"
-+  else
-+    export LD_LIBRARY_PATH="${anItem}:${LD_LIBRARY_PATH}"
-+  fi
-+  OPT_LINKER_OPTIONS="${OPT_LINKER_OPTIONS} -L${anItem}"
-+done
-+
-+if [ "$ARCH" == "64" ]; then
-+  export CSF_OPT_LNK64="$OPT_LINKER_OPTIONS"
-+  export CSF_OPT_LNK64D="$OPT_LINKER_OPTIONS"
-+else
-+  export CSF_OPT_LNK32="$OPT_LINKER_OPTIONS"
-+  export CSF_OPT_LNK32D="$OPT_LINKER_OPTIONS"
-+fi
-+
-+export PATH="${CASROOT}/${CASBIN}bin${CASDEB}:${PATH}"
-+export LD_LIBRARY_PATH="${CASROOT}/${CASBIN}lib${CASDEB}:${LD_LIBRARY_PATH}"
-+if [ "$WOKSTATION" == "mac" ]; then
-+  export DYLD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${DYLD_LIBRARY_PATH}"
-+fi
-+
-+# Set envoronment variables used by OCCT
-+export CSF_LANGUAGE="us"
-+export MMGT_CLEAR="1"
-+export CSF_EXCEPTION_PROMPT="1"
-+export CSF_SHMessage="${CASROOT}/src/SHMessage"
-+export CSF_MDTVTexturesDirectory="${CASROOT}/src/Textures"
-+export CSF_XSMessage="${CASROOT}/src/XSMessage"
-+export CSF_TObjMessage="${CASROOT}/src/TObj"
-+export CSF_StandardDefaults="${CASROOT}/src/StdResource"
-+export CSF_PluginDefaults="${CASROOT}/src/StdResource"
-+export CSF_XCAFDefaults="${CASROOT}/src/StdResource"
-+export CSF_TObjDefaults="${CASROOT}/src/StdResource"
-+export CSF_StandardLiteDefaults="${CASROOT}/src/StdResource"
-+if [ "$WOKSTATION" == "mac" ]; then
-+  export CSF_GraphicShr="libTKOpenGl.dylib"
-+else
-+  export CSF_GraphicShr="libTKOpenGl.so"
-+fi
-+export CSF_UnitsLexicon="${CASROOT}/src/UnitsAPI/Lexi_Expr.dat"
-+export CSF_UnitsDefinition="${CASROOT}/src/UnitsAPI/Units.dat"
-+export CSF_IGESDefaults="${CASROOT}/src/XSTEPResource"
-+export CSF_STEPDefaults="${CASROOT}/src/XSTEPResource"
-+export CSF_XmlOcafResource="${CASROOT}/src/XmlOcafResource"
-+export CSF_MIGRATION_TYPES="${CASROOT}/src/StdResource/MigrationSheet.txt"
-+
-+# Draw Harness special stuff
-+if [ -e "${CASROOT}/src/DrawResources" ]; then
-+  export DRAWHOME="${CASROOT}/src/DrawResources"
-+  export CSF_DrawPluginDefaults="${DRAWHOME}"
-+fi
-+if [ -e "${aScriptPath}/src/DrawResourcesProducts" ]; then
-+  export CSF_DrawPluginProductsDefaults="${aScriptPath}/src/DrawResourcesProducts"
-+fi
-Index: oce/scripts/env_cbp.sh
-===================================================================
---- /dev/null
-+++ oce/scripts/env_cbp.sh
-@@ -0,0 +1,193 @@
-+#!/bin/bash
-+
-+# go to the script directory
-+aScriptPath=${BASH_SOURCE%/*}; if [ -d "${aScriptPath}" ]; then cd "$aScriptPath"; fi; aScriptPath="$PWD";
-+
-+export CASROOT=""
++export CASROOT="${aScriptPath}"
 +
 +if [ "${CASROOT}" != "" ] && [ -d "${aScriptPath}/${CASROOT}" ]; then
 +  export CASROOT="${aScriptPath}/${CASROOT}"
@@ -1141,6 +824,7 @@ Index: oce/scripts/env_cbp.sh
 +# Reset values
 +export CASDEB=""
 +export HAVE_TBB="false";
++export HAVE_OPENCL="false";
 +export HAVE_FREEIMAGE="false";
 +export HAVE_GL2PS="false";
 +export MACOSX_USE_GLX="false";
@@ -1151,20 +835,18 @@ Index: oce/scripts/env_cbp.sh
 +export CSF_OPT_BIN64=""
 +
 +# ----- Set local settings -----
-+if [ -e "${aScriptPath}/custom_cbp.sh" ]; then source "${aScriptPath}/custom_cbp.sh"; fi
++if [ -e "${aScriptPath}/custom.sh" ]; then source "${aScriptPath}/custom.sh"; fi
 +
 +# Read script arguments
 +shopt -s nocasematch
-+if [[ "$1" == "cbp" ]]; then
++export TARGET="";
++if [[ "$2" == "cbp" ]]; then
 +  export TARGET="cbp";
-+elif [[ "$1" == "xcd" ]]; then
++elif [[ "$2" == "xcd" ]]; then
 +  export TARGET="xcd";
-+else
-+  echo "Error: wrong target identifier. Should be \"cbp\" (Code::Blocks) or \"xcd\" (Xcode)"
-+  exit
 +fi
-+if [[ "$2" == "debug" ]]; then export CASDEB="d"; fi
-+if [[ "$2" == "d" ]]; then export CASDEB="d"; fi
++if [[ "$1" == "debug" ]]; then export CASDEB="d"; fi
++if [[ "$1" == "d" ]]; then export CASDEB="d"; fi
 +shopt -u nocasematch
 +
 +# ----- Setup Environment Variables -----
@@ -1193,23 +875,25 @@ Index: oce/scripts/env_cbp.sh
 +export CSF_OPT_INC="${CSF_OPT_INC}:${CASROOT}/inc"
 +
 +if [ "${TARGET}" == "cbp" ]; then
-+  export CSF_OPT_LIB32="${CSF_OPT_LIB32}:${CASROOT}/${CASBIN}/lib"
-+  export CSF_OPT_LIB64="${CSF_OPT_LIB64}:${CASROOT}/${CASBIN}/lib"
 +  export CSF_OPT_LIB32D="${CSF_OPT_LIB32}:${CASROOT}/${CASBIN}/libd"
 +  export CSF_OPT_LIB64D="${CSF_OPT_LIB64}:${CASROOT}/${CASBIN}/libd"
++  export CSF_OPT_LIB32="${CSF_OPT_LIB32}:${CASROOT}/${CASBIN}/lib"
++  export CSF_OPT_LIB64="${CSF_OPT_LIB64}:${CASROOT}/${CASBIN}/lib"
 +elif [ "${TARGET}" == "xcd" ]; then
-+  export CSF_OPT_LIB32="${CSF_OPT_LIB32}:${CASROOT}/${CASBIN}/Release"
-+  export CSF_OPT_LIB64="${CSF_OPT_LIB64}:${CASROOT}/${CASBIN}/Release"
 +  export CSF_OPT_LIB32D="${CSF_OPT_LIB32}:${CASROOT}/${CASBIN}/Debug"
 +  export CSF_OPT_LIB64D="${CSF_OPT_LIB64}:${CASROOT}/${CASBIN}/Debug"
++  export CSF_OPT_LIB32="${CSF_OPT_LIB32}:${CASROOT}/${CASBIN}/Release"
++  export CSF_OPT_LIB64="${CSF_OPT_LIB64}:${CASROOT}/${CASBIN}/Release"
 +fi
-+
 +
 +export CSF_OPT_CMPL=""
 +
 +# Optiona 3rd-parties should be enabled by HAVE macros
 +if [ "$HAVE_TBB" == "true" ]; then
 +  export CSF_OPT_CMPL="${CSF_OPT_CMPL} -DHAVE_TBB"
++fi
++if [ "$HAVE_OPENCL" == "true" ]; then
++  export CSF_OPT_CMPL="${CSF_OPT_CMPL} -DHAVE_OPENCL"
 +fi
 +if [ "$HAVE_FREEIMAGE" == "true" ]; then
 +  export CSF_OPT_CMPL="${CSF_OPT_CMPL} -DHAVE_FREEIMAGE"
@@ -1239,13 +923,23 @@ Index: oce/scripts/env_cbp.sh
 +if [ "$ARCH" == "32" ]; then
 +  set -- "$CSF_OPT_LIB32"
 +  declare -a aPartiesLibs=($*)
++  set -- "$CSF_OPT_LIB32D"
++  declare -a aPartiesLibsDeb=($*)
 +else
 +  set -- "$CSF_OPT_LIB64"
 +  declare -a aPartiesLibs=($*)
++  set -- "$CSF_OPT_LIB64D"
++  declare -a aPartiesLibsDeb=($*)
 +fi
 +
 +# Turn back value
 +IFS=$aDelimBack
++
++OPT_LINKER_OPTIONS_DEB=""
++for anItem in ${aPartiesLibsDeb[*]}
++do
++  OPT_LINKER_OPTIONS_DEB="${OPT_LINKER_OPTIONS_DEB} -L${anItem}"
++done
 +
 +OPT_LINKER_OPTIONS=""
 +for anItem in ${aPartiesLibs[*]}
@@ -1253,26 +947,23 @@ Index: oce/scripts/env_cbp.sh
 +  if [ "${LD_LIBRARY_PATH}" == "" ]; then
 +    export LD_LIBRARY_PATH="${anItem}"
 +  else
-+    export LD_LIBRARY_PATH="${LD_LIBRARY_PATH}:${anItem}"
++    export LD_LIBRARY_PATH="${anItem}:${LD_LIBRARY_PATH}"
 +  fi
 +  OPT_LINKER_OPTIONS="${OPT_LINKER_OPTIONS} -L${anItem}"
 +done
 +
 +if [ "$ARCH" == "64" ]; then
 +  export CSF_OPT_LNK64="$OPT_LINKER_OPTIONS"
-+  export CSF_OPT_LNK64D="$OPT_LINKER_OPTIONS"
++  export CSF_OPT_LNK64D="$OPT_LINKER_OPTIONS_DEB"
 +else
 +  export CSF_OPT_LNK32="$OPT_LINKER_OPTIONS"
-+  export CSF_OPT_LNK32D="$OPT_LINKER_OPTIONS"
++  export CSF_OPT_LNK32D="$OPT_LINKER_OPTIONS_DEB"
 +fi
 +
 +
-+BIN_PATH=""
-+LIBS_PATH=""
-+if [ "${TARGET}" == "cbp" ]; then
-+  BIN_PATH="${CASBIN}/bin${CASDEB}"
-+  LIBS_PATH="${CASBIN}/lib${CASDEB}"
-+elif [ "${TARGET}" == "xcd" ]; then
++BIN_PATH="${CASBIN}/bin${CASDEB}"
++LIBS_PATH="${CASBIN}/lib${CASDEB}"
++if [ "${TARGET}" == "xcd" ]; then
 +  [[ "${CASDEB}" == "d" ]] && BIN_PATH="${CASBIN}/Debug" || BIN_PATH="${CASBIN}/Release"
 +  LIBS_PATH="$BIN_PATH"
 +fi
@@ -1289,6 +980,7 @@ Index: oce/scripts/env_cbp.sh
 +export CSF_EXCEPTION_PROMPT="1"
 +export CSF_SHMessage="${CASROOT}/src/SHMessage"
 +export CSF_MDTVTexturesDirectory="${CASROOT}/src/Textures"
++export CSF_ShadersDirectory="${CASROOT}/src/Shaders"
 +export CSF_XSMessage="${CASROOT}/src/XSMessage"
 +export CSF_TObjMessage="${CASROOT}/src/TObj"
 +export CSF_StandardDefaults="${CASROOT}/src/StdResource"
@@ -1316,12 +1008,54 @@ Index: oce/scripts/env_cbp.sh
 +if [ -e "${aScriptPath}/src/DrawResourcesProducts" ]; then
 +  export CSF_DrawPluginProductsDefaults="${aScriptPath}/src/DrawResourcesProducts"
 +fi
+Index: oce/scripts/gendoc.bat
+===================================================================
+--- /dev/null
++++ oce/scripts/gendoc.bat
+@@ -0,0 +1,14 @@
++@echo off
 +
++rem Helper script to run generation of OCCT documentation on Windows.
++rem Running it requires that Tcl, Doxygen, and MikTex (for PDF generation)
++rem should be in the PATH
++
++SET "OLD_PATH=%PATH%"
++
++if exist "%~dp0env.bat" (
++  call "%~dp0env.bat"
++)
++
++tclsh.exe %~dp0dox/start.tcl  %*
++SET "PATH=%OLD_PATH%"
+Index: oce/scripts/gendoc.sh
+===================================================================
+--- /dev/null
++++ oce/scripts/gendoc.sh
+@@ -0,0 +1,19 @@
++#!/bin/bash
++
++# Helper script to run generation of OCCT documentation on Linux.
++# Running it requires that Tcl, Doxygen, and MikTex (for PDF generation) should be in the PATH
++
++anArgs=$*
++anOldPath="$PATH"
++anOldLd="$LD_LIBRARY_PATH"
++anOldDyLd="$DYLD_LIBRARY_PATH"
++
++# go to the script directory
++aScriptPath=${BASH_SOURCE%/*}; if [ -d "${aScriptPath}" ]; then cd "$aScriptPath"; fi; aScriptPath="$PWD";
++if [ -e "${aScriptPath}/env.sh" ]; then source "${aScriptPath}/env.sh"; fi
++
++tclsh "${aScriptPath}/dox/start.tcl" $anArgs
++
++export PATH="$anOldPath"
++export LD_LIBRARY_PATH="$anOldLd"
++export DYLD_LIBRARY_PATH="$anOldDyLd"
 Index: oce/scripts/msvc.bat
 ===================================================================
 --- /dev/null
 +++ oce/scripts/msvc.bat
-@@ -0,0 +1,38 @@
+@@ -0,0 +1,42 @@
 +@echo off
 +
 +rem Setup environment
@@ -1346,6 +1080,10 @@ Index: oce/scripts/msvc.bat
 +  set "DevEnvDir=%VS110COMNTOOLS%..\IDE"
 +  rem Visual Studio 2012 Express for Windows Desktop have a new name for executable - WDExpress
 +  set "VisualStudioExpressName=WDExpress"
++) else if "%VCVER%" == "vc12" (
++  set "DevEnvDir=%VS120COMNTOOLS%..\IDE"
++  rem Visual Studio 2013 Express for Windows Desktop have a new name for executable - WDExpress
++  set "VisualStudioExpressName=WDExpress"
 +) else (
 +  echo Error: wrong VS identifier
 +  exit /B
@@ -1360,3 +1098,33 @@ Index: oce/scripts/msvc.bat
 +  echo Error: Could not find MS Visual Studio ^(%VCVER%^)
 +  echo Check relevant environment variable ^(e.g. VS80COMNTOOLS for vc8^)
 +)
+Index: oce/scripts/xcode.sh
+===================================================================
+--- /dev/null
++++ oce/scripts/xcode.sh
+@@ -0,0 +1,10 @@
++#!/bin/bash
++
++export TARGET="xcd"
++
++source ./env.sh "$TARGET" "$1"
++
++export CSF_OPT_LIB64="$CSF_OPT_LIB64:/usr/X11/lib"
++export CSF_OPT_LIB64D="$CSF_OPT_LIB64:/usr/X11/lib"
++
++open -a Xcode ./adm/mac/xcd/OCCT.xcworkspace
+Index: oce/xcode.sh
+===================================================================
+--- oce.orig/xcode.sh
++++ /dev/null
+@@ -1,10 +0,0 @@
+-#!/bin/bash
+-
+-export TARGET="xcd"
+-
+-source ./env.sh "$TARGET" "$1"
+-
+-export CSF_OPT_LIB64="$CSF_OPT_LIB64:/usr/X11/lib"
+-export CSF_OPT_LIB64D="$CSF_OPT_LIB64:/usr/X11/lib"
+-
+-open -a Xcode ./adm/mac/xcd/OCCT.xcworkspace

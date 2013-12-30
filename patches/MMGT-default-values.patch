@@ -20,7 +20,7 @@ Index: oce/src/Standard/Standard.cxx
 ===================================================================
 --- oce.orig/src/Standard/Standard.cxx
 +++ oce/src/Standard/Standard.cxx
-@@ -38,6 +38,28 @@
+@@ -32,6 +32,28 @@
  #define OCCT_MMGT_OPT_DEFAULT 0
  #endif
  
@@ -46,39 +46,36 @@ Index: oce/src/Standard/Standard.cxx
 +# define MMGT_REENTRANT_DEFAULT     0
 +#endif
 +
- // Global reentrant flag
- static Standard_Boolean Standard_IsReentrant = Standard_True;
- 
-@@ -78,8 +100,8 @@ Standard_MMgrFactory::Standard_MMgrFacto
+ //=======================================================================
+ //class    : Standard_MMgrFactory 
+ //purpose  : Container for pointer to memory manager;
+@@ -69,9 +91,9 @@ Standard_MMgrFactory::Standard_MMgrFacto
  
    char* aVar;
-   Standard_Integer anAllocId   = (aVar = getenv ("MMGT_OPT"      )) ?  atoi (aVar)       :
--    (OCCT_MMGT_OPT_DEFAULT);
--  Standard_Boolean toClear     = (aVar = getenv ("MMGT_CLEAR"    )) ? (atoi (aVar) != 0) : Standard_True;
-+    (MMGT_OPT_DEFAULT);
-+  Standard_Boolean toClear     = (aVar = getenv ("MMGT_CLEAR"    )) ? (atoi (aVar) != 0) : (MMGT_CLEAR_DEFAULT != 0);
+   aVar = getenv ("MMGT_OPT");
+-  Standard_Integer anAllocId   = (aVar ?  atoi (aVar): OCCT_MMGT_OPT_DEFAULT);
++  Standard_Integer anAllocId   = (aVar != NULL ?  atoi (aVar): MMGT_OPT_DEFAULT);
+   aVar = getenv ("MMGT_CLEAR");
+-  Standard_Boolean toClear     = (aVar ? (atoi (aVar) != 0) : Standard_True);
++  Standard_Boolean toClear     = (aVar != NULL ? (atoi (aVar) != 0) : (MMGT_CLEAR_DEFAULT != 0));
  
    // on Windows (actual for XP and 2000) activate low fragmentation heap
    // for CRT heap in order to get best performance.
-@@ -97,15 +119,17 @@ Standard_MMgrFactory::Standard_MMgrFacto
-   aVar = getenv ("MMGT_REENTRANT");
-   if ( aVar != NULL ) 
-     Standard_IsReentrant = (atoi (aVar) != 0);
-+  else
-+    Standard_IsReentrant = (MMGT_THRESHOLD_DEFAULT != 0);
- 
-   switch (anAllocId)
-   {
+@@ -91,13 +113,13 @@ Standard_MMgrFactory::Standard_MMgrFacto
      case 1:  // OCCT optimized memory allocator
      {
--      Standard_Boolean bMMap       = (aVar = getenv ("MMGT_MMAP"     )) ? (atoi (aVar) != 0) : Standard_True;
--      Standard_Integer aCellSize   = (aVar = getenv ("MMGT_CELLSIZE" )) ?  atoi (aVar) : 200;
--      Standard_Integer aNbPages    = (aVar = getenv ("MMGT_NBPAGES"  )) ?  atoi (aVar) : 1000;
--      Standard_Integer aThreshold  = (aVar = getenv ("MMGT_THRESHOLD")) ?  atoi (aVar) : 40000;
-+      Standard_Boolean bMMap       = (aVar = getenv ("MMGT_MMAP"     )) ? (atoi (aVar) != 0) : (MMGT_MMAP_DEFAULT != 0);
-+      Standard_Integer aCellSize   = (aVar = getenv ("MMGT_CELLSIZE" )) ?  atoi (aVar) : MMGT_CELLSIZE_DEFAULT;
-+      Standard_Integer aNbPages    = (aVar = getenv ("MMGT_NBPAGES"  )) ?  atoi (aVar) : MMGT_NBPAGES_DEFAULT;
-+      Standard_Integer aThreshold  = (aVar = getenv ("MMGT_THRESHOLD")) ?  atoi (aVar) : MMGT_THRESHOLD_DEFAULT;
-       myFMMgr = new Standard_MMgrOpt (toClear, bMMap, aCellSize, aNbPages, aThreshold, Standard_IsReentrant);
+       aVar = getenv ("MMGT_MMAP");
+-      Standard_Boolean bMMap       = (aVar ? (atoi (aVar) != 0) : Standard_True);
++      Standard_Boolean bMMap       = (aVar != NULL ? (atoi (aVar) != 0) : (MMGT_MMAP_DEFAULT != 0));
+       aVar = getenv ("MMGT_CELLSIZE");
+-      Standard_Integer aCellSize   = (aVar ?  atoi (aVar) : 200);
++      Standard_Integer aCellSize   = (aVar != NULL ?  atoi (aVar) : MMGT_CELLSIZE_DEFAULT);
+       aVar = getenv ("MMGT_NBPAGES");
+-      Standard_Integer aNbPages    = (aVar ?  atoi (aVar) : 1000);
++      Standard_Integer aNbPages    = (aVar != NULL ?  atoi (aVar) : MMGT_NBPAGES_DEFAULT);
+       aVar = getenv ("MMGT_THRESHOLD");
+-      Standard_Integer aThreshold  = (aVar ?  atoi (aVar) : 40000);
++      Standard_Integer aThreshold  = (aVar != NULL ?  atoi (aVar) : MMGT_THRESHOLD_DEFAULT);
+       myFMMgr = new Standard_MMgrOpt (toClear, bMMap, aCellSize, aNbPages, aThreshold);
        break;
      }

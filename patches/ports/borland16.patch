@@ -43,30 +43,21 @@ Index: oce/src/Font/FILES
 @@ -1,4 +1,5 @@
  EXTERNLIB
 +Font_CMPLRS.edl
+ Font_BRepFont.hxx
+ Font_BRepFont.cxx
  Font_FTFont.hxx
- Font_FTFont.cxx
- Font_FTLibrary.hxx
 Index: oce/src/Font/Font_CMPLRS.edl
 ===================================================================
 --- /dev/null
 +++ oce/src/Font/Font_CMPLRS.edl
-@@ -0,0 +1,28 @@
+@@ -0,0 +1,19 @@
 +-- Created by: Fotios Sioutis
 +--
-+-- The content of this file is subject to the Open CASCADE Technology Public
-+-- License Version 6.5 (the "License"). You may not use the content of this file
-+-- except in compliance with the License. Please obtain a copy of the License
-+-- at http://www.opencascade.org and read it completely before using this file.
-+--
-+-- The Initial Developer of the Original Code is Open CASCADE S.A.S., having its
-+-- main offices at: 1, place des Freres Montgolfier, 78280 Guyancourt, France.
-+--
-+-- The Original Code and all software distributed under the License is
-+-- distributed on an "AS IS" basis, without warranty of any kind, and the
-+-- Initial Developer hereby disclaims all such warranties, including without
-+-- limitation, any warranties of merchantability, fitness for a particular
-+-- purpose or non-infringement. Please see the License for the specific terms
-+-- and conditions governing the rights and limitations under the License.
++-- This library is free software; you can redistribute it and / or modify it
++-- under the terms of the GNU Lesser General Public version 2.1 as published
++-- by the Free Software Foundation, with special exception defined in the file
++-- OCCT_LGPL_EXCEPTION.txt. Consult the file LICENSE_LGPL_21.txt included in OCCT
++-- distribution for complete text of the license and disclaimer of any warranty.
 +
 +
 +@ifnotdefined ( %Font_CMPLRS_EDL) then
@@ -219,24 +210,6 @@ Index: oce/src/OSD/OSD_Host.cxx
  #pragma comment( lib, "WSOCK32.LIB" )
  #endif
  
-Index: oce/src/OpenGl/OpenGl_AspectFace.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_AspectFace.cxx
-+++ oce/src/OpenGl/OpenGl_AspectFace.cxx
-@@ -205,7 +205,12 @@ void OpenGl_AspectFace::Init (const Hand
-   doTextureMap = theAspect.Texture.doTextureMap;
-   const Handle(Graphic3d_TextureMap)& aNewTexture = theAspect.Texture.TextureMap;
-   TCollection_AsciiString aNewKey = aNewTexture.IsNull() ? TCollection_AsciiString() : aNewTexture->GetId();
--  TextureParams = aNewTexture.IsNull() ? NULL : aNewTexture->GetParams();
-+  if (aNewTexture.IsNull()) {
-+    TextureParams.Nullify();
-+  }
-+  else {
-+    TextureParams = aNewTexture->GetParams(); 
-+  }  
-   if (aNewKey.IsEmpty()
-    || myTextureId != aNewKey)
-   {
 Index: oce/src/Standard/Standard_CLocaleSentry.cxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_CLocaleSentry.cxx

@@ -15,7 +15,7 @@ Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
 ===================================================================
 --- oce.orig/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
 +++ oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
-@@ -48,6 +48,8 @@
+@@ -43,6 +43,8 @@
  #include <IntPolyh_Edge.hxx>
  #include <IntPolyh_Couple.hxx>
  
@@ -28,9 +28,9 @@ Index: oce/src/OpenGl/OpenGl_Display.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_Display.cxx
 +++ oce/src/OpenGl/OpenGl_Display.cxx
-@@ -28,6 +28,8 @@
- 
- #include <OpenGl_Light.hxx>
+@@ -23,6 +23,8 @@
+ #include <TCollection_AsciiString.hxx>
+ #include <Aspect_GraphicDeviceDefinitionError.hxx>
  
 +#include <stdio.h>
 +
@@ -41,11 +41,11 @@ Index: oce/src/QABugs/QABugs_13.cxx
 ===================================================================
 --- oce.orig/src/QABugs/QABugs_13.cxx
 +++ oce/src/QABugs/QABugs_13.cxx
-@@ -29,6 +29,7 @@
- #include <TopoDS_Shape.hxx>
- 
- #include <tcl.h>
+@@ -47,6 +47,7 @@
+ #include <TopExp_Explorer.hxx>
+ #include <GProp_GProps.hxx>
+ #include <Standard_ErrorHandler.hxx>
 +#include <stdio.h>
  
- #include <gp_Ax2.hxx>
- #include <gp_Circ.hxx>
+ //=======================================================================
+ //function :  OCC332

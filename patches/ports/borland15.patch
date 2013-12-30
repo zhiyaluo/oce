@@ -54,19 +54,6 @@ Index: oce/src/Image/Image_AlienPixMap.cxx
  
  #ifdef HAVE_FREEIMAGE
  namespace
-Index: oce/src/OSD/OSD_DirectoryIterator.cdl
-===================================================================
---- oce.orig/src/OSD/OSD_DirectoryIterator.cdl
-+++ oce/src/OSD/OSD_DirectoryIterator.cdl
-@@ -97,7 +97,7 @@ is
-       myEntry      : Address ;      -- unused by Windows NT code
-       myInit       : Integer ;      -- unused by Windows NT code
-       myError      : Error;
--      myHandle     : Integer;   -- Windows NT specific
-+      myHandle     : Address;   -- Windows NT specific
-       myData       : Address;   -- Windows NT specific
-       myFirstCall  : Boolean;   -- Windows NT specific
- end DirectoryIterator from OSD;
 Index: oce/src/OSD/OSD_EnvironmentIterator.cdl
 ===================================================================
 --- oce.orig/src/OSD/OSD_EnvironmentIterator.cdl
@@ -79,32 +66,6 @@ Index: oce/src/OSD/OSD_EnvironmentIterator.cdl
 +      myCount      : CString;         -- Count in list of variables
        myError      : Error;
  end EnvironmentIterator from OSD;
- 
-Index: oce/src/OSD/OSD_FileIterator.cdl
-===================================================================
---- oce.orig/src/OSD/OSD_FileIterator.cdl
-+++ oce/src/OSD/OSD_FileIterator.cdl
-@@ -96,7 +96,7 @@ is
-       myEntry      : Address ;      -- unused by Windows NT code
-       myInit       : Integer ;      -- unused by Windows NT code
-       myError      : Error;
--      myHandle     : Integer;   -- Windows NT specific
-+      myHandle     : Address;   -- Windows NT specific
-       myData       : Address;   -- Windows NT specific
-       myFirstCall  : Boolean;   -- Windows NT specific
- end FileIterator from OSD;
-Index: oce/src/OSD/OSD_FileNode.cdl
-===================================================================
---- oce.orig/src/OSD/OSD_FileNode.cdl
-+++ oce/src/OSD/OSD_FileNode.cdl
-@@ -130,7 +130,7 @@ is
- 
-  fields
-     myPath              : Path is protected;   -- system independent path name
--    myFileChannel       : Integer is protected; -- file descriptor
-+    myFileChannel       : Address is protected; -- file descriptor
-     myError             : Error is protected;
- end FileNode from OSD;
  
 Index: oce/src/OSD/OSD_SharedMemory.cdl
 ===================================================================
@@ -129,6 +90,6 @@ Index: oce/src/OpenGl/OpenGl_GraphicDriver.hxx
  #include <Handle_OpenGl_GraphicDriver.hxx>
 +#include <Handle_OpenGl_View.hxx>
 +#include <Handle_OpenGl_Workspace.hxx>
+ #include <Handle_OpenGl_Display.hxx>
  #include <OpenGl_Context.hxx>
  #include <OpenGl_PrinterContext.hxx>
- 

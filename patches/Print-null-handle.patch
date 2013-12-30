@@ -6,7 +6,7 @@ Index: oce/inc/V3d_View.hxx
  //!  view on level of OpenGl_GraphicDriver; Please take it into account if <br>
  //!  you use it for your purposes; <br>
  //!  Warning: Works only under Windows. <br>
--  Standard_EXPORT     Standard_Boolean Print(const Aspect_Handle hPrnDC = NULL,const Standard_Boolean showDialog = Standard_True,const Standard_Boolean showBackground = Standard_True,const Standard_CString filename = NULL,const Aspect_PrintAlgo printAlgorithm = Aspect_PA_STRETCH) const;
+-  Standard_EXPORT     Standard_Boolean Print(const Aspect_Handle hPrnDC = 0,const Standard_Boolean showDialog = Standard_True,const Standard_Boolean showBackground = Standard_True,const Standard_CString filename = NULL,const Aspect_PrintAlgo printAlgorithm = Aspect_PA_STRETCH) const;
 +  Standard_EXPORT     Standard_Boolean Print(const Aspect_Handle hPrnDC = OCE_NULL_Aspect_Handle,const Standard_Boolean showDialog = Standard_True,const Standard_Boolean showBackground = Standard_True,const Standard_CString filename = NULL,const Aspect_PrintAlgo printAlgorithm = Aspect_PA_STRETCH) const;
    //! dump the full contents of the view <br>
  //!        to a pixmap of pixel size <theWidth>*<theHeight> and <br>
@@ -30,7 +30,7 @@ Index: oce/src/V3d/V3d_View.cdl
          --          extension must be one of ".png",".bmp",".jpg",".gif".
          --          Returns FALSE when the dump has failed
  
--      Print (me; hPrnDC: Handle from Aspect = NULL;
+-      Print (me; hPrnDC: Handle from Aspect = 0;
 +      Print (me; hPrnDC: Handle from Aspect = OCE_NULL_Aspect_Handle;
               showDialog: Boolean = Standard_True;
               showBackground : Boolean = Standard_True;

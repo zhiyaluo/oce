@@ -130,19 +130,6 @@ Subject: [PATCH] Check compiler before including stdint.h
  src/OSD/OSD_signal_WNT.cxx |    2 ++
  6 files changed, 12 insertions(+)
 
-Index: oce/inc/OSD_DirectoryIterator.hxx
-===================================================================
---- oce.orig/inc/OSD_DirectoryIterator.hxx
-+++ oce/inc/OSD_DirectoryIterator.hxx
-@@ -102,7 +102,7 @@ Standard_Address myDescr;
- Standard_Address myEntry;
- Standard_Integer myInit;
- OSD_Error myError;
--Standard_Integer myHandle;
-+Standard_Address myHandle;
- Standard_Address myData;
- Standard_Boolean myFirstCall;
- 
 Index: oce/inc/OSD_EnvironmentIterator.hxx
 ===================================================================
 --- oce.orig/inc/OSD_EnvironmentIterator.hxx
@@ -155,35 +142,6 @@ Index: oce/inc/OSD_EnvironmentIterator.hxx
 +Standard_CString myCount;
 +#else
  Standard_Integer myCount;
-+#endif
- OSD_Error myError;
- 
- 
-Index: oce/inc/OSD_FileIterator.hxx
-===================================================================
---- oce.orig/inc/OSD_FileIterator.hxx
-+++ oce/inc/OSD_FileIterator.hxx
-@@ -102,7 +102,7 @@ Standard_Address myDescr;
- Standard_Address myEntry;
- Standard_Integer myInit;
- OSD_Error myError;
--Standard_Integer myHandle;
-+Standard_Address myHandle;
- Standard_Address myData;
- Standard_Boolean myFirstCall;
- 
-Index: oce/inc/OSD_FileNode.hxx
-===================================================================
---- oce.orig/inc/OSD_FileNode.hxx
-+++ oce/inc/OSD_FileNode.hxx
-@@ -99,7 +99,11 @@ protected:
- 
- 
- OSD_Path myPath;
-+#ifdef WNT
-+Standard_Address myFileChannel;
-+#else
- Standard_Integer myFileChannel;
 +#endif
  OSD_Error myError;
  
@@ -204,77 +162,11 @@ Index: oce/inc/OSD_SharedMemory.hxx
  Standard_Address myAddress;
  TCollection_AsciiString myName;
  Standard_Integer mySize;
-Index: oce/src/OSD/OSD_DirectoryIterator.cxx
-===================================================================
---- oce.orig/src/OSD/OSD_DirectoryIterator.cxx
-+++ oce/src/OSD/OSD_DirectoryIterator.cxx
-@@ -208,7 +208,7 @@ OSD_DirectoryIterator :: OSD_DirectoryIt
-                          ) {
- 
-  myFlag   = Standard_False;
-- myHandle = ( Standard_Integer )INVALID_HANDLE_VALUE;
-+ myHandle = INVALID_HANDLE_VALUE;
- 
-  where.SystemName ( myPlace );
- 
-@@ -223,15 +223,15 @@ void OSD_DirectoryIterator :: Destroy ()
- 
-  if ( myData != NULL ) HeapFree (  GetProcessHeap (), 0, myData  );
- 
-- if (  myHandle != ( Standard_Integer )INVALID_HANDLE_VALUE  )
-+ if (  myHandle != INVALID_HANDLE_VALUE  )
- 
--  FindClose (  ( HANDLE )myHandle  );
-+  FindClose (  myHandle  );
- 
- }  // end  OSD_DirectoryIterator :: Destroy
- 
- Standard_Boolean OSD_DirectoryIterator :: More () {
- 
-- if (  myHandle == ( Standard_Integer )INVALID_HANDLE_VALUE  ) {
-+ if (  myHandle == INVALID_HANDLE_VALUE  ) {
-  
-   TCollection_AsciiString wc = myPlace + TEXT( "/" ) + myMask;
- 
-@@ -239,11 +239,11 @@ Standard_Boolean OSD_DirectoryIterator :
-             GetProcessHeap (), HEAP_GENERATE_EXCEPTIONS, sizeof ( WIN32_FIND_DATA )
-            );
- 
--  myHandle = ( Standard_Integer )FindFirstFile (
-+  myHandle = FindFirstFile (
-                                   wc.ToCString (), ( PWIN32_FIND_DATA )myData
-                                  );
- 
--  if (  myHandle == ( Standard_Integer )INVALID_HANDLE_VALUE  )
-+  if (  myHandle == INVALID_HANDLE_VALUE  )
-   
-    _osd_wnt_set_error ( myError, OSD_WDirectoryIterator );
-   
-@@ -258,8 +258,8 @@ Standard_Boolean OSD_DirectoryIterator :
-   
-  } else if ( !myFlag ) {
-  
--  FindClose (  ( HANDLE )myHandle  );
--  myHandle = ( Standard_Integer )INVALID_HANDLE_VALUE;
-+  FindClose ( myHandle );
-+  myHandle = INVALID_HANDLE_VALUE;
-  
-  }  // end if
- 
-@@ -275,7 +275,7 @@ void OSD_DirectoryIterator :: Next () {
-  
-   do {
-   
--   if (   !FindNextFile (  ( HANDLE )myHandle, _FD  )   ) {
-+   if (   !FindNextFile (  myHandle, _FD  )   ) {
-    
-     myFlag = Standard_False;
- 
 Index: oce/src/OSD/OSD_EnvironmentIterator.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_EnvironmentIterator.cxx
 +++ oce/src/OSD/OSD_EnvironmentIterator.cxx
-@@ -102,7 +102,7 @@ Standard_Integer OSD_EnvironmentIterator
+@@ -97,7 +97,7 @@ Standard_Integer OSD_EnvironmentIterator
  OSD_EnvironmentIterator :: OSD_EnvironmentIterator () {
  
   myEnv   = GetEnvironmentStrings ();
@@ -283,7 +175,7 @@ Index: oce/src/OSD/OSD_EnvironmentIterator.cxx
  
  }  // end constructor
  
-@@ -114,7 +114,7 @@ void OSD_EnvironmentIterator :: Destroy
+@@ -109,7 +109,7 @@ void OSD_EnvironmentIterator :: Destroy
  
  Standard_Boolean OSD_EnvironmentIterator :: More () {
  
@@ -292,7 +184,7 @@ Index: oce/src/OSD/OSD_EnvironmentIterator.cxx
  
  }  // end OSD_EnvironmentIterator :: More
  
-@@ -122,7 +122,7 @@ void OSD_EnvironmentIterator :: Next ()
+@@ -117,7 +117,7 @@ void OSD_EnvironmentIterator :: Next ()
  
   if (  More ()  ) {
   
@@ -301,7 +193,7 @@ Index: oce/src/OSD/OSD_EnvironmentIterator.cxx
  
    ++myCount;
   
-@@ -134,7 +134,7 @@ OSD_Environment OSD_EnvironmentIterator
+@@ -129,7 +129,7 @@ OSD_Environment OSD_EnvironmentIterator
  
   TCollection_AsciiString env, name, value;
  
@@ -314,7 +206,7 @@ Index: oce/src/OSD/OSD_File.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_File.cxx
 +++ oce/src/OSD/OSD_File.cxx
-@@ -846,13 +846,16 @@ Standard_Boolean OSD_File::IsExecutable(
+@@ -843,13 +843,16 @@ Standard_Boolean OSD_File::IsExecutable(
  
  #include <stdio.h>
  #include <io.h>
@@ -332,429 +224,11 @@ Index: oce/src/OSD/OSD_File.cxx
  #define VAC
  #define _int64 int64_t
  #endif
-@@ -876,7 +879,7 @@ BOOL                 __fastcall _osd_wnt
-                                 );
- BOOL                 __fastcall _osd_print (const Standard_PCharacter, Standard_CString );
- 
--static void      __fastcall _test_raise ( Standard_Integer, Standard_CString );
-+static void      __fastcall _test_raise ( HANDLE, Standard_CString );
- static DWORDLONG __fastcall _get_line   ( Standard_PCharacter&, DWORD );
- static int       __fastcall _get_buffer ( HANDLE, Standard_PCharacter&, DWORD, BOOL, BOOL );
- static DWORD     __fastcall _get_access_mask ( OSD_SingleProtection );
-@@ -888,7 +891,7 @@ static OSD_SingleProtection __fastcall _
- 
- typedef OSD_SingleProtection ( __fastcall *GET_PROT_FUNC ) ( DWORD );
- 
--Standard_Integer __fastcall _get_file_type ( Standard_CString, Standard_Integer );
-+Standard_Integer __fastcall _get_file_type ( Standard_CString, HANDLE );
- 
- // ---------------------------------------------------------------------
- // Create an empty file object
-@@ -929,7 +932,7 @@ void OSD_File :: Build (
-    Standard_ProgramError::Raise("OSD_File::Read : it is a directory");
-  }
-                                         
-- if (  ( HANDLE )myFileChannel != INVALID_HANDLE_VALUE  )
-+ if (  myFileChannel != INVALID_HANDLE_VALUE  )
- 
-   RAISE(  TEXT( "OSD_File :: Build (): incorrect call - file already opened" )  );
- 
-@@ -940,9 +943,9 @@ void OSD_File :: Build (
- 
-   RAISE(  TEXT( "OSD_File :: Build (): incorrent call - no filename given" )  );
- 
-- myFileChannel = ( Standard_Integer )_open_file ( fName.ToCString (), Mode, OPEN_NEW );
-+ myFileChannel = _open_file ( fName.ToCString (), Mode, OPEN_NEW );
- 
-- if (  ( HANDLE )myFileChannel == INVALID_HANDLE_VALUE  )
-+ if (  myFileChannel == INVALID_HANDLE_VALUE  )
- 
-   _osd_wnt_set_error ( myError, OSD_WFile );
- 
-@@ -968,7 +971,7 @@ void OSD_File :: Open (
-  TCollection_AsciiString fName;
- 
- 
-- if (  ( HANDLE )myFileChannel != INVALID_HANDLE_VALUE  )
-+ if (  myFileChannel != INVALID_HANDLE_VALUE  )
- 
-   RAISE(  TEXT( "OSD_File :: Open (): incorrect call - file already opened" )  );
- 
-@@ -979,9 +982,9 @@ void OSD_File :: Open (
- 
-   RAISE(  TEXT( "OSD_File :: Open (): incorrent call - no filename given" )  );
- 
-- myFileChannel = ( Standard_Integer )_open_file ( fName.ToCString (), Mode, OPEN_OLD );
-+ myFileChannel = _open_file ( fName.ToCString (), Mode, OPEN_OLD );
- 
-- if (  ( HANDLE )myFileChannel == INVALID_HANDLE_VALUE  ) {
-+ if (  myFileChannel == INVALID_HANDLE_VALUE  ) {
- 
-    _osd_wnt_set_error ( myError, OSD_WFile );
-  }
-@@ -1002,7 +1005,7 @@ void OSD_File :: Append (
-  BOOL                    fNew = FALSE;
-  TCollection_AsciiString fName;
- 
-- if (  ( HANDLE )myFileChannel != INVALID_HANDLE_VALUE  )
-+ if (  myFileChannel != INVALID_HANDLE_VALUE  )
- 
-   RAISE(  TEXT( "OSD_File :: Append (): incorrect call - file already opened" )  );
- 
-@@ -1013,9 +1016,9 @@ void OSD_File :: Append (
- 
-   RAISE(  TEXT( "OSD_File :: Append (): incorrent call - no filename given" )  );
- 
-- myFileChannel = ( Standard_Integer )_open_file ( fName.ToCString (), Mode, OPEN_APPEND, &fNew );
-+ myFileChannel = _open_file ( fName.ToCString (), Mode, OPEN_APPEND, &fNew );
- 
-- if (  ( HANDLE )myFileChannel == INVALID_HANDLE_VALUE  )
-+ if (  myFileChannel == INVALID_HANDLE_VALUE  )
- 
-   _osd_wnt_set_error ( myError, OSD_WFile );
- 
-@@ -1120,7 +1123,7 @@ void OSD_File :: ReadLine (
-  if ( myIO & FLAG_FILE ) {
-  
-   if (  !ReadFile (
--          ( HANDLE )myFileChannel, cBuffer, ( DWORD )NByte, &dwBytesRead, NULL
-+          myFileChannel, cBuffer, ( DWORD )NByte, &dwBytesRead, NULL
-          )
-   ) {  // an error occured
- 
-@@ -1147,7 +1150,7 @@ void OSD_File :: ReadLine (
-                                           // peek next character to see if it is a <LF>
- #endif
-     if (  !ReadFile (
--            ( HANDLE )myFileChannel, ppeekChar, 1, &dwDummy, NULL
-+            myFileChannel, ppeekChar, 1, &dwDummy, NULL
-            )
-     ) {
-     
-@@ -1159,7 +1162,7 @@ void OSD_File :: ReadLine (
-     
-      // adjust file position
- 
--      SetFilePointer (  ( HANDLE )myFileChannel, -1, NULL, FILE_CURRENT  );
-+      SetFilePointer (  myFileChannel, -1, NULL, FILE_CURRENT  );
- 
-     } else
-      myIO |= FLAG_EOF;
-@@ -1169,7 +1172,7 @@ void OSD_File :: ReadLine (
-    } else {
- 
-     if ( dwSeekPos != 0 )
--     SetFilePointer (  ( HANDLE )myFileChannel, ( LONG )dwSeekPos, NULL, FILE_CURRENT  );
-+     SetFilePointer (  myFileChannel, ( LONG )dwSeekPos, NULL, FILE_CURRENT  );
- 
-     NbyteRead = ( Standard_Integer )( eos - cBuffer );
- 
-@@ -1180,7 +1183,7 @@ void OSD_File :: ReadLine (
-  } else if ( myIO & FLAG_SOCKET || myIO & FLAG_PIPE || myIO & FLAG_NAMED_PIPE ) {
- 
-   dwBytesRead = ( DWORD )_get_buffer (
--                          ( HANDLE )myFileChannel, cBuffer, ( DWORD )NByte,
-+                          myFileChannel, cBuffer, ( DWORD )NByte,
-                           TRUE, myIO & FLAG_SOCKET
-                          );
- 
-@@ -1213,7 +1216,7 @@ void OSD_File :: ReadLine (
-     NbyteRead = dwBytesRead; // (LD) always fits this case.
- 
-     dwDummy = _get_buffer (
--               ( HANDLE )myFileChannel, ppeekChar, 1, TRUE, myIO & FLAG_SOCKET
-+               myFileChannel, ppeekChar, 1, TRUE, myIO & FLAG_SOCKET
-               );
-     if (  ( int )dwDummy == -1  ) {  // an error occured
-    
-@@ -1242,7 +1245,7 @@ void OSD_File :: ReadLine (
-    Standard_PCharacter cDummyBuffer = new Standard_Character[ NByte + 3 ];
- 
-    _get_buffer (  // remove pending input
--    ( HANDLE )myFileChannel, cDummyBuffer, dwBytesRead, FALSE, myIO & FLAG_SOCKET
-+    myFileChannel, cDummyBuffer, dwBytesRead, FALSE, myIO & FLAG_SOCKET
-    );
-    delete [] cDummyBuffer ;
- 
-@@ -1294,7 +1297,7 @@ void OSD_File :: ReadLine (
-  if ( myIO & FLAG_FILE ) {
-  
-   if (  !ReadFile (
--          ( HANDLE )myFileChannel, cBuffer, ( DWORD )NByte, &dwBytesRead, NULL
-+          myFileChannel, cBuffer, ( DWORD )NByte, &dwBytesRead, NULL
-          )
-   ) {  // an error occured
- 
-@@ -1321,7 +1324,7 @@ void OSD_File :: ReadLine (
-                                           // peek next character to see if it is a <LF>
- #endif
-     if (  !ReadFile (
--            ( HANDLE )myFileChannel, &peekChar, 1, &dwDummy, NULL
-+            myFileChannel, &peekChar, 1, &dwDummy, NULL
-            )
-     ) {
-     
-@@ -1336,7 +1339,7 @@ void OSD_File :: ReadLine (
-     
-      else  // adjust file position
- 
--      SetFilePointer (  ( HANDLE )myFileChannel, -1, NULL, FILE_CURRENT  );
-+      SetFilePointer (  myFileChannel, -1, NULL, FILE_CURRENT  );
- 
-     } else
-          
-@@ -1346,7 +1349,7 @@ void OSD_File :: ReadLine (
- 
-    } else if ( dwSeekPos != 0 ) {
-    
--    SetFilePointer (  ( HANDLE )myFileChannel, ( LONG )dwSeekPos, NULL, FILE_CURRENT  );
-+    SetFilePointer (  myFileChannel, ( LONG )dwSeekPos, NULL, FILE_CURRENT  );
-     NbyteRead = ( Standard_Integer )( eos - cBuffer );
- 
-    } else
-@@ -1358,7 +1361,7 @@ void OSD_File :: ReadLine (
-  } else if ( myIO & FLAG_SOCKET || myIO & FLAG_PIPE || myIO & FLAG_NAMED_PIPE ) {
- 
-   dwBytesRead = ( DWORD )_get_buffer (
--                          ( HANDLE )myFileChannel, cBuffer, ( DWORD )NByte,
-+                          myFileChannel, cBuffer, ( DWORD )NByte,
-                           TRUE, myIO & FLAG_SOCKET
-                          );
- 
-@@ -1386,7 +1389,7 @@ void OSD_File :: ReadLine (
-                                           // peek next character to see if it is a <LF>
- #endif
-     dwDummy = _get_buffer (
--               ( HANDLE )myFileChannel, &peekChar, 1, TRUE, myIO & FLAG_SOCKET
-+               myFileChannel, &peekChar, 1, TRUE, myIO & FLAG_SOCKET
-               );
-     eos     = cBuffer + dwBytesRead;
- 
-@@ -1417,7 +1420,7 @@ void OSD_File :: ReadLine (
-     NbyteRead = ( Standard_Integer )( eos - cBuffer );
- 
-    _get_buffer (  // remove pending input
--    ( HANDLE )myFileChannel, cBuffer, dwBytesRead, FALSE, myIO & FLAG_SOCKET
-+    myFileChannel, cBuffer, dwBytesRead, FALSE, myIO & FLAG_SOCKET
-    );
-    *eos = 0;
- 
-@@ -1459,7 +1462,7 @@ void OSD_File :: Read (
-   RAISE(  TEXT( "OSD_File :: Read (): attempt to read from write only pipe" )  );
- 
-  if (  !ReadFile (
--         ( HANDLE )myFileChannel, Buffer, ( DWORD )Nbyte, &dwBytesRead, NULL
-+         myFileChannel, Buffer, ( DWORD )Nbyte, &dwBytesRead, NULL
-         )
-  ) {
-  
-@@ -1505,7 +1508,7 @@ void OSD_File :: Write (
-   RAISE(  TEXT( "OSD_File :: Write (): attempt to write to read only pipe" )  );
- 
-  if (  !WriteFile (
--         ( HANDLE )myFileChannel, Buffer, ( DWORD )Nbyte, &dwBytesWritten, NULL
-+         myFileChannel, Buffer, ( DWORD )Nbyte, &dwBytesWritten, NULL
-         ) || dwBytesWritten != ( DWORD )Nbyte
-  )
- 
-@@ -1550,7 +1553,7 @@ void OSD_File :: Seek (
-   }  // end switch
- 
-   if (  SetFilePointer (
--         ( HANDLE )myFileChannel, ( LONG )Offset, NULL, dwMoveMethod
-+         myFileChannel, ( LONG )Offset, NULL, dwMoveMethod
-         ) == 0xFFFFFFFF
-   )
- 
-@@ -1570,9 +1573,9 @@ void OSD_File :: Close () {
- 
-  TEST_RAISE(  TEXT( "Close" )  );
- 
-- CloseHandle (  ( HANDLE )myFileChannel  );
-+ CloseHandle (  myFileChannel  );
- 
-- myFileChannel = ( Standard_Integer )INVALID_HANDLE_VALUE;
-+ myFileChannel = INVALID_HANDLE_VALUE;
-  myIO          = 0;
- 
- }  // end OSD_File :: Close
-@@ -1596,7 +1599,7 @@ OSD_KindFile OSD_File :: KindOfFile () c
-  OSD_KindFile     retVal;
-  Standard_Integer flags;
- 
-- if (  ( HANDLE )myFileChannel == INVALID_HANDLE_VALUE  ) {
-+ if (  myFileChannel == INVALID_HANDLE_VALUE  ) {
- 
-   TCollection_AsciiString fName;
- 
-@@ -1607,7 +1610,7 @@ OSD_KindFile OSD_File :: KindOfFile () c
-    RAISE(  TEXT( "OSD_File :: KindOfFile (): incorrent call - no filename given" )  );
- 
-   flags = _get_file_type (
--            fName.ToCString (), ( Standard_Integer )INVALID_HANDLE_VALUE
-+            fName.ToCString (), INVALID_HANDLE_VALUE
-            );
- 
-  } else
-@@ -1796,7 +1799,7 @@ void OSD_File :: SetLock ( const OSD_Loc
-  if (Ret)
-  {
-   if (  !LockFileEx (
--          ( HANDLE )myFileChannel, dwFlags, 0, Size (), 0, &ovlp
-+          myFileChannel, dwFlags, 0, Size (), 0, &ovlp
-          )
-   ) {
- 
-@@ -1820,7 +1823,7 @@ void OSD_File :: UnLock () {
-  if ( ImperativeFlag ) {
-  
-   if (  !UnlockFile (
--          ( HANDLE )myFileChannel, 0, 0, Size (), 0
-+          myFileChannel, 0, 0, Size (), 0
-          )
-   )
-    
-@@ -1858,7 +1861,7 @@ Standard_Integer OSD_File :: Size () {
-  TEST_RAISE(  TEXT( "Size" )  );
- 
-  retVal = ( Standard_Integer )GetFileSize (
--                               ( HANDLE )myFileChannel, NULL
-+                               myFileChannel, NULL
-                               );
- 
-  if (  retVal == ( Standard_Integer )0xFFFFFFFF  )
-@@ -1875,7 +1878,7 @@ Standard_Integer OSD_File :: Size () {
- 
- void OSD_File :: Print ( const OSD_Printer& WhichPrinter ) {
- 
-- if (  ( HANDLE )myFileChannel != INVALID_HANDLE_VALUE  )
-+ if (  myFileChannel != INVALID_HANDLE_VALUE  )
- 
-   RAISE(  TEXT( "OSD_File :: Print (): incorrect call - file opened" )  );
- 
-@@ -1896,7 +1899,7 @@ void OSD_File :: Print ( const OSD_Print
- 
- Standard_Boolean OSD_File :: IsOpen () const {
- 
-- return ( HANDLE )myFileChannel != INVALID_HANDLE_VALUE;
-+ return myFileChannel != INVALID_HANDLE_VALUE;
- 
- }  // end OSD_File :: IsOpen
- 
-@@ -2171,11 +2174,11 @@ retry:
- }  // end _osd_wnt_protection_to_sd */
- 
- 
--static void __fastcall _test_raise ( Standard_Integer hFile, Standard_CString str ) {
-+static void __fastcall _test_raise ( HANDLE hFile, Standard_CString str ) {
- 
-  Standard_Character buff[ 64 ];
- 
-- if (  ( HANDLE )hFile == INVALID_HANDLE_VALUE  ) {
-+ if (  hFile == INVALID_HANDLE_VALUE  ) {
-  
-   _tcscpy (  buff, TEXT( "OSD_File :: " )  );
-   _tcscat (  buff, str );
-@@ -2242,7 +2245,7 @@ static DWORDLONG __fastcall _get_line (
-  }  // end while
- 
- #ifdef VAC
-- retVal  = (DWORDLONG) ( ( (unsigned __int64) ((DWORD) buffer + dwBuffSize) ) << 32 );
-+ retVal  = (DWORDLONG) ( ( (unsigned __int64) ((DWORD)(intptr_t) buffer + dwBuffSize) ) << 32 );
-  retVal = (DWORDLONG) ( (unsigned __int64) retVal & (((unsigned __int64) 0xFFFFFFFF) << 32) );
- #else
-  retVal  = (   (  ( DWORDLONG )( ( DWORD )buffer + dwBuffSize )  ) << 32   );
-@@ -2668,16 +2671,16 @@ static HANDLE __fastcall _open_file (
- }  // end _open_file
- 
- Standard_Integer __fastcall _get_file_type (
--                             Standard_CString fName, Standard_Integer fileHandle
-+                             Standard_CString fName, HANDLE fileHandle
-                             ) {
- 
-  Standard_Integer retVal = 0;
-  DWORD            dwType;
-  int              fileType;
- 
-- fileType = fileHandle == ( Standard_Integer )INVALID_HANDLE_VALUE ?
-+ fileType = fileHandle == INVALID_HANDLE_VALUE ?
-                           FILE_TYPE_DISK :
--                          GetFileType (  ( HANDLE )fileHandle  );
-+                          GetFileType ( fileHandle );
- 
-  switch ( fileType ) {
-  
-Index: oce/src/OSD/OSD_FileIterator.cxx
-===================================================================
---- oce.orig/src/OSD/OSD_FileIterator.cxx
-+++ oce/src/OSD/OSD_FileIterator.cxx
-@@ -292,7 +292,7 @@ OSD_FileIterator :: OSD_FileIterator (
-                     ) {
- 
-  myFlag   = Standard_False;
-- myHandle = ( Standard_Integer )INVALID_HANDLE_VALUE;
-+ myHandle = INVALID_HANDLE_VALUE;
- 
-  where.SystemName ( myPlace );
- 
-@@ -307,15 +307,15 @@ void OSD_FileIterator :: Destroy () {
- 
-  if ( myData != NULL ) HeapFree (  GetProcessHeap (), 0, myData  );
- 
-- if (  myHandle != ( Standard_Integer )INVALID_HANDLE_VALUE  )
-+ if (  myHandle != INVALID_HANDLE_VALUE  )
- 
--  FindClose (  ( HANDLE )myHandle  );
-+  FindClose (  myHandle  );
- 
- }  // end  OSD_DirectoryIterator :: Destroy
- 
- Standard_Boolean OSD_FileIterator :: More () {
- 
-- if (  myHandle == ( Standard_Integer )INVALID_HANDLE_VALUE  ) {
-+ if (  myHandle == INVALID_HANDLE_VALUE  ) {
-  
-   TCollection_AsciiString wc = myPlace + TEXT( "/" ) + myMask;
- 
-@@ -323,11 +323,11 @@ Standard_Boolean OSD_FileIterator :: Mor
-             GetProcessHeap (), HEAP_GENERATE_EXCEPTIONS, sizeof ( WIN32_FIND_DATA )
-            );
- 
--  myHandle = ( Standard_Integer )FindFirstFile (
-+  myHandle = FindFirstFile (
-                                   wc.ToCString (), ( PWIN32_FIND_DATA )myData
-                                  );
- 
--  if (  myHandle == ( Standard_Integer )INVALID_HANDLE_VALUE  )
-+  if (  myHandle == INVALID_HANDLE_VALUE  )
-   
-    _osd_wnt_set_error ( myError, OSD_WDirectoryIterator );
-   
-@@ -342,8 +342,8 @@ Standard_Boolean OSD_FileIterator :: Mor
-   
-  } else if ( !myFlag ) {
-  
--  FindClose (  ( HANDLE )myHandle  );
--  myHandle = ( Standard_Integer )INVALID_HANDLE_VALUE;
-+  FindClose (  myHandle  );
-+  myHandle = INVALID_HANDLE_VALUE;
-  
-  }  // end if
- 
-@@ -359,7 +359,7 @@ void OSD_FileIterator :: Next () {
-  
-   do {
-   
--   if (   !FindNextFile (  ( HANDLE )myHandle, _FD  )   ) {
-+   if (   !FindNextFile (  myHandle, _FD  )   ) {
-    
-     myFlag = Standard_False;
- 
 Index: oce/src/OSD/OSD_FileNode.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_FileNode.cxx
 +++ oce/src/OSD/OSD_FileNode.cxx
-@@ -460,6 +460,9 @@ Standard_Integer OSD_FileNode::Error()co
+@@ -446,6 +446,9 @@ Standard_Integer OSD_FileNode::Error()co
  #endif  // _INC_TCHAR
  
  #include <stdio.h>
@@ -764,79 +238,7 @@ Index: oce/src/OSD/OSD_FileNode.cxx
  
  #define TEST_RAISE( arg ) _test_raise (  fName, ( arg )  )
  #define RAISE( arg ) Standard_ProgramError :: Raise (  ( arg )  )
-@@ -468,7 +471,7 @@ PSECURITY_DESCRIPTOR __fastcall _osd_wnt
- BOOL                 __fastcall _osd_wnt_sd_to_protection (
-                                  PSECURITY_DESCRIPTOR pSD, OSD_Protection& prot, BOOL
-                                 );
--Standard_Integer     __fastcall _get_file_type ( Standard_CString, Standard_Integer );
-+Standard_Integer     __fastcall _get_file_type ( Standard_CString, HANDLE );
- 
- void _osd_wnt_set_error ( OSD_Error&, OSD_WhoAmI, ... );
- 
-@@ -482,7 +485,7 @@ static void __fastcall _test_raise ( TCo
- 
- OSD_FileNode::OSD_FileNode () {
- 
-- myFileChannel = ( Standard_Integer )INVALID_HANDLE_VALUE;
-+ myFileChannel = INVALID_HANDLE_VALUE;
- 
- }  // end constructor ( 1 )
- 
-@@ -493,7 +496,7 @@ OSD_FileNode::OSD_FileNode () {
- 
- OSD_FileNode::OSD_FileNode ( const OSD_Path& Name ) {
- 
-- myFileChannel = ( Standard_Integer )INVALID_HANDLE_VALUE;
-+ myFileChannel = INVALID_HANDLE_VALUE;
-  myPath        = Name;
- 
- }  // end constructor ( 2 )
-@@ -563,7 +566,7 @@ void OSD_FileNode::Remove () {
-  TEST_RAISE(  TEXT( "Remove" )  );
- 
-  switch (  _get_file_type (  fName.ToCString (),
--                             ( Standard_Integer )INVALID_HANDLE_VALUE )  ) {
-+                             INVALID_HANDLE_VALUE )  ) {
- 
-   case FLAG_FILE:
- 
-@@ -611,7 +614,7 @@ void OSD_FileNode::Move ( const OSD_Path
-  NewPath.SystemName ( fNameDst );
- 
-  switch (  _get_file_type ( fName.ToCString (),
--                            ( Standard_Integer )INVALID_HANDLE_VALUE )  ) {
-+                            INVALID_HANDLE_VALUE )  ) {
- 
-   case FLAG_FILE:
- 
-@@ -662,7 +665,7 @@ void OSD_FileNode::Copy ( const OSD_Path
-  ToPath.SystemName ( fNameDst );
- 
-  switch (  _get_file_type ( fName.ToCString (),
--                            ( Standard_Integer )INVALID_HANDLE_VALUE )  ) {
-+                            INVALID_HANDLE_VALUE )  ) {
- 
-   case FLAG_FILE:
- 
-@@ -715,7 +718,7 @@ OSD_Protection OSD_FileNode::Protection
-         ) == NULL ||
-         !_osd_wnt_sd_to_protection (
-           pSD, retVal,
--          _get_file_type (  fName.ToCString (), ( Standard_Integer )INVALID_HANDLE_VALUE  ) ==
-+          _get_file_type (  fName.ToCString (), INVALID_HANDLE_VALUE  ) ==
-           FLAG_DIRECTORY
-          )
-  )
-@@ -747,7 +750,7 @@ void OSD_FileNode::SetProtection ( const
-  pSD = _osd_wnt_protection_to_sd (
-         Prot,
-         _get_file_type ( fName.ToCString (),
--                         ( Standard_Integer )INVALID_HANDLE_VALUE  ) ==
-+                         INVALID_HANDLE_VALUE  ) ==
-         FLAG_DIRECTORY,
-         (char *)fName.ToCString ()
-        );
-@@ -881,7 +884,7 @@ Standard_Integer OSD_FileNode::UserId ()
+@@ -857,7 +860,7 @@ Standard_Integer OSD_FileNode::UserId ()
  
    FreeFileSecurity ( pSD );
   
@@ -845,7 +247,7 @@ Index: oce/src/OSD/OSD_FileNode.cxx
  
  }  // end OSD_FileNode :: UserId
  
-@@ -914,7 +917,7 @@ Standard_Integer OSD_FileNode::GroupId (
+@@ -890,7 +893,7 @@ Standard_Integer OSD_FileNode::GroupId (
  
    _osd_wnt_set_error ( myError, OSD_WFileNode );
  
@@ -858,7 +260,7 @@ Index: oce/src/OSD/OSD_Process.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Process.cxx
 +++ oce/src/OSD/OSD_Process.cxx
-@@ -41,7 +41,7 @@ const OSD_WhoAmI Iam = OSD_WProcess;
+@@ -36,7 +36,7 @@ const OSD_WhoAmI Iam = OSD_WProcess;
  # include <sys/param.h>
  #endif
  
@@ -867,7 +269,7 @@ Index: oce/src/OSD/OSD_Process.cxx
  # include <time.h>
  #endif
  
-@@ -236,6 +236,9 @@ Standard_Integer OSD_Process::Error()con
+@@ -231,6 +231,9 @@ Standard_Integer OSD_Process::Error()con
  
  #include <OSD_WNT_1.hxx>
  #include <lmcons.h> /// pour UNLEN  ( see MSDN about GetUserName() )
@@ -877,7 +279,7 @@ Index: oce/src/OSD/OSD_Process.cxx
  
  #ifdef _MSC_VER
  #pragma warning( disable : 4700 )
-@@ -329,7 +332,7 @@ Standard_Integer OSD_Process :: UserId (
+@@ -324,7 +327,7 @@ Standard_Integer OSD_Process :: UserId (
   if ( hProcessToken != INVALID_HANDLE_VALUE ) CloseHandle ( hProcessToken );
   if ( pTKowner      != NULL                 ) FreeTokenInformation ( pTKowner );
  
@@ -890,7 +292,7 @@ Index: oce/src/OSD/OSD_SharedMemory.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_SharedMemory.cxx
 +++ oce/src/OSD/OSD_SharedMemory.cxx
-@@ -185,7 +185,7 @@ void _osd_wnt_set_error ( OSD_Error&, OS
+@@ -180,7 +180,7 @@ void _osd_wnt_set_error ( OSD_Error&, OS
  
  OSD_SharedMemory :: OSD_SharedMemory () {
  
@@ -899,7 +301,7 @@ Index: oce/src/OSD/OSD_SharedMemory.cxx
  
  }  // end constructor ( 1 )
  
-@@ -227,7 +227,7 @@ void OSD_SharedMemory :: Build () {
+@@ -222,7 +222,7 @@ void OSD_SharedMemory :: Build () {
  
    else
  
@@ -908,7 +310,7 @@ Index: oce/src/OSD/OSD_SharedMemory.cxx
  
   }  // end else
  
-@@ -264,7 +264,7 @@ void OSD_SharedMemory :: Open (
+@@ -259,7 +259,7 @@ void OSD_SharedMemory :: Open (
  
    else
  
@@ -917,7 +319,7 @@ Index: oce/src/OSD/OSD_SharedMemory.cxx
  
    CloseHandle ( hFileMapping );
  
-@@ -276,14 +276,14 @@ void OSD_SharedMemory :: Delete () {
+@@ -271,14 +271,14 @@ void OSD_SharedMemory :: Delete () {
  
   if (  Failed ()  ) Perror ();
  
@@ -938,7 +340,7 @@ Index: oce/src/OSD/OSD_Thread.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Thread.cxx
 +++ oce/src/OSD/OSD_Thread.cxx
-@@ -132,6 +132,9 @@ void OSD_Thread::SetFunction (const OSD_
+@@ -127,6 +127,9 @@ void OSD_Thread::SetFunction (const OSD_
  //=============================================
  
  #ifdef WNT
@@ -948,7 +350,7 @@ Index: oce/src/OSD/OSD_Thread.cxx
  #include <malloc.h>
  // On Windows the signature of the thread function differs from that on UNIX/Linux.
  // As we use the same definition of the thread function on all platforms (POSIX-like),
-@@ -142,7 +145,7 @@ static DWORD WINAPI WNTthread_func (LPVO
+@@ -137,7 +140,7 @@ static DWORD WINAPI WNTthread_func (LPVO
    WNTthread_data *adata = (WNTthread_data*)data;
    void* ret = adata->func ( adata->data );
    free ( adata );
@@ -961,7 +363,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_WNT.cxx
 +++ oce/src/OSD/OSD_WNT.cxx
-@@ -865,12 +865,12 @@ BOOL MoveDirectory ( LPCTSTR oldDir, LPC
+@@ -861,12 +861,12 @@ BOOL MoveDirectory ( LPCTSTR oldDir, LPC
   BOOL                fFind;
   BOOL                retVal = FALSE;
   DIR_RESPONSE        response;
@@ -978,7 +380,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  
    fFind = FALSE;
    driveSrc = driveDst = pathSrc = pathDst = NULL;
-@@ -924,16 +924,16 @@ retry:
+@@ -920,16 +920,16 @@ retry:
  
    if ( fFind ) {
      
@@ -999,7 +401,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
   
   }  // end else
  
-@@ -1079,8 +1079,8 @@ retry_2:
+@@ -1073,8 +1073,8 @@ retry_2:
    
   }  /* end if */
  
@@ -1014,7 +416,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_signal_WNT.cxx
 +++ oce/src/OSD/OSD_signal_WNT.cxx
-@@ -194,6 +194,9 @@ _CRTIMP _se_translator_function __cdecl
+@@ -189,6 +189,9 @@ _CRTIMP _se_translator_function __cdecl
  #include <process.h>
  #include <signal.h>
  #include <float.h>
@@ -1024,7 +426,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
  
  static Standard_Boolean fMsgBox;
  static Standard_Boolean fFltExceptions;
-@@ -210,7 +213,7 @@ static LONG _osd_debug   ( void );
+@@ -205,7 +208,7 @@ static LONG _osd_debug   ( void );
  
  MB_DESC fatalErrorDesc[] = {
  
@@ -1037,10 +439,10 @@ Index: oce/src/OpenGl/OpenGl_Context.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_Context.cxx
 +++ oce/src/OpenGl/OpenGl_Context.cxx
-@@ -280,7 +280,7 @@ void OpenGl_Context::SwapBuffers()
+@@ -321,7 +321,7 @@ void OpenGl_Context::SwapBuffers()
  void* OpenGl_Context::findProc (const char* theFuncName)
  {
- #if (defined(_WIN32) || defined(__WIN32__))
+ #if defined(_WIN32)
 -  return wglGetProcAddress (theFuncName);
 +  return (void*)wglGetProcAddress (theFuncName);
  #elif defined(__APPLE__) && !defined(MACOSX_USE_GLX)
@@ -1050,7 +452,7 @@ Index: oce/src/TDF/TDF_LabelMapHasher.lxx
 ===================================================================
 --- oce.orig/src/TDF/TDF_LabelMapHasher.lxx
 +++ oce/src/TDF/TDF_LabelMapHasher.lxx
-@@ -23,6 +23,11 @@
+@@ -19,6 +19,11 @@
  //Version	Date		Purpose
  //		0.0	Feb 13 1997	Creation
  
@@ -1062,7 +464,7 @@ Index: oce/src/TDF/TDF_LabelMapHasher.lxx
  
  //=======================================================================
  //function : HashCode
-@@ -35,7 +40,7 @@
+@@ -31,7 +36,7 @@
  inline         Standard_Integer TDF_LabelMapHasher::HashCode
  //#endif
  (const TDF_Label& aLab, const Standard_Integer Upper) 
@@ -1075,7 +477,7 @@ Index: oce/src/Units/Units_Token.cxx
 ===================================================================
 --- oce.orig/src/Units/Units_Token.cxx
 +++ oce/src/Units/Units_Token.cxx
-@@ -394,7 +394,7 @@ void Units_Token::Dump(const Standard_In
+@@ -390,7 +390,7 @@ void Units_Token::Dump(const Standard_In
    TCollection_AsciiString mean = Mean();
  
    for(i=0; i<ashift; i++)cout<<"  ";

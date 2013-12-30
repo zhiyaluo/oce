@@ -247,19 +247,6 @@ Index: oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
  #pragma option -x-
  #endif
  
-Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_repvg.cxx
-===================================================================
---- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS_repvg.cxx
-+++ oce/src/TopOpeBRepDS/TopOpeBRepDS_repvg.cxx
-@@ -139,7 +139,7 @@ Standard_EXPORT void FDS_repvg2
- 	  gp_Pnt2d uv; ok = FUN_tool_paronEF(E,pE,F1,uv); if (!ok) {it2.Next();continue;}
- 	  Standard_Real factor = 0.789;
- 	  TopOpeBRepTool_makeTransition MKT; 
--	  TopAbs_State stb = TopAbs_State::TopAbs_UNKNOWN,sta = TopAbs_State::TopAbs_UNKNOWN; 
-+	  TopAbs_State stb = TopAbs_UNKNOWN,sta = TopAbs_UNKNOWN; 
- 	  ok = MKT.Initialize(E,pbef,paft,pE, F1,uv, factor);
- 	  if (ok) ok = MKT.SetRest(E1,pE1);
- 	  if (ok) ok = MKT.MkTonE(stb,sta);
 Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ObjectCommands.cxx

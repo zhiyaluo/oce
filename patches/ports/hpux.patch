@@ -28,17 +28,6 @@ Index: oce/src/BOPCol/BOPCol_Array1.hxx
        pBlock->~BOPCol_MemBlock<Type>();
  #else
        pBlock->~BOPCol_XMemBlock();
-Index: oce/src/BRepMesh/BRepMesh_CellFilter.hxx
-===================================================================
---- oce.orig/src/BRepMesh/BRepMesh_CellFilter.hxx
-+++ oce/src/BRepMesh/BRepMesh_CellFilter.hxx
-@@ -32,4 +32,4 @@ typedef NCollection_CellFilter<BRepMesh_
-   { return aCell.HashCode(theUpper); }
-   Standard_Boolean IsEqual (const NCollection_CellFilter<BRepMesh_CircleInspector>::Cell &aCell1, const NCollection_CellFilter<BRepMesh_CircleInspector>::Cell &aCell2)
-   { return aCell1.IsEqual(aCell2); }
--#endif
-\ No newline at end of file
-+#endif
 Index: oce/src/BRepMesh/BRepMesh_DiscretFactory.cxx
 ===================================================================
 --- oce.orig/src/BRepMesh/BRepMesh_DiscretFactory.cxx
@@ -52,17 +41,6 @@ Index: oce/src/BRepMesh/BRepMesh_DiscretFactory.cxx
      theLibName += ".sl";
    #else
      theLibName += ".so";
-Index: oce/src/BRepMesh/BRepMesh_FastDiscret.cxx
-===================================================================
---- oce.orig/src/BRepMesh/BRepMesh_FastDiscret.cxx
-+++ oce/src/BRepMesh/BRepMesh_FastDiscret.cxx
-@@ -1755,4 +1755,4 @@ void BRepMesh_FastDiscret::CreateMutexes
- void BRepMesh_FastDiscret::RemoveAllMutexes()
- {
-   myMutexProvider.RemoveAllMutexes();
--}
-\ No newline at end of file
-+}
 Index: oce/src/Draw/Draw.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw.cxx
@@ -195,28 +173,6 @@ Index: oce/src/Image/Image_Diff.cxx
  
    // allocate groups of different pixels
    releaseGroupsOfDiffPixels();
-Index: oce/src/Interface/Interface_BitMap.cxx
-===================================================================
---- oce.orig/src/Interface/Interface_BitMap.cxx
-+++ oce/src/Interface/Interface_BitMap.cxx
-@@ -268,4 +268,4 @@ void Interface_BitMap::Clear()
- {
-   theflags.Nullify();
-   Initialize(0);
--}
-\ No newline at end of file
-+}
-Index: oce/src/Interface/Interface_FileReaderTool.cxx
-===================================================================
---- oce.orig/src/Interface/Interface_FileReaderTool.cxx
-+++ oce/src/Interface/Interface_FileReaderTool.cxx
-@@ -573,4 +573,4 @@ void Interface_FileReaderTool::Clear()
-   thereader.Nullify();
-   themodel.Nullify();
-   thereports.Nullify();
--}
-\ No newline at end of file
-+}
 Index: oce/src/MeshVS/MeshVS_NodalColorPrsBuilder.cxx
 ===================================================================
 --- oce.orig/src/MeshVS/MeshVS_NodalColorPrsBuilder.cxx
@@ -384,64 +340,61 @@ Index: oce/src/OSD/OSD_signal.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_signal.cxx
 +++ oce/src/OSD/OSD_signal.cxx
-@@ -646,41 +646,6 @@ void OSD::SegvHandler(const OSD_Signals,
-     cout << "Wrong undefined address." << endl ;
+@@ -646,38 +646,6 @@ void OSD::SegvHandler(const OSD_Signals,
    exit(SIGSEGV);
  }
--
--#if defined (_hpux) || defined(HPUX)
--//============================================================================
--//==== SegvHandler 
--//============================================================================
--
+ 
+-#elif defined (_hpux) || defined(HPUX)
 -// Not ACTIVE ? SA_SIGINFO is defined on SUN, OSF, SGI and HP (and Linux) !
 -// pour version 09.07
--void OSD::SegvHandler(const OSD_Signals aSig, const Standard_Address code,
--                      const Standard_Address scp)
--//void OSD::SegvHandler(const OSD_Signals aSig, int code, const Standard_Address scp)
+-
+-static void SegvHandler(const int theSignal,
+-                        siginfo_t *ip,
+-                        const Standard_Address theContext)
 -{
 -  unsigned long Space  ;
 -  unsigned long Offset ;
 -  char Msg[100] ;
 -
--  if ( scp != NULL ) {
--    Space = ((struct sigcontext *)scp)->sc_sl.sl_ss.ss_cr20 ;
--    Offset = ((struct sigcontext *)scp)->sc_sl.sl_ss.ss_cr21 ;
+-  if ( theContext != NULL ) {
+-    Space = ((struct sigcontext *)theContext)->sc_sl.sl_ss.ss_cr20 ;
+-    Offset = ((struct sigcontext *)theContext)->sc_sl.sl_ss.ss_cr21 ;
 -//    cout << "Wrong address = " << hex(Offset) << endl ;
--    if ((Offset & ~0xffff) == (long)UndefinedHandleAddress)
--	Standard_NullObject::Jump("Attempt to access to null object") ;
+-    if ((Offset & ~0xffff) == (long)UndefinedHandleAddress) {
+-      Standard_NullObject::Jump("Attempt to access to null object") ;
+-    }
 -    else {
--       sprintf(Msg,"SIGSEGV 'segmentation violation' detected. Address %lx",Offset) ;
--       OSD_SIGSEGV::Jump(Msg);
+-      sprintf(Msg,"SIGSEGV 'segmentation violation' detected. Address %lx",Offset) ;
+-      OSD_SIGSEGV::Jump(Msg);
 -//    scp->sc_pcoq_head = scp->sc_pcoq_tail ;       Permettrait de continuer a
 -//    scp->sc_pcoq_tail = scp->sc_pcoq_tail + 0x4 ; l'intruction suivant le segv.
 -    }
 -  }
--  else
+-  else {
 -    cout << "Wrong undefined address." << endl ;
+-  }
 -  exit(SIGSEGV);
--} 
+-}
 -
--#endif
- #else
- // Must be there for compatibility with Windows NT system ---------------
+ #endif
  
+ //============================================================================
 Index: oce/src/OpenGl/OpenGl_AspectFace.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_AspectFace.cxx
 +++ oce/src/OpenGl/OpenGl_AspectFace.cxx
 @@ -231,7 +231,11 @@ void OpenGl_AspectFace::Init (const Hand
  
-     if (!aNewTexture.IsNull())
-     {
+   if (!theTexture.IsNull())
+   {
 +#ifdef __hpux
-+      if (aNewKey.IsEmpty() || !theContext->GetResource(aNewKey, TextureRes))
++    if (TextureId.IsEmpty() || !aContext->GetResource(TextureId, Texture))
 +#else
-       if (aNewKey.IsEmpty() || !theContext->GetResource<Handle(OpenGl_Texture)> (aNewKey, TextureRes))
+     if (TextureId.IsEmpty() || !aContext->GetResource<Handle(OpenGl_Texture)> (TextureId, Texture))
 +#endif
-       {
-         TextureRes = new OpenGl_Texture (TextureParams);
-         Handle(Image_PixMap) anImage = aNewTexture->GetImage();
+     {
+       Texture = new OpenGl_Texture (theTexture->GetParams());
+       Handle(Image_PixMap) anImage = theTexture->GetImage();
 Index: oce/src/Plugin/Plugin.cxx
 ===================================================================
 --- oce.orig/src/Plugin/Plugin.cxx
@@ -524,14 +477,3 @@ Index: oce/src/TDF/TDF_LabelMapHasher.lxx
  
  //=======================================================================
  //function : HashCode
-Index: oce/src/V3d/V3d_Viewer.cxx
-===================================================================
---- oce.orig/src/V3d/V3d_Viewer.cxx
-+++ oce/src/V3d/V3d_Viewer.cxx
-@@ -450,4 +450,4 @@ Standard_ExtString V3d_Viewer::NextName(
- void V3d_Viewer::IncrCount()
- {
-   myNextCount++;
--}
-\ No newline at end of file
-+}

@@ -21,7 +21,7 @@ Index: oce/src/OSD/OSD_File.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_File.cxx
 +++ oce/src/OSD/OSD_File.cxx
-@@ -1765,11 +1765,6 @@ OSD_File OSD_File :: BuildTemporary () {
+@@ -1564,11 +1564,6 @@ OSD_File OSD_File :: BuildTemporary () {
  
  //-------------------------------------------------finpri???980424
  
@@ -33,7 +33,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
  void OSD_File :: SetLock ( const OSD_LockType Lock ) {
  
-@@ -1780,12 +1775,13 @@ void OSD_File :: SetLock ( const OSD_Loc
+@@ -1579,12 +1574,13 @@ void OSD_File :: SetLock ( const OSD_Loc
   
   ZeroMemory (  &ovlp, sizeof ( OVERLAPPED )  );
  
@@ -49,7 +49,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
    } else if ( myLock == OSD_ReadLock || myLock == OSD_ExclusiveLock ) {
  
-@@ -1794,33 +1790,27 @@ void OSD_File :: SetLock ( const OSD_Loc
+@@ -1593,32 +1589,26 @@ void OSD_File :: SetLock ( const OSD_Loc
    } else
  
     dwFlags = 0;
@@ -57,10 +57,9 @@ Index: oce/src/OSD/OSD_File.cxx
  
 + if (Ret)
 + {
-   if (  !LockFileEx (
-           ( HANDLE )myFileChannel, dwFlags, 0, Size (), 0, &ovlp
-          )
-   ) {
+   LARGE_INTEGER aSize;
+   aSize.QuadPart = Size();
+   if (!LockFileEx (myFileHandle, dwFlags, 0, aSize.LowPart, aSize.HighPart, &ovlp)) {
  
     _osd_wnt_set_error ( myError, OSD_WFile );
 -   __leave;
@@ -91,7 +90,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
  void OSD_File :: UnLock () {
  
-@@ -1909,11 +1899,6 @@ Standard_Boolean OSD_File :: IsOpen () c
+@@ -1706,11 +1696,6 @@ Standard_Boolean OSD_File :: IsOpen () c
  
  }  // end OSD_File :: IsOpen
  
@@ -103,7 +102,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
  PSECURITY_DESCRIPTOR __fastcall _osd_wnt_protection_to_sd (
                                   const OSD_Protection& prot, BOOL fDir, char* fName
-@@ -1944,34 +1929,46 @@ PSECURITY_DESCRIPTOR __fastcall _osd_wnt
+@@ -1741,34 +1726,46 @@ PSECURITY_DESCRIPTOR __fastcall _osd_wnt
   PSECURITY_DESCRIPTOR pfSD = NULL;
   BOOL                 fDummy;
   PFILE_ACE            pFileACE;
@@ -155,7 +154,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
  retry:
    if ( fName == NULL )
-@@ -2027,7 +2024,11 @@ retry:
+@@ -1824,7 +1821,11 @@ retry:
                    ( ( GetLengthSid ( pSIDworld ) + ACE_HEADER_SIZE ) << j )
                 );
  
@@ -168,7 +167,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
    if ( dwAccessAdmin != 0 )
  
-@@ -2133,17 +2134,17 @@ retry:
+@@ -1930,17 +1931,17 @@ retry:
     }  // end for
  
    }  // end if
@@ -192,7 +191,7 @@ Index: oce/src/OSD/OSD_File.cxx
    if ( !fOK ) {
  
     if ( retVal != NULL )
-@@ -2164,21 +2165,10 @@ retry:
+@@ -1961,21 +1962,10 @@ retry:
    if ( pTkPrimaryGroup != NULL ) FreeTokenInformation ( pTkPrimaryGroup );
    if ( pfSD            != NULL ) FreeFileSecurity     ( pfSD            );
   
@@ -212,9 +211,9 @@ Index: oce/src/OSD/OSD_File.cxx
 -#undef __leave
 -#endif
  
- static void __fastcall _test_raise ( Standard_Integer hFile, Standard_CString str ) {
+ static void __fastcall _test_raise ( HANDLE hFile, Standard_CString str ) {
  
-@@ -2726,11 +2716,6 @@ Standard_Integer __fastcall _get_file_ty
+@@ -2450,11 +2440,6 @@ Standard_Integer __fastcall _get_file_ty
  
  }  // end _get_file_type
  
@@ -226,7 +225,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
  BOOL __fastcall _osd_wnt_sd_to_protection (
                   PSECURITY_DESCRIPTOR pSD, OSD_Protection& prot, BOOL fDir
-@@ -2751,21 +2736,29 @@ BOOL __fastcall _osd_wnt_sd_to_protectio
+@@ -2475,21 +2460,29 @@ BOOL __fastcall _osd_wnt_sd_to_protectio
   BOOL          retVal = FALSE;
   GET_PROT_FUNC _get_prot_func = fDir ? &_get_protection_dir : &_get_protection;
  
@@ -262,7 +261,7 @@ Index: oce/src/OSD/OSD_File.cxx
    pSIDadmin = AdminSid ();
    pSIDworld = WorldSid ();
  
-@@ -2806,23 +2799,12 @@ BOOL __fastcall _osd_wnt_sd_to_protectio
+@@ -2530,23 +2523,12 @@ BOOL __fastcall _osd_wnt_sd_to_protectio
  
    retVal = TRUE;
    
@@ -287,7 +286,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
  static OSD_SingleProtection __fastcall _get_protection ( DWORD mask ) {
  
-@@ -3040,11 +3022,6 @@ static OSD_SingleProtection __fastcall _
+@@ -2764,11 +2746,6 @@ static OSD_SingleProtection __fastcall _
  
  }  // end _get_protection_dir
  
@@ -299,10 +298,10 @@ Index: oce/src/OSD/OSD_File.cxx
  
  BOOL __fastcall _osd_print (const Standard_PCharacter pName, Standard_CString fName ) {
  
-@@ -3052,41 +3029,49 @@ BOOL __fastcall _osd_print (const Standa
-  HANDLE hPrinter;
+@@ -2776,41 +2753,49 @@ BOOL __fastcall _osd_print (const Standa
+  HANDLE hPrinter = NULL;
   BYTE   jobInfo[ MAX_PATH + sizeof ( DWORD ) ];
-  DWORD  dwNeeded, dwCode;
+  DWORD  dwNeeded, dwCode = 0;
 + bool Ret = true;
  
   fOK = fJob = FALSE;
@@ -358,7 +357,7 @@ Index: oce/src/OSD/OSD_File.cxx
    if ( !fOK ) {
    
     BYTE  info[ 1024 ];
-@@ -3112,12 +3097,6 @@ BOOL __fastcall _osd_print (const Standa
+@@ -2836,12 +2821,6 @@ BOOL __fastcall _osd_print (const Standa
    }  // end if
  
    if ( hPrinter != NULL ) ClosePrinter ( hPrinter );
@@ -371,7 +370,7 @@ Index: oce/src/OSD/OSD_File.cxx
  
   if ( !fOK ) SetLastError ( dwCode );
  
-@@ -3125,11 +3104,6 @@ leave: ;       // added for VisualAge
+@@ -2849,11 +2828,6 @@ leave: ;       // added for VisualAge
                  
  }  // end _osd_print
  
@@ -387,7 +386,7 @@ Index: oce/src/OSD/OSD_FileNode.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_FileNode.cxx
 +++ oce/src/OSD/OSD_FileNode.cxx
-@@ -988,11 +988,6 @@ void _osd_wnt_set_error ( OSD_Error& err
+@@ -964,11 +964,6 @@ void _osd_wnt_set_error ( OSD_Error& err
  
  }  // end _set_error
  
@@ -399,10 +398,10 @@ Index: oce/src/OSD/OSD_FileNode.cxx
  
  static BOOL __fastcall _get_file_time (
                          Standard_CString fName, LPSYSTEMTIME lpSysTime, BOOL fAccess
-@@ -1003,46 +998,34 @@ static BOOL __fastcall _get_file_time (
+@@ -979,46 +974,34 @@ static BOOL __fastcall _get_file_time (
   FILETIME   ftLastWriteTime;
   LPFILETIME lpftPtr;
-  HANDLE     hFile;
+  HANDLE     hFile = INVALID_HANDLE_VALUE;
 -
 - __try {
 -
@@ -460,7 +459,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_WNT.cxx
 +++ oce/src/OSD/OSD_WNT.cxx
-@@ -123,12 +123,6 @@ void FreeSD ( PSECURITY_DESCRIPTOR pSD )
+@@ -119,12 +119,6 @@ void FreeSD ( PSECURITY_DESCRIPTOR pSD )
  /******************************************************************************/
  /***/
  
@@ -473,7 +472,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  LPVOID GetTokenInformationEx ( HANDLE hToken, TOKEN_INFORMATION_CLASS tic ) {
  
   DWORD  errVal;
-@@ -136,8 +130,7 @@ LPVOID GetTokenInformationEx ( HANDLE hT
+@@ -132,8 +126,7 @@ LPVOID GetTokenInformationEx ( HANDLE hT
   DWORD  dwSizeNeeded = 0;
   LPVOID buffer       = NULL;
   BOOL   fOK          = FALSE;
@@ -483,7 +482,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  
    do {
  
-@@ -147,46 +140,35 @@ LPVOID GetTokenInformationEx ( HANDLE hT
+@@ -143,46 +136,35 @@ LPVOID GetTokenInformationEx ( HANDLE hT
     if (  !GetTokenInformation ( hToken, tic, buffer, dwSize, &dwSizeNeeded )  ) {
  
      if (   (  errVal = GetLastError ()  ) != ERROR_INSUFFICIENT_BUFFER   )
@@ -539,7 +538,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  /***/
  /******************************************************************************/
  /* Function : FreeTokenInformation                                          */
-@@ -445,13 +427,6 @@ PSID NullSid ( void ) {
+@@ -441,13 +423,6 @@ PSID NullSid ( void ) {
  /******************************************************************************/
  /***/
  
@@ -553,7 +552,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  PSECURITY_DESCRIPTOR GetFileSecurityEx ( LPCTSTR fileName, SECURITY_INFORMATION si ) {
  
   DWORD                errVal;
-@@ -459,8 +434,8 @@ PSECURITY_DESCRIPTOR GetFileSecurityEx (
+@@ -455,8 +430,8 @@ PSECURITY_DESCRIPTOR GetFileSecurityEx (
   DWORD                dwSizeNeeded = 0;
   PSECURITY_DESCRIPTOR retVal = NULL;
   BOOL                 fOK    = FALSE;
@@ -564,7 +563,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  
    do {
  
-@@ -473,21 +448,24 @@ PSECURITY_DESCRIPTOR GetFileSecurityEx (
+@@ -469,21 +444,24 @@ PSECURITY_DESCRIPTOR GetFileSecurityEx (
            )
     ) {
   
@@ -595,7 +594,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
   
    if ( !fOK && retVal != NULL ) {
    
-@@ -496,22 +474,10 @@ PSECURITY_DESCRIPTOR GetFileSecurityEx (
+@@ -492,22 +470,10 @@ PSECURITY_DESCRIPTOR GetFileSecurityEx (
    
    }  /* end if */
   
@@ -618,7 +617,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  /***/
  /******************************************************************************/
  /* Function : FreeFileSecurity                                              */
-@@ -538,12 +504,6 @@ void FreeFileSecurity ( PSECURITY_DESCRI
+@@ -534,12 +500,6 @@ void FreeFileSecurity ( PSECURITY_DESCRI
  /******************************************************************************/
  /***/
  
@@ -631,7 +630,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  BOOL LookupAccountSidEx ( PSID pSID, LPTSTR* name, LPTSTR* domain ) {
  
   DWORD        errVal;
-@@ -551,8 +511,7 @@ BOOL LookupAccountSidEx ( PSID pSID, LPT
+@@ -547,8 +507,7 @@ BOOL LookupAccountSidEx ( PSID pSID, LPT
   DWORD        dwSizeDomain = 0;
   BOOL         retVal       = FALSE;
   SID_NAME_USE eUse;
@@ -641,7 +640,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  
    do {   
  
-@@ -563,21 +522,26 @@ BOOL LookupAccountSidEx ( PSID pSID, LPT
+@@ -559,21 +518,26 @@ BOOL LookupAccountSidEx ( PSID pSID, LPT
            )
     ) {
     
@@ -674,7 +673,7 @@ Index: oce/src/OSD/OSD_WNT.cxx
  
    if ( !retVal ) {
    
-@@ -586,22 +550,10 @@ BOOL LookupAccountSidEx ( PSID pSID, LPT
+@@ -582,22 +546,10 @@ BOOL LookupAccountSidEx ( PSID pSID, LPT
    
    }  /* end if */
   
@@ -701,7 +700,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_signal_WNT.cxx
 +++ oce/src/OSD/OSD_signal_WNT.cxx
-@@ -521,12 +521,6 @@ static LONG __fastcall _osd_raise ( DWOR
+@@ -512,12 +512,6 @@ static LONG __fastcall _osd_raise ( DWOR
  //==== _osd_debug 
  //============================================================================
  
@@ -714,7 +713,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
  LONG _osd_debug ( void ) {
  
   LONG action ;
-@@ -542,29 +536,33 @@ LONG _osd_debug ( void ) {
+@@ -533,29 +527,33 @@ LONG _osd_debug ( void ) {
    SECURITY_ATTRIBUTES sa;
    PROCESS_INFORMATION pi;
    STARTUPINFO         si;
@@ -754,7 +753,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
     wsprintf (  cmdLine, keyValue, GetCurrentProcessId (), hEvent  );
  
     ZeroMemory (  &si, sizeof ( STARTUPINFO )  );
-@@ -577,8 +575,11 @@ LONG _osd_debug ( void ) {
+@@ -568,8 +566,11 @@ LONG _osd_debug ( void ) {
             NULL, cmdLine, NULL, NULL, TRUE, CREATE_DEFAULT_ERROR_MODE,
             NULL, NULL, &si, &pi
            )
@@ -767,7 +766,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
  //   cout << "_osd_debug -> WaitForSingleObject " << endl ;
     WaitForSingleObject ( hEvent, INFINITE );
  //   cout << "_osd_debug <- WaitForSingleObject -> CloseHandle " << endl ;
-@@ -589,18 +590,13 @@ LONG _osd_debug ( void ) {
+@@ -580,18 +581,13 @@ LONG _osd_debug ( void ) {
  //   cout << "_osd_debug fDbgLoaded  " << endl ;
     fDbgLoaded = TRUE;
    
@@ -787,7 +786,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
   }  /* end if */
  
   action = fDbgLoaded ? EXCEPTION_CONTINUE_EXECUTION : EXCEPTION_EXECUTE_HANDLER;
-@@ -610,12 +606,6 @@ LONG _osd_debug ( void ) {
+@@ -601,9 +597,4 @@ LONG _osd_debug ( void ) {
  
  }  // end _osd_debug
  
@@ -796,7 +795,4 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
 -#undef __finally
 -#undef __leave
 -#endif
--
- // Must be there for compatibility with UNIX system code ----------------------
- 
- //void OSD::Handler(const OSD_Signals aSig,
+ #endif // WNT
