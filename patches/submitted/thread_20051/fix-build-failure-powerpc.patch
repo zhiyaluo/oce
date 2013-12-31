@@ -14,6 +14,16 @@ See http://www.opencascade.org/org/forum/thread_20051/
  src/Plate/Plate_LinearXYZConstraint.cxx    |   16 ++++++++--------
  7 files changed, 36 insertions(+), 36 deletions(-)
 
+From 57f27d6668e58a00e22ad7a36d71516a37754ccb Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Thu, 10 Nov 2011 16:32:12 +0200
+Subject: [PATCH] Renamed PPC to ppc in Plate cdl declarations.
+
+---
+ src/Plate/Plate_LinearScalarConstraint.cdl |   14 +++++++-------
+ src/Plate/Plate_LinearXYZConstraint.cdl    |   12 ++++++------
+ 2 files changed, 13 insertions(+), 13 deletions(-)
+
 Index: oce/inc/Plate_LinearScalarConstraint.hxx
 ===================================================================
 --- oce.orig/inc/Plate_LinearScalarConstraint.hxx
@@ -68,7 +78,7 @@ Index: oce/src/BRepFill/BRepFill_Evolved.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_Evolved.cxx
 +++ oce/src/BRepFill/BRepFill_Evolved.cxx
-@@ -2106,8 +2106,8 @@ void BRepFill_Evolved::AddTopAndBottom(B
+@@ -2101,8 +2101,8 @@ void BRepFill_Evolved::AddTopAndBottom(B
  	    gp_Pnt PC;
  	    gp_Vec VC;
  	    C.D1(u,PC,VC);
@@ -83,7 +93,7 @@ Index: oce/src/BRepLib/BRepLib_FindSurface.cxx
 ===================================================================
 --- oce.orig/src/BRepLib/BRepLib_FindSurface.cxx
 +++ oce/src/BRepLib/BRepLib_FindSurface.cxx
-@@ -204,7 +204,7 @@ void BRepLib_FindSurface::Init(const Top
+@@ -199,7 +199,7 @@ void BRepLib_FindSurface::Init(const Top
  
    TopoDS_Edge E = TopoDS::Edge(ex.Current());
    Standard_Real f,l,ff,ll;
@@ -92,8 +102,8 @@ Index: oce/src/BRepLib/BRepLib_FindSurface.cxx
    Handle(Geom_Surface) SS;
    TopLoc_Location L;
    Standard_Integer i = 0,j;
-@@ -223,7 +223,7 @@ void BRepLib_FindSurface::Init(const Top
- 	while (Standard_True) {
+@@ -218,7 +218,7 @@ void BRepLib_FindSurface::Init(const Top
+ 	for(;;) {
  	  j++;
  	  BRep_Tool::CurveOnSurface(TopoDS::Edge(ex.Current()),
 -				    PPC,SS,L,ff,ll,j);
@@ -105,7 +115,7 @@ Index: oce/src/Bisector/Bisector_BisecPC.cxx
 ===================================================================
 --- oce.orig/src/Bisector/Bisector_BisecPC.cxx
 +++ oce/src/Bisector/Bisector_BisecPC.cxx
-@@ -386,11 +386,11 @@ void Bisector_BisecPC::Values(const Stan
+@@ -381,11 +381,11 @@ void Bisector_BisecPC::Values(const Stan
    case 2 :  {curve->D3(UOnCurve,PC,Tu,Tuu,T3u);break;}
    }
    
@@ -120,7 +130,7 @@ Index: oce/src/Bisector/Bisector_BisecPC.cxx
    Standard_Real A1;
  
    if (Abs(NorPPC) > gp::Resolution() && (NorPPC*sign) < 0.) {
-@@ -402,8 +402,8 @@ void Bisector_BisecPC::Values(const Stan
+@@ -397,8 +397,8 @@ void Bisector_BisecPC::Values(const Stan
    if (N == 0) return;                                 // End Calculation Point;
  
    gp_Vec2d      Nu ( - Tuu.Y() , Tuu.X());            // derivative of the normal by U.
@@ -131,7 +141,7 @@ Index: oce/src/Bisector/Bisector_BisecPC.cxx
    Standard_Real NorPPCE2  = NorPPC*NorPPC;
    Standard_Real A2        = TuPPC/NorPPC - 0.5*NuPPC*SquarePPC/NorPPCE2;
  
-@@ -415,8 +415,8 @@ void Bisector_BisecPC::Values(const Stan
+@@ -410,8 +410,8 @@ void Bisector_BisecPC::Values(const Stan
    gp_Vec2d Nuu ( - T3u.Y() , T3u.X());
    
    Standard_Real NorPPCE4 = NorPPCE2*NorPPCE2;
@@ -142,7 +152,7 @@ Index: oce/src/Bisector/Bisector_BisecPC.cxx
    
    Standard_Real A21 = TuuPPC/NorPPC - TuPPC*NuPPC/NorPPCE2;
    Standard_Real A22 = (0.5*NuuPPC*SquarePPC + NuPPC*TuPPC)/NorPPCE2 - 
-@@ -470,12 +470,12 @@ Standard_Real Bisector_BisecPC::Distance
+@@ -465,12 +465,12 @@ Standard_Real Bisector_BisecPC::Distance
    Standard_Real UOnCurve = LinkBisCurve(U);
    
    curve->D1(UOnCurve,PC,Tan);
@@ -158,11 +168,48 @@ Index: oce/src/Bisector/Bisector_BisecPC.cxx
    
    if (point.IsEqual(PC,Precision::Confusion())) {
      if (isConvex) { return 0.;}
+Index: oce/src/Plate/Plate_LinearScalarConstraint.cdl
+===================================================================
+--- oce.orig/src/Plate/Plate_LinearScalarConstraint.cdl
++++ oce/src/Plate/Plate_LinearScalarConstraint.cdl
+@@ -39,18 +39,18 @@ is
+     Create  (PPC1  :  PinpointConstraint; coeff  :  XYZ ) 
+            returns LinearScalarConstraint; 
+ 
+-    Create  (PPC  :  Array1OfPinpointConstraint; coeff  :  Array1OfXYZ ) 
++    Create  (ppc  :  Array1OfPinpointConstraint; coeff  :  Array1OfXYZ ) 
+            returns LinearScalarConstraint
+ 	   raises DimensionMismatch from Standard;
+-    -- PPC and coeff have to be of the same length
++    -- ppc and coeff have to be of the same length
+ 
+-    Create  (PPC  :  Array1OfPinpointConstraint; coeff  :  Array2OfXYZ )
++    Create  (ppc  :  Array1OfPinpointConstraint; coeff  :  Array2OfXYZ )
+            returns LinearScalarConstraint
+ 	   raises DimensionMismatch from Standard;
+-    --  the length of PPC  have to be the  Row lentgth of  coeff
++    --  the length of ppc  have to be the  Row lentgth of  coeff
+ 
+     Create  (ColLen,RowLen  :  Integer ) 
+-    -- initialize with 0 valued PPC and Coeffs
++    -- initialize with 0 valued ppc and Coeffs
+            returns LinearScalarConstraint;
+ 
+     -- Accessors :
+@@ -67,7 +67,7 @@ is
+     	Value: PinpointConstraint) 
+     	---Purpose:  Sets   the PinPointConstraint of   index Index to
+     	--          Value raise if Index is greater than the length of
+-    	--          PPC or the Row length of coeff or lower  than 1
++    	--          ppc or the Row length of coeff or lower  than 1
+     	raises OutOfRange from Standard;
+ 
+     SetCoeff (me : in out;  
 Index: oce/src/Plate/Plate_LinearScalarConstraint.cxx
 ===================================================================
 --- oce.orig/src/Plate/Plate_LinearScalarConstraint.cxx
 +++ oce/src/Plate/Plate_LinearScalarConstraint.cxx
-@@ -37,26 +37,26 @@ Plate_LinearScalarConstraint::Plate_Line
+@@ -31,26 +31,26 @@ Plate_LinearScalarConstraint::Plate_Line
    myCoef->ChangeValue(1,1) = coeff;
  }
  
@@ -197,11 +244,48 @@ Index: oce/src/Plate/Plate_LinearScalarConstraint.cxx
    myCoef->ChangeArray2() = coeff;
  }
  
+Index: oce/src/Plate/Plate_LinearXYZConstraint.cdl
+===================================================================
+--- oce.orig/src/Plate/Plate_LinearXYZConstraint.cdl
++++ oce/src/Plate/Plate_LinearXYZConstraint.cdl
+@@ -36,18 +36,18 @@ raises
+ is
+     Create returns LinearXYZConstraint; 
+     
+-    Create  (PPC  :  Array1OfPinpointConstraint; coeff  :  Array1OfReal )
++    Create  (ppc  :  Array1OfPinpointConstraint; coeff  :  Array1OfReal )
+            returns LinearXYZConstraint 
+ 	   raises DimensionMismatch from Standard;
+-    --  the length of PPC  have to be the  Row lentgth of  coeff
++    --  the length of ppc  have to be the  Row lentgth of  coeff
+     --  
+-    Create  (PPC  :  Array1OfPinpointConstraint; coeff  :  Array2OfReal )
++    Create  (ppc  :  Array1OfPinpointConstraint; coeff  :  Array2OfReal )
+            returns LinearXYZConstraint 
+ 	   raises DimensionMismatch from Standard;
+-    --  the length of PPC  have to be the  Row lentgth of  coeff
++    --  the length of ppc  have to be the  Row lentgth of  coeff
+ 
+     Create  (ColLen,RowLen  :  Integer ) 
+-    -- initialize with 0 valued PPC and Coeffs
++    -- initialize with 0 valued ppc and Coeffs
+            returns LinearXYZConstraint;
+ 
+      -- Accessors :
+@@ -64,7 +64,7 @@ is
+     	Value: PinpointConstraint) 
+     	---Purpose:  Sets   the PinPointConstraint of   index Index to
+     	--          Value raise if Index is greater than the length of
+-    	--          PPC or the Row length of coeff or lower  than 1
++    	--          ppc or the Row length of coeff or lower  than 1
+     	raises OutOfRange from Standard;
+ 
+     SetCoeff (me : in out;  
 Index: oce/src/Plate/Plate_LinearXYZConstraint.cxx
 ===================================================================
 --- oce.orig/src/Plate/Plate_LinearXYZConstraint.cxx
 +++ oce/src/Plate/Plate_LinearXYZConstraint.cxx
-@@ -25,24 +25,24 @@
+@@ -19,24 +19,24 @@
  
  Plate_LinearXYZConstraint::Plate_LinearXYZConstraint() {}
  
