@@ -15,6 +15,45 @@ Note: this commit breaks API compatibility
  src/TCollection/TCollection_ExtendedString.cxx |    2 +-
  4 files changed, 4 insertions(+), 4 deletions(-)
 
+Index: oce/inc/BRepLib_FuseEdges.hxx
+===================================================================
+--- oce.orig/inc/BRepLib_FuseEdges.hxx
++++ oce/inc/BRepLib_FuseEdges.hxx
+@@ -96,7 +96,7 @@ public:
+ //!          edges removed from it. <br>
+   Standard_EXPORT     TopoDS_Shape& Shape() ;
+   //! returns the number of vertices candidate to be removed <br>
+-  Standard_EXPORT    const Standard_Integer NbVertices() ;
++  Standard_EXPORT    Standard_Integer NbVertices() ;
+   //! Using  map of list of connex  edges, fuse each list to <br>
+ //!           one edge and then update myShape <br>
+   Standard_EXPORT     void Perform() ;
+Index: oce/inc/FSD_BinaryFile.hxx
+===================================================================
+--- oce.orig/inc/FSD_BinaryFile.hxx
++++ oce/inc/FSD_BinaryFile.hxx
+@@ -299,7 +299,7 @@ private:
+   
+   Standard_EXPORT     void ReadHeader() ;
+   
+-  Standard_EXPORT   static const Standard_CString MagicNumber() ;
++  Standard_EXPORT   static Standard_CString MagicNumber() ;
+ 
+ 
+ FSD_BStream myStream;
+Index: oce/inc/FSD_CmpFile.hxx
+===================================================================
+--- oce.orig/inc/FSD_CmpFile.hxx
++++ oce/inc/FSD_CmpFile.hxx
+@@ -302,7 +302,7 @@ protected:
+ private:
+ 
+   
+-  Standard_EXPORT   static const Standard_CString MagicNumber() ;
++  Standard_EXPORT   static Standard_CString MagicNumber() ;
+   
+   Standard_EXPORT     void RaiseError(const Handle(Standard_Type)& theFailure) ;
+ 
 Index: oce/inc/FSD_File.hxx
 ===================================================================
 --- oce.orig/inc/FSD_File.hxx
@@ -28,6 +67,32 @@ Index: oce/inc/FSD_File.hxx
  
  
  FSD_FStream myStream;
+Index: oce/inc/IGESData_ParamReader.hxx
+===================================================================
+--- oce.orig/inc/IGESData_ParamReader.hxx
++++ oce/inc/IGESData_ParamReader.hxx
+@@ -137,7 +137,7 @@ public:
+ //!           be encountered, they correspond to "Integer", see also below <br>
+   Standard_EXPORT     Interface_ParamType ParamType(const Standard_Integer num) const;
+   //! returns litteral value of a parameter, as it was in file <br>
+-  Standard_EXPORT    const Standard_CString ParamValue(const Standard_Integer num) const;
++  Standard_EXPORT    Standard_CString ParamValue(const Standard_Integer num) const;
+   //! says if a parameter is defined (not void) <br>
+ //!           See also DefinedElseSkip <br>
+   Standard_EXPORT     Standard_Boolean IsParamDefined(const Standard_Integer num) const;
+Index: oce/inc/STEPConstruct_ExternRefs.hxx
+===================================================================
+--- oce.orig/inc/STEPConstruct_ExternRefs.hxx
++++ oce/inc/STEPConstruct_ExternRefs.hxx
+@@ -104,7 +104,7 @@ public:
+   Standard_EXPORT     Standard_Integer NbExternRefs() const;
+   //! Returns filename for numth extern reference <br>
+ //!          Returns Null if FileName is not defined or bad <br>
+-  Standard_EXPORT    const Standard_CString FileName(const Standard_Integer num) const;
++  Standard_EXPORT    Standard_CString FileName(const Standard_Integer num) const;
+   //! Returns ProductDefinition to which numth extern reference <br>
+ //!          is associated. <br>
+ //!          Returns Null if cannot be detected or if extern reference <br>
 Index: oce/inc/TCollection_ExtendedString.hxx
 ===================================================================
 --- oce.orig/inc/TCollection_ExtendedString.hxx
@@ -41,11 +106,177 @@ Index: oce/inc/TCollection_ExtendedString.hxx
    //! Truncates <me> to <ahowmany> characters. <br>
  //! Example:  me = "Hello Dolly" -> Trunc(3) -> me = "Hel" <br>
  //!   Exceptions <br>
+Index: oce/inc/TCollection_HExtendedString.hxx
+===================================================================
+--- oce.orig/inc/TCollection_HExtendedString.hxx
++++ oce/inc/TCollection_HExtendedString.hxx
+@@ -147,7 +147,7 @@ public:
+ //! It returns -1 if not found. <br>
+   Standard_EXPORT     Standard_Integer SearchFromEnd(const Handle(TCollection_HExtendedString)& what) const;
+   //! Returns pointer to ExtString <br>
+-  Standard_EXPORT    const Standard_ExtString ToExtString() const;
++  Standard_EXPORT    Standard_ExtString ToExtString() const;
+   //! Extracts <whichone> token from <me>. <br>
+ //! By default, the <separators> is set to space and tabulation. <br>
+ //! By default, the token extracted is the first one (whichone = 1). <br>
+Index: oce/inc/TNaming_Name.hxx
+===================================================================
+--- oce.orig/inc/TNaming_Name.hxx
++++ oce/inc/TNaming_Name.hxx
+@@ -93,7 +93,7 @@ public:
+   
+   Standard_EXPORT    const TDF_Label& ContextLabel() const;
+   
+-       const TopAbs_Orientation Orientation() const;
++       TopAbs_Orientation Orientation() const;
+   
+   Standard_EXPORT     Standard_Boolean Solve(const TDF_Label& aLab,const TDF_LabelMap& Valid) const;
+   
+Index: oce/src/AIS/AIS_Dimension.cxx
+===================================================================
+--- oce.orig/src/AIS/AIS_Dimension.cxx
++++ oce/src/AIS/AIS_Dimension.cxx
+@@ -138,7 +138,7 @@ const gp_Pln& AIS_Dimension::GetPlane()
+ //function : GetGeometryType
+ //purpose  : 
+ //=======================================================================
+-const Standard_Integer AIS_Dimension::GetGeometryType () const
++Standard_Integer AIS_Dimension::GetGeometryType () const
+ {
+   return myGeometryType;
+ }
+Index: oce/src/AIS/AIS_Dimension.hxx
+===================================================================
+--- oce.orig/src/AIS/AIS_Dimension.hxx
++++ oce/src/AIS/AIS_Dimension.hxx
+@@ -221,7 +221,7 @@ public:
+ 
+   //! Geometry type defines type of shapes on which the dimension is to be built. 
+   //! @return type of geometry on which the dimension will be built.
+-  Standard_EXPORT const Standard_Integer GetGeometryType () const;
++  Standard_EXPORT Standard_Integer GetGeometryType () const;
+ 
+   //! Sets user-defined plane where the 2D dimension presentation will be placed.
+   //! Checks validity of this plane if geometry has been set already.
+Index: oce/src/BRepLib/BRepLib_FuseEdges.cdl
+===================================================================
+--- oce.orig/src/BRepLib/BRepLib_FuseEdges.cdl
++++ oce/src/BRepLib/BRepLib_FuseEdges.cdl
+@@ -86,7 +86,6 @@ is
+     returns Integer from Standard
+     raises NullObject        from Standard;
+     	---Purpose: returns the number of vertices candidate to be removed
+-    	---C++: return const
+ 
+     Perform (me : in out);
+     ---Purpose: Using  map of list of connex  edges, fuse each list to
+Index: oce/src/BRepLib/BRepLib_FuseEdges.cxx
+===================================================================
+--- oce.orig/src/BRepLib/BRepLib_FuseEdges.cxx
++++ oce/src/BRepLib/BRepLib_FuseEdges.cxx
+@@ -314,7 +314,7 @@ void BRepLib_FuseEdges::Faces(TopTools_D
+ //purpose  : 
+ //=======================================================================
+ 
+-const Standard_Integer BRepLib_FuseEdges::NbVertices()
++Standard_Integer BRepLib_FuseEdges::NbVertices()
+ {
+ 
+   Standard_NullObject_Raise_if(myShape.IsNull(),"FuseEdges : No Shape");
+Index: oce/src/BRepMesh/BRepMesh_VertexInspector.hxx
+===================================================================
+--- oce.orig/src/BRepMesh/BRepMesh_VertexInspector.hxx
++++ oce/src/BRepMesh/BRepMesh_VertexInspector.hxx
+@@ -108,7 +108,7 @@ public:
+   }
+ 
+   //!Get result index of node
+-  const Standard_Integer GetCoincidentInd() const
++  Standard_Integer GetCoincidentInd() const
+   {
+     if ( myResInd.Size() > 0 )
+     {
+Index: oce/src/DDF/DDF_IOStream.cxx
+===================================================================
+--- oce.orig/src/DDF/DDF_IOStream.cxx
++++ oce/src/DDF/DDF_IOStream.cxx
+@@ -162,7 +162,7 @@ Storage_Error DDF_IOStream::Close()
+ //purpose  : 
+ //=======================================================================
+ 
+-const Standard_CString DDF_IOStream::MagicNumber()
++Standard_CString DDF_IOStream::MagicNumber()
+ { return MAGICNUMBER; }
+ 
+ //=======================================================================
+Index: oce/src/DDF/DDF_IOStream.hxx
+===================================================================
+--- oce.orig/src/DDF/DDF_IOStream.hxx
++++ oce/src/DDF/DDF_IOStream.hxx
+@@ -248,7 +248,7 @@ private:
+ 
+  // Methods PRIVATE
+  // 
+-static const Standard_CString MagicNumber() ;
++static Standard_CString MagicNumber() ;
+ 
+ 
+  // Fields PRIVATE
+Index: oce/src/FSD/FSD_BinaryFile.cdl
+===================================================================
+--- oce.orig/src/FSD/FSD_BinaryFile.cdl
++++ oce/src/FSD/FSD_BinaryFile.cdl
+@@ -299,7 +299,6 @@ is
+     
+     MagicNumber(myclass)
+     	returns CString from Standard is private;
+-    ---C++: return const
+  
+     ReadChar(me : in out; buffer : in out AsciiString from TCollection; rsize : Size from Standard) is protected;
+     ---Purpose: read <rsize> character from the current position.    
+Index: oce/src/FSD/FSD_BinaryFile.cxx
+===================================================================
+--- oce.orig/src/FSD/FSD_BinaryFile.cxx
++++ oce/src/FSD/FSD_BinaryFile.cxx
+@@ -140,7 +140,7 @@ Storage_Error FSD_BinaryFile::Close()
+ //purpose  : ------------------ PROTECTED
+ //=======================================================================
+ 
+-const Standard_CString FSD_BinaryFile::MagicNumber()
++Standard_CString FSD_BinaryFile::MagicNumber()
+ {
+   return MAGICNUMBER;
+ }
+Index: oce/src/FSD/FSD_CmpFile.cxx
+===================================================================
+--- oce.orig/src/FSD/FSD_CmpFile.cxx
++++ oce/src/FSD/FSD_CmpFile.cxx
+@@ -159,7 +159,7 @@ Storage_Error FSD_CmpFile::Close()
+ //purpose  : ------------------ PROTECTED
+ //=======================================================================
+ 
+-const Standard_CString FSD_CmpFile::MagicNumber()
++Standard_CString FSD_CmpFile::MagicNumber()
+ {
+   return MAGICNUMBER;
+ }
+Index: oce/src/FSD/FSD_File.cdl
+===================================================================
+--- oce.orig/src/FSD/FSD_File.cdl
++++ oce/src/FSD/FSD_File.cdl
+@@ -335,7 +335,6 @@ is
+ 
+     MagicNumber(myclass)
+     	returns CString from Standard is private;
+-    ---C++: return const
+     
+     fields
+     
 Index: oce/src/FSD/FSD_File.cxx
 ===================================================================
 --- oce.orig/src/FSD/FSD_File.cxx
 +++ oce/src/FSD/FSD_File.cxx
-@@ -137,7 +137,7 @@ Storage_Error FSD_File::Close()
+@@ -133,7 +133,7 @@ Storage_Error FSD_File::Close()
  //purpose  : ------------------ PROTECTED
  //=======================================================================
  
@@ -54,11 +285,151 @@ Index: oce/src/FSD/FSD_File.cxx
  {
    return MAGICNUMBER;
  }
+Index: oce/src/IGESData/IGESData_ParamReader.cdl
+===================================================================
+--- oce.orig/src/IGESData/IGESData_ParamReader.cdl
++++ oce/src/IGESData/IGESData_ParamReader.cdl
+@@ -94,7 +94,6 @@ is
+ 
+     ParamValue (me; num : Integer) returns CString;
+     ---Purpose : returns litteral value of a parameter, as it was in file
+-    ---C++ : return const
+ 
+        	-- --   Adapted Helps for Reading   -- --
+ 
+Index: oce/src/IGESData/IGESData_ParamReader.cxx
+===================================================================
+--- oce.orig/src/IGESData/IGESData_ParamReader.cxx
++++ oce/src/IGESData/IGESData_ParamReader.cxx
+@@ -162,7 +162,7 @@ Interface_ParamType IGESData_ParamReader
+ //purpose  : 
+ //=======================================================================
+ 
+-const Standard_CString IGESData_ParamReader::ParamValue
++Standard_CString IGESData_ParamReader::ParamValue
+   (const Standard_Integer num) const
+ {
+   return theparams->Value(num+thebase).CValue();
+Index: oce/src/OpenGl/OpenGl_AspectFace.hxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_AspectFace.hxx
++++ oce/src/OpenGl/OpenGl_AspectFace.hxx
+@@ -72,7 +72,7 @@ public:
+   }
+ 
+   //! @return interior style
+-  const Aspect_InteriorStyle InteriorStyle() const
++  Aspect_InteriorStyle InteriorStyle() const
+   {
+     return myInteriorStyle;
+   }
+Index: oce/src/OpenGl/OpenGl_Texture.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_Texture.cxx
++++ oce/src/OpenGl/OpenGl_Texture.cxx
+@@ -74,7 +74,7 @@ OpenGl_Texture::~OpenGl_Texture()
+ // function : HasMipmaps
+ // purpose  :
+ // =======================================================================
+-const Standard_Boolean OpenGl_Texture::HasMipmaps() const
++Standard_Boolean OpenGl_Texture::HasMipmaps() const
+ {
+   return myHasMipmaps;
+ }
+Index: oce/src/OpenGl/OpenGl_Texture.hxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_Texture.hxx
++++ oce/src/OpenGl/OpenGl_Texture.hxx
+@@ -99,7 +99,7 @@ public:
+                              const Graphic3d_TypeOfTexture theType);
+ 
+   //! @return true if texture was generated within mipmaps
+-  Standard_EXPORT const Standard_Boolean HasMipmaps() const;
++  Standard_EXPORT Standard_Boolean HasMipmaps() const;
+ 
+   //! @return assigned texture parameters (not necessary applied)
+   Standard_EXPORT const Handle(Graphic3d_TextureParams)& GetParams() const;
+Index: oce/src/OpenGl/OpenGl_Workspace.hxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_Workspace.hxx
++++ oce/src/OpenGl/OpenGl_Workspace.hxx
+@@ -179,7 +179,7 @@ public:
+ 
+   //! Updates current model-view matrix
+   //! replacing it with StructureMatrixT*ViewMatrix from the workspace.
+-  const void UpdateModelViewMatrix();
++  void UpdateModelViewMatrix();
+ 
+   const OpenGl_AspectLine*   SetAspectLine   (const OpenGl_AspectLine*   theAspect);
+   const OpenGl_AspectFace*   SetAspectFace   (const OpenGl_AspectFace*   theAspect);
+Index: oce/src/OpenGl/OpenGl_Workspace_5.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_Workspace_5.cxx
++++ oce/src/OpenGl/OpenGl_Workspace_5.cxx
+@@ -279,7 +279,7 @@ const OpenGl_Matrix * OpenGl_Workspace::
+ 
+ /*----------------------------------------------------------------------*/
+ 
+-const void OpenGl_Workspace::UpdateModelViewMatrix()
++void OpenGl_Workspace::UpdateModelViewMatrix()
+ {
+   OpenGl_Matrix aStructureMatT;
+   OpenGl_Transposemat3( &aStructureMatT, StructureMatrix_applied);
+Index: oce/src/STEPConstruct/STEPConstruct_ExternRefs.cdl
+===================================================================
+--- oce.orig/src/STEPConstruct/STEPConstruct_ExternRefs.cdl
++++ oce/src/STEPConstruct/STEPConstruct_ExternRefs.cdl
+@@ -64,7 +64,6 @@ is
+     FileName (me; num: Integer) returns CString;
+     	---Purpose: Returns filename for numth extern reference
+ 	--          Returns Null if FileName is not defined or bad
+-	---C++: return const
+     
+     ProdDef (me; num: Integer) returns ProductDefinition from StepBasic;
+     	---Purpose: Returns ProductDefinition to which numth extern reference
+Index: oce/src/STEPConstruct/STEPConstruct_ExternRefs.cxx
+===================================================================
+--- oce.orig/src/STEPConstruct/STEPConstruct_ExternRefs.cxx
++++ oce/src/STEPConstruct/STEPConstruct_ExternRefs.cxx
+@@ -321,7 +321,7 @@ Standard_Integer STEPConstruct_ExternRef
+ //purpose  : 
+ //=======================================================================
+ 
+-const Standard_CString STEPConstruct_ExternRefs::FileName (const Standard_Integer num) const
++Standard_CString STEPConstruct_ExternRefs::FileName (const Standard_Integer num) const
+ {
+   Handle(StepBasic_DocumentFile) DocFile;
+   Handle(StepAP214_AppliedExternalIdentificationAssignment) AEIA;
+Index: oce/src/Select3D/Select3D_PointData.hxx
+===================================================================
+--- oce.orig/src/Select3D/Select3D_PointData.hxx
++++ oce/src/Select3D/Select3D_PointData.hxx
+@@ -100,7 +100,7 @@ public:
+   }
+ 
+   // Returns size of internal arrays
+-  const Standard_Integer Size () const
++  Standard_Integer Size () const
+   {
+     return mynbpoints;
+   }
+Index: oce/src/TCollection/TCollection_ExtendedString.cdl
+===================================================================
+--- oce.orig/src/TCollection/TCollection_ExtendedString.cdl
++++ oce/src/TCollection/TCollection_ExtendedString.cdl
+@@ -307,7 +307,6 @@ is
+    ToExtString(me) returns ExtString
+    ---Level: Public
+    ---Purpose: Returns pointer to ExtString
+-   ---C++: return const
+    is static;
+ 
+    Trunc (me : out ; ahowmany  : Integer)
 Index: oce/src/TCollection/TCollection_ExtendedString.cxx
 ===================================================================
 --- oce.orig/src/TCollection/TCollection_ExtendedString.cxx
 +++ oce/src/TCollection/TCollection_ExtendedString.cxx
-@@ -975,7 +975,7 @@ TCollection_ExtendedString TCollection_E
+@@ -767,7 +767,7 @@ TCollection_ExtendedString TCollection_E
  // ----------------------------------------------------------------------------
  // ToExtString
  // ----------------------------------------------------------------------------
@@ -67,3 +438,53 @@ Index: oce/src/TCollection/TCollection_ExtendedString.cxx
  {
    if(mystring) return mystring;
    return NULL_EXTSTRING;
+Index: oce/src/TCollection/TCollection_HExtendedString.cdl
+===================================================================
+--- oce.orig/src/TCollection/TCollection_HExtendedString.cdl
++++ oce/src/TCollection/TCollection_HExtendedString.cdl
+@@ -173,7 +173,6 @@ is
+  ToExtString(me) returns ExtString;
+    ---Level: Public
+    ---Purpose: Returns pointer to ExtString
+-   ---C++: return const
+ 
+  Token (me ; separators : ExtString; whichone : Integer=1) 
+  returns mutable HExtendedString from TCollection
+Index: oce/src/TCollection/TCollection_HExtendedString.cxx
+===================================================================
+--- oce.orig/src/TCollection/TCollection_HExtendedString.cxx
++++ oce/src/TCollection/TCollection_HExtendedString.cxx
+@@ -250,7 +250,7 @@ Handle(TCollection_HExtendedString) TCol
+ // ----------------------------------------------------------------------------
+ // ToExtString
+ // ----------------------------------------------------------------------------
+-const Standard_ExtString TCollection_HExtendedString::ToExtString() const
++Standard_ExtString TCollection_HExtendedString::ToExtString() const
+ { 
+    return (myString.ToExtString());
+ }
+Index: oce/src/TNaming/TNaming_Name.cdl
+===================================================================
+--- oce.orig/src/TNaming/TNaming_Name.cdl
++++ oce/src/TNaming/TNaming_Name.cdl
+@@ -77,7 +77,6 @@ is
+ 
+     Orientation    (me) returns Orientation from TopAbs;
+     ---C++: inline
+-    ---C++: return const
+     
+ 
+     ---Category: Resolution
+Index: oce/src/TNaming/TNaming_Name.lxx
+===================================================================
+--- oce.orig/src/TNaming/TNaming_Name.lxx
++++ oce/src/TNaming/TNaming_Name.lxx
+@@ -20,7 +20,7 @@
+ //purpose  : Get
+ //=======================================================================
+ 
+-inline const TopAbs_Orientation TNaming_Name::Orientation() const
++inline TopAbs_Orientation TNaming_Name::Orientation() const
+ { 
+   return myOrientation;
+ }

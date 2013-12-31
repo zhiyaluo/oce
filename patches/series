@@ -1,4 +1,5 @@
 remove-duplicate-headers.patch
+remove-Image_PixelAddress.cxx.patch
 
 # See if the new OpenGL stuff needs it # submitted/OCC22332/fix-layer-line.patch
 # May have been fixed upstream         # submitted/OCC22749/fix-hashcode.patch
@@ -67,6 +68,8 @@ warning/undefined-macro.patch
 warning/fix-delete-void-pointer.patch
 warning/fix-switch-condition-boolean.patch
 warning/fix-condition-always-true.patch
+warning/remove-extra-semicolon.patch
+warning/fix-declared-but-never-defined.patch
 
 improve-exception-message.patch
 
@@ -97,6 +100,7 @@ ports/borland12.patch
 ports/borland13.patch
 ports/workaround-gcc42-bug-gpMat.patch
 ports/rename-glext.h.patch
+ports/fix-prototype-debugCallbackWrap.patch
 ports/mingw64-intptr_t-fixes.patch
 
 ports/osx.patch

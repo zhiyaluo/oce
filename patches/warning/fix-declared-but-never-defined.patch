@@ -1,0 +1,31 @@
+From fba7592f723e50eb089c85fd53001a24137c9fbd Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Tue, 31 Dec 2013 12:59:05 +0100
+Subject: [PATCH] [warning-fix][declared-but-never-defined]
+
+---
+ src/ProjLib/ProjLib_ComputeApprox.cxx | 8 --------
+ 1 file changed, 8 deletions(-)
+
+diff --git a/src/ProjLib/ProjLib_ComputeApprox.cxx b/src/ProjLib/ProjLib_ComputeApprox.cxx
+index 41566c4..04e24ee 100644
+--- a/src/ProjLib/ProjLib_ComputeApprox.cxx
++++ b/src/ProjLib/ProjLib_ComputeApprox.cxx
+@@ -52,14 +52,6 @@
+ static Standard_Boolean AffichValue = Standard_False;
+ #endif    
+ 
+-static 
+-  void Parameters(const Handle(Adaptor3d_HCurve)&   myCurve,
+-		  const Handle(Adaptor3d_HSurface)& mySurface,
+-		  const gp_Pnt& aP1, 
+-		  const Standard_Integer iFirst,
+-		  const Standard_Real aTolU, 
+-		  Standard_Real& aU, 
+-		  Standard_Real& aV);
+ 
+ //=======================================================================
+ //function : IsEqual
+-- 
+1.8.5.2
+

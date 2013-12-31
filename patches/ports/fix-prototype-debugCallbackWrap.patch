@@ -1,0 +1,32 @@
+From 3d24a95abacab91b9971fa2bddd7d2d7ac5fc067 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Mon, 30 Dec 2013 20:57:28 +0100
+Subject: [PATCH] Fix prototype of debugCallbackWrap
+
+Declaration in src/OpenGl/OpenGl_glext.h is:
+
+  typedef void (APIENTRY *GLDEBUGPROCARB)(GLenum source,GLenum type,GLuint id,GLenum severity,GLsizei length,const GLchar *message,GLvoid *userParam);
+
+OCCT 6.7.0 ships an updated version of glext.h, which has a different
+signature (with respect to the last argument).  So maybe this change
+will be reverted if glext.h is updated.
+---
+ src/OpenGl/OpenGl_Context.cxx | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/OpenGl/OpenGl_Context.cxx b/src/OpenGl/OpenGl_Context.cxx
+index 5a6ab31..5e3b108 100644
+--- a/src/OpenGl/OpenGl_Context.cxx
++++ b/src/OpenGl/OpenGl_Context.cxx
+@@ -592,7 +592,7 @@ static void APIENTRY debugCallbackWrap(unsigned int theSource,
+                                        unsigned int theSeverity,
+                                        int          /*theLength*/,
+                                        const char*  theMessage,
+-                                       const void*  theUserParam)
++                                       void*  theUserParam)
+ {
+   OpenGl_Context* aCtx = (OpenGl_Context* )theUserParam;
+   aCtx->PushMessage (theSource, theType, theId, theSeverity, theMessage);
+-- 
+1.8.5.2
+

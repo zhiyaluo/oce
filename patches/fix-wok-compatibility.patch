@@ -11,19 +11,6 @@ Subject: [PATCH] Modifications needed for correct building of oce under WOK
  src/TopOpeBRep/FILES                           |    1 -
  5 files changed, 3 insertions(+), 5 deletions(-)
 
-Index: oce/src/FSD/FSD_File.cdl
-===================================================================
---- oce.orig/src/FSD/FSD_File.cdl
-+++ oce/src/FSD/FSD_File.cdl
-@@ -340,7 +340,7 @@ is
- 
-     MagicNumber(myclass)
-     	returns CString from Standard is private;
--    ---C++: return const
-+--    ---C++: return const
-     
-     fields
-     
 Index: oce/src/MeshVS/FILES
 ===================================================================
 --- oce.orig/src/MeshVS/FILES
@@ -36,19 +23,6 @@ Index: oce/src/MeshVS/FILES
  MeshVS_TwoColors.hxx
  MeshVS_TwoColors.cxx
  MeshVS_TwoNodes.hxx
-Index: oce/src/TCollection/TCollection_ExtendedString.cdl
-===================================================================
---- oce.orig/src/TCollection/TCollection_ExtendedString.cdl
-+++ oce/src/TCollection/TCollection_ExtendedString.cdl
-@@ -312,7 +312,7 @@ is
-    ToExtString(me) returns ExtString
-    ---Level: Public
-    ---Purpose: Returns pointer to ExtString
--   ---C++: return const
-+--   ---C++: return const
-    is static;
- 
-    Trunc (me : out ; ahowmany  : Integer)
 Index: oce/src/TopOpeBRep/FILES
 ===================================================================
 --- oce.orig/src/TopOpeBRep/FILES

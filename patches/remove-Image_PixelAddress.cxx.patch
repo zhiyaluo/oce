@@ -1,0 +1,43 @@
+From 308e7eb98478e50f2860353399d231a170de859a Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Mon, 30 Dec 2013 19:39:50 +0100
+Subject: [PATCH] Remove src/Image/Image_PixelAddress.cxx
+
+This file should have been removed upstream in
+ http://git.dev.opencascade.org/gitweb/?p=occt.git;a=commit;h=2361d7e
+---
+ src/Image/Image_PixelAddress.cxx | 22 ----------------------
+ 1 file changed, 22 deletions(-)
+ delete mode 100644 src/Image/Image_PixelAddress.cxx
+
+diff --git a/src/Image/Image_PixelAddress.cxx b/src/Image/Image_PixelAddress.cxx
+deleted file mode 100644
+index b6b194a..0000000
+--- a/src/Image/Image_PixelAddress.cxx
++++ /dev/null
+@@ -1,22 +0,0 @@
+-// Copyright (c) 1995-1999 Matra Datavision
+-// Copyright (c) 1999-2014 OPEN CASCADE SAS
+-//
+-// This file is part of Open CASCADE Technology software library.
+-//
+-// This library is free software; you can redistribute it and / or modify it
+-// under the terms of the GNU Lesser General Public version 2.1 as published
+-// by the Free Software Foundation, with special exception defined in the file
+-// OCCT_LGPL_EXCEPTION.txt. Consult the file LICENSE_LGPL_21.txt included in OCCT
+-// distribution for complete text of the license and disclaimer of any warranty.
+-//
+-// Alternatively, this file may be used under the terms of Open CASCADE
+-// commercial license or contractual agreement.
+-
+-#include <Image_PixelAddress.hxx>
+-
+-const Handle(Standard_Type)& STANDARD_TYPE(Image_PixelAddress)
+-{
+-  static Handle(Standard_Type) _atype = 
+-    new Standard_Type ("Image_PixelAddress", sizeof (Image_PixelAddress));
+-  return _atype;
+-}
+-- 
+1.8.5.2
+

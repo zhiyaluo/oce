@@ -1,0 +1,795 @@
+From 91e8d91d26e454dc71c641db1fe1bf3bb6b97dd7 Mon Sep 17 00:00:00 2001
+From: Denis Barbier <bouzim@gmail.com>
+Date: Tue, 31 Dec 2013 17:54:31 +0100
+Subject: [PATCH] [warning-fix][extra-semi]
+
+---
+ inc/Standard_Persistent.hxx                   |  4 +-
+ src/BOPDS/BOPDS_CoupleOfPaveBlocks.hxx        |  6 +-
+ src/BOPDS/BOPDS_Interf.hxx                    | 88 +++++++++++++--------------
+ src/LDOM/LDOM_OSStream.hxx                    |  8 +--
+ src/Message/Message_ExecStatus.hxx            | 16 ++---
+ src/NCollection/NCollection_BaseAllocator.hxx |  2 +-
+ src/NCollection/NCollection_HeapAllocator.hxx |  2 +-
+ src/NCollection/NCollection_IncAllocator.cxx  |  2 +-
+ src/NCollection/NCollection_Vec2.hxx          |  2 +-
+ src/NCollection/NCollection_Vec3.hxx          |  8 +--
+ src/NCollection/NCollection_Vec4.hxx          | 22 +++----
+ src/OSD/OSD_MAllocHook.cxx                    |  2 +-
+ src/OpenGl/OpenGl_Window.cxx                  |  2 +-
+ src/PLib/PLib.cxx                             |  2 +-
+ src/Select3D/Select3D_PointData.hxx           |  2 +-
+ src/Standard/Standard_CLocaleSentry.cxx       |  2 +-
+ src/Standard/Standard_Persistent_proto.hxx    |  4 +-
+ src/TDF/TDF_LabelNode.hxx                     | 30 ++++-----
+ 18 files changed, 102 insertions(+), 102 deletions(-)
+
+diff --git a/inc/Standard_Persistent.hxx b/inc/Standard_Persistent.hxx
+index f9ff23e..1867e72 100644
+--- a/inc/Standard_Persistent.hxx
++++ b/inc/Standard_Persistent.hxx
+@@ -55,8 +55,8 @@ public:
+   Standard_EXPORT virtual ~Standard_Persistent();
+   
+   Standard_EXPORT Standard_Persistent& operator= (const Standard_Persistent&);
+-                  Standard_Persistent() : count(0),_typenum(0),_refnum(0) {};
+-                  Standard_Persistent(const Standard_Persistent&) : count(0),_typenum(0),_refnum(0) {};
++                  Standard_Persistent() : count(0),_typenum(0),_refnum(0) {}
++                  Standard_Persistent(const Standard_Persistent&) : count(0),_typenum(0),_refnum(0) {}
+                   Standard_Persistent(const Storage_stCONSTclCOM&) : count(0),_typenum(0),_refnum(0) {}
+ 
+   Standard_EXPORT virtual const Handle_Standard_Type& DynamicType() const;
+diff --git a/src/BOPDS/BOPDS_CoupleOfPaveBlocks.hxx b/src/BOPDS/BOPDS_CoupleOfPaveBlocks.hxx
+index 6bd06d4..e23c225 100644
+--- a/src/BOPDS/BOPDS_CoupleOfPaveBlocks.hxx
++++ b/src/BOPDS/BOPDS_CoupleOfPaveBlocks.hxx
+@@ -35,7 +35,7 @@ class BOPDS_CoupleOfPaveBlocks {
+   BOPDS_CoupleOfPaveBlocks() {
+     myIndex=-1;
+     myIndexInterf=-1;
+-  };
++  }
+   //
+   /**
+    * Constructor
+@@ -49,13 +49,13 @@ class BOPDS_CoupleOfPaveBlocks {
+     myIndex=-1;
+     myIndexInterf=-1;
+     SetPaveBlocks(thePB1, thePB2);
+-  };
++  }
+   //
+   /**
+    * Destructor
+    */
+   ~BOPDS_CoupleOfPaveBlocks() {
+-  };
++  }
+   //
+   /**
+    * Sets an index
+diff --git a/src/BOPDS/BOPDS_Interf.hxx b/src/BOPDS/BOPDS_Interf.hxx
+index 0cffa41..38b0d34 100644
+--- a/src/BOPDS/BOPDS_Interf.hxx
++++ b/src/BOPDS/BOPDS_Interf.hxx
+@@ -57,7 +57,7 @@ class BOPDS_Interf  {
+ 		  const Standard_Integer theIndex2) {
+     myIndex1=theIndex1; 
+     myIndex2=theIndex2; 
+-  }; 
++  }
+   //
+   /**
+    * Returns the indices of interferred shapes
+@@ -70,7 +70,7 @@ class BOPDS_Interf  {
+ 	       Standard_Integer& theIndex2) const {
+ 		 theIndex1=myIndex1; 
+ 		 theIndex2=myIndex2; 
+-	       };
++	       }
+   //
+   /**
+    * Sets the index of the first interferred shape
+@@ -79,7 +79,7 @@ class BOPDS_Interf  {
+    */
+   void SetIndex1(const Standard_Integer theIndex) {
+     myIndex1=theIndex; 
+-  };
++  }
+   //
+   /**
+    * Sets the index of the second interferred shape
+@@ -88,7 +88,7 @@ class BOPDS_Interf  {
+    */
+   void SetIndex2(const Standard_Integer theIndex) {
+     myIndex2=theIndex;
+-  };
++  }
+   //
+   /**
+    * Returns the index of the first interferred shape
+@@ -97,7 +97,7 @@ class BOPDS_Interf  {
+    */
+   Standard_Integer Index1() const {
+     return myIndex1; 
+-  };
++  }
+   //
+   /**
+    * Returns the index of the second interferred shape
+@@ -106,7 +106,7 @@ class BOPDS_Interf  {
+    */
+   Standard_Integer Index2() const {
+     return myIndex2; 
+-  };
++  }
+   //
+   /**
+    * Returns the index of that are opposite to the given index
+@@ -125,7 +125,7 @@ class BOPDS_Interf  {
+     else {
+       return -1;
+     }
+-  };
++  }
+   //
+   /**
+    * Returns true if the interference contains given index
+@@ -145,7 +145,7 @@ class BOPDS_Interf  {
+    */
+   void SetIndexNew(const Standard_Integer theIndex) {
+     myIndexNew=theIndex;
+-  };
++  }
+   //
+   //
+   /**
+@@ -155,7 +155,7 @@ class BOPDS_Interf  {
+    */
+   Standard_Integer IndexNew() const {
+     return myIndexNew; 
+-  };
++  }
+   //
+   /**
+    * Returns true if the interference has index of new shape
+@@ -168,7 +168,7 @@ class BOPDS_Interf  {
+   Standard_Boolean HasIndexNew(Standard_Integer& theIndex) const {
+     theIndex=myIndexNew;
+     return (myIndexNew>=0);
+-  };
++  }
+   //
+   /**
+    * Returns true if the interference has index of new shape
+@@ -177,7 +177,7 @@ class BOPDS_Interf  {
+    */
+   Standard_Boolean HasIndexNew() const {
+     return (myIndexNew>=0);
+-  };
++  }
+   //
+  protected:     
+   BOPDS_Interf() :
+@@ -185,17 +185,17 @@ class BOPDS_Interf  {
+     myIndex2(-1),
+     myIndexNew(-1),
+     myAllocator(NCollection_BaseAllocator::CommonBaseAllocator()) {
+-  };
++  }
+   //
+   BOPDS_Interf(const Handle(NCollection_BaseAllocator)& theAllocator) :
+     myIndex1(-1), 
+     myIndex2(-1),
+     myIndexNew(-1),
+     myAllocator(theAllocator) {
+-  };
++  }
+   //
+   virtual ~BOPDS_Interf() {
+-  };
++  }
+   
+  protected:  	
+   Standard_Integer myIndex1;
+@@ -218,7 +218,7 @@ class BOPDS_InterfVV  : public BOPDS_Interf {
+    *  Constructor
+    */
+   BOPDS_InterfVV() : BOPDS_Interf() {
+-  };
++  }
+   //
+   /**
+    *  Constructor
+@@ -227,13 +227,13 @@ class BOPDS_InterfVV  : public BOPDS_Interf {
+    */
+   BOPDS_InterfVV(const Handle(NCollection_BaseAllocator)& theAllocator) 
+     : BOPDS_Interf(theAllocator) {
+-  };
++  }
+   //
+   /**
+    *  Destructor
+    */
+   virtual ~BOPDS_InterfVV() {
+-  };
++  }
+   //
+ };
+ /**
+@@ -254,7 +254,7 @@ class BOPDS_InterfVE  : public BOPDS_Interf {
+     :
+       BOPDS_Interf(),
+       myParameter(0.) {
+-  };
++  }
+   //
+   /**
+    *  Constructor
+@@ -265,13 +265,13 @@ class BOPDS_InterfVE  : public BOPDS_Interf {
+     :
+       BOPDS_Interf(theAllocator),
+       myParameter(0.) {
+-  };
++  }
+   //
+   /**
+    *  Destructor
+    */
+   virtual ~BOPDS_InterfVE() {
+-  };
++  }
+   //
+   /**
+    *  Modifier
+@@ -283,7 +283,7 @@ class BOPDS_InterfVE  : public BOPDS_Interf {
+    */
+   void SetParameter(const Standard_Real theT) {
+     myParameter=theT;
+-  };
++  }
+   //
+   /**
+    *  Selector
+@@ -295,7 +295,7 @@ class BOPDS_InterfVE  : public BOPDS_Interf {
+    */
+   Standard_Real Parameter() const {
+     return myParameter;
+-  };
++  }
+   
+  protected:
+   Standard_Real myParameter;
+@@ -319,7 +319,7 @@ class BOPDS_InterfVF  : public BOPDS_Interf {
+     : BOPDS_Interf(),
+       myU(0.),
+       myV(0.) {
+-  };
++  }
+   //
+   /**
+    *  Constructor
+@@ -330,13 +330,13 @@ class BOPDS_InterfVF  : public BOPDS_Interf {
+     : BOPDS_Interf(theAllocator),
+       myU(0.),
+       myV(0.) {
+-  };
++  }
+   //
+   /**
+    *  Destructor
+    */  
+   virtual ~BOPDS_InterfVF() {
+-  };
++  }
+   //
+   /**
+    * Modifier
+@@ -352,7 +352,7 @@ class BOPDS_InterfVF  : public BOPDS_Interf {
+ 	     const Standard_Real theV) {
+     myU=theU;
+     myV=theV;
+-  };
++  }
+   //
+   /**
+    * Selector
+@@ -367,7 +367,7 @@ class BOPDS_InterfVF  : public BOPDS_Interf {
+   void UV(Standard_Real& theU,Standard_Real& theV) const {
+     theU=myU;
+     theV=myV;
+-  };
++  }
+   
+  protected:
+   Standard_Real myU;
+@@ -389,7 +389,7 @@ class BOPDS_InterfEE  : public BOPDS_Interf {
+    *  Constructor
+    */
+   BOPDS_InterfEE() : BOPDS_Interf() {
+-  };
++  }
+   //
+   /**
+    *  Constructor
+@@ -398,13 +398,13 @@ class BOPDS_InterfEE  : public BOPDS_Interf {
+    */
+   BOPDS_InterfEE(const Handle(NCollection_BaseAllocator)& theAllocator)
+     : BOPDS_Interf(theAllocator) {
+-  };
++  }
+   //
+   /**
+    *  Destructor
+    */
+   virtual ~BOPDS_InterfEE() {
+-  };
++  }
+   //
+   /**
+    *  Modifier
+@@ -414,7 +414,7 @@ class BOPDS_InterfEE  : public BOPDS_Interf {
+    */
+   void SetCommonPart(const IntTools_CommonPrt& theCP) {
+     myCommonPart=theCP;
+-  };
++  }
+   //
+   /**
+    *  Selector
+@@ -424,7 +424,7 @@ class BOPDS_InterfEE  : public BOPDS_Interf {
+    */
+   const IntTools_CommonPrt& CommonPart() const {
+     return myCommonPart;
+-  };
++  }
+   
+  protected:
+   IntTools_CommonPrt myCommonPart;
+@@ -444,7 +444,7 @@ class BOPDS_InterfEF  : public BOPDS_Interf {
+    *  Constructor
+    */
+   BOPDS_InterfEF(): BOPDS_Interf() {
+-  };
++  }
+   //
+   /**
+    *  Constructor
+@@ -458,13 +458,13 @@ class BOPDS_InterfEF  : public BOPDS_Interf {
+    */
+   BOPDS_InterfEF(const Handle(NCollection_BaseAllocator)& theAllocator)
+     : BOPDS_Interf(theAllocator) {
+-  };
++  }
+   //
+   /**
+    *  Destructor
+    */
+   virtual ~BOPDS_InterfEF() {
+-  };
++  }
+   //
+   /**
+    * Modifier
+@@ -474,7 +474,7 @@ class BOPDS_InterfEF  : public BOPDS_Interf {
+    */
+   void SetCommonPart(const IntTools_CommonPrt& theCP){
+     myCommonPart=theCP;
+-  };
++  }
+   //
+   /**
+    *  Selector
+@@ -484,7 +484,7 @@ class BOPDS_InterfEF  : public BOPDS_Interf {
+    */
+   const IntTools_CommonPrt& CommonPart() const {
+     return myCommonPart;
+-  };
++  }
+   //
+  protected:
+   IntTools_CommonPrt myCommonPart;
+@@ -511,7 +511,7 @@ class BOPDS_InterfFF  : public BOPDS_Interf {
+       myTolR2D(1.e-7),
+       myCurves(myAllocator),
+       myPoints(myAllocator) {
+-  };
++  }
+   //
+   /**
+    *  Constructor
+@@ -527,14 +527,14 @@ class BOPDS_InterfFF  : public BOPDS_Interf {
+       myTolR2D(1.e-7),
+       myCurves(myAllocator),
+       myPoints(myAllocator) {
+-  };
++  }
+   */
+   //
+   /**
+    *  Destructor
+    */
+   virtual ~BOPDS_InterfFF() {
+-  };
++  }
+   //
+   /**
+    * Initializer
+@@ -622,7 +622,7 @@ class BOPDS_InterfFF  : public BOPDS_Interf {
+    */
+   const BOPDS_VectorOfCurve& Curves()const{
+     return myCurves;
+-  };
++  }
+   //
+   /**
+    * Selector/Modifier
+@@ -632,7 +632,7 @@ class BOPDS_InterfFF  : public BOPDS_Interf {
+    */
+   BOPDS_VectorOfCurve& ChangeCurves(){
+     return myCurves;
+-  };
++  }
+   //
+   /**
+    * Selector
+@@ -642,7 +642,7 @@ class BOPDS_InterfFF  : public BOPDS_Interf {
+    */
+   const BOPDS_VectorOfPoint& Points()const{
+     return myPoints;
+-  };
++  }
+   //
+   /**
+    * Selector/Modifier
+@@ -652,7 +652,7 @@ class BOPDS_InterfFF  : public BOPDS_Interf {
+    */
+   BOPDS_VectorOfPoint& ChangePoints(){
+     return myPoints;
+-  };
++  }
+   //
+  protected:
+   Standard_Boolean myTangentFaces;
+diff --git a/src/LDOM/LDOM_OSStream.hxx b/src/LDOM/LDOM_OSStream.hxx
+index 4978b9f..d0816ff 100644
+--- a/src/LDOM/LDOM_OSStream.hxx
++++ b/src/LDOM/LDOM_OSStream.hxx
+@@ -54,7 +54,7 @@ class LDOM_SBuffer : public streambuf
+   // Caller of this function is responsible
+   // for memory release after the string usage.
+ 
+-  Standard_Integer Length () const {return myLength;};
++  Standard_Integer Length () const {return myLength;}
+   // Returns full length of data contained
+ 
+   Standard_EXPORT void Clear ();
+@@ -86,11 +86,11 @@ class LDOM_OSStream : public Standard_OStream
+   Standard_EXPORT LDOM_OSStream (const Standard_Integer theMaxBuf);
+   // Constructor
+ 
+-  Standard_CString str () const {return myBuffer.str();};
++  Standard_CString str () const {return myBuffer.str();}
+ 
+-  Standard_Integer Length () const {return myBuffer.Length();};
++  Standard_Integer Length () const {return myBuffer.Length();}
+ 
+-  void Clear () { myBuffer.Clear(); };
++  void Clear () { myBuffer.Clear(); }
+ 
+  private:
+   LDOM_SBuffer myBuffer;
+diff --git a/src/Message/Message_ExecStatus.hxx b/src/Message/Message_ExecStatus.hxx
+index 7eed182..9fa5377 100644
+--- a/src/Message/Message_ExecStatus.hxx
++++ b/src/Message/Message_ExecStatus.hxx
+@@ -123,16 +123,16 @@ class Standard_EXPORT Message_ExecStatus
+   Standard_Boolean IsAlarm () const { return myAlarm != Message_None;  }
+   
+   //! Set all statuses of each type
+-  void SetAllDone   () { myDone  = ~0; };
+-  void SetAllWarn   () { myWarn  = ~0; };
+-  void SetAllAlarm  () { myAlarm = ~0; };
+-  void SetAllFail   () { myFail  = ~0; };
++  void SetAllDone   () { myDone  = ~0; }
++  void SetAllWarn   () { myWarn  = ~0; }
++  void SetAllAlarm  () { myAlarm = ~0; }
++  void SetAllFail   () { myFail  = ~0; }
+ 
+   //! Clear all statuses of each type 
+-  void ClearAllDone () { myDone  = Message_None; };
+-  void ClearAllWarn () { myWarn  = Message_None; };
+-  void ClearAllAlarm() { myAlarm = Message_None; };
+-  void ClearAllFail () { myFail  = Message_None; };
++  void ClearAllDone () { myDone  = Message_None; }
++  void ClearAllWarn () { myWarn  = Message_None; }
++  void ClearAllAlarm() { myAlarm = Message_None; }
++  void ClearAllFail () { myFail  = Message_None; }
+ 
+   //! Clear all statuses
+   void Clear ()
+diff --git a/src/NCollection/NCollection_BaseAllocator.hxx b/src/NCollection/NCollection_BaseAllocator.hxx
+index eb630b8..ebae4d9 100644
+--- a/src/NCollection/NCollection_BaseAllocator.hxx
++++ b/src/NCollection/NCollection_BaseAllocator.hxx
+@@ -71,7 +71,7 @@ class NCollection_BaseAllocator : public MMgt_TShared
+ 
+  protected:
+   //! Constructor - prohibited
+-  NCollection_BaseAllocator(void) {};
++  NCollection_BaseAllocator(void) {}
+ 
+  private:
+   //! Copy constructor - prohibited
+diff --git a/src/NCollection/NCollection_HeapAllocator.hxx b/src/NCollection/NCollection_HeapAllocator.hxx
+index 0a69925..c8049b8 100644
+--- a/src/NCollection/NCollection_HeapAllocator.hxx
++++ b/src/NCollection/NCollection_HeapAllocator.hxx
+@@ -36,7 +36,7 @@ class NCollection_HeapAllocator : public NCollection_BaseAllocator
+ 
+  protected:
+   //! Constructor - prohibited
+-  NCollection_HeapAllocator(void) {};
++  NCollection_HeapAllocator(void) {}
+ 
+  private:
+   //! Copy constructor - prohibited
+diff --git a/src/NCollection/NCollection_IncAllocator.cxx b/src/NCollection/NCollection_IncAllocator.cxx
+index e29ed50..41c35b5 100644
+--- a/src/NCollection/NCollection_IncAllocator.cxx
++++ b/src/NCollection/NCollection_IncAllocator.cxx
+@@ -44,7 +44,7 @@ namespace
+   // auxiliary dummy function used to get a place where break point can be set
+   inline void place_for_breakpoint() {}
+ #endif
+-};
++}
+ 
+ #define MaxLookup 16
+ 
+diff --git a/src/NCollection/NCollection_Vec2.hxx b/src/NCollection/NCollection_Vec2.hxx
+index 58f83d2..3d1e675 100644
+--- a/src/NCollection/NCollection_Vec2.hxx
++++ b/src/NCollection/NCollection_Vec2.hxx
+@@ -79,7 +79,7 @@ public:
+   Element_t y() const { return v[1]; }
+ 
+   //! @return 2 components by their names in specified order (in GLSL-style)
+-  NCOLLECTION_VEC_COMPONENTS_2D(x, y);
++  NCOLLECTION_VEC_COMPONENTS_2D(x, y)
+ 
+   //! Alias to 1st component as X coordinate in XY.
+   Element_t& x() { return v[0]; }
+diff --git a/src/NCollection/NCollection_Vec3.hxx b/src/NCollection/NCollection_Vec3.hxx
+index 311fd6c..f6ff42b 100644
+--- a/src/NCollection/NCollection_Vec3.hxx
++++ b/src/NCollection/NCollection_Vec3.hxx
+@@ -105,12 +105,12 @@ public:
+   Element_t b() const { return v[2]; }
+ 
+   //! @return 2 components by their names in specified order (in GLSL-style)
+-  NCOLLECTION_VEC_COMPONENTS_2D(x, y);
+-  NCOLLECTION_VEC_COMPONENTS_2D(x, z);
+-  NCOLLECTION_VEC_COMPONENTS_2D(y, z);
++  NCOLLECTION_VEC_COMPONENTS_2D(x, y)
++  NCOLLECTION_VEC_COMPONENTS_2D(x, z)
++  NCOLLECTION_VEC_COMPONENTS_2D(y, z)
+ 
+   //! @return 3 components by their names in specified order (in GLSL-style)
+-  NCOLLECTION_VEC_COMPONENTS_3D(x, y, z);
++  NCOLLECTION_VEC_COMPONENTS_3D(x, y, z)
+ 
+   //! Alias to 1st component as X coordinate in XYZ.
+   Element_t& x() { return v[0]; }
+diff --git a/src/NCollection/NCollection_Vec4.hxx b/src/NCollection/NCollection_Vec4.hxx
+index 2042a0d..27e5437 100644
+--- a/src/NCollection/NCollection_Vec4.hxx
++++ b/src/NCollection/NCollection_Vec4.hxx
+@@ -118,21 +118,21 @@ public:
+   Element_t a() const { return v[3]; }
+ 
+   //! @return 2 of XYZW components in specified order as vector in GLSL-style
+-  NCOLLECTION_VEC_COMPONENTS_2D(x, y);
+-  NCOLLECTION_VEC_COMPONENTS_2D(x, z);
+-  NCOLLECTION_VEC_COMPONENTS_2D(x, w);
+-  NCOLLECTION_VEC_COMPONENTS_2D(y, z);
+-  NCOLLECTION_VEC_COMPONENTS_2D(y, w);
+-  NCOLLECTION_VEC_COMPONENTS_2D(z, w);
++  NCOLLECTION_VEC_COMPONENTS_2D(x, y)
++  NCOLLECTION_VEC_COMPONENTS_2D(x, z)
++  NCOLLECTION_VEC_COMPONENTS_2D(x, w)
++  NCOLLECTION_VEC_COMPONENTS_2D(y, z)
++  NCOLLECTION_VEC_COMPONENTS_2D(y, w)
++  NCOLLECTION_VEC_COMPONENTS_2D(z, w)
+ 
+   //! @return 3 of XYZW components in specified order as vector in GLSL-style
+-  NCOLLECTION_VEC_COMPONENTS_3D(x, y, z);
+-  NCOLLECTION_VEC_COMPONENTS_3D(x, y, w);
+-  NCOLLECTION_VEC_COMPONENTS_3D(x, z, w);
+-  NCOLLECTION_VEC_COMPONENTS_3D(y, z, w);
++  NCOLLECTION_VEC_COMPONENTS_3D(x, y, z)
++  NCOLLECTION_VEC_COMPONENTS_3D(x, y, w)
++  NCOLLECTION_VEC_COMPONENTS_3D(x, z, w)
++  NCOLLECTION_VEC_COMPONENTS_3D(y, z, w)
+ 
+   //! @return RGB components as vector
+-  NCOLLECTION_VEC_COMPONENTS_3D(r, g, b);
++  NCOLLECTION_VEC_COMPONENTS_3D(r, g, b)
+ 
+   //! Alias to 1st component as X coordinate in XYZW.
+   Element_t& x() { return v[0]; }
+diff --git a/src/OSD/OSD_MAllocHook.cxx b/src/OSD/OSD_MAllocHook.cxx
+index 363f3ba..88a1fd0 100644
+--- a/src/OSD/OSD_MAllocHook.cxx
++++ b/src/OSD/OSD_MAllocHook.cxx
+@@ -46,7 +46,7 @@ static OSD_MAllocHook::Callback* MypCurrentCallback = NULL;
+ namespace {
+   // dummy function to call at place where break point might be needed
+   inline void place_for_breakpoint () {}
+-};
++}
+ 
+ //=======================================================================
+ //function : GetCallback
+diff --git a/src/OpenGl/OpenGl_Window.cxx b/src/OpenGl/OpenGl_Window.cxx
+index c67dffc..be6c403 100644
+--- a/src/OpenGl/OpenGl_Window.cxx
++++ b/src/OpenGl/OpenGl_Window.cxx
+@@ -120,7 +120,7 @@ namespace
+   }
+ #endif
+ 
+-};
++}
+ 
+ // =======================================================================
+ // function : OpenGl_Window
+diff --git a/src/PLib/PLib.cxx b/src/PLib/PLib.cxx
+index 8202ddb..2f6cae5 100644
+--- a/src/PLib/PLib.cxx
++++ b/src/PLib/PLib.cxx
+@@ -273,7 +273,7 @@ private:
+   // we do not call BSplCLib here to avoid Cyclic dependency detection by WOK
+   //static BinomAllocator THE_BINOM (BSplCLib::MaxDegree() + 1);
+   static BinomAllocator THE_BINOM (25 + 1);
+-};
++}
+ 
+ //=======================================================================
+ //function : Bin
+diff --git a/src/Select3D/Select3D_PointData.hxx b/src/Select3D/Select3D_PointData.hxx
+index 51515be..d279517 100644
+--- a/src/Select3D/Select3D_PointData.hxx
++++ b/src/Select3D/Select3D_PointData.hxx
+@@ -108,7 +108,7 @@ public:
+ private:
+ 
+   // Default constructor
+-  Select3D_PointData () {};
++  Select3D_PointData () {}
+ 
+   Select3D_Pnt*    mypolyg3d;
+   Select3D_Pnt2d*  mypolyg2d;
+diff --git a/src/Standard/Standard_CLocaleSentry.cxx b/src/Standard/Standard_CLocaleSentry.cxx
+index b9ad32e..6ea8f7a 100644
+--- a/src/Standard/Standard_CLocaleSentry.cxx
++++ b/src/Standard/Standard_CLocaleSentry.cxx
+@@ -62,7 +62,7 @@ namespace
+ 
+   static CLocalePtr theCLocale;
+ 
+-};
++}
+ 
+ // =======================================================================
+ // function : GetCLocale
+diff --git a/src/Standard/Standard_Persistent_proto.hxx b/src/Standard/Standard_Persistent_proto.hxx
+index f9ff23e..1867e72 100644
+--- a/src/Standard/Standard_Persistent_proto.hxx
++++ b/src/Standard/Standard_Persistent_proto.hxx
+@@ -55,8 +55,8 @@ public:
+   Standard_EXPORT virtual ~Standard_Persistent();
+   
+   Standard_EXPORT Standard_Persistent& operator= (const Standard_Persistent&);
+-                  Standard_Persistent() : count(0),_typenum(0),_refnum(0) {};
+-                  Standard_Persistent(const Standard_Persistent&) : count(0),_typenum(0),_refnum(0) {};
++                  Standard_Persistent() : count(0),_typenum(0),_refnum(0) {}
++                  Standard_Persistent(const Standard_Persistent&) : count(0),_typenum(0),_refnum(0) {}
+                   Standard_Persistent(const Storage_stCONSTclCOM&) : count(0),_typenum(0),_refnum(0) {}
+ 
+   Standard_EXPORT virtual const Handle_Standard_Type& DynamicType() const;
+diff --git a/src/TDF/TDF_LabelNode.hxx b/src/TDF/TDF_LabelNode.hxx
+index f16324b..338c30c 100644
+--- a/src/TDF/TDF_LabelNode.hxx
++++ b/src/TDF/TDF_LabelNode.hxx
+@@ -53,31 +53,31 @@ class TDF_LabelNode {
+ 
+   // Father access
+   inline TDF_LabelNode* Father() const
+-    { return myFather; };
++    { return myFather; }
+ 
+   // Brother access
+   inline TDF_LabelNode* Brother() const
+-    { return myBrother; };
++    { return myBrother; }
+ 
+   // Child access
+   inline TDF_LabelNode* FirstChild() const
+-    { return myFirstChild; };
++    { return myFirstChild; }
+ 
+     // Attribute access
+   inline const Handle(TDF_Attribute)& FirstAttribute() const
+-    { return myFirstAttribute; };
++    { return myFirstAttribute; }
+ 
+   // Tag access
+   inline Standard_Integer Tag() const
+-    { return myTag; };
++    { return myTag; }
+ 
+   // Depth access
+   inline Standard_Integer Depth() const
+-    { return (myFlags & ~TDF_LabelNodeFlagsMsk); };
++    { return (myFlags & ~TDF_LabelNodeFlagsMsk); }
+ 
+   // IsRoot
+   inline Standard_Boolean IsRoot() const
+-    { return myFather == NULL; };
++    { return myFather == NULL; }
+ 
+   // Data
+   Standard_EXPORT TDF_Data * Data() const;
+@@ -89,19 +89,19 @@ class TDF_LabelNode {
+         (myFlags | TDF_LabelNodeAttModMsk) :
+           (myFlags & ~TDF_LabelNodeAttModMsk);
+       if (aStatus) AllMayBeModified();
+-    };
++    }
+ 
+   inline Standard_Boolean AttributesModified() const
+-    { return ((myFlags & TDF_LabelNodeAttModMsk) != 0); };
++    { return ((myFlags & TDF_LabelNodeAttModMsk) != 0); }
+ 
+   // Flag MayBeModified access
+   inline void MayBeModified(const Standard_Boolean aStatus)
+     { myFlags = (aStatus) ?
+         (myFlags | TDF_LabelNodeMayModMsk) :
+-          (myFlags & ~TDF_LabelNodeMayModMsk); };
++          (myFlags & ~TDF_LabelNodeMayModMsk); }
+ 
+   inline Standard_Boolean MayBeModified() const
+-    { return ((myFlags & TDF_LabelNodeMayModMsk) != 0); };
++    { return ((myFlags & TDF_LabelNodeMayModMsk) != 0); }
+ 
+   private :
+ 
+@@ -143,20 +143,20 @@ class TDF_LabelNode {
+ 
+   // Tag modification
+   inline void Tag(const Standard_Integer aTag)
+-    { myTag = aTag; };
++    { myTag = aTag; }
+ 
+   // Depth modification
+   inline void Depth(const Standard_Integer aDepth)
+-    { myFlags = ((myFlags & TDF_LabelNodeFlagsMsk) | aDepth); };
++    { myFlags = ((myFlags & TDF_LabelNodeFlagsMsk) | aDepth); }
+ 
+   // Flag Imported access
+   inline void Imported(const Standard_Boolean aStatus)
+     { myFlags = (aStatus) ?
+         (myFlags | TDF_LabelNodeImportMsk) :
+-          (myFlags & ~TDF_LabelNodeImportMsk); };
++          (myFlags & ~TDF_LabelNodeImportMsk); }
+ 
+   inline Standard_Boolean IsImported() const
+-    { return ((myFlags & TDF_LabelNodeImportMsk) != 0); };
++    { return ((myFlags & TDF_LabelNodeImportMsk) != 0); }
+ 
+   // Private Fields
+   // --------------------------------------------------------------------------
+-- 
+1.8.5.2
+

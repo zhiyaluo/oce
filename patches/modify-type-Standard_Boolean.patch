@@ -1133,6 +1133,78 @@ Index: oce/src/ChFi3d/ChFi3d_ChBuilder.cxx
       
  {
    Handle(ChFiDS_ChamfSpine) 
+@@ -888,7 +888,7 @@ ChFi3d_ChBuilder::SimulSurf(Handle(ChFiD
+       if(cp1.IsOnArc()){
+ 	TopoDS_Face F1 = S1->ChangeSurface().Face();
+ 	TopoDS_Face bid;
+-	ok = intf = !SearchFace(Spine,cp1,F1,bid);
++	intf = ok = !SearchFace(Spine,cp1,F1,bid);
+       }
+       const ChFiDS_CommonPoint& cp2 = Data->VertexFirstOnS2();
+       if(cp2.IsOnArc() && !ok){
+@@ -903,7 +903,7 @@ ChFi3d_ChBuilder::SimulSurf(Handle(ChFiD
+       if(cp1.IsOnArc()){
+ 	TopoDS_Face F1 = S1->ChangeSurface().Face();
+ 	TopoDS_Face bid;
+-	ok = intl = !SearchFace(Spine,cp1,F1,bid);
++	intl = ok = !SearchFace(Spine,cp1,F1,bid);
+       }
+       const ChFiDS_CommonPoint& cp2 = Data->VertexLastOnS2();
+       if(cp2.IsOnArc() && !ok){
+@@ -968,7 +968,7 @@ ChFi3d_ChBuilder::SimulSurf(Handle(ChFiD
+       if(cp1.IsOnArc()){
+ 	TopoDS_Face F1 = S1->ChangeSurface().Face();
+ 	TopoDS_Face bid;
+-	ok = intf = !SearchFace(Spine,cp1,F1,bid);
++	intf = ok = !SearchFace(Spine,cp1,F1,bid);
+       }
+       const ChFiDS_CommonPoint& cp2 = Data->VertexFirstOnS2();
+       if(cp2.IsOnArc() && !ok){
+@@ -983,7 +983,7 @@ ChFi3d_ChBuilder::SimulSurf(Handle(ChFiD
+       if(cp1.IsOnArc()){
+ 	TopoDS_Face F1 = S1->ChangeSurface().Face();
+ 	TopoDS_Face bid;
+-	ok = intl = !SearchFace(Spine,cp1,F1,bid);
++	intl = ok = !SearchFace(Spine,cp1,F1,bid);
+       }
+       const ChFiDS_CommonPoint& cp2 = Data->VertexLastOnS2();
+       if(cp2.IsOnArc() && !ok){
+@@ -1053,7 +1053,7 @@ ChFi3d_ChBuilder::SimulSurf(Handle(ChFiD
+ 	if(cp1.IsOnArc()){
+ 	  TopoDS_Face F1 = S1->ChangeSurface().Face();
+ 	  TopoDS_Face bid;
+-	  ok = intf = !SearchFace(Spine,cp1,F1,bid);
++	  intf = ok = !SearchFace(Spine,cp1,F1,bid);
+ 	}
+ 	const ChFiDS_CommonPoint& cp2 = Data->VertexFirstOnS2();
+ 	if(cp2.IsOnArc() && !ok){
+@@ -1069,7 +1069,7 @@ ChFi3d_ChBuilder::SimulSurf(Handle(ChFiD
+ 	if(cp1.IsOnArc()){
+ 	  TopoDS_Face F1 = S1->ChangeSurface().Face();
+ 	  TopoDS_Face bid;
+-	  ok = intl = !SearchFace(Spine,cp1,F1,bid);
++	  intl = ok = !SearchFace(Spine,cp1,F1,bid);
+ 	}
+ 	const ChFiDS_CommonPoint& cp2 = Data->VertexLastOnS2();
+ 	if(cp2.IsOnArc() && !ok){
+@@ -1137,7 +1137,7 @@ ChFi3d_ChBuilder::SimulSurf(Handle(ChFiD
+ 	if(cp1.IsOnArc()){
+ 	  TopoDS_Face F1 = S1->ChangeSurface().Face();
+ 	  TopoDS_Face bid;
+-	  ok = intf = !SearchFace(Spine,cp1,F1,bid);
++	  intf = ok = !SearchFace(Spine,cp1,F1,bid);
+ 	}
+ 	const ChFiDS_CommonPoint& cp2 = Data->VertexFirstOnS2();
+ 	if(cp2.IsOnArc() && !ok){
+@@ -1153,7 +1153,7 @@ ChFi3d_ChBuilder::SimulSurf(Handle(ChFiD
+ 	if(cp1.IsOnArc()){
+ 	  TopoDS_Face F1 = S1->ChangeSurface().Face();
+ 	  TopoDS_Face bid;
+-	  ok = intl = !SearchFace(Spine,cp1,F1,bid);
++	  intl = ok = !SearchFace(Spine,cp1,F1,bid);
+ 	}
+ 	const ChFiDS_CommonPoint& cp2 = Data->VertexLastOnS2();
+ 	if(cp2.IsOnArc() && !ok){
 @@ -1570,8 +1570,8 @@ ChFi3d_ChBuilder::PerformSurf(ChFiDS_Seq
  			      const Standard_Boolean              RecOnS1,
  			      const Standard_Boolean              RecOnS2,
@@ -1194,6 +1266,24 @@ Index: oce/src/ChFi3d/ChFi3d_FilBuilder.cxx
  {
    Handle(ChFiDS_FilSpine) fsp = Handle(ChFiDS_FilSpine)::DownCast(Spine);
    if(fsp.IsNull()) Standard_ConstructionError::Raise
+@@ -698,7 +698,7 @@ ChFi3d_FilBuilder::SimulSurf(Handle(ChFi
+     if(cp1.IsOnArc()){
+       TopoDS_Face F1 = S1->ChangeSurface().Face();
+       TopoDS_Face bid;
+-      ok = intf = !SearchFace(Spine,cp1,F1,bid);
++      intf = ok = !SearchFace(Spine,cp1,F1,bid);
+     }
+     const ChFiDS_CommonPoint& cp2 = Data->VertexFirstOnS2();
+     if(cp2.IsOnArc() && !ok){
+@@ -713,7 +713,7 @@ ChFi3d_FilBuilder::SimulSurf(Handle(ChFi
+     if(cp1.IsOnArc()){
+       TopoDS_Face F1 = S1->ChangeSurface().Face();
+       TopoDS_Face bid;
+-      ok = intl = !SearchFace(Spine,cp1,F1,bid);
++      intl = ok = !SearchFace(Spine,cp1,F1,bid);
+     }
+     const ChFiDS_CommonPoint& cp2 = Data->VertexLastOnS2();
+     if(cp2.IsOnArc() && !ok){
 @@ -1237,8 +1237,8 @@ ChFi3d_FilBuilder::PerformSurf(ChFiDS_Se
  			       const Standard_Boolean              RecOnS1,
  			       const Standard_Boolean              RecOnS2,
