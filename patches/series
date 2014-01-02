@@ -2,6 +2,7 @@ remove-duplicate-headers.patch
 
 upstream/CR24510/warning-fix-unused-local-var.patch
 upstream/CR24511/remove-Image_PixelAddress.cxx.patch
+upstream/CR24512/remove-extra-semicolon.patch
 
 # See if the new OpenGL stuff needs it # submitted/OCC22332/fix-layer-line.patch
 # May have been fixed upstream         # submitted/OCC22749/fix-hashcode.patch
@@ -63,7 +64,6 @@ warning/undefined-macro.patch
 warning/fix-delete-void-pointer.patch
 warning/fix-switch-condition-boolean.patch
 warning/fix-condition-always-true.patch
-warning/remove-extra-semicolon.patch
 warning/fix-declared-but-never-defined.patch
 
 warning/review-fix-unused-local-var.patch
