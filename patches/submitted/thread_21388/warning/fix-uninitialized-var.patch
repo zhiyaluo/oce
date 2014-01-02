@@ -496,19 +496,6 @@ Index: oce/src/GProp/GProp_UFunction.gxx
    Standard_Real aParam1;
    Standard_Real aParam2;
    Standard_Real *aCoeffs = (Standard_Real *)myCoeffs;
-Index: oce/src/IntAna/IntAna_Curve.cxx
-===================================================================
---- oce.orig/src/IntAna/IntAna_Curve.cxx
-+++ oce/src/IntAna/IntAna_Curve.cxx
-@@ -559,7 +559,7 @@
-   case GeomAbs_Sphere:
-     return(ElSLib::SphereValue(U,V,Ax3,RCyl)); 
-   default:
--    return(gp_Pnt(0.0,0.0,0.0));
-+    break; 
-   }
- }
- 
 Index: oce/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
