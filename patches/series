@@ -1,7 +1,7 @@
 remove-duplicate-headers.patch
-remove-Image_PixelAddress.cxx.patch
 
 upstream/CR24510/warning-fix-unused-local-var.patch
+upstream/CR24511/remove-Image_PixelAddress.cxx.patch
 
 # See if the new OpenGL stuff needs it # submitted/OCC22332/fix-layer-line.patch
 # May have been fixed upstream         # submitted/OCC22749/fix-hashcode.patch
