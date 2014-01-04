@@ -6,6 +6,8 @@ puts ""
 # (OCC 6.5.3 regression) BRepBuilderAPI_Sewing returns wrong result
 #######################################################################
 
+pload XSDRAW
+
 restore [locate_data_file bug23375_Volute1.brep] v
 
 explode v
@@ -23,11 +25,11 @@ if { ${MaxTolerance} > ${CMP_TOL} } {
 }
 
 # 3
-catch {freebounds $result -0.01}
+freebounds $result -0.01
 set s [explode result_c e]
 puts $s
 set index [ llength $s ]
-if { $index != 0 } {
+if { $index != 8 } {
    puts "Error : Number of free edges is $index"
 }
 

@@ -15,12 +15,12 @@ if { [string compare $command chamf_sequence] == 0 } {
   if { [string compare ${os} "Windows-64-VC9"] != 0 && [string compare ${os} "Windows-64-VC10"] != 0} {
     set nf 0
     if { [string compare $group equal_dist] == 0 } {
-      if {[string compare $os "Debian40"] == 0 || [string compare $os "Mandriva2008"] == 0 || [string compare $os "Mandriva2010"] == 0 } {
+      if {[string compare $os "Debian40"] == 0 || [string compare $os "Debian60-64"] == 0 || [string compare $os "Mandriva2008"] == 0 || [string compare $os "Mandriva2010"] == 0 } {
         set nf 4
       }
     }
     if { [string compare $group dist_dist] == 0 } {
-      if {[string compare $os "Mandriva2010"] == 0} {
+      if {[string compare $os "Mandriva2010"] == 0 || [string compare $os "Debian60-64"] == 0 } {
         set nf 2
       ##set nf 0
       }
@@ -36,15 +36,20 @@ if { [string compare $command chamf_sequence] == 0 } {
   if { [string compare ${os} "MacOS"] == 0 } {
     set nf 0
     if { [string compare $group dist_dist] == 0 } {
+      puts "TODO OCC24156 MacOS: chamfer is not done. compute of chamfer failed"
       set nf 8
     }
     if { [string compare $group equal_dist] == 0 } {
+      puts "TODO OCC24156 MacOS: chamfer is not done. compute of chamfer failed"
       set nf 2
+    }
+    if { [string compare $group dist_angle] == 0 } {
+      puts "TODO OCC24156 MacOS: chamfer is not done. compute of chamfer failed"
     }
   }  
 
   if { $nf != 0 } {
      #puts "TODO OCC22909 $os:Faulty shapes in variables faulty_1 to faulty_$nf"
-     puts "TODO OCC22909 $os:Faulty shapes in variables faulty_1 to faulty_"
+     puts "TODO ?OCC22909 ALL:Faulty shapes in variables faulty_1 to faulty_"
   }
 }

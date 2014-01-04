@@ -1,3 +1,6 @@
+puts "TODO OCC24156 MacOS: Tcl Exception: tolerance ang"
+puts "TODO OCC24156 MacOS: TEST INCOMPLETE"
+
 puts "========================"
 puts "OCC625"
 puts "========================"
@@ -11,7 +14,6 @@ pload QAcommands
 restore [locate_data_file OCC625.brep] a 
 checkshape a
 
-vinit
 tclean a
 explode a e
 
