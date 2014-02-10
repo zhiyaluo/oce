@@ -35,4 +35,23 @@ branches:
   only:
     - master
     - /^review/
+    - coverity_scan
+
+env:
+  global:
+   # The next declration is the encrypted COVERITY_SCAN_TOKEN, created
+   #   via the "travis encrypt" command using the project repo's public key
+   - secure: "V7NcQXuuHhxxSoqXsFkzxnPSdlKL5EGgYBG2rlhX8CeqSHhy8jkkcwMPvCABE1L8FJh7H1KcZ5pnicqhPqMabOf/xIXQp86aiLK5DRY5IgnG6+p4O4aCxA2Cb6MfGpZmtVy+KzrEjt2TPLcqVC7sVoXuyrUajwNiV4XSgJjr3vM="
+
+addons:
+  coverity_scan:
+    project:
+      name: "tpaviot/oce"
+      description: "Your project description here"
+    # the notification notification email should be public,
+    # for instance oce-dev
+    notification_email: tpaviot@gmail.com
+    build_command_prepend:
+    build_command: xvfb-run -s "-screen 0 1024x768x16" ../.travis.build.sh
+    branch_pattern: coverity_scan
 
