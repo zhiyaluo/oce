@@ -1,8 +1,27 @@
-remove-duplicate-headers.patch
-
+#  Patches submitted on http://tracker.dev.opencascade.org/
 upstream/CR24510/warning-fix-unused-local-var.patch
 upstream/CR24511/remove-Image_PixelAddress.cxx.patch
 upstream/CR24512/remove-extra-semicolon.patch
+
+#  OCE specific changes to support CMake
+cmake/remove-Autotools-and-project-files.patch
+cmake/add-support-for-CMake.patch
+cmake/bump-version-number.patch
+remove-duplicate-headers.patch
+
+config/unconditionnally-include-config.h.patch
+config/rename-config.h-into-oce-config.h.patch
+config/add-OCE-prefix-to-macros.patch
+config/separate-installation-path.patch
+cmake/remove-RETSIGTYPE-in-Csemaphore.c.patch
+#  End of OCE specific changes
+
+submitted/thread_21383/warning/fix-signed-unsigned-mismatch.patch
+warning/fix-invalid-enum-value-in-switch.patch
+warning/enum-value-not-in-switch.patch
+warning/fix-unhandled-enumeration-value.patch
+
+#  Patches not submitted yet
 
 # See if the new OpenGL stuff needs it # submitted/OCC22332/fix-layer-line.patch
 # May have been fixed upstream         # submitted/OCC22749/fix-hashcode.patch
@@ -24,7 +43,6 @@ modify-type-Standard_Boolean.patch
 submitted/thread_21346/ports/remove-__try-__finally.patch
 submitted/thread_21348/warning/fix-declared-but-never-defined.patch
 submitted/thread_21349/warning/fix-deprecated-conversion-from-string.patch
-submitted/thread_21383/warning/fix-signed-unsigned-mismatch.patch
 submitted/thread_21388/warning/fix-uninitialized-var.patch
 submitted/thread_21389/warning/fix-unused-function.patch
 submitted/thread_21393/warning/linker-warnings.patch
@@ -44,9 +62,6 @@ warning/fix-unused-local-function.patch
 
 #  Do not submit, either needs to be reworked, or are unsuitable
 warning/fix-empty-conditional-body.patch
-warning/fix-invalid-enum-value-in-switch.patch
-warning/enum-value-not-in-switch.patch
-warning/fix-unhandled-enumeration-value.patch
 warning/fix-constant-logical-operand.patch
 warning/fix-uninitialized-var.patch
 warning/fix-maybe-uninitialized.patch
@@ -73,13 +88,9 @@ improve-exception-message.patch
 #  This patch should drop const qualifiers in return value for all methods (only for objects, not pointers and references!)
 warning/remove-const-return-value.patch
 
-cmake/remove-Autotools-and-project-files.patch
-cmake/add-support-for-CMake.patch
 cmake/move-scripts-in-subdir.patch
-cmake/bump-version-number.patch
 cmake/precompiled-headers/add-the-effective-precompiled-headers.patch
 cmake/remove-pragmas.patch
-cmake/remove-RETSIGTYPE-in-Csemaphore.c.patch
 
 ports/fix-OSD_Process-CurrentDirectory-on-the-Hurd.patch
 ports/rename-ED-variables-into-EData.patch
@@ -120,11 +131,6 @@ static-linking.patch
 debug-postfix.patch
 disable-bspline-mesher.patch
 fix-wok-compatibility.patch
-
-config/unconditionnally-include-config.h.patch
-config/rename-config.h-into-oce-config.h.patch
-config/add-OCE-prefix-to-macros.patch
-config/separate-installation-path.patch
 
 ports/borland11.patch
 ports/borland14.patch
