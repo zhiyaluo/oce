@@ -10,11 +10,30 @@ a "nocdlpack" type under wok
  adm/UDLIST.DataExchange |    2 +-
  2 files changed, 2 insertions(+), 2 deletions(-)
 
+From 1c6ff0e5e3d8374869d31b36abeffe0b67bf773f Mon Sep 17 00:00:00 2001
+From: Fotios Sioutis <sfotis@gmail.com>
+Date: Mon, 19 Sep 2011 14:21:03 +0300
+Subject: [PATCH] Modifications needed for correct building of oce under WOK
+
+---
+ src/FSD/FSD_File.cdl                           |    2 +-
+ src/MeshVS/FILES                               |    1 -
+ src/StepFile/StepFile_CODEGEN.edl              |    2 +-
+ src/TCollection/TCollection_ExtendedString.cdl |    2 +-
+ src/TopOpeBRep/FILES                           |    1 -
+ 5 files changed, 3 insertions(+), 5 deletions(-)
+
+From 81a9aa66cf7afd2721e955402a185b7f1edeb3a2
+From: Fotios Sioutis <sfotis@gmail.com>
+Date:   Tue Jan 14 19:02:21 2014 +0200
+
+Subject: [PATCH] Added edl & EXTERNLIB for AIS package (wok)
+
 Index: oce/adm/UDLIST
 ===================================================================
 --- oce.orig/adm/UDLIST
 +++ oce/adm/UDLIST
-@@ -410,7 +410,7 @@ p UnitsMethods
+@@ -411,7 +411,7 @@ p UnitsMethods
  p Vrml
  p VrmlAPI
  p VrmlConverter
@@ -23,3 +42,57 @@ Index: oce/adm/UDLIST
  p XCAFApp
  p XCAFDoc
  p XCAFDrivers
+Index: oce/src/AIS/AIS_CMPLRS.edl
+===================================================================
+--- /dev/null
++++ oce/src/AIS/AIS_CMPLRS.edl
+@@ -0,0 +1,19 @@
++-- Created by: Fotios Sioutis
++--
++-- This library is free software; you can redistribute it and / or modify it
++-- under the terms of the GNU Lesser General Public version 2.1 as published
++-- by the Free Software Foundation, with special exception defined in the file
++-- OCCT_LGPL_EXCEPTION.txt. Consult the file LICENSE_LGPL_21.txt included in OCCT
++-- distribution for complete text of the license and disclaimer of any warranty.
++
++
++@ifnotdefined ( %AIS_CMPLRS_EDL) then
++
++  @set %AIS_CMPLRS_EDL = "";
++
++  @uses "CSF.edl";
++
++  @string %CMPLRS_CXX_Options += %CSF_FREETYPE_INCLUDES " ";
++  @string %CMPLRS_C_Options   += %CSF_FREETYPE_INCLUDES " ";
++
++@endif;
+Index: oce/src/AIS/EXTERNLIB
+===================================================================
+--- /dev/null
++++ oce/src/AIS/EXTERNLIB
+@@ -0,0 +1 @@
++CSF_FREETYPE
+Index: oce/src/MeshVS/FILES
+===================================================================
+--- oce.orig/src/MeshVS/FILES
++++ oce/src/MeshVS/FILES
+@@ -2,7 +2,6 @@ MeshVS_Buffer.hxx
+ MeshVS_EntityType.hxx
+ MeshVS_DisplayModeFlags.hxx
+ MeshVS_BuilderPriority.hxx
+-MeshVS_MeshPrsBuilder.lxx
+ MeshVS_TwoColors.hxx
+ MeshVS_TwoColors.cxx
+ MeshVS_TwoNodes.hxx
+Index: oce/src/TopOpeBRep/FILES
+===================================================================
+--- oce.orig/src/TopOpeBRep/FILES
++++ oce/src/TopOpeBRep/FILES
+@@ -8,7 +8,6 @@ TopOpeBRep_vprdeg.cxx
+ TopOpeBRep_kpart.cxx
+ TopOpeBRep_FaceEdgeFiller_DEB.cxx
+ TopOpeBRep_ProcessGR.cxx
+-TopOpeBRep_tools.hxx
+ TopOpeBRep_ProcessSectionEdges.cxx
+ TopOpeBRep_trace.cxx
+ TopOpeBRep_traceBOOPNINT.cxx

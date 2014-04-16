@@ -1,8 +1,28 @@
+Index: oce/src/AdvApp2Var/AdvApp2Var_SysBase.hxx
+===================================================================
+--- oce.orig/src/AdvApp2Var/AdvApp2Var_SysBase.hxx
++++ oce/src/AdvApp2Var/AdvApp2Var_SysBase.hxx
+@@ -110,8 +110,14 @@ private:
+      multi-threaded execution). Previous number of 1000 was excessive but
+      tolerable when used for static memory.
+   */
++#ifdef __BORLANDC__
++public:
++#endif
+   static const int MAX_ALLOC_NB = 32;
+-  
++#ifdef __BORLANDC__
++private:
++#endif
++
+   enum {
+     static_allocation = 0, /* indicates static allocation, currently not used */
+     heap_allocation   = 1  /* indicates heap allocation */
 Index: oce/src/BOPCol/BOPCol_Array1.hxx
 ===================================================================
 --- oce.orig/src/BOPCol/BOPCol_Array1.hxx
 +++ oce/src/BOPCol/BOPCol_Array1.hxx
-@@ -182,7 +182,11 @@ template <class Type> class BOPCol_Array
+@@ -178,7 +178,11 @@ template <class Type> class BOPCol_Array
        pNext=pBlock->Next();
        //
        //pBlock->~BOPCol_MemBlock<Type> ();
@@ -14,11 +34,26 @@ Index: oce/src/BOPCol/BOPCol_Array1.hxx
        //pBlock->Clear();
        myAllocator->Free((Standard_Address&)pBlock);
        //
+Index: oce/src/BRepMesh/BRepMesh_Delaun.cxx
+===================================================================
+--- oce.orig/src/BRepMesh/BRepMesh_Delaun.cxx
++++ oce/src/BRepMesh/BRepMesh_Delaun.cxx
+@@ -49,6 +49,10 @@
+ 
+ #include <NCollection_Vector.hxx>
+ 
++#ifdef __BORLANDC__
++#define M_SQRT1_2 0.7071067811865475244008443621048490392848359376887
++#endif
++
+ typedef TColStd_ListIteratorOfListOfInteger  IteratorOnListOfInteger;
+ typedef TColStd_ListOfInteger                ListOfInteger;
+ 
 Index: oce/src/DsgPrs/DsgPrs_LengthPresentation.cxx
 ===================================================================
 --- oce.orig/src/DsgPrs/DsgPrs_LengthPresentation.cxx
 +++ oce/src/DsgPrs/DsgPrs_LengthPresentation.cxx
-@@ -59,7 +59,7 @@ void DsgPrs_LengthPresentation::Add (con
+@@ -55,7 +55,7 @@ void DsgPrs_LengthPresentation::Add (con
    gp_Lin L2 (AttachmentPoint2,aDirection);
    gp_Pnt Proj1 = ElCLib::Value(ElCLib::Parameter(L1,OffsetPoint),L1);
    gp_Pnt Proj2 = ElCLib::Value(ElCLib::Parameter(L2,OffsetPoint),L2);
@@ -27,7 +62,7 @@ Index: oce/src/DsgPrs/DsgPrs_LengthPresentation.cxx
    Standard_Real parmin,parmax,parcur;
    parmin = ElCLib::Parameter(L3,Proj1);
    parmax = parmin;
-@@ -215,7 +215,7 @@ void DsgPrs_LengthPresentation::Add (con
+@@ -211,7 +211,7 @@ void DsgPrs_LengthPresentation::Add (con
    gp_Lin L2 (AttachmentPoint2,aDirection);
    gp_Pnt Proj1 = ElCLib::Value(ElCLib::Parameter(L1,OffsetPoint),L1);
    gp_Pnt Proj2 = ElCLib::Value(ElCLib::Parameter(L2,OffsetPoint),L2);
@@ -36,6 +71,36 @@ Index: oce/src/DsgPrs/DsgPrs_LengthPresentation.cxx
    Standard_Real parmin,parmax,parcur;
    parmin = ElCLib::Parameter(L3,Proj1);
    parmax = parmin;
+Index: oce/src/Dynamic/Dynamic_FuzzyDefinitionsDictionary.cxx
+===================================================================
+--- oce.orig/src/Dynamic/Dynamic_FuzzyDefinitionsDictionary.cxx
++++ oce/src/Dynamic/Dynamic_FuzzyDefinitionsDictionary.cxx
+@@ -51,6 +51,10 @@
+ #define stat _stat
+ #endif
+ 
++#if defined(__BORLANDC__)
++#include <mem.h>
++#endif
++
+ //=======================================================================
+ //function : Dynamic_FuzzyDefinitionsDictionary
+ //purpose  : 
+Index: oce/src/Dynamic/Dynamic_MethodDefinitionsDictionary.cxx
+===================================================================
+--- oce.orig/src/Dynamic/Dynamic_MethodDefinitionsDictionary.cxx
++++ oce/src/Dynamic/Dynamic_MethodDefinitionsDictionary.cxx
+@@ -52,6 +52,10 @@
+ //#define strcasecmp _stricoll
+ #endif
+ 
++#if defined(__BORLANDC__)
++#include <mem.h>
++#endif
++
+ //=======================================================================
+ //function : Dynamic_MethodDefinitionsDictionary
+ //purpose  : 
 Index: oce/src/Font/FILES
 ===================================================================
 --- oce.orig/src/Font/FILES
@@ -74,7 +139,7 @@ Index: oce/src/Image/Image_Color.hxx
 ===================================================================
 --- oce.orig/src/Image/Image_Color.hxx
 +++ oce/src/Image/Image_Color.hxx
-@@ -434,9 +434,15 @@ public:
+@@ -430,9 +430,15 @@ public:
  template<typename ColorType_t>
  inline ColorType_t Image_ColorSumm3 (const ColorType_t& theA, const ColorType_t& theB)
  {
@@ -90,7 +155,7 @@ Index: oce/src/Image/Image_Color.hxx
    return aRes;
  }
  
-@@ -463,10 +469,17 @@ inline Image_ColorBGRF operator+ (const
+@@ -459,10 +465,17 @@ inline Image_ColorBGRF operator+ (const
  template<typename ColorType_t>
  inline ColorType_t Image_ColorSumm4 (const ColorType_t& theA, const ColorType_t& theB)
  {
@@ -108,7 +173,7 @@ Index: oce/src/Image/Image_Color.hxx
    return aRes;
  }
  
-@@ -504,9 +517,15 @@ inline Image_ColorBGRAF operator+ (const
+@@ -500,9 +513,15 @@ inline Image_ColorBGRAF operator+ (const
  template<typename ColorType_t>
  inline ColorType_t Image_ColorSub3 (const ColorType_t& theA, const ColorType_t& theB)
  {
@@ -124,7 +189,7 @@ Index: oce/src/Image/Image_Color.hxx
    return aRes;
  }
  
-@@ -533,10 +552,17 @@ inline Image_ColorBGRF operator- (const
+@@ -529,10 +548,17 @@ inline Image_ColorBGRF operator- (const
  template<typename ColorType_t>
  inline ColorType_t Image_ColorSub4 (const ColorType_t& theA, const ColorType_t& theB)
  {
@@ -164,7 +229,7 @@ Index: oce/src/NCollection/NCollection_UtfString.lxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_UtfString.lxx
 +++ oce/src/NCollection/NCollection_UtfString.lxx
-@@ -21,8 +21,8 @@
+@@ -17,8 +17,8 @@
  // function : strGetAdvance
  // purpose  : Compute advance for specified string.
  // =======================================================================
@@ -175,7 +240,7 @@ Index: oce/src/NCollection/NCollection_UtfString.lxx
                                                     const Standard_Integer theLengthMax,
                                                     Standard_Integer&      theSizeBytes,
                                                     Standard_Integer&      theLength)
-@@ -31,7 +31,7 @@ void NCollection_UtfString<TypeTo>::strG
+@@ -27,7 +27,7 @@ void NCollection_UtfString<TypeTo>::strG
    theLength    = 0;
    NCollection_UtfIterator<TypeFrom> anIter (theStringUtf);
    const Standard_Integer aLengthMax = (theLengthMax > 0) ? theLengthMax : IntegerLast();
@@ -188,7 +253,7 @@ Index: oce/src/OSD/OSD_File.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_File.cxx
 +++ oce/src/OSD/OSD_File.cxx
-@@ -860,7 +860,7 @@ Standard_Boolean OSD_File::IsExecutable(
+@@ -857,7 +857,7 @@ Standard_Boolean OSD_File::IsExecutable(
  #define _int64 int64_t
  #endif
  
@@ -201,7 +266,7 @@ Index: oce/src/OSD/OSD_Host.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Host.cxx
 +++ oce/src/OSD/OSD_Host.cxx
-@@ -232,7 +232,7 @@ Standard_Integer OSD_Host::Error()const{
+@@ -228,7 +228,7 @@ Standard_Integer OSD_Host::Error()const{
  
  #include <OSD_Host.hxx>
  
@@ -210,11 +275,41 @@ Index: oce/src/OSD/OSD_Host.cxx
  #pragma comment( lib, "WSOCK32.LIB" )
  #endif
  
+Index: oce/src/OpenGl/OpenGl_ShaderObject.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_ShaderObject.cxx
++++ oce/src/OpenGl/OpenGl_ShaderObject.cxx
+@@ -20,6 +20,10 @@
+ #include <Standard_Assert.hxx>
+ #include <TCollection_AsciiString.hxx>
+ 
++#ifdef __BORLANDC__
++#include <malloc.h>
++#endif
++
+ IMPLEMENT_STANDARD_HANDLE (OpenGl_ShaderObject, OpenGl_Resource)
+ IMPLEMENT_STANDARD_RTTIEXT(OpenGl_ShaderObject, OpenGl_Resource)
+ 
+Index: oce/src/OpenGl/OpenGl_ShaderProgram.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_ShaderProgram.cxx
++++ oce/src/OpenGl/OpenGl_ShaderProgram.cxx
+@@ -24,6 +24,10 @@
+ #include <OpenGl_ShaderProgram.hxx>
+ #include <OpenGl_ShaderManager.hxx>
+ 
++#ifdef __BORLANDC__
++#include <malloc.h>
++#endif
++
+ IMPLEMENT_STANDARD_HANDLE (OpenGl_ShaderProgram, OpenGl_Resource)
+ IMPLEMENT_STANDARD_RTTIEXT(OpenGl_ShaderProgram, OpenGl_Resource)
+ 
 Index: oce/src/Standard/Standard_CLocaleSentry.cxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_CLocaleSentry.cxx
 +++ oce/src/Standard/Standard_CLocaleSentry.cxx
-@@ -27,6 +27,10 @@
+@@ -23,6 +23,10 @@
  
  #include <cstring>
  
@@ -225,7 +320,7 @@ Index: oce/src/Standard/Standard_CLocaleSentry.cxx
  namespace
  {
  
-@@ -38,7 +42,7 @@ namespace
+@@ -34,7 +38,7 @@ namespace
      CLocalePtr()
      #ifdef HAVE_XLOCALE_H
      : myLocale (newlocale (LC_ALL_MASK, "C", NULL))
@@ -234,7 +329,7 @@ Index: oce/src/Standard/Standard_CLocaleSentry.cxx
      : myLocale (_create_locale (LC_ALL, "C"))
      #else
      : myLocale (NULL)
-@@ -49,7 +53,7 @@ namespace
+@@ -45,7 +49,7 @@ namespace
      {
      #ifdef HAVE_XLOCALE_H
        freelocale (myLocale);
@@ -247,7 +342,7 @@ Index: oce/src/Standard/Standard_CLocaleSentry.hxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_CLocaleSentry.hxx
 +++ oce/src/Standard/Standard_CLocaleSentry.hxx
-@@ -60,7 +60,7 @@ public:
+@@ -56,7 +56,7 @@ public:
  
  #ifdef HAVE_XLOCALE_H
    typedef  locale_t clocale_t;
@@ -256,7 +351,7 @@ Index: oce/src/Standard/Standard_CLocaleSentry.hxx
    typedef _locale_t clocale_t;
  #else
    typedef void*     clocale_t;
-@@ -73,7 +73,7 @@ public:
+@@ -69,7 +69,7 @@ public:
  private:
  
    void* myPrevLocale;       //!< previous locale, platform-dependent pointer!
@@ -269,7 +364,7 @@ Index: oce/src/Standard/Standard_CString.cxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_CString.cxx
 +++ oce/src/Standard/Standard_CString.cxx
-@@ -260,7 +260,7 @@ Standard_Boolean ISSIMILAR(const Standar
+@@ -80,7 +80,7 @@ Standard_Integer HashCodes (const Standa
  #ifdef __APPLE__
    // There are a lot of *_l functions availalbe on Mac OS X - we use them
    #define SAVE_TL()
@@ -278,7 +373,7 @@ Index: oce/src/Standard/Standard_CString.cxx
    // MSVCRT has equivalents with slightly different syntax
    #define SAVE_TL()
    #define strtod_l(thePtr, theNextPtr, theLocale)                _strtod_l(thePtr, theNextPtr, theLocale)
-@@ -274,7 +274,7 @@ Standard_Boolean ISSIMILAR(const Standar
+@@ -94,7 +94,7 @@ Standard_Integer HashCodes (const Standa
    // So we switch to C locale temporarily
    #define SAVE_TL() Standard_CLocaleSentry aLocaleSentry;
    #ifndef HAVE_XLOCALE_H
@@ -287,12 +382,27 @@ Index: oce/src/Standard/Standard_CString.cxx
      #define strtod_l(thePtr, theNextPtr, theLocale)              strtod(thePtr, theNextPtr)
    #endif
    #define vprintf_l(theLocale, theFormat, theArgPtr)             vprintf(theFormat, theArgPtr)
+Index: oce/src/Standard/Standard_Integer.hxx
+===================================================================
+--- oce.orig/src/Standard/Standard_Integer.hxx
++++ oce/src/Standard/Standard_Integer.hxx
+@@ -27,6 +27,10 @@
+ # include <oce-config.h>
+ #endif
+ 
++#ifdef __BORLANDC__
++#define OCE_IS_DUPLICATE_UINT32_T
++#endif
++
+ class Handle_Standard_Type;
+ 
+ __Standard_API const Handle_Standard_Type& Standard_Integer_Type_();
 Index: oce/src/Standard/Standard_TypeDef.hxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_TypeDef.hxx
 +++ oce/src/Standard/Standard_TypeDef.hxx
-@@ -30,6 +30,10 @@
-   #include <stdint.h>
+@@ -49,6 +49,10 @@
+   #include <inttypes.h>
  #endif
  
 +#if defined(__BORLANDC__)
@@ -302,3 +412,36 @@ Index: oce/src/Standard/Standard_TypeDef.hxx
  #define Standard_False false
  #define Standard_True  true
  
+Index: oce/src/Standard/Standard_math.cxx
+===================================================================
+--- oce.orig/src/Standard/Standard_math.cxx
++++ oce/src/Standard/Standard_math.cxx
+@@ -15,7 +15,7 @@
+ #include <Standard_math.hxx>
+ 
+ // MSVC versions prior to 12 did not provided acosh, asinh, atanh functions in standard library
+-#if defined(_MSC_VER) && (_MSC_VER < 1800)
++#if (defined(_MSC_VER) && (_MSC_VER < 1800)) || defined(__BORLANDC__)
+ 
+ Standard_EXPORT double  __cdecl acosh( double X)
+ {
+Index: oce/src/Standard/Standard_math.hxx
+===================================================================
+--- oce.orig/src/Standard/Standard_math.hxx
++++ oce/src/Standard/Standard_math.hxx
+@@ -16,13 +16,13 @@
+ #include <Standard_Macro.hxx>
+ #endif
+ 
+-#ifdef _MSC_VER
++#if defined(_MSC_VER) || defined(__BORLANDC__)
+ 
+ #define _USE_MATH_DEFINES
+ #include <math.h>
+ 
+ // MSVC versions prior to 12 did not provided acosh, asinh, atanh functions in standard library
+-#if _MSC_VER < 1800
++#if (defined(_MSC_VER) && (_MSC_VER < 1800)) || defined(__BORLANDC__)
+ __Standard_API double __cdecl acosh ( double );
+ __Standard_API double __cdecl asinh ( double );
+ __Standard_API double __cdecl atanh ( double );

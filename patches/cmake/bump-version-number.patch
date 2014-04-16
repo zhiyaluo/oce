@@ -78,7 +78,15 @@ Index: oce/BUILD.MSVC.txt
  3) Extracting the sources
  4) Configuring
    4.1) Designate a build directory 
-@@ -75,6 +76,13 @@ precompiled binaries if you just want to
+@@ -42,7 +43,6 @@ precompiled binaries if you just want to
+     Some modules of OCE require external libraries. These include
+ 
+     - freetype , required by Visualization
+-    - FTGL , required by Visualization
+     - TCL , required by DRAW
+     - gl2ps and FreeImage , optionally required by Visualization
+     - TBB , optionally required to to multithreading
+@@ -75,6 +75,13 @@ precompiled binaries if you just want to
          http://www.github.com/QbProg/oce-win-bundle
          
          In this example we will extract the precompiled bundle in C:\oce-win-bundle-win32\
@@ -92,7 +100,7 @@ Index: oce/BUILD.MSVC.txt
    --
      
  3) Extracting the sources
-@@ -138,8 +146,17 @@ precompiled binaries if you just want to
+@@ -138,8 +145,17 @@ precompiled binaries if you just want to
        
        It should automatically set all the library paths. Some of them will appear in red, but the CONFIGURE phase will end successfully at 
        this time. You should check this in the output window at the bottom of cmake-gui
@@ -112,11 +120,56 @@ Index: oce/BUILD.MSVC.txt
        For each lib, set the appropriate fields pointing to the include directories or libraries.
        For example, you will have to set FREETYPE_INCLUDE_DIR to C:/freetype-???/include/ and so on...
        Reconfigure until all the errors go away
+@@ -225,4 +241,4 @@ precompiled binaries if you just want to
+   9.2) Debug symbols 
+     If you include them in the INSTALL directory, you will be able to see OCE call stacks and local variables. The INSTALL dir will grow in size
+     of about 200MB.
+-     
+\ No newline at end of file
++     
 Index: oce/NEWS
 ===================================================================
 --- oce.orig/NEWS
 +++ oce/NEWS
-@@ -1,3 +1,380 @@
+@@ -1,3 +1,418 @@
++Version 0.15 - February 2014
++
++This version is not binary compatible with OCE 0.14.1, OCE_ABI_SOVERSION
++was incremented.
++
++* Upgraded to OCCT 6.7.0
++
++* Relicensed to LGPL 2.1.
++
++* Many bug and warning fixes detected by static analysis and compilers.
++
++* Add support for OCCT tests.
++
++* Build OCE and run tests on travis-ci.org service.
++
++* Build system improvements and additions
++  - Added multithreaded build option for MSVC.
++  - Build improvements and fixes with MSVC and Mingw.
++  - Fix build failures with Borland compiler.
++  - Fix build failures with Mesa 10.
++  - Various CMake improvements when compiling with bundle.
++  - Removed OCE_DISABLE_TKSERVICE_FONT option, it is no more possible
++    to build TKService without freetype.
++
++Users who contributed to this release:
++  Denis Barbier, Thomas Paviot, QbProg, Fotios Sioutis, Johannes Obermayr,
++  Jacob Abel, Benjamin Bihler
++
++Version 0.14.1 - January 2014
++
++This version is binary compatible with 0CE 0.14.
++
++* Fix Debug build on MSVC.
++
++Users who contributed to this release:
++  Denis Barbier
++
++
 +Version 0.14 - December 2013
 +
 +This version is binary compatible with 0CE 0.13.
@@ -529,37 +582,56 @@ Index: oce/README
 -How to compile on Unix?
 -=======================
 -Read INSTALL file for instructions on compiling.
-Index: oce/README.txt
+Index: oce/README.md
 ===================================================================
 --- /dev/null
-+++ oce/README.txt
-@@ -0,0 +1,29 @@
++++ oce/README.md
+@@ -0,0 +1,48 @@
++Travis-CI Build Status :
++[![Build Status](https://travis-ci.org/tpaviot/oce.png?branch=master)](https://travis-ci.org/tpaviot/oce)
++
 +oce stands for *o*pencascade *c*ommunity *e*dition.
 +
-+This project aims at gathering patches/changes/improvements from the OCC community over the latest release
-+(currently OCCT 6.7.0).
++This project aims at gathering patches/changes/improvements from the OCC
++community over the latest release (currently OCCT 6.7.0).
 +
 +We use the following online resources:
 +  * Sources
 +       https://github.com/tpaviot/oce
 +  * Binaries
-+       http://code.google.com/p/oce-binaries/downloads/
++       oce < 0.14: http://code.google.com/p/oce-binaries/downloads/
++       oce >= 0.14: Google Drive at http://bit.ly/1kvDoTN
 +  * Bug tracker
 +       https://github.com/tpaviot/oce/issues
 +  * Mailing list
 +       http://groups.google.com/group/oce-dev/about
++  * Travic-CI
++       https://travis-ci.org/tpaviot/oce
 +
-+Just email tpaviot@gmail.com for a request regarding write access to the repository.
++Just ask @tpaviot (tpaviot@gmail.com) or @dbarbier (bouzim@gmail.com) for a
++request regarding write access to the repository.
 +
 +How to create a local copy of the repository?
 +=============================================
-+ git clone git://github.com/tpaviot/oce.git
++
++    git clone git://github.com/tpaviot/oce.git
 +
 +How to stay up to date with latest developements?
 +=================================================
-+ cd oce
-+ git pull
++
++    cd oce
++    git pull
 +
 +How to compile on Unix?
 +=======================
++
 +Read INSTALL.Unix file for instructions on compiling.
++
++License
++=======
++
++OCE has the same license as OCCT; since OCCT 6.7.0, you can redistribute it
++and/or modify it under the terms of the GNU Lesser General Public License
++version 2.1 as published by the Free Software Foundation, with special
++exception defined in the file OCCT_LGPL_EXCEPTION.txt.
++See LICENSE_LGPL_21.txt for the full license text.

@@ -22,7 +22,7 @@ Index: oce/src/OSD/OSD_Path.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Path.cxx
 +++ oce/src/OSD/OSD_Path.cxx
-@@ -368,6 +368,7 @@ OSD_Path::OSD_Path(const TCollection_Asc
+@@ -364,6 +364,7 @@ OSD_Path::OSD_Path(const TCollection_Asc
  #ifdef DEB
         cout << " WARNING WARNING : OSD Path for an Unknown SYSTEM : " << (Standard_Integer)todo << endl;
  #endif 

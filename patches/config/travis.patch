@@ -1,0 +1,139 @@
+Index: oce/.travis.build.sh
+===================================================================
+--- /dev/null
++++ oce/.travis.build.sh
+@@ -0,0 +1,45 @@
++#! /bin/sh
++set -e
++
++ncpus=1
++if test -x /usr/bin/getconf; then
++    ncpus=$(/usr/bin/getconf _NPROCESSORS_ONLN)
++fi
++
++echo "Timestamp" && date
++cmake -DOCE_ENABLE_DEB_FLAG:BOOL=OFF \
++      -DCMAKE_BUILD_TYPE:STRING=Release \
++      -DOCE_USE_TCL_TEST_FRAMEWORK:BOOL=ON \
++      -DOCE_TESTING:BOOL=ON \
++      -DOCE_DRAW:BOOL=ON \
++      -DOCE_VISUALISATION:BOOL=ON \
++      -DOCE_OCAF:BOOL=ON \
++      -DOCE_DATAEXCHANGE:BOOL=ON \
++      -DOCE_USE_PCH:BOOL=ON \
++      -DOCE_WITH_GL2PS:BOOL=ON \
++      -DOCE_WITH_FREEIMAGE:BOOL=ON \
++      -DOCE_MULTITHREAD_LIBRARY:STRING=NONE \
++      ..
++echo ""
++echo "Timestamp" && date
++echo "Starting build with -j$ncpus ..."
++# travis-ci truncates when there are more than 10,000 lines of output.
++# Builds generate around 9,000 lines of output, trim them to see test
++# results.
++make -j$ncpus | grep Built
++
++# Run OCE tests
++echo "Timestamp" && date
++make test
++
++# Run OCCT tests, but overwrite DrawLaunchTests.draw to write
++# an XML summary file at a specified location
++cat > DrawLaunchTests.draw <<EOT
++testgrid -outdir occt -xml summary.xml -refresh 300
++exit
++EOT
++
++echo "Timestamp" && date
++cmake -P DrawLaunchTests.cmake || true
++echo "Timestamp" && date
++
+Index: oce/.travis.xsl
+===================================================================
+--- /dev/null
++++ oce/.travis.xsl
+@@ -0,0 +1,41 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
++
++   <xsl:strip-space elements="*"/>
++   <xsl:output method="text"/>
++
++   <xsl:param name="duration"/>
++
++   <xsl:template match="testsuite">
++       <xsl:choose>
++           <xsl:when test="$duration = 1">
++               <xsl:value-of select="@name"/>
++               <xsl:text> (</xsl:text>
++               <xsl:value-of select="@tests"/>
++               <xsl:text> tests, </xsl:text>
++               <xsl:value-of select="@skipped"/>
++               <xsl:text> skipped, </xsl:text>
++               <xsl:value-of select="@failures"/>
++               <xsl:text> failures, </xsl:text>
++               <xsl:value-of select="@errors"/>
++               <xsl:text> errors) </xsl:text>
++               <xsl:value-of select="format-number(@time, '###.##s')"/><xsl:text>
++</xsl:text>
++           </xsl:when>
++           <xsl:otherwise>
++               <xsl:apply-templates select="testcase"/>
++           </xsl:otherwise>
++       </xsl:choose>
++   </xsl:template>
++
++   <xsl:template match="testcase">
++       <xsl:if test="contains(@status, 'FAILED')">
++           <xsl:variable name="parent" select="../@name"/>
++           <xsl:value-of select="translate($parent, ' ', '/')"/>/<xsl:value-of select="@name"/>
++           <xsl:text>
++</xsl:text>
++       </xsl:if>
++   </xsl:template>
++
++</xsl:stylesheet>
++
+Index: oce/.travis.yml
+===================================================================
+--- /dev/null
++++ oce/.travis.yml
+@@ -0,0 +1,38 @@
++language: cpp
++compiler:
++  - gcc
++  - clang
++before_install:
++  - sudo apt-get install libxmu-dev tcl8.5-dev tk8.5-dev libgl2ps-dev libfreeimage-dev
++#  Needed to run OCCT tests in parallel
++  - sudo apt-get install tclthread
++#  Is this needed to run OCCT tests?
++  - sudo apt-get install libgl1-mesa-dri
++#  Postprocess OCCT tests output
++  - sudo apt-get install xsltproc
++before_script:
++#  Remove OCCT tests which are going to be skipped
++#  because of missing data files.  We must use -name
++#  to filter out 'begin' or 'end' files.
++  - find tests -type f -name '[A-Z][0-9]' -o -name 'Z[A-Z][0-9]' -o -name 'bu[gc]*' | xargs grep -l locate_data_file /dev/null | xargs rm -f
++  - rm -rf tests/chamfer tests/de tests/mesh tests/perf/*_mesh_*
++  - mkdir cmake-build
++  - cd cmake-build
++#  Depth is necessary, otherwise DRAWEXE exits with this message:
++#    Tcl Exception: ** Exception ** 0x7fee03adb307 : Aspect_WindowDefinitionError: Xw_Window, couldn't find compatible Visual (RGBA, double-buffered)
++script: xvfb-run -s "-screen 0 1024x768x16" ../.travis.build.sh
++after_script:
++  - test ! -r occt/summary.xml || xsltproc --param duration 1 ../.travis.xsl occt/summary.xml
++  - if [ -r occt/summary.xml ]; then
++        xsltproc ../.travis.xsl occt/summary.xml > occt/summary.failed;
++        if [ -s occt/summary.failed ]; then
++            echo "FAILED TESTS:";
++            cat occt/summary.failed;
++            for file in $(cat occt/summary.failed); do head -n -1 occt/$file.{tcl,log}; done;
++        fi;
++    fi
++branches:
++  only:
++    - master
++    - /^review/
++

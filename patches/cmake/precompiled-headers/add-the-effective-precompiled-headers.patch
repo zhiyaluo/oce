@@ -1133,7 +1133,7 @@ Index: oce/adm/cmake/TKService/Precompiled.h
 ===================================================================
 --- /dev/null
 +++ oce/adm/cmake/TKService/Precompiled.h
-@@ -0,0 +1,10 @@
+@@ -0,0 +1,9 @@
 +#pragma once
 +
 +#include "../TKernel/Precompiled.h"
@@ -1142,7 +1142,6 @@ Index: oce/adm/cmake/TKService/Precompiled.h
 +#include "Standard.hxx"
 +#include "Aspect.hxx"
 +#include "Aspect_Handle.hxx"
-+#include "Image.hxx"
 +#include "SelectBasics.hxx"
 Index: oce/adm/cmake/TKShHealing/Precompiled.cpp
 ===================================================================
@@ -1677,11 +1676,25 @@ Index: oce/adm/cmake/TKernel/Precompiled.h
 ===================================================================
 --- /dev/null
 +++ oce/adm/cmake/TKernel/Precompiled.h
-@@ -0,0 +1,7 @@
+@@ -0,0 +1,21 @@
 +#pragma once
 +
 +#include <string>
 +#include <iostream>
 +#include <math.h>
++
 +#include "Standard.hxx"
 +#include "Standard_PrimitiveTypes.hxx"
++#include "Standard_Stream.hxx"
++#include "Standard_Failure.hxx"
++#include "Standard_Transient.hxx"
++
++#ifdef USE_STL_STREAM
++#include <sstream>
++#else /* USE_STL_STREAM */
++#ifdef WNT
++#include <strstrea.h>
++#else
++#include <strstream.h>
++#endif
++#endif

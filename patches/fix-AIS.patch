@@ -1,0 +1,24 @@
+From bf5713148e02a03a9663415a6456730d0de8e3e9 Mon Sep 17 00:00:00 2001
+From: QbProg <tholag@gmail.com>
+Date: Sat, 11 Jan 2014 17:06:27 +0100
+Subject: [PATCH] Compilation fix for some OCE setting configurations. DrawText
+ ends up to be defined as DrawTextA, and causes compilation failures.
+
+---
+ src/AIS/AIS_Dimension.cxx | 3 +++
+ 1 file changed, 3 insertions(+)
+
+Index: oce/src/AIS/AIS_Dimension.cxx
+===================================================================
+--- oce.orig/src/AIS/AIS_Dimension.cxx
++++ oce/src/AIS/AIS_Dimension.cxx
+@@ -395,6 +395,9 @@ void AIS_Dimension::DrawArrow (const Han
+ //function : DrawText
+ //purpose  : 
+ //=======================================================================
++#ifdef WNT
++#undef DrawText
++#endif
+ void AIS_Dimension::DrawText (const Handle(Prs3d_Presentation)& thePresentation,
+                               const gp_Pnt& theTextPos,
+                               const gp_Dir& theTextDir,

@@ -13,6 +13,7 @@ config/unconditionnally-include-config.h.patch
 config/rename-config.h-into-oce-config.h.patch
 config/add-OCE-prefix-to-macros.patch
 config/separate-installation-path.patch
+config/travis.patch
 cmake/remove-RETSIGTYPE-in-Csemaphore.c.patch
 #  End of OCE specific changes
 
@@ -37,6 +38,7 @@ fix-std-atol.patch
 fix-out-of-bounds-errors.patch
 add-missing-include-stdio.h.patch
 fix-sorttools-quicksort.patch
+fix-AIS.patch
 
 modify-type-Standard_Boolean.patch
 
@@ -130,8 +132,8 @@ make-myFMMgr-private.patch
 static-linking.patch
 debug-postfix.patch
 disable-bspline-mesher.patch
-fix-wok-compatibility.patch
 
+#OK
 ports/borland11.patch
 ports/borland14.patch
 ports/borland15.patch
@@ -146,3 +148,4 @@ Print-null-handle.patch
 
 fix-ftbfs-c++11.patch
 fix-ftbfs-Hurd.patch
+unsorted.patch

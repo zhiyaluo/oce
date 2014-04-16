@@ -1,0 +1,529 @@
+diff --git a/.travis.build.sh b/.travis.build.sh
+old mode 100644
+new mode 100755
+diff --git a/src/Aspect/Aspect_MarkerStyle.cxx b/src/Aspect/Aspect_MarkerStyle.cxx
+index 3022656..16a2982 100644
+--- a/src/Aspect/Aspect_MarkerStyle.cxx
++++ b/src/Aspect/Aspect_MarkerStyle.cxx
+@@ -532,6 +532,8 @@ void Aspect_MarkerStyle::SetPredefinedStyle() {
+ 		  }
+ 		}
+ 		break ;
++		default :
++		break;
+ 	}
+ 
+ }
+diff --git a/src/BOPAlgo/BOPAlgo_Builder_3.cxx b/src/BOPAlgo/BOPAlgo_Builder_3.cxx
+index aae8379..f3adee9 100644
+--- a/src/BOPAlgo/BOPAlgo_Builder_3.cxx
++++ b/src/BOPAlgo/BOPAlgo_Builder_3.cxx
+@@ -299,6 +299,8 @@ void BOPAlgo_Builder::FillIn3DParts(BOPCol_DataMapOfShapeListOfShape& theInParts
+     aSelector.Clear();
+     aSelector.SetBox(aBoxS);
+     //
++    aBBTree.Select(aSelector);
++    //
+     const BOPCol_ListOfInteger& aLIFP=aSelector.Indices();
+     //
+     // 2.7. Collect faces that are IN aSolid [ aLFIN ]
+diff --git a/src/BRepAlgo/BRepAlgo_Tool.cxx b/src/BRepAlgo/BRepAlgo_Tool.cxx
+index d04714c..a2ce21d 100644
+--- a/src/BRepAlgo/BRepAlgo_Tool.cxx
++++ b/src/BRepAlgo/BRepAlgo_Tool.cxx
+@@ -68,7 +68,7 @@ TopoDS_Shape BRepAlgo_Tool::Deboucle3D(const TopoDS_Shape& S,
+       // iterate on sub-shapes and add non-empty.
+       TopoDS_Iterator it(S);
+       TopoDS_Shape SubShape;
+-      Standard_Boolean NbSub = 0;
++      Standard_Boolean NbSub = Standard_False;
+       BRep_Builder B;
+       if (S.ShapeType() == TopAbs_COMPOUND) {
+ 	B.MakeCompound(TopoDS::Compound(SS));
+@@ -81,10 +81,10 @@ TopoDS_Shape BRepAlgo_Tool::Deboucle3D(const TopoDS_Shape& S,
+ 	SubShape = Deboucle3D(CurS,Boundary);
+ 	if ( !SubShape.IsNull()) {
+ 	  B.Add(SS, SubShape);
+-	  NbSub++;
++	  NbSub = Standard_True;
+ 	}
+       }
+-      if (NbSub == 0)
++      if (!NbSub)
+         {
+ #ifdef DEB
+         cout << "No subhape in shape!" << endl;
+diff --git a/src/Blend/Blend_Walking_1.gxx b/src/Blend/Blend_Walking_1.gxx
+index e4cce5e..5d7e27b 100644
+--- a/src/Blend/Blend_Walking_1.gxx
++++ b/src/Blend/Blend_Walking_1.gxx
+@@ -182,6 +182,8 @@ Standard_Boolean Blend_Walking::PerformFirstSection
+ 
+   Pos1 = Pos2 = TopAbs_UNKNOWN;
+ 
++  Blend_Status State;
++
+   param = Pdep;
+   Func.Set(param);
+ 
+@@ -205,7 +207,7 @@ Standard_Boolean Blend_Walking::PerformFirstSection
+     return Standard_False;
+   }
+ 
+-  TestArret(Func, Blend_OK, Standard_False);
++  State = TestArret(Func, Blend_OK, Standard_False);
+ #ifdef DEB
+   if (Blend_GettraceDRAWSECT()){
+     Drawsect(surf1,surf2,sol,param,Func);
+diff --git a/src/Bnd/Bnd_BoundSortBox.cxx b/src/Bnd/Bnd_BoundSortBox.cxx
+index 5291f5a..c8392b9 100644
+--- a/src/Bnd/Bnd_BoundSortBox.cxx
++++ b/src/Bnd/Bnd_BoundSortBox.cxx
+@@ -636,10 +636,11 @@ const TColStd_ListOfInteger& Bnd_BoundSortBox::Compare (const Bnd_Box& theBox)
+   //-- Rejection with the table of bits
+   Standard_Boolean touch = Standard_True;
+   touch = Standard_False;
+-  Standard_Real _Xmax,_Ymax,_Zmax;
++  Standard_Real _Xmin,_Ymin,_Zmin,_Xmax,_Ymax,_Zmax;
+   BSB_T3Bits* Map = (BSB_T3Bits *)TabBits;
+   Standard_Real xmin, ymin, zmin, xmax, ymax, zmax;
+   _Xmax=Map->Xmax; _Ymax=Map->Ymax; _Zmax=Map->Zmax;
++  _Xmin=Map->Xmin; _Ymin=Map->Ymin; _Zmin=Map->Zmin;
+   theBox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
+   Standard_Integer i0,i1,j0,j1,k0,k1;
+   if(xmin>Xmin) i0=(Standard_Integer )((xmin-Xmin)*deltaX)-1; else  i0=1;
+diff --git a/src/Draw/Draw.cxx b/src/Draw/Draw.cxx
+index f3ccd80..5467cf5 100644
+--- a/src/Draw/Draw.cxx
++++ b/src/Draw/Draw.cxx
+@@ -407,7 +407,7 @@ void Draw_Appli(Standard_Integer argc, char** argv,const FDraw_InitAppli Draw_In
+         cin.get(cmd[++i]);
+       } while ((cmd[i] != '\n') && (!cin.fail()));
+       cmd[i] = '\0';
+-    } while (Draw_Interprete(cmd) != (unsigned int ) -2);
++    } while (Draw_Interprete(cmd));
+   }
+ #ifdef WNT
+   // Destruction de l'application
+diff --git a/src/DrawResources/TestCommands.tcl b/src/DrawResources/TestCommands.tcl
+index e3ede06..fba423b 100644
+--- a/src/DrawResources/TestCommands.tcl
++++ b/src/DrawResources/TestCommands.tcl
+@@ -367,7 +367,10 @@ proc testgrid {args} {
+         # commant to run DRAW with a command file;
+         # note that empty string is passed as standard input to avoid possible 
+         # hang-ups due to waiting for stdin of the launching process
+-	set command "exec <<{} DRAWEXE -f $logdir/$group/$grid/${casename}.tcl"
++	if { [catch {set nameofexecutable [info nameofexecutable]}] } {
++		set nameofexecutable "DRAWEXE"
++	}
++	set command "exec <<{} $nameofexecutable -f $logdir/$group/$grid/${casename}.tcl"
+ 
+ 	# alternative method to run without temporary file; disabled as it needs too many backslashes
+ #	else {
+@@ -740,6 +743,13 @@ proc testfile {filelist} {
+ proc locate_data_file {filename} {
+     global env groupname gridname casename
+ 
++    if [info exists env(OCE_SKIP_TESTS_DATA)] {
++        # raise error
++        error [join [list "File $filename could not be found" \
++                          "(should be in paths indicated by CSF_TestDataPath environment variable, " \
++                          "or in subfolder data in the script directory)"] "\n"]
++    }
++
+     # check if the file is located in the subdirectory data of the script dir
+     set scriptfile [info script]
+     if { $scriptfile != "" } {
+diff --git a/src/FSD/FSD_CmpFile.cdl b/src/FSD/FSD_CmpFile.cdl
+index 6984f81..728aab5 100644
+--- a/src/FSD/FSD_CmpFile.cdl
++++ b/src/FSD/FSD_CmpFile.cdl
+@@ -319,7 +319,6 @@ is
+ 
+     MagicNumber(myclass)
+     	returns CString from Standard is private;
+-    ---C++: return const
+     
+     RaiseError(me: in out ; theFailure: Type from Standard) is private;
+         
+diff --git a/src/Graphic3d/Graphic3d.cxx b/src/Graphic3d/Graphic3d.cxx
+index 3cf42bd..90d67c5 100644
+--- a/src/Graphic3d/Graphic3d.cxx
++++ b/src/Graphic3d/Graphic3d.cxx
+@@ -25,6 +25,7 @@
+ //function : InitGraphicDriver
+ //purpose  :
+ //=======================================================================
++#if !defined(OCE_BUILD_STATIC_LIB) && !defined(HAVE_NO_DLL)
+ Handle(Graphic3d_GraphicDriver) Graphic3d::InitGraphicDriver (const Handle(Aspect_DisplayConnection)& theDisplayConnection)
+ {
+ #if !defined(_WIN32) && !defined(__WIN32__) && (!defined(__APPLE__) || defined(MACOSX_USE_GLX))
+@@ -98,3 +99,15 @@ Handle(Graphic3d_GraphicDriver) Graphic3d::InitGraphicDriver (const Handle(Aspec
+ 
+   return aGraphicDriver;
+ }
++#else
++
++extern "C"
++{
++     Handle(Graphic3d_GraphicDriver) MetaGraphicDriverFactory(const Standard_CString AShrName);
++}
++
++Handle(Graphic3d_GraphicDriver) Graphic3d::InitGraphicDriver (const Handle(Aspect_DisplayConnection)& theDisplayConnection)
++{
++     return MetaGraphicDriverFactory("");
++}
++#endif
+diff --git a/src/NCollection/NCollection_Mat4.hxx b/src/NCollection/NCollection_Mat4.hxx
+index 7d58367..bd884b3 100644
+--- a/src/NCollection/NCollection_Mat4.hxx
++++ b/src/NCollection/NCollection_Mat4.hxx
+@@ -203,8 +203,6 @@ public:
+   //! Raw access to the data (for OpenGL exchange).
+   const Element_t* GetData()    const { return myMat; }
+   Element_t*       ChangeData()       { return myMat; }
+-  operator const   Element_t*() const { return myMat; }
+-  operator         Element_t*()       { return myMat; }
+ 
+   //! Multiply by the vector (M * V).
+   //! @param theVec [in] the vector to multiply.
+@@ -228,10 +226,10 @@ public:
+     size_t aInputElem;
+     for (size_t aResElem = 0; aResElem < 16; ++aResElem)
+     {
+-      aMatRes[aResElem] = (Element_t )0;
++      aMatRes.myMat[aResElem] = (Element_t )0;
+       for (aInputElem = 0; aInputElem < 4; ++aInputElem)
+       {
+-        aMatRes[aResElem] += theMatA.GetValue(aResElem % 4, aInputElem)
++        aMatRes.myMat[aResElem] += theMatA.GetValue(aResElem % 4, aInputElem)
+                            * theMatB.GetValue(aInputElem, aResElem / 4);
+       }
+     }
+diff --git a/src/NCollection/NCollection_Vec3.hxx b/src/NCollection/NCollection_Vec3.hxx
+index f6ff42b..4cf1529 100644
+--- a/src/NCollection/NCollection_Vec3.hxx
++++ b/src/NCollection/NCollection_Vec3.hxx
+@@ -161,14 +161,14 @@ public:
+   friend NCollection_Vec3 operator+ (const NCollection_Vec3& theLeft,
+                                      const NCollection_Vec3& theRight)
+   {
+-    NCollection_Vec3 aSumm = NCollection_Vec3 (theLeft);
++    NCollection_Vec3 aSumm = NCollection_Vec3<Element_t> (theLeft);
+     return aSumm += theRight;
+   }
+ 
+   //! Unary -.
+   NCollection_Vec3 operator-() const
+   {
+-    return NCollection_Vec3 (-x(), -y(), -z());
++    return NCollection_Vec3<Element_t> (-x(), -y(), -z());
+   }
+ 
+   //! Compute per-component subtraction.
+@@ -311,19 +311,19 @@ public:
+   //! Constuct DX unit vector.
+   static NCollection_Vec3 DX()
+   {
+-    return NCollection_Vec3 (Element_t(1), Element_t(0), Element_t(0));
++    return NCollection_Vec3<Element_t> (Element_t(1), Element_t(0), Element_t(0));
+   }
+ 
+   //! Constuct DY unit vector.
+   static NCollection_Vec3 DY()
+   {
+-    return NCollection_Vec3 (Element_t(0), Element_t(1), Element_t(0));
++    return NCollection_Vec3<Element_t> (Element_t(0), Element_t(1), Element_t(0));
+   }
+ 
+   //! Constuct DZ unit vector.
+   static NCollection_Vec3 DZ()
+   {
+-    return NCollection_Vec3 (Element_t(0), Element_t(0), Element_t(1));
++    return NCollection_Vec3<Element_t> (Element_t(0), Element_t(0), Element_t(1));
+   }
+ 
+ private:
+diff --git a/src/NCollection/NCollection_Vec4.hxx b/src/NCollection/NCollection_Vec4.hxx
+index 27e5437..1e4a7cd 100644
+--- a/src/NCollection/NCollection_Vec4.hxx
++++ b/src/NCollection/NCollection_Vec4.hxx
+@@ -215,7 +215,7 @@ public:
+   //! Unary -.
+   NCollection_Vec4 operator-() const
+   {
+-    return NCollection_Vec4 (-x(), -y(), -z(), -w());
++    return NCollection_Vec4<Element_t> (-x(), -y(), -z(), -w());
+   }
+ 
+   //! Compute per-component subtraction.
+@@ -232,7 +232,7 @@ public:
+   friend NCollection_Vec4 operator- (const NCollection_Vec4& theLeft,
+                                      const NCollection_Vec4& theRight)
+   {
+-    NCollection_Vec4 aSumm = NCollection_Vec4 (theLeft);
++    NCollection_Vec4 aSumm = NCollection_Vec4<Element_t> (theLeft);
+     return aSumm -= theRight;
+   }
+ 
+diff --git a/src/OSD/OSD_FileNode.cxx b/src/OSD/OSD_FileNode.cxx
+index 6afae18..4247b20 100644
+--- a/src/OSD/OSD_FileNode.cxx
++++ b/src/OSD/OSD_FileNode.cxx
+@@ -945,16 +945,13 @@ void _osd_wnt_set_error ( OSD_Error& err, OSD_WhoAmI who, ... ) {
+ 
+  DWORD              errCode;
+  Standard_Character buffer[ 2048 ];
+- va_list            arg_ptr;
+-
+- va_start ( arg_ptr, err );
+ 
+  errCode = GetLastError ();
+ 
+  if (  !FormatMessage (
+-         FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_ARGUMENT_ARRAY,
++         FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
+          0, errCode, MAKELANGID( LANG_NEUTRAL, SUBLANG_NEUTRAL ),
+-         buffer, 2048, &arg_ptr
++         buffer, 2048, NULL
+         )
+  ) {
+  
+@@ -965,8 +962,6 @@ void _osd_wnt_set_error ( OSD_Error& err, OSD_WhoAmI who, ... ) {
+ 
+  err.SetValue ( errCode, who, buffer );
+ 
+- va_end ( arg_ptr );
+-
+ }  // end _set_error
+ 
+ 
+diff --git a/src/OpenGl/OpenGl_Context.cxx b/src/OpenGl/OpenGl_Context.cxx
+index 5e3b108..aea7870 100644
+--- a/src/OpenGl/OpenGl_Context.cxx
++++ b/src/OpenGl/OpenGl_Context.cxx
+@@ -76,7 +76,6 @@ OpenGl_Context::OpenGl_Context (const Handle(OpenGl_Caps)& theCaps)
+   core14 (NULL),
+   core15 (NULL),
+   core20 (NULL),
+-  caps   (!theCaps.IsNull() ? theCaps : new OpenGl_Caps()),
+   arbNPTW(Standard_False),
+   arbVBO (NULL),
+   arbTBO (NULL),
+@@ -103,6 +102,11 @@ OpenGl_Context::OpenGl_Context (const Handle(OpenGl_Caps)& theCaps)
+   myIsFeedback (Standard_False),
+   myIsInitialized (Standard_False)
+ {
++  if (!theCaps.IsNull())
++    caps = theCaps;
++  else
++    caps = new OpenGl_Caps();
++
+ #if defined(MAC_OS_X_VERSION_10_3) && !defined(MACOSX_USE_GLX)
+   // Vendors can not extend functionality on this system
+   // and developers are limited to OpenGL support provided by Mac OS X SDK.
+@@ -592,7 +596,7 @@ static void APIENTRY debugCallbackWrap(unsigned int theSource,
+                                        unsigned int theSeverity,
+                                        int          /*theLength*/,
+                                        const char*  theMessage,
+-                                       void*  theUserParam)
++                                       const void*  theUserParam)
+ {
+   OpenGl_Context* aCtx = (OpenGl_Context* )theUserParam;
+   aCtx->PushMessage (theSource, theType, theId, theSeverity, theMessage);
+diff --git a/src/OpenGl/OpenGl_Display.cxx b/src/OpenGl/OpenGl_Display.cxx
+index 77cb99e..4717ee5 100644
+--- a/src/OpenGl/OpenGl_Display.cxx
++++ b/src/OpenGl/OpenGl_Display.cxx
+@@ -35,7 +35,7 @@ IMPLEMENT_STANDARD_RTTIEXT(OpenGl_Display,MMgt_TShared)
+ namespace
+ {
+   #if (defined(_WIN32) || defined(__WIN32__)) || (defined(__APPLE__) && !defined(MACOSX_USE_GLX))
+-    static char* TheDummyDisplay = "DISPLAY";
++    static char TheDummyDisplay[] = "DISPLAY";
+   #endif
+ 
+   static const OpenGl_Facilities myDefaultFacilities = { 1, 1, 1, 1, OpenGLMaxLights, 10000 };
+diff --git a/src/OpenGl/OpenGl_Flipper.cxx b/src/OpenGl/OpenGl_Flipper.cxx
+index 83398bf..e648d1a 100644
+--- a/src/OpenGl/OpenGl_Flipper.cxx
++++ b/src/OpenGl/OpenGl_Flipper.cxx
+@@ -192,7 +192,7 @@ void OpenGl_Flipper::Render (const Handle(OpenGl_Workspace)& theWorkspace) const
+     glMatrixMode (GL_MODELVIEW);
+   }
+ 
+-  glLoadMatrixf ((GLfloat*) aMatrixMV);
++  glLoadMatrixf (aMatrixMV.GetData());
+ 
+   if (aCurrMode != GL_MODELVIEW)
+   {
+diff --git a/src/OpenGl/OpenGl_GlCore12.hxx b/src/OpenGl/OpenGl_GlCore12.hxx
+index 76d146e..952b1fe 100644
+--- a/src/OpenGl/OpenGl_GlCore12.hxx
++++ b/src/OpenGl/OpenGl_GlCore12.hxx
+@@ -23,13 +23,15 @@
+ 
+ #include <OpenGl_GlCore11.hxx>
+ 
+-#if defined(__APPLE__) && !defined(MACOSX_USE_GLX)
+-  #undef GL_VERSION_1_2
+-  #undef GL_VERSION_1_3
+-  #undef GL_VERSION_1_4
+-  #undef GL_VERSION_1_5
+-  #undef GL_VERSION_2_0
+-#endif
++// We can safely #undef GL_VERSION_x_y since redeclaration of typedef names can
++// be done for same type: http://msdn.microsoft.com/en-us/library/87txds41.aspx
++// It is required to fix build against Mesa >= 10:
++// http://cgit.freedesktop.org/mesa/mesa/commit/?id=a36f7e6
++#undef GL_VERSION_1_2
++#undef GL_VERSION_1_3
++#undef GL_VERSION_1_4
++#undef GL_VERSION_1_5
++#undef GL_VERSION_2_0
+ 
+ #include <OpenGl_glext.h>
+ 
+diff --git a/src/OpenGl/OpenGl_ShaderManager.cxx b/src/OpenGl/OpenGl_ShaderManager.cxx
+index 25218df..f83f66f 100644
+--- a/src/OpenGl/OpenGl_ShaderManager.cxx
++++ b/src/OpenGl/OpenGl_ShaderManager.cxx
+@@ -611,7 +611,7 @@ static void PushAspectFace (const Handle(OpenGl_Context)&       theCtx,
+ {
+   theProgram->SetUniform (theCtx,
+                           theProgram->GetStateLocation (OpenGl_OCCT_TEXTURE_ENABLE),
+-                          theAspect->DoTextureMap());
++                          (GLint)theAspect->DoTextureMap());
+   theProgram->SetUniform (theCtx,
+                           theProgram->GetStateLocation (OpenGl_OCCT_ACTIVE_SAMPLER),
+                           0 /* GL_TEXTURE0 */);
+diff --git a/src/ProjLib/ProjLib_ProjectedCurve.cxx b/src/ProjLib/ProjLib_ProjectedCurve.cxx
+index 33aabb5..c3c1553 100644
+--- a/src/ProjLib/ProjLib_ProjectedCurve.cxx
++++ b/src/ProjLib/ProjLib_ProjectedCurve.cxx
+@@ -529,9 +529,10 @@ void ProjLib_ProjectedCurve::Load(const Handle(Adaptor3d_HCurve)& C)
+ 
+ 	if(IsTrimmed[0] || IsTrimmed[1]) {
+ 	  // Treatment only for surface of revolution
+-	  Standard_Real u1, u2, v2;
++	  Standard_Real u1, u2, v1, v2;
+ 	  u1 = mySurface->FirstUParameter();
+ 	  u2 = mySurface->LastUParameter();
++	  v1 = mySurface->FirstVParameter();
+ 	  v2 = mySurface->LastVParameter();
+ 	  
+ 	  if(IsTrimmed[0]) {
+diff --git a/src/QABugs/QABugs_3.cxx b/src/QABugs/QABugs_3.cxx
+index fb3906c..9d2565d 100644
+--- a/src/QABugs/QABugs_3.cxx
++++ b/src/QABugs/QABugs_3.cxx
+@@ -1012,7 +1012,10 @@ static Standard_Integer coordload (Draw_Interpretor& theDi,
+   }
+ 
+   BRepBuilderAPI_MakeFace aMakeFace (aMakeWire.Wire());
+-  DBRep::Set (theArgVec[1], aMakeFace.IsDone() ? aMakeFace.Face() : TopoDS_Face());
++  TopoDS_Face aFace;
++  if (aMakeFace.IsDone())
++    aFace = aMakeFace.Face();
++  DBRep::Set (theArgVec[1], aFace);
+   return 0;
+ }
+ 
+diff --git a/src/Standard/Standard_Atomic.hxx b/src/Standard/Standard_Atomic.hxx
+index 82c34c5..a580c11 100644
+--- a/src/Standard/Standard_Atomic.hxx
++++ b/src/Standard/Standard_Atomic.hxx
+@@ -27,6 +27,8 @@
+ #ifndef _Standard_Atomic_HeaderFile
+ #define _Standard_Atomic_HeaderFile
+ 
++#include <Standard_Macro.hxx>
++
+ //! Increments atomically integer variable pointed by theValue
+ //! and returns resulting incremented value.
+ inline int Standard_Atomic_Increment (volatile int* theValue);
+diff --git a/src/Standard/Standard_TypeDef.hxx b/src/Standard/Standard_TypeDef.hxx
+index 8dcf242..65ca753 100644
+--- a/src/Standard/Standard_TypeDef.hxx
++++ b/src/Standard/Standard_TypeDef.hxx
+@@ -18,19 +18,16 @@
+ #include <cstddef>
+ #include <ctime>
+ 
+-#if(defined(_MSC_VER) && (_MSC_VER < 1600))
++#if(defined(_MSC_VER) && (_MSC_VER < 1800)) || defined(__BORLANDC__)
++
++  #if defined(_MSC_VER) && (_MSC_VER < 1600)
+   // old MSVC - hasn't stdint header
+   typedef unsigned __int16  uint16_t;
+   typedef unsigned __int32  uint32_t;
+-#else
+-#if defined(__hpux) && !defined(__GNUC__)
+-  #include <inttypes.h>
+-#else
++  #else
+   #include <stdint.h>
+-#endif
+-#endif
++  #endif
+ 
+-#if(defined(_MSC_VER) && (_MSC_VER < 1800))
+   // only Visual Studio 2013 (vc12) provides <cinttypes> header
+   // we do not defined all macros here - only used by OCCT framework
+   #ifdef _WIN64
+diff --git a/src/StdSelect/StdSelect_ViewerSelector3d.cxx b/src/StdSelect/StdSelect_ViewerSelector3d.cxx
+index dc14b40..eeb19f5 100644
+--- a/src/StdSelect/StdSelect_ViewerSelector3d.cxx
++++ b/src/StdSelect/StdSelect_ViewerSelector3d.cxx
+@@ -767,9 +767,10 @@ void StdSelect_ViewerSelector3d::ComputeSensitivePrs(const Handle(SelectMgr_Sele
+             gp_Pnt ThePts[3] =
+             {
+               gp_Pnt (C->GetPoint3d (II).XYZ()),
+-              gp_Pnt (C->GetPoint3d (++II).XYZ()),
+-              gp_Pnt (C->GetPoint3d (++II).XYZ())
++              gp_Pnt (C->GetPoint3d (II+1).XYZ()),
++              gp_Pnt (C->GetPoint3d (II+2).XYZ())
+             };
++            II += 2;
+ 
+             if (hasloc)
+             {
+@@ -834,9 +835,10 @@ void StdSelect_ViewerSelector3d::ComputeSensitivePrs(const Handle(SelectMgr_Sele
+         gp_Pnt ThePts[3] =
+         {
+           gp_Pnt (C->GetPoint3d (II).XYZ()),
+-          gp_Pnt (C->GetPoint3d (++II).XYZ()),
+-          gp_Pnt (C->GetPoint3d (++II).XYZ())
++          gp_Pnt (C->GetPoint3d (II+1).XYZ()),
++          gp_Pnt (C->GetPoint3d (II+2).XYZ())
+         };
++        II += 2;
+ 
+         if (hasloc)
+         {
+diff --git a/src/TObj/TObj_Model.cxx b/src/TObj/TObj_Model.cxx
+index df71517..24b7914 100644
+--- a/src/TObj/TObj_Model.cxx
++++ b/src/TObj/TObj_Model.cxx
+@@ -232,7 +232,7 @@ Handle(TCollection_HAsciiString) TObj_Model::GetFile() const
+   TCollection_AsciiString aPath (aDoc->GetPath());
+   return !aPath.IsEmpty()
+        ? new TCollection_HAsciiString (aPath)
+-       : Handle(TCollection_HAsciiString)();
++       : new TCollection_HAsciiString ();
+ }
+ 
+ //=======================================================================
+diff --git a/src/ViewerTest/ViewerTest_CMPLRS.edl b/src/ViewerTest/ViewerTest_CMPLRS.edl
+index 1a58210..fa27f5b 100644
+--- a/src/ViewerTest/ViewerTest_CMPLRS.edl
++++ b/src/ViewerTest/ViewerTest_CMPLRS.edl
+@@ -17,6 +17,6 @@
+ 
+   @uses "CSF.edl" ;
+ 
+-  @string %CMPLRS_CXX_Options += " " %CSF_TCL_INCLUDE;
++  @string %CMPLRS_CXX_Options += " " %CSF_TCL_INCLUDE " " %CSF_FREETYPE_INCLUDES " ";
+ 
+ @endif;
