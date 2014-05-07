@@ -1,0 +1,76 @@
+From f1fce5a47e71010671c4b05b953b3607c2f245f4 Mon Sep 17 00:00:00 2001
+From: Conrad Poelman <cp@stellarscience.com>
+Date: Thu, 27 Mar 2014 12:39:57 -0600
+Subject: [PATCH] Revert "Removed OCE_DISABLE_TKSERVICE_FONT"
+
+(This reverts commit a016096d4559bd601d96863f56f4afd4242c469c.)
+Updated to work with latest version of OCE by adding a couple of
+ifdef's in AIS/AIS_Dimension.cxx.
+---
+ CMakeLists.txt                     | 44 +++++++++++++++++++++++++-------------
+ adm/cmake/TKService/CMakeLists.txt | 24 +++++++++++++--------
+ adm/cmake/TKV3d/CMakeLists.txt     |  3 +++
+ src/AIS/AIS_Dimension.cxx          | 11 +++++++++-
+ 4 files changed, 57 insertions(+), 25 deletions(-)
+
+diff --git a/src/AIS/AIS_Dimension.cxx b/src/AIS/AIS_Dimension.cxx
+index a312531..2e575f4 100644
+--- a/src/AIS/AIS_Dimension.cxx
++++ b/src/AIS/AIS_Dimension.cxx
+@@ -23,7 +23,9 @@
+ #include <BRepBndLib.hxx>
+ #include <Bnd_Box.hxx>
+ #include <ElCLib.hxx>
++#ifndef OCE_DISABLE_TKSERVICE_FONT
+ #include <Font_BRepFont.hxx>
++#endif // OCE_DISABLE_TKSERVICE_FONT
+ #include <GC_MakeCircle.hxx>
+ #include <GeomAdaptor_Curve.hxx>
+ #include <Geom_Circle.hxx>
+@@ -36,6 +38,7 @@
+ #include <Graphic3d_AspectFillArea3d.hxx>
+ #include <Graphic3d_AspectText3d.hxx>
+ #include <Graphic3d_Group.hxx>
++#include <NCollection_UtfString.hxx>
+ #include <PrsMgr_PresentationManager3d.hxx>
+ #include <Prs3d_Arrow.hxx>
+ #include <Prs3d_ArrowAspect.hxx>
+@@ -304,6 +307,7 @@ TCollection_ExtendedString AIS_Dimension::GetValueString (Standard_Real& theWidt
+ 
+   theWidth = 0.0;
+ 
++#ifndef OCE_DISABLE_TKSERVICE_FONT
+   if (myDrawer->DimensionAspect()->IsText3d())
+   {
+     // text width produced by BRepFont
+@@ -329,7 +333,10 @@ TCollection_ExtendedString AIS_Dimension::GetValueString (Standard_Real& theWidt
+       theWidth += (Standard_Real) aFont->AdvanceX (aCurrChar, aNextChar);
+     }
+   }
+-
++#else
++  // Using height as width will generally produce an overestimate of the text's width in pixels.
++  theWidth += anUTFString.Length() * myDrawer->DimensionAspect()->TextAspect()->Height();
++#endif // OCE_DISABLE_TKSERVICE_FONT
+   return aValueStr;
+ }
+ 
+@@ -404,6 +411,7 @@ void AIS_Dimension::DrawText (const Handle(Prs3d_Presentation)& thePresentation,
+                               const TCollection_ExtendedString& theText,
+                               const Standard_Integer theLabelPosition)
+ {
++#ifndef OCE_DISABLE_TKSERVICE_FONT
+   if (myDrawer->DimensionAspect()->IsText3d())
+   {
+     // getting font parameters
+@@ -523,6 +531,7 @@ void AIS_Dimension::DrawText (const Handle(Prs3d_Presentation)& thePresentation,
+ 
+     return;
+   }
++#endif // OCE_DISABLE_TKSERVICE_FONT
+ 
+   // generate primitives for 2D text
+   myDrawer->DimensionAspect()->TextAspect()->Aspect()->SetDisplayType (Aspect_TODT_DIMENSION);
+-- 
+1.9.1
+

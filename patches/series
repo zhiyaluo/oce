@@ -86,6 +86,8 @@ warning/fix-declared-but-never-defined.patch
 warning/review-fix-unused-local-var.patch
 
 improve-exception-message.patch
+fix-exception-in-BOP.patch
+optimize-BOP.patch
 
 #  This patch should drop const qualifiers in return value for all methods (only for objects, not pointers and references!)
 warning/remove-const-return-value.patch
@@ -143,8 +145,11 @@ ports/hpux-atomic.patch
 ports/rad-studio-xe4.patch
 ports/mingw-locale.patch
 ports/mingw64.patch
+ports/mingw-math.patch
 
 Print-null-handle.patch
+disable-TKService-Font.patch
+fix-numerical-bug.patch
 
 fix-ftbfs-c++11.patch
 fix-ftbfs-Hurd.patch

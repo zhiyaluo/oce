@@ -1,0 +1,42 @@
+From c659bb6b5c7fed573b4caf7586ca920f29bade01 Mon Sep 17 00:00:00 2001
+From: Jacob Abel <thatcadguy@users.noreply.github.com>
+Date: Tue, 4 Mar 2014 15:46:38 -0800
+Subject: [PATCH] Re-add math defines for MinGW
+
+Commit 5c79896 took away the math defines, these defines are needed under MinGW if strict ANSI compilation is performed
+---
+ src/Standard/Standard_math.hxx | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+diff --git a/src/Standard/Standard_math.hxx b/src/Standard/Standard_math.hxx
+index 5c5f0ca..428abff 100644
+--- a/src/Standard/Standard_math.hxx
++++ b/src/Standard/Standard_math.hxx
+@@ -16,7 +16,7 @@
+ #include <Standard_Macro.hxx>
+ #endif
+ 
+-#if defined(_MSC_VER) || defined(__BORLANDC__)
++#if defined(_MSC_VER) || defined(__BORLANDC__) || defined(__MINGW32__)
+ 
+ #define _USE_MATH_DEFINES
+ #include <math.h>
+@@ -28,5 +28,14 @@ __Standard_API double __cdecl asinh ( double );
+ __Standard_API double __cdecl atanh ( double );
+ #endif
+ 
+-#endif  /* _MSC_VER */
++// if __STRICT_ANSI__ is defined when using MinGW, no math defines will be defined
++#ifdef __MINGW32__
++# undef M_SQRT1_2
++# define M_SQRT1_2  0.707106781186547524401
++# undef M_PI_2
++# define M_PI_2     1.57079632679489661923
++# undef M_PI
++# define M_PI       3.14159265358979323846
++#endif /* __MINGW32__ */
+ 
++#endif  /* _MSC_VER, __BORLANDC__, or __MINGW32__ */
+-- 
+1.9.1
+
