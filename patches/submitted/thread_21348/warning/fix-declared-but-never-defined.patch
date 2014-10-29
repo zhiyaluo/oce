@@ -21,7 +21,7 @@ Index: oce/src/InterfaceGraphic/InterfaceGraphic_wntio.hxx
 ===================================================================
 --- oce.orig/src/InterfaceGraphic/InterfaceGraphic_wntio.hxx
 +++ oce/src/InterfaceGraphic/InterfaceGraphic_wntio.hxx
-@@ -33,7 +33,6 @@ extern "C" {
+@@ -29,7 +29,6 @@ extern "C" {
  
  __InterfaceGraphic_API int   cPrintf ( char*, ... );
  __InterfaceGraphic_API int   fcPrintf ( int, char*, ... );

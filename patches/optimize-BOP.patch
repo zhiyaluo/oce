@@ -9,19 +9,19 @@ In order to not impact the code too much, we'll simply calculate the correct val
  src/IntTools/IntTools_FClass2d.cxx    | 6 ++++++
  2 files changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/src/BOPTools/BOPTools_AlgoTools2D.cxx b/src/BOPTools/BOPTools_AlgoTools2D.cxx
-index 41234e2..e43f9a1 100644
---- a/src/BOPTools/BOPTools_AlgoTools2D.cxx
-+++ b/src/BOPTools/BOPTools_AlgoTools2D.cxx
-@@ -54,6 +54,7 @@
- #include <BOPCol_IndexedMapOfShape.hxx>
+Index: oce/src/BOPTools/BOPTools_AlgoTools2D.cxx
+===================================================================
+--- oce.orig/src/BOPTools/BOPTools_AlgoTools2D.cxx
++++ oce/src/BOPTools/BOPTools_AlgoTools2D.cxx
+@@ -55,6 +55,7 @@
  #include <BOPTools.hxx>
+ #include <BRepClass_FaceClassifier.hxx>
  
 +#include <Standard_Real.hxx>
  
  static 
    Standard_Boolean CheckEdgeLength (const TopoDS_Edge& E);
-@@ -289,14 +290,14 @@ static
+@@ -290,14 +291,14 @@ static
        aUP1=aUPeriod+aDelta;
        //
        if (u2 > aUP2) {
@@ -38,10 +38,10 @@ index 41234e2..e43f9a1 100644
          do {
            aUx=u2+k*aUPeriod;
            iCnt = (k++) + 1;
-diff --git a/src/IntTools/IntTools_FClass2d.cxx b/src/IntTools/IntTools_FClass2d.cxx
-index 27fb145..a65be9d 100644
---- a/src/IntTools/IntTools_FClass2d.cxx
-+++ b/src/IntTools/IntTools_FClass2d.cxx
+Index: oce/src/IntTools/IntTools_FClass2d.cxx
+===================================================================
+--- oce.orig/src/IntTools/IntTools_FClass2d.cxx
++++ oce/src/IntTools/IntTools_FClass2d.cxx
 @@ -45,6 +45,8 @@
  #include <TColStd_DataMapOfIntegerInteger.hxx>
  #include <TColgp_SequenceOfVec2d.hxx>
@@ -83,6 +83,3 @@ index 27fb145..a65be9d 100644
  	  if (vv < Vmin)
  	    while (vv < Vmin)
  	      vv += vperiod;
--- 
-1.9.1
-

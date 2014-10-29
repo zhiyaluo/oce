@@ -11,7 +11,7 @@ Index: oce/src/Intf/Intf_InterferencePolygonPolyhedron.gxx
 ===================================================================
 --- oce.orig/src/Intf/Intf_InterferencePolygonPolyhedron.gxx
 +++ oce/src/Intf/Intf_InterferencePolygonPolyhedron.gxx
-@@ -813,6 +813,7 @@ void Intf_InterferencePolygonPolyhedron:
+@@ -808,6 +808,7 @@ void Intf_InterferencePolygonPolyhedron:
      Standard_Integer sEdge=-1;
      Standard_Integer sVertex=-1;
      Standard_Integer tbreak=0;
@@ -27,3 +27,15 @@ Index: oce/src/Intf/Intf_InterferencePolygonPolyhedron.gxx
      { //-- is = 0
        gp_XYZ segT(ToolPolyh::Point(thePolyh, pTri[1]).XYZ()-
  		  ToolPolyh::Point(thePolyh, pTri[0]).XYZ());
+Index: oce/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
+===================================================================
+--- oce.orig/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
++++ oce/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
+@@ -146,7 +146,6 @@ static void Hunt(const TColStd_Array1OfR
+   if(Abs(Coord - Arr(i)) < Tol)
+     Iloc = i;
+   else
+-    if(Abs(Coord - Arr(i)) > Tol) 
+       Standard_NotImplemented::Raise("Adaptor3d_CurveOnSurface:Hunt");
+ }
+ 

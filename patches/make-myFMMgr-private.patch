@@ -13,7 +13,7 @@ Index: oce/src/Standard/Standard.cxx
 ===================================================================
 --- oce.orig/src/Standard/Standard.cxx
 +++ oce/src/Standard/Standard.cxx
-@@ -70,12 +70,15 @@ static Standard_Boolean Standard_IsReent
+@@ -61,12 +61,15 @@
  //           to environment settings, and to ensure destruction upon exit
  //=======================================================================
  

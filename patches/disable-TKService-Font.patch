@@ -13,10 +13,10 @@ ifdef's in AIS/AIS_Dimension.cxx.
  src/AIS/AIS_Dimension.cxx          | 11 +++++++++-
  4 files changed, 57 insertions(+), 25 deletions(-)
 
-diff --git a/src/AIS/AIS_Dimension.cxx b/src/AIS/AIS_Dimension.cxx
-index a312531..2e575f4 100644
---- a/src/AIS/AIS_Dimension.cxx
-+++ b/src/AIS/AIS_Dimension.cxx
+Index: oce/src/AIS/AIS_Dimension.cxx
+===================================================================
+--- oce.orig/src/AIS/AIS_Dimension.cxx
++++ oce/src/AIS/AIS_Dimension.cxx
 @@ -23,7 +23,9 @@
  #include <BRepBndLib.hxx>
  #include <Bnd_Box.hxx>
@@ -25,9 +25,9 @@ index a312531..2e575f4 100644
  #include <Font_BRepFont.hxx>
 +#endif // OCE_DISABLE_TKSERVICE_FONT
  #include <GC_MakeCircle.hxx>
+ #include <Geom_Line.hxx>
  #include <GeomAdaptor_Curve.hxx>
- #include <Geom_Circle.hxx>
-@@ -36,6 +38,7 @@
+@@ -38,6 +40,7 @@
  #include <Graphic3d_AspectFillArea3d.hxx>
  #include <Graphic3d_AspectText3d.hxx>
  #include <Graphic3d_Group.hxx>
@@ -35,7 +35,7 @@ index a312531..2e575f4 100644
  #include <PrsMgr_PresentationManager3d.hxx>
  #include <Prs3d_Arrow.hxx>
  #include <Prs3d_ArrowAspect.hxx>
-@@ -304,6 +307,7 @@ TCollection_ExtendedString AIS_Dimension::GetValueString (Standard_Real& theWidt
+@@ -312,6 +315,7 @@ TCollection_ExtendedString AIS_Dimension
  
    theWidth = 0.0;
  
@@ -43,7 +43,7 @@ index a312531..2e575f4 100644
    if (myDrawer->DimensionAspect()->IsText3d())
    {
      // text width produced by BRepFont
-@@ -329,7 +333,10 @@ TCollection_ExtendedString AIS_Dimension::GetValueString (Standard_Real& theWidt
+@@ -337,7 +341,10 @@ TCollection_ExtendedString AIS_Dimension
        theWidth += (Standard_Real) aFont->AdvanceX (aCurrChar, aNextChar);
      }
    }
@@ -55,7 +55,7 @@ index a312531..2e575f4 100644
    return aValueStr;
  }
  
-@@ -404,6 +411,7 @@ void AIS_Dimension::DrawText (const Handle(Prs3d_Presentation)& thePresentation,
+@@ -412,6 +419,7 @@ void AIS_Dimension::DrawText (const Hand
                                const TCollection_ExtendedString& theText,
                                const Standard_Integer theLabelPosition)
  {
@@ -63,7 +63,7 @@ index a312531..2e575f4 100644
    if (myDrawer->DimensionAspect()->IsText3d())
    {
      // getting font parameters
-@@ -523,6 +531,7 @@ void AIS_Dimension::DrawText (const Handle(Prs3d_Presentation)& thePresentation,
+@@ -531,6 +539,7 @@ void AIS_Dimension::DrawText (const Hand
  
      return;
    }
@@ -71,6 +71,3 @@ index a312531..2e575f4 100644
  
    // generate primitives for 2D text
    myDrawer->DimensionAspect()->TextAspect()->Aspect()->SetDisplayType (Aspect_TODT_DIMENSION);
--- 
-1.9.1
-

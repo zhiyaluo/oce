@@ -12,7 +12,7 @@ Index: oce/src/AIS/AIS_Dimension.cxx
 ===================================================================
 --- oce.orig/src/AIS/AIS_Dimension.cxx
 +++ oce/src/AIS/AIS_Dimension.cxx
-@@ -395,6 +395,9 @@ void AIS_Dimension::DrawArrow (const Han
+@@ -403,6 +403,9 @@ void AIS_Dimension::DrawArrow (const Han
  //function : DrawText
  //purpose  : 
  //=======================================================================

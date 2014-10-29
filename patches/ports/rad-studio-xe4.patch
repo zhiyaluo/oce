@@ -25,7 +25,7 @@ Index: oce/src/BRepFill/BRepFill.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill.cxx
 +++ oce/src/BRepFill/BRepFill.cxx
-@@ -175,14 +175,14 @@ static void TrimEdge (const TopoDS_Edge&
+@@ -171,14 +171,14 @@ static void TrimEdge (const TopoDS_Edge&
      for (j=1; j<=ndec; j++) {
        // piece of edge  
        m1 = (CutValues.Value(j)-t0)*(last-first)/(t1-t0)+first;
@@ -42,7 +42,7 @@ Index: oce/src/BRepFill/BRepFill.cxx
  	LastE.Orientation(CurrentOrient);
  	S.Append(LastE);
        }
-@@ -195,14 +195,14 @@ static void TrimEdge (const TopoDS_Edge&
+@@ -191,14 +191,14 @@ static void TrimEdge (const TopoDS_Edge&
      for (j=ndec; j>=1; j--) {
        // piece of edge  
        m0 = (CutValues.Value(j)-t0)*(last-first)/(t1-t0)+first;
@@ -63,7 +63,7 @@ Index: oce/src/BRepLib/BRepLib_FindSurface.cxx
 ===================================================================
 --- oce.orig/src/BRepLib/BRepLib_FindSurface.cxx
 +++ oce/src/BRepLib/BRepLib_FindSurface.cxx
-@@ -127,7 +127,7 @@ static Standard_Boolean Is2DClosed(const
+@@ -122,7 +122,7 @@ static Standard_Boolean Is2DClosed(const
      }
      TopoDS_Wire aWire = TopoDS::Wire( aWireExp.Current() );
      // a tmp face
@@ -76,7 +76,7 @@ Index: oce/src/BRepOffsetAPI/BRepOffsetAPI_MiddlePath.cxx
 ===================================================================
 --- oce.orig/src/BRepOffsetAPI/BRepOffsetAPI_MiddlePath.cxx
 +++ oce/src/BRepOffsetAPI/BRepOffsetAPI_MiddlePath.cxx
-@@ -617,7 +617,7 @@ void BRepOffsetAPI_MiddlePath::Build()
+@@ -625,7 +625,7 @@ void BRepOffsetAPI_MiddlePath::Build()
            Handle(Geom_Surface) theSurf = BRep_Tool::Surface(theFace);
            Handle(Geom2d_Line) theLine = GCE2d_MakeLine(FirstPnt2d, LastPnt2d);
            Standard_Real len_ne = FirstPnt2d.Distance(LastPnt2d);
@@ -85,7 +85,7 @@ Index: oce/src/BRepOffsetAPI/BRepOffsetAPI_MiddlePath.cxx
                                                   PrevVertex, CurVertex,
                                                   0., len_ne);
            BRepLib::BuildCurve3d(NewEdge);
-@@ -644,7 +644,7 @@ void BRepOffsetAPI_MiddlePath::Build()
+@@ -652,7 +652,7 @@ void BRepOffsetAPI_MiddlePath::Build()
            Handle(Geom_Surface) theSurf = BRep_Tool::Surface(theFace);
            Handle(Geom2d_Line) theLine = GCE2d_MakeLine(FirstPnt2d, LastPnt2d);
            Standard_Real len_ne = FirstPnt2d.Distance(LastPnt2d);
@@ -94,7 +94,7 @@ Index: oce/src/BRepOffsetAPI/BRepOffsetAPI_MiddlePath.cxx
                                                   PrevVertex, CurVertex,
                                                   0., len_ne);
            BRepLib::BuildCurve3d(NewEdge);
-@@ -653,12 +653,12 @@ void BRepOffsetAPI_MiddlePath::Build()
+@@ -661,12 +661,12 @@ void BRepOffsetAPI_MiddlePath::Build()
            Handle(Geom2d_Line) Line1 = GCE2d_MakeLine(PrevFirstPnt2d, LastPnt2d);
            Handle(Geom2d_Line) Line2 = GCE2d_MakeLine(FirstPnt2d, PrevLastPnt2d);
            Standard_Real len_ne1 = PrevFirstPnt2d.Distance(LastPnt2d);
@@ -113,7 +113,7 @@ Index: oce/src/QABugs/QABugs_10.cxx
 ===================================================================
 --- oce.orig/src/QABugs/QABugs_10.cxx
 +++ oce/src/QABugs/QABugs_10.cxx
-@@ -77,7 +77,7 @@ static Standard_Integer OCC426 (Draw_Int
+@@ -73,7 +73,7 @@ static Standard_Integer OCC426 (Draw_Int
    W1.Add(gp_Pnt(10, 0, 0));
  
    Standard_Boolean OnlyPlane1 = Standard_False;
@@ -122,7 +122,7 @@ Index: oce/src/QABugs/QABugs_10.cxx
  
    gp_Pnt P1(0, 0, 0);
    gp_Dir D1(0, 0, 30);
-@@ -95,7 +95,7 @@ static Standard_Integer OCC426 (Draw_Int
+@@ -91,7 +91,7 @@ static Standard_Integer OCC426 (Draw_Int
    W2.Add(gp_Pnt(f1, f1, 10));
  
    Standard_Boolean OnlyPlane2 = Standard_False;
@@ -131,7 +131,7 @@ Index: oce/src/QABugs/QABugs_10.cxx
  
    gp_Pnt P2(0, 0, 0);
    gp_Dir D2(0, 0, 30);
-@@ -111,7 +111,7 @@ static Standard_Integer OCC426 (Draw_Int
+@@ -107,7 +107,7 @@ static Standard_Integer OCC426 (Draw_Int
    W3.Add(gp_Pnt(10, 0, 20));
  
    Standard_Boolean OnlyPlane3 = Standard_False;
@@ -140,7 +140,7 @@ Index: oce/src/QABugs/QABugs_10.cxx
  
    gp_Pnt P3(0, 0, 0);
    gp_Dir D3(0, 0, 30);
-@@ -325,10 +325,10 @@ static Standard_Integer OCC712 (Draw_Int
+@@ -317,10 +317,10 @@ static Standard_Integer OCC712 (Draw_Int
    GC_MakeArcOfCircle arc3(p5, p6, p7);
    GC_MakeArcOfCircle arc4(p7, p8, p1);
  
@@ -155,7 +155,7 @@ Index: oce/src/QABugs/QABugs_10.cxx
  
    BRepBuilderAPI_MakeWire MW;
    MW.Add(e1);
-@@ -343,7 +343,7 @@ static Standard_Integer OCC712 (Draw_Int
+@@ -335,7 +335,7 @@ static Standard_Integer OCC712 (Draw_Int
      }
    TopoDS_Wire W = MW.Wire();
  
@@ -164,7 +164,7 @@ Index: oce/src/QABugs/QABugs_10.cxx
    if ( F.IsNull())
      {
        di << " Error in Face creation " << "\n";
-@@ -889,7 +889,7 @@ static Standard_Integer OCC826 (Draw_Int
+@@ -881,7 +881,7 @@ static Standard_Integer OCC826 (Draw_Int
    W1.Add(gp_Pnt(x1, y1, 0));
  
    Standard_Boolean myFalse = Standard_False;
@@ -173,7 +173,7 @@ Index: oce/src/QABugs/QABugs_10.cxx
  
    gp_Pnt P1(0, 0, 0);
    gp_Dir D1(0, 30, 0);
-@@ -963,7 +963,7 @@ static Standard_Integer OCC827 (Draw_Int
+@@ -955,7 +955,7 @@ static Standard_Integer OCC827 (Draw_Int
    W1.Add(gp_Pnt(10, 0, 0));
  
    Standard_Boolean myFalse = Standard_False;
@@ -182,7 +182,7 @@ Index: oce/src/QABugs/QABugs_10.cxx
  
    gp_Pnt P1(0, 0, 0);
    gp_Dir D1(0, 0, 30);
-@@ -1105,13 +1105,13 @@ static Standard_Integer OCC828 (Draw_Int
+@@ -1097,13 +1097,13 @@ static Standard_Integer OCC828 (Draw_Int
    GC_MakeSegment ln2(p23, p31);
    GC_MakeSegment ln3(p33, p11);
  
@@ -203,7 +203,7 @@ Index: oce/src/QABugs/QABugs_10.cxx
  
    BRepBuilderAPI_MakeWire MW;
    MW.Add(e1);
-@@ -1128,7 +1128,7 @@ static Standard_Integer OCC828 (Draw_Int
+@@ -1120,7 +1120,7 @@ static Standard_Integer OCC828 (Draw_Int
      }
  
    TopoDS_Wire W = MW.Wire();
@@ -216,7 +216,7 @@ Index: oce/src/QABugs/QABugs_11.cxx
 ===================================================================
 --- oce.orig/src/QABugs/QABugs_11.cxx
 +++ oce/src/QABugs/QABugs_11.cxx
-@@ -203,7 +203,7 @@ static Standard_Integer OCC136 (Draw_Int
+@@ -195,7 +195,7 @@ static Standard_Integer OCC136 (Draw_Int
    Standard_Real Size=100;
    gp_Pnt P0(0,0,0), P1(Size,Size,Size);
    //box
@@ -225,7 +225,7 @@ Index: oce/src/QABugs/QABugs_11.cxx
    //sphere
    TopoDS_Solid aSphere = BRepPrimAPI_MakeSphere (Size*0.5);
    //cone
-@@ -3146,7 +3146,7 @@ static Standard_Integer OCC8797 (Draw_In
+@@ -3092,7 +3092,7 @@ static Standard_Integer OCC8797 (Draw_In
    cout<<"Length Spline(abcissa_Pnt): "<<l_abcissa<<endl;
  
    //length!! 2.
@@ -238,7 +238,7 @@ Index: oce/src/QABugs/QABugs_13.cxx
 ===================================================================
 --- oce.orig/src/QABugs/QABugs_13.cxx
 +++ oce/src/QABugs/QABugs_13.cxx
-@@ -140,11 +140,11 @@ static Standard_Integer OCC332bug (Draw_
+@@ -134,11 +134,11 @@ static Standard_Integer OCC332bug (Draw_
    //gp_Circ faceCircle2(circ2axis,radius_r);
    //gp_Circ outFaceCircle2(circ2axis,radius_r+wall_thickness);
  
@@ -252,7 +252,7 @@ Index: oce/src/QABugs/QABugs_13.cxx
    TopoDS_Wire outerWire1_ = BRepBuilderAPI_MakeWire(Eout1).Wire();
  
    // SUPPORT:
-@@ -487,23 +487,23 @@ static Standard_Integer OCC544 (Draw_Int
+@@ -480,23 +480,23 @@ static Standard_Integer OCC544 (Draw_Int
    gp_Circ faceCircle2(circ2axis,radius_r);
    gp_Circ outFaceCircle2(circ2axis,radius_r+wall_thickness);
  
@@ -292,7 +292,7 @@ Index: oce/src/QABugs/QABugs_14.cxx
 ===================================================================
 --- oce.orig/src/QABugs/QABugs_14.cxx
 +++ oce/src/QABugs/QABugs_14.cxx
-@@ -291,7 +291,7 @@ static Standard_Integer BUC60870 (Draw_I
+@@ -286,7 +286,7 @@ static Standard_Integer BUC60870 (Draw_I
        P1 = (dst.PointOnShape1(i1));
        P2 = (dst.PointOnShape2(i1));
        if (dst.Value()<=1.e-9) {
@@ -301,7 +301,7 @@ Index: oce/src/QABugs/QABugs_14.cxx
  	char namev[100];
  	if (i1==1) {
  	  Sprintf(namev, "%s" ,ns0);
-@@ -303,7 +303,7 @@ static Standard_Integer BUC60870 (Draw_I
+@@ -298,7 +298,7 @@ static Standard_Integer BUC60870 (Draw_I
  	di << namev << " ";
        } else {
  	char name[100];
@@ -314,7 +314,7 @@ Index: oce/src/QABugs/QABugs_16.cxx
 ===================================================================
 --- oce.orig/src/QABugs/QABugs_16.cxx
 +++ oce/src/QABugs/QABugs_16.cxx
-@@ -116,7 +116,7 @@ static Standard_Integer BUC60848 (Draw_I
+@@ -112,7 +112,7 @@ static Standard_Integer BUC60848 (Draw_I
  
  static Standard_Integer BUC60828 (Draw_Interpretor& di, Standard_Integer /*argc*/, const char ** /*argv*/)
  {
@@ -323,7 +323,7 @@ Index: oce/src/QABugs/QABugs_16.cxx
    Standard_Boolean aValue; 
    aValue=anEdge.Infinite(); 
    di << "Initial flag : " << (Standard_Integer) aValue << "\n";
-@@ -697,8 +697,8 @@ static Standard_Integer OCC301 (Draw_Int
+@@ -691,8 +691,8 @@ static Standard_Integer OCC301 (Draw_Int
    gp_Pnt p2 = gp_Pnt(50.,10.,0.);
    gp_Pnt p3 = gp_Pnt(50.,50.,0.);
  
@@ -361,16 +361,16 @@ Index: oce/src/QABugs/QABugs_17.cxx
    gp_Pnt plnpt(0, 0, 0);
    gp_Dir plndir(0, 0, 1);
    Handle(Geom_Plane) pln = new Geom_Plane(plnpt,plndir);
-@@ -354,7 +354,7 @@ static Standard_Integer BUC60915_1(Draw_
+@@ -353,7 +353,7 @@ static Standard_Integer BUC60915_1(Draw_
    //dimension "R 88.58"
    /***************************************/
    gp_Circ cir = gp_Circ(gp_Ax2(gp_Pnt(191.09, -88.58, 0), gp_Dir(0, 0, 1)), 88.58);
 -  TopoDS_Edge E1 = BRepBuilderAPI_MakeEdge(cir,gp_Pnt(191.09,0,0.),gp_Pnt(191.09,-177.16,0.) );
 +  TopoDS_Edge E1 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(cir,gp_Pnt(191.09,0,0.),gp_Pnt(191.09,-177.16,0.) );
    Handle(AIS_RadiusDimension) dim1 = new AIS_RadiusDimension(E1);
+   dim1->SetDimensionAspect (anAspect);
    context->Display(dim1);
-   /***************************************/
-@@ -362,7 +362,7 @@ static Standard_Integer BUC60915_1(Draw_
+@@ -361,7 +361,7 @@ static Standard_Integer BUC60915_1(Draw_
    //dimension "R 43.80"
    /***************************************/
    gp_Circ cir1 = gp_Circ(gp_Ax2(gp_Pnt(191.09, -88.58, 0), gp_Dir(0, 0, 1)), 43.80);
@@ -379,16 +379,16 @@ Index: oce/src/QABugs/QABugs_17.cxx
    dim1 = new AIS_RadiusDimension(E_cir1);
    anAspect->ArrowAspect()->SetLength (60.0);
    dim1->SetDimensionAspect (anAspect);
-@@ -372,7 +372,7 @@ static Standard_Integer BUC60915_1(Draw_
+@@ -370,7 +370,7 @@ static Standard_Integer BUC60915_1(Draw_
    //dimension "R 17.86"
    /***************************************/
    gp_Circ cir2 = gp_Circ(gp_Ax2(gp_Pnt(566.11, -88.58, 0), gp_Dir(0, 0, -1)), 17.86);
 -  TopoDS_Edge E_cir2 = BRepBuilderAPI_MakeEdge(cir2);
 +  TopoDS_Edge E_cir2 = (TopoDS_Edge) BRepBuilderAPI_MakeEdge(cir2);
    dim1 = new AIS_RadiusDimension(E_cir2);
-   context->Display(dim1);
- 
-@@ -1172,7 +1172,7 @@ static Standard_Integer OCC884 (Draw_Int
+   anAspect->ArrowAspect()->SetLength (40.0);
+   dim1->SetDimensionAspect (anAspect);
+@@ -1168,7 +1168,7 @@ static Standard_Integer OCC884 (Draw_Int
    builder.Add(wire, TopoDS::Edge(exp.Current()));
  
    // HelpDesk: Create planar face if possible
@@ -397,7 +397,7 @@ Index: oce/src/QABugs/QABugs_17.cxx
  
    Handle(ShapeAnalysis_Wire) advWA = new ShapeAnalysis_Wire;
    advWA->Load(wire);
-@@ -1605,8 +1605,8 @@ static Standard_Integer OCC1642 (Draw_In
+@@ -1601,8 +1601,8 @@ static Standard_Integer OCC1642 (Draw_In
  
    DBRep::Set(argv[3],wire);
  
@@ -408,7 +408,7 @@ Index: oce/src/QABugs/QABugs_17.cxx
  
    DBRep::Set(argv[4],face);
  
-@@ -1732,7 +1732,7 @@ static Standard_Integer OCC1642 (Draw_In
+@@ -1728,7 +1728,7 @@ static Standard_Integer OCC1642 (Draw_In
    advWA->Load(TopoDS::Wire(finalwire));
  
    TopoDS_Face fface =
@@ -421,7 +421,7 @@ Index: oce/src/QABugs/QABugs_3.cxx
 ===================================================================
 --- oce.orig/src/QABugs/QABugs_3.cxx
 +++ oce/src/QABugs/QABugs_3.cxx
-@@ -572,8 +572,8 @@ static Standard_Integer BUC60632(Draw_In
+@@ -242,8 +242,8 @@ static Standard_Integer BUC60632(Draw_In
    }
    myAIScontext->EraseAll();
    
@@ -436,7 +436,7 @@ Index: oce/src/QABugs/QABugs_5.cxx
 ===================================================================
 --- oce.orig/src/QABugs/QABugs_5.cxx
 +++ oce/src/QABugs/QABugs_5.cxx
-@@ -98,8 +98,8 @@ static Standard_Integer OCC5696 (Draw_In
+@@ -92,8 +92,8 @@ static Standard_Integer OCC5696 (Draw_In
      di << "Usage : " << argv[0] << "\n";
      return 1;
    }
@@ -451,7 +451,7 @@ Index: oce/src/ShapeFix/ShapeFix_Face.cxx
 ===================================================================
 --- oce.orig/src/ShapeFix/ShapeFix_Face.cxx
 +++ oce/src/ShapeFix/ShapeFix_Face.cxx
-@@ -2409,7 +2409,7 @@ Standard_Boolean ShapeFix_Face::FixPerio
+@@ -2428,7 +2428,7 @@ Standard_Boolean ShapeFix_Face::FixPerio
    Standard_Real anApexV = -aConeBaseH;
  
    // Get apex vertex
@@ -460,7 +460,7 @@ Index: oce/src/ShapeFix/ShapeFix_Face.cxx
  
    // ====================================
    //  Build degenerated edge in the apex
-@@ -2450,7 +2450,7 @@ Standard_Boolean ShapeFix_Face::FixPerio
+@@ -2469,7 +2469,7 @@ Standard_Boolean ShapeFix_Face::FixPerio
    aBuilder.Add( anApexEdge, anApex.Reversed() );
    aBuilder.Degenerated(anApexEdge, Standard_True);
    aBuilder.Range( anApexEdge, 0, fabs(aMaxLoopU - aMinLoopU) );

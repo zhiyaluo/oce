@@ -15,7 +15,7 @@ Index: oce/src/InterfaceGraphic/InterfaceGraphic_Palette.c
 ===================================================================
 --- oce.orig/src/InterfaceGraphic/InterfaceGraphic_Palette.c
 +++ oce/src/InterfaceGraphic/InterfaceGraphic_Palette.c
-@@ -40,6 +40,8 @@ int _a_horreur_du_vide_a_la_compilation;
+@@ -35,6 +35,8 @@ int _a_horreur_du_vide_a_la_compilation;
  #define BLACK RGB(   0,   0,   0 )
  #define WHITE RGB( 255, 255, 255 )
  
@@ -24,7 +24,7 @@ Index: oce/src/InterfaceGraphic/InterfaceGraphic_Palette.c
  static int s_sysPalIdx[ NB_STATIC_COLORS ] = {
  
              COLOR_SCROLLBAR, 
-@@ -105,7 +107,7 @@ static COLORREF s_sysPalBW[ NB_STATIC_CO
+@@ -100,7 +102,7 @@ static COLORREF s_sysPalBW[ NB_STATIC_CO
  static BOOL     s_sysUse;
  static COLORREF s_sysPal[ NB_STATIC_COLORS ];
  
@@ -37,7 +37,7 @@ Index: oce/src/InterfaceGraphic/InterfaceGraphic_WNT.hxx
 ===================================================================
 --- oce.orig/src/InterfaceGraphic/InterfaceGraphic_WNT.hxx
 +++ oce/src/InterfaceGraphic/InterfaceGraphic_WNT.hxx
-@@ -43,6 +43,8 @@
+@@ -39,6 +39,8 @@
  #define WDF_NOERASEBKGRND 0x00000001
  #define WDF_FOREIGN       0x00000002
  
@@ -46,7 +46,7 @@ Index: oce/src/InterfaceGraphic/InterfaceGraphic_WNT.hxx
  typedef struct window_data {
  
    void*    WNT_Window_Ptr;   // pointer to WNT_Window
-@@ -76,15 +78,8 @@ typedef struct font_data {
+@@ -72,15 +74,8 @@ typedef struct font_data {
  
  } FONT_DATA;
  
@@ -68,7 +68,7 @@ Index: oce/src/Standard/Standard_Atomic.hxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_Atomic.hxx
 +++ oce/src/Standard/Standard_Atomic.hxx
-@@ -67,8 +67,8 @@ int Standard_Atomic_Decrement (volatile
+@@ -63,8 +63,8 @@ int Standard_Atomic_Decrement (volatile
      }
    #else
      extern "C" {
@@ -83,7 +83,7 @@ Index: oce/src/Standard/Standard_symlink.c
 ===================================================================
 --- oce.orig/src/Standard/Standard_symlink.c
 +++ oce/src/Standard/Standard_symlink.c
-@@ -30,6 +30,7 @@
+@@ -25,6 +25,7 @@
  #define STRICT
  #include <windows.h>
  #include <tchar.h>
@@ -91,7 +91,7 @@ Index: oce/src/Standard/Standard_symlink.c
  
  #ifdef __cplusplus
  extern "C" int symlink ( const _TCHAR*, const _TCHAR* );
-@@ -37,7 +38,7 @@ extern "C" int symlink ( const _TCHAR*,
+@@ -32,7 +33,7 @@ extern "C" int symlink ( const _TCHAR*,
  /***/
  /******************************* symlink **************************************/
  /***/

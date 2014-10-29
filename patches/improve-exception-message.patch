@@ -11,7 +11,7 @@ Index: oce/src/Geom/Geom_BSplineCurve.cxx
 ===================================================================
 --- oce.orig/src/Geom/Geom_BSplineCurve.cxx
 +++ oce/src/Geom/Geom_BSplineCurve.cxx
-@@ -58,20 +58,22 @@ static void CheckCurveData
+@@ -53,20 +53,22 @@ static void CheckCurveData
   const Standard_Boolean            Periodic)
  {
    if (Degree < 1 || Degree > Geom_BSplineCurve::MaxDegree()) {

@@ -12,9 +12,9 @@ Index: oce/src/OSD/OSD_MAllocHook.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_MAllocHook.cxx
 +++ oce/src/OSD/OSD_MAllocHook.cxx
-@@ -47,6 +47,10 @@
- # define FMT_SZ_Q ""
- #endif
+@@ -33,6 +33,10 @@
+ 
+ #define MAX_STR 80
  
 +#ifdef __MINGW32__
 +# define fprintf __mingw_fprintf
@@ -22,4 +22,4 @@ Index: oce/src/OSD/OSD_MAllocHook.cxx
 +
  static OSD_MAllocHook::Callback* MypCurrentCallback = NULL;
  
- //=======================================================================
+ namespace {

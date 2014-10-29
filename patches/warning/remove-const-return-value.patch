@@ -136,7 +136,7 @@ Index: oce/src/AIS/AIS_Dimension.cxx
 ===================================================================
 --- oce.orig/src/AIS/AIS_Dimension.cxx
 +++ oce/src/AIS/AIS_Dimension.cxx
-@@ -138,7 +138,7 @@ const gp_Pln& AIS_Dimension::GetPlane()
+@@ -141,7 +141,7 @@ const gp_Pln& AIS_Dimension::GetPlane()
  //function : GetGeometryType
  //purpose  : 
  //=======================================================================
@@ -149,7 +149,7 @@ Index: oce/src/AIS/AIS_Dimension.hxx
 ===================================================================
 --- oce.orig/src/AIS/AIS_Dimension.hxx
 +++ oce/src/AIS/AIS_Dimension.hxx
-@@ -221,7 +221,7 @@ public:
+@@ -248,7 +248,7 @@ public:
  
    //! Geometry type defines type of shapes on which the dimension is to be built. 
    //! @return type of geometry on which the dimension will be built.
@@ -314,7 +314,7 @@ Index: oce/src/OpenGl/OpenGl_AspectFace.hxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_AspectFace.hxx
 +++ oce/src/OpenGl/OpenGl_AspectFace.hxx
-@@ -72,7 +72,7 @@ public:
+@@ -75,7 +75,7 @@ public:
    }
  
    //! @return interior style
@@ -353,7 +353,7 @@ Index: oce/src/OpenGl/OpenGl_Workspace.hxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_Workspace.hxx
 +++ oce/src/OpenGl/OpenGl_Workspace.hxx
-@@ -179,7 +179,7 @@ public:
+@@ -180,7 +180,7 @@ public:
  
    //! Updates current model-view matrix
    //! replacing it with StructureMatrixT*ViewMatrix from the workspace.
@@ -366,7 +366,7 @@ Index: oce/src/OpenGl/OpenGl_Workspace_5.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_Workspace_5.cxx
 +++ oce/src/OpenGl/OpenGl_Workspace_5.cxx
-@@ -279,7 +279,7 @@ const OpenGl_Matrix * OpenGl_Workspace::
+@@ -291,7 +291,7 @@ const OpenGl_Matrix * OpenGl_Workspace::
  
  /*----------------------------------------------------------------------*/
  
@@ -429,7 +429,7 @@ Index: oce/src/TCollection/TCollection_ExtendedString.cxx
 ===================================================================
 --- oce.orig/src/TCollection/TCollection_ExtendedString.cxx
 +++ oce/src/TCollection/TCollection_ExtendedString.cxx
-@@ -767,7 +767,7 @@ TCollection_ExtendedString TCollection_E
+@@ -763,7 +763,7 @@ TCollection_ExtendedString TCollection_E
  // ----------------------------------------------------------------------------
  // ToExtString
  // ----------------------------------------------------------------------------

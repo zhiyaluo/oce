@@ -35,7 +35,7 @@ Index: oce/src/math/math_DoubleTab.gxx
 ===================================================================
 --- oce.orig/src/math/math_DoubleTab.gxx
 +++ oce/src/math/math_DoubleTab.gxx
-@@ -19,10 +19,10 @@
+@@ -15,10 +15,10 @@
  // Lpa, le 7/02/92
  
  
@@ -45,13 +45,13 @@ Index: oce/src/math/math_DoubleTab.gxx
  #include <Standard_Integer.hxx>
 +#include <cstring>
  
- void math_DoubleTab::Allocate()
- {
+ // macro to get size of C array
+ #define CARRAY_LENGTH(arr) (int)(sizeof(arr)/sizeof(arr[0]))
 Index: oce/src/math/math_DoubleTab.lxx
 ===================================================================
 --- oce.orig/src/math/math_DoubleTab.lxx
 +++ oce/src/math/math_DoubleTab.lxx
-@@ -18,8 +18,8 @@
+@@ -14,8 +14,8 @@
  
  // Lpa, le 7/02/92
  
@@ -65,7 +65,7 @@ Index: oce/src/math/math_Memory.hxx
 ===================================================================
 --- oce.orig/src/math/math_Memory.hxx
 +++ oce/src/math/math_Memory.hxx
-@@ -19,26 +19,8 @@
+@@ -15,26 +15,8 @@
  #ifndef math_Memory_HeaderFile 
  #define math_Memory_HeaderFile 
  
@@ -96,23 +96,23 @@ Index: oce/src/math/math_SingleTab.gxx
 ===================================================================
 --- oce.orig/src/math/math_SingleTab.gxx
 +++ oce/src/math/math_SingleTab.gxx
-@@ -17,9 +17,9 @@
- // and conditions governing the rights and limitations under the License.
- 
+@@ -12,9 +12,9 @@
+ // Alternatively, this file may be used under the terms of Open CASCADE
+ // commercial license or contractual agreement.
  
 -#include <math_Memory.hxx>
  #include <Standard_OutOfRange.hxx>
  #include <Standard_Failure.hxx>
 +#include <cstring>
  
- math_SingleTab::math_SingleTab(const Standard_Integer LowerIndex,
- 		               const Standard_Integer UpperIndex) :
+ // macro to get size of C array
+ #define CARRAY_LENGTH(arr) (int)(sizeof(arr)/sizeof(arr[0]))
 Index: oce/src/math/math_SingleTab.lxx
 ===================================================================
 --- oce.orig/src/math/math_SingleTab.lxx
 +++ oce/src/math/math_SingleTab.lxx
-@@ -17,7 +17,7 @@
- // and conditions governing the rights and limitations under the License.
+@@ -13,7 +13,7 @@
+ // commercial license or contractual agreement.
  
  #include <Standard_OutOfRange.hxx>
 -#include <math_Memory.hxx>

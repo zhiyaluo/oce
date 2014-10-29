@@ -28,7 +28,7 @@ Index: oce/src/Draw/Draw_Viewer.hxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Viewer.hxx
 +++ oce/src/Draw/Draw_Viewer.hxx
-@@ -35,18 +35,23 @@
+@@ -29,18 +29,23 @@
  #include <Draw_SequenceOfDrawable3D.hxx>
  #include <Draw_Color.hxx>
  
@@ -65,7 +65,7 @@ Index: oce/src/Draw/Draw_Window.hxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.hxx
 +++ oce/src/Draw/Draw_Window.hxx
-@@ -325,11 +325,15 @@ void GetNextEvent (Standard_Boolean  the
+@@ -320,11 +320,15 @@ void GetNextEvent (Standard_Boolean  the
  #define DRAWTITLE "Draw View"
  #define MAXCOLOR  15
  

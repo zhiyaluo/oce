@@ -21,8 +21,8 @@ Index: oce/src/DPrsStd/DPrsStd.cxx
 ===================================================================
 --- oce.orig/src/DPrsStd/DPrsStd.cxx
 +++ oce/src/DPrsStd/DPrsStd.cxx
-@@ -32,7 +32,7 @@
- #include <OSD_File.hxx>
+@@ -36,7 +36,7 @@
+ #endif
  
  // avoid warnings on 'extern "C"' functions returning C++ classes
 -#ifdef WNT
@@ -64,7 +64,7 @@ Index: oce/src/IntTools/IntTools_EdgeFace.cxx
  #pragma warning ( disable : 4101 )
  #endif
  
-@@ -1536,6 +1536,6 @@ Standard_Integer AdaptiveDiscret (const
+@@ -1538,6 +1538,6 @@ Standard_Integer AdaptiveDiscret (const
  }
  
  

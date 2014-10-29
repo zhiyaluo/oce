@@ -31,7 +31,7 @@ Index: oce/src/TNaming/TNaming_DeltaOnModification.cxx
 ===================================================================
 --- oce.orig/src/TNaming/TNaming_DeltaOnModification.cxx
 +++ oce/src/TNaming/TNaming_DeltaOnModification.cxx
-@@ -96,6 +96,8 @@ static void LoadNamedShape (TNaming_Buil
+@@ -97,6 +97,8 @@ static void LoadNamedShape (TNaming_Buil
        B.Select(NS,OS);
        break;
      }

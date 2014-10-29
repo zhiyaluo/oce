@@ -11,8 +11,8 @@ Index: oce/src/Interface/Interface_Version.hxx
 ===================================================================
 --- oce.orig/src/Interface/Interface_Version.hxx
 +++ oce/src/Interface/Interface_Version.hxx
-@@ -16,8 +16,8 @@
- // and conditions governing the rights and limitations under the License.
+@@ -12,8 +12,8 @@
+ // commercial license or contractual agreement.
  
  #include <Standard_Version.hxx>
 -#define XSTEP_PROCESSOR_VERSION "Open CASCADE %s processor "OCC_VERSION_STRING
@@ -26,7 +26,7 @@ Index: oce/src/STEPControl/STEPControl_Controller.cxx
 ===================================================================
 --- oce.orig/src/STEPControl/STEPControl_Controller.cxx
 +++ oce/src/STEPControl/STEPControl_Controller.cxx
-@@ -68,7 +68,7 @@ STEPControl_Controller::STEPControl_Cont
+@@ -64,7 +64,7 @@ STEPControl_Controller::STEPControl_Cont
    if (!init) {
      RWHeaderSection::Init();  RWStepAP214::Init();
  

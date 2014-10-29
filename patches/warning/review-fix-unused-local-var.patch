@@ -2,8 +2,8 @@ Index: oce/src/BOPAlgo/BOPAlgo_Builder_3.cxx
 ===================================================================
 --- oce.orig/src/BOPAlgo/BOPAlgo_Builder_3.cxx
 +++ oce/src/BOPAlgo/BOPAlgo_Builder_3.cxx
-@@ -166,7 +166,7 @@ void BOPAlgo_Builder::FillIn3DParts(BOPC
- 				    const BOPCol_BaseAllocator& )
+@@ -177,7 +177,7 @@ void BOPAlgo_Builder::FillIn3DParts
+    const BOPCol_BaseAllocator& )
  {
    Standard_Boolean bHasImage;
 -  Standard_Integer i, k, aNbS, aNbLIF, nFP, aNbFP, aNbFIN, iIsIN;
@@ -11,7 +11,7 @@ Index: oce/src/BOPAlgo/BOPAlgo_Builder_3.cxx
    TopoDS_Solid aSD;
    TopoDS_Iterator aIt;
    BRep_Builder aBB; 
-@@ -299,8 +299,6 @@ void BOPAlgo_Builder::FillIn3DParts(BOPC
+@@ -306,8 +306,6 @@ void BOPAlgo_Builder::FillIn3DParts
      aSelector.Clear();
      aSelector.SetBox(aBoxS);
      //
@@ -19,147 +19,12 @@ Index: oce/src/BOPAlgo/BOPAlgo_Builder_3.cxx
 -    //
      const BOPCol_ListOfInteger& aLIFP=aSelector.Indices();
      //
-     // 2.7. Collect faces that are IN aSolid [ aLFIN ]
-Index: oce/src/Bisector/Bisector_Inter.cxx
-===================================================================
---- oce.orig/src/Bisector/Bisector_Inter.cxx
-+++ oce/src/Bisector/Bisector_Inter.cxx
-@@ -38,8 +38,7 @@
- #include <Draw_Appli.hxx>
- #include <DrawTrSurf_Curve2d.hxx>
- #include <Draw_Marker2D.hxx>
--#endif
--#ifdef DEB
-+
- static Standard_Boolean Affich = Standard_False;
- #endif
- 
-Index: oce/src/BRepFill/BRepFill_Evolved.cxx
-===================================================================
---- oce.orig/src/BRepFill/BRepFill_Evolved.cxx
-+++ oce/src/BRepFill/BRepFill_Evolved.cxx
-@@ -127,9 +127,11 @@
- #include <stdio.h>
- #endif
- 
--#ifdef DEB
--static Standard_Boolean AffichGeom = Standard_False;
-+#if defined(DRAW) || defined(DEB)
- static Standard_Boolean AffichEdge = Standard_False;
-+#endif
-+#ifdef DRAW
-+static Standard_Boolean AffichGeom = Standard_False;
- static Standard_Integer NbFACES       = 0;
- static Standard_Integer NbTRIMFACES   = 0;
- static Standard_Integer NbVEVOS       = 0;
-Index: oce/src/BRepFill/BRepFill_MultiLine.cxx
-===================================================================
---- oce.orig/src/BRepFill/BRepFill_MultiLine.cxx
-+++ oce/src/BRepFill/BRepFill_MultiLine.cxx
-@@ -49,7 +49,7 @@
- #include <DrawTrSurf.hxx>
- #endif
- 
--#ifdef DEB
-+#ifdef DRAW
- static Standard_Boolean AffichCurve = Standard_False;
- static Standard_Integer NbProj = 1;
- #endif
-Index: oce/src/BRepFill/BRepFill_OffsetWire.cxx
-===================================================================
---- oce.orig/src/BRepFill/BRepFill_OffsetWire.cxx
-+++ oce/src/BRepFill/BRepFill_OffsetWire.cxx
-@@ -107,13 +107,14 @@
- #include <DBRep.hxx>
- #endif
- 
--#ifdef DEB
-+#if defined(DRAW) || defined(DEB)
-+static Standard_Boolean AffichEdge  = Standard_False;
-+#endif
-+#ifdef DRAW
- static Standard_Boolean AffichGeom  = Standard_False;
- static Standard_Boolean Affich2d    = Standard_False;
--static Standard_Boolean AffichEdge  = Standard_False;
- static Standard_Integer NbTRIMEDGES = 0;
- static Standard_Integer NbOFFSET    = 0;
--static Standard_Integer NbEDGES     = 0;
- static Standard_Integer NbBISSEC    = 0;
- #ifndef WNT
- static char tname[100];
-Index: oce/src/BRepOffset/BRepOffset_Inter2d.cxx
-===================================================================
---- oce.orig/src/BRepOffset/BRepOffset_Inter2d.cxx
-+++ oce/src/BRepOffset/BRepOffset_Inter2d.cxx
-@@ -48,8 +48,7 @@
- 
- #ifdef DRAW 
- #include <DBRep.hxx>
--#endif
--#ifdef DEB
-+
- #ifndef WNT
- extern Standard_Integer AffichInt2d;
- #else
-@@ -1410,7 +1409,7 @@ void BRepOffset_Inter2d::Compute (const
- 				  const TopTools_IndexedMapOfShape& NewEdges,
- 				  const Standard_Real               Tol)
- {
--#ifdef DEB
-+#ifdef DRAW
-   NbF2d++;
-   NbE2d = 0;
- #endif 
-Index: oce/src/BRepOffset/BRepOffset_MakeLoops.cxx
-===================================================================
---- oce.orig/src/BRepOffset/BRepOffset_MakeLoops.cxx
-+++ oce/src/BRepOffset/BRepOffset_MakeLoops.cxx
-@@ -36,7 +36,7 @@
- #ifdef DRAW
- #include <DBRep.hxx>
- #endif
--#ifdef DEB
-+#ifdef DRAW
- Standard_Integer NbF = 1;
- static Standard_Boolean Affich = Standard_False;
- //POP pour NT
-Index: oce/src/BRepOffset/BRepOffset_Tool.cxx
-===================================================================
---- oce.orig/src/BRepOffset/BRepOffset_Tool.cxx
-+++ oce/src/BRepOffset/BRepOffset_Tool.cxx
-@@ -145,9 +145,11 @@
- #include <DBRep.hxx>
- #endif
- 
--#ifdef DEB       
--Standard_Boolean AffichInter  = Standard_False;
-+#if defined(DRAW) || defined(DEB)
- static Standard_Boolean AffichExtent = Standard_False;
-+#endif
-+#ifdef DRAW
-+Standard_Boolean AffichInter  = Standard_False;
- static Standard_Integer NbNewEdges  = 1;
- static Standard_Integer NbFaces     = 1;
- static Standard_Integer NbFOB       = 1;
-Index: oce/src/GeomFill/GeomFill_SweepSectionGenerator.cxx
-===================================================================
---- oce.orig/src/GeomFill/GeomFill_SweepSectionGenerator.cxx
-+++ oce/src/GeomFill/GeomFill_SweepSectionGenerator.cxx
-@@ -38,8 +38,7 @@
- 
- #ifdef DRAW
- #include <DrawTrSurf.hxx>
--#endif
--#ifdef DEB
-+
- static Standard_Boolean Affich     = Standard_False;
- static Standard_Integer NbSECTIONS = 0;
- #endif
+     // 2.5. Collect faces that are IN aSolid [ aLFIN ]
 Index: oce/src/ChFi3d/ChFi3d_Builder_C2.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder_C2.cxx
 +++ oce/src/ChFi3d/ChFi3d_Builder_C2.cxx
-@@ -173,11 +173,8 @@ Standard_Integer ChFi3d_Builder::Perform
+@@ -173,11 +173,8 @@ Standard_Boolean ChFi3d_Builder::Perform
    // Otherwise the opposite face  
    // and the eventual intersection of 2 pcurves on this face are found.
  
@@ -192,34 +57,6 @@ Index: oce/src/DsgPrs/DsgPrs.cxx
        gp_Vec PosVec;
        if(! Center.IsEqual( Position, Precision::Confusion() ))
  	PosVec.SetXYZ( gp_Vec(Center, Position).XYZ() );
-Index: oce/src/GeomPlate/GeomPlate_BuildPlateSurface.cxx
-===================================================================
---- oce.orig/src/GeomPlate/GeomPlate_BuildPlateSurface.cxx
-+++ oce/src/GeomPlate/GeomPlate_BuildPlateSurface.cxx
-@@ -72,7 +72,9 @@
- // pour mes tests
- #ifdef DEB
- #include <OSD_Chronometer.hxx>
-+#endif
- 
-+#ifdef DRAW
- static Standard_Integer Affich=0;
- // 0 : Pas de display
- // 1 : Display des Geometries et controle intermediaire
-Index: oce/src/GeomProjLib/GeomProjLib.cxx
-===================================================================
---- oce.orig/src/GeomProjLib/GeomProjLib.cxx
-+++ oce/src/GeomProjLib/GeomProjLib.cxx
-@@ -59,8 +59,7 @@
- 
- #ifdef DRAW
- #include <DrawTrSurf.hxx>
--#endif
--#ifdef DEB
-+
- static Standard_Boolean Affich = Standard_False;
- static Standard_Integer NBPROJ = 1;
- #endif
 Index: oce/src/IntTools/IntTools.cxx
 ===================================================================
 --- oce.orig/src/IntTools/IntTools.cxx
@@ -238,7 +75,7 @@ Index: oce/src/IntTools/IntTools_EdgeFace.cxx
 ===================================================================
 --- oce.orig/src/IntTools/IntTools_EdgeFace.cxx
 +++ oce/src/IntTools/IntTools_EdgeFace.cxx
-@@ -691,9 +682,8 @@ Standard_Real IntTools_EdgeFace::Distanc
+@@ -684,9 +684,8 @@ Standard_Real IntTools_EdgeFace::Distanc
        anArray1OfRange(n+i).SetLast (aFSeq(i));
      }
      

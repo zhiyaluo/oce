@@ -30,7 +30,7 @@ Index: oce/src/Draw/Draw.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw.cxx
 +++ oce/src/Draw/Draw.cxx
-@@ -592,7 +592,11 @@ void Draw::Load(Draw_Interpretor& theDI,
+@@ -603,7 +603,11 @@ void Draw::Load(Draw_Interpretor& theDI,
  #endif
      aPluginLibrary +=  aPluginResource->Value(theKey.ToCString());
  #ifdef WNT
@@ -47,7 +47,7 @@ Index: oce/src/Plugin/Plugin.cxx
 ===================================================================
 --- oce.orig/src/Plugin/Plugin.cxx
 +++ oce/src/Plugin/Plugin.cxx
-@@ -63,7 +63,11 @@ Handle(Standard_Transient) Plugin::Load(
+@@ -61,7 +61,11 @@ Handle(Standard_Transient) Plugin::Load(
  #endif
      thePluginLibrary +=  PluginResource->Value(theResource.ToCString());
  #ifdef WNT

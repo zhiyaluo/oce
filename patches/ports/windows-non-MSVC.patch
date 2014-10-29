@@ -711,7 +711,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
  #include <process.h>
  #include <signal.h>
  #include <float.h>
-@@ -207,7 +343,7 @@ static LONG CallHandler (DWORD dwExcepti
+@@ -198,7 +334,7 @@ static LONG CallHandler (DWORD dwExcepti
  
    case EXCEPTION_STACK_OVERFLOW:
  //      cout << "CallHandler : EXCEPTION_STACK_OVERFLOW:" << endl ;
@@ -720,7 +720,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
      // try recovering from stack overflow: available in MS VC++ 7.0
      if (!_resetstkoflw())
        lstrcpy (  buffer, TEXT( "Unrecoverable STACK OVERFLOW" )  );
-@@ -317,7 +453,7 @@ static void SIGWntHandler (int signum, i
+@@ -308,7 +444,7 @@ static void SIGWntHandler (int signum, i
  //purpose  : Translate Structural Exceptions into C++ exceptions
  //           Will be used when user's code is compiled with /EHa option
  //=======================================================================
@@ -729,7 +729,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
  
  // If this file compiled with the default MSVC options for exception
  // handling (/GX or /EHsc) then the following warning is issued:
-@@ -392,7 +528,7 @@ void OSD::SetSignal (const Standard_Bool
+@@ -383,7 +519,7 @@ void OSD::SetSignal (const Standard_Bool
    fCtrlBrk = Standard_False;
    SetConsoleCtrlHandler (&_osd_ctrl_break_handler, TRUE);
  
@@ -738,7 +738,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
  //  _se_translator_function pOldSeFunc = 
      _set_se_translator (TranslateSE);
  #endif
-@@ -498,8 +634,10 @@ static LONG __fastcall _osd_raise ( DWOR
+@@ -489,8 +625,10 @@ static LONG __fastcall _osd_raise ( DWOR
      case EXCEPTION_FLT_INVALID_OPERATION:
      case EXCEPTION_FLT_DENORMAL_OPERAND:
      case EXCEPTION_FLT_INEXACT_RESULT:
@@ -856,7 +856,7 @@ Index: oce/src/Standard/Standard_MMgrOpt.cxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_MMgrOpt.cxx
 +++ oce/src/Standard/Standard_MMgrOpt.cxx
-@@ -855,7 +855,11 @@ void Standard_MMgrOpt::FreeMemory (Stand
+@@ -852,7 +852,11 @@ void Standard_MMgrOpt::FreeMemory (Stand
      // recover handle to the memory mapping stored just before the block
      const HANDLE * aMBlock = (const HANDLE *)aBlock;
      HANDLE hMap = *(--aMBlock);
@@ -872,7 +872,7 @@ Index: oce/src/Standard/Standard_Macro.hxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_Macro.hxx
 +++ oce/src/Standard/Standard_Macro.hxx
-@@ -31,9 +31,8 @@
+@@ -29,9 +29,8 @@
  // Windows-specific definitions
  //======================================================
  
@@ -884,7 +884,7 @@ Index: oce/src/Standard/Standard_Macro.hxx
  #endif
  
  # if defined(WNT) && !defined(HAVE_NO_DLL)
-@@ -62,7 +61,7 @@
+@@ -60,7 +59,7 @@
  #define WIN32_LEAN_AND_MEAN   /* exclude extra Windows stuff */
  #endif
  #ifndef NOMINMAX
@@ -893,7 +893,7 @@ Index: oce/src/Standard/Standard_Macro.hxx
  #endif
  #ifndef NOMSG
  #define NOMSG NOMSG           /* avoid #define SendMessage etc. */
-@@ -132,9 +131,15 @@
+@@ -130,9 +129,15 @@
  #   if !defined(WNT) || defined(__Standard_DLL) || defined(__FSD_DLL) || defined(__MMgt_DLL) || defined(__OSD_DLL) || defined(__Plugin_DLL) || defined(__Quantity_DLL) || defined(__Resource_DLL) || defined(__SortTools_DLL) || defined(__StdFail_DLL) || defined(__Storage_DLL) || defined(__TColStd_DLL) || defined(__TCollection_DLL) || defined(__TShort_DLL) || defined(__Units_DLL) || defined(__UnitsAPI_DLL) || defined(__Dico_DLL) || defined(__Message_DLL)
  #    define __Standard_API Standard_EXPORT
  #    define __Standard_APIEXTERN Standard_EXPORTEXTERN
@@ -992,7 +992,7 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
  
  Standard_IMPORT Standard_Boolean Draw_VirtualWindows;
  Standard_IMPORT Standard_Boolean Draw_Interprete (const char* theCommand);
-@@ -2090,22 +2096,6 @@ int ViewerMainLoop(Standard_Integer argc
+@@ -2129,22 +2135,6 @@ int ViewerMainLoop(Standard_Integer argc
  
  #elif !defined(__APPLE__) || defined(MACOSX_USE_GLX)
  
@@ -1161,7 +1161,7 @@ Index: oce/src/WNT/WNT_Window.cxx
 ===================================================================
 --- oce.orig/src/WNT/WNT_Window.cxx
 +++ oce/src/WNT/WNT_Window.cxx
-@@ -227,10 +227,10 @@ Aspect_TypeOfResize WNT_Window :: DoResi
+@@ -221,10 +221,10 @@ Aspect_TypeOfResize WNT_Window :: DoResi
  
    if (wp.showCmd != SW_SHOWMINIMIZED)
    {

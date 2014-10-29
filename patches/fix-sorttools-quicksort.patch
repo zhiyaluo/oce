@@ -11,7 +11,7 @@ Index: oce/src/SortTools/SortTools_QuickSort.gxx
 ===================================================================
 --- oce.orig/src/SortTools/SortTools_QuickSort.gxx
 +++ oce/src/SortTools/SortTools_QuickSort.gxx
-@@ -50,19 +50,17 @@ static void SortRecursive(Array& TheArra
+@@ -46,19 +46,17 @@ static void SortRecursive(Array& TheArra
      Exchange(TheArray(Middle), TheArray(Right - 1));
      Front = Left + 1;
      Back = Right - 1;

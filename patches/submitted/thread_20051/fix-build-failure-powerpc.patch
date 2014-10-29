@@ -78,7 +78,7 @@ Index: oce/src/BRepFill/BRepFill_Evolved.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_Evolved.cxx
 +++ oce/src/BRepFill/BRepFill_Evolved.cxx
-@@ -2101,8 +2101,8 @@ void BRepFill_Evolved::AddTopAndBottom(B
+@@ -2104,8 +2104,8 @@ void BRepFill_Evolved::AddTopAndBottom(B
  	    gp_Pnt PC;
  	    gp_Vec VC;
  	    C.D1(u,PC,VC);

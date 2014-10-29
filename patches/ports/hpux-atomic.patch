@@ -11,7 +11,7 @@ Index: oce/src/Standard/Standard_Atomic.hxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_Atomic.hxx
 +++ oce/src/Standard/Standard_Atomic.hxx
-@@ -132,10 +132,25 @@ int Standard_Atomic_Decrement (volatile
+@@ -128,10 +128,25 @@ int Standard_Atomic_Decrement (volatile
    return Standard_Atomic_Add (theValue, -1);
  }
  

@@ -72,7 +72,7 @@ Index: oce/src/BinLDrivers/BinLDrivers_DocumentRetrievalDriver.cxx
 ===================================================================
 --- oce.orig/src/BinLDrivers/BinLDrivers_DocumentRetrievalDriver.cxx
 +++ oce/src/BinLDrivers/BinLDrivers_DocumentRetrievalDriver.cxx
-@@ -496,7 +496,7 @@ void BinLDrivers_DocumentRetrievalDriver
+@@ -491,7 +491,7 @@ void BinLDrivers_DocumentRetrievalDriver
  						    Standard_IStream& IS)
  {
    if(!IS.eof()) {
@@ -85,7 +85,7 @@ Index: oce/src/Graphic3d/Graphic3d_Structure.pxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d_Structure.pxx
 +++ oce/src/Graphic3d/Graphic3d_Structure.pxx
-@@ -24,9 +24,9 @@
+@@ -19,9 +19,9 @@
  # include <oce-config.h>
  #endif
  
@@ -101,7 +101,7 @@ Index: oce/src/OSD/OSD_Chronometer.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Chronometer.cxx
 +++ oce/src/OSD/OSD_Chronometer.cxx
-@@ -64,9 +64,9 @@
+@@ -59,9 +59,9 @@
  #   define CLK_TCK	CLOCKS_PER_SEC
  #  endif
  
@@ -117,7 +117,7 @@ Index: oce/src/Standard/Standard_Stream.hxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_Stream.hxx
 +++ oce/src/Standard/Standard_Stream.hxx
-@@ -38,24 +38,24 @@
+@@ -34,24 +34,24 @@
  // Unix variant
  #ifndef WNT
  
@@ -153,7 +153,7 @@ Index: oce/src/Standard/Standard_values.h
 ===================================================================
 --- oce.orig/src/Standard/Standard_values.h
 +++ oce/src/Standard/Standard_values.h
-@@ -29,13 +29,15 @@
+@@ -24,13 +24,15 @@
  #include <oce-config.h>
  
  #ifndef WNT

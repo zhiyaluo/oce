@@ -23,7 +23,7 @@ Index: oce/src/BRepFilletAPI/BRepFilletAPI_MakeChamfer.cxx
 ===================================================================
 --- oce.orig/src/BRepFilletAPI/BRepFilletAPI_MakeChamfer.cxx
 +++ oce/src/BRepFilletAPI/BRepFilletAPI_MakeChamfer.cxx
-@@ -278,8 +278,7 @@ const TopoDS_Edge& BRepFilletAPI_MakeCha
+@@ -272,8 +272,7 @@ const TopoDS_Edge& BRepFilletAPI_MakeCha
  					     const Standard_Integer J)const
  {
    const Handle(ChFiDS_Spine)& Spine = myBuilder.Value(I);
@@ -37,7 +37,7 @@ Index: oce/src/BRepFilletAPI/BRepFilletAPI_MakeFillet.cxx
 ===================================================================
 --- oce.orig/src/BRepFilletAPI/BRepFilletAPI_MakeFillet.cxx
 +++ oce/src/BRepFilletAPI/BRepFilletAPI_MakeFillet.cxx
-@@ -413,8 +413,7 @@ const TopoDS_Edge& BRepFilletAPI_MakeFil
+@@ -407,8 +407,7 @@ const TopoDS_Edge& BRepFilletAPI_MakeFil
  						  const Standard_Integer J)const
  {
    const Handle(ChFiDS_Spine)& Spine = myBuilder.Value(I);
@@ -51,7 +51,7 @@ Index: oce/src/HatchGen/HatchGen_Hatcher.lxx
 ===================================================================
 --- oce.orig/src/HatchGen/HatchGen_Hatcher.lxx
 +++ oce/src/HatchGen/HatchGen_Hatcher.lxx
-@@ -188,8 +188,7 @@ inline const HatchGen_PointOnHatching& H
+@@ -183,8 +183,7 @@ inline const HatchGen_PointOnHatching& H
  #if RAISE_IF_NOSUCHOBJECT
    Standard_OutOfRange_Raise_if (IndP < 0 || IndP > Hatching.NbPoints(), "") ;
  #endif
@@ -65,7 +65,7 @@ Index: oce/src/TopOpeBRep/TopOpeBRep_LineInter.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRep/TopOpeBRep_LineInter.cxx
 +++ oce/src/TopOpeBRep/TopOpeBRep_LineInter.cxx
-@@ -491,14 +491,12 @@ const TopoDS_Shape& TopOpeBRep_LineInter
+@@ -490,14 +490,12 @@ const TopoDS_Shape& TopOpeBRep_LineInter
      if(myILR->IsArcOnS1()) { 
        const Handle(Adaptor2d_HCurve2d)& AHC2D = myILR->ArcOnS1();
        const BRepAdaptor_Curve2d& BC2DP = *((BRepAdaptor_Curve2d*)&(AHC2D->Curve2d()));
@@ -86,7 +86,7 @@ Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder.cxx
 +++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder.cxx
-@@ -375,8 +375,7 @@ const TopTools_ListOfShape& TopOpeBRepBu
+@@ -370,8 +370,7 @@ const TopTools_ListOfShape& TopOpeBRepBu
  
    if ((*p).IsBound(S)) {
      const TopOpeBRepDS_ListOfShapeOn1State& losos = (*p).Find(S);
@@ -96,7 +96,7 @@ Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_Builder.cxx
    }
    return myEmptyShapeList;
  } // Splits
-@@ -404,8 +403,7 @@ TopTools_ListOfShape& TopOpeBRepBuild_Bu
+@@ -399,8 +398,7 @@ TopTools_ListOfShape& TopOpeBRepBuild_Bu
    TopOpeBRepDS_ListOfShapeOn1State thelist1;
    if (!(*p).IsBound(S)) (*p).Bind(S, thelist1);
    TopOpeBRepDS_ListOfShapeOn1State& losos = (*p).ChangeFind(S);
@@ -110,7 +110,7 @@ Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_EdgeBuilder.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_EdgeBuilder.cxx
 +++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_EdgeBuilder.cxx
-@@ -126,8 +126,7 @@ const TopoDS_Shape& TopOpeBRepBuild_Edge
+@@ -121,8 +121,7 @@ const TopoDS_Shape& TopOpeBRepBuild_Edge
  {
    const Handle(TopOpeBRepBuild_Loop)& L = Loop();
    const Handle(TopOpeBRepBuild_Pave)& PV = *((Handle(TopOpeBRepBuild_Pave)*)&L);
@@ -124,7 +124,7 @@ Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_FaceBuilder.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_FaceBuilder.cxx
 +++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_FaceBuilder.cxx
-@@ -566,8 +566,7 @@ Standard_Boolean TopOpeBRepBuild_FaceBui
+@@ -536,8 +536,7 @@ Standard_Boolean TopOpeBRepBuild_FaceBui
  const TopoDS_Shape& TopOpeBRepBuild_FaceBuilder::OldWire() const
  {
    const Handle(TopOpeBRepBuild_Loop)& L = myFaceAreaBuilder.Loop();
@@ -138,7 +138,7 @@ Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_SolidBuilder.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_SolidBuilder.cxx
 +++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_SolidBuilder.cxx
-@@ -145,8 +145,7 @@ Standard_Boolean TopOpeBRepBuild_SolidBu
+@@ -140,8 +140,7 @@ Standard_Boolean TopOpeBRepBuild_SolidBu
  const TopoDS_Shape& TopOpeBRepBuild_SolidBuilder::OldShell() const
  {
    const Handle(TopOpeBRepBuild_Loop)& L = mySolidAreaBuilder.Loop();
@@ -152,7 +152,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_DataStructure.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS_DataStructure.cxx
 +++ oce/src/TopOpeBRepDS/TopOpeBRepDS_DataStructure.cxx
-@@ -446,8 +446,7 @@ const TopOpeBRepDS_ListOfInterference& T
+@@ -442,8 +442,7 @@ const TopOpeBRepDS_ListOfInterference& T
      return myEmptyListOfInterference;
    }
    const TopOpeBRepDS_SurfaceData& SD = mySurfaces.Find(I);
@@ -162,7 +162,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_DataStructure.cxx
  }
  
  
-@@ -462,8 +461,7 @@ TopOpeBRepDS_ListOfInterference& TopOpeB
+@@ -458,8 +457,7 @@ TopOpeBRepDS_ListOfInterference& TopOpeB
      return myEmptyListOfInterference;
    }
    TopOpeBRepDS_SurfaceData& SD = mySurfaces.ChangeFind(I);
@@ -172,7 +172,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_DataStructure.cxx
  }
  
  //=======================================================================
-@@ -477,8 +475,7 @@ const TopOpeBRepDS_ListOfInterference& T
+@@ -473,8 +471,7 @@ const TopOpeBRepDS_ListOfInterference& T
      return myEmptyListOfInterference;
    }
    const TopOpeBRepDS_CurveData& CD = myCurves.Find(I);
@@ -182,7 +182,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_DataStructure.cxx
  }
  
  
-@@ -493,8 +490,7 @@ TopOpeBRepDS_ListOfInterference& TopOpeB
+@@ -489,8 +486,7 @@ TopOpeBRepDS_ListOfInterference& TopOpeB
      return myEmptyListOfInterference;
    }
    TopOpeBRepDS_CurveData& CD = myCurves.ChangeFind(I);
@@ -192,7 +192,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_DataStructure.cxx
  }
  
  
-@@ -509,8 +505,7 @@ const TopOpeBRepDS_ListOfInterference& T
+@@ -505,8 +501,7 @@ const TopOpeBRepDS_ListOfInterference& T
      return myEmptyListOfInterference;
    }
    const TopOpeBRepDS_PointData& PD = myPoints.Find(I);
@@ -202,7 +202,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_DataStructure.cxx
  }
  
  
-@@ -525,8 +520,7 @@ TopOpeBRepDS_ListOfInterference& TopOpeB
+@@ -521,8 +516,7 @@ TopOpeBRepDS_ListOfInterference& TopOpeB
      return myEmptyListOfInterference;
    }
    TopOpeBRepDS_PointData& PD = myPoints.ChangeFind(I);
@@ -212,7 +212,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_DataStructure.cxx
  }
  
  
-@@ -586,8 +580,7 @@ const TopTools_ListOfShape& TopOpeBRepDS
+@@ -582,8 +576,7 @@ const TopTools_ListOfShape& TopOpeBRepDS
    if(!S.IsNull())
      if (myShapes.Contains(S)) {
        const TopOpeBRepDS_ShapeData& SD = myShapes.FindFromKey(S);
@@ -222,7 +222,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_DataStructure.cxx
      }
    return myEmptyListOfShape;
  }
-@@ -612,8 +605,7 @@ const TopTools_ListOfShape& TopOpeBRepDS
+@@ -608,8 +601,7 @@ const TopTools_ListOfShape& TopOpeBRepDS
  {
    if (I >= 1 && I <= myShapes.Extent()) {
      const TopOpeBRepDS_ShapeData& SD = myShapes.FindFromIndex(I);
@@ -232,7 +232,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_DataStructure.cxx
    }
    else {
      return myEmptyListOfShape;
-@@ -1156,8 +1148,7 @@ const TopOpeBRepDS_Curve& TopOpeBRepDS_D
+@@ -1152,8 +1144,7 @@ const TopOpeBRepDS_Curve& TopOpeBRepDS_D
  {
    if ( myCurves.IsBound(I) ) {
      const TopOpeBRepDS_CurveData& CD = myCurves(I);
@@ -242,7 +242,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_DataStructure.cxx
    }
    else
      return myEmptyCurve;
-@@ -1171,8 +1162,7 @@ TopOpeBRepDS_Curve& TopOpeBRepDS_DataStr
+@@ -1167,8 +1158,7 @@ TopOpeBRepDS_Curve& TopOpeBRepDS_DataStr
  {
    if ( myCurves.IsBound(I) ) {
      TopOpeBRepDS_CurveData& CD = myCurves.ChangeFind(I);
@@ -256,7 +256,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_connex.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS_connex.cxx
 +++ oce/src/TopOpeBRepDS/TopOpeBRepDS_connex.cxx
-@@ -72,8 +72,7 @@ Standard_EXPORT const TopTools_ListOfSha
+@@ -67,8 +67,7 @@ Standard_EXPORT const TopTools_ListOfSha
    Standard_Integer re = BDS.AncestorRank(E); if (re == 0) return *GLOBAL_los;
    TopTools_DataMapOfShapeListOfShape* pelf = (SI == 1) ? GLOBAL_elf1 : GLOBAL_elf2;
    TopTools_DataMapOfShapeListOfShape& elf = *pelf;
@@ -266,7 +266,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_connex.cxx
  }
  
  // S = edge --> liste de faces connexes par S
-@@ -89,8 +88,7 @@ Standard_EXPORT const TopTools_ListOfSha
+@@ -84,8 +83,7 @@ Standard_EXPORT const TopTools_ListOfSha
    else if (t == TopAbs_FACE) {
      TopTools_DataMapOfShapeListOfShape& fle = *GLOBAL_fle;
      if (fle.IsBound(S)) {
@@ -280,7 +280,7 @@ Index: oce/src/TopOpeBRepTool/TopOpeBRepTool_box.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepTool/TopOpeBRepTool_box.cxx
 +++ oce/src/TopOpeBRepTool/TopOpeBRepTool_box.cxx
-@@ -47,7 +47,6 @@ Standard_EXPORT Handle(TopOpeBRepTool_HB
+@@ -42,7 +42,6 @@ Standard_EXPORT Handle(TopOpeBRepTool_HB
  Standard_EXPORT const Bnd_Box& FBOX_Box(const TopoDS_Shape& S)
  {
    Handle(TopOpeBRepTool_HBoxTool) hbt = FBOX_GetHBoxTool();
@@ -288,7 +288,7 @@ Index: oce/src/TopOpeBRepTool/TopOpeBRepTool_box.cxx
  #ifdef DEB
    if (TopOpeBRepTool_GettraceBOX()) {
      Standard_Integer i = hbt->Index(S);
-@@ -55,5 +54,5 @@ Standard_EXPORT const Bnd_Box& FBOX_Box(
+@@ -50,5 +49,5 @@ Standard_EXPORT const Bnd_Box& FBOX_Box(
      cout<<"TOOLBOX : "<<i<<"/"<<n<<endl;
    }
  #endif

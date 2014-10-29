@@ -12,11 +12,11 @@ Fix #485.
  src/BOPTools/BOPTools_AlgoTools.cxx | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/src/BOPTools/BOPTools_AlgoTools.cxx b/src/BOPTools/BOPTools_AlgoTools.cxx
-index 2f9993c..d103df0 100644
---- a/src/BOPTools/BOPTools_AlgoTools.cxx
-+++ b/src/BOPTools/BOPTools_AlgoTools.cxx
-@@ -1872,6 +1872,7 @@ Standard_Boolean FindPointInFace(const TopoDS_Edge& aE,
+Index: oce/src/BOPTools/BOPTools_AlgoTools.cxx
+===================================================================
+--- oce.orig/src/BOPTools/BOPTools_AlgoTools.cxx
++++ oce/src/BOPTools/BOPTools_AlgoTools.cxx
+@@ -1909,6 +1909,7 @@ Standard_Boolean FindPointInFace(const T
      aPOut = aProjPL.NearestPoint();
      //
      gp_Vec aV(aP, aPOut);
@@ -24,6 +24,3 @@ index 2f9993c..d103df0 100644
      aDB.SetXYZ(aV.XYZ());
    } while (aDist>Precision::Angular() && --aNbItMax);
    //
--- 
-1.9.1
-

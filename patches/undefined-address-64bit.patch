@@ -24,7 +24,7 @@ Index: oce/src/Standard/Handle_Standard_Persistent.hxx
 ===================================================================
 --- oce.orig/src/Standard/Handle_Standard_Persistent.hxx
 +++ oce/src/Standard/Handle_Standard_Persistent.hxx
-@@ -45,7 +45,7 @@
+@@ -41,7 +41,7 @@
  
  #ifndef PUndefinedAddress 
  #ifdef _OCC64
@@ -37,7 +37,7 @@ Index: oce/src/Standard/Handle_Standard_Transient.hxx
 ===================================================================
 --- oce.orig/src/Standard/Handle_Standard_Transient.hxx
 +++ oce/src/Standard/Handle_Standard_Transient.hxx
-@@ -42,7 +42,7 @@
+@@ -38,7 +38,7 @@
  
  #ifndef UndefinedHandleAddress 
  #ifdef _OCC64

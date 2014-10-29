@@ -11,7 +11,7 @@ Index: oce/src/OSD/OSD_Process.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Process.cxx
 +++ oce/src/OSD/OSD_Process.cxx
-@@ -136,11 +136,18 @@ Standard_Boolean OSD_Process::IsSuperUse
+@@ -131,11 +131,18 @@ Standard_Boolean OSD_Process::IsSuperUse
  
  
  OSD_Path OSD_Process::CurrentDirectory(){
@@ -32,7 +32,7 @@ Index: oce/src/OSD/OSD_Process.cxx
     myError.SetValue (errno, Iam, "Where");
   else {
     Name = cwd;
-@@ -170,6 +177,9 @@ TCollection_AsciiString Name;
+@@ -165,6 +172,9 @@ TCollection_AsciiString Name;
     //      result.SetValues("","","","",Name,"","");
  #endif
  

@@ -6,7 +6,7 @@ Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx
 +++ oce/src/Draw/Draw_Window.cxx
-@@ -1183,23 +1183,6 @@ static void StdinProc(ClientData clientD
+@@ -1195,23 +1195,6 @@ static void StdinProc(ClientData clientD
    Tcl_DStringFree(&line);
    count = Tcl_Gets(chan, &line);
  
@@ -34,7 +34,7 @@ Index: oce/src/OSD/OSD_Path.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Path.cxx
 +++ oce/src/OSD/OSD_Path.cxx
-@@ -416,19 +416,6 @@ void OSD_Path::SetValues(const TCollecti
+@@ -412,19 +412,6 @@ void OSD_Path::SetValues(const TCollecti
                           const TCollection_AsciiString& Nam,
                           const TCollection_AsciiString& ext){
  
@@ -54,7 +54,7 @@ Index: oce/src/OSD/OSD_Path.cxx
   myNode = Nod;
   myUserName = UsrNm;
   myPassword = Passwd;
-@@ -521,25 +508,7 @@ static Standard_Boolean Analyse_UNIX(con
+@@ -517,25 +504,7 @@ static Standard_Boolean Analyse_UNIX(con
  
  Standard_Boolean OSD_Path::IsValid(const TCollection_AsciiString& aDependentName,
                                     const OSD_SysType aSysType)const{
@@ -81,7 +81,7 @@ Index: oce/src/OSD/OSD_Path.cxx
  }
  
  
-@@ -947,8 +916,6 @@ TCollection_AsciiString OSD_Path::Name()
+@@ -943,8 +912,6 @@ TCollection_AsciiString OSD_Path::Name()
  
  
  void OSD_Path::SetNode(const TCollection_AsciiString& aName){
@@ -90,7 +90,7 @@ Index: oce/src/OSD/OSD_Path.cxx
   myNode = aName;
  }
  
-@@ -956,8 +923,6 @@ void OSD_Path::SetNode(const TCollection
+@@ -952,8 +919,6 @@ void OSD_Path::SetNode(const TCollection
  
  
  void OSD_Path::SetUserName(const TCollection_AsciiString& aName){
@@ -99,7 +99,7 @@ Index: oce/src/OSD/OSD_Path.cxx
   myUserName = aName;
  }
  
-@@ -965,8 +930,6 @@ void OSD_Path::SetUserName(const TCollec
+@@ -961,8 +926,6 @@ void OSD_Path::SetUserName(const TCollec
  
  
  void OSD_Path::SetPassword(const TCollection_AsciiString& aName){
@@ -108,7 +108,7 @@ Index: oce/src/OSD/OSD_Path.cxx
    myPassword = aName;
  }
  
-@@ -974,8 +937,6 @@ void OSD_Path::SetPassword(const TCollec
+@@ -970,8 +933,6 @@ void OSD_Path::SetPassword(const TCollec
  
  
  void OSD_Path::SetDisk(const TCollection_AsciiString& aName){
@@ -117,7 +117,7 @@ Index: oce/src/OSD/OSD_Path.cxx
    myDisk = aName;
  }
  
-@@ -983,8 +944,6 @@ void OSD_Path::SetDisk(const TCollection
+@@ -979,8 +940,6 @@ void OSD_Path::SetDisk(const TCollection
  
  
  void OSD_Path::SetTrek(const TCollection_AsciiString& aName){
@@ -126,7 +126,7 @@ Index: oce/src/OSD/OSD_Path.cxx
    myTrek = aName;
  }
  
-@@ -992,8 +951,6 @@ void OSD_Path::SetTrek(const TCollection
+@@ -988,8 +947,6 @@ void OSD_Path::SetTrek(const TCollection
  
  
  void OSD_Path::SetName(const TCollection_AsciiString& aName){
@@ -135,7 +135,7 @@ Index: oce/src/OSD/OSD_Path.cxx
    myName = aName;
  }
  
-@@ -1001,8 +958,6 @@ void OSD_Path::SetName(const TCollection
+@@ -997,8 +954,6 @@ void OSD_Path::SetName(const TCollection
  
  
  void OSD_Path::SetExtension(const TCollection_AsciiString& aName){

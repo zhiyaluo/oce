@@ -34,7 +34,7 @@ Index: oce/src/NCollection/NCollection_CellFilter.hxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_CellFilter.hxx
 +++ oce/src/NCollection/NCollection_CellFilter.hxx
-@@ -324,10 +324,20 @@ protected:
+@@ -319,10 +319,20 @@ protected:
    };
  
    // definition of global functions is needed for map
@@ -59,23 +59,23 @@ Index: oce/src/NCollection/NCollection_IndexedDataMap.hxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_IndexedDataMap.hxx
 +++ oce/src/NCollection/NCollection_IndexedDataMap.hxx
-@@ -110,7 +110,11 @@ template < class TheKeyType,
+@@ -105,7 +105,11 @@ template < class TheKeyType,
        myIndex(0) {}
      //! Constructor
-     Iterator (const NCollection_IndexedDataMap& theMap) :
+     Iterator (const NCollection_IndexedDataMap& theMap)
 +#ifdef __BORLANDC__
-+      myMap((NCollection_IndexedDataMap <TheKeyType, TheItemType, Hasher> *) &theMap),
++    : myMap((NCollection_IndexedDataMap <TheKeyType, TheItemType, Hasher> *) &theMap),
 +#else
-       myMap((NCollection_IndexedDataMap *) &theMap),
+     : myMap  ((NCollection_IndexedDataMap* )&theMap),
 +#endif
-       myIndex(1) {}
+       myNode (myMap->nodeFromIndex (1)),
+       myIndex (1) {}
      //! Query if the end of collection is reached by iterator
-     virtual Standard_Boolean More(void) const
 Index: oce/src/NCollection/NCollection_IndexedMap.hxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_IndexedMap.hxx
 +++ oce/src/NCollection/NCollection_IndexedMap.hxx
-@@ -100,7 +100,11 @@ template < class TheKeyType,
+@@ -95,7 +95,11 @@ template < class TheKeyType,
        myIndex(0) {}
      //! Constructor
      Iterator (const NCollection_IndexedMap& theMap) :
@@ -91,7 +91,7 @@ Index: oce/src/NCollection/NCollection_Vector.hxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_Vector.hxx
 +++ oce/src/NCollection/NCollection_Vector.hxx
-@@ -301,7 +301,11 @@ private: //! @name private methods
+@@ -297,7 +297,11 @@ private: //! @name private methods
      {
        for (Standard_Integer anItemIter = 0; anItemIter < theBlock.Size; ++anItemIter)
        {

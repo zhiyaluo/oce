@@ -48,7 +48,7 @@ Index: oce/src/BRepBuilderAPI/BRepBuilderAPI_CellFilter.hxx
 ===================================================================
 --- oce.orig/src/BRepBuilderAPI/BRepBuilderAPI_CellFilter.hxx
 +++ oce/src/BRepBuilderAPI/BRepBuilderAPI_CellFilter.hxx
-@@ -36,4 +36,12 @@
+@@ -31,4 +31,12 @@
  
  typedef NCollection_CellFilter<BRepBuilderAPI_VertexInspector> BRepBuilderAPI_CellFilter;
  
@@ -65,7 +65,7 @@ Index: oce/src/DDF/DDF_BrowserCommands.cxx
 ===================================================================
 --- oce.orig/src/DDF/DDF_BrowserCommands.cxx
 +++ oce/src/DDF/DDF_BrowserCommands.cxx
-@@ -113,7 +113,7 @@ static Standard_Integer DFOpenLabel (Dra
+@@ -109,7 +109,7 @@ static Standard_Integer DFOpenLabel (Dra
    TDF_Label lab;
    if (n == 3) TDF_Tool::Label(browser->Data(),a[2],lab);
  
@@ -78,7 +78,7 @@ Index: oce/src/NCollection/NCollection_Array1.hxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_Array1.hxx
 +++ oce/src/NCollection/NCollection_Array1.hxx
-@@ -75,7 +75,7 @@ template <class TheItemType> class NColl
+@@ -70,7 +70,7 @@ template <class TheItemType> class NColl
      //! Constructor with initialisation
      Iterator  (const NCollection_Array1& theArray) :
        myCurrent (theArray.Lower()),
@@ -91,7 +91,7 @@ Index: oce/src/NCollection/NCollection_Array2.hxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_Array2.hxx
 +++ oce/src/NCollection/NCollection_Array2.hxx
-@@ -59,7 +59,7 @@ template <class TheItemType> class NColl
+@@ -54,7 +54,7 @@ template <class TheItemType> class NColl
      Iterator  (const NCollection_Array2& theArray) :
        myCurrent (0),
        mySize    (theArray.Length()),
@@ -104,7 +104,7 @@ Index: oce/src/NCollection/NCollection_SList.hxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_SList.hxx
 +++ oce/src/NCollection/NCollection_SList.hxx
-@@ -73,7 +73,7 @@ template <class TheItemType> class NColl
+@@ -68,7 +68,7 @@ template <class TheItemType> class NColl
                 const NCollection_SList& theTail) :
                   myCount(1),
                   myValue(theItem) 
@@ -113,7 +113,7 @@ Index: oce/src/NCollection/NCollection_SList.hxx
      //! Tail
      NCollection_SList& Tail (void)
      { return (*myTail); }
-@@ -165,7 +165,7 @@ template <class TheItemType> class NColl
+@@ -160,7 +160,7 @@ template <class TheItemType> class NColl
      for (; anIter.More(); anIter.Next())
      {
        aNode = new (this->myAllocator) SListNode 
@@ -122,7 +122,7 @@ Index: oce/src/NCollection/NCollection_SList.hxx
        if (IsEmpty())
          myNode = aNode;
        else
-@@ -237,11 +237,11 @@ template <class TheItemType> class NColl
+@@ -232,11 +232,11 @@ template <class TheItemType> class NColl
  
    //! Construct
    void Construct(const TheItemType& theItem)
@@ -140,7 +140,7 @@ Index: oce/src/NCollection/NCollection_SparseArray.hxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_SparseArray.hxx
 +++ oce/src/NCollection/NCollection_SparseArray.hxx
-@@ -264,7 +264,7 @@ private:
+@@ -259,7 +259,7 @@ private:
    //! Call destructor to the item at given address
    virtual void destroyItem (Standard_Address theAddress)
    {
@@ -153,7 +153,7 @@ Index: oce/src/NCollection/NCollection_UBTreeFiller.hxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_UBTreeFiller.hxx
 +++ oce/src/NCollection/NCollection_UBTreeFiller.hxx
-@@ -26,6 +26,10 @@
+@@ -21,6 +21,10 @@
  #include <stdlib.h>
  #include <stdio.h>
  
@@ -168,7 +168,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_signal_WNT.cxx
 +++ oce/src/OSD/OSD_signal_WNT.cxx
-@@ -183,6 +183,10 @@ int _resetstkoflw(void)
+@@ -178,6 +178,10 @@ int _resetstkoflw(void)
  
  typedef void (*_se_translator_function)(unsigned int, EXCEPTION_POINTERS*);
  
@@ -183,7 +183,7 @@ Index: oce/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
 +++ oce/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
-@@ -135,7 +135,11 @@ static char getFarestCorner(float d000,
+@@ -131,7 +131,11 @@ static char getFarestCorner(float d000,
  }
  
  #ifdef __BORLANDC__
@@ -200,7 +200,7 @@ Index: oce/src/QABugs/QABugs_3.cxx
 ===================================================================
 --- oce.orig/src/QABugs/QABugs_3.cxx
 +++ oce/src/QABugs/QABugs_3.cxx
-@@ -1818,7 +1818,7 @@ static int BUC60831_1(Draw_Interpretor&
+@@ -1415,7 +1415,7 @@ static int BUC60831_1(Draw_Interpretor&
      L.Root().AddAttribute(MDF);
    }
  
@@ -213,7 +213,7 @@ Index: oce/src/ShapeFix/ShapeFix.cxx
 ===================================================================
 --- oce.orig/src/ShapeFix/ShapeFix.cxx
 +++ oce/src/ShapeFix/ShapeFix.cxx
-@@ -176,6 +176,9 @@ Standard_Boolean ShapeFix::SameParameter
+@@ -170,6 +170,9 @@ Standard_Boolean ShapeFix::SameParameter
             continue;
        }
  
@@ -223,7 +223,7 @@ Index: oce/src/ShapeFix/ShapeFix.cxx
        Handle(GeomAdaptor_HSurface) AS = new GeomAdaptor_HSurface ( plane );
        for ( TopExp_Explorer ed ( face, TopAbs_EDGE ); ed.More(); ed.Next() ) {
          TopoDS_Edge edge = TopoDS::Edge ( ed.Current() );
-@@ -212,6 +215,10 @@ Standard_Boolean ShapeFix::SameParameter
+@@ -206,6 +209,10 @@ Standard_Boolean ShapeFix::SameParameter
              B.UpdateVertex ( TopoDS::Vertex ( S ), tol );
            }
          }
@@ -238,7 +238,7 @@ Index: oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
 ===================================================================
 --- oce.orig/src/ShapeFix/ShapeFix_ComposeShell.cxx
 +++ oce/src/ShapeFix/ShapeFix_ComposeShell.cxx
-@@ -24,6 +24,8 @@
+@@ -20,6 +20,8 @@
  
  /* Starting from bcc32 v6.40 this flag should be passed as a compiler option. */
  #if defined(__BORLANDC__) && __BORLANDC__ < 0x0640 /* bcc32 v6.40 */
@@ -251,7 +251,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
-@@ -1788,7 +1788,7 @@ class FilledCircle : public AIS_Interact
+@@ -1942,7 +1942,7 @@ class FilledCircle : public AIS_Interact
  {
  public:
      // CASCADE RTTI
@@ -260,7 +260,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
  
      FilledCircle(gp_Pnt theCenter, Standard_Real theRadius);
      FilledCircle(Handle(Geom_Circle) theCircle);
-@@ -2287,7 +2287,7 @@ class MyTextClass:public AIS_Interactive
+@@ -2442,7 +2442,7 @@ class MyTextClass:public AIS_Interactive
  {
  public:
    // CASCADE RTTI
@@ -269,8 +269,8 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
  
    MyTextClass(){};
  
-@@ -3169,7 +3169,7 @@ public:
-     myArray = theArray;
+@@ -3151,7 +3151,7 @@ public:
+     myMarkerAspect = theMarkerAspect;
    }
  
 -  DEFINE_STANDARD_RTTI(MyPArrayObject);
@@ -278,7 +278,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
  
  private:
  
-@@ -4016,7 +4016,7 @@ class Triangle: public AIS_InteractiveOb
+@@ -4031,7 +4031,7 @@ class Triangle: public AIS_InteractiveOb
  {
  public: 
    // CASCADE RTTI
@@ -287,7 +287,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
    Triangle (const gp_Pnt& theP1, 
              const gp_Pnt& theP2, 
              const gp_Pnt& theP3);
-@@ -4211,7 +4211,7 @@ class SegmentObject: public AIS_Interact
+@@ -4226,7 +4226,7 @@ class SegmentObject: public AIS_Interact
  {
  public:
    // CASCADE RTTI
@@ -300,7 +300,7 @@ Index: oce/src/ViewerTest/ViewerTest_OpenGlCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_OpenGlCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_OpenGlCommands.cxx
-@@ -63,7 +63,7 @@ class VUserDrawObj : public AIS_Interact
+@@ -68,7 +68,7 @@ class VUserDrawObj : public AIS_Interact
  {
  public:
      // CASCADE RTTI

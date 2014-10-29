@@ -8,10 +8,10 @@ Commit 5c79896 took away the math defines, these defines are needed under MinGW 
  src/Standard/Standard_math.hxx | 13 +++++++++++--
  1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/src/Standard/Standard_math.hxx b/src/Standard/Standard_math.hxx
-index 5c5f0ca..428abff 100644
---- a/src/Standard/Standard_math.hxx
-+++ b/src/Standard/Standard_math.hxx
+Index: oce/src/Standard/Standard_math.hxx
+===================================================================
+--- oce.orig/src/Standard/Standard_math.hxx
++++ oce/src/Standard/Standard_math.hxx
 @@ -16,7 +16,7 @@
  #include <Standard_Macro.hxx>
  #endif
@@ -21,7 +21,7 @@ index 5c5f0ca..428abff 100644
  
  #define _USE_MATH_DEFINES
  #include <math.h>
-@@ -28,5 +28,14 @@ __Standard_API double __cdecl asinh ( double );
+@@ -28,5 +28,14 @@ __Standard_API double __cdecl asinh ( do
  __Standard_API double __cdecl atanh ( double );
  #endif
  
@@ -37,6 +37,3 @@ index 5c5f0ca..428abff 100644
 +#endif /* __MINGW32__ */
  
 +#endif  /* _MSC_VER, __BORLANDC__, or __MINGW32__ */
--- 
-1.9.1
-

@@ -19,7 +19,7 @@ Index: oce/src/OSD/OSD.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD.cxx
 +++ oce/src/OSD/OSD.cxx
-@@ -24,7 +24,9 @@
+@@ -19,7 +19,9 @@
  #if HAVE_IEEEFP_H
  # include <ieeefp.h>
  #endif
@@ -30,7 +30,7 @@ Index: oce/src/OSD/OSD.cxx
  # define finite isfinite
  #endif
  
-@@ -81,7 +83,6 @@ Standard_Boolean OSD::CStringToReal(cons
+@@ -77,7 +79,6 @@ Standard_Boolean OSD::CStringToReal(cons
  # define _DEXPLEN	             11
  # define _IEEE		              1
  # define DMAXEXP	             ((1 << _DEXPLEN - 1) - 1 + _IEEE)

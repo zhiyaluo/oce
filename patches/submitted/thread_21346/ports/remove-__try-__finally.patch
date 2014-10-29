@@ -700,7 +700,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_signal_WNT.cxx
 +++ oce/src/OSD/OSD_signal_WNT.cxx
-@@ -512,12 +512,6 @@ static LONG __fastcall _osd_raise ( DWOR
+@@ -503,12 +503,6 @@ static LONG __fastcall _osd_raise ( DWOR
  //==== _osd_debug 
  //============================================================================
  
@@ -713,7 +713,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
  LONG _osd_debug ( void ) {
  
   LONG action ;
-@@ -533,29 +527,33 @@ LONG _osd_debug ( void ) {
+@@ -524,29 +518,33 @@ LONG _osd_debug ( void ) {
    SECURITY_ATTRIBUTES sa;
    PROCESS_INFORMATION pi;
    STARTUPINFO         si;
@@ -753,7 +753,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
     wsprintf (  cmdLine, keyValue, GetCurrentProcessId (), hEvent  );
  
     ZeroMemory (  &si, sizeof ( STARTUPINFO )  );
-@@ -568,8 +566,11 @@ LONG _osd_debug ( void ) {
+@@ -559,8 +557,11 @@ LONG _osd_debug ( void ) {
             NULL, cmdLine, NULL, NULL, TRUE, CREATE_DEFAULT_ERROR_MODE,
             NULL, NULL, &si, &pi
            )
@@ -766,7 +766,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
  //   cout << "_osd_debug -> WaitForSingleObject " << endl ;
     WaitForSingleObject ( hEvent, INFINITE );
  //   cout << "_osd_debug <- WaitForSingleObject -> CloseHandle " << endl ;
-@@ -580,18 +581,13 @@ LONG _osd_debug ( void ) {
+@@ -571,18 +572,13 @@ LONG _osd_debug ( void ) {
  //   cout << "_osd_debug fDbgLoaded  " << endl ;
     fDbgLoaded = TRUE;
    
@@ -786,7 +786,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
   }  /* end if */
  
   action = fDbgLoaded ? EXCEPTION_CONTINUE_EXECUTION : EXCEPTION_EXECUTE_HANDLER;
-@@ -601,9 +597,4 @@ LONG _osd_debug ( void ) {
+@@ -592,9 +588,4 @@ LONG _osd_debug ( void ) {
  
  }  // end _osd_debug
  

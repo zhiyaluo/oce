@@ -20,7 +20,7 @@ Index: oce/src/OSD/OSD_Path.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Path.cxx
 +++ oce/src/OSD/OSD_Path.cxx
-@@ -29,12 +29,8 @@
+@@ -25,12 +25,8 @@
  #include <OSD_Path.ixx>
  #include <OSD_WhoAmI.hxx>
  
@@ -34,7 +34,7 @@ Index: oce/src/OSD/OSD_Path.cxx
    return OSD_UnixBSD;
  }
  #elif defined(sgi)  || defined(IRIX) || defined(__sun)  || defined(SOLARIS) ||  defined(__sco__) || defined(__hpux) || defined(HPUX)
-@@ -62,13 +58,6 @@ static OSD_SysType whereAmI(){
+@@ -58,13 +54,6 @@ static OSD_SysType whereAmI(){
    return OSD_Aix;
  }
  #else

@@ -1,0 +1,65 @@
+commit df3d78b38ff6b77a1ba4c6556e012f3f4b2b6672
+Author: Jacob Abel <thatcadguy@gmail.com>
+Date:   Sat Jul 19 22:27:44 2014 -0700
+
+    [cppcheck-fix]Fix memory leaks and parse error
+    
+    See #286, newest comment.
+
+Index: oce/src/BRepOffset/BRepOffset_Offset.cxx
+===================================================================
+--- oce.orig/src/BRepOffset/BRepOffset_Offset.cxx
++++ oce/src/BRepOffset/BRepOffset_Offset.cxx
+@@ -1364,7 +1364,7 @@ void BRepOffset_Offset::Init(const TopoD
+   TopoDS_Wire W;
+   myBuilder.MakeWire(W);
+   
+-#ifdef DRAW
++#if defined(DEB) && defined(DRAW)
+   // POP pour NT
+   //  char name[100];
+   if (Affich) {
+@@ -1385,6 +1385,7 @@ void BRepOffset_Offset::Init(const TopoD
+     C = new Geom_TrimmedCurve(C, f, l);
+     C->Transform(Loc.Transformation());
+ 
++#ifdef DEB
+ #ifdef DRAW
+     if ( Affich) {
+       sprintf(name,"CURVE_%d_%d",NbOFFSET,CO);
+@@ -1392,6 +1393,8 @@ void BRepOffset_Offset::Init(const TopoD
+       CO++;
+     }
+ #endif
++    delete[] name;
++#endif
+ 
+     Handle(Geom2d_Curve) PCurve = GeomProjLib::Curve2d(C, S);
+     // check if the first point of PCurve in is the canonical boundaries 
+Index: oce/src/NIS/NIS_View.cxx
+===================================================================
+--- oce.orig/src/NIS/NIS_View.cxx
++++ oce/src/NIS/NIS_View.cxx
+@@ -347,8 +347,8 @@ int NIS_View::MyCallback (Aspect_Drawabl
+       glDeleteLists (anIterM.Key(), 5);
+ #else
+       glDeleteLists (anIterM.Key(), 1);
+-    }
+ #endif
++    }
+   thisView->myExListId.Clear();
+ 
+   for (anIter = thisView->myContexts; anIter.More(); anIter.Next())
+Index: oce/src/OpenGl/OpenGl_Workspace_Raytrace.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_Workspace_Raytrace.cxx
++++ oce/src/OpenGl/OpenGl_Workspace_Raytrace.cxx
+@@ -463,7 +463,7 @@ Standard_Boolean OpenGl_Workspace::AddRa
+   {
+     if (anIts.Value()->Transformation()->mat != NULL)
+     {
+-      float* aTransform = new float[16];
++      aTransform = new float[16];
+ 
+       for (int i = 0; i < 4; ++i)
+         for (int j = 0; j < 4; ++j)

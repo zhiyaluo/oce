@@ -34,9 +34,9 @@ Index: oce/src/XCAFPrs/XCAFPrs_AISObject.cxx
 ===================================================================
 --- oce.orig/src/XCAFPrs/XCAFPrs_AISObject.cxx
 +++ oce/src/XCAFPrs/XCAFPrs_AISObject.cxx
-@@ -18,6 +18,8 @@
- // and conditions governing the rights and limitations under the License.
- 
+@@ -13,6 +13,8 @@
+ // Alternatively, this file may be used under the terms of Open CASCADE
+ // commercial license or contractual agreement.
  
 +#define BUC60577	//TP_14012011 Fix out of bound.
 +

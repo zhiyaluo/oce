@@ -2,7 +2,7 @@ Index: oce/src/FWOSDriver/FWOSDriver_Driver.cxx
 ===================================================================
 --- oce.orig/src/FWOSDriver/FWOSDriver_Driver.cxx
 +++ oce/src/FWOSDriver/FWOSDriver_Driver.cxx
-@@ -172,7 +172,7 @@ TCollection_ExtendedString FWOSDriver_Dr
+@@ -167,7 +167,7 @@ TCollection_ExtendedString FWOSDriver_Dr
      
  #ifdef WNT
      TCollection_ExtendedString hd=UTL::xgetenv("HOMEDRIVE");

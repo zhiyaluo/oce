@@ -12,7 +12,7 @@ Index: oce/src/OSD/OSD_File.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_File.cxx
 +++ oce/src/OSD/OSD_File.cxx
-@@ -1052,13 +1052,13 @@ void OSD_File :: Read (
+@@ -1053,13 +1053,13 @@ void OSD_File :: Read (
   }
                                          
   Standard_Integer NbyteRead;

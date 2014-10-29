@@ -62,7 +62,7 @@ Index: oce/src/TopoDS/TopoDS_Shape.lxx
 ===================================================================
 --- oce.orig/src/TopoDS/TopoDS_Shape.lxx
 +++ oce/src/TopoDS/TopoDS_Shape.lxx
-@@ -22,6 +22,11 @@
+@@ -17,6 +17,11 @@
  #include <TopoDS_TShape.hxx>
  #include <TopAbs.hxx>
  
@@ -78,7 +78,7 @@ Index: oce/src/TopoDS/TopoDS_TShape.lxx
 ===================================================================
 --- oce.orig/src/TopoDS/TopoDS_TShape.lxx
 +++ oce/src/TopoDS/TopoDS_TShape.lxx
-@@ -23,6 +23,12 @@
+@@ -18,6 +18,12 @@
  #include <TopoDS_Shape.hxx>
  #include <TopoDS_ListIteratorOfListOfShape.hxx>
  
@@ -95,9 +95,9 @@ Index: oce/src/TopoDS/TopoDS_TVertex.lxx
 ===================================================================
 --- oce.orig/src/TopoDS/TopoDS_TVertex.lxx
 +++ oce/src/TopoDS/TopoDS_TVertex.lxx
-@@ -19,6 +19,12 @@
- // and conditions governing the rights and limitations under the License.
- 
+@@ -14,6 +14,12 @@
+ // Alternatively, this file may be used under the terms of Open CASCADE
+ // commercial license or contractual agreement.
  
 +// The Convex function can conflict with Convex defined as an integer
 +// in X.h

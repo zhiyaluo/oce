@@ -203,7 +203,7 @@ Index: oce/src/Resource/Resource_Manager.cxx
 ===================================================================
 --- oce.orig/src/Resource/Resource_Manager.cxx
 +++ oce/src/Resource/Resource_Manager.cxx
-@@ -179,7 +179,7 @@ static Standard_Integer WhatKindOfLine(O
+@@ -183,7 +183,7 @@ static Standard_Integer WhatKindOfLine(O
    if (!Pos2 || Pos1 == Pos2)
      return ERROR;
  

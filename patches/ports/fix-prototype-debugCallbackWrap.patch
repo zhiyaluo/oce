@@ -14,11 +14,11 @@ will be reverted if glext.h is updated.
  src/OpenGl/OpenGl_Context.cxx | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/src/OpenGl/OpenGl_Context.cxx b/src/OpenGl/OpenGl_Context.cxx
-index 5a6ab31..5e3b108 100644
---- a/src/OpenGl/OpenGl_Context.cxx
-+++ b/src/OpenGl/OpenGl_Context.cxx
-@@ -592,7 +592,7 @@ static void APIENTRY debugCallbackWrap(unsigned int theSource,
+Index: oce/src/OpenGl/OpenGl_Context.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_Context.cxx
++++ oce/src/OpenGl/OpenGl_Context.cxx
+@@ -592,7 +592,7 @@ static void APIENTRY debugCallbackWrap(u
                                         unsigned int theSeverity,
                                         int          /*theLength*/,
                                         const char*  theMessage,
@@ -27,6 +27,3 @@ index 5a6ab31..5e3b108 100644
  {
    OpenGl_Context* aCtx = (OpenGl_Context* )theUserParam;
    aCtx->PushMessage (theSource, theType, theId, theSeverity, theMessage);
--- 
-1.8.5.2
-

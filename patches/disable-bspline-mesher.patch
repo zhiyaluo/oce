@@ -23,7 +23,7 @@ Index: oce/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
 ===================================================================
 --- oce.orig/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
 +++ oce/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
-@@ -903,6 +903,7 @@ void BRepMesh_FastDiscretFace::InternalV
+@@ -899,6 +899,7 @@ void BRepMesh_FastDiscretFace::InternalV
        }
      }
    }
@@ -31,7 +31,7 @@ Index: oce/src/BRepMesh/BRepMesh_FastDiscretFace.cxx
    else if (thetype == GeomAbs_BezierSurface || thetype == GeomAbs_BSplineSurface)
    {
      //define resolutions
-@@ -1049,6 +1050,7 @@ void BRepMesh_FastDiscretFace::InternalV
+@@ -1045,6 +1046,7 @@ void BRepMesh_FastDiscretFace::InternalV
        }
      }
    }

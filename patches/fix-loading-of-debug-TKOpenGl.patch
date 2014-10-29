@@ -22,7 +22,7 @@ Index: oce/src/Graphic3d/Graphic3d.cxx
 ===================================================================
 --- oce.orig/src/Graphic3d/Graphic3d.cxx
 +++ oce/src/Graphic3d/Graphic3d.cxx
-@@ -21,6 +21,10 @@
+@@ -17,6 +17,10 @@
  #include <Aspect_DriverDefinitionError.hxx>
  #include <OSD_Environment.hxx>
  
@@ -33,7 +33,7 @@ Index: oce/src/Graphic3d/Graphic3d.cxx
  //=======================================================================
  //function : InitGraphicDriver
  //purpose  :
-@@ -36,6 +40,13 @@ Handle(Graphic3d_GraphicDriver) Graphic3
+@@ -32,6 +36,13 @@ Handle(Graphic3d_GraphicDriver) Graphic3
  
    TCollection_AsciiString aGraphicLibName;
  
@@ -47,7 +47,7 @@ Index: oce/src/Graphic3d/Graphic3d.cxx
    // Setting the library name. Depends on the platform.
  #if defined(_WIN32) || defined(__WIN32__)
    aGraphicLibName = "TKOpenGl.dll";
-@@ -46,6 +57,8 @@ Handle(Graphic3d_GraphicDriver) Graphic3
+@@ -42,6 +53,8 @@ Handle(Graphic3d_GraphicDriver) Graphic3
  #else
    aGraphicLibName = "libTKOpenGl.so";
  #endif

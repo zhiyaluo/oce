@@ -177,7 +177,7 @@ Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx
 +++ oce/src/Draw/Draw_Window.cxx
-@@ -97,7 +97,7 @@ defaultPrompt:
+@@ -95,7 +95,7 @@ defaultPrompt:
  #if !defined(_WIN32) && !defined(__WIN32__)
  
  #ifdef HAVE_CONFIG_H
@@ -355,45 +355,6 @@ Index: oce/src/OSD/OSD_Chronometer.cxx
  #endif
  
  #ifdef HAVE_SYS_TYPES_H
-Index: oce/src/OSD/OSD_Cmailbox.c
-===================================================================
---- oce.orig/src/OSD/OSD_Cmailbox.c
-+++ oce/src/OSD/OSD_Cmailbox.c
-@@ -17,7 +17,7 @@
- #if !defined( WNT ) && !defined(__hpux)
- 
- #ifdef HAVE_CONFIG_H
--# include <config.h>
-+# include <oce-config.h>
- #endif
- 
- #include <stdio.h>
-Index: oce/src/OSD/OSD_Csemaphore.c
-===================================================================
---- oce.orig/src/OSD/OSD_Csemaphore.c
-+++ oce/src/OSD/OSD_Csemaphore.c
-@@ -17,7 +17,7 @@
- #ifndef WNT
- 
- #ifdef HAVE_CONFIG_H
--# include <config.h>
-+# include <oce-config.h>
- #endif
- 
- #include <errno.h>
-Index: oce/src/OSD/OSD_Csharedmemory.c
-===================================================================
---- oce.orig/src/OSD/OSD_Csharedmemory.c
-+++ oce/src/OSD/OSD_Csharedmemory.c
-@@ -21,7 +21,7 @@
- #include <sys/shm.h>
- 
- #if defined(HAVE_CONFIG_H)
--#include "config.h"
-+#include <oce-config.h>
- #endif
- #if defined(HAVE_STDLIB_H)
- #include <stdlib.h>
 Index: oce/src/OSD/OSD_Directory.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Directory.cxx
@@ -511,19 +472,6 @@ Index: oce/src/OSD/OSD_Process.cxx
  #endif
  
  #ifndef WNT
-Index: oce/src/OSD/OSD_Semaphore.cxx
-===================================================================
---- oce.orig/src/OSD/OSD_Semaphore.cxx
-+++ oce/src/OSD/OSD_Semaphore.cxx
-@@ -15,7 +15,7 @@
- #ifndef WNT
- 
- #ifdef HAVE_CONFIG_H
--# include <config.h>
-+# include <oce-config.h>
- #endif
- 
- #include <Standard_ProgramError.hxx>
 Index: oce/src/OSD/OSD_SharedLibrary.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_SharedLibrary.cxx
@@ -645,7 +593,7 @@ Index: oce/src/OpenGl/OpenGl_LayerList.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_LayerList.cxx
 +++ oce/src/OpenGl/OpenGl_LayerList.cxx
-@@ -15,7 +15,7 @@
+@@ -14,7 +14,7 @@
  // commercial license or contractual agreement.
  
  #ifdef HAVE_CONFIG_H

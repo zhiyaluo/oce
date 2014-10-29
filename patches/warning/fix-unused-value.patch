@@ -12,7 +12,7 @@ Index: oce/src/OpenGl/OpenGl_telem_util.hxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_telem_util.hxx
 +++ oce/src/OpenGl/OpenGl_telem_util.hxx
-@@ -87,7 +87,7 @@ xx-xx-xx : xxx ; Creation.
+@@ -83,7 +83,7 @@ xx-xx-xx : xxx ; Creation.
  /* normalize */
  #define  vecnrmd(a,d)    ( d = (Tfloat)vecmag(a), \
    ( d > 1e-10 ? (a[0] /= d, a[1] /= d, a[2] /= d, d) : (Tfloat)0. ) )

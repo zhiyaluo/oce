@@ -13,7 +13,7 @@ Index: oce/src/BRepMesh/BRepMesh_CellFilter.hxx
 ===================================================================
 --- oce.orig/src/BRepMesh/BRepMesh_CellFilter.hxx
 +++ oce/src/BRepMesh/BRepMesh_CellFilter.hxx
-@@ -25,3 +25,11 @@
+@@ -19,3 +19,11 @@
  #include <BRepMesh_CircleInspector.hxx>
  
  typedef NCollection_CellFilter<BRepMesh_CircleInspector> BRepMesh_CellFilter;
@@ -30,7 +30,7 @@ Index: oce/src/BRepMesh/BRepMesh_VertexCellFilter.hxx
 ===================================================================
 --- oce.orig/src/BRepMesh/BRepMesh_VertexCellFilter.hxx
 +++ oce/src/BRepMesh/BRepMesh_VertexCellFilter.hxx
-@@ -36,4 +36,12 @@
+@@ -31,4 +31,12 @@
  
  typedef NCollection_CellFilter<BRepMesh_VertexInspector> BRepMesh_VertexCellFilter;
  

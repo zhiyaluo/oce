@@ -12,7 +12,7 @@ Index: oce/src/NCollection/NCollection_CellFilter.hxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_CellFilter.hxx
 +++ oce/src/NCollection/NCollection_CellFilter.hxx
-@@ -311,10 +311,10 @@ protected:
+@@ -306,10 +306,10 @@ protected:
      {
        // number of bits per each dimension in the hash code
        const Standard_Size aShiftBits = (BITS(long)-1) / Inspector::Dimension;

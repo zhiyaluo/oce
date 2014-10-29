@@ -12,7 +12,7 @@ Index: oce/src/OSD/OSD_File.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_File.cxx
 +++ oce/src/OSD/OSD_File.cxx
-@@ -854,7 +854,7 @@ Standard_Boolean OSD_File::IsExecutable(
+@@ -851,7 +851,7 @@ Standard_Boolean OSD_File::IsExecutable(
  
  #if defined(__CYGWIN32__) || defined(__MINGW32__)
  #define VAC
@@ -21,7 +21,7 @@ Index: oce/src/OSD/OSD_File.cxx
  #endif
  
  #pragma comment( lib, "WSOCK32.LIB"  )
-@@ -1685,7 +1685,7 @@ OSD_File OSD_File :: BuildTemporary () {
+@@ -1484,7 +1484,7 @@ OSD_File OSD_File :: BuildTemporary () {
  typedef struct _osd_wnt_key {
  
                  HKEY   hKey;
@@ -34,7 +34,7 @@ Index: oce/src/OSD/OSD_WNT_1.hxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_WNT_1.hxx
 +++ oce/src/OSD/OSD_WNT_1.hxx
-@@ -83,7 +83,7 @@ typedef struct _MB_DESC {
+@@ -79,7 +79,7 @@ typedef struct _MB_DESC {
  
                  MB_ITEMTYPE   itemType;
                  _TINT         itemId;

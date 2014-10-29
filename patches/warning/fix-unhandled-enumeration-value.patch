@@ -33,7 +33,7 @@ Index: oce/src/Aspect/Aspect_ColorScale.cxx
 ===================================================================
 --- oce.orig/src/Aspect/Aspect_ColorScale.cxx
 +++ oce/src/Aspect/Aspect_ColorScale.cxx
-@@ -514,6 +514,7 @@ void Aspect_ColorScale::DrawScale( const
+@@ -517,6 +517,7 @@ void Aspect_ColorScale::DrawScale( const
      case Aspect_TOCSP_RIGHT:
        x += colorWidth + spacer;
        break;

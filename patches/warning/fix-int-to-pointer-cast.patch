@@ -1,0 +1,67 @@
+commit 73450347fb743ca42420aae202ce51baa06abe19
+Author: Jacob Abel <thatcadguy@gmail.com>
+Date:   Fri May 9 14:10:53 2014 -0700
+
+    [gcc-warning-fix][int-to-pointer-cast]
+    
+    Please check if the includes for intptr_t are correct; I stole them from
+    AdvApp2Var_SysBase.hxx.
+
+Index: oce/src/Draw/Draw_VariableCommands.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw_VariableCommands.cxx
++++ oce/src/Draw/Draw_VariableCommands.cxx
+@@ -51,6 +51,15 @@ extern Draw_Viewer dout;
+ 
+ #include <OSD_Environment.hxx>
+ 
++// for intptr_t
++#if defined(_MSC_VER)
++# include <stddef.h>
++#elif defined(__hpux) && !defined(__GNUC__)
++# include <inttypes.h>
++#else
++# include <stdint.h>
++#endif
++
+ Standard_Boolean Draw_ParseFailed;
+ 
+ static Standard_Boolean autodisp = Standard_True;
+@@ -800,7 +809,7 @@ void Draw::Set(const Standard_CString na
+     
+       // set the trace function
+       Tcl_TraceVar(theCommands.Interp(),name,TCL_TRACE_UNSETS,
+-		   tracevar,(ClientData)ival);
++		   tracevar,(ClientData)(intptr_t)ival);
+       
+       if (displ) {
+ 	if (!D->Visible())
+Index: oce/src/TestTopOpeTools/TestTopOpeTools_Trace.cxx
+===================================================================
+--- oce.orig/src/TestTopOpeTools/TestTopOpeTools_Trace.cxx
++++ oce/src/TestTopOpeTools/TestTopOpeTools_Trace.cxx
+@@ -16,6 +16,15 @@
+ 
+ #include <TestTopOpeTools_Trace.hxx>
+ 
++// for intptr_t
++#if defined(_MSC_VER)
++# include <stddef.h>
++#elif defined(__hpux) && !defined(__GNUC__)
++# include <inttypes.h>
++#else
++# include <stdint.h>
++#endif
++
+ TestTopOpeTools_Trace::TestTopOpeTools_Trace
+ (const Standard_Integer nbmaxentry,
+  const TCollection_AsciiString& genre) :
+@@ -161,7 +170,7 @@ const t_flag TestTopOpeTools_Trace::Getf
+ { return (t_flag)myflag.Value(index); }
+ 
+ const tf_value TestTopOpeTools_Trace::Getfunc(const Standard_Integer index)
+-{ return (tf_value)myfunc.Value(index); }
++{ return (tf_value)(intptr_t)myfunc.Value(index); }
+ 
+ const te_ftyp TestTopOpeTools_Trace::Getftyp(const Standard_Integer index)
+ {

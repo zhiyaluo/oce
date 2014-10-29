@@ -217,7 +217,7 @@ Index: oce/src/IntTools/IntTools_EdgeFace.cxx
  static
    Standard_Boolean IsCoplanar (const BRepAdaptor_Curve&  ,
  			       const BRepAdaptor_Surface& );
-@@ -1535,7 +1531,3 @@ Standard_Integer AdaptiveDiscret (const
+@@ -1537,7 +1533,3 @@ Standard_Integer AdaptiveDiscret (const
    return iDiscretNew;
  }
  
@@ -244,7 +244,7 @@ Index: oce/src/OSD/OSD_File.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_File.cxx
 +++ oce/src/OSD/OSD_File.cxx
-@@ -857,8 +857,10 @@ Standard_Boolean OSD_File::IsExecutable(
+@@ -855,8 +855,10 @@ Standard_Boolean OSD_File::IsExecutable(
  #define _int64 int64_t
  #endif
  

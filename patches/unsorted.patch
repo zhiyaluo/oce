@@ -1,11 +1,8 @@
-diff --git a/.travis.build.sh b/.travis.build.sh
-old mode 100644
-new mode 100755
-diff --git a/src/Aspect/Aspect_MarkerStyle.cxx b/src/Aspect/Aspect_MarkerStyle.cxx
-index 3022656..16a2982 100644
---- a/src/Aspect/Aspect_MarkerStyle.cxx
-+++ b/src/Aspect/Aspect_MarkerStyle.cxx
-@@ -532,6 +532,8 @@ void Aspect_MarkerStyle::SetPredefinedStyle() {
+Index: oce/src/Aspect/Aspect_MarkerStyle.cxx
+===================================================================
+--- oce.orig/src/Aspect/Aspect_MarkerStyle.cxx
++++ oce/src/Aspect/Aspect_MarkerStyle.cxx
+@@ -532,6 +532,8 @@ void Aspect_MarkerStyle::SetPredefinedSt
  		  }
  		}
  		break ;
@@ -14,11 +11,11 @@ index 3022656..16a2982 100644
  	}
  
  }
-diff --git a/src/BOPAlgo/BOPAlgo_Builder_3.cxx b/src/BOPAlgo/BOPAlgo_Builder_3.cxx
-index aae8379..f3adee9 100644
---- a/src/BOPAlgo/BOPAlgo_Builder_3.cxx
-+++ b/src/BOPAlgo/BOPAlgo_Builder_3.cxx
-@@ -299,6 +299,8 @@ void BOPAlgo_Builder::FillIn3DParts(BOPCol_DataMapOfShapeListOfShape& theInParts
+Index: oce/src/BOPAlgo/BOPAlgo_Builder_3.cxx
+===================================================================
+--- oce.orig/src/BOPAlgo/BOPAlgo_Builder_3.cxx
++++ oce/src/BOPAlgo/BOPAlgo_Builder_3.cxx
+@@ -306,6 +306,8 @@ void BOPAlgo_Builder::FillIn3DParts
      aSelector.Clear();
      aSelector.SetBox(aBoxS);
      //
@@ -26,12 +23,12 @@ index aae8379..f3adee9 100644
 +    //
      const BOPCol_ListOfInteger& aLIFP=aSelector.Indices();
      //
-     // 2.7. Collect faces that are IN aSolid [ aLFIN ]
-diff --git a/src/BRepAlgo/BRepAlgo_Tool.cxx b/src/BRepAlgo/BRepAlgo_Tool.cxx
-index d04714c..a2ce21d 100644
---- a/src/BRepAlgo/BRepAlgo_Tool.cxx
-+++ b/src/BRepAlgo/BRepAlgo_Tool.cxx
-@@ -68,7 +68,7 @@ TopoDS_Shape BRepAlgo_Tool::Deboucle3D(const TopoDS_Shape& S,
+     // 2.5. Collect faces that are IN aSolid [ aLFIN ]
+Index: oce/src/BRepAlgo/BRepAlgo_Tool.cxx
+===================================================================
+--- oce.orig/src/BRepAlgo/BRepAlgo_Tool.cxx
++++ oce/src/BRepAlgo/BRepAlgo_Tool.cxx
+@@ -68,7 +68,7 @@ TopoDS_Shape BRepAlgo_Tool::Deboucle3D(c
        // iterate on sub-shapes and add non-empty.
        TopoDS_Iterator it(S);
        TopoDS_Shape SubShape;
@@ -40,7 +37,7 @@ index d04714c..a2ce21d 100644
        BRep_Builder B;
        if (S.ShapeType() == TopAbs_COMPOUND) {
  	B.MakeCompound(TopoDS::Compound(SS));
-@@ -81,10 +81,10 @@ TopoDS_Shape BRepAlgo_Tool::Deboucle3D(const TopoDS_Shape& S,
+@@ -81,10 +81,10 @@ TopoDS_Shape BRepAlgo_Tool::Deboucle3D(c
  	SubShape = Deboucle3D(CurS,Boundary);
  	if ( !SubShape.IsNull()) {
  	  B.Add(SS, SubShape);
@@ -53,50 +50,11 @@ index d04714c..a2ce21d 100644
          {
  #ifdef DEB
          cout << "No subhape in shape!" << endl;
-diff --git a/src/Blend/Blend_Walking_1.gxx b/src/Blend/Blend_Walking_1.gxx
-index e4cce5e..5d7e27b 100644
---- a/src/Blend/Blend_Walking_1.gxx
-+++ b/src/Blend/Blend_Walking_1.gxx
-@@ -182,6 +182,8 @@ Standard_Boolean Blend_Walking::PerformFirstSection
- 
-   Pos1 = Pos2 = TopAbs_UNKNOWN;
- 
-+  Blend_Status State;
-+
-   param = Pdep;
-   Func.Set(param);
- 
-@@ -205,7 +207,7 @@ Standard_Boolean Blend_Walking::PerformFirstSection
-     return Standard_False;
-   }
- 
--  TestArret(Func, Blend_OK, Standard_False);
-+  State = TestArret(Func, Blend_OK, Standard_False);
- #ifdef DEB
-   if (Blend_GettraceDRAWSECT()){
-     Drawsect(surf1,surf2,sol,param,Func);
-diff --git a/src/Bnd/Bnd_BoundSortBox.cxx b/src/Bnd/Bnd_BoundSortBox.cxx
-index 5291f5a..c8392b9 100644
---- a/src/Bnd/Bnd_BoundSortBox.cxx
-+++ b/src/Bnd/Bnd_BoundSortBox.cxx
-@@ -636,10 +636,11 @@ const TColStd_ListOfInteger& Bnd_BoundSortBox::Compare (const Bnd_Box& theBox)
-   //-- Rejection with the table of bits
-   Standard_Boolean touch = Standard_True;
-   touch = Standard_False;
--  Standard_Real _Xmax,_Ymax,_Zmax;
-+  Standard_Real _Xmin,_Ymin,_Zmin,_Xmax,_Ymax,_Zmax;
-   BSB_T3Bits* Map = (BSB_T3Bits *)TabBits;
-   Standard_Real xmin, ymin, zmin, xmax, ymax, zmax;
-   _Xmax=Map->Xmax; _Ymax=Map->Ymax; _Zmax=Map->Zmax;
-+  _Xmin=Map->Xmin; _Ymin=Map->Ymin; _Zmin=Map->Zmin;
-   theBox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
-   Standard_Integer i0,i1,j0,j1,k0,k1;
-   if(xmin>Xmin) i0=(Standard_Integer )((xmin-Xmin)*deltaX)-1; else  i0=1;
-diff --git a/src/Draw/Draw.cxx b/src/Draw/Draw.cxx
-index f3ccd80..5467cf5 100644
---- a/src/Draw/Draw.cxx
-+++ b/src/Draw/Draw.cxx
-@@ -407,7 +407,7 @@ void Draw_Appli(Standard_Integer argc, char** argv,const FDraw_InitAppli Draw_In
+Index: oce/src/Draw/Draw.cxx
+===================================================================
+--- oce.orig/src/Draw/Draw.cxx
++++ oce/src/Draw/Draw.cxx
+@@ -407,7 +407,7 @@ void Draw_Appli(Standard_Integer argc, c
          cin.get(cmd[++i]);
        } while ((cmd[i] != '\n') && (!cin.fail()));
        cmd[i] = '\0';
@@ -105,10 +63,10 @@ index f3ccd80..5467cf5 100644
    }
  #ifdef WNT
    // Destruction de l'application
-diff --git a/src/DrawResources/TestCommands.tcl b/src/DrawResources/TestCommands.tcl
-index e3ede06..fba423b 100644
---- a/src/DrawResources/TestCommands.tcl
-+++ b/src/DrawResources/TestCommands.tcl
+Index: oce/src/DrawResources/TestCommands.tcl
+===================================================================
+--- oce.orig/src/DrawResources/TestCommands.tcl
++++ oce/src/DrawResources/TestCommands.tcl
 @@ -367,7 +367,10 @@ proc testgrid {args} {
          # commant to run DRAW with a command file;
          # note that empty string is passed as standard input to avoid possible 
@@ -135,10 +93,10 @@ index e3ede06..fba423b 100644
      # check if the file is located in the subdirectory data of the script dir
      set scriptfile [info script]
      if { $scriptfile != "" } {
-diff --git a/src/FSD/FSD_CmpFile.cdl b/src/FSD/FSD_CmpFile.cdl
-index 6984f81..728aab5 100644
---- a/src/FSD/FSD_CmpFile.cdl
-+++ b/src/FSD/FSD_CmpFile.cdl
+Index: oce/src/FSD/FSD_CmpFile.cdl
+===================================================================
+--- oce.orig/src/FSD/FSD_CmpFile.cdl
++++ oce/src/FSD/FSD_CmpFile.cdl
 @@ -319,7 +319,6 @@ is
  
      MagicNumber(myclass)
@@ -147,10 +105,10 @@ index 6984f81..728aab5 100644
      
      RaiseError(me: in out ; theFailure: Type from Standard) is private;
          
-diff --git a/src/Graphic3d/Graphic3d.cxx b/src/Graphic3d/Graphic3d.cxx
-index 3cf42bd..90d67c5 100644
---- a/src/Graphic3d/Graphic3d.cxx
-+++ b/src/Graphic3d/Graphic3d.cxx
+Index: oce/src/Graphic3d/Graphic3d.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d.cxx
++++ oce/src/Graphic3d/Graphic3d.cxx
 @@ -25,6 +25,7 @@
  //function : InitGraphicDriver
  //purpose  :
@@ -159,7 +117,7 @@ index 3cf42bd..90d67c5 100644
  Handle(Graphic3d_GraphicDriver) Graphic3d::InitGraphicDriver (const Handle(Aspect_DisplayConnection)& theDisplayConnection)
  {
  #if !defined(_WIN32) && !defined(__WIN32__) && (!defined(__APPLE__) || defined(MACOSX_USE_GLX))
-@@ -98,3 +99,15 @@ Handle(Graphic3d_GraphicDriver) Graphic3d::InitGraphicDriver (const Handle(Aspec
+@@ -98,3 +99,15 @@ Handle(Graphic3d_GraphicDriver) Graphic3
  
    return aGraphicDriver;
  }
@@ -175,10 +133,10 @@ index 3cf42bd..90d67c5 100644
 +     return MetaGraphicDriverFactory("");
 +}
 +#endif
-diff --git a/src/NCollection/NCollection_Mat4.hxx b/src/NCollection/NCollection_Mat4.hxx
-index 7d58367..bd884b3 100644
---- a/src/NCollection/NCollection_Mat4.hxx
-+++ b/src/NCollection/NCollection_Mat4.hxx
+Index: oce/src/NCollection/NCollection_Mat4.hxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_Mat4.hxx
++++ oce/src/NCollection/NCollection_Mat4.hxx
 @@ -203,8 +203,6 @@ public:
    //! Raw access to the data (for OpenGL exchange).
    const Element_t* GetData()    const { return myMat; }
@@ -201,10 +159,10 @@ index 7d58367..bd884b3 100644
                             * theMatB.GetValue(aInputElem, aResElem / 4);
        }
      }
-diff --git a/src/NCollection/NCollection_Vec3.hxx b/src/NCollection/NCollection_Vec3.hxx
-index f6ff42b..4cf1529 100644
---- a/src/NCollection/NCollection_Vec3.hxx
-+++ b/src/NCollection/NCollection_Vec3.hxx
+Index: oce/src/NCollection/NCollection_Vec3.hxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_Vec3.hxx
++++ oce/src/NCollection/NCollection_Vec3.hxx
 @@ -161,14 +161,14 @@ public:
    friend NCollection_Vec3 operator+ (const NCollection_Vec3& theLeft,
                                       const NCollection_Vec3& theRight)
@@ -245,10 +203,10 @@ index f6ff42b..4cf1529 100644
    }
  
  private:
-diff --git a/src/NCollection/NCollection_Vec4.hxx b/src/NCollection/NCollection_Vec4.hxx
-index 27e5437..1e4a7cd 100644
---- a/src/NCollection/NCollection_Vec4.hxx
-+++ b/src/NCollection/NCollection_Vec4.hxx
+Index: oce/src/NCollection/NCollection_Vec4.hxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_Vec4.hxx
++++ oce/src/NCollection/NCollection_Vec4.hxx
 @@ -215,7 +215,7 @@ public:
    //! Unary -.
    NCollection_Vec4 operator-() const
@@ -267,11 +225,11 @@ index 27e5437..1e4a7cd 100644
      return aSumm -= theRight;
    }
  
-diff --git a/src/OSD/OSD_FileNode.cxx b/src/OSD/OSD_FileNode.cxx
-index 6afae18..4247b20 100644
---- a/src/OSD/OSD_FileNode.cxx
-+++ b/src/OSD/OSD_FileNode.cxx
-@@ -945,16 +945,13 @@ void _osd_wnt_set_error ( OSD_Error& err, OSD_WhoAmI who, ... ) {
+Index: oce/src/OSD/OSD_FileNode.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_FileNode.cxx
++++ oce/src/OSD/OSD_FileNode.cxx
+@@ -945,16 +945,13 @@ void _osd_wnt_set_error ( OSD_Error& err
  
   DWORD              errCode;
   Standard_Character buffer[ 2048 ];
@@ -290,7 +248,7 @@ index 6afae18..4247b20 100644
          )
   ) {
   
-@@ -965,8 +962,6 @@ void _osd_wnt_set_error ( OSD_Error& err, OSD_WhoAmI who, ... ) {
+@@ -965,8 +962,6 @@ void _osd_wnt_set_error ( OSD_Error& err
  
   err.SetValue ( errCode, who, buffer );
  
@@ -299,11 +257,11 @@ index 6afae18..4247b20 100644
  }  // end _set_error
  
  
-diff --git a/src/OpenGl/OpenGl_Context.cxx b/src/OpenGl/OpenGl_Context.cxx
-index 5e3b108..aea7870 100644
---- a/src/OpenGl/OpenGl_Context.cxx
-+++ b/src/OpenGl/OpenGl_Context.cxx
-@@ -76,7 +76,6 @@ OpenGl_Context::OpenGl_Context (const Handle(OpenGl_Caps)& theCaps)
+Index: oce/src/OpenGl/OpenGl_Context.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_Context.cxx
++++ oce/src/OpenGl/OpenGl_Context.cxx
+@@ -75,7 +75,6 @@ OpenGl_Context::OpenGl_Context (const Ha
    core14 (NULL),
    core15 (NULL),
    core20 (NULL),
@@ -311,7 +269,7 @@ index 5e3b108..aea7870 100644
    arbNPTW(Standard_False),
    arbVBO (NULL),
    arbTBO (NULL),
-@@ -103,6 +102,11 @@ OpenGl_Context::OpenGl_Context (const Handle(OpenGl_Caps)& theCaps)
+@@ -102,6 +101,11 @@ OpenGl_Context::OpenGl_Context (const Ha
    myIsFeedback (Standard_False),
    myIsInitialized (Standard_False)
  {
@@ -323,7 +281,7 @@ index 5e3b108..aea7870 100644
  #if defined(MAC_OS_X_VERSION_10_3) && !defined(MACOSX_USE_GLX)
    // Vendors can not extend functionality on this system
    // and developers are limited to OpenGL support provided by Mac OS X SDK.
-@@ -592,7 +596,7 @@ static void APIENTRY debugCallbackWrap(unsigned int theSource,
+@@ -592,7 +596,7 @@ static void APIENTRY debugCallbackWrap(u
                                         unsigned int theSeverity,
                                         int          /*theLength*/,
                                         const char*  theMessage,
@@ -332,11 +290,11 @@ index 5e3b108..aea7870 100644
  {
    OpenGl_Context* aCtx = (OpenGl_Context* )theUserParam;
    aCtx->PushMessage (theSource, theType, theId, theSeverity, theMessage);
-diff --git a/src/OpenGl/OpenGl_Display.cxx b/src/OpenGl/OpenGl_Display.cxx
-index 77cb99e..4717ee5 100644
---- a/src/OpenGl/OpenGl_Display.cxx
-+++ b/src/OpenGl/OpenGl_Display.cxx
-@@ -35,7 +35,7 @@ IMPLEMENT_STANDARD_RTTIEXT(OpenGl_Display,MMgt_TShared)
+Index: oce/src/OpenGl/OpenGl_Display.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_Display.cxx
++++ oce/src/OpenGl/OpenGl_Display.cxx
+@@ -35,7 +35,7 @@ IMPLEMENT_STANDARD_RTTIEXT(OpenGl_Displa
  namespace
  {
    #if (defined(_WIN32) || defined(__WIN32__)) || (defined(__APPLE__) && !defined(MACOSX_USE_GLX))
@@ -345,11 +303,11 @@ index 77cb99e..4717ee5 100644
    #endif
  
    static const OpenGl_Facilities myDefaultFacilities = { 1, 1, 1, 1, OpenGLMaxLights, 10000 };
-diff --git a/src/OpenGl/OpenGl_Flipper.cxx b/src/OpenGl/OpenGl_Flipper.cxx
-index 83398bf..e648d1a 100644
---- a/src/OpenGl/OpenGl_Flipper.cxx
-+++ b/src/OpenGl/OpenGl_Flipper.cxx
-@@ -192,7 +192,7 @@ void OpenGl_Flipper::Render (const Handle(OpenGl_Workspace)& theWorkspace) const
+Index: oce/src/OpenGl/OpenGl_Flipper.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_Flipper.cxx
++++ oce/src/OpenGl/OpenGl_Flipper.cxx
+@@ -192,7 +192,7 @@ void OpenGl_Flipper::Render (const Handl
      glMatrixMode (GL_MODELVIEW);
    }
  
@@ -358,11 +316,11 @@ index 83398bf..e648d1a 100644
  
    if (aCurrMode != GL_MODELVIEW)
    {
-diff --git a/src/OpenGl/OpenGl_GlCore12.hxx b/src/OpenGl/OpenGl_GlCore12.hxx
-index 76d146e..952b1fe 100644
---- a/src/OpenGl/OpenGl_GlCore12.hxx
-+++ b/src/OpenGl/OpenGl_GlCore12.hxx
-@@ -23,13 +23,15 @@
+Index: oce/src/OpenGl/OpenGl_GlCore12.hxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_GlCore12.hxx
++++ oce/src/OpenGl/OpenGl_GlCore12.hxx
+@@ -20,13 +20,15 @@
  
  #include <OpenGl_GlCore11.hxx>
  
@@ -385,11 +343,11 @@ index 76d146e..952b1fe 100644
  
  #include <OpenGl_glext.h>
  
-diff --git a/src/OpenGl/OpenGl_ShaderManager.cxx b/src/OpenGl/OpenGl_ShaderManager.cxx
-index 25218df..f83f66f 100644
---- a/src/OpenGl/OpenGl_ShaderManager.cxx
-+++ b/src/OpenGl/OpenGl_ShaderManager.cxx
-@@ -611,7 +611,7 @@ static void PushAspectFace (const Handle(OpenGl_Context)&       theCtx,
+Index: oce/src/OpenGl/OpenGl_ShaderManager.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_ShaderManager.cxx
++++ oce/src/OpenGl/OpenGl_ShaderManager.cxx
+@@ -611,7 +611,7 @@ static void PushAspectFace (const Handle
  {
    theProgram->SetUniform (theCtx,
                            theProgram->GetStateLocation (OpenGl_OCCT_TEXTURE_ENABLE),
@@ -398,27 +356,11 @@ index 25218df..f83f66f 100644
    theProgram->SetUniform (theCtx,
                            theProgram->GetStateLocation (OpenGl_OCCT_ACTIVE_SAMPLER),
                            0 /* GL_TEXTURE0 */);
-diff --git a/src/ProjLib/ProjLib_ProjectedCurve.cxx b/src/ProjLib/ProjLib_ProjectedCurve.cxx
-index 33aabb5..c3c1553 100644
---- a/src/ProjLib/ProjLib_ProjectedCurve.cxx
-+++ b/src/ProjLib/ProjLib_ProjectedCurve.cxx
-@@ -529,9 +529,10 @@ void ProjLib_ProjectedCurve::Load(const Handle(Adaptor3d_HCurve)& C)
- 
- 	if(IsTrimmed[0] || IsTrimmed[1]) {
- 	  // Treatment only for surface of revolution
--	  Standard_Real u1, u2, v2;
-+	  Standard_Real u1, u2, v1, v2;
- 	  u1 = mySurface->FirstUParameter();
- 	  u2 = mySurface->LastUParameter();
-+	  v1 = mySurface->FirstVParameter();
- 	  v2 = mySurface->LastVParameter();
- 	  
- 	  if(IsTrimmed[0]) {
-diff --git a/src/QABugs/QABugs_3.cxx b/src/QABugs/QABugs_3.cxx
-index fb3906c..9d2565d 100644
---- a/src/QABugs/QABugs_3.cxx
-+++ b/src/QABugs/QABugs_3.cxx
-@@ -1012,7 +1012,10 @@ static Standard_Integer coordload (Draw_Interpretor& theDi,
+Index: oce/src/QABugs/QABugs_3.cxx
+===================================================================
+--- oce.orig/src/QABugs/QABugs_3.cxx
++++ oce/src/QABugs/QABugs_3.cxx
+@@ -1012,7 +1012,10 @@ static Standard_Integer coordload (Draw_
    }
  
    BRepBuilderAPI_MakeFace aMakeFace (aMakeWire.Wire());
@@ -430,10 +372,10 @@ index fb3906c..9d2565d 100644
    return 0;
  }
  
-diff --git a/src/Standard/Standard_Atomic.hxx b/src/Standard/Standard_Atomic.hxx
-index 82c34c5..a580c11 100644
---- a/src/Standard/Standard_Atomic.hxx
-+++ b/src/Standard/Standard_Atomic.hxx
+Index: oce/src/Standard/Standard_Atomic.hxx
+===================================================================
+--- oce.orig/src/Standard/Standard_Atomic.hxx
++++ oce/src/Standard/Standard_Atomic.hxx
 @@ -27,6 +27,8 @@
  #ifndef _Standard_Atomic_HeaderFile
  #define _Standard_Atomic_HeaderFile
@@ -443,10 +385,10 @@ index 82c34c5..a580c11 100644
  //! Increments atomically integer variable pointed by theValue
  //! and returns resulting incremented value.
  inline int Standard_Atomic_Increment (volatile int* theValue);
-diff --git a/src/Standard/Standard_TypeDef.hxx b/src/Standard/Standard_TypeDef.hxx
-index 8dcf242..65ca753 100644
---- a/src/Standard/Standard_TypeDef.hxx
-+++ b/src/Standard/Standard_TypeDef.hxx
+Index: oce/src/Standard/Standard_TypeDef.hxx
+===================================================================
+--- oce.orig/src/Standard/Standard_TypeDef.hxx
++++ oce/src/Standard/Standard_TypeDef.hxx
 @@ -18,19 +18,16 @@
  #include <cstddef>
  #include <ctime>
@@ -472,41 +414,11 @@ index 8dcf242..65ca753 100644
    // only Visual Studio 2013 (vc12) provides <cinttypes> header
    // we do not defined all macros here - only used by OCCT framework
    #ifdef _WIN64
-diff --git a/src/StdSelect/StdSelect_ViewerSelector3d.cxx b/src/StdSelect/StdSelect_ViewerSelector3d.cxx
-index dc14b40..eeb19f5 100644
---- a/src/StdSelect/StdSelect_ViewerSelector3d.cxx
-+++ b/src/StdSelect/StdSelect_ViewerSelector3d.cxx
-@@ -767,9 +767,10 @@ void StdSelect_ViewerSelector3d::ComputeSensitivePrs(const Handle(SelectMgr_Sele
-             gp_Pnt ThePts[3] =
-             {
-               gp_Pnt (C->GetPoint3d (II).XYZ()),
--              gp_Pnt (C->GetPoint3d (++II).XYZ()),
--              gp_Pnt (C->GetPoint3d (++II).XYZ())
-+              gp_Pnt (C->GetPoint3d (II+1).XYZ()),
-+              gp_Pnt (C->GetPoint3d (II+2).XYZ())
-             };
-+            II += 2;
- 
-             if (hasloc)
-             {
-@@ -834,9 +835,10 @@ void StdSelect_ViewerSelector3d::ComputeSensitivePrs(const Handle(SelectMgr_Sele
-         gp_Pnt ThePts[3] =
-         {
-           gp_Pnt (C->GetPoint3d (II).XYZ()),
--          gp_Pnt (C->GetPoint3d (++II).XYZ()),
--          gp_Pnt (C->GetPoint3d (++II).XYZ())
-+          gp_Pnt (C->GetPoint3d (II+1).XYZ()),
-+          gp_Pnt (C->GetPoint3d (II+2).XYZ())
-         };
-+        II += 2;
- 
-         if (hasloc)
-         {
-diff --git a/src/TObj/TObj_Model.cxx b/src/TObj/TObj_Model.cxx
-index df71517..24b7914 100644
---- a/src/TObj/TObj_Model.cxx
-+++ b/src/TObj/TObj_Model.cxx
-@@ -232,7 +232,7 @@ Handle(TCollection_HAsciiString) TObj_Model::GetFile() const
+Index: oce/src/TObj/TObj_Model.cxx
+===================================================================
+--- oce.orig/src/TObj/TObj_Model.cxx
++++ oce/src/TObj/TObj_Model.cxx
+@@ -232,7 +232,7 @@ Handle(TCollection_HAsciiString) TObj_Mo
    TCollection_AsciiString aPath (aDoc->GetPath());
    return !aPath.IsEmpty()
         ? new TCollection_HAsciiString (aPath)
@@ -515,10 +427,10 @@ index df71517..24b7914 100644
  }
  
  //=======================================================================
-diff --git a/src/ViewerTest/ViewerTest_CMPLRS.edl b/src/ViewerTest/ViewerTest_CMPLRS.edl
-index 1a58210..fa27f5b 100644
---- a/src/ViewerTest/ViewerTest_CMPLRS.edl
-+++ b/src/ViewerTest/ViewerTest_CMPLRS.edl
+Index: oce/src/ViewerTest/ViewerTest_CMPLRS.edl
+===================================================================
+--- oce.orig/src/ViewerTest/ViewerTest_CMPLRS.edl
++++ oce/src/ViewerTest/ViewerTest_CMPLRS.edl
 @@ -17,6 +17,6 @@
  
    @uses "CSF.edl" ;
@@ -527,3 +439,156 @@ index 1a58210..fa27f5b 100644
 +  @string %CMPLRS_CXX_Options += " " %CSF_TCL_INCLUDE " " %CSF_FREETYPE_INCLUDES " ";
  
  @endif;
+Index: oce/inc/BOPDS_Curve.hxx
+===================================================================
+--- oce.orig/inc/BOPDS_Curve.hxx
++++ oce/inc/BOPDS_Curve.hxx
+@@ -34,6 +34,9 @@
+ #ifndef _Handle_BOPDS_PaveBlock_HeaderFile
+ #include <Handle_BOPDS_PaveBlock.hxx>
+ #endif
++#ifndef _BOPDS_PaveBlock_HeaderFile
++#include <BOPDS_PaveBlock.hxx>
++#endif
+ #ifndef _Standard_Boolean_HeaderFile
+ #include <Standard_Boolean.hxx>
+ #endif
+Index: oce/inc/IntPatch_PrmPrmIntersection.hxx
+===================================================================
+--- oce.orig/inc/IntPatch_PrmPrmIntersection.hxx
++++ oce/inc/IntPatch_PrmPrmIntersection.hxx
+@@ -37,6 +37,9 @@
+ #ifndef _Handle_IntPatch_Line_HeaderFile
+ #include <Handle_IntPatch_Line.hxx>
+ #endif
++#ifndef _IntPatch_Polyhedron_HeaderFile
++#include <IntPatch_Polyhedron.hxx>
++#endif
+ #ifndef _Handle_IntSurf_LineOn2S_HeaderFile
+ #include <Handle_IntSurf_LineOn2S.hxx>
+ #endif
+Index: oce/src/StdPrs/StdPrs_HLRShape.hxx
+===================================================================
+--- oce.orig/src/StdPrs/StdPrs_HLRShape.hxx
++++ oce/src/StdPrs/StdPrs_HLRShape.hxx
+@@ -18,6 +18,7 @@
+ #include <Handle_Prs3d_Presentation.hxx>
+ #include <Handle_Prs3d_Drawer.hxx>
+ #include <Handle_Prs3d_Projector.hxx>
++#include <TopoDS_Shape.hxx>
+ 
+ class StdPrs_HLRShape: public Prs3d_Root
+ {
+Index: oce/inc/config.h
+===================================================================
+--- oce.orig/inc/config.h
++++ oce/inc/config.h
+@@ -938,9 +938,6 @@
+ /* Define to 1 if you have the <X11/extensions/transovl.h> header file. */
+ /* #undef HAVE_X11_EXTENSIONS_TRANSOVL_H */
+ 
+-/* Define to 1 if you have the <Xmu/Editres.h> header file. */
+-/* #undef HAVE_XMU_EDITRES_H */
+-
+ /* Define to 1 if your C compiler doesn't accept -c and -o together. */
+ /* #undef NO_MINUS_C_MINUS_O */
+ 
+@@ -1286,9 +1283,6 @@
+ /* Define to 1 if you have the <X11/extensions/transovl.h> header file. */
+ /* #undef HAVE_X11_EXTENSIONS_TRANSOVL_H */
+ 
+-/* Define to 1 if you have the <Xmu/Editres.h> header file. */
+-/* #undef HAVE_XMU_EDITRES_H */
+-
+ /* Define to 1 if your C compiler doesn't accept -c and -o together. */
+ /* #undef NO_MINUS_C_MINUS_O */
+ 
+@@ -1785,9 +1779,6 @@
+ /* Define to 1 if you have the <X11/extensions/transovl.h> header file. */
+ /* #undef HAVE_X11_EXTENSIONS_TRANSOVL_H */
+ 
+-/* Define to 1 if you have the <Xmu/Editres.h> header file. */
+-#define HAVE_XMU_EDITRES_H 1
+-
+ /* Define to 1 if your C compiler doesn't accept -c and -o together. */
+ /* #undef NO_MINUS_C_MINUS_O */
+ 
+Index: oce/scripts/gendoc
+===================================================================
+--- oce.orig/scripts/gendoc
++++ /dev/null
+@@ -1,19 +0,0 @@
+-#!/bin/bash
+-
+-# Helper script to run generation of OCCT documentation on Linux.
+-# Running it requires that Tcl, Doxygen, and MikTex (for PDF generation) should be in the PATH
+-
+-anArgs=$*
+-anOldPath="$PATH"
+-anOldLd="$LD_LIBRARY_PATH"
+-anOldDyLd="$DYLD_LIBRARY_PATH"
+-
+-# go to the script directory
+-aScriptPath=${BASH_SOURCE%/*}; if [ -d "${aScriptPath}" ]; then cd "$aScriptPath"; fi; aScriptPath="$PWD";
+-if [ -e "${aScriptPath}/env.sh" ]; then source "${aScriptPath}/env.sh"; fi
+-
+-tclsh "${aScriptPath}/adm/start.tcl" $anArgs
+-
+-export PATH="$anOldPath"
+-export LD_LIBRARY_PATH="$anOldLd"
+-export DYLD_LIBRARY_PATH="$anOldDyLd"
+Index: oce/src/FSD/FSD_FileHeader.hxx
+===================================================================
+--- oce.orig/src/FSD/FSD_FileHeader.hxx
++++ oce/src/FSD/FSD_FileHeader.hxx
+@@ -33,12 +33,21 @@ struct FSD_FileHeader {
+ };
+ 
+ #ifndef DO_INVERSE
++# ifdef HAVE_CONFIG_H
++#  include <oce-config.h>
++#  ifdef WORDS_BIGENDIAN
++#   define DO_INVERSE 1
++#  else
++#   define DO_INVERSE 0
++#  endif
++# else
+ #if defined ( SOLARIS ) || defined ( IRIX ) || defined(__hpux)
+ #define DO_INVERSE 1
+ #else
+ #define DO_INVERSE 0
+ #endif
+ #endif
++#endif
+ 
+ //=======================================================================
+ //function : InverseInt
+Index: oce/src/Intf/Intf_InterferencePolyhedron.gxx
+===================================================================
+--- oce.orig/src/Intf/Intf_InterferencePolyhedron.gxx
++++ oce/src/Intf/Intf_InterferencePolyhedron.gxx
+@@ -894,7 +894,7 @@ Standard_Boolean Intf_InterferencePolyhe
+ 	if (nob<0) break;
+       }
+       if (nob>=0) {
+-	while (nob<nbNoInserted) {
++	while ((nob<nbNoInserted) && (nob + 1 < static_cast<Standard_Integer>(sizeof(piToInsert)))) {
+ 	  piToInsert[nob]=piToInsert[nob+1];
+ 	  nob++;
+ 	}
+Index: oce/src/LDOM/LDOMBasicString.cxx
+===================================================================
+--- oce.orig/src/LDOM/LDOMBasicString.cxx
++++ oce/src/LDOM/LDOMBasicString.cxx
+@@ -137,8 +137,10 @@ LDOMBasicString& LDOMBasicString::operat
+ 
+ LDOMBasicString& LDOMBasicString::operator = (const LDOMBasicString& anOther)
+ {
+-  if (myType == LDOM_AsciiFree && myVal.ptr)
++  if (myType == LDOM_AsciiFree && myVal.ptr) {
++    if (myVal.ptr == anOther.myVal.ptr && myType == anOther.Type()) return * this;
+     delete [] (char *) myVal.ptr;
++  }
+   myType    = anOther.Type();
+   switch (myType) {
+   case LDOM_AsciiFree:

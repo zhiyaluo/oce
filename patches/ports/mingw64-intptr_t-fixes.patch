@@ -146,22 +146,6 @@ Index: oce/inc/OSD_EnvironmentIterator.hxx
  OSD_Error myError;
  
  
-Index: oce/inc/OSD_SharedMemory.hxx
-===================================================================
---- oce.orig/inc/OSD_SharedMemory.hxx
-+++ oce/inc/OSD_SharedMemory.hxx
-@@ -101,7 +101,11 @@ private:
- 
- 
- 
-+#ifdef WNT
-+Standard_Address myId;
-+#else
- Standard_Integer myId;
-+#endif
- Standard_Address myAddress;
- TCollection_AsciiString myName;
- Standard_Integer mySize;
 Index: oce/src/OSD/OSD_EnvironmentIterator.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_EnvironmentIterator.cxx
@@ -206,7 +190,7 @@ Index: oce/src/OSD/OSD_File.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_File.cxx
 +++ oce/src/OSD/OSD_File.cxx
-@@ -843,13 +843,16 @@ Standard_Boolean OSD_File::IsExecutable(
+@@ -841,13 +841,16 @@ Standard_Boolean OSD_File::IsExecutable(
  
  #include <stdio.h>
  #include <io.h>
@@ -288,54 +272,6 @@ Index: oce/src/OSD/OSD_Process.cxx
  
  }  // end OSD_Process :: UserId
  
-Index: oce/src/OSD/OSD_SharedMemory.cxx
-===================================================================
---- oce.orig/src/OSD/OSD_SharedMemory.cxx
-+++ oce/src/OSD/OSD_SharedMemory.cxx
-@@ -180,7 +180,7 @@ void _osd_wnt_set_error ( OSD_Error&, OS
- 
- OSD_SharedMemory :: OSD_SharedMemory () {
- 
-- myId = 0;
-+ myId = INVALID_HANDLE_VALUE;
- 
- }  // end constructor ( 1 )
- 
-@@ -222,7 +222,7 @@ void OSD_SharedMemory :: Build () {
- 
-   else
- 
--   myId = ( Standard_Integer )hFileMapping;
-+   myId = hFileMapping;
- 
-  }  // end else
- 
-@@ -259,7 +259,7 @@ void OSD_SharedMemory :: Open (
- 
-   else
- 
--   myId = ( Standard_Integer )hFileMapping;
-+   myId = hFileMapping;
- 
-   CloseHandle ( hFileMapping );
- 
-@@ -271,14 +271,14 @@ void OSD_SharedMemory :: Delete () {
- 
-  if (  Failed ()  ) Perror ();
- 
-- if ( myId == 0 )
-+ if ( myId == INVALID_HANDLE_VALUE )
- 
-   Standard_ProgramError :: Raise (
-                             "OSD_SharedMemory :: Delete : shared memory not opened/created"
-                            );
- 
-  UnmapViewOfFile ( myAddress );
-- CloseHandle (  ( HANDLE )myId  );
-+ CloseHandle (  myId  );
- 
- }  // end OSD_SharedMemory :: Delete
- 
 Index: oce/src/OSD/OSD_Thread.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Thread.cxx
@@ -412,29 +348,6 @@ Index: oce/src/OSD/OSD_WNT.cxx
  
   return retVal;
  
-Index: oce/src/OSD/OSD_signal_WNT.cxx
-===================================================================
---- oce.orig/src/OSD/OSD_signal_WNT.cxx
-+++ oce/src/OSD/OSD_signal_WNT.cxx
-@@ -189,6 +189,9 @@ _CRTIMP _se_translator_function __cdecl
- #include <process.h>
- #include <signal.h>
- #include <float.h>
-+#if !defined (_MSC_VER) || (_MSC_VER >= 1600)
-+#include <stdint.h>
-+#endif
- 
- static Standard_Boolean fMsgBox;
- static Standard_Boolean fFltExceptions;
-@@ -205,7 +208,7 @@ static LONG _osd_debug   ( void );
- 
- MB_DESC fatalErrorDesc[] = {
- 
--                 { MBT_ICON,   ( int )IDI_HAND              },
-+                 { MBT_ICON,   ( intptr_t )IDI_HAND              },
-                  { MBT_BUTTON, IDYES,    TEXT( "Continue" ) },
-                  { MBT_BUTTON, IDNO,     TEXT( "Debugger" ) },
-                  { MBT_BUTTON, IDCANCEL, TEXT( "Stop"     ) }
 Index: oce/src/OpenGl/OpenGl_Context.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_Context.cxx
@@ -473,16 +386,3 @@ Index: oce/src/TDF/TDF_LabelMapHasher.lxx
  
   
  //=======================================================================
-Index: oce/src/Units/Units_Token.cxx
-===================================================================
---- oce.orig/src/Units/Units_Token.cxx
-+++ oce/src/Units/Units_Token.cxx
-@@ -390,7 +390,7 @@ void Units_Token::Dump(const Standard_In
-   TCollection_AsciiString mean = Mean();
- 
-   for(i=0; i<ashift; i++)cout<<"  ";
--  cout << "Units_Token::Dump of " << hex << (long ) this << dec << endl;
-+  cout << "Units_Token::Dump of " << hex << (Standard_Address) this << dec << endl;
-   for(i=0; i<ashift; i++)cout<<"  ";
-   cout<<word.ToCString()<<endl;
-   for(i=0; i<ashift; i++)cout<<"  ";

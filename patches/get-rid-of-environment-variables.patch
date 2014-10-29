@@ -74,7 +74,7 @@ Index: oce/src/DPrsStd/DPrsStd.cxx
 ===================================================================
 --- oce.orig/src/DPrsStd/DPrsStd.cxx
 +++ oce/src/DPrsStd/DPrsStd.cxx
-@@ -70,6 +70,11 @@ static Standard_Boolean FoundCAFPlugin (
+@@ -74,6 +74,11 @@ static Standard_Boolean FoundCAFPlugin (
    Standard_Boolean hasPlugin = Standard_False; 
    TCollection_AsciiString PluginName ;
    if ( !plugin ) { 
@@ -90,7 +90,7 @@ Index: oce/src/Draw/Draw.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw.cxx
 +++ oce/src/Draw/Draw.cxx
-@@ -340,6 +340,8 @@ void Draw_Appli(Standard_Integer argc, c
+@@ -344,6 +344,8 @@ void Draw_Appli(Standard_Integer argc, c
      {
  #ifdef WNT
        ReadInitFile ("ddefault");
@@ -103,7 +103,7 @@ Index: oce/src/Draw/Draw_PloadCommands.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_PloadCommands.cxx
 +++ oce/src/Draw/Draw_PloadCommands.cxx
-@@ -64,6 +64,11 @@ static Standard_Boolean FindPluginFile (
+@@ -68,6 +68,11 @@ static Standard_Boolean FindPluginFile (
      // now try by CASROOT
      aPluginDir = getenv("CASROOT");
  
@@ -119,7 +119,7 @@ Index: oce/src/DrawResources/DrawDefault
 ===================================================================
 --- oce.orig/src/DrawResources/DrawDefault
 +++ oce/src/DrawResources/DrawDefault
-@@ -13,12 +13,7 @@ set dir ""
+@@ -26,12 +26,7 @@ set dir ""
  if { [info exists env(DRAWHOME) ] } { 
    set dir $env(DRAWHOME)  
  } else {
@@ -149,7 +149,7 @@ Index: oce/src/Resource/Resource_Manager.cxx
 ===================================================================
 --- oce.orig/src/Resource/Resource_Manager.cxx
 +++ oce/src/Resource/Resource_Manager.cxx
-@@ -71,6 +71,8 @@ Resource_Manager::Resource_Manager(const
+@@ -75,6 +75,8 @@ Resource_Manager::Resource_Manager(const
    Debug = (getenv("ResourceDebug") != NULL) ;
  
    TCollection_AsciiString EnvVar, CSF_ = "CSF_" ;
@@ -158,7 +158,7 @@ Index: oce/src/Resource/Resource_Manager.cxx
    TCollection_AsciiString Directory ;
    Standard_CString dir ;
  
-@@ -83,9 +85,19 @@ Resource_Manager::Resource_Manager(const
+@@ -87,9 +89,19 @@ Resource_Manager::Resource_Manager(const
      Load(Directory,myName,myRefMap);
    }
    else
@@ -182,7 +182,7 @@ Index: oce/src/UnitsAPI/UnitsAPI.cxx
 ===================================================================
 --- oce.orig/src/UnitsAPI/UnitsAPI.cxx
 +++ oce/src/UnitsAPI/UnitsAPI.cxx
-@@ -49,6 +49,11 @@ void UnitsAPI::CheckLoading (const Units
+@@ -53,6 +53,11 @@ void UnitsAPI::CheckLoading (const Units
      else {
        OSD_Environment CasRootEnv("CASROOT");
        TCollection_AsciiString CasRootString(CasRootEnv.Value());
@@ -194,7 +194,7 @@ Index: oce/src/UnitsAPI/UnitsAPI.cxx
        if (CasRootString.Length() > 0 )  {
  	CasRootString += "/src/UnitsAPI/Lexi_Expr.dat" ;
  	Units::LexiconFile(CasRootString.ToCString());
-@@ -63,6 +68,11 @@ void UnitsAPI::CheckLoading (const Units
+@@ -67,6 +72,11 @@ void UnitsAPI::CheckLoading (const Units
      else {
        OSD_Environment CasRootEnv("CASROOT");
        TCollection_AsciiString CasRootString(CasRootEnv.Value());
@@ -210,7 +210,7 @@ Index: oce/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
 ===================================================================
 --- oce.orig/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
 +++ oce/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
-@@ -186,6 +186,11 @@ Standard_Boolean XmlLDrivers_DocumentSto
+@@ -190,6 +190,11 @@ Standard_Boolean XmlLDrivers_DocumentSto
    if (aResourceDir.IsEmpty()) {
      // now try by CASROOT
      aResourceDir = getenv (aCSFVariable[1]);

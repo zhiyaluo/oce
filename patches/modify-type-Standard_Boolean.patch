@@ -477,52 +477,52 @@ Index: oce/src/BRepFill/BRepFill_Sweep.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_Sweep.cxx
 +++ oce/src/BRepFill/BRepFill_Sweep.cxx
-@@ -2088,13 +2088,13 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
-       // Return data
-       if (isec >NbLaw) {
-         S = TabS(NbLaw, 1);
--        ureverse = UReverse(NbLaw, 1);
--        exuv = ExchUV(NbLaw, 1);
-+        ureverse = (0 != UReverse(NbLaw, 1));
-+        exuv = (0 != ExchUV(NbLaw, 1));
-       }
-       else {
-         S = TabS(isec, 1);
--        ureverse = UReverse(isec, 1);
--        exuv = ExchUV(isec, 1);
-+        ureverse = (0 != UReverse(isec, 1));
-+        exuv = (0 != ExchUV(isec, 1));
-       }
-       S->Bounds(UFirst, ULast, VFirst, VLast);
- 
-@@ -2157,13 +2157,13 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
-       // Return data
-       if (isec >NbLaw) {
+@@ -2147,13 +2147,13 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
+     // Return data
+     if (isec >NbLaw) {
+       S = TabS(NbLaw, 1);
+-      ureverse = UReverse(NbLaw, 1);
+-      exuv = ExchUV(NbLaw, 1);
++      ureverse = (0 != UReverse(NbLaw, 1));
++      exuv = (0 != ExchUV(NbLaw, 1));
+     }
+     else {
+       S = TabS(isec, 1);
+-      ureverse = UReverse(isec, 1);
+-      exuv = ExchUV(isec, 1);
++      ureverse = (0 != UReverse(isec, 1));
++      exuv = (0 != ExchUV(isec, 1));
+     }
+     S->Bounds(UFirst, ULast, VFirst, VLast);
+     
+@@ -2229,13 +2229,13 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
+     // Return data
+     if (isec >NbLaw) {
          S = TabS(NbLaw, NbPath);
 -        ureverse = UReverse(NbLaw, NbPath);
 -        exuv = ExchUV(NbLaw, NbPath);
 +        ureverse = (0 != UReverse(NbLaw, NbPath));
 +        exuv = (0 != ExchUV(NbLaw, NbPath));
-       }
-       else {
-         S = TabS(isec, NbPath);
--        ureverse = UReverse(isec, NbPath);
--        exuv = ExchUV(isec, NbPath);
-+        ureverse = (0 != UReverse(isec, NbPath));
-+        exuv = (0 != ExchUV(isec, NbPath));
-       }
-       S->Bounds(UFirst, ULast, VFirst, VLast);
- 
-@@ -2204,7 +2204,7 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
-        ipath++, IPath++) {
-     for (isec=1; isec <=NbLaw; isec++) {
+     }
+     else {
+       S = TabS(isec, NbPath);
+-      ureverse = UReverse(isec, NbPath);
+-      exuv = ExchUV(isec, NbPath);
++      ureverse = (0 != UReverse(isec, NbPath));
++      exuv = (0 != ExchUV(isec, NbPath));
+     }
+     S->Bounds(UFirst, ULast, VFirst, VLast);
+     
+@@ -2288,7 +2288,7 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
+         continue;
+       
        S = TabS(isec, ipath);
 -      exuv = ExchUV(isec, ipath);
 +      exuv = (0 != ExchUV(isec, ipath));
        S->Bounds(UFirst, ULast, VFirst, VLast);
        if (UReverse(isec, ipath)) {
  	Standard_Real aux;
-@@ -2434,8 +2434,8 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
+@@ -2543,8 +2543,8 @@ BRepFill_Sweep::BRepFill_Sweep(const Han
  		  TopoDS::Edge(UEdge(isec+1, ipath)),
  		  TopoDS::Edge(VEdge(isec, ipath+1)),
  		  myVEdgesModified,
@@ -620,7 +620,7 @@ Index: oce/src/BRepTest/BRepTest_CurveCommands.cxx
 ===================================================================
 --- oce.orig/src/BRepTest/BRepTest_CurveCommands.cxx
 +++ oce/src/BRepTest/BRepTest_CurveCommands.cxx
-@@ -1013,7 +1013,7 @@ static Standard_Integer bsplineprof(Draw
+@@ -1032,7 +1032,7 @@ static Standard_Integer bsplineprof(Draw
    not_done = 1 ;
    while (not_done) {
  
@@ -926,7 +926,7 @@ Index: oce/src/Bnd/Bnd_Box2d.lxx
 ===================================================================
 --- oce.orig/src/Bnd/Bnd_Box2d.lxx
 +++ oce/src/Bnd/Bnd_Box2d.lxx
-@@ -146,7 +146,7 @@ inline void Bnd_Box2d::OpenYmax ()
+@@ -151,7 +151,7 @@ inline void Bnd_Box2d::OpenYmax ()
  //=======================================================================
  
  inline Standard_Boolean Bnd_Box2d::IsOpenXmin () const
@@ -935,7 +935,7 @@ Index: oce/src/Bnd/Bnd_Box2d.lxx
  
  //=======================================================================
  //function : IsOpenXmax
-@@ -154,7 +154,7 @@ inline Standard_Boolean Bnd_Box2d::IsOpe
+@@ -159,7 +159,7 @@ inline Standard_Boolean Bnd_Box2d::IsOpe
  //=======================================================================
  
  inline Standard_Boolean Bnd_Box2d::IsOpenXmax () const
@@ -944,7 +944,7 @@ Index: oce/src/Bnd/Bnd_Box2d.lxx
  
  //=======================================================================
  //function : IsOpenYmin
-@@ -162,7 +162,7 @@ inline Standard_Boolean Bnd_Box2d::IsOpe
+@@ -167,7 +167,7 @@ inline Standard_Boolean Bnd_Box2d::IsOpe
  //=======================================================================
  
  inline Standard_Boolean Bnd_Box2d::IsOpenYmin () const
@@ -953,7 +953,7 @@ Index: oce/src/Bnd/Bnd_Box2d.lxx
  
  //=======================================================================
  //function : IsOpenYmax
-@@ -170,7 +170,7 @@ inline Standard_Boolean Bnd_Box2d::IsOpe
+@@ -175,7 +175,7 @@ inline Standard_Boolean Bnd_Box2d::IsOpe
  //=======================================================================
  
  inline Standard_Boolean Bnd_Box2d::IsOpenYmax () const
@@ -1469,7 +1469,7 @@ Index: oce/src/DNaming/DNaming_Line3DDriver.cxx
 ===================================================================
 --- oce.orig/src/DNaming/DNaming_Line3DDriver.cxx
 +++ oce/src/DNaming/DNaming_Line3DDriver.cxx
-@@ -117,7 +117,7 @@ Standard_Integer DNaming_Line3DDriver::E
+@@ -113,7 +113,7 @@ Standard_Integer DNaming_Line3DDriver::E
    }
  
    const Standard_Integer aType = DNaming::GetInteger(aFunction, LINE3D_TYPE)->Get();
@@ -1598,7 +1598,7 @@ Index: oce/src/Draw/Draw_Viewer.cxx
      for (Standard_Integer i = 1; i <= n; i++)
        if (myDrawables(i)->Is3D()) {
  	if (!view2d) myDrawables(i)->DrawOn(DF);
-@@ -1174,7 +1174,7 @@ void Draw_Viewer::DrawOnView(const Stand
+@@ -1157,7 +1157,7 @@ void Draw_Viewer::DrawOnView(const Stand
      xmin = ymin = DRAWINFINITE;
      xmax = ymax = -DRAWINFINITE;
  
@@ -2640,7 +2640,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  
  #define Nod24PntX ((Standard_Real*)Nod24RValues)[ 0]
  #define Nod24PntY ((Standard_Real*)Nod24RValues)[ 1]
-@@ -1263,7 +1263,7 @@ InitBiPointsWithConnexity (const Standar
+@@ -1262,7 +1262,7 @@ InitBiPointsWithConnexity (const Standar
  	    &(((HLRAlgo_Array1OfPINod*)PINod1)->ChangeValue(Pol1(iPol)));
  	  Standard_Address Nod1AIndices = (*pi1pA)->Indices();
  	  Standard_Address Nod1ARValues = (*pi1pA)->RValues();
@@ -2649,7 +2649,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  	    Nod1AEdg1 = e;
  	    Nod1APCu1 = par->Value(iPol);
  	  }
-@@ -1279,8 +1279,8 @@ InitBiPointsWithConnexity (const Standar
+@@ -1278,8 +1278,8 @@ InitBiPointsWithConnexity (const Standar
  	XTI2 = X2 = Nod12PntX;
  	YTI2 = Y2 = Nod12PntY;
  	ZTI2 = Z2 = Nod12PntZ;
@@ -2660,7 +2660,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
  	else {
  	  cout << " HLRBRep_PolyAlgo::InitBiPointsWithConnexity : ";
-@@ -1331,8 +1331,8 @@ InitBiPointsWithConnexity (const Standar
+@@ -1330,8 +1330,8 @@ InitBiPointsWithConnexity (const Standar
  	    XTI2 = X2 = Nod12PntX;
  	    YTI2 = Y2 = Nod12PntY;
  	    ZTI2 = Z2 = Nod12PntZ;
@@ -2671,7 +2671,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
  	    else {
  	      cout << " HLRBRep_PolyAlgo::InitBiPointsWithConnexity : ";
-@@ -1422,7 +1422,7 @@ InitBiPointsWithConnexity (const Standar
+@@ -1421,7 +1421,7 @@ InitBiPointsWithConnexity (const Standar
  	  Standard_Address Nod2AIndices = (*pi2pA)->Indices();
  	  Standard_Address Nod2ARValues = (*pi2pA)->RValues();
  	  Standard_Real PCu = par->Value(iPol);
@@ -2680,7 +2680,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  	    Nod1AEdg1 = e;
  	    Nod1APCu1 = PCu;
  	  }
-@@ -1430,7 +1430,7 @@ InitBiPointsWithConnexity (const Standar
+@@ -1429,7 +1429,7 @@ InitBiPointsWithConnexity (const Standar
  	    Nod1AEdg2 = e;
  	    Nod1APCu2 = PCu;
  	  }
@@ -2689,7 +2689,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  	    Nod2AEdg1 = e;
  	    Nod2APCu1 = PCu;
  	  }
-@@ -1449,8 +1449,8 @@ InitBiPointsWithConnexity (const Standar
+@@ -1448,8 +1448,8 @@ InitBiPointsWithConnexity (const Standar
  	XTI2 = X2 = Nod12PntX;
  	YTI2 = Y2 = Nod12PntY;
  	ZTI2 = Z2 = Nod12PntZ;
@@ -2700,7 +2700,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
  	else {
  	  cout << " HLRBRep_PolyAlgo::InitBiPointsWithConnexity : ";
-@@ -1522,8 +1522,8 @@ InitBiPointsWithConnexity (const Standar
+@@ -1521,8 +1521,8 @@ InitBiPointsWithConnexity (const Standar
  	    XTI2 = X2 = Nod12PntX;
  	    YTI2 = Y2 = Nod12PntY;
  	    ZTI2 = Z2 = Nod12PntZ;
@@ -2711,7 +2711,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
  	    else {
  	      cout << " HLRBRep_PolyAlgo::InitBiPointsWithConnexity : ";
-@@ -1718,7 +1718,7 @@ Interpolation (HLRAlgo_ListOfBPoint& Lis
+@@ -1717,7 +1717,7 @@ Interpolation (HLRAlgo_ListOfBPoint& Lis
    Standard_Real X3,Y3,Z3,XTI3,YTI3,ZTI3,coef3,U3;
    Standard_Real X4,Y4,Z4,XTI4,YTI4,ZTI4,coef4,U4;
  //  gp_Pnt P3,PT3,P4,PT4;
@@ -2720,7 +2720,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
    if (rg >= GeomAbs_G1) flag += 1;
    if (rg >= GeomAbs_G2) flag += 2;
    insP3 = Interpolation(U1,U2,Nod11RValues,Nod12RValues,
-@@ -1794,7 +1794,7 @@ Interpolation (HLRAlgo_ListOfBPoint& Lis
+@@ -1793,7 +1793,7 @@ Interpolation (HLRAlgo_ListOfBPoint& Lis
      List.Prepend(HLRAlgo_BiPoint
  		 (XTI1,YTI1,ZTI1,XTI2,YTI2,ZTI2,
  		  X1  ,Y1  ,Z1  ,X2  ,Y2  ,Z2  ,   e,
@@ -2729,7 +2729,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  }
  
  //=======================================================================
-@@ -1874,7 +1874,7 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -1873,7 +1873,7 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
  		   const Standard_Real U3,
  		   const Standard_Boolean insP3,
  		   const Standard_Boolean mP3P1,
@@ -2738,7 +2738,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  {
    Standard_Address TData2 = 0;
    Standard_Address PISeg2 = 0;
-@@ -1898,8 +1898,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -1897,8 +1897,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
        Nod11PntX = X3;
        Nod11PntY = Y3;
        Nod11PntZ = Z3;
@@ -2749,7 +2749,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
-@@ -1936,8 +1936,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -1935,8 +1935,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
        Nod12PntX = X3;
        Nod12PntY = Y3;
        Nod12PntZ = Z3;
@@ -2760,7 +2760,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
-@@ -1967,17 +1967,17 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -1966,17 +1966,17 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
      List.Prepend(HLRAlgo_BiPoint
  		 (XTI1,YTI1,ZTI1,XTI3,YTI3,ZTI3,
  		  X1  ,Y1  ,Z1  ,X3  ,Y3  ,Z3  ,   e,
@@ -2781,7 +2781,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  }
  
  //=======================================================================
-@@ -2035,7 +2035,7 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -2034,7 +2034,7 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
  		   const Standard_Real U3,
  		   const Standard_Boolean insP3,
  		   const Standard_Boolean mP3P1,
@@ -2790,7 +2790,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  {
    Standard_Boolean ins3 = insP3;
    if (ins3 && mP3P1) {                             // P1 ---> P3
-@@ -2061,8 +2061,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -2060,8 +2060,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
        Nod11PntX = X3;
        Nod11PntY = Y3;
        Nod11PntZ = Z3;
@@ -2801,7 +2801,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
-@@ -2075,8 +2075,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -2074,8 +2074,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
        Nod21PntX  = X3;
        Nod21PntY  = Y3;
        Nod21PntZ  = Z3;
@@ -2812,7 +2812,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
-@@ -2118,8 +2118,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -2117,8 +2117,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
        Nod12PntX = X3;
        Nod12PntY = Y3;
        Nod12PntZ = Z3;
@@ -2823,7 +2823,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
-@@ -2132,8 +2132,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -2131,8 +2131,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
        Nod22PntX  = X3;
        Nod22PntY  = Y3;
        Nod22PntZ  = Z3;
@@ -2834,7 +2834,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
-@@ -2177,17 +2177,17 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -2176,17 +2176,17 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
      List.Prepend(HLRAlgo_BiPoint
  		 (XTI1,YTI1,ZTI1,XTI3,YTI3,ZTI3,
  		  X1  ,Y1  ,Z1  ,X3  ,Y3  ,Z3  ,   e,
@@ -2855,7 +2855,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  }
  
  //=======================================================================
-@@ -2255,7 +2255,7 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -2254,7 +2254,7 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
  		   const Standard_Real U4,
  		   const Standard_Boolean insP4,
  		   const Standard_Boolean mP4P1,
@@ -2864,7 +2864,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  {
    Standard_Boolean ins3 = insP3;
    Standard_Boolean ins4 = insP4;
-@@ -2282,8 +2282,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -2281,8 +2281,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
        Nod11PntX = X3;
        Nod11PntY = Y3;
        Nod11PntZ = Z3;
@@ -2875,7 +2875,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
-@@ -2296,8 +2296,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -2295,8 +2295,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
        Nod21PntX  = X3;
        Nod21PntY  = Y3;
        Nod21PntZ  = Z3;
@@ -2886,7 +2886,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
-@@ -2339,8 +2339,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -2338,8 +2338,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
        Nod12PntX = X4;
        Nod12PntY = Y4;
        Nod12PntZ = Z4;
@@ -2897,7 +2897,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
-@@ -2353,8 +2353,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -2352,8 +2352,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
        Nod22PntX  = X4;
        Nod22PntY  = Y4;
        Nod22PntZ  = Z4;
@@ -2908,7 +2908,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  #ifdef DEB
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
-@@ -2451,22 +2451,22 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
+@@ -2450,22 +2450,22 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
        List.Prepend(HLRAlgo_BiPoint
  		   (XTI1,YTI1,ZTI1,XTI3,YTI3,ZTI3,
  		    X1  ,Y1  ,Z1  ,X3  ,Y3  ,Z3  ,   e,
@@ -2935,7 +2935,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
  }
  
  //=======================================================================
-@@ -3158,9 +3158,9 @@ HLRBRep_PolyAlgo::OrientTriangle(const S
+@@ -3152,9 +3152,9 @@ HLRBRep_PolyAlgo::OrientTriangle(const S
  				 const Standard_Address Nod3Indices,
  				 const Standard_Address Nod3RValues) const
  {
@@ -3256,7 +3256,7 @@ Index: oce/src/IntPatch/IntPatch_RstInt.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_RstInt.cxx
 +++ oce/src/IntPatch/IntPatch_RstInt.cxx
-@@ -738,7 +738,7 @@ void IntPatch_RstInt::PutVertexOnLine (H
+@@ -741,7 +741,7 @@ void IntPatch_RstInt::PutVertexOnLine (H
  	    }
  	  }
  
@@ -3281,7 +3281,7 @@ Index: oce/src/MeshTest/MeshTest.cxx
 ===================================================================
 --- oce.orig/src/MeshTest/MeshTest.cxx
 +++ oce/src/MeshTest/MeshTest.cxx
-@@ -276,7 +276,7 @@ static Standard_Integer fastdiscret(Draw
+@@ -214,7 +214,7 @@ static Standard_Integer fastdiscret(Draw
    const Standard_Real d = Draw::Atof(argv[2]);
  
    Standard_Boolean WithShare = Standard_True;
@@ -3294,7 +3294,7 @@ Index: oce/src/NIS/NIS_Triangulated.cxx
 ===================================================================
 --- oce.orig/src/NIS/NIS_Triangulated.cxx
 +++ oce/src/NIS/NIS_Triangulated.cxx
-@@ -905,46 +905,46 @@ Standard_Real NIS_Triangulated::Intersec
+@@ -904,46 +904,46 @@ Standard_Real NIS_Triangulated::Intersec
          const unsigned char * pTri =
            reinterpret_cast<unsigned char *>(mypTriangles) + (3 * i);
          if (myNodeCoord > 2)
@@ -3425,7 +3425,7 @@ Index: oce/src/OpenGl/OpenGl_Workspace_2.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_Workspace_2.cxx
 +++ oce/src/OpenGl/OpenGl_Workspace_2.cxx
-@@ -776,7 +776,7 @@ Standard_Boolean OpenGl_Workspace::Print
+@@ -782,7 +782,7 @@ Standard_Boolean OpenGl_Workspace::Print
    NamedStatus &= ~OPENGL_NS_WHITEBACK;
  
    myPrintContext.Nullify();
@@ -4274,73 +4274,73 @@ Index: oce/src/Standard/Standard_Character.hxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_Character.hxx
 +++ oce/src/Standard/Standard_Character.hxx
-@@ -91,19 +91,19 @@ inline Standard_Boolean IsSimilar(const
+@@ -86,19 +86,19 @@ inline Standard_Boolean IsSimilar(const
  // IsAlphabetic : Returns Standard_True if a character is alphabetic
  // ==================================================================
  inline Standard_Boolean IsAlphabetic(const Standard_Character me) 
--{ return isalpha((unsigned char)me); }
-+{ return 0 != isalpha((unsigned char)me); }
+-{ return std::isalpha ((unsigned char)me); }
++{ return 0 != std::isalpha ((unsigned char)me); }
  
  // ==================================================================
  // IsDigit : Returns Standard_True if a character is a digit
  // ==================================================================
  inline Standard_Boolean IsDigit(const Standard_Character me) 
--{ return isdigit((unsigned char)me); }
-+{ return 0 != isdigit((unsigned char)me); }
+-{ return std::isdigit ((unsigned char)me); }
++{ return 0 != std::isdigit ((unsigned char)me); }
  
  // ==================================================================
  // IsXDigit : Returns Standard_True if a character is a digit
  // ==================================================================
  inline Standard_Boolean IsXDigit(const Standard_Character me) 
--{ return isxdigit((unsigned char)me); }
-+{ return 0 != isxdigit((unsigned char)me); }
+-{ return std::isxdigit((unsigned char)me); }
++{ return 0 != std::isxdigit((unsigned char)me); }
  
  // ==================================================================
  // IsAlphanumeric : Returns Standard_True if a character is alphanumeric
-@@ -115,26 +115,26 @@ inline Standard_Boolean IsAlphanumeric(c
+@@ -110,26 +110,26 @@ inline Standard_Boolean IsAlphanumeric(c
  // IsControl : Returns Standard_True if a character  is a control character
  // ==================================================================
  inline Standard_Boolean IsControl(const Standard_Character me) 
--{ return iscntrl((unsigned char)me); }
-+{ return 0 != iscntrl((unsigned char)me); }
+-{ return std::iscntrl((unsigned char)me); }
++{ return 0 != std::iscntrl((unsigned char)me); }
  
  
  // ==================================================================
  // IsGraphic : Returns Standard_True if a character is graphic
  // ==================================================================
  inline Standard_Boolean IsGraphic(const Standard_Character me) 
--{ return isgraph((unsigned char)me); }
-+{ return 0 != isgraph((unsigned char)me); }
+-{ return std::isgraph((unsigned char)me); }
++{ return 0 != std::isgraph((unsigned char)me); }
  
  // ==================================================================
  // IsLowerCase : Returns Standard_True if a character is lowercase
  // ==================================================================
  inline Standard_Boolean IsLowerCase(const Standard_Character me) 
--{ return islower((unsigned char)me); }
-+{ return 0 != islower((unsigned char)me); }
+-{ return std::islower((unsigned char)me); }
++{ return 0 != std::islower((unsigned char)me); }
  
  // ==================================================================
  // IsPrintable : Returns Standard_True if a character is printable
  // ==================================================================
  inline Standard_Boolean IsPrintable(const Standard_Character me) 
--{ return isprint((unsigned char)me); }
-+{ return 0 != isprint((unsigned char)me); }
+-{ return std::isprint((unsigned char)me); }
++{ return 0 != std::isprint((unsigned char)me); }
  
  // ==================================================================
  // IsPunctuation : Returns Standard_True if a character is a graphic and 
-@@ -147,13 +147,13 @@ inline Standard_Boolean IsPunctuation(co
+@@ -142,13 +142,13 @@ inline Standard_Boolean IsPunctuation(co
  // IsSpace : Returns Standard_True if a character is a space
  // ==================================================================
  inline Standard_Boolean IsSpace(const Standard_Character me) 
--{ return isspace((unsigned char)me); }
-+{ return 0 != isspace((unsigned char)me); }
+-{ return std::isspace((unsigned char)me); }
++{ return 0 != std::isspace((unsigned char)me); }
  
  // ==================================================================
  // IsUppercase : Returns Standard_True if a character is uppercase
  // ==================================================================
  inline Standard_Boolean IsUpperCase(const Standard_Character me) 
--{ return isupper((unsigned char)me); }
-+{ return 0 != isupper((unsigned char)me); }
+-{ return std::isupper((unsigned char)me); }
++{ return 0 != std::isupper((unsigned char)me); }
  
  // ==================================================================
  // LowerCase : Returns a lowercase character
@@ -4398,7 +4398,7 @@ Index: oce/src/StepToTopoDS/StepToTopoDS_TranslateEdge.cxx
 ===================================================================
 --- oce.orig/src/StepToTopoDS/StepToTopoDS_TranslateEdge.cxx
 +++ oce/src/StepToTopoDS/StepToTopoDS_TranslateEdge.cxx
-@@ -368,7 +368,7 @@ static void GetCartesianPoints ( const H
+@@ -375,7 +375,7 @@ static void GetCartesianPoints ( const H
  				 gp_Pnt &P1, gp_Pnt &P2)
  {
    for ( Standard_Integer i=1; i<=2; i++ ) {
@@ -4524,7 +4524,7 @@ Index: oce/src/TopOpeBRep/TopOpeBRep_vpr.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRep/TopOpeBRep_vpr.cxx
 +++ oce/src/TopOpeBRep/TopOpeBRep_vpr.cxx
-@@ -614,7 +614,7 @@ void TopOpeBRep_FacesFiller::ProcessVPon
+@@ -617,7 +617,7 @@ void TopOpeBRep_FacesFiller::ProcessVPon
  {
    Standard_Integer absindex = VP.ShapeIndex(); // 0,1,2,3
    Standard_Integer iVP = VP.Index();
@@ -4589,7 +4589,7 @@ Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_KPart.cxx
    changev = (rankv == 2);
    return changev;
  }
-@@ -1098,11 +1098,9 @@ Standard_Integer TopOpeBRepBuild_Builder
+@@ -1094,11 +1094,9 @@ Standard_Integer TopOpeBRepBuild_Builder
    Standard_Boolean TKPB = TopOpeBRepBuild_GettraceKPB();
  #endif*/
    
@@ -4603,7 +4603,7 @@ Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_KPart.cxx
    
    return 1;
  }
-@@ -1118,11 +1116,9 @@ Standard_Integer TopOpeBRepBuild_Builder
+@@ -1114,11 +1112,9 @@ Standard_Integer TopOpeBRepBuild_Builder
    Standard_Boolean TKPB = TopOpeBRepBuild_GettraceKPB();
  #endif*/
    
@@ -4724,7 +4724,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest.cxx
 +++ oce/src/ViewerTest/ViewerTest.cxx
-@@ -947,7 +947,7 @@ static int VDispMode (Draw_Interpretor&
+@@ -920,7 +920,7 @@ static int VDispMode (Draw_Interpretor&
      }
      else{
        for(Ctx->InitSelected();Ctx->MoreSelected();Ctx->NextSelected())
@@ -4733,7 +4733,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
      }
    }
    else{
-@@ -2678,7 +2678,7 @@ Standard_Boolean  ViewerTest::PickObject
+@@ -2951,7 +2951,7 @@ Standard_Boolean  ViewerTest::PickObject
    // step 2 : wait for the selection...
  //  Standard_Boolean IsGood (Standard_False);
  //  Standard_Integer NbPick(0);
@@ -4742,7 +4742,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
    Standard_Integer NbPickFail(0);
    Standard_Integer argccc = 5;
    const char *bufff[] = { "A", "B", "C","D", "E" };
-@@ -2851,7 +2851,7 @@ Standard_Boolean ViewerTest::PickShapes
+@@ -3124,7 +3124,7 @@ Standard_Boolean ViewerTest::PickShapes
  
    // step 2 : wait for the selection...
  
@@ -4755,7 +4755,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
-@@ -1973,7 +1973,7 @@ static int VCircleBuilder(Draw_Interpret
+@@ -2082,7 +2082,7 @@ static int VCircleBuilder(Draw_Interpret
    {
      // Get arguments
      TCollection_AsciiString aName(argv[1]);
@@ -4764,7 +4764,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
  
      Handle(AIS_InteractiveObject) theShapeA;
      Handle(AIS_InteractiveObject) theShapeB;
-@@ -2481,7 +2481,7 @@ static int VDrawText (Draw_Interpretor&
+@@ -2590,7 +2590,7 @@ static int VDrawText (Draw_Interpretor&
    const Standard_Real angle = Draw::Atof(argv[10]);
  
    // Text zooming
@@ -4773,7 +4773,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
  
    // Text height
    const Standard_Real height = Draw::Atof(argv[12]);
-@@ -2819,7 +2819,7 @@ static int VDrawSphere (Draw_Interpretor
+@@ -2924,7 +2924,7 @@ static int VDrawSphere (Draw_Interpretor
    Standard_Real aCenterY = (argc > 5) ? Draw::Atof (argv[4]) : 0.0;
    Standard_Real aCenterZ = (argc > 5) ? Draw::Atof (argv[5]) : 0.0;
    Standard_Real aRadius =  (argc > 6) ? Draw::Atof (argv[6]) : 100.0;
@@ -4782,7 +4782,7 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
  
    // remove AIS object with given name from map
    VDisplayAISObject (aShapeName, Handle(AIS_InteractiveObject)());
-@@ -3873,7 +3873,7 @@ static Standard_Integer VSetSelectionMod
+@@ -3978,7 +3978,7 @@ static Standard_Integer VSetSelectionMod
    }
  
    const Standard_Integer aSelectionMode = Draw::Atoi (theArgc == 3 ? theArgv[1] : theArgv[2]);
@@ -4795,7 +4795,7 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-@@ -1972,11 +1972,11 @@ static LRESULT WINAPI ViewerWindowProc(
+@@ -2011,11 +2011,11 @@ static LRESULT WINAPI ViewerWindowProc(
          {
            if (fwKeys & MK_CONTROL)
            {

@@ -348,7 +348,7 @@ Index: oce/src/AIS/AIS_InteractiveContext.cxx
 ===================================================================
 --- oce.orig/src/AIS/AIS_InteractiveContext.cxx
 +++ oce/src/AIS/AIS_InteractiveContext.cxx
-@@ -547,7 +547,7 @@ void AIS_InteractiveContext::Load(const
+@@ -546,7 +546,7 @@ void AIS_InteractiveContext::Load(const
  
    if(!HasOpenedContext()) {
      if(SelMode==-1 && !AllowDecomposition){
@@ -357,7 +357,7 @@ Index: oce/src/AIS/AIS_InteractiveContext.cxx
        
        GetDefModes(anIObj,DispMode,HiMod,SelModeDef);
        Handle(AIS_GlobalStatus) STATUS= 
-@@ -741,7 +741,7 @@ Standard_Boolean AIS_InteractiveContext:
+@@ -740,7 +740,7 @@ Standard_Boolean AIS_InteractiveContext:
    
    
    if(LS->IsTemporary()){
@@ -366,7 +366,7 @@ Index: oce/src/AIS/AIS_InteractiveContext.cxx
      GetDefModes(anIObj,DM,HM,SM);
      
      SM = LS->SelectionModes().IsEmpty() ? SM : LS->SelectionModes().First();
-@@ -1563,7 +1563,7 @@ void AIS_InteractiveContext::SetDisplayM
+@@ -1564,7 +1564,7 @@ void AIS_InteractiveContext::SetDisplayM
            STATUS->AddDisplayMode(aMode);
  
          myMainPM->Display(anIObj,aMode);
@@ -375,7 +375,7 @@ Index: oce/src/AIS/AIS_InteractiveContext.cxx
          GetDefModes(anIObj,DM,HM,SM);
          if(STATUS->IsHilighted()){
            myMainPM->Highlight(anIObj,HM);
-@@ -1608,7 +1608,7 @@ UnsetDisplayMode(const Handle(AIS_Intera
+@@ -1609,7 +1609,7 @@ UnsetDisplayMode(const Handle(AIS_Intera
            myMainPM->Unhighlight(anIObj,OldMode);
          myMainPM->SetVisibility (anIObj, OldMode, Standard_False);
          myMainPM->Display(anIObj,myDisplayMode);
@@ -384,34 +384,6 @@ Index: oce/src/AIS/AIS_InteractiveContext.cxx
          GetDefModes(anIObj,DM,HM,SM);
          if(STATUS->IsHilighted()){
            myMainPM->Highlight(anIObj,HM);
-Index: oce/src/AIS/AIS_Shape.cxx
-===================================================================
---- oce.orig/src/AIS/AIS_Shape.cxx
-+++ oce/src/AIS/AIS_Shape.cxx
-@@ -217,8 +217,8 @@ void AIS_Shape::Compute(const Handle(Prs
-     {
-       Standard_Real prevangle ;
-       Standard_Real newangle  ; 
--      Standard_Real prevcoeff ;
--      Standard_Real newcoeff  ; 
-+      Standard_Real prevcoeff = 0;
-+      Standard_Real newcoeff = 0 ; 
-       
-       Standard_Boolean isOwnDeviationAngle = OwnDeviationAngle(newangle,prevangle);
-       Standard_Boolean isOwnDeviationCoefficient = OwnDeviationCoefficient(newcoeff,prevcoeff);
-Index: oce/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
-===================================================================
---- oce.orig/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
-+++ oce/src/Adaptor3d/Adaptor3d_CurveOnSurface.cxx
-@@ -194,7 +194,7 @@ static void FindBounds(const TColStd_Arr
- 		       Standard_Boolean& DerNull)
- 
- {
--  Standard_Integer N;
-+  Standard_Integer N = 0;
-   Standard_Real Tol=Precision::PConfusion()/10;
-   Hunt(Arr,Coord,N);
-   DerNull=Standard_False;
 Index: oce/src/ChFi3d/ChFi3d_Builder_0.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder_0.cxx
@@ -450,7 +422,7 @@ Index: oce/src/Draw/Draw_Viewer.cxx
      GetPosSize(id,X,Y,W,H);
      Standard_Real w = W;
      myViews[id]->dX = (Standard_Integer )(   w / 2 - zz * (w/2 - myViews[id]->dX));
-@@ -1822,7 +1822,7 @@ void Draw_Display::DrawTo (const gp_Pnt2
+@@ -1805,7 +1805,7 @@ void Draw_Display::DrawTo (const gp_Pnt2
    case DRAW : {
  
  #if 1
@@ -496,19 +468,6 @@ Index: oce/src/GProp/GProp_UFunction.gxx
    Standard_Real aParam1;
    Standard_Real aParam2;
    Standard_Real *aCoeffs = (Standard_Real *)myCoeffs;
-Index: oce/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
-===================================================================
---- oce.orig/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
-+++ oce/src/IntPatch/IntPatch_PrmPrmIntersection.cxx
-@@ -3121,6 +3121,8 @@ void IntPatch_PrmPrmIntersection::PointD
- 	//-- dans chacun des tableaux 
- 		  Standard_Real Dist3[3],u3[3] = { 0.0, 0.0, 0.0 },v3[3] = { 0.0, 0.0, 0.0 };
- 	Dist3[0]=Dist3[1]=Dist3[2]=RealLast();
-+	u3[0]=u3[1]=u3[2]=0;
-+	v3[0]=v3[1]=v3[2]=0;
- 	for(U=resu0,i=0; i<SU1; i++,U+=du1) { 
- 	  for(V=resv0,j=0; j<SV1; V+=dv1,j++) {       
- 	    //-- On place les 3 meilleures valeurs dans Dist1,Dist2,Dist3
 Index: oce/src/MoniTool/MoniTool_TypedValue.cxx
 ===================================================================
 --- oce.orig/src/MoniTool/MoniTool_TypedValue.cxx
@@ -781,7 +740,7 @@ Index: oce/src/TopOpeBRepBuild/TopOpeBRepBuild_BuilderON.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepBuild/TopOpeBRepBuild_BuilderON.cxx
 +++ oce/src/TopOpeBRepBuild/TopOpeBRepBuild_BuilderON.cxx
-@@ -1526,7 +1526,7 @@ void TopOpeBRepBuild_BuilderON::GFillONP
+@@ -1532,7 +1532,7 @@ void TopOpeBRepBuild_BuilderON::GFillONP
  //    Standard_Boolean samerk = (rankEG == rkToFill);
  
  //    TopAbs_Orientation oegFOR;
@@ -853,7 +812,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_EXPORT.cxx
 ===================================================================
 --- oce.orig/src/TopOpeBRepDS/TopOpeBRepDS_EXPORT.cxx
 +++ oce/src/TopOpeBRepDS/TopOpeBRepDS_EXPORT.cxx
-@@ -349,7 +349,7 @@ Standard_EXPORT Standard_Boolean FDS_SIi
+@@ -342,7 +342,7 @@ Standard_EXPORT Standard_Boolean FDS_SIi
      TopOpeBRepDS_ListIteratorOfListOfInterference it(Bloi);
      for(; it.More(); it.Next()) {
        const Handle(TopOpeBRepDS_Interference)& IB = it.Value();
@@ -862,7 +821,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_EXPORT.cxx
        FDS_Idata(IB,SBB,IBB,SAB,IAB,GTB,GB,STB,SB);
        if (GTB == TopOpeBRepDS_EDGE && GB == SI) {
  	// la face IB1 a une interference dont la geometrie est l'arete SI.
-@@ -363,7 +363,7 @@ Standard_EXPORT Standard_Boolean FDS_SIi
+@@ -356,7 +356,7 @@ Standard_EXPORT Standard_Boolean FDS_SIi
      TopOpeBRepDS_ListIteratorOfListOfInterference it(Aloi);
      for(; it.More(); it.Next()) {
        const Handle(TopOpeBRepDS_Interference)& IA = it.Value();
@@ -871,7 +830,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_EXPORT.cxx
        FDS_Idata(IA,SBA,IBA,SAA,IAA,GTA,GA,STA,SA);
        if (GTA == TopOpeBRepDS_EDGE && GA == SI) {
  	// la face IA1 a une interference dont la geometrie est l'arete IS.
-@@ -660,7 +660,7 @@ Standard_EXPORT void FUN_ds_PURGEforE9(c
+@@ -653,7 +653,7 @@ Standard_EXPORT void FUN_ds_PURGEforE9(c
      TopOpeBRepDS_ListIteratorOfListOfInterference it(l3dF);
      while (it.More()) {
        const Handle(TopOpeBRepDS_Interference)& I = it.Value();
@@ -880,7 +839,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_EXPORT.cxx
        FDS_Idata(I,SB,IB,SA,IA,GT,G,ST,S);      
        Standard_Boolean FhasGE = FDS_SIisGIofIofSBAofTofI(BDS,IE,I);
        if (FhasGE) {removed = Standard_True; l3dF.Remove(it); continue;} // E has split ON F (cto904A3;e19,f14)
-@@ -749,7 +749,7 @@ Standard_EXPORT void FUN_ds_completeforS
+@@ -742,7 +742,7 @@ Standard_EXPORT void FUN_ds_completeforS
  //	const TopOpeBRepDS_Transition& T = I->Transition();
  #endif
  	TopOpeBRepDS_Kind GT,ST;
@@ -889,7 +848,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_EXPORT.cxx
          FDS_data(I,GT,G1,ST,S);
  	TopAbs_ShapeEnum tsb,tsa; Standard_Integer isb,isa; FDS_Tdata(I,tsb,isb,tsa,isa);
  	const TopoDS_Edge& ES = TopoDS::Edge(BDS.Shape(S)); 
-@@ -869,7 +869,7 @@ Standard_EXPORT void FUN_ds_completeforS
+@@ -862,7 +862,7 @@ Standard_EXPORT void FUN_ds_completeforS
  #ifdef DEB
  //      const TopOpeBRepDS_Transition& T = I->Transition();
  #endif
@@ -898,7 +857,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_EXPORT.cxx
        TopAbs_ShapeEnum tsb,tsa; Standard_Integer isb,isa; FDS_Tdata(I,tsb,isb,tsa,isa);
        const TopoDS_Face& FTRA= TopoDS::Face(BDS.Shape(isb));
        const TopoDS_Edge& ES = TopoDS::Edge(BDS.Shape(S)); 
-@@ -995,7 +995,7 @@ static Standard_Boolean FUN_ds_completef
+@@ -988,7 +988,7 @@ static Standard_Boolean FUN_ds_completef
    // Tr
    //---
    const Handle(TopOpeBRepDS_Interference)& I3 = l3d.First();
@@ -907,7 +866,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_EXPORT.cxx
    TopAbs_ShapeEnum tsb3,tsa3; Standard_Integer isb3,isa3; FDS_Tdata(I3,tsb3,isb3,tsa3,isa3);
    IES = S3; ITRASHA = isb3;
    
-@@ -1313,7 +1313,7 @@ static Standard_Integer FUN_EisSE2(const
+@@ -1306,7 +1306,7 @@ static Standard_Integer FUN_EisSE2(const
  {
    const TopOpeBRepDS_Transition& T = I->Transition();
    const TopAbs_Orientation O = T.Orientation(TopAbs_IN);
@@ -916,7 +875,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_EXPORT.cxx
    FDS_Idata(I,SB,IB,SA,IA,GT,G,ST,S);
    if (GT != TopOpeBRepDS_VERTEX) return NONE;
    if (M_EXTERNAL(O)) return NONE;
-@@ -1443,14 +1443,14 @@ Standard_EXPORT Standard_Integer FUN_ds_
+@@ -1436,14 +1436,14 @@ Standard_EXPORT Standard_Integer FUN_ds_
    TopOpeBRepDS_ListIteratorOfListOfInterference itE(LIE);
    for (; itE.More(); itE.Next()){
      const Handle(TopOpeBRepDS_Interference)& IE = itE.Value();
@@ -933,7 +892,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_EXPORT.cxx
        if (GE != GF) continue;
        if (SF==isb) {
  	is3d = Standard_True;
-@@ -1501,7 +1501,7 @@ Standard_EXPORT void FUN_ds_completeforS
+@@ -1494,7 +1494,7 @@ Standard_EXPORT void FUN_ds_completeforS
        if (n2 < 1) continue;
  
        const Handle(TopOpeBRepDS_Interference)& I = l2.First();
@@ -942,7 +901,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_EXPORT.cxx
        TopAbs_ShapeEnum tsb,tsa; Standard_Integer isb,isa; FDS_Tdata(I,tsb,isb,tsa,isa);
        const TopoDS_Edge& ES = TopoDS::Edge(BDS.Shape(S));
        const TopoDS_Face& FTRA = TopoDS::Face(BDS.Shape(isb));
-@@ -1512,7 +1512,7 @@ Standard_EXPORT void FUN_ds_completeforS
+@@ -1505,7 +1505,7 @@ Standard_EXPORT void FUN_ds_completeforS
        Standard_Boolean hasFOR=Standard_False,hasREV=Standard_False;
        for (TopOpeBRepDS_ListIteratorOfListOfInterference it(l2); it.More(); it.Next()){
  	const Handle(TopOpeBRepDS_Interference)& I2 = it.Value();
@@ -951,7 +910,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_EXPORT.cxx
  	TopAbs_ShapeEnum tsb2,tsa2; Standard_Integer isb2,isa2; FDS_Tdata(I2,tsb2,isb2,tsa2,isa2);
  	Standard_Boolean error = (S2 != S) || (isb2 != isb);
  	if (error) return; // nyi raise
-@@ -2081,8 +2081,8 @@ Standard_EXPORT void FUN_ds_PointToVerte
+@@ -2074,8 +2074,8 @@ Standard_EXPORT void FUN_ds_PointToVerte
        Standard_Integer Scur = 0; Standard_Boolean Gfaulty = Standard_False;
        for (TopOpeBRepDS_ListIteratorOfListOfInterference it(loi); it.More(); it.Next()){
  	const Handle(TopOpeBRepDS_Interference)& I = it.Value();
@@ -962,7 +921,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_EXPORT.cxx
          FDS_data(I,GT,G1,ST,S);
  	if (ST != TopOpeBRepDS_EDGE) continue;
  	if (Scur == 0) {
-@@ -2142,8 +2142,8 @@ Standard_EXPORT void FUN_ds_PointToVerte
+@@ -2135,8 +2135,8 @@ Standard_EXPORT void FUN_ds_PointToVerte
  	if (CPI.IsNull()) continue;
  
  	Standard_Real par = CPI->Parameter(); 
@@ -973,7 +932,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_EXPORT.cxx
          FDS_data(I,GT,G1,ST,S);
  	const TopOpeBRepDS_Transition& T = I->Transition();
  	Standard_Real parvG; Standard_Boolean ok = FUN_tool_parVonE(vG,TopoDS::Edge(s),parvG);
-@@ -2172,7 +2172,7 @@ static Standard_Boolean FUN_redusamshaon
+@@ -2165,7 +2165,7 @@ static Standard_Boolean FUN_redusamshaon
  // attached to edge(EIX) : IFOR=(FORWARD(ES),G,ES) + IREV=(REVERSED(ES),G,ES)
  {
    newI.Nullify();
@@ -982,7 +941,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_EXPORT.cxx
    FDS_Idata(I,SB,IB,SA,IA,GT,G,ST,S); 
    const TopoDS_Edge& E = TopoDS::Edge(BDS.Shape(EIX));
    Standard_Real parE = FDS_Parameter(I); Standard_Real f,l; FUN_tool_bounds(E,f,l);
-@@ -2253,7 +2253,7 @@ Standard_EXPORT void FUN_ds_redusamsha(c
+@@ -2246,7 +2246,7 @@ Standard_EXPORT void FUN_ds_redusamsha(c
  	  const TopOpeBRepDS_Transition& T1 = I1->Transition();
  	  TopAbs_Orientation O1 = T1.Orientation(TopAbs_IN);
  	  if (!M_FORWARD(O1) && !M_REVERSED(O1)) {it1.Next(); continue;}
@@ -991,7 +950,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_EXPORT.cxx
  	  FDS_Idata(I1,SB1,IB1,SA1,IA1,GT1,G1,ST1,S1);
  	  if (IB1 != IA1) {it1.Next(); continue;}
  	  
-@@ -2263,7 +2263,7 @@ Standard_EXPORT void FUN_ds_redusamsha(c
+@@ -2256,7 +2256,7 @@ Standard_EXPORT void FUN_ds_redusamsha(c
  	    const Handle(TopOpeBRepDS_Interference)& I2 = it2.Value();
  	    const TopOpeBRepDS_Transition& T2 = I2->Transition();
  	    TopAbs_Orientation O2 = T2.Orientation(TopAbs_IN);
@@ -1000,7 +959,7 @@ Index: oce/src/TopOpeBRepDS/TopOpeBRepDS_EXPORT.cxx
  	    FDS_Idata(I2,SB2,IB2,SA2,IA2,GT2,G2,ST2,S2);
  	    if (IB2 != IA2) {it2.Next(); continue;}
  	    if (IB1 != IB2) {it2.Next(); continue;} // same fTRASHA
-@@ -2312,7 +2312,7 @@ Standard_EXPORT Standard_Boolean FUN_ds_
+@@ -2305,7 +2305,7 @@ Standard_EXPORT Standard_Boolean FUN_ds_
    for (TopOpeBRepDS_ListIteratorOfListOfInterference it(LI); it.More(); it.Next()){
      const Handle(TopOpeBRepDS_Interference)& I = it.Value();
      const TopOpeBRepDS_Transition& T = I->Transition();

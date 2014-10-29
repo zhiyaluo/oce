@@ -13,7 +13,7 @@ Index: oce/src/BRepMesh/BRepMesh_DiscretFactory.cxx
 ===================================================================
 --- oce.orig/src/BRepMesh/BRepMesh_DiscretFactory.cxx
 +++ oce/src/BRepMesh/BRepMesh_DiscretFactory.cxx
-@@ -90,9 +90,14 @@ void BRepMesh_DiscretFactory::Clear()
+@@ -85,9 +85,14 @@ void BRepMesh_DiscretFactory::Clear()
  //=======================================================================
  BRepMesh_DiscretFactory& BRepMesh_DiscretFactory::Get()
  {

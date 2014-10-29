@@ -14,9 +14,9 @@ Index: oce/src/AIS/AIS_TexturedShape.cxx
 ===================================================================
 --- oce.orig/src/AIS/AIS_TexturedShape.cxx
 +++ oce/src/AIS/AIS_TexturedShape.cxx
-@@ -264,10 +264,10 @@ void AIS_TexturedShape::Compute (const H
+@@ -283,10 +283,10 @@ void AIS_TexturedShape::Compute (const H
      }
-     case 1: // Shading
+     case AIS_Shaded:
      {
 -      Standard_Real prevangle;
 -      Standard_Real newangle;
@@ -33,7 +33,7 @@ Index: oce/src/AdvApp2Var/AdvApp2Var_Iso.cxx
 ===================================================================
 --- oce.orig/src/AdvApp2Var/AdvApp2Var_Iso.cxx
 +++ oce/src/AdvApp2Var/AdvApp2Var_Iso.cxx
-@@ -174,6 +174,7 @@ void AdvApp2Var_Iso::MakeApprox(const Ad
+@@ -168,6 +168,7 @@ void AdvApp2Var_Iso::MakeApprox(const Ad
    case GeomAbs_NoneIso:
      //pkv t
    default:
@@ -58,7 +58,7 @@ Index: oce/src/BSplCLib/BSplCLib_2.cxx
 ===================================================================
 --- oce.orig/src/BSplCLib/BSplCLib_2.cxx
 +++ oce/src/BSplCLib/BSplCLib_2.cxx
-@@ -589,14 +589,14 @@ void BSplCLib::MovePointAndTangent(const
+@@ -586,14 +586,14 @@ void BSplCLib::MovePointAndTangent(const
    conditions,
    start_num_poles,
    end_num_poles,
@@ -293,7 +293,7 @@ Index: oce/src/LDOM/LDOM_BasicElement.cxx
 ===================================================================
 --- oce.orig/src/LDOM/LDOM_BasicElement.cxx
 +++ oce/src/LDOM/LDOM_BasicElement.cxx
-@@ -223,7 +223,7 @@ const LDOM_BasicNode * LDOM_BasicElement
+@@ -219,7 +219,7 @@ const LDOM_BasicNode * LDOM_BasicElement
                                     const LDOM_BasicNode           * aLastCh)
  {
    //  Create attribute
@@ -302,7 +302,7 @@ Index: oce/src/LDOM/LDOM_BasicElement.cxx
    LDOM_BasicAttribute& anAttr =
      LDOM_BasicAttribute::Create (anAttrName, aDocument, aHash);
    anAttr.myValue = anAttrValue;
-@@ -453,7 +453,7 @@ void LDOM_BasicElement::ReplaceElement
+@@ -449,7 +449,7 @@ void LDOM_BasicElement::ReplaceElement
  loop_attr:
    LDOM_BasicNode * aLastAttr = (LDOM_BasicNode *) aLastChild;
    for (; aBNode != NULL; aBNode = aBNode -> GetSibling()) {
@@ -315,12 +315,12 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_signal_WNT.cxx
 +++ oce/src/OSD/OSD_signal_WNT.cxx
-@@ -531,7 +531,7 @@ LONG _osd_debug ( void ) {
+@@ -516,7 +516,7 @@ LONG _osd_debug ( void ) {
    TCHAR               keyValue[ MAX_PATH ];
    TCHAR               cmdLine[ MAX_PATH ];
    SECURITY_ATTRIBUTES sa;
 -  PROCESS_INFORMATION pi;
 +  PROCESS_INFORMATION pi = {};
    STARTUPINFO         si;
- 
-   __try {
+   bool Ret = true;
+     

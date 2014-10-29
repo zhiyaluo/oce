@@ -22,18 +22,18 @@ Index: oce/src/BOPCol/BOPCol_Array1.hxx
 ===================================================================
 --- oce.orig/src/BOPCol/BOPCol_Array1.hxx
 +++ oce/src/BOPCol/BOPCol_Array1.hxx
-@@ -178,7 +178,11 @@ template <class Type> class BOPCol_Array
+@@ -177,7 +177,11 @@ template <class Type> class BOPCol_Array
+     while(pBlock) {
        pNext=pBlock->Next();
        //
-       //pBlock->~BOPCol_MemBlock<Type> ();
 +#if defined(__BORLANDC__)
 +      pBlock->~BOPCol_MemBlock<Type>();
 +#else
        pBlock->~BOPCol_XMemBlock();
 +#endif
-       //pBlock->Clear();
-       myAllocator->Free((Standard_Address&)pBlock);
+       myAllocator->Free(pBlock);
        //
+       pBlock=pNext;
 Index: oce/src/BRepMesh/BRepMesh_Delaun.cxx
 ===================================================================
 --- oce.orig/src/BRepMesh/BRepMesh_Delaun.cxx
@@ -253,7 +253,7 @@ Index: oce/src/OSD/OSD_File.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_File.cxx
 +++ oce/src/OSD/OSD_File.cxx
-@@ -857,7 +857,7 @@ Standard_Boolean OSD_File::IsExecutable(
+@@ -855,7 +855,7 @@ Standard_Boolean OSD_File::IsExecutable(
  #define _int64 int64_t
  #endif
  
@@ -386,9 +386,9 @@ Index: oce/src/Standard/Standard_Integer.hxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_Integer.hxx
 +++ oce/src/Standard/Standard_Integer.hxx
-@@ -27,6 +27,10 @@
- # include <oce-config.h>
- #endif
+@@ -25,6 +25,10 @@
+ 
+ #include <oce-config.h>
  
 +#ifdef __BORLANDC__
 +#define OCE_IS_DUPLICATE_UINT32_T

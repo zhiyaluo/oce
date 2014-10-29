@@ -2,7 +2,7 @@ Index: oce/inc/V3d_View.hxx
 ===================================================================
 --- oce.orig/inc/V3d_View.hxx
 +++ oce/inc/V3d_View.hxx
-@@ -880,7 +880,7 @@ public:
+@@ -857,7 +857,7 @@ public:
  //!  view on level of OpenGl_GraphicDriver; Please take it into account if <br>
  //!  you use it for your purposes; <br>
  //!  Warning: Works only under Windows. <br>
@@ -15,7 +15,7 @@ Index: oce/src/Aspect/Aspect_Handle.hxx
 ===================================================================
 --- oce.orig/src/Aspect/Aspect_Handle.hxx
 +++ oce/src/Aspect/Aspect_Handle.hxx
-@@ -42,4 +42,6 @@ const Handle(Standard_Type)& STANDARD_TY
+@@ -38,4 +38,6 @@ const Handle(Standard_Type)& STANDARD_TY
  /*============================================================================*/
  #endif
  
@@ -26,7 +26,7 @@ Index: oce/src/V3d/V3d_View.cdl
 ===================================================================
 --- oce.orig/src/V3d/V3d_View.cdl
 +++ oce/src/V3d/V3d_View.cdl
-@@ -1505,7 +1505,7 @@ is
+@@ -1451,7 +1451,7 @@ is
          --          extension must be one of ".png",".bmp",".jpg",".gif".
          --          Returns FALSE when the dump has failed
  

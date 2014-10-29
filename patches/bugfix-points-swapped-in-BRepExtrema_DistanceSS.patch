@@ -22,7 +22,7 @@ Index: oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
 ===================================================================
 --- oce.orig/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
 +++ oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
-@@ -1143,13 +1143,13 @@ void BRepExtrema_DistanceSS::Perform(con
+@@ -1146,13 +1146,13 @@ void BRepExtrema_DistanceSS::Perform(con
          {
            if (fabs(Dstmin-sqrt(Ext.SquareDistance(i)))<myEps)
            {
@@ -40,7 +40,7 @@ Index: oce/src/BRepExtrema/BRepExtrema_DistanceSS.cxx
                {
                  Ext.ParameterOnFace(i,U,V);
                  const gp_Pnt2d PUV(U,V);
-@@ -1159,8 +1159,8 @@ void BRepExtrema_DistanceSS::Perform(con
+@@ -1162,8 +1162,8 @@ void BRepExtrema_DistanceSS::Perform(con
                    if (myDstRef > Dstmin)
                      myDstRef=Dstmin;
                    myModif=Standard_True;

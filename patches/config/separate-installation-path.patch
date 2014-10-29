@@ -57,7 +57,7 @@ Index: oce/src/DPrsStd/DPrsStd.cxx
 ===================================================================
 --- oce.orig/src/DPrsStd/DPrsStd.cxx
 +++ oce/src/DPrsStd/DPrsStd.cxx
-@@ -37,6 +37,10 @@
+@@ -31,6 +31,10 @@
  #include <OSD_Directory.hxx>
  #include <OSD_File.hxx>
  
@@ -66,15 +66,15 @@ Index: oce/src/DPrsStd/DPrsStd.cxx
 +#endif
 +
  // avoid warnings on 'extern "C"' functions returning C++ classes
- #ifdef _MSC_VER
+ #ifdef WNT
  #pragma warning(4:4190)
 Index: oce/src/Draw/Draw.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw.cxx
 +++ oce/src/Draw/Draw.cxx
-@@ -71,6 +71,10 @@
- 
- #include <stdio.h>
+@@ -77,6 +77,10 @@
+ #undef STRINGIZE1
+ #endif
  
 +#ifdef HAVE_OCE_PATHS_H
 +# include "oce-paths.h"
@@ -87,7 +87,7 @@ Index: oce/src/Draw/Draw_PloadCommands.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_PloadCommands.cxx
 +++ oce/src/Draw/Draw_PloadCommands.cxx
-@@ -28,6 +28,10 @@
+@@ -23,6 +23,10 @@
  #include <Draw_MapOfAsciiString.hxx>
  #include <Draw.hxx>
  
@@ -102,7 +102,7 @@ Index: oce/src/Plugin/Plugin.cxx
 ===================================================================
 --- oce.orig/src/Plugin/Plugin.cxx
 +++ oce/src/Plugin/Plugin.cxx
-@@ -28,6 +28,10 @@
+@@ -22,6 +22,10 @@
  
  #include <TCollection_AsciiString.hxx>
  
@@ -117,7 +117,7 @@ Index: oce/src/Resource/Resource_Manager.cxx
 ===================================================================
 --- oce.orig/src/Resource/Resource_Manager.cxx
 +++ oce/src/Resource/Resource_Manager.cxx
-@@ -34,6 +34,10 @@
+@@ -30,6 +30,10 @@
  
  #include <errno.h>
  
@@ -132,7 +132,7 @@ Index: oce/src/UnitsAPI/UnitsAPI.cxx
 ===================================================================
 --- oce.orig/src/UnitsAPI/UnitsAPI.cxx
 +++ oce/src/UnitsAPI/UnitsAPI.cxx
-@@ -26,6 +26,10 @@
+@@ -22,6 +22,10 @@
  #include <Standard_NoSuchObject.hxx>
  #include <OSD_Environment.hxx>
  
@@ -147,7 +147,7 @@ Index: oce/src/ViewerTest/ViewerTest.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest.cxx
 +++ oce/src/ViewerTest/ViewerTest.cxx
-@@ -81,6 +81,11 @@
+@@ -75,6 +75,11 @@
  
  #include <NIS_InteractiveContext.hxx>
  #include <NIS_Triangulated.hxx>
@@ -163,7 +163,7 @@ Index: oce/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
 ===================================================================
 --- oce.orig/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
 +++ oce/src/XmlLDrivers/XmlLDrivers_DocumentStorageDriver.cxx
-@@ -49,6 +49,10 @@
+@@ -44,6 +44,10 @@
  #include <OSD_File.hxx>
  #include <OSD_Environment.hxx>
  
