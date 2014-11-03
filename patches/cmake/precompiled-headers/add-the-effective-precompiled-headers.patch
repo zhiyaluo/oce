@@ -318,22 +318,6 @@ Index: oce/adm/cmake/PTKernel/Precompiled.h
 +
 +#include "../TKernel/Precompiled.h"
 +
-Index: oce/adm/cmake/TKAdvTools/Precompiled.cpp
-===================================================================
---- /dev/null
-+++ oce/adm/cmake/TKAdvTools/Precompiled.cpp
-@@ -0,0 +1 @@
-+#include "Precompiled.h"
-\ No newline at end of file
-Index: oce/adm/cmake/TKAdvTools/Precompiled.h
-===================================================================
---- /dev/null
-+++ oce/adm/cmake/TKAdvTools/Precompiled.h
-@@ -0,0 +1,4 @@
-+#pragma once
-+
-+#include "Dynamic.hxx"
-+#include "../TKernel/Precompiled.h"
 Index: oce/adm/cmake/TKBO/Precompiled.cpp
 ===================================================================
 --- /dev/null
@@ -1698,3 +1682,54 @@ Index: oce/adm/cmake/TKernel/Precompiled.h
 +#include <strstream.h>
 +#endif
 +#endif
+Index: oce/adm/cmake/TKIVtk/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKIVtk/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKIVtk/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKIVtk/Precompiled.h
+@@ -0,0 +1,12 @@
++#pragma once
++#include "../TKernel"
++#include "../TKBRep"
++#include "../TKG2d"
++#include "../TKG3d"
++#include "../TKGeomAlgo"
++#include "../TKGeomBase"
++#include "../TKMath"
++#include "../TKMesh"
++#include "../TKService"
++#include "../TKTopAlgo"
++#include "../TKV3d"
+Index: oce/adm/cmake/TKIVtkDraw/Precompiled.cpp
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKIVtkDraw/Precompiled.cpp
+@@ -0,0 +1 @@
++#include "Precompiled.h"
+\ No newline at end of file
+Index: oce/adm/cmake/TKIVtkDraw/Precompiled.h
+===================================================================
+--- /dev/null
++++ oce/adm/cmake/TKIVtkDraw/Precompiled.h
+@@ -0,0 +1,15 @@
++#pragma once
++#include "../TKernel"
++#include "../TKBRep"
++#include "../TKDraw"
++#include "../TKG2d"
++#include "../TKG3d"
++#include "../TKGeomAlgo"
++#include "../TKGeomBase"
++#include "../TKMath"
++#include "../TKMesh"
++#include "../TKService"
++#include "../TKTopAlgo"
++#include "../TKV3d"
++#include "../TKOpenGl"
++#include "../TKIVtk"

@@ -31,22 +31,6 @@ Subject: [PATCH 2/2] Include <cstring> instead of <string.h>
  inc/math_SingleTab.lxx |    2 +-
  4 files changed, 4 insertions(+), 4 deletions(-)
 
-Index: oce/src/math/math_DoubleTab.gxx
-===================================================================
---- oce.orig/src/math/math_DoubleTab.gxx
-+++ oce/src/math/math_DoubleTab.gxx
-@@ -15,10 +15,10 @@
- // Lpa, le 7/02/92
- 
- 
--#include <math_Memory.hxx>
- #include <Standard_OutOfRange.hxx>
- #include <Standard_Failure.hxx>
- #include <Standard_Integer.hxx>
-+#include <cstring>
- 
- // macro to get size of C array
- #define CARRAY_LENGTH(arr) (int)(sizeof(arr)/sizeof(arr[0]))
 Index: oce/src/math/math_DoubleTab.lxx
 ===================================================================
 --- oce.orig/src/math/math_DoubleTab.lxx
@@ -59,7 +43,7 @@ Index: oce/src/math/math_DoubleTab.lxx
  #include <Standard_OutOfRange.hxx>
 +#include <cstring>
  
- inline Item& math_DoubleTab::Value (const Standard_Integer RowIndex,
+ inline Standard_Real& math_DoubleTab::Value (const Standard_Integer RowIndex,
  				    const Standard_Integer ColIndex) const
 Index: oce/src/math/math_Memory.hxx
 ===================================================================
@@ -92,31 +76,3 @@ Index: oce/src/math/math_Memory.hxx
 -   }
  #endif
  #endif
-Index: oce/src/math/math_SingleTab.gxx
-===================================================================
---- oce.orig/src/math/math_SingleTab.gxx
-+++ oce/src/math/math_SingleTab.gxx
-@@ -12,9 +12,9 @@
- // Alternatively, this file may be used under the terms of Open CASCADE
- // commercial license or contractual agreement.
- 
--#include <math_Memory.hxx>
- #include <Standard_OutOfRange.hxx>
- #include <Standard_Failure.hxx>
-+#include <cstring>
- 
- // macro to get size of C array
- #define CARRAY_LENGTH(arr) (int)(sizeof(arr)/sizeof(arr[0]))
-Index: oce/src/math/math_SingleTab.lxx
-===================================================================
---- oce.orig/src/math/math_SingleTab.lxx
-+++ oce/src/math/math_SingleTab.lxx
-@@ -13,7 +13,7 @@
- // commercial license or contractual agreement.
- 
- #include <Standard_OutOfRange.hxx>
--#include <math_Memory.hxx>
-+#include <cstring>
- 
- inline Item& math_SingleTab::Value(const Standard_Integer Index) const
- {

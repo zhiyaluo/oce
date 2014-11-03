@@ -34,21 +34,6 @@ Index: oce/src/BOPCol/BOPCol_Array1.hxx
        myAllocator->Free(pBlock);
        //
        pBlock=pNext;
-Index: oce/src/BRepMesh/BRepMesh_Delaun.cxx
-===================================================================
---- oce.orig/src/BRepMesh/BRepMesh_Delaun.cxx
-+++ oce/src/BRepMesh/BRepMesh_Delaun.cxx
-@@ -49,6 +49,10 @@
- 
- #include <NCollection_Vector.hxx>
- 
-+#ifdef __BORLANDC__
-+#define M_SQRT1_2 0.7071067811865475244008443621048490392848359376887
-+#endif
-+
- typedef TColStd_ListIteratorOfListOfInteger  IteratorOnListOfInteger;
- typedef TColStd_ListOfInteger                ListOfInteger;
- 
 Index: oce/src/DsgPrs/DsgPrs_LengthPresentation.cxx
 ===================================================================
 --- oce.orig/src/DsgPrs/DsgPrs_LengthPresentation.cxx
@@ -71,36 +56,6 @@ Index: oce/src/DsgPrs/DsgPrs_LengthPresentation.cxx
    Standard_Real parmin,parmax,parcur;
    parmin = ElCLib::Parameter(L3,Proj1);
    parmax = parmin;
-Index: oce/src/Dynamic/Dynamic_FuzzyDefinitionsDictionary.cxx
-===================================================================
---- oce.orig/src/Dynamic/Dynamic_FuzzyDefinitionsDictionary.cxx
-+++ oce/src/Dynamic/Dynamic_FuzzyDefinitionsDictionary.cxx
-@@ -51,6 +51,10 @@
- #define stat _stat
- #endif
- 
-+#if defined(__BORLANDC__)
-+#include <mem.h>
-+#endif
-+
- //=======================================================================
- //function : Dynamic_FuzzyDefinitionsDictionary
- //purpose  : 
-Index: oce/src/Dynamic/Dynamic_MethodDefinitionsDictionary.cxx
-===================================================================
---- oce.orig/src/Dynamic/Dynamic_MethodDefinitionsDictionary.cxx
-+++ oce/src/Dynamic/Dynamic_MethodDefinitionsDictionary.cxx
-@@ -52,6 +52,10 @@
- //#define strcasecmp _stricoll
- #endif
- 
-+#if defined(__BORLANDC__)
-+#include <mem.h>
-+#endif
-+
- //=======================================================================
- //function : Dynamic_MethodDefinitionsDictionary
- //purpose  : 
 Index: oce/src/Font/FILES
 ===================================================================
 --- oce.orig/src/Font/FILES
@@ -374,14 +329,14 @@ Index: oce/src/Standard/Standard_CString.cxx
    #define SAVE_TL()
    #define strtod_l(thePtr, theNextPtr, theLocale)                _strtod_l(thePtr, theNextPtr, theLocale)
 @@ -94,7 +94,7 @@ Standard_Integer HashCodes (const Standa
-   // So we switch to C locale temporarily
-   #define SAVE_TL() Standard_CLocaleSentry aLocaleSentry;
-   #ifndef HAVE_XLOCALE_H
--    #error System does not support xlocale. Import/export could be broken if C locale did not specified by application.
-+    #warning System does not support xlocale. Import/export could be broken if C locale did not specified by application.
+     // strtod, strtol, strtoll functions. For other system with locale-depended
+     // implementations problems may appear if "C" locale is not set explicitly.
+     #ifndef __ANDROID__
+-      #error System does not support xlocale. Import/export could be broken if C locale did not specified by application.
++      #warning System does not support xlocale. Import/export could be broken if C locale did not specified by application.
+     #endif
      #define strtod_l(thePtr, theNextPtr, theLocale)              strtod(thePtr, theNextPtr)
    #endif
-   #define vprintf_l(theLocale, theFormat, theArgPtr)             vprintf(theFormat, theArgPtr)
 Index: oce/src/Standard/Standard_Integer.hxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_Integer.hxx
@@ -394,9 +349,9 @@ Index: oce/src/Standard/Standard_Integer.hxx
 +#define OCE_IS_DUPLICATE_UINT32_T
 +#endif
 +
- class Handle_Standard_Type;
- 
- __Standard_API const Handle_Standard_Type& Standard_Integer_Type_();
+ // ===============
+ // Inline methods
+ // ===============
 Index: oce/src/Standard/Standard_TypeDef.hxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_TypeDef.hxx
@@ -429,14 +384,16 @@ Index: oce/src/Standard/Standard_math.hxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_math.hxx
 +++ oce/src/Standard/Standard_math.hxx
-@@ -16,13 +16,13 @@
+@@ -16,7 +16,7 @@
  #include <Standard_Macro.hxx>
  #endif
  
 -#ifdef _MSC_VER
 +#if defined(_MSC_VER) || defined(__BORLANDC__)
  
+ #ifndef _USE_MATH_DEFINES
  #define _USE_MATH_DEFINES
+@@ -26,7 +26,7 @@
  #include <math.h>
  
  // MSVC versions prior to 12 did not provided acosh, asinh, atanh functions in standard library

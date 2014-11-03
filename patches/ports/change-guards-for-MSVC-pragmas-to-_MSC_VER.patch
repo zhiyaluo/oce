@@ -185,9 +185,9 @@ Index: oce/src/TestTopOpe/TestTopOpe.cxx
 --- oce.orig/src/TestTopOpe/TestTopOpe.cxx
 +++ oce/src/TestTopOpe/TestTopOpe.cxx
 @@ -24,7 +24,7 @@
- #include <Draw_Interpretor.hxx>
  #include <Draw_PluginMacro.hxx>
  #include <BOPTest.hxx>
+ #include <SWDRAW.hxx>
 -#ifdef WNT
 +#ifdef _MSC_VER
  #pragma warning(4:4190)
@@ -233,13 +233,13 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 --- oce.orig/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 @@ -143,7 +143,7 @@
- #include <strings.h>
- #endif
+ #include <Image_AlienPixMap.hxx>
+ #include <TColStd_HArray1OfAsciiString.hxx>
  
--#ifdef WNT
+-#ifdef _WIN32
 +#ifdef _MSC_VER
- #define _CRT_SECURE_NO_DEPRECATE
- #pragma warning (disable:4996)
+ # define _CRT_SECURE_NO_DEPRECATE
+ # pragma warning (disable:4996)
  #endif
 Index: oce/src/VrmlData/VrmlData_Geometry.cxx
 ===================================================================

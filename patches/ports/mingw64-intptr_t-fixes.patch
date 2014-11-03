@@ -198,6 +198,7 @@ Index: oce/src/OSD/OSD_File.cxx
 +#include <stdint.h>
 +#endif
  #include <Standard_PCharacter.hxx>
+ #include <TCollection_ExtendedString.hxx>
  
  #ifndef _INC_TCHAR
  # include <tchar.h>
@@ -244,15 +245,6 @@ Index: oce/src/OSD/OSD_Process.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Process.cxx
 +++ oce/src/OSD/OSD_Process.cxx
-@@ -36,7 +36,7 @@ const OSD_WhoAmI Iam = OSD_WProcess;
- # include <sys/param.h>
- #endif
- 
--#if defined(HAVE_TIME_H) || defined(WNT)
-+#if defined(HAVE_TIME_H)
- # include <time.h>
- #endif
- 
 @@ -231,6 +231,9 @@ Standard_Integer OSD_Process::Error()con
  
  #include <OSD_WNT_1.hxx>
@@ -300,11 +292,11 @@ Index: oce/src/OSD/OSD_WNT.cxx
 --- oce.orig/src/OSD/OSD_WNT.cxx
 +++ oce/src/OSD/OSD_WNT.cxx
 @@ -861,12 +861,12 @@ BOOL MoveDirectory ( LPCTSTR oldDir, LPC
-  BOOL                fFind;
-  BOOL                retVal = FALSE;
-  DIR_RESPONSE        response;
-- DWORD               level;
-+ LPVOID              level;
+  BOOL                 fFind;
+  BOOL                 retVal = FALSE;
+  DIR_RESPONSE         response;
+- DWORD                level;
++ LPVOID               level;
  
 - if (   (  level = ( DWORD )TlsGetValue ( dwLevel )  ) == NULL   ) {
 + if (   (  level = TlsGetValue ( dwLevel )  ) == NULL   ) {
@@ -353,9 +345,9 @@ Index: oce/src/OpenGl/OpenGl_Context.cxx
 --- oce.orig/src/OpenGl/OpenGl_Context.cxx
 +++ oce/src/OpenGl/OpenGl_Context.cxx
 @@ -321,7 +321,7 @@ void OpenGl_Context::SwapBuffers()
- void* OpenGl_Context::findProc (const char* theFuncName)
- {
- #if defined(_WIN32)
+ #if defined(HAVE_EGL)
+   return (void* )eglGetProcAddress (theFuncName);
+ #elif defined(_WIN32)
 -  return wglGetProcAddress (theFuncName);
 +  return (void*)wglGetProcAddress (theFuncName);
  #elif defined(__APPLE__) && !defined(MACOSX_USE_GLX)

@@ -11,59 +11,6 @@ Subject: [PATCH] Fixed linker errors in static build
  src/Standard/Standard_symlink.c                 |    3 ++-
  5 files changed, 16 insertions(+), 12 deletions(-)
 
-Index: oce/src/InterfaceGraphic/InterfaceGraphic_Palette.c
-===================================================================
---- oce.orig/src/InterfaceGraphic/InterfaceGraphic_Palette.c
-+++ oce/src/InterfaceGraphic/InterfaceGraphic_Palette.c
-@@ -35,6 +35,8 @@ int _a_horreur_du_vide_a_la_compilation;
- #define BLACK RGB(   0,   0,   0 )
- #define WHITE RGB( 255, 255, 255 )
- 
-+#include <Standard_Macro.hxx>
-+
- static int s_sysPalIdx[ NB_STATIC_COLORS ] = {
- 
-             COLOR_SCROLLBAR, 
-@@ -100,7 +102,7 @@ static COLORREF s_sysPalBW[ NB_STATIC_CO
- static BOOL     s_sysUse;
- static COLORREF s_sysPal[ NB_STATIC_COLORS ];
- 
--__declspec( dllexport ) long InterfaceGraphic_RealizePalette ( HDC hdc, HPALETTE hPal, BOOL fBkg, BOOL fUseStatic ) {
-+Standard_EXPORTEXTERN long InterfaceGraphic_RealizePalette ( HDC hdc, HPALETTE hPal, BOOL fBkg, BOOL fUseStatic ) {
- 
-  int i;
-  long retVal = 0;
-Index: oce/src/InterfaceGraphic/InterfaceGraphic_WNT.hxx
-===================================================================
---- oce.orig/src/InterfaceGraphic/InterfaceGraphic_WNT.hxx
-+++ oce/src/InterfaceGraphic/InterfaceGraphic_WNT.hxx
-@@ -39,6 +39,8 @@
- #define WDF_NOERASEBKGRND 0x00000001
- #define WDF_FOREIGN       0x00000002
- 
-+# include <Standard_Macro.hxx>
-+
- typedef struct window_data {
- 
-   void*    WNT_Window_Ptr;   // pointer to WNT_Window
-@@ -72,15 +74,8 @@ typedef struct font_data {
- 
- } FONT_DATA;
- 
--#ifdef __cplusplus
--extern "C" {
--#endif  /* __cplusplus */
--
--  __declspec( dllimport ) long InterfaceGraphic_RealizePalette ( HDC, HPALETTE, BOOL, BOOL );
--
--#ifdef __cplusplus
--}
--#endif  /* __cplusplus */
-+Standard_IMPORTC long InterfaceGraphic_RealizePalette ( HDC, HPALETTE, BOOL, BOOL );
-+
- #endif //WNT
- 
- #endif  /* __INTERFACE_GRAPHIC_WNT_HXX */
 Index: oce/src/Standard/Standard_Atomic.hxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_Atomic.hxx
@@ -79,24 +26,3 @@ Index: oce/src/Standard/Standard_Atomic.hxx
      }
      #define _InterlockedIncrement InterlockedIncrement
      #define _InterlockedDecrement InterlockedDecrement
-Index: oce/src/Standard/Standard_symlink.c
-===================================================================
---- oce.orig/src/Standard/Standard_symlink.c
-+++ oce/src/Standard/Standard_symlink.c
-@@ -25,6 +25,7 @@
- #define STRICT
- #include <windows.h>
- #include <tchar.h>
-+#include "Standard_Macro.hxx"
- 
- #ifdef __cplusplus
- extern "C" int symlink ( const _TCHAR*, const _TCHAR* );
-@@ -32,7 +33,7 @@ extern "C" int symlink ( const _TCHAR*,
- /***/
- /******************************* symlink **************************************/
- /***/
--__declspec( dllexport ) int symlink ( const _TCHAR* name1, const _TCHAR* name2 ) {
-+Standard_EXPORT int symlink ( const _TCHAR* name1, const _TCHAR* name2 ) {
- 
-  return CopyFile ( name1, name2, FALSE ) == TRUE ? 0 : -1;
- 

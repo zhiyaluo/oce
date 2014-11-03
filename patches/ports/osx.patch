@@ -31,59 +31,59 @@ Fix build failure on Mac OSX 10.5, see discussion in issue #378.
  src/Standard/Standard_Integer.hxx | 2 --
  1 file changed, 2 deletions(-)
 
-Index: oce/src/Image/Image_PixMap.cxx
+Index: oce/src/Standard/Standard.cxx
 ===================================================================
---- oce.orig/src/Image/Image_PixMap.cxx
-+++ oce/src/Image/Image_PixMap.cxx
+--- oce.orig/src/Standard/Standard.cxx
++++ oce/src/Standard/Standard.cxx
 @@ -17,10 +17,10 @@
  
- #ifdef _MSC_VER
+ #if defined(_MSC_VER) || defined(__ANDROID__)
    #include <malloc.h>
 -#elif (defined(__GNUC__) && __GNUC__ >= 4 && __GNUC_MINOR__ >= 1)
 +#elif defined(HAVE_MM_MALLOC_H)
    #include <mm_malloc.h>
  #else
--  extern "C" int posix_memalign (void** thePtr, size_t theAlign, size_t theBytesCount);
+-  extern "C" int posix_memalign (void** thePtr, size_t theAlign, size_t theSize);
 +  #include <stdlib.h>
  #endif
  
- template<typename TypePtr>
+ #ifndef OCCT_MMGT_OPT_DEFAULT
 @@ -29,15 +29,17 @@ inline TypePtr MemAllocAligned (const St
- {
- #if defined(_MSC_VER)
-   return (TypePtr )_aligned_malloc (theBytesCount, theAlign);
+   return _aligned_malloc (theSize, theAlign);
+ #elif defined(__ANDROID__)
+   return memalign (theAlign, theSize);
 -#elif (defined(__GNUC__) && __GNUC__ >= 4 && __GNUC_MINOR__ >= 1)
 +#elif defined(HAVE_MM_MALLOC_H)
-   return (TypePtr )     _mm_malloc (theBytesCount, theAlign);
+   return _mm_malloc (theSize, theAlign);
 -#else
 +#elif defined(HAVE_POSIX_MEMALIGN)
    void* aPtr;
-   if (posix_memalign (&aPtr, theAlign, theBytesCount))
+   if (posix_memalign (&aPtr, theAlign, theSize))
    {
-     aPtr = NULL;
+     return NULL;
    }
-   return (TypePtr )aPtr;
+   return aPtr;
 +#else
-+  return (TypePtr ) malloc (theBytesCount);
++  return malloc (theSize);
  #endif
  }
  
 @@ -45,7 +47,7 @@ inline void MemFreeAligned (void* thePtr
- {
- #if defined(_MSC_VER)
    _aligned_free (thePtrAligned);
+ #elif defined(__ANDROID__)
+   free (thePtrAligned);
 -#elif (defined(__GNUC__) && __GNUC__ >= 4 && __GNUC_MINOR__ >= 1)
 +#elif defined(HAVE_MM_MALLOC_H)
    _mm_free (thePtrAligned);
  #else
    free (thePtrAligned);
-Index: oce/src/OpenGl/OpenGl_GlCore11.hxx
+Index: oce/src/OpenGl/OpenGl_GlFunctions.hxx
 ===================================================================
---- oce.orig/src/OpenGl/OpenGl_GlCore11.hxx
-+++ oce/src/OpenGl/OpenGl_GlCore11.hxx
+--- oce.orig/src/OpenGl/OpenGl_GlFunctions.hxx
++++ oce/src/OpenGl/OpenGl_GlFunctions.hxx
 @@ -16,6 +16,8 @@
- #ifndef _OpenGl_GlCore11_H__
- #define _OpenGl_GlCore11_H__
+ #ifndef _OpenGl_GlFunctions_Header
+ #define _OpenGl_GlFunctions_Header
  
 +#include <oce-config.h>
 +
@@ -99,34 +99,6 @@ Index: oce/src/OpenGl/OpenGl_GlCore11.hxx
    #include <OpenGL/gl.h>
    #include <OpenGL/glu.h>
    #define __X_GL_H // prevent chaotic gl.h inclusions to avoid compile errors
-Index: oce/src/OpenGl/OpenGl_GlCore12.hxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_GlCore12.hxx
-+++ oce/src/OpenGl/OpenGl_GlCore12.hxx
-@@ -16,14 +16,17 @@
- #ifndef _OpenGl_GlCore12_H__
- #define _OpenGl_GlCore12_H__
- 
-+#include <oce-config.h>
-+
- #include <OpenGl_GlCore11.hxx>
- 
--// GL version can be defined by system gl.h header
--#undef GL_VERSION_1_2
--#undef GL_VERSION_1_3
--#undef GL_VERSION_1_4
--#undef GL_VERSION_1_5
--#undef GL_VERSION_2_0
-+#if defined(__APPLE__) && !defined(MACOSX_USE_GLX)
-+  #undef GL_VERSION_1_2
-+  #undef GL_VERSION_1_3
-+  #undef GL_VERSION_1_4
-+  #undef GL_VERSION_1_5
-+  #undef GL_VERSION_2_0
-+#endif
- 
- #include <OpenGl_glext.h>
- 
 Index: oce/src/OpenGl/OpenGl_glext.h
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_glext.h
@@ -335,9 +307,9 @@ Index: oce/src/Standard/Standard_Integer.hxx
  
 +#include <oce-config.h>
 +
- class Handle_Standard_Type;
- 
- __Standard_API const Handle_Standard_Type& Standard_Integer_Type_();
+ // ===============
+ // Inline methods
+ // ===============
 @@ -75,7 +77,7 @@ inline Standard_Boolean IsEqual (const S
    return theOne == theTwo;
  }
@@ -375,14 +347,13 @@ Index: oce/src/Visual3d/Visual3d_View.cxx
 ===================================================================
 --- oce.orig/src/Visual3d/Visual3d_View.cxx
 +++ oce/src/Visual3d/Visual3d_View.cxx
-@@ -12,6 +12,10 @@
- // Alternatively, this file may be used under the terms of Open CASCADE
- // commercial license or contractual agreement.
- 
+@@ -12,6 +12,9 @@
+ #ifdef _WIN32
+   #include <windows.h>
+ #endif
 +#ifdef HAVE_CONFIG_H
 +# include <oce-config.h>
 +#endif
-+
- /***********************************************************************
  
-      FONCTION :
+ #include <Visual3d_View.ixx>
+ 

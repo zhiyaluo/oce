@@ -223,7 +223,7 @@ Index: oce/src/AIS/AIS_InteractiveContext.lxx
 @@ -77,7 +77,7 @@ inline Standard_Boolean AIS_InteractiveC
  {return myCurLocalIndex != 0;}
  
- inline Handle_AIS_LocalContext AIS_InteractiveContext::LocalContext() const
+ inline Handle(AIS_LocalContext) AIS_InteractiveContext::LocalContext() const
 -{ return (myCurLocalIndex > 0) ? myLocalContexts(myCurLocalIndex) : NULL; }
 +{ return (myCurLocalIndex > 0) ? myLocalContexts(myCurLocalIndex) : (Handle_AIS_LocalContext) NULL; }
  

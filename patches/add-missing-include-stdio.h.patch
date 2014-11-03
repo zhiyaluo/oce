@@ -24,19 +24,6 @@ Index: oce/src/IntPolyh/IntPolyh_MaillageAffinage.cxx
  static Standard_Real MyTolerance=10.0e-7;
  static Standard_Real MyConfusionPrecision=10.0e-12;
  static Standard_Real SquareMyConfusionPrecision=10.0e-24;
-Index: oce/src/OpenGl/OpenGl_Display.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_Display.cxx
-+++ oce/src/OpenGl/OpenGl_Display.cxx
-@@ -23,6 +23,8 @@
- #include <TCollection_AsciiString.hxx>
- #include <Aspect_GraphicDeviceDefinitionError.hxx>
- 
-+#include <stdio.h>
-+
- #if (!defined(_WIN32) && !defined(__WIN32__) && (!defined(__APPLE__) || defined(MACOSX_USE_GLX)))
-   #include <X11/Xlib.h> // XOpenDisplay()
- #endif
 Index: oce/src/QABugs/QABugs_13.cxx
 ===================================================================
 --- oce.orig/src/QABugs/QABugs_13.cxx

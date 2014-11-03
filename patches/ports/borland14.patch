@@ -74,19 +74,6 @@ Index: oce/src/DDF/DDF_BrowserCommands.cxx
    di<<list.ToCString();
    return 0;
  }
-Index: oce/src/NCollection/NCollection_Array1.hxx
-===================================================================
---- oce.orig/src/NCollection/NCollection_Array1.hxx
-+++ oce/src/NCollection/NCollection_Array1.hxx
-@@ -70,7 +70,7 @@ template <class TheItemType> class NColl
-     //! Constructor with initialisation
-     Iterator  (const NCollection_Array1& theArray) :
-       myCurrent (theArray.Lower()),
--      myArray   ((NCollection_Array1 *) &theArray) {}
-+      myArray   ((NCollection_Array1<TheItemType> *) &theArray) {}
-     //! Initialisation
-     void Init (const NCollection_Array1& theArray)
-     { 
 Index: oce/src/NCollection/NCollection_Array2.hxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_Array2.hxx
@@ -100,42 +87,6 @@ Index: oce/src/NCollection/NCollection_Array2.hxx
      //! Initialisation
      void Init (const NCollection_Array2& theArray)
      { 
-Index: oce/src/NCollection/NCollection_SList.hxx
-===================================================================
---- oce.orig/src/NCollection/NCollection_SList.hxx
-+++ oce/src/NCollection/NCollection_SList.hxx
-@@ -68,7 +68,7 @@ template <class TheItemType> class NColl
-                const NCollection_SList& theTail) :
-                  myCount(1),
-                  myValue(theItem) 
--    { myTail = new (theTail.myAllocator) NCollection_SList(theTail); }
-+    { myTail = new (theTail.myAllocator) NCollection_SList <TheItemType> (theTail); }
-     //! Tail
-     NCollection_SList& Tail (void)
-     { return (*myTail); }
-@@ -160,7 +160,7 @@ template <class TheItemType> class NColl
-     for (; anIter.More(); anIter.Next())
-     {
-       aNode = new (this->myAllocator) SListNode 
--        (anIter.Value(), NCollection_SList(this->myAllocator));
-+        (anIter.Value(), NCollection_SList <TheItemType> (this->myAllocator));
-       if (IsEmpty())
-         myNode = aNode;
-       else
-@@ -232,11 +232,11 @@ template <class TheItemType> class NColl
- 
-   //! Construct
-   void Construct(const TheItemType& theItem)
--  { *this = NCollection_SList (theItem, *this); }
-+  { *this = NCollection_SList <TheItemType> (theItem, *this); }
- 
-   //! Constructed
-   NCollection_SList Constructed(const TheItemType& theItem) const
--  { return NCollection_SList (theItem, *this); }
-+  { return NCollection_SList <TheItemType> (theItem, *this); }
- 
-   //! ToTail
-   void ToTail (void)
 Index: oce/src/NCollection/NCollection_SparseArray.hxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_SparseArray.hxx

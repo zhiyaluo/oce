@@ -37,9 +37,9 @@ Index: oce/src/OSD/OSD_WNT_1.hxx
 @@ -79,7 +79,7 @@ typedef struct _MB_DESC {
  
                  MB_ITEMTYPE   itemType;
-                 _TINT         itemId;
--                _TCHAR*       buttonLabel;
-+                const _TCHAR* buttonLabel;
+                 int           itemId;
+-                char*         buttonLabel;
++                const char*   buttonLabel;
  
                 } MB_DESC, *LPMB_DESC;
  

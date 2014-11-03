@@ -20,14 +20,9 @@ Index: oce/src/OSD/OSD_Path.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Path.cxx
 +++ oce/src/OSD/OSD_Path.cxx
-@@ -25,12 +25,8 @@
+@@ -25,7 +25,7 @@
  #include <OSD_Path.ixx>
- #include <OSD_WhoAmI.hxx>
  
--#ifdef HAVE_SYS_UTSNAME_H
--//# include <sys/utsname.h>
--#endif
--
  static OSD_SysType whereAmI(){
 -#if defined(__digital__) || defined(__FreeBSD__) || defined(SUNOS) || defined(__APPLE__)
 +#if defined(__digital__) || defined(__FreeBSD__) || defined(SUNOS) || defined(__APPLE__) || defined(__FreeBSD_kernel__)

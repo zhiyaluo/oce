@@ -8,9 +8,9 @@ Index: oce/inc/V3d_View.hxx
  //!  Warning: Works only under Windows. <br>
 -  Standard_EXPORT     Standard_Boolean Print(const Aspect_Handle hPrnDC = 0,const Standard_Boolean showDialog = Standard_True,const Standard_Boolean showBackground = Standard_True,const Standard_CString filename = NULL,const Aspect_PrintAlgo printAlgorithm = Aspect_PA_STRETCH) const;
 +  Standard_EXPORT     Standard_Boolean Print(const Aspect_Handle hPrnDC = OCE_NULL_Aspect_Handle,const Standard_Boolean showDialog = Standard_True,const Standard_Boolean showBackground = Standard_True,const Standard_CString filename = NULL,const Aspect_PrintAlgo printAlgorithm = Aspect_PA_STRETCH) const;
-   //! dump the full contents of the view <br>
- //!        to a pixmap of pixel size <theWidth>*<theHeight> and <br>
- //!        buffer type <theBufferType>. If <theForceCentered> is true <br>
+   //! Dumps the full contents of the view <br>
+ //!           to a pixmap of pixel size <theWidth> * <theHeight> and <br>
+ //!           buffer type <theBufferType>. If <theToKeepAspect> is true <br>
 Index: oce/src/Aspect/Aspect_Handle.hxx
 ===================================================================
 --- oce.orig/src/Aspect/Aspect_Handle.hxx

@@ -424,8 +424,8 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
 @@ -145,7 +145,6 @@
  
  #ifdef _MSC_VER
- #define _CRT_SECURE_NO_DEPRECATE
--#pragma warning (disable:4996)
+ # define _CRT_SECURE_NO_DEPRECATE
+-# pragma warning (disable:4996)
  #endif
  
  extern ViewerTest_DoubleMapOfInteractiveAndName& GetMapOfAIS();

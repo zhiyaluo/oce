@@ -17,27 +17,27 @@ Index: oce/src/OpenGl/FILES
 +++ oce/src/OpenGl/FILES
 @@ -97,7 +97,7 @@ OpenGl_ArbVBO.hxx
  OpenGl_ArbDbg.hxx
- OpenGl_ExtFBO.hxx
+ OpenGl_ArbFBO.hxx
  OpenGl_ExtGS.hxx
 -glext.h
 +OpenGl_glext.h
+ OpenGl_GlFunctions.hxx
  OpenGl_GlCore11.hxx
- OpenGl_GlCore12.hxx
- OpenGl_GlCore13.hxx
-Index: oce/src/OpenGl/OpenGl_GlCore12.hxx
+ OpenGl_GlCore11Fwd.hxx
+Index: oce/src/OpenGl/OpenGl_GlFunctions.hxx
 ===================================================================
---- oce.orig/src/OpenGl/OpenGl_GlCore12.hxx
-+++ oce/src/OpenGl/OpenGl_GlCore12.hxx
+--- oce.orig/src/OpenGl/OpenGl_GlFunctions.hxx
++++ oce/src/OpenGl/OpenGl_GlFunctions.hxx
 @@ -25,8 +25,7 @@
- #undef GL_VERSION_1_5
- #undef GL_VERSION_2_0
+   #undef GL_VERSION_4_3
+   #undef GL_VERSION_4_4
  
--// include glext.h provided by Khronos group
--#include <glext.h>
-+#include <OpenGl_glext.h>
+-  // include glext.h provided by Khronos group
+-  #include <glext.h>
++  #include <OpenGl_glext.h>
+ #endif
  
- //! Function list for GL1.2 core functionality.
- struct OpenGl_GlCore12
+ //! Mega structure defines the complete list of OpenGL functions.
 Index: oce/src/OpenGl/OpenGl_glext.h
 ===================================================================
 --- /dev/null

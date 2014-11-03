@@ -1,21 +1,8 @@
-Index: oce/src/Aspect/Aspect_MarkerStyle.cxx
-===================================================================
---- oce.orig/src/Aspect/Aspect_MarkerStyle.cxx
-+++ oce/src/Aspect/Aspect_MarkerStyle.cxx
-@@ -532,6 +532,8 @@ void Aspect_MarkerStyle::SetPredefinedSt
- 		  }
- 		}
- 		break ;
-+		default :
-+		break;
- 	}
- 
- }
 Index: oce/src/BOPAlgo/BOPAlgo_Builder_3.cxx
 ===================================================================
 --- oce.orig/src/BOPAlgo/BOPAlgo_Builder_3.cxx
 +++ oce/src/BOPAlgo/BOPAlgo_Builder_3.cxx
-@@ -306,6 +306,8 @@ void BOPAlgo_Builder::FillIn3DParts
+@@ -310,6 +310,8 @@ void BOPAlgo_Builder::FillIn3DParts
      aSelector.Clear();
      aSelector.SetBox(aBoxS);
      //
@@ -54,7 +41,7 @@ Index: oce/src/Draw/Draw.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw.cxx
 +++ oce/src/Draw/Draw.cxx
-@@ -407,7 +407,7 @@ void Draw_Appli(Standard_Integer argc, c
+@@ -381,7 +381,7 @@ void Draw_Appli(Standard_Integer argc, c
          cin.get(cmd[++i]);
        } while ((cmd[i] != '\n') && (!cin.fail()));
        cmd[i] = '\0';
@@ -67,7 +54,7 @@ Index: oce/src/DrawResources/TestCommands.tcl
 ===================================================================
 --- oce.orig/src/DrawResources/TestCommands.tcl
 +++ oce/src/DrawResources/TestCommands.tcl
-@@ -367,7 +367,10 @@ proc testgrid {args} {
+@@ -371,7 +371,10 @@ proc testgrid {args} {
          # commant to run DRAW with a command file;
          # note that empty string is passed as standard input to avoid possible 
          # hang-ups due to waiting for stdin of the launching process
@@ -79,7 +66,7 @@ Index: oce/src/DrawResources/TestCommands.tcl
  
  	# alternative method to run without temporary file; disabled as it needs too many backslashes
  #	else {
-@@ -740,6 +743,13 @@ proc testfile {filelist} {
+@@ -744,6 +747,13 @@ proc testfile {filelist} {
  proc locate_data_file {filename} {
      global env groupname gridname casename
  
@@ -105,34 +92,6 @@ Index: oce/src/FSD/FSD_CmpFile.cdl
      
      RaiseError(me: in out ; theFailure: Type from Standard) is private;
          
-Index: oce/src/Graphic3d/Graphic3d.cxx
-===================================================================
---- oce.orig/src/Graphic3d/Graphic3d.cxx
-+++ oce/src/Graphic3d/Graphic3d.cxx
-@@ -25,6 +25,7 @@
- //function : InitGraphicDriver
- //purpose  :
- //=======================================================================
-+#if !defined(OCE_BUILD_STATIC_LIB) && !defined(HAVE_NO_DLL)
- Handle(Graphic3d_GraphicDriver) Graphic3d::InitGraphicDriver (const Handle(Aspect_DisplayConnection)& theDisplayConnection)
- {
- #if !defined(_WIN32) && !defined(__WIN32__) && (!defined(__APPLE__) || defined(MACOSX_USE_GLX))
-@@ -98,3 +99,15 @@ Handle(Graphic3d_GraphicDriver) Graphic3
- 
-   return aGraphicDriver;
- }
-+#else
-+
-+extern "C"
-+{
-+     Handle(Graphic3d_GraphicDriver) MetaGraphicDriverFactory(const Standard_CString AShrName);
-+}
-+
-+Handle(Graphic3d_GraphicDriver) Graphic3d::InitGraphicDriver (const Handle(Aspect_DisplayConnection)& theDisplayConnection)
-+{
-+     return MetaGraphicDriverFactory("");
-+}
-+#endif
 Index: oce/src/NCollection/NCollection_Mat4.hxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_Mat4.hxx
@@ -180,7 +139,7 @@ Index: oce/src/NCollection/NCollection_Vec3.hxx
    }
  
    //! Compute per-component subtraction.
-@@ -311,19 +311,19 @@ public:
+@@ -327,19 +327,19 @@ public:
    //! Constuct DX unit vector.
    static NCollection_Vec3 DX()
    {
@@ -229,7 +188,7 @@ Index: oce/src/OSD/OSD_FileNode.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_FileNode.cxx
 +++ oce/src/OSD/OSD_FileNode.cxx
-@@ -945,16 +945,13 @@ void _osd_wnt_set_error ( OSD_Error& err
+@@ -934,16 +934,13 @@ void _osd_wnt_set_error ( OSD_Error& err
  
   DWORD              errCode;
   Standard_Character buffer[ 2048 ];
@@ -248,7 +207,7 @@ Index: oce/src/OSD/OSD_FileNode.cxx
          )
   ) {
   
-@@ -965,8 +962,6 @@ void _osd_wnt_set_error ( OSD_Error& err
+@@ -954,8 +951,6 @@ void _osd_wnt_set_error ( OSD_Error& err
  
   err.SetValue ( errCode, who, buffer );
  
@@ -261,17 +220,17 @@ Index: oce/src/OpenGl/OpenGl_Context.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_Context.cxx
 +++ oce/src/OpenGl/OpenGl_Context.cxx
-@@ -75,7 +75,6 @@ OpenGl_Context::OpenGl_Context (const Ha
-   core14 (NULL),
-   core15 (NULL),
-   core20 (NULL),
+@@ -87,7 +87,6 @@ OpenGl_Context::OpenGl_Context (const Ha
+   core43back (NULL),
+   core44     (NULL),
+   core44back (NULL),
 -  caps   (!theCaps.IsNull() ? theCaps : new OpenGl_Caps()),
-   arbNPTW(Standard_False),
-   arbVBO (NULL),
-   arbTBO (NULL),
-@@ -102,6 +101,11 @@ OpenGl_Context::OpenGl_Context (const Ha
-   myIsFeedback (Standard_False),
-   myIsInitialized (Standard_False)
+ #if defined(GL_ES_VERSION_2_0)
+   hasHighp   (Standard_False),
+   hasTexRGBA8(Standard_False),
+@@ -127,6 +126,11 @@ OpenGl_Context::OpenGl_Context (const Ha
+ #endif
+   myDrawBuffer (0)
  {
 +  if (!theCaps.IsNull())
 +    caps = theCaps;
@@ -281,7 +240,7 @@ Index: oce/src/OpenGl/OpenGl_Context.cxx
  #if defined(MAC_OS_X_VERSION_10_3) && !defined(MACOSX_USE_GLX)
    // Vendors can not extend functionality on this system
    // and developers are limited to OpenGL support provided by Mac OS X SDK.
-@@ -592,7 +596,7 @@ static void APIENTRY debugCallbackWrap(u
+@@ -777,7 +781,7 @@ static void APIENTRY debugCallbackWrap(u
                                         unsigned int theSeverity,
                                         int          /*theLength*/,
                                         const char*  theMessage,
@@ -290,24 +249,11 @@ Index: oce/src/OpenGl/OpenGl_Context.cxx
  {
    OpenGl_Context* aCtx = (OpenGl_Context* )theUserParam;
    aCtx->PushMessage (theSource, theType, theId, theSeverity, theMessage);
-Index: oce/src/OpenGl/OpenGl_Display.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_Display.cxx
-+++ oce/src/OpenGl/OpenGl_Display.cxx
-@@ -35,7 +35,7 @@ IMPLEMENT_STANDARD_RTTIEXT(OpenGl_Displa
- namespace
- {
-   #if (defined(_WIN32) || defined(__WIN32__)) || (defined(__APPLE__) && !defined(MACOSX_USE_GLX))
--    static char* TheDummyDisplay = "DISPLAY";
-+    static char TheDummyDisplay[] = "DISPLAY";
-   #endif
- 
-   static const OpenGl_Facilities myDefaultFacilities = { 1, 1, 1, 1, OpenGLMaxLights, 10000 };
 Index: oce/src/OpenGl/OpenGl_Flipper.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_Flipper.cxx
 +++ oce/src/OpenGl/OpenGl_Flipper.cxx
-@@ -192,7 +192,7 @@ void OpenGl_Flipper::Render (const Handl
+@@ -194,7 +194,7 @@ void OpenGl_Flipper::Render (const Handl
      glMatrixMode (GL_MODELVIEW);
    }
  
@@ -316,38 +262,11 @@ Index: oce/src/OpenGl/OpenGl_Flipper.cxx
  
    if (aCurrMode != GL_MODELVIEW)
    {
-Index: oce/src/OpenGl/OpenGl_GlCore12.hxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_GlCore12.hxx
-+++ oce/src/OpenGl/OpenGl_GlCore12.hxx
-@@ -20,13 +20,15 @@
- 
- #include <OpenGl_GlCore11.hxx>
- 
--#if defined(__APPLE__) && !defined(MACOSX_USE_GLX)
--  #undef GL_VERSION_1_2
--  #undef GL_VERSION_1_3
--  #undef GL_VERSION_1_4
--  #undef GL_VERSION_1_5
--  #undef GL_VERSION_2_0
--#endif
-+// We can safely #undef GL_VERSION_x_y since redeclaration of typedef names can
-+// be done for same type: http://msdn.microsoft.com/en-us/library/87txds41.aspx
-+// It is required to fix build against Mesa >= 10:
-+// http://cgit.freedesktop.org/mesa/mesa/commit/?id=a36f7e6
-+#undef GL_VERSION_1_2
-+#undef GL_VERSION_1_3
-+#undef GL_VERSION_1_4
-+#undef GL_VERSION_1_5
-+#undef GL_VERSION_2_0
- 
- #include <OpenGl_glext.h>
- 
 Index: oce/src/OpenGl/OpenGl_ShaderManager.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_ShaderManager.cxx
 +++ oce/src/OpenGl/OpenGl_ShaderManager.cxx
-@@ -611,7 +611,7 @@ static void PushAspectFace (const Handle
+@@ -822,7 +822,7 @@ static void PushAspectFace (const Handle
  {
    theProgram->SetUniform (theCtx,
                            theProgram->GetStateLocation (OpenGl_OCCT_TEXTURE_ENABLE),
@@ -360,7 +279,7 @@ Index: oce/src/QABugs/QABugs_3.cxx
 ===================================================================
 --- oce.orig/src/QABugs/QABugs_3.cxx
 +++ oce/src/QABugs/QABugs_3.cxx
-@@ -1012,7 +1012,10 @@ static Standard_Integer coordload (Draw_
+@@ -1010,7 +1010,10 @@ static Standard_Integer coordload (Draw_
    }
  
    BRepBuilderAPI_MakeFace aMakeFace (aMakeWire.Wire());
@@ -389,7 +308,7 @@ Index: oce/src/Standard/Standard_TypeDef.hxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_TypeDef.hxx
 +++ oce/src/Standard/Standard_TypeDef.hxx
-@@ -18,19 +18,16 @@
+@@ -18,21 +18,18 @@
  #include <cstddef>
  #include <ctime>
  
@@ -398,8 +317,10 @@ Index: oce/src/Standard/Standard_TypeDef.hxx
 +
 +  #if defined(_MSC_VER) && (_MSC_VER < 1600)
    // old MSVC - hasn't stdint header
+   typedef unsigned __int8   uint8_t;
    typedef unsigned __int16  uint16_t;
    typedef unsigned __int32  uint32_t;
+   typedef unsigned __int64  uint64_t;
 -#else
 -#if defined(__hpux) && !defined(__GNUC__)
 -  #include <inttypes.h>
@@ -472,13 +393,13 @@ Index: oce/src/StdPrs/StdPrs_HLRShape.hxx
 --- oce.orig/src/StdPrs/StdPrs_HLRShape.hxx
 +++ oce/src/StdPrs/StdPrs_HLRShape.hxx
 @@ -18,6 +18,7 @@
- #include <Handle_Prs3d_Presentation.hxx>
- #include <Handle_Prs3d_Drawer.hxx>
- #include <Handle_Prs3d_Projector.hxx>
+ #include <Prs3d_Presentation.hxx>
+ #include <Prs3d_Drawer.hxx>
+ #include <Prs3d_Projector.hxx>
 +#include <TopoDS_Shape.hxx>
  
- class StdPrs_HLRShape: public Prs3d_Root
- {
+ // Computes the presentation of objects with
+ // removal of their hidden lines for a specific
 Index: oce/inc/config.h
 ===================================================================
 --- oce.orig/inc/config.h
@@ -513,30 +434,6 @@ Index: oce/inc/config.h
  /* Define to 1 if your C compiler doesn't accept -c and -o together. */
  /* #undef NO_MINUS_C_MINUS_O */
  
-Index: oce/scripts/gendoc
-===================================================================
---- oce.orig/scripts/gendoc
-+++ /dev/null
-@@ -1,19 +0,0 @@
--#!/bin/bash
--
--# Helper script to run generation of OCCT documentation on Linux.
--# Running it requires that Tcl, Doxygen, and MikTex (for PDF generation) should be in the PATH
--
--anArgs=$*
--anOldPath="$PATH"
--anOldLd="$LD_LIBRARY_PATH"
--anOldDyLd="$DYLD_LIBRARY_PATH"
--
--# go to the script directory
--aScriptPath=${BASH_SOURCE%/*}; if [ -d "${aScriptPath}" ]; then cd "$aScriptPath"; fi; aScriptPath="$PWD";
--if [ -e "${aScriptPath}/env.sh" ]; then source "${aScriptPath}/env.sh"; fi
--
--tclsh "${aScriptPath}/adm/start.tcl" $anArgs
--
--export PATH="$anOldPath"
--export LD_LIBRARY_PATH="$anOldLd"
--export DYLD_LIBRARY_PATH="$anOldDyLd"
 Index: oce/src/FSD/FSD_FileHeader.hxx
 ===================================================================
 --- oce.orig/src/FSD/FSD_FileHeader.hxx
@@ -563,11 +460,11 @@ Index: oce/src/FSD/FSD_FileHeader.hxx
  
  //=======================================================================
  //function : InverseInt
-Index: oce/src/Intf/Intf_InterferencePolyhedron.gxx
+Index: oce/src/IntPatch/IntPatch_InterferencePolyhedron.cxx
 ===================================================================
---- oce.orig/src/Intf/Intf_InterferencePolyhedron.gxx
-+++ oce/src/Intf/Intf_InterferencePolyhedron.gxx
-@@ -894,7 +894,7 @@ Standard_Boolean Intf_InterferencePolyhe
+--- oce.orig/src/IntPatch/IntPatch_InterferencePolyhedron.cxx
++++ oce/src/IntPatch/IntPatch_InterferencePolyhedron.cxx
+@@ -899,7 +899,7 @@ Standard_Boolean IntPatch_InterferencePo
  	if (nob<0) break;
        }
        if (nob>=0) {
@@ -592,3 +489,52 @@ Index: oce/src/LDOM/LDOMBasicString.cxx
    myType    = anOther.Type();
    switch (myType) {
    case LDOM_AsciiFree:
+Index: oce/src/OpenGl/OpenGl_Workspace_Raytrace.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_Workspace_Raytrace.cxx
++++ oce/src/OpenGl/OpenGl_Workspace_Raytrace.cxx
+@@ -2180,15 +2180,15 @@ Standard_Boolean OpenGl_Workspace::Raytr
+   {
+     for (Standard_Integer i = 0; i < 4; ++i)
+     {
+-      aOrientationMatrix [4 * j + i] = theOrientation (i, j);
+-      aViewMappingMatrix [4 * j + i] = theViewMapping (i, j);
++      aOrientationMatrix.ChangeValue(i, j) = theOrientation (i, j);
++      aViewMappingMatrix.ChangeValue(i, j) = theViewMapping (i, j);
+     }
+   }
+   
+   NCollection_Mat4<GLdouble> aInvOrientationMatrix;
+   aOrientationMatrix.Inverted (aInvOrientationMatrix);
+ 
+-  if (!UpdateRaytraceLightSources (aInvOrientationMatrix))
++  if (!UpdateRaytraceLightSources (aInvOrientationMatrix.GetData()))
+     return Standard_False;
+ 
+   OpenGl_Vec3 aOrigins[4];
+Index: oce/test/gp_test/gp_test.cpp
+===================================================================
+--- oce.orig/test/gp_test/gp_test.cpp
++++ oce/test/gp_test/gp_test.cpp
+@@ -31,8 +31,7 @@ TEST(gpTestSuite, testGCC42gp_Trsf)
+     T.SetValues(
+         1.0, 0.0, 0.0, 0.0,
+         0.0, 1.0, 0.0, 0.0,
+-        0.0, 0.0, 1.0, 0.0,
+-        1.e-6, 1.e-6);
++        0.0, 0.0, 1.0, 0.0);
+     ASSERT_EQ(1.0,T.Value(1,1));
+     ASSERT_EQ(1.0,T.Value(2,2));
+     ASSERT_EQ(1.0,T.Value(3,3));
+Index: oce/src/OpenGl/OpenGl_GlFunctions.hxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_GlFunctions.hxx
++++ oce/src/OpenGl/OpenGl_GlFunctions.hxx
+@@ -36,6 +36,7 @@
+ 
+ // exclude modern definitions and system-provided glext.h, should be defined before gl.h inclusion
+ #define GL_GLEXT_LEGACY
++#define GLX_GLXEXT_LEGACY
+ 
+ // include main OpenGL header provided with system
+ #if defined(__APPLE__) && !defined(MACOSX_USE_GLX)

@@ -190,11 +190,11 @@ Index: oce/src/BRepMesh/BRepMesh_VertexInspector.hxx
 @@ -108,7 +108,7 @@ public:
    }
  
-   //!Get result index of node
--  const Standard_Integer GetCoincidentInd() const
-+  Standard_Integer GetCoincidentInd() const
+   //! Returns index of point coinciding with regerence one.
+-  inline const Standard_Integer GetCoincidentPoint() const
++  inline Standard_Integer GetCoincidentPoint() const
    {
-     if ( myResInd.Size() > 0 )
+     if ( myResIndices.Size() > 0 )
      {
 Index: oce/src/DDF/DDF_IOStream.cxx
 ===================================================================

@@ -17,38 +17,70 @@ Index: oce/src/BRepMesh/BRepMesh_FastDiscret.cxx
 ===================================================================
 --- oce.orig/src/BRepMesh/BRepMesh_FastDiscret.cxx
 +++ oce/src/BRepMesh/BRepMesh_FastDiscret.cxx
-@@ -258,8 +258,10 @@ void BRepMesh_FastDiscret::Perform(const
-     tbb::parallel_for_each (aFaces.begin(), aFaces.end(), *this);
-   #else
-     // alternative parallelization not yet available
--    for (std::vector<TopoDS_Face>::iterator it(aFaces.begin()); it != aFaces.end(); it++)
--      Process (*it);
+@@ -163,20 +163,25 @@ void BRepMesh_FastDiscret::Perform(const
+     aFaces.push_back(aFace);
+   }
+ 
+-#ifdef HAVE_TBB
++#if defined(HAVE_TBB) || defined(_OPENMP)
+   if ( myInParallel )
+   {
++#ifdef HAVE_TBB
+     tbb::parallel_for_each(aFaces.begin(), aFaces.end(), *this);
++#else
 +    int i, n = aFaces.size();
 +#pragma omp parallel for private(i)
 +    for (i = 0; i < n; ++i)
-+      Process (aFaces[i]);
-   #endif
-     RemoveAllMutexes();
++      Process(aFaces[i]);
++#endif
    }
+   else
+-  {
+ #endif
++  {
+     std::vector<TopoDS_Face>::const_iterator anIt(aFaces.begin());
+     for (; anIt != aFaces.end(); anIt++)
+       Process(*anIt);
+-#ifdef HAVE_TBB
+   }
+-#endif
+ }
+ 
+ 
 Index: oce/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
 ===================================================================
 --- oce.orig/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
 +++ oce/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
-@@ -259,9 +259,10 @@ void BRepMesh_IncrementalMesh::Update(co
-     // mesh faces in parallel threads using TBB
-     tbb::parallel_for_each (aFaces.begin(), aFaces.end(), *myMesh.operator->());
-   #else
--    // alternative parallelization not yet available
--    for (std::vector<TopoDS_Face>::iterator it(aFaces.begin()); it != aFaces.end(); it++)
--      myMesh->Process (*it);
-+    int i, n = aFaces.size();
+@@ -238,19 +238,24 @@ void BRepMesh_IncrementalMesh::update()
+     update(*aFaceIt);
+ 
+   // Mesh faces
+-#ifdef HAVE_TBB
++#if defined(HAVE_TBB) || defined(_OPENMP)
+   if (myInParallel)
+   {
++#ifdef HAVE_TBB
+     tbb::parallel_for_each(myFaces.begin(), myFaces.end(), *myMesh);
++#else
++    int i, n = myFaces.size();
 +#pragma omp parallel for private(i)
 +    for (i = 0; i < n; ++i)
-+      myMesh->Process (aFaces[i]);
-   #endif
-     myMesh->RemoveAllMutexes();
++      myMesh->Process(myFaces[i]);
++#endif
    }
-@@ -518,12 +519,7 @@ Standard_Integer BRepMesh_IncrementalMes
+   else
+-  {
+ #endif
++  {
+     for (aFaceIt = myFaces.begin(); aFaceIt != myFaces.end(); aFaceIt++)
+       myMesh->Process(*aFaceIt);
+-#ifdef HAVE_TBB
+   }
+-#endif
+ 
+   commit();
+ }
+@@ -567,12 +572,7 @@ Standard_Integer BRepMesh_IncrementalMes
  //=======================================================================
  Standard_Boolean BRepMesh_IncrementalMesh::IsParallelDefault()
  {

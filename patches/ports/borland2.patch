@@ -87,19 +87,3 @@ Index: oce/src/NCollection/NCollection_IndexedMap.hxx
        myIndex(1) {}
      //! Query if the end of collection is reached by iterator
      virtual Standard_Boolean More(void) const
-Index: oce/src/NCollection/NCollection_Vector.hxx
-===================================================================
---- oce.orig/src/NCollection/NCollection_Vector.hxx
-+++ oce/src/NCollection/NCollection_Vector.hxx
-@@ -297,7 +297,11 @@ private: //! @name private methods
-     {
-       for (Standard_Integer anItemIter = 0; anItemIter < theBlock.Size; ++anItemIter)
-       {
-+#ifdef __BORLANDC__
-+        ((TheItemType* )theBlock.DataPtr)[anItemIter].~TheItemType();
-+#else
-         ((TheItemType* )theBlock.DataPtr)[anItemIter].~TheItemTypeD();
-+#endif
-       }
-       anAllocator->Free (theBlock.DataPtr);
-       theBlock.DataPtr = NULL;

@@ -104,6 +104,7 @@ Index: oce/src/Draw/Draw.cxx
 --- oce.orig/src/Draw/Draw.cxx
 +++ oce/src/Draw/Draw.cxx
 @@ -525,6 +525,14 @@ void Draw::Load(Draw_Interpretor& theDI,
+       Draw_Failure::Raise(aMsg);
      }
  
      TCollection_AsciiString aPluginLibrary("");
@@ -151,32 +152,6 @@ Index: oce/src/Draw/Draw.cxx
      OSD_SharedLibrary aSharedLibrary(aPluginLibrary.ToCString());
      if(!aSharedLibrary.DlOpen(OSD_RTLD_LAZY)) {
        TCollection_AsciiString error(aSharedLibrary.DlError());
-Index: oce/src/Graphic3d/Graphic3d.cxx
-===================================================================
---- oce.orig/src/Graphic3d/Graphic3d.cxx
-+++ oce/src/Graphic3d/Graphic3d.cxx
-@@ -43,6 +43,13 @@ Handle(Graphic3d_GraphicDriver) Graphic3
- #ifdef OCE_DEFAULT_CSF_GraphicShr
-   aGraphicLibName = OCE_DEFAULT_CSF_GraphicShr;
- #else
-+#ifdef OCE_LIBRARY_PREFIX
-+  // Assemble library name according to the variables defined by CMAKE
-+  aGraphicLibName += OCE_LIBRARY_PREFIX;
-+  aGraphicLibName += "TKOpenGl";
-+  aGraphicLibName += OCE_LIBRARY_DEBUG_POSTFIX;
-+  aGraphicLibName += OCE_LIBRARY_EXTENSION;
-+#else
-   // Setting the library name. Depends on the platform.
- #if defined(_WIN32) || defined(__WIN32__)
-   aGraphicLibName = "TKOpenGl.dll";
-@@ -54,6 +61,7 @@ Handle(Graphic3d_GraphicDriver) Graphic3
-   aGraphicLibName = "libTKOpenGl.so";
- #endif
- #endif
-+#endif
-   }
- 
-   // Loading the library.
 Index: oce/src/NCollection/NCollection_UtfString.lxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_UtfString.lxx

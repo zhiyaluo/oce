@@ -19,7 +19,7 @@ Index: oce/src/OSD/OSD_File.cxx
 - Standard_Address buff;
 + Standard_Character* buff;
  
-  TEST_RAISE(  TEXT( "Read" )  );
+  TEST_RAISE(  "Read"  );
       
 - buff = ( Standard_Address )new Standard_Character[ Nbyte + 1 ];
 + buff = new Standard_Character[ Nbyte + 1 ];

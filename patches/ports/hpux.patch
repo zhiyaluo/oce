@@ -54,15 +54,6 @@ Index: oce/src/Draw/Draw.cxx
      aPluginLibrary += ".sl";
  #else
      aPluginLibrary += ".so";
-@@ -610,7 +610,7 @@ void Draw::Load(Draw_Interpretor& theDI,
- #endif /* OCE_DEBUG_POSTFIX */
- #elif __APPLE__
-     aPluginLibrary += ".dylib";
--#elif defined (HPUX) || defined(_hpux)
-+#elif defined (HPUX) || defined(__hpux)
-     aPluginLibrary += ".sl";
- #else
-     aPluginLibrary += ".so";
 Index: oce/src/Draw/Draw_BasicCommands.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_BasicCommands.cxx
@@ -129,82 +120,6 @@ Index: oce/src/IGESData/IGESData.cxx
      ("HP-UX");
    cout<<"--  OSD_Path::SystemVersion, does not work well on HP-UX"<<endl;
  #endif
-Index: oce/src/Image/Image_Diff.cxx
-===================================================================
---- oce.orig/src/Image/Image_Diff.cxx
-+++ oce/src/Image/Image_Diff.cxx
-@@ -174,8 +174,13 @@ Standard_Boolean Image_Diff::Init (const
-   {
-     // Convert the images to white/black
-     const Image_ColorRGB aWhite = {{255, 255, 255}};
-+#ifdef __hpux
-+    Image_PixMapData<Image_ColorRGB>& aDataRef = *(Image_PixMapData<Image_ColorRGB>* )myImageRef->Data();
-+    Image_PixMapData<Image_ColorRGB>& aDataNew = *(Image_PixMapData<Image_ColorRGB>* )myImageNew->Data();
-+#else
-     Image_PixMapData<Image_ColorRGB>& aDataRef = myImageRef->EditData<Image_ColorRGB>();
-     Image_PixMapData<Image_ColorRGB>& aDataNew = myImageNew->EditData<Image_ColorRGB>();
-+#endif
-     for (Standard_Size aRow = 0; aRow < aDataRef.SizeY(); ++aRow)
-     {
-       for (Standard_Size aCol = 0; aCol < aDataRef.SizeY(); ++aCol)
-@@ -276,8 +281,13 @@ Standard_Integer Image_Diff::Compare()
- 
-   // we don't care about RGB/BGR/RGBA/BGRA/RGB32/BGR32 differences
-   // because we just compute summ of r g b components
-+#ifdef __hpux
-+  Image_PixMapData<Image_ColorRGB>& aDataRef = *(Image_PixMapData<Image_ColorRGB>* )myImageRef->Data();
-+  Image_PixMapData<Image_ColorRGB>& aDataNew = *(Image_PixMapData<Image_ColorRGB>* )myImageNew->Data();
-+#else
-   const Image_PixMapData<Image_ColorRGB>& aDataRef = myImageRef->ReadData<Image_ColorRGB>();
-   const Image_PixMapData<Image_ColorRGB>& aDataNew = myImageNew->ReadData<Image_ColorRGB>();
-+#endif
- 
-   // compare colors of each pixel
-   for (Standard_Size aRow = 0; aRow < myImageRef->SizeY(); ++aRow)
-@@ -401,7 +411,11 @@ Standard_Integer Image_Diff::ignoreBorde
-     return 0;
-   }
- 
-+#ifdef __hpux
-+  const Image_PixMapData<Image_ColorRGB>& aDataRef = *(Image_PixMapData<Image_ColorRGB>* )myImageRef->Data();
-+#else
-   const Image_PixMapData<Image_ColorRGB>& aDataRef = myImageRef->ReadData<Image_ColorRGB>();
-+#endif
- 
-   // allocate groups of different pixels
-   releaseGroupsOfDiffPixels();
-Index: oce/src/MeshVS/MeshVS_NodalColorPrsBuilder.cxx
-===================================================================
---- oce.orig/src/MeshVS/MeshVS_NodalColorPrsBuilder.cxx
-+++ oce/src/MeshVS/MeshVS_NodalColorPrsBuilder.cxx
-@@ -695,7 +695,11 @@ Handle(Graphic3d_Texture2D) MeshVS_Nodal
-   }
- 
-   anImage->SetTopDown (false);
-+#ifdef __hpux
-+  Image_PixMapData<Image_ColorRGBA>& aData = *(Image_PixMapData<Image_ColorRGBA>* )anImage->Data();
-+#else
-   Image_PixMapData<Image_ColorRGBA>& aData = anImage->EditData<Image_ColorRGBA>();
-+#endif
-   for (Standard_Size aCol = 0; aCol < Standard_Size(aColorsNb); ++aCol)
-   {
-     const Quantity_Color& aSrcColor = myTextureColorMap.Value (Standard_Integer(aCol) + 1);
-Index: oce/src/NCollection/NCollection_Array1.hxx
-===================================================================
---- oce.orig/src/NCollection/NCollection_Array1.hxx
-+++ oce/src/NCollection/NCollection_Array1.hxx
-@@ -75,7 +75,11 @@ template <class TheItemType> class NColl
-     void Init (const NCollection_Array1& theArray)
-     { 
-       myCurrent = theArray.Lower();
-+#ifdef __hpux
-+      myArray   = (NCollection_Array1<TheItemType> *) &theArray;
-+#else
-       myArray   = (NCollection_Array1 *) &theArray; 
-+#endif
-     }
-     //! Check end
-     virtual Standard_Boolean More (void) const
 Index: oce/src/NCollection/NCollection_Array2.hxx
 ===================================================================
 --- oce.orig/src/NCollection/NCollection_Array2.hxx
@@ -306,7 +221,7 @@ Index: oce/src/OSD/OSD_signal.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_signal.cxx
 +++ oce/src/OSD/OSD_signal.cxx
-@@ -407,38 +407,6 @@ static void SegvHandler(const int theSig
+@@ -407,35 +407,6 @@ static void SegvHandler(const int theSig
    exit(SIGSEGV);
  }
  
@@ -326,10 +241,7 @@ Index: oce/src/OSD/OSD_signal.cxx
 -    Space = ((struct sigcontext *)theContext)->sc_sl.sl_ss.ss_cr20 ;
 -    Offset = ((struct sigcontext *)theContext)->sc_sl.sl_ss.ss_cr21 ;
 -//    cout << "Wrong address = " << hex(Offset) << endl ;
--    if ((Offset & ~0xffff) == (long)UndefinedHandleAddress) {
--      Standard_NullObject::Jump("Attempt to access to null object") ;
--    }
--    else {
+-    {
 -      sprintf(Msg,"SIGSEGV 'segmentation violation' detected. Address %lx",Offset) ;
 -      OSD_SIGSEGV::Jump(Msg);
 -//    scp->sc_pcoq_head = scp->sc_pcoq_tail ;       Permettrait de continuer a
@@ -354,9 +266,9 @@ Index: oce/src/OpenGl/OpenGl_AspectFace.cxx
    if (!theTexture.IsNull())
    {
 +#ifdef __hpux
-+    if (TextureId.IsEmpty() || !aContext->GetResource(TextureId, Texture))
++    if (TextureId.IsEmpty() || !theCtx->GetResource(TextureId, Texture))
 +#else
-     if (TextureId.IsEmpty() || !aContext->GetResource<Handle(OpenGl_Texture)> (TextureId, Texture))
+     if (TextureId.IsEmpty() || !theCtx->GetResource<Handle(OpenGl_Texture)> (TextureId, Texture))
 +#endif
      {
        Texture = new OpenGl_Texture (theTexture->GetParams());
@@ -404,8 +316,8 @@ Index: oce/src/Standard/Standard_MMgrOpt.cxx
        perror("ERR_MEMRY_FAIL");
  #endif
      
--#if defined(IRIX) || defined(__sgi) || defined(SOLARIS) || defined(__sun) || defined(LIN) || defined(linux) || defined(__FreeBSD__)
-+#if defined(IRIX) || defined(__sgi) || defined(SOLARIS) || defined(__sun) || defined(LIN) || defined(linux) || defined(__FreeBSD__) || defined(__hpux)
+-#if defined(IRIX) || defined(__sgi) || defined(SOLARIS) || defined(__sun) || defined(LIN) || defined(linux) || defined(__FreeBSD__) || defined(__ANDROID__)
++#if defined(IRIX) || defined(__sgi) || defined(SOLARIS) || defined(__sun) || defined(LIN) || defined(linux) || defined(__FreeBSD__) || defined(__ANDROID__) || defined(__hpux)
      if ((myMMap = open ("/dev/zero", O_RDWR)) < 0) {
        if ((myMMap = open ("/dev/null", O_RDWR)) < 0){
          myMMap = 0;

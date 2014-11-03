@@ -47,10 +47,10 @@ Index: oce/src/BRepFilletAPI/BRepFilletAPI_MakeFillet.cxx
  }
  
  
-Index: oce/src/HatchGen/HatchGen_Hatcher.lxx
+Index: oce/src/Geom2dHatch/Geom2dHatch_Hatcher.lxx
 ===================================================================
---- oce.orig/src/HatchGen/HatchGen_Hatcher.lxx
-+++ oce/src/HatchGen/HatchGen_Hatcher.lxx
+--- oce.orig/src/Geom2dHatch/Geom2dHatch_Hatcher.lxx
++++ oce/src/Geom2dHatch/Geom2dHatch_Hatcher.lxx
 @@ -183,8 +183,7 @@ inline const HatchGen_PointOnHatching& H
  #if RAISE_IF_NOSUCHOBJECT
    Standard_OutOfRange_Raise_if (IndP < 0 || IndP > Hatching.NbPoints(), "") ;

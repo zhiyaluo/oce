@@ -1,7 +1,7 @@
-Index: oce/src/FWOSDriver/FWOSDriver_Driver.cxx
+Index: oce/src/CDF/CDF_FWOSDriver.cxx
 ===================================================================
---- oce.orig/src/FWOSDriver/FWOSDriver_Driver.cxx
-+++ oce/src/FWOSDriver/FWOSDriver_Driver.cxx
+--- oce.orig/src/CDF/CDF_FWOSDriver.cxx
++++ oce/src/CDF/CDF_FWOSDriver.cxx
 @@ -167,7 +167,7 @@ TCollection_ExtendedString FWOSDriver_Dr
      
  #ifdef WNT

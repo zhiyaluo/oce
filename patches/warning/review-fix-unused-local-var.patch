@@ -2,7 +2,7 @@ Index: oce/src/BOPAlgo/BOPAlgo_Builder_3.cxx
 ===================================================================
 --- oce.orig/src/BOPAlgo/BOPAlgo_Builder_3.cxx
 +++ oce/src/BOPAlgo/BOPAlgo_Builder_3.cxx
-@@ -177,7 +177,7 @@ void BOPAlgo_Builder::FillIn3DParts
+@@ -180,7 +180,7 @@ void BOPAlgo_Builder::FillIn3DParts
     const BOPCol_BaseAllocator& )
  {
    Standard_Boolean bHasImage;
@@ -11,7 +11,7 @@ Index: oce/src/BOPAlgo/BOPAlgo_Builder_3.cxx
    TopoDS_Solid aSD;
    TopoDS_Iterator aIt;
    BRep_Builder aBB; 
-@@ -306,8 +306,6 @@ void BOPAlgo_Builder::FillIn3DParts
+@@ -310,8 +310,6 @@ void BOPAlgo_Builder::FillIn3DParts
      aSelector.Clear();
      aSelector.SetBox(aBoxS);
      //
@@ -75,7 +75,7 @@ Index: oce/src/IntTools/IntTools_EdgeFace.cxx
 ===================================================================
 --- oce.orig/src/IntTools/IntTools_EdgeFace.cxx
 +++ oce/src/IntTools/IntTools_EdgeFace.cxx
-@@ -684,9 +684,8 @@ Standard_Real IntTools_EdgeFace::Distanc
+@@ -718,9 +718,8 @@ void IntTools_EdgeFace::AddDerivativePoi
        anArray1OfRange(n+i).SetLast (aFSeq(i));
      }
      
@@ -86,3 +86,20 @@ Index: oce/src/IntTools/IntTools_EdgeFace.cxx
      
      // filling the  output arrays
      myArgsArray.Resize(k);
+Index: oce/src/Bnd/Bnd_BoundSortBox.cxx
+===================================================================
+--- oce.orig/src/Bnd/Bnd_BoundSortBox.cxx
++++ oce/src/Bnd/Bnd_BoundSortBox.cxx
+@@ -636,11 +636,10 @@ const TColStd_ListOfInteger& Bnd_BoundSo
+   //-- Rejection with the table of bits
+   Standard_Boolean touch = Standard_True;
+   touch = Standard_False;
+-  Standard_Real _Xmin,_Ymin,_Zmin,_Xmax,_Ymax,_Zmax;
++  Standard_Real _Xmax,_Ymax,_Zmax;
+   BSB_T3Bits* Map = (BSB_T3Bits *)TabBits;
+   Standard_Real xmin, ymin, zmin, xmax, ymax, zmax;
+   _Xmax=Map->Xmax; _Ymax=Map->Ymax; _Zmax=Map->Zmax;
+-  _Xmin=Map->Xmin; _Ymin=Map->Ymin; _Zmin=Map->Zmin;
+   theBox.Get(xmin, ymin, zmin, xmax, ymax, zmax);
+   Standard_Integer i0,i1,j0,j1,k0,k1;
+   if(xmin>Xmin) i0=(Standard_Integer )((xmin-Xmin)*deltaX)-1; else  i0=1;

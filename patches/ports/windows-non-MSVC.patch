@@ -823,7 +823,7 @@ Index: oce/src/Standard/Standard_Atomic.hxx
    return __sync_sub_and_fetch (theValue, 1);
  }
  
--#elif defined(_WIN32) || defined(__WIN32__)
+-#elif defined(_WIN32)
 +#elif defined(_MSC_VER) || defined(__BORLANDC__)
 +#ifdef __BORLANDC__
 +extern "C" {
@@ -909,19 +909,6 @@ Index: oce/src/Standard/Standard_Macro.hxx
  #   endif  // __Standard_DLL
  //#  else
  //#   define __Standard_API
-Index: oce/src/Standard/Standard_osd_ffi.c
-===================================================================
---- oce.orig/src/Standard/Standard_osd_ffi.c
-+++ oce/src/Standard/Standard_osd_ffi.c
-@@ -89,7 +89,7 @@
- /**
- */ 
- /*************************************************************/ 
--#if defined(_MSC_VER) && !defined(WNT)
-+#if (defined(_MSC_VER) || defined(__BORLANDC__)) && !defined(WNT)
- #error "Wrong compiler options has been detected. Add /DWNT option for proper compilation!!!!!"
- #endif
- 
 Index: oce/src/Standard/Standard_values.h
 ===================================================================
 --- oce.orig/src/Standard/Standard_values.h
@@ -1214,6 +1201,6 @@ Index: oce/src/math/math_DoubleTab.lxx
 +#include <mem.h>
 +#endif
 +
- inline Item& math_DoubleTab::Value (const Standard_Integer RowIndex,
+ inline Standard_Real& math_DoubleTab::Value (const Standard_Integer RowIndex,
  				    const Standard_Integer ColIndex) const
  {

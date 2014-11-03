@@ -1,5 +1,4 @@
 #  Patches submitted on http://tracker.dev.opencascade.org/
-upstream/CR24912/remove-unused-Graphic3d_Strips.patch
 
 #  OCE specific changes to support CMake
 cmake/remove-Autotools-and-project-files.patch
@@ -7,9 +6,6 @@ cmake/add-support-for-CMake.patch
 cmake/bump-version-number.patch
 remove-duplicate-headers.patch
 
-config/unconditionnally-include-config.h.patch
-config/rename-config.h-into-oce-config.h.patch
-config/add-OCE-prefix-to-macros.patch
 config/separate-installation-path.patch
 config/travis.patch
 #  End of OCE specific changes
@@ -32,7 +28,6 @@ submitted/thread_20105/add-openmp-support.patch
 fix-cast-OSD_Process.patch
 fix-xsputn-prototype.patch
 fix-std-atol.patch
-fix-out-of-bounds-errors.patch
 add-missing-include-stdio.h.patch
 fix-sorttools-quicksort.patch
 fix-AIS.patch
@@ -40,13 +35,11 @@ fix-AIS.patch
 modify-type-Standard_Boolean.patch
 
 submitted/thread_21346/ports/remove-__try-__finally.patch
-submitted/thread_21348/warning/fix-declared-but-never-defined.patch
 submitted/thread_21349/warning/fix-deprecated-conversion-from-string.patch
 submitted/thread_21388/warning/fix-uninitialized-var.patch
 submitted/thread_21393/warning/linker-warnings.patch
 
 submitted/thread_22234/Standard_StdAllocator.patch
-submitted/thread_22556/fix-elif-HAVE_SYS_TIME_H.patch
 
 do-not-redefine-memmove.patch
 fix-symbol-decorators-Draw.patch
@@ -67,7 +60,6 @@ warning/fix-unused-result.patch
 warning/pointer-arith.patch
 warning/macro-redefinition.patch
 warning/clang-sanitizer-shift-issue.patch
-warning/deprecated-declaration.patch
 warning/mingw-fix-unknown-format-specifier.patch
 warning/intel-write-strings.patch
 warning/undefined-macro.patch
@@ -76,12 +68,9 @@ warning/fix-switch-condition-boolean.patch
 
 warning/review-fix-unused-local-var.patch
 warning/fix-tmpnam-dangerous.patch
-warning/fix-logical-not-parentheses.patch
-warning/unknown-pragmas.patch
 
 improve-exception-message.patch
 fix-exception-in-BOP.patch
-optimize-BOP.patch
 
 #  This patch should drop const qualifiers in return value for all methods (only for objects, not pointers and references!)
 warning/remove-const-return-value.patch
@@ -92,7 +81,6 @@ cmake/remove-pragmas.patch
 
 ports/fix-OSD_Process-CurrentDirectory-on-the-Hurd.patch
 ports/rename-ED-variables-into-EData.patch
-ports/do-not-include-X11-bitmaps-icon.patch
 
 ports/change-guards-for-MSVC-pragmas-to-_MSC_VER.patch
 
@@ -101,7 +89,6 @@ ports/borland2.patch
 ports/borland3.patch
 ports/borland7.patch
 ports/borland10.patch
-ports/borland12.patch
 ports/borland13.patch
 ports/workaround-gcc42-bug-gpMat.patch
 ports/rename-glext.h.patch
@@ -114,20 +101,16 @@ warning/modify-MSVC-pragmas.patch
 
 review/avoid-macro-redefinition.patch
 
-fix-older-tcl.patch
 undef-Convex.patch
-undefined-address-64bit.patch
 remove-TopOpeBRep_tools.hxx.patch
 fix-wok-issues.patch
 fix-non-ASCII-path.patch
-fix-loading-of-debug-TKOpenGl.patch
 
 get-rid-of-environment-variables.patch
 make-myFMMgr-private.patch
 
 static-linking.patch
 debug-postfix.patch
-disable-bspline-mesher.patch
 
 #OK
 ports/borland11.patch
@@ -146,6 +129,5 @@ Print-null-handle.patch
 disable-TKService-Font.patch
 fix-numerical-bug.patch
 
-fix-ftbfs-c++11.patch
 fix-ftbfs-Hurd.patch
 unsorted.patch

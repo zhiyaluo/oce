@@ -47,9 +47,9 @@ Index: oce/src/Image/Image_AlienPixMap.cxx
 --- oce.orig/src/Image/Image_AlienPixMap.cxx
 +++ oce/src/Image/Image_AlienPixMap.cxx
 @@ -25,6 +25,7 @@
- #include <gp.hxx>
  #include <TCollection_AsciiString.hxx>
  #include <fstream>
+ #include <algorithm>
 +#include <stdio.h>
  
  #ifdef HAVE_FREEIMAGE
@@ -67,16 +67,3 @@ Index: oce/src/OSD/OSD_EnvironmentIterator.cdl
        myError      : Error;
  end EnvironmentIterator from OSD;
  
-Index: oce/src/OpenGl/OpenGl_GraphicDriver.hxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_GraphicDriver.hxx
-+++ oce/src/OpenGl/OpenGl_GraphicDriver.hxx
-@@ -18,6 +18,8 @@
- 
- #include <Graphic3d_GraphicDriver.hxx>
- #include <Handle_OpenGl_GraphicDriver.hxx>
-+#include <Handle_OpenGl_View.hxx>
-+#include <Handle_OpenGl_Workspace.hxx>
- #include <Handle_OpenGl_Display.hxx>
- #include <OpenGl_Context.hxx>
- #include <OpenGl_PrinterContext.hxx>
