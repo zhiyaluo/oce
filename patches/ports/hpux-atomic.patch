@@ -11,11 +11,11 @@ Index: oce/src/Standard/Standard_Atomic.hxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_Atomic.hxx
 +++ oce/src/Standard/Standard_Atomic.hxx
-@@ -128,10 +128,25 @@ int Standard_Atomic_Decrement (volatile
+@@ -147,10 +147,25 @@ int Standard_Atomic_Decrement (volatile
    return Standard_Atomic_Add (theValue, -1);
  }
  
-+#elif defined(__hpux) && defined(HAVE_ATOMIC_H)
++#elif defined(__hpux) && defined(OCE_HAVE_ATOMIC_H)
 +//on hpux please install 'HP-UX Atomic APIs' bundle
 +
 +#include <atomic.h>

@@ -322,14 +322,14 @@ Index: oce/src/Draw/Draw.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw.cxx
 +++ oce/src/Draw/Draw.cxx
-@@ -45,6 +45,7 @@
- # include <strings.h>
- #endif
+@@ -467,6 +467,7 @@ Standard_Integer Tcl_AppInit (Tcl_Interp
+ // for debug call
+ //
  
 +#include <stdio.h>
  
- #include <Draw_Window.hxx>
- #include <gp_Pnt2d.hxx>
+ 
+ Standard_Integer  Draw_Call (char *c)
 Index: oce/src/Draw/Draw_Interpretor.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Interpretor.cxx
@@ -347,7 +347,7 @@ Index: oce/src/Draw/Draw_Window.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw_Window.cxx
 +++ oce/src/Draw/Draw_Window.cxx
-@@ -1298,7 +1298,9 @@ prompt:
+@@ -1290,7 +1290,9 @@ prompt:
  #include <Draw_Appli.hxx>
  #include <OSD.hxx>
  
@@ -418,7 +418,7 @@ Index: oce/src/OSD/OSD.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD.cxx
 +++ oce/src/OSD/OSD.cxx
-@@ -72,7 +72,7 @@ Standard_Boolean OSD::CStringToReal(cons
+@@ -67,7 +67,7 @@ Standard_Boolean OSD::CStringToReal(cons
  //=======================================================================
  
  #ifdef WNT
@@ -444,7 +444,7 @@ Index: oce/src/OSD/OSD_FileNode.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_FileNode.cxx
 +++ oce/src/OSD/OSD_FileNode.cxx
-@@ -445,6 +445,8 @@ Standard_Integer OSD_FileNode::Error()co
+@@ -419,6 +419,8 @@ Standard_Integer OSD_FileNode::Error()co
  # include <tchar.h>
  #endif  // _INC_TCHAR
  
@@ -481,31 +481,12 @@ Index: oce/src/OSD/OSD_MemInfo.cxx
      #pragma comment(lib, "Psapi.lib")
    #endif
  #elif (defined(__APPLE__))
-@@ -35,6 +35,18 @@
- #include <sstream>
- #include <fstream>
- 
-+#ifdef HAVE_CONFIG_H
-+# include <oce-config.h>
-+#endif
-+
-+#ifdef HAVE_UNISTD_H
-+# include <unistd.h>
-+#endif
-+
-+#ifdef HAVE_SYS_TYPES_H
-+# include <sys/types.h>
-+#endif
-+
- #include <OSD_MemInfo.hxx>
- 
- // =======================================================================
 Index: oce/src/OSD/OSD_Process.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_Process.cxx
 +++ oce/src/OSD/OSD_Process.cxx
-@@ -230,7 +230,7 @@ Standard_Integer OSD_Process::Error()con
- #include <Quantity_Date.hxx>
+@@ -211,7 +211,7 @@ Standard_Integer OSD_Process::Error()con
+ #include <TCollection_ExtendedString.hxx>
  
  #include <OSD_WNT_1.hxx>
 -#include <LMCONS.H> /// pour UNLEN  ( see MSDN about GetUserName() )
@@ -517,7 +498,7 @@ Index: oce/src/OSD/OSD_SharedLibrary.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_SharedLibrary.cxx
 +++ oce/src/OSD/OSD_SharedLibrary.cxx
-@@ -316,9 +316,18 @@ OSD_Function OSD_SharedLibrary :: DlSymb
+@@ -262,9 +262,18 @@ OSD_Function OSD_SharedLibrary :: DlSymb
  
   OSD_Function func = ( OSD_Function )GetProcAddress (  ( HMODULE )myHandle, Name  );
  
@@ -541,7 +522,7 @@ Index: oce/src/OSD/OSD_WNT_1.hxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_WNT_1.hxx
 +++ oce/src/OSD/OSD_WNT_1.hxx
-@@ -65,8 +65,13 @@ enum MB_ITEMTYPE { MBT_BUTTON, MBT_ICON
+@@ -61,8 +61,13 @@ enum MB_ITEMTYPE { MBT_BUTTON, MBT_ICON
  //#define LODWORD( a ) ( DWORD )(   ( ( DWORDLONG )( a ) ) & 0x00000000FFFFFFFF   )
  //#define HIDWORD( a ) ( DWORD )(   ( ( DWORDLONG )( a ) ) >> 32                  )
  
@@ -719,7 +700,7 @@ Index: oce/src/OSD/OSD_signal_WNT.cxx
 +#if (defined( _MSC_VER ) && ( _MSC_VER >= 1300 )) || defined(__BORLANDC__)
      // try recovering from stack overflow: available in MS VC++ 7.0
      if (!_resetstkoflw())
-       lstrcpy (  buffer, TEXT( "Unrecoverable STACK OVERFLOW" )  );
+       lstrcpyA (  buffer, "Unrecoverable STACK OVERFLOW"  );
 @@ -308,7 +444,7 @@ static void SIGWntHandler (int signum, i
  //purpose  : Translate Structural Exceptions into C++ exceptions
  //           Will be used when user's code is compiled with /EHa option
@@ -753,7 +734,7 @@ Index: oce/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
 +++ oce/src/OpenGl/OpenGl_GraduatedTrihedron.cxx
-@@ -130,6 +130,11 @@ static char getFarestCorner(float d000,
+@@ -131,6 +131,11 @@ static char getFarestCorner(float d000,
      return 8; /* d111 */
  }
  
@@ -782,7 +763,7 @@ Index: oce/src/STEPConstruct/STEPConstruct_AP203Context.cxx
 ===================================================================
 --- oce.orig/src/STEPConstruct/STEPConstruct_AP203Context.cxx
 +++ oce/src/STEPConstruct/STEPConstruct_AP203Context.cxx
-@@ -59,6 +59,10 @@
+@@ -46,6 +46,10 @@
  #include <StepAP203_HArray1OfApprovedItem.hxx>
  #include <StepBasic_ProductCategory.hxx>
  
@@ -797,16 +778,16 @@ Index: oce/src/Standard/Handle_Standard_Transient.hxx
 ===================================================================
 --- oce.orig/src/Standard/Handle_Standard_Transient.hxx
 +++ oce/src/Standard/Handle_Standard_Transient.hxx
-@@ -30,7 +30,7 @@
+@@ -20,7 +20,7 @@
+ #include <Standard_PrimitiveTypes.hxx>
  #include <Standard_Transient_proto.hxx>
- #endif
  
 -#ifdef _WIN32
 +#ifdef _MSC_VER
  // Disable the warning "conversion from 'unsigned int' to Standard_Transient *"
  #pragma warning (push)
  #pragma warning (disable:4312)
-@@ -242,7 +242,7 @@ inline Standard_Boolean IsEqual (const H
+@@ -225,7 +225,7 @@ inline Standard_Boolean IsEqual (const H
    return theFirst == theSecond;
  }
  
@@ -856,7 +837,7 @@ Index: oce/src/Standard/Standard_MMgrOpt.cxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_MMgrOpt.cxx
 +++ oce/src/Standard/Standard_MMgrOpt.cxx
-@@ -852,7 +852,11 @@ void Standard_MMgrOpt::FreeMemory (Stand
+@@ -812,7 +812,11 @@ void Standard_MMgrOpt::FreeMemory (Stand
      // recover handle to the memory mapping stored just before the block
      const HANDLE * aMBlock = (const HANDLE *)aBlock;
      HANDLE hMap = *(--aMBlock);
@@ -872,7 +853,7 @@ Index: oce/src/Standard/Standard_Macro.hxx
 ===================================================================
 --- oce.orig/src/Standard/Standard_Macro.hxx
 +++ oce/src/Standard/Standard_Macro.hxx
-@@ -29,9 +29,8 @@
+@@ -37,9 +37,8 @@
  // Windows-specific definitions
  //======================================================
  
@@ -883,8 +864,8 @@ Index: oce/src/Standard/Standard_Macro.hxx
 +#define WNT
  #endif
  
- # if defined(WNT) && !defined(HAVE_NO_DLL)
-@@ -60,7 +59,7 @@
+ # if defined(_WIN32) && !defined(HAVE_NO_DLL)
+@@ -68,7 +67,7 @@
  #define WIN32_LEAN_AND_MEAN   /* exclude extra Windows stuff */
  #endif
  #ifndef NOMINMAX
@@ -893,8 +874,8 @@ Index: oce/src/Standard/Standard_Macro.hxx
  #endif
  #ifndef NOMSG
  #define NOMSG NOMSG           /* avoid #define SendMessage etc. */
-@@ -130,9 +129,15 @@
- #   if !defined(WNT) || defined(__Standard_DLL) || defined(__FSD_DLL) || defined(__MMgt_DLL) || defined(__OSD_DLL) || defined(__Plugin_DLL) || defined(__Quantity_DLL) || defined(__Resource_DLL) || defined(__SortTools_DLL) || defined(__StdFail_DLL) || defined(__Storage_DLL) || defined(__TColStd_DLL) || defined(__TCollection_DLL) || defined(__TShort_DLL) || defined(__Units_DLL) || defined(__UnitsAPI_DLL) || defined(__Dico_DLL) || defined(__Message_DLL)
+@@ -138,9 +137,15 @@
+ #   if !defined(_WIN32) || defined(__Standard_DLL) || defined(__FSD_DLL) || defined(__MMgt_DLL) || defined(__OSD_DLL) || defined(__Plugin_DLL) || defined(__Quantity_DLL) || defined(__Resource_DLL) || defined(__SortTools_DLL) || defined(__StdFail_DLL) || defined(__Storage_DLL) || defined(__TColStd_DLL) || defined(__TCollection_DLL) || defined(__TShort_DLL) || defined(__Units_DLL) || defined(__UnitsAPI_DLL) || defined(__Dico_DLL) || defined(__Message_DLL)
  #    define __Standard_API Standard_EXPORT
  #    define __Standard_APIEXTERN Standard_EXPORTEXTERN
 +#      ifdef __BORLANDC__
@@ -922,8 +903,8 @@ Index: oce/src/Standard/Standard_values.h
  #error "Wrong compiler options has been detected. Add /DWNT option for proper compilation!!!!!"
  #endif
  
-@@ -40,6 +40,10 @@
- # include <limits>
+@@ -27,6 +27,10 @@
+ # include <limits.h>
  #endif
  
 +#ifdef __MINGW32__
@@ -950,7 +931,7 @@ Index: oce/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
 ===================================================================
 --- oce.orig/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
 +++ oce/src/TestTopOpe/TestTopOpe_BOOPCommands.cxx
-@@ -322,7 +322,11 @@ Standard_Integer BOOPCHK(Draw_Interpreto
+@@ -316,7 +316,11 @@ Standard_Integer BOOPCHK(Draw_Interpreto
  {
    if (!strcmp(a[0],"tchk")) { 
  //    Standard_IMPORT extern Standard_Integer TopOpeBRepTool_BOOOPE_CHECK_DEB;
@@ -966,7 +947,7 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 ===================================================================
 --- oce.orig/src/ViewerTest/ViewerTest_ViewerCommands.cxx
 +++ oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
-@@ -105,6 +105,12 @@ static const char THE_KEY_DELETE = 127;
+@@ -123,6 +123,12 @@ static const char THE_KEY_DELETE = 127;
  //==============================================================================
  //  VIEWER GLOBAL VARIABLES
  //==============================================================================
@@ -979,7 +960,7 @@ Index: oce/src/ViewerTest/ViewerTest_ViewerCommands.cxx
  
  Standard_IMPORT Standard_Boolean Draw_VirtualWindows;
  Standard_IMPORT Standard_Boolean Draw_Interprete (const char* theCommand);
-@@ -2129,22 +2135,6 @@ int ViewerMainLoop(Standard_Integer argc
+@@ -2157,22 +2163,6 @@ int ViewerMainLoop(Standard_Integer argc
  
  #elif !defined(__APPLE__) || defined(MACOSX_USE_GLX)
  
@@ -1148,7 +1129,7 @@ Index: oce/src/WNT/WNT_Window.cxx
 ===================================================================
 --- oce.orig/src/WNT/WNT_Window.cxx
 +++ oce/src/WNT/WNT_Window.cxx
-@@ -221,10 +221,10 @@ Aspect_TypeOfResize WNT_Window :: DoResi
+@@ -210,10 +210,10 @@ Aspect_TypeOfResize WNT_Window::DoResize
  
    if (wp.showCmd != SW_SHOWMINIMIZED)
    {
@@ -1204,3 +1185,55 @@ Index: oce/src/math/math_DoubleTab.lxx
  inline Standard_Real& math_DoubleTab::Value (const Standard_Integer RowIndex,
  				    const Standard_Integer ColIndex) const
  {
+Index: oce/src/BinLDrivers/BinLDrivers_DocumentRetrievalDriver.cxx
+===================================================================
+--- oce.orig/src/BinLDrivers/BinLDrivers_DocumentRetrievalDriver.cxx
++++ oce/src/BinLDrivers/BinLDrivers_DocumentRetrievalDriver.cxx
+@@ -179,7 +179,7 @@ void BinLDrivers_DocumentRetrievalDriver
+   }
+ 
+   // Open the file stream
+-#ifdef _WIN32
++#ifdef _MSC_VER
+   ifstream anIS ((const wchar_t*) theFileName.ToExtString(), ios::in | ios::binary);
+ #else
+   ifstream anIS (aFileName.ToCString());
+Index: oce/src/BinLDrivers/BinLDrivers_DocumentStorageDriver.cxx
+===================================================================
+--- oce.orig/src/BinLDrivers/BinLDrivers_DocumentStorageDriver.cxx
++++ oce/src/BinLDrivers/BinLDrivers_DocumentStorageDriver.cxx
+@@ -103,7 +103,7 @@ void BinLDrivers_DocumentStorageDriver::
+         return;
+     }
+ 
+-#if defined(_WIN32)
++#if defined(_MSC_VER)
+     ofstream anOS ((const wchar_t*) theFileName.ToExtString(), ios::in | ios::binary | ios::ate);
+ #elif !defined(IRIX) // 10.10.2005
+     ofstream anOS (aFileName.ToCString(), ios::in | ios::binary | ios::ate);
+Index: oce/src/FSD/FSD_File.cxx
+===================================================================
+--- oce.orig/src/FSD/FSD_File.cxx
++++ oce/src/FSD/FSD_File.cxx
+@@ -73,7 +73,7 @@ Storage_Error FSD_File::Open(const TColl
+ 
+   if (OpenMode() == Storage_VSNone) {
+ 
+-#ifdef _WIN32
++#ifdef _MSC_VER
+     TCollection_ExtendedString aWName(aName);
+     if (aMode == Storage_VSRead) {
+       myStream.open( (const wchar_t*) aWName.ToExtString(),ios::in); // ios::nocreate is not portable
+Index: oce/src/NCollection/NCollection_WinHeapAllocator.cxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_WinHeapAllocator.cxx
++++ oce/src/NCollection/NCollection_WinHeapAllocator.cxx
+@@ -37,7 +37,7 @@ NCollection_WinHeapAllocator::NCollectio
+ #endif
+   myToZeroMemory (Standard_False)
+ {
+-#if(defined(_WIN32) || defined(__WIN32__))
++#ifdef _MSC_VER
+   // activate LHF to improve small size allocations
+   ULONG aHeapInfo = 2;
+   HeapSetInformation (myHeapH, HeapCompatibilityInformation,

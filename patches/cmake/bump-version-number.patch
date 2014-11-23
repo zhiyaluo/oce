@@ -131,7 +131,18 @@ Index: oce/NEWS
 ===================================================================
 --- oce.orig/NEWS
 +++ oce/NEWS
-@@ -1,3 +1,450 @@
+@@ -1,3 +1,461 @@
++Version 0.17 - ???
++
++This version is not binary compatible with OCE 0.16, OCE_ABI_SOVERSION
++was incremented.
++
++* Upgraded to OCCT 6.8.0
++
++* Build system changes
++  - Remove OCE_DISABLE_BSPLINE_MESHER option, OCCT improved meshing
++    in recent releases.
++
 +Version 0.16 - July 2014
 +
 +This version is not binary compatible with OCE 0.15, OCE_ABI_SOVERSION
@@ -625,7 +636,7 @@ Index: oce/README.md
 +oce stands for *o*pencascade *c*ommunity *e*dition.
 +
 +This project aims at gathering patches/changes/improvements from the OCC
-+community over the latest release (currently OCCT 6.7.1).
++community over the latest release (currently OCCT 6.8.0).
 +
 +We use the following online resources:
 +  * Sources

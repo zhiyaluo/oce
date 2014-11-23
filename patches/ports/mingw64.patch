@@ -67,7 +67,7 @@ Index: oce/src/BRepMesh/BRepMesh_DiscretFactory.cxx
 +++ oce/src/BRepMesh/BRepMesh_DiscretFactory.cxx
 @@ -20,6 +20,10 @@
  #include <BRepMesh_IncrementalMesh.hxx>
- #include <BRepMesh_PDiscretRoot.hxx>
+ #include <BRepMesh_DiscretRoot.hxx>
  
 +#ifdef HAVE_OCE_PATHS_H
 +# include "oce-paths.h"
@@ -103,8 +103,7 @@ Index: oce/src/Draw/Draw.cxx
 ===================================================================
 --- oce.orig/src/Draw/Draw.cxx
 +++ oce/src/Draw/Draw.cxx
-@@ -525,6 +525,14 @@ void Draw::Load(Draw_Interpretor& theDI,
-       Draw_Failure::Raise(aMsg);
+@@ -503,6 +503,14 @@ void Draw::Load(Draw_Interpretor& theDI,
      }
  
      TCollection_AsciiString aPluginLibrary("");
@@ -119,31 +118,7 @@ Index: oce/src/Draw/Draw.cxx
  #ifndef WNT
      aPluginLibrary += "lib";
  #endif
-@@ -538,6 +546,8 @@ void Draw::Load(Draw_Interpretor& theDI,
- #else
-     aPluginLibrary += ".so";
- #endif
-+#endif
-+
-     OSD_SharedLibrary aSharedLibrary(aPluginLibrary.ToCString());
-     if(!aSharedLibrary.DlOpen(OSD_RTLD_LAZY)) {
-       TCollection_AsciiString error(aSharedLibrary.DlError());
-@@ -597,7 +607,14 @@ void Draw::Load(Draw_Interpretor& theDI,
-       Draw_Failure::Raise(aMsg);
-     }
- 
-+    // Assemble library name according to the variables defined by CMAKE
-     TCollection_AsciiString aPluginLibrary("");
-+#ifdef OCE_LIBRARY_PREFIX
-+    aPluginLibrary += OCE_LIBRARY_PREFIX;
-+    aPluginLibrary += aPluginResource->Value(theKey.ToCString());
-+    aPluginLibrary += OCE_LIBRARY_DEBUG_POSTFIX;
-+    aPluginLibrary += OCE_LIBRARY_EXTENSION;
-+#else
- #ifndef WNT
-     aPluginLibrary += "lib";
- #endif
-@@ -615,6 +632,8 @@ void Draw::Load(Draw_Interpretor& theDI,
+@@ -520,6 +528,8 @@ void Draw::Load(Draw_Interpretor& theDI,
  #else
      aPluginLibrary += ".so";
  #endif
@@ -178,7 +153,7 @@ Index: oce/src/Plugin/Plugin.cxx
 ===================================================================
 --- oce.orig/src/Plugin/Plugin.cxx
 +++ oce/src/Plugin/Plugin.cxx
-@@ -56,6 +56,14 @@ Handle(Standard_Transient) Plugin::Load(
+@@ -61,6 +61,14 @@ Handle(Standard_Transient) Plugin::Load
      }
      
      TCollection_AsciiString thePluginLibrary("");
@@ -193,7 +168,7 @@ Index: oce/src/Plugin/Plugin.cxx
  #ifndef WNT
      thePluginLibrary += "lib";
  #endif
-@@ -72,7 +80,9 @@ Handle(Standard_Transient) Plugin::Load(
+@@ -77,7 +85,9 @@ Handle(Standard_Transient) Plugin::Load
      thePluginLibrary += ".sl";
  #else
      thePluginLibrary += ".so";

@@ -538,3 +538,56 @@ Index: oce/src/OpenGl/OpenGl_GlFunctions.hxx
  
  // include main OpenGL header provided with system
  #if defined(__APPLE__) && !defined(MACOSX_USE_GLX)
+Index: oce/inc/Select3D_SensitiveTriangulation.lxx
+===================================================================
+--- oce.orig/inc/Select3D_SensitiveTriangulation.lxx
++++ /dev/null
+@@ -1,5 +0,0 @@
+-
+-inline Standard_Integer Select3D_SensitiveTriangulation::DetectedTriangle() const
+-{
+-  return myDetectedTr;
+-}
+Index: oce/src/BndLib/BndLib_Add2dCurve.cxx
+===================================================================
+--- oce.orig/src/BndLib/BndLib_Add2dCurve.cxx
++++ oce/src/BndLib/BndLib_Add2dCurve.cxx
+@@ -530,14 +530,13 @@ Standard_Boolean BndLib_Box2dCurve::IsTy
+ void BndLib_Box2dCurve::PerformLineConic()
+ {
+   Standard_Integer i, iInf[2];
+-  Standard_Real  aTb[2], aTinf;
++  Standard_Real  aTb[2];
+   gp_Pnt2d aP2D;
+   //
+   myErrorStatus=0;
+   //
+   Bnd_Box2d& aBox2D=myBox;
+   //
+-  aTinf=Precision::Infinite();
+   iInf[0]=0;
+   iInf[1]=0;
+   aTb[0]=myT1;
+Index: oce/src/OSD/OSD.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD.cxx
++++ oce/src/OSD/OSD.cxx
+@@ -16,7 +16,9 @@
+ #include <Standard_Stream.hxx>
+ #include <stdio.h>
+ #include <math.h>
+-#if defined(isfinite)
++#ifdef WNT
++# define finite _finite
++#elif defined(isfinite)
+ # define finite isfinite
+ #endif
+ 
+@@ -74,7 +76,6 @@ Standard_Boolean OSD::CStringToReal(cons
+ # define _DEXPLEN	             11
+ # define _IEEE		              1
+ # define DMAXEXP	             ((1 << _DEXPLEN - 1) - 1 + _IEEE)
+-# define finite                      _finite
+ # define SLEEP(NSEC)                 Sleep(1000*(NSEC))
+ #else
+ # define SLEEP(NSEC)                 sleep(NSEC)
