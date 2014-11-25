@@ -3,102 +3,104 @@ Index: oce/inc/ChFi3d_Builder.hxx
 --- oce.orig/inc/ChFi3d_Builder.hxx
 +++ oce/inc/ChFi3d_Builder.hxx
 @@ -234,7 +234,7 @@ Standard_EXPORT virtual ~ChFi3d_Builder(
- //!          chamfer). <br>
-   Standard_EXPORT     Standard_Boolean SplitKPart(const Handle(ChFiDS_SurfData)& Data,ChFiDS_SequenceOfSurfData& SetData,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Iedge,const Handle(Adaptor3d_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(Adaptor3d_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,Standard_Boolean& Intf,Standard_Boolean& Intl) ;
+   //! chamfer).
+   Standard_EXPORT   Standard_Boolean SplitKPart (const Handle(ChFiDS_SurfData)& Data, ChFiDS_SequenceOfSurfData& SetData, const Handle(ChFiDS_Spine)& Spine, const Standard_Integer Iedge, const Handle(Adaptor3d_HSurface)& S1, const Handle(Adaptor3d_TopolTool)& I1, const Handle(Adaptor3d_HSurface)& S2, const Handle(Adaptor3d_TopolTool)& I2, Standard_Boolean& Intf, Standard_Boolean& Intl) ;
    
--  Standard_EXPORT     Standard_Integer PerformTwoCornerbyInter(const Standard_Integer Index) ;
-+  Standard_EXPORT     Standard_Boolean PerformTwoCornerbyInter(const Standard_Integer Index) ;
+-  Standard_EXPORT   Standard_Integer PerformTwoCornerbyInter (const Standard_Integer Index) ;
++  Standard_EXPORT   Standard_Boolean PerformTwoCornerbyInter (const Standard_Integer Index) ;
  
  
  
 @@ -247,7 +247,7 @@ protected:
    
-   Standard_EXPORT   virtual  void SimulKPart(const Handle(ChFiDS_SurfData)& SD) const = 0;
+   Standard_EXPORT virtual   void SimulKPart (const Handle(ChFiDS_SurfData)& SD)  const = 0;
    
--  Standard_EXPORT   virtual  Standard_Boolean SimulSurf(Handle(ChFiDS_SurfData)& Data,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Choix,const Handle(BRepAdaptor_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecOnS1,const Standard_Boolean RecOnS2,const math_Vector& Soldep,Standard_Boolean& Intf,Standard_Boolean& Intl)  = 0;
-+  Standard_EXPORT   virtual  Standard_Boolean SimulSurf(Handle(ChFiDS_SurfData)& Data,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Choix,const Handle(BRepAdaptor_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecOnS1,const Standard_Boolean RecOnS2,const math_Vector& Soldep,Standard_Integer& Intf,Standard_Integer& Intl)  = 0;
+-  Standard_EXPORT virtual   Standard_Boolean SimulSurf (Handle(ChFiDS_SurfData)& Data, const Handle(ChFiDS_HElSpine)& Guide, const Handle(ChFiDS_Spine)& Spine, const Standard_Integer Choix, const Handle(BRepAdaptor_HSurface)& S1, const Handle(Adaptor3d_TopolTool)& I1, const Handle(BRepAdaptor_HSurface)& S2, const Handle(Adaptor3d_TopolTool)& I2, const Standard_Real TolGuide, Standard_Real& First, Standard_Real& Last, const Standard_Boolean Inside, const Standard_Boolean Appro, const Standard_Boolean Forward, const Standard_Boolean RecOnS1, const Standard_Boolean RecOnS2, const math_Vector& Soldep, Standard_Boolean& Intf, Standard_Boolean& Intl)  = 0;
++  Standard_EXPORT virtual   Standard_Boolean SimulSurf(Handle(ChFiDS_SurfData)& Data, const Handle(ChFiDS_HElSpine)& Guide, const Handle(ChFiDS_Spine)& Spine, const Standard_Integer Choix, const Handle(BRepAdaptor_HSurface)& S1, const Handle(Adaptor3d_TopolTool)& I1, const Handle(BRepAdaptor_HSurface)& S2, const Handle(Adaptor3d_TopolTool)& I2, const Standard_Real TolGuide, Standard_Real& First, Standard_Real& Last, const Standard_Boolean Inside, const Standard_Boolean Appro, const Standard_Boolean Forward, const Standard_Boolean RecOnS1, const Standard_Boolean RecOnS2, const math_Vector& Soldep, Standard_Integer& Intf, Standard_Integer& Intl)  = 0;
    
-   Standard_EXPORT   virtual  void SimulSurf(Handle(ChFiDS_SurfData)& Data,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Choix,const Handle(BRepAdaptor_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HCurve2d)& PC1,const Handle(BRepAdaptor_HSurface)& Sref1,const Handle(BRepAdaptor_HCurve2d)& PCref1,Standard_Boolean& Decroch1,const Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,const TopAbs_Orientation Or2,const Standard_Real Fleche,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecP,const Standard_Boolean RecS,const Standard_Boolean RecRst,const math_Vector& Soldep) ;
+   Standard_EXPORT virtual   void SimulSurf (Handle(ChFiDS_SurfData)& Data, const Handle(ChFiDS_HElSpine)& Guide, const Handle(ChFiDS_Spine)& Spine, const Standard_Integer Choix, const Handle(BRepAdaptor_HSurface)& S1, const Handle(Adaptor3d_TopolTool)& I1, const Handle(BRepAdaptor_HCurve2d)& PC1, const Handle(BRepAdaptor_HSurface)& Sref1, const Handle(BRepAdaptor_HCurve2d)& PCref1, Standard_Boolean& Decroch1, const Handle(BRepAdaptor_HSurface)& S2, const Handle(Adaptor3d_TopolTool)& I2, const TopAbs_Orientation Or2, const Standard_Real Fleche, const Standard_Real TolGuide, Standard_Real& First, Standard_Real& Last, const Standard_Boolean Inside, const Standard_Boolean Appro, const Standard_Boolean Forward, const Standard_Boolean RecP, const Standard_Boolean RecS, const Standard_Boolean RecRst, const math_Vector& Soldep) ;
    
-@@ -275,11 +275,11 @@ protected:
+@@ -275,13 +275,13 @@ protected:
    
-   Standard_EXPORT     void Trunc(const Handle(ChFiDS_SurfData)& SD,const Handle(ChFiDS_Spine)& Spine,const Handle(Adaptor3d_HSurface)& S1,const Handle(Adaptor3d_HSurface)& S2,const Standard_Integer iedge,const Standard_Boolean isfirst,const Standard_Integer cntlFiOnS) ;
+   Standard_EXPORT   void Trunc (const Handle(ChFiDS_SurfData)& SD, const Handle(ChFiDS_Spine)& Spine, const Handle(Adaptor3d_HSurface)& S1, const Handle(Adaptor3d_HSurface)& S2, const Standard_Integer iedge, const Standard_Boolean isfirst, const Standard_Integer cntlFiOnS) ;
    
--  Standard_EXPORT     void CallPerformSurf(Handle(ChFiDS_Stripe)& Stripe,const Standard_Boolean Simul,ChFiDS_SequenceOfSurfData& SeqSD,Handle(ChFiDS_SurfData)& SD,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Handle(BRepAdaptor_HSurface)& HS1,const Handle(BRepAdaptor_HSurface)& HS3,const gp_Pnt2d& P1,const gp_Pnt2d& P3,Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HSurface)& HS2,const Handle(BRepAdaptor_HSurface)& HS4,const gp_Pnt2d& P2,const gp_Pnt2d& P4,Handle(Adaptor3d_TopolTool)& I2,const Standard_Real MaxStep,const Standard_Real Fleche,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecOnS1,const Standard_Boolean RecOnS2,math_Vector& Soldep,Standard_Boolean& Intf,Standard_Boolean& Intl,Handle(BRepAdaptor_HSurface)& Surf1,Handle(BRepAdaptor_HSurface)& Surf2) ;
-+  Standard_EXPORT     void CallPerformSurf(Handle(ChFiDS_Stripe)& Stripe,const Standard_Boolean Simul,ChFiDS_SequenceOfSurfData& SeqSD,Handle(ChFiDS_SurfData)& SD,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Handle(BRepAdaptor_HSurface)& HS1,const Handle(BRepAdaptor_HSurface)& HS3,const gp_Pnt2d& P1,const gp_Pnt2d& P3,Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HSurface)& HS2,const Handle(BRepAdaptor_HSurface)& HS4,const gp_Pnt2d& P2,const gp_Pnt2d& P4,Handle(Adaptor3d_TopolTool)& I2,const Standard_Real MaxStep,const Standard_Real Fleche,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecOnS1,const Standard_Boolean RecOnS2,math_Vector& Soldep,Standard_Integer& Intf,Standard_Integer& Intl,Handle(BRepAdaptor_HSurface)& Surf1,Handle(BRepAdaptor_HSurface)& Surf2) ;
-   //! Method, implemented in the inheritants, calculating <br>
- //!          elements of construction of the surface (fillet or <br>
- //!          chamfer). <br>
--  Standard_EXPORT   virtual  Standard_Boolean PerformSurf(ChFiDS_SequenceOfSurfData& Data,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Choix,const Handle(BRepAdaptor_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,const Standard_Real MaxStep,const Standard_Real Fleche,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecOnS1,const Standard_Boolean RecOnS2,const math_Vector& Soldep,Standard_Boolean& Intf,Standard_Boolean& Intl)  = 0;
-+  Standard_EXPORT   virtual  Standard_Boolean PerformSurf(ChFiDS_SequenceOfSurfData& Data,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Choix,const Handle(BRepAdaptor_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,const Standard_Real MaxStep,const Standard_Real Fleche,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecOnS1,const Standard_Boolean RecOnS2,const math_Vector& Soldep,Standard_Integer& Intf,Standard_Integer& Intl)  = 0;
-   //! Method, implemented  in inheritants, calculates <br>
- //!          the elements of construction of  the surface (fillet <br>
- //!          or chamfer) contact edge/face. <br>
+-  Standard_EXPORT   void CallPerformSurf (Handle(ChFiDS_Stripe)& Stripe, const Standard_Boolean Simul, ChFiDS_SequenceOfSurfData& SeqSD, Handle(ChFiDS_SurfData)& SD, const Handle(ChFiDS_HElSpine)& Guide, const Handle(ChFiDS_Spine)& Spine, const Handle(BRepAdaptor_HSurface)& HS1, const Handle(BRepAdaptor_HSurface)& HS3, const gp_Pnt2d& P1, const gp_Pnt2d& P3, Handle(Adaptor3d_TopolTool)& I1, const Handle(BRepAdaptor_HSurface)& HS2, const Handle(BRepAdaptor_HSurface)& HS4, const gp_Pnt2d& P2, const gp_Pnt2d& P4, Handle(Adaptor3d_TopolTool)& I2, const Standard_Real MaxStep, const Standard_Real Fleche, const Standard_Real TolGuide, Standard_Real& First, Standard_Real& Last, const Standard_Boolean Inside, const Standard_Boolean Appro, const Standard_Boolean Forward, const Standard_Boolean RecOnS1, const Standard_Boolean RecOnS2, math_Vector& Soldep, Standard_Boolean& Intf, Standard_Boolean& Intl, Handle(BRepAdaptor_HSurface)& Surf1, Handle(BRepAdaptor_HSurface)& Surf2) ;
++  Standard_EXPORT   void CallPerformSurf (Handle(ChFiDS_Stripe)& Stripe, const Standard_Boolean Simul, ChFiDS_SequenceOfSurfData& SeqSD, Handle(ChFiDS_SurfData)& SD, const Handle(ChFiDS_HElSpine)& Guide, const Handle(ChFiDS_Spine)& Spine, const Handle(BRepAdaptor_HSurface)& HS1, const Handle(BRepAdaptor_HSurface)& HS3, const gp_Pnt2d& P1, const gp_Pnt2d& P3, Handle(Adaptor3d_TopolTool)& I1, const Handle(BRepAdaptor_HSurface)& HS2, const Handle(BRepAdaptor_HSurface)& HS4, const gp_Pnt2d& P2, const gp_Pnt2d& P4, Handle(Adaptor3d_TopolTool)& I2, const Standard_Real MaxStep, const Standard_Real Fleche, const Standard_Real TolGuide, Standard_Real& First, Standard_Real& Last, const Standard_Boolean Inside, const Standard_Boolean Appro, const Standard_Boolean Forward, const Standard_Boolean RecOnS1, const Standard_Boolean RecOnS2, math_Vector& Soldep, Standard_Integer& Intf, Standard_Integer& Intl, Handle(BRepAdaptor_HSurface)& Surf1, Handle(BRepAdaptor_HSurface)& Surf2) ;
+   
+   //! Method, implemented in the inheritants, calculating
+   //! elements of construction of the surface (fillet or
+   //! chamfer).
+-  Standard_EXPORT virtual   Standard_Boolean PerformSurf (ChFiDS_SequenceOfSurfData& Data, const Handle(ChFiDS_HElSpine)& Guide, const Handle(ChFiDS_Spine)& Spine, const Standard_Integer Choix, const Handle(BRepAdaptor_HSurface)& S1, const Handle(Adaptor3d_TopolTool)& I1, const Handle(BRepAdaptor_HSurface)& S2, const Handle(Adaptor3d_TopolTool)& I2, const Standard_Real MaxStep, const Standard_Real Fleche, const Standard_Real TolGuide, Standard_Real& First, Standard_Real& Last, const Standard_Boolean Inside, const Standard_Boolean Appro, const Standard_Boolean Forward, const Standard_Boolean RecOnS1, const Standard_Boolean RecOnS2, const math_Vector& Soldep, Standard_Boolean& Intf, Standard_Boolean& Intl)  = 0;
++  Standard_EXPORT virtual   Standard_Boolean PerformSurf (ChFiDS_SequenceOfSurfData& Data, const Handle(ChFiDS_HElSpine)& Guide, const Handle(ChFiDS_Spine)& Spine, const Standard_Integer Choix, const Handle(BRepAdaptor_HSurface)& S1, const Handle(Adaptor3d_TopolTool)& I1, const Handle(BRepAdaptor_HSurface)& S2, const Handle(Adaptor3d_TopolTool)& I2, const Standard_Real MaxStep, const Standard_Real Fleche, const Standard_Real TolGuide, Standard_Real& First, Standard_Real& Last, const Standard_Boolean Inside, const Standard_Boolean Appro, const Standard_Boolean Forward, const Standard_Boolean RecOnS1, const Standard_Boolean RecOnS2, const math_Vector& Soldep, Standard_Integer& Intf, Standard_Integer& Intl)  = 0;
+   
+   //! Method, implemented  in inheritants, calculates
+   //! the elements of construction of  the surface (fillet
+   //! or chamfer) contact edge/face.
 @@ -311,7 +311,7 @@ protected:
+   Standard_EXPORT   Standard_Boolean StripeOrientations (const Handle(ChFiDS_Spine)& Sp, TopAbs_Orientation& Or1, TopAbs_Orientation& Or2, Standard_Integer& ChoixConge)  const;
    
-   Standard_EXPORT     Standard_Boolean StripeOrientations(const Handle(ChFiDS_Spine)& Sp,TopAbs_Orientation& Or1,TopAbs_Orientation& Or2,Standard_Integer& ChoixConge) const;
-   //! Calculates  a Line of contact face/face. <br>
--  Standard_EXPORT     Standard_Boolean ComputeData(Handle(ChFiDS_SurfData)& Data,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,Handle(BRepBlend_Line)& Lin,const Handle(Adaptor3d_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(Adaptor3d_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,Blend_Function& Func,Blend_FuncInv& FInv,const Standard_Real PFirst,const Standard_Real MaxStep,const Standard_Real Fleche,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const math_Vector& Soldep,Standard_Boolean& Intf,Standard_Boolean& Intl,Standard_Boolean& Gd1,Standard_Boolean& Gd2,Standard_Boolean& Gf1,Standard_Boolean& Gf2,const Standard_Boolean RecOnS1 = Standard_False,const Standard_Boolean RecOnS2 = Standard_False) ;
-+  Standard_EXPORT     Standard_Boolean ComputeData(Handle(ChFiDS_SurfData)& Data,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,Handle(BRepBlend_Line)& Lin,const Handle(Adaptor3d_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(Adaptor3d_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,Blend_Function& Func,Blend_FuncInv& FInv,const Standard_Real PFirst,const Standard_Real MaxStep,const Standard_Real Fleche,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const math_Vector& Soldep,Standard_Integer& Intf,Standard_Integer& Intl,Standard_Boolean& Gd1,Standard_Boolean& Gd2,Standard_Boolean& Gf1,Standard_Boolean& Gf2,const Standard_Boolean RecOnS1 = Standard_False,const Standard_Boolean RecOnS2 = Standard_False) ;
-   //! Calculates a Line of contact edge/face. <br>
-   Standard_EXPORT     Standard_Boolean ComputeData(Handle(ChFiDS_SurfData)& Data,const Handle(ChFiDS_HElSpine)& HGuide,Handle(BRepBlend_Line)& Lin,const Handle(Adaptor3d_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(Adaptor3d_HSurface)& S2,const Handle(Adaptor2d_HCurve2d)& PC2,const Handle(Adaptor3d_TopolTool)& I2,Standard_Boolean& Decroch,Blend_SurfRstFunction& Func,Blend_FuncInv& FInv,Blend_SurfPointFuncInv& FInvP,Blend_SurfCurvFuncInv& FInvC,const Standard_Real PFirst,const Standard_Real MaxStep,const Standard_Real Fleche,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const math_Vector& Soldep,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecP,const Standard_Boolean RecS,const Standard_Boolean RecRst) ;
-   //! Calculates a Line of contact edge/edge. <br>
+   //! Calculates  a Line of contact face/face.
+-  Standard_EXPORT   Standard_Boolean ComputeData (Handle(ChFiDS_SurfData)& Data, const Handle(ChFiDS_HElSpine)& Guide, const Handle(ChFiDS_Spine)& Spine, Handle(BRepBlend_Line)& Lin, const Handle(Adaptor3d_HSurface)& S1, const Handle(Adaptor3d_TopolTool)& I1, const Handle(Adaptor3d_HSurface)& S2, const Handle(Adaptor3d_TopolTool)& I2, Blend_Function& Func, Blend_FuncInv& FInv, const Standard_Real PFirst, const Standard_Real MaxStep, const Standard_Real Fleche, const Standard_Real TolGuide, Standard_Real& First, Standard_Real& Last, const Standard_Boolean Inside, const Standard_Boolean Appro, const Standard_Boolean Forward, const math_Vector& Soldep, Standard_Boolean& Intf, Standard_Boolean& Intl, Standard_Boolean& Gd1, Standard_Boolean& Gd2, Standard_Boolean& Gf1, Standard_Boolean& Gf2, const Standard_Boolean RecOnS1 = Standard_False, const Standard_Boolean RecOnS2 = Standard_False) ;
++  Standard_EXPORT   Standard_Boolean ComputeData (Handle(ChFiDS_SurfData)& Data, const Handle(ChFiDS_HElSpine)& Guide, const Handle(ChFiDS_Spine)& Spine, Handle(BRepBlend_Line)& Lin, const Handle(Adaptor3d_HSurface)& S1, const Handle(Adaptor3d_TopolTool)& I1, const Handle(Adaptor3d_HSurface)& S2, const Handle(Adaptor3d_TopolTool)& I2, Blend_Function& Func, Blend_FuncInv& FInv, const Standard_Real PFirst, const Standard_Real MaxStep, const Standard_Real Fleche, const Standard_Real TolGuide, Standard_Real& First, Standard_Real& Last, const Standard_Boolean Inside, const Standard_Boolean Appro, const Standard_Boolean Forward, const math_Vector& Soldep, Standard_Integer& Intf, Standard_Integer& Intl, Standard_Boolean& Gd1, Standard_Boolean& Gd2, Standard_Boolean& Gf1, Standard_Boolean& Gf2, const Standard_Boolean RecOnS1 = Standard_False, const Standard_Boolean RecOnS2 = Standard_False) ;
+   
+   //! Calculates a Line of contact edge/face.
+   Standard_EXPORT   Standard_Boolean ComputeData (Handle(ChFiDS_SurfData)& Data, const Handle(ChFiDS_HElSpine)& HGuide, Handle(BRepBlend_Line)& Lin, const Handle(Adaptor3d_HSurface)& S1, const Handle(Adaptor3d_TopolTool)& I1, const Handle(Adaptor3d_HSurface)& S2, const Handle(Adaptor2d_HCurve2d)& PC2, const Handle(Adaptor3d_TopolTool)& I2, Standard_Boolean& Decroch, Blend_SurfRstFunction& Func, Blend_FuncInv& FInv, Blend_SurfPointFuncInv& FInvP, Blend_SurfCurvFuncInv& FInvC, const Standard_Real PFirst, const Standard_Real MaxStep, const Standard_Real Fleche, const Standard_Real TolGuide, Standard_Real& First, Standard_Real& Last, const math_Vector& Soldep, const Standard_Boolean Inside, const Standard_Boolean Appro, const Standard_Boolean Forward, const Standard_Boolean RecP, const Standard_Boolean RecS, const Standard_Boolean RecRst) ;
 Index: oce/inc/ChFi3d_ChBuilder.hxx
 ===================================================================
 --- oce.orig/inc/ChFi3d_ChBuilder.hxx
 +++ oce/inc/ChFi3d_ChBuilder.hxx
 @@ -148,7 +148,7 @@ public:
-   //! Methode, implemented in inheritants, calculates <br>
- //!          the elements of construction of  the surface (fillet <br>
- //!          or chamfer). <br>
--  Standard_EXPORT   virtual  Standard_Boolean PerformSurf(ChFiDS_SequenceOfSurfData& Data,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Choix,const Handle(BRepAdaptor_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,const Standard_Real MaxStep,const Standard_Real Fleche,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecOnS1,const Standard_Boolean RecOnS2,const math_Vector& Soldep,Standard_Boolean& Intf,Standard_Boolean& Intl) ;
-+  Standard_EXPORT   virtual  Standard_Boolean PerformSurf(ChFiDS_SequenceOfSurfData& Data,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Choix,const Handle(BRepAdaptor_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,const Standard_Real MaxStep,const Standard_Real Fleche,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecOnS1,const Standard_Boolean RecOnS2,const math_Vector& Soldep,Standard_Integer& Intf,Standard_Integer& Intl) ;
-   //! Method, implemented in  the inheritants, calculates <br>
- //!          the elements of construction of  the surface (fillet <br>
- //!          or chamfer) contact edge/face. <br>
+   //! Methode, implemented in inheritants, calculates
+   //! the elements of construction of  the surface (fillet
+   //! or chamfer).
+-  Standard_EXPORT virtual   Standard_Boolean PerformSurf (ChFiDS_SequenceOfSurfData& Data, const Handle(ChFiDS_HElSpine)& Guide, const Handle(ChFiDS_Spine)& Spine, const Standard_Integer Choix, const Handle(BRepAdaptor_HSurface)& S1, const Handle(Adaptor3d_TopolTool)& I1, const Handle(BRepAdaptor_HSurface)& S2, const Handle(Adaptor3d_TopolTool)& I2, const Standard_Real MaxStep, const Standard_Real Fleche, const Standard_Real TolGuide, Standard_Real& First, Standard_Real& Last, const Standard_Boolean Inside, const Standard_Boolean Appro, const Standard_Boolean Forward, const Standard_Boolean RecOnS1, const Standard_Boolean RecOnS2, const math_Vector& Soldep, Standard_Boolean& Intf, Standard_Boolean& Intl) ;
++  Standard_EXPORT virtual   Standard_Boolean PerformSurf (ChFiDS_SequenceOfSurfData& Data, const Handle(ChFiDS_HElSpine)& Guide, const Handle(ChFiDS_Spine)& Spine, const Standard_Integer Choix, const Handle(BRepAdaptor_HSurface)& S1, const Handle(Adaptor3d_TopolTool)& I1, const Handle(BRepAdaptor_HSurface)& S2, const Handle(Adaptor3d_TopolTool)& I2, const Standard_Real MaxStep, const Standard_Real Fleche, const Standard_Real TolGuide, Standard_Real& First, Standard_Real& Last, const Standard_Boolean Inside, const Standard_Boolean Appro, const Standard_Boolean Forward, const Standard_Boolean RecOnS1, const Standard_Boolean RecOnS2, const math_Vector& Soldep, Standard_Integer& Intf, Standard_Integer& Intl) ;
+   
+   //! Method, implemented in  the inheritants, calculates
+   //! the elements of construction of  the surface (fillet
 @@ -173,7 +173,7 @@ protected:
    
-   Standard_EXPORT     void SimulKPart(const Handle(ChFiDS_SurfData)& SD) const;
+   Standard_EXPORT   void SimulKPart (const Handle(ChFiDS_SurfData)& SD)  const;
    
--  Standard_EXPORT     Standard_Boolean SimulSurf(Handle(ChFiDS_SurfData)& Data,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Choix,const Handle(BRepAdaptor_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecOnS1,const Standard_Boolean RecOnS2,const math_Vector& Soldep,Standard_Boolean& Intf,Standard_Boolean& Intl) ;
-+  Standard_EXPORT     Standard_Boolean SimulSurf(Handle(ChFiDS_SurfData)& Data,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Choix,const Handle(BRepAdaptor_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecOnS1,const Standard_Boolean RecOnS2,const math_Vector& Soldep,Standard_Integer& Intf,Standard_Integer& Intl) ;
+-  Standard_EXPORT   Standard_Boolean SimulSurf (Handle(ChFiDS_SurfData)& Data, const Handle(ChFiDS_HElSpine)& Guide, const Handle(ChFiDS_Spine)& Spine, const Standard_Integer Choix, const Handle(BRepAdaptor_HSurface)& S1, const Handle(Adaptor3d_TopolTool)& I1, const Handle(BRepAdaptor_HSurface)& S2, const Handle(Adaptor3d_TopolTool)& I2, const Standard_Real TolGuide, Standard_Real& First, Standard_Real& Last, const Standard_Boolean Inside, const Standard_Boolean Appro, const Standard_Boolean Forward, const Standard_Boolean RecOnS1, const Standard_Boolean RecOnS2, const math_Vector& Soldep, Standard_Boolean& Intf, Standard_Boolean& Intl) ;
++  Standard_EXPORT   Standard_Boolean SimulSurf (Handle(ChFiDS_SurfData)& Data, const Handle(ChFiDS_HElSpine)& Guide, const Handle(ChFiDS_Spine)& Spine, const Standard_Integer Choix, const Handle(BRepAdaptor_HSurface)& S1, const Handle(Adaptor3d_TopolTool)& I1, const Handle(BRepAdaptor_HSurface)& S2, const Handle(Adaptor3d_TopolTool)& I2, const Standard_Real TolGuide, Standard_Real& First, Standard_Real& Last, const Standard_Boolean Inside, const Standard_Boolean Appro, const Standard_Boolean Forward, const Standard_Boolean RecOnS1, const Standard_Boolean RecOnS2, const math_Vector& Soldep, Standard_Integer& Intf, Standard_Integer& Intl) ;
    
-   Standard_EXPORT     Standard_Boolean PerformFirstSection(const Handle(ChFiDS_Spine)& S,const Handle(ChFiDS_HElSpine)& HGuide,const Standard_Integer Choix,Handle(BRepAdaptor_HSurface)& S1,Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I1,const Handle(Adaptor3d_TopolTool)& I2,const Standard_Real Par,math_Vector& SolDep,TopAbs_State& Pos1,TopAbs_State& Pos2) const;
-   //! computes  the  intersection of two chamfers on <br>
+   Standard_EXPORT   Standard_Boolean PerformFirstSection (const Handle(ChFiDS_Spine)& S, const Handle(ChFiDS_HElSpine)& HGuide, const Standard_Integer Choix, Handle(BRepAdaptor_HSurface)& S1, Handle(BRepAdaptor_HSurface)& S2, const Handle(Adaptor3d_TopolTool)& I1, const Handle(Adaptor3d_TopolTool)& I2, const Standard_Real Par, math_Vector& SolDep, TopAbs_State& Pos1, TopAbs_State& Pos2)  const;
+   
 Index: oce/inc/ChFi3d_FilBuilder.hxx
 ===================================================================
 --- oce.orig/inc/ChFi3d_FilBuilder.hxx
 +++ oce/inc/ChFi3d_FilBuilder.hxx
 @@ -163,7 +163,7 @@ protected:
    
-   Standard_EXPORT     void SimulKPart(const Handle(ChFiDS_SurfData)& SD) const;
+   Standard_EXPORT   void SimulKPart (const Handle(ChFiDS_SurfData)& SD)  const;
    
--  Standard_EXPORT     Standard_Boolean SimulSurf(Handle(ChFiDS_SurfData)& Data,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Choix,const Handle(BRepAdaptor_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecOnS1,const Standard_Boolean RecOnS2,const math_Vector& Soldep,Standard_Boolean& Intf,Standard_Boolean& Intl) ;
-+  Standard_EXPORT     Standard_Boolean SimulSurf(Handle(ChFiDS_SurfData)& Data,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Choix,const Handle(BRepAdaptor_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecOnS1,const Standard_Boolean RecOnS2,const math_Vector& Soldep,Standard_Integer& Intf,Standard_Integer& Intl) ;
+-  Standard_EXPORT   Standard_Boolean SimulSurf (Handle(ChFiDS_SurfData)& Data, const Handle(ChFiDS_HElSpine)& Guide, const Handle(ChFiDS_Spine)& Spine, const Standard_Integer Choix, const Handle(BRepAdaptor_HSurface)& S1, const Handle(Adaptor3d_TopolTool)& I1, const Handle(BRepAdaptor_HSurface)& S2, const Handle(Adaptor3d_TopolTool)& I2, const Standard_Real TolGuide, Standard_Real& First, Standard_Real& Last, const Standard_Boolean Inside, const Standard_Boolean Appro, const Standard_Boolean Forward, const Standard_Boolean RecOnS1, const Standard_Boolean RecOnS2, const math_Vector& Soldep, Standard_Boolean& Intf, Standard_Boolean& Intl) ;
++  Standard_EXPORT   Standard_Boolean SimulSurf (Handle(ChFiDS_SurfData)& Data, const Handle(ChFiDS_HElSpine)& Guide, const Handle(ChFiDS_Spine)& Spine, const Standard_Integer Choix, const Handle(BRepAdaptor_HSurface)& S1, const Handle(Adaptor3d_TopolTool)& I1, const Handle(BRepAdaptor_HSurface)& S2, const Handle(Adaptor3d_TopolTool)& I2, const Standard_Real TolGuide, Standard_Real& First, Standard_Real& Last, const Standard_Boolean Inside, const Standard_Boolean Appro, const Standard_Boolean Forward, const Standard_Boolean RecOnS1, const Standard_Boolean RecOnS2, const math_Vector& Soldep, Standard_Integer& Intf, Standard_Integer& Intl) ;
    
-   Standard_EXPORT   virtual  void SimulSurf(Handle(ChFiDS_SurfData)& Data,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Choix,const Handle(BRepAdaptor_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HCurve2d)& PC1,const Handle(BRepAdaptor_HSurface)& Sref1,const Handle(BRepAdaptor_HCurve2d)& PCref1,Standard_Boolean& Decroch1,const Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,const TopAbs_Orientation Or2,const Standard_Real Fleche,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecP,const Standard_Boolean RecS,const Standard_Boolean RecRst,const math_Vector& Soldep) ;
+   Standard_EXPORT virtual   void SimulSurf (Handle(ChFiDS_SurfData)& Data, const Handle(ChFiDS_HElSpine)& Guide, const Handle(ChFiDS_Spine)& Spine, const Standard_Integer Choix, const Handle(BRepAdaptor_HSurface)& S1, const Handle(Adaptor3d_TopolTool)& I1, const Handle(BRepAdaptor_HCurve2d)& PC1, const Handle(BRepAdaptor_HSurface)& Sref1, const Handle(BRepAdaptor_HCurve2d)& PCref1, Standard_Boolean& Decroch1, const Handle(BRepAdaptor_HSurface)& S2, const Handle(Adaptor3d_TopolTool)& I2, const TopAbs_Orientation Or2, const Standard_Real Fleche, const Standard_Real TolGuide, Standard_Real& First, Standard_Real& Last, const Standard_Boolean Inside, const Standard_Boolean Appro, const Standard_Boolean Forward, const Standard_Boolean RecP, const Standard_Boolean RecS, const Standard_Boolean RecRst, const math_Vector& Soldep) ;
    
 @@ -174,7 +174,7 @@ protected:
-   Standard_EXPORT     Standard_Boolean PerformFirstSection(const Handle(ChFiDS_Spine)& S,const Handle(ChFiDS_HElSpine)& HGuide,const Standard_Integer Choix,Handle(BRepAdaptor_HSurface)& S1,Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I1,const Handle(Adaptor3d_TopolTool)& I2,const Standard_Real Par,math_Vector& SolDep,TopAbs_State& Pos1,TopAbs_State& Pos2) const;
-   //! Method calculates the elements of construction of  the <br>
- //!          fillet (constant or evolutive). <br>
--  Standard_EXPORT     Standard_Boolean PerformSurf(ChFiDS_SequenceOfSurfData& SeqData,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Choix,const Handle(BRepAdaptor_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,const Standard_Real MaxStep,const Standard_Real Fleche,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecOnS1,const Standard_Boolean RecOnS2,const math_Vector& Soldep,Standard_Boolean& Intf,Standard_Boolean& Intl) ;
-+  Standard_EXPORT     Standard_Boolean PerformSurf(ChFiDS_SequenceOfSurfData& SeqData,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Choix,const Handle(BRepAdaptor_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,const Standard_Real MaxStep,const Standard_Real Fleche,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecOnS1,const Standard_Boolean RecOnS2,const math_Vector& Soldep,Standard_Integer& Intf,Standard_Integer& Intl) ;
    
-   Standard_EXPORT   virtual  void PerformSurf(ChFiDS_SequenceOfSurfData& SeqData,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Choix,const Handle(BRepAdaptor_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HCurve2d)& PC1,const Handle(BRepAdaptor_HSurface)& Sref1,const Handle(BRepAdaptor_HCurve2d)& PCref1,Standard_Boolean& Decroch1,const Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,const TopAbs_Orientation Or2,const Standard_Real MaxStep,const Standard_Real Fleche,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecP,const Standard_Boolean RecS,const Standard_Boolean RecRst,const math_Vector& Soldep) ;
+   //! Method calculates the elements of construction of  the
+   //! fillet (constant or evolutive).
+-  Standard_EXPORT   Standard_Boolean PerformSurf (ChFiDS_SequenceOfSurfData& SeqData, const Handle(ChFiDS_HElSpine)& Guide, const Handle(ChFiDS_Spine)& Spine, const Standard_Integer Choix, const Handle(BRepAdaptor_HSurface)& S1, const Handle(Adaptor3d_TopolTool)& I1, const Handle(BRepAdaptor_HSurface)& S2, const Handle(Adaptor3d_TopolTool)& I2, const Standard_Real MaxStep, const Standard_Real Fleche, const Standard_Real TolGuide, Standard_Real& First, Standard_Real& Last, const Standard_Boolean Inside, const Standard_Boolean Appro, const Standard_Boolean Forward, const Standard_Boolean RecOnS1, const Standard_Boolean RecOnS2, const math_Vector& Soldep, Standard_Boolean& Intf, Standard_Boolean& Intl) ;
++  Standard_EXPORT   Standard_Boolean PerformSurf (ChFiDS_SequenceOfSurfData& SeqData, const Handle(ChFiDS_HElSpine)& Guide, const Handle(ChFiDS_Spine)& Spine, const Standard_Integer Choix, const Handle(BRepAdaptor_HSurface)& S1, const Handle(Adaptor3d_TopolTool)& I1, const Handle(BRepAdaptor_HSurface)& S2, const Handle(Adaptor3d_TopolTool)& I2, const Standard_Real MaxStep, const Standard_Real Fleche, const Standard_Real TolGuide, Standard_Real& First, Standard_Real& Last, const Standard_Boolean Inside, const Standard_Boolean Appro, const Standard_Boolean Forward, const Standard_Boolean RecOnS1, const Standard_Boolean RecOnS2, const math_Vector& Soldep, Standard_Integer& Intf, Standard_Integer& Intl) ;
+   
+   Standard_EXPORT virtual   void PerformSurf (ChFiDS_SequenceOfSurfData& SeqData, const Handle(ChFiDS_HElSpine)& Guide, const Handle(ChFiDS_Spine)& Spine, const Standard_Integer Choix, const Handle(BRepAdaptor_HSurface)& S1, const Handle(Adaptor3d_TopolTool)& I1, const Handle(BRepAdaptor_HCurve2d)& PC1, const Handle(BRepAdaptor_HSurface)& Sref1, const Handle(BRepAdaptor_HCurve2d)& PCref1, Standard_Boolean& Decroch1, const Handle(BRepAdaptor_HSurface)& S2, const Handle(Adaptor3d_TopolTool)& I2, const TopAbs_Orientation Or2, const Standard_Real MaxStep, const Standard_Real Fleche, const Standard_Real TolGuide, Standard_Real& First, Standard_Real& Last, const Standard_Boolean Inside, const Standard_Boolean Appro, const Standard_Boolean Forward, const Standard_Boolean RecP, const Standard_Boolean RecS, const Standard_Boolean RecRst, const math_Vector& Soldep) ;
    
 Index: oce/inc/FilletSurf_InternalBuilder.hxx
 ===================================================================
 --- oce.orig/inc/FilletSurf_InternalBuilder.hxx
 +++ oce/inc/FilletSurf_InternalBuilder.hxx
 @@ -154,7 +154,7 @@ protected:
-   //! This  method calculates the elements of construction of the <br>
- //!          fillet (constant or evolutive). <br>
- //! <br>
--  Standard_EXPORT   virtual  Standard_Boolean PerformSurf(ChFiDS_SequenceOfSurfData& SeqData,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Choix,const Handle(BRepAdaptor_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,const Standard_Real MaxStep,const Standard_Real Fleche,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecOnS1,const Standard_Boolean RecOnS2,const math_Vector& Soldep,Standard_Boolean& Intf,Standard_Boolean& Intl) ;
-+  Standard_EXPORT   virtual  Standard_Boolean PerformSurf(ChFiDS_SequenceOfSurfData& SeqData,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Choix,const Handle(BRepAdaptor_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,const Standard_Real MaxStep,const Standard_Real Fleche,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecOnS1,const Standard_Boolean RecOnS2,const math_Vector& Soldep,Standard_Integer& Intf,Standard_Integer& Intl) ;
    
-   Standard_EXPORT   virtual  void PerformSurf(ChFiDS_SequenceOfSurfData& SeqData,const Handle(ChFiDS_HElSpine)& Guide,const Handle(ChFiDS_Spine)& Spine,const Standard_Integer Choix,const Handle(BRepAdaptor_HSurface)& S1,const Handle(Adaptor3d_TopolTool)& I1,const Handle(BRepAdaptor_HCurve2d)& PC1,const Handle(BRepAdaptor_HSurface)& Sref1,const Handle(BRepAdaptor_HCurve2d)& PCref1,Standard_Boolean& Decroch1,const Handle(BRepAdaptor_HSurface)& S2,const Handle(Adaptor3d_TopolTool)& I2,const TopAbs_Orientation Or2,const Standard_Real MaxStep,const Standard_Real Fleche,const Standard_Real TolGuide,Standard_Real& First,Standard_Real& Last,const Standard_Boolean Inside,const Standard_Boolean Appro,const Standard_Boolean Forward,const Standard_Boolean RecP,const Standard_Boolean RecS,const Standard_Boolean RecRst,const math_Vector& Soldep) ;
+   //! This  method calculates the elements of construction of the
+   //! fillet (constant or evolutive).
+-  Standard_EXPORT virtual   Standard_Boolean PerformSurf (ChFiDS_SequenceOfSurfData& SeqData, const Handle(ChFiDS_HElSpine)& Guide, const Handle(ChFiDS_Spine)& Spine, const Standard_Integer Choix, const Handle(BRepAdaptor_HSurface)& S1, const Handle(Adaptor3d_TopolTool)& I1, const Handle(BRepAdaptor_HSurface)& S2, const Handle(Adaptor3d_TopolTool)& I2, const Standard_Real MaxStep, const Standard_Real Fleche, const Standard_Real TolGuide, Standard_Real& First, Standard_Real& Last, const Standard_Boolean Inside, const Standard_Boolean Appro, const Standard_Boolean Forward, const Standard_Boolean RecOnS1, const Standard_Boolean RecOnS2, const math_Vector& Soldep, Standard_Boolean& Intf, Standard_Boolean& Intl) ;
++  Standard_EXPORT virtual   Standard_Boolean PerformSurf (ChFiDS_SequenceOfSurfData& SeqData, const Handle(ChFiDS_HElSpine)& Guide, const Handle(ChFiDS_Spine)& Spine, const Standard_Integer Choix, const Handle(BRepAdaptor_HSurface)& S1, const Handle(Adaptor3d_TopolTool)& I1, const Handle(BRepAdaptor_HSurface)& S2, const Handle(Adaptor3d_TopolTool)& I2, const Standard_Real MaxStep, const Standard_Real Fleche, const Standard_Real TolGuide, Standard_Real& First, Standard_Real& Last, const Standard_Boolean Inside, const Standard_Boolean Appro, const Standard_Boolean Forward, const Standard_Boolean RecOnS1, const Standard_Boolean RecOnS2, const math_Vector& Soldep, Standard_Integer& Intf, Standard_Integer& Intl) ;
+   
+   Standard_EXPORT virtual   void PerformSurf (ChFiDS_SequenceOfSurfData& SeqData, const Handle(ChFiDS_HElSpine)& Guide, const Handle(ChFiDS_Spine)& Spine, const Standard_Integer Choix, const Handle(BRepAdaptor_HSurface)& S1, const Handle(Adaptor3d_TopolTool)& I1, const Handle(BRepAdaptor_HCurve2d)& PC1, const Handle(BRepAdaptor_HSurface)& Sref1, const Handle(BRepAdaptor_HCurve2d)& PCref1, Standard_Boolean& Decroch1, const Handle(BRepAdaptor_HSurface)& S2, const Handle(Adaptor3d_TopolTool)& I2, const TopAbs_Orientation Or2, const Standard_Real MaxStep, const Standard_Real Fleche, const Standard_Real TolGuide, Standard_Real& First, Standard_Real& Last, const Standard_Boolean Inside, const Standard_Boolean Appro, const Standard_Boolean Forward, const Standard_Boolean RecP, const Standard_Boolean RecS, const Standard_Boolean RecRst, const math_Vector& Soldep) ;
    
 Index: oce/inc/HLRAlgo_BiPoint.hxx
 ===================================================================
@@ -106,20 +108,20 @@ Index: oce/inc/HLRAlgo_BiPoint.hxx
 +++ oce/inc/HLRAlgo_BiPoint.hxx
 @@ -41,15 +41,15 @@ public:
    
-   Standard_EXPORT   HLRAlgo_BiPoint(const Standard_Real X1,const Standard_Real Y1,const Standard_Real Z1,const Standard_Real X2,const Standard_Real Y2,const Standard_Real Z2,const Standard_Real XT1,const Standard_Real YT1,const Standard_Real ZT1,const Standard_Real XT2,const Standard_Real YT2,const Standard_Real ZT2,const Standard_Integer Index,const Standard_Boolean reg1,const Standard_Boolean regn,const Standard_Boolean outl,const Standard_Boolean intl);
+   Standard_EXPORT HLRAlgo_BiPoint(const Standard_Real X1, const Standard_Real Y1, const Standard_Real Z1, const Standard_Real X2, const Standard_Real Y2, const Standard_Real Z2, const Standard_Real XT1, const Standard_Real YT1, const Standard_Real ZT1, const Standard_Real XT2, const Standard_Real YT2, const Standard_Real ZT2, const Standard_Integer Index, const Standard_Boolean reg1, const Standard_Boolean regn, const Standard_Boolean outl, const Standard_Boolean intl);
    
--  Standard_EXPORT   HLRAlgo_BiPoint(const Standard_Real X1,const Standard_Real Y1,const Standard_Real Z1,const Standard_Real X2,const Standard_Real Y2,const Standard_Real Z2,const Standard_Real XT1,const Standard_Real YT1,const Standard_Real ZT1,const Standard_Real XT2,const Standard_Real YT2,const Standard_Real ZT2,const Standard_Integer Index,const Standard_Boolean flag);
-+  Standard_EXPORT   HLRAlgo_BiPoint(const Standard_Real X1,const Standard_Real Y1,const Standard_Real Z1,const Standard_Real X2,const Standard_Real Y2,const Standard_Real Z2,const Standard_Real XT1,const Standard_Real YT1,const Standard_Real ZT1,const Standard_Real XT2,const Standard_Real YT2,const Standard_Real ZT2,const Standard_Integer Index,const Standard_Integer flag);
+-  Standard_EXPORT HLRAlgo_BiPoint(const Standard_Real X1, const Standard_Real Y1, const Standard_Real Z1, const Standard_Real X2, const Standard_Real Y2, const Standard_Real Z2, const Standard_Real XT1, const Standard_Real YT1, const Standard_Real ZT1, const Standard_Real XT2, const Standard_Real YT2, const Standard_Real ZT2, const Standard_Integer Index, const Standard_Boolean flag);
++  Standard_EXPORT HLRAlgo_BiPoint(const Standard_Real X1, const Standard_Real Y1, const Standard_Real Z1, const Standard_Real X2, const Standard_Real Y2, const Standard_Real Z2, const Standard_Real XT1, const Standard_Real YT1, const Standard_Real ZT1, const Standard_Real XT2, const Standard_Real YT2, const Standard_Real ZT2, const Standard_Integer Index, const Standard_Integer flag);
    
-   Standard_EXPORT   HLRAlgo_BiPoint(const Standard_Real X1,const Standard_Real Y1,const Standard_Real Z1,const Standard_Real X2,const Standard_Real Y2,const Standard_Real Z2,const Standard_Real XT1,const Standard_Real YT1,const Standard_Real ZT1,const Standard_Real XT2,const Standard_Real YT2,const Standard_Real ZT2,const Standard_Integer Index,const Standard_Integer i1,const Standard_Integer i1p1,const Standard_Integer i1p2,const Standard_Boolean reg1,const Standard_Boolean regn,const Standard_Boolean outl,const Standard_Boolean intl);
+   Standard_EXPORT HLRAlgo_BiPoint(const Standard_Real X1, const Standard_Real Y1, const Standard_Real Z1, const Standard_Real X2, const Standard_Real Y2, const Standard_Real Z2, const Standard_Real XT1, const Standard_Real YT1, const Standard_Real ZT1, const Standard_Real XT2, const Standard_Real YT2, const Standard_Real ZT2, const Standard_Integer Index, const Standard_Integer i1, const Standard_Integer i1p1, const Standard_Integer i1p2, const Standard_Boolean reg1, const Standard_Boolean regn, const Standard_Boolean outl, const Standard_Boolean intl);
    
--  Standard_EXPORT   HLRAlgo_BiPoint(const Standard_Real X1,const Standard_Real Y1,const Standard_Real Z1,const Standard_Real X2,const Standard_Real Y2,const Standard_Real Z2,const Standard_Real XT1,const Standard_Real YT1,const Standard_Real ZT1,const Standard_Real XT2,const Standard_Real YT2,const Standard_Real ZT2,const Standard_Integer Index,const Standard_Integer i1,const Standard_Integer i1p1,const Standard_Integer i1p2,const Standard_Boolean flag);
-+  Standard_EXPORT   HLRAlgo_BiPoint(const Standard_Real X1,const Standard_Real Y1,const Standard_Real Z1,const Standard_Real X2,const Standard_Real Y2,const Standard_Real Z2,const Standard_Real XT1,const Standard_Real YT1,const Standard_Real ZT1,const Standard_Real XT2,const Standard_Real YT2,const Standard_Real ZT2,const Standard_Integer Index,const Standard_Integer i1,const Standard_Integer i1p1,const Standard_Integer i1p2,const Standard_Integer flag);
+-  Standard_EXPORT HLRAlgo_BiPoint(const Standard_Real X1, const Standard_Real Y1, const Standard_Real Z1, const Standard_Real X2, const Standard_Real Y2, const Standard_Real Z2, const Standard_Real XT1, const Standard_Real YT1, const Standard_Real ZT1, const Standard_Real XT2, const Standard_Real YT2, const Standard_Real ZT2, const Standard_Integer Index, const Standard_Integer i1, const Standard_Integer i1p1, const Standard_Integer i1p2, const Standard_Boolean flag);
++  Standard_EXPORT HLRAlgo_BiPoint(const Standard_Real X1, const Standard_Real Y1, const Standard_Real Z1, const Standard_Real X2, const Standard_Real Y2, const Standard_Real Z2, const Standard_Real XT1, const Standard_Real YT1, const Standard_Real ZT1, const Standard_Real XT2, const Standard_Real YT2, const Standard_Real ZT2, const Standard_Integer Index, const Standard_Integer i1, const Standard_Integer i1p1, const Standard_Integer i1p2, const Standard_Integer flag);
    
-   Standard_EXPORT   HLRAlgo_BiPoint(const Standard_Real X1,const Standard_Real Y1,const Standard_Real Z1,const Standard_Real X2,const Standard_Real Y2,const Standard_Real Z2,const Standard_Real XT1,const Standard_Real YT1,const Standard_Real ZT1,const Standard_Real XT2,const Standard_Real YT2,const Standard_Real ZT2,const Standard_Integer Index,const Standard_Integer i1,const Standard_Integer i1p1,const Standard_Integer i1p2,const Standard_Integer i2,const Standard_Integer i2p1,const Standard_Integer i2p2,const Standard_Boolean reg1,const Standard_Boolean regn,const Standard_Boolean outl,const Standard_Boolean intl);
+   Standard_EXPORT HLRAlgo_BiPoint(const Standard_Real X1, const Standard_Real Y1, const Standard_Real Z1, const Standard_Real X2, const Standard_Real Y2, const Standard_Real Z2, const Standard_Real XT1, const Standard_Real YT1, const Standard_Real ZT1, const Standard_Real XT2, const Standard_Real YT2, const Standard_Real ZT2, const Standard_Integer Index, const Standard_Integer i1, const Standard_Integer i1p1, const Standard_Integer i1p2, const Standard_Integer i2, const Standard_Integer i2p1, const Standard_Integer i2p2, const Standard_Boolean reg1, const Standard_Boolean regn, const Standard_Boolean outl, const Standard_Boolean intl);
    
--  Standard_EXPORT   HLRAlgo_BiPoint(const Standard_Real X1,const Standard_Real Y1,const Standard_Real Z1,const Standard_Real X2,const Standard_Real Y2,const Standard_Real Z2,const Standard_Real XT1,const Standard_Real YT1,const Standard_Real ZT1,const Standard_Real XT2,const Standard_Real YT2,const Standard_Real ZT2,const Standard_Integer Index,const Standard_Integer i1,const Standard_Integer i1p1,const Standard_Integer i1p2,const Standard_Integer i2,const Standard_Integer i2p1,const Standard_Integer i2p2,const Standard_Boolean flag);
-+  Standard_EXPORT   HLRAlgo_BiPoint(const Standard_Real X1,const Standard_Real Y1,const Standard_Real Z1,const Standard_Real X2,const Standard_Real Y2,const Standard_Real Z2,const Standard_Real XT1,const Standard_Real YT1,const Standard_Real ZT1,const Standard_Real XT2,const Standard_Real YT2,const Standard_Real ZT2,const Standard_Integer Index,const Standard_Integer i1,const Standard_Integer i1p1,const Standard_Integer i1p2,const Standard_Integer i2,const Standard_Integer i2p1,const Standard_Integer i2p2,const Standard_Integer flag);
+-  Standard_EXPORT HLRAlgo_BiPoint(const Standard_Real X1, const Standard_Real Y1, const Standard_Real Z1, const Standard_Real X2, const Standard_Real Y2, const Standard_Real Z2, const Standard_Real XT1, const Standard_Real YT1, const Standard_Real ZT1, const Standard_Real XT2, const Standard_Real YT2, const Standard_Real ZT2, const Standard_Integer Index, const Standard_Integer i1, const Standard_Integer i1p1, const Standard_Integer i1p2, const Standard_Integer i2, const Standard_Integer i2p1, const Standard_Integer i2p2, const Standard_Boolean flag);
++  Standard_EXPORT HLRAlgo_BiPoint(const Standard_Real X1, const Standard_Real Y1, const Standard_Real Z1, const Standard_Real X2, const Standard_Real Y2, const Standard_Real Z2, const Standard_Real XT1, const Standard_Real YT1, const Standard_Real ZT1, const Standard_Real XT2, const Standard_Real YT2, const Standard_Real ZT2, const Standard_Integer Index, const Standard_Integer i1, const Standard_Integer i1p1, const Standard_Integer i1p2, const Standard_Integer i2, const Standard_Integer i2p1, const Standard_Integer i2p2, const Standard_Integer flag);
    
          Standard_Boolean Rg1Line() const;
    
@@ -128,12 +130,12 @@ Index: oce/inc/HLRAlgo_EdgeStatus.hxx
 --- oce.orig/inc/HLRAlgo_EdgeStatus.hxx
 +++ oce/inc/HLRAlgo_EdgeStatus.hxx
 @@ -103,7 +103,7 @@ Standard_Real myStart;
- Standard_Real myEnd;
- Standard_ShortReal myTolStart;
- Standard_ShortReal myTolEnd;
--Standard_Boolean myFlags;
-+Standard_Integer myFlags;
- Intrv_Intervals myVisibles;
+   Standard_Real myEnd;
+   Standard_ShortReal myTolStart;
+   Standard_ShortReal myTolEnd;
+-  Standard_Boolean myFlags;
++  Standard_Integer myFlags;
+   Intrv_Intervals myVisibles;
  
  
 Index: oce/inc/HLRAlgo_EdgesBlock.hxx
@@ -143,10 +145,10 @@ Index: oce/inc/HLRAlgo_EdgesBlock.hxx
 @@ -102,7 +102,7 @@ private:
  
  
- TColStd_Array1OfInteger myEdges;
--TColStd_Array1OfBoolean myFlags;
-+TColStd_Array1OfInteger myFlags;
- Standard_Integer myMinMax[16];
+   TColStd_Array1OfInteger myEdges;
+-  TColStd_Array1OfBoolean myFlags;
++  TColStd_Array1OfInteger myFlags;
+   Standard_Integer myMinMax[16];
  
  
 Index: oce/inc/HLRAlgo_PolyData.hxx
@@ -156,9 +158,9 @@ Index: oce/inc/HLRAlgo_PolyData.hxx
 @@ -91,7 +91,7 @@ protected:
  private: 
  
-   //! evident. <br>
--  Standard_EXPORT     void HideByOneTriangle(const Standard_Address Coordinates,const Standard_Address RealPtr,const Standard_Address BooleanPtr,const Standard_Address PlanPtr,HLRAlgo_EdgeStatus& status) ;
-+  Standard_EXPORT     void HideByOneTriangle(const Standard_Address Coordinates,const Standard_Address RealPtr,const Standard_Boolean Crossing,const Standard_Boolean HideBefore,const Standard_Integer TrFlags,HLRAlgo_EdgeStatus& status) ;
+   //! evident.
+-  Standard_EXPORT   void HideByOneTriangle (const Standard_Address Coordinates, const Standard_Address RealPtr, const Standard_Address BooleanPtr, const Standard_Address PlanPtr, HLRAlgo_EdgeStatus& status) ;
++  Standard_EXPORT   void HideByOneTriangle (const Standard_Address Coordinates, const Standard_Address RealPtr, const Standard_Boolean Crossing, const Standard_Boolean HideBefore, const Standard_Integer TrFlags, HLRAlgo_EdgeStatus& status) ;
  
  Standard_Integer myIndices[3];
  Handle_TColgp_HArray1OfXYZ myHNodes;
@@ -167,11 +169,11 @@ Index: oce/inc/HLRBRep_BiPnt2D.hxx
 --- oce.orig/inc/HLRBRep_BiPnt2D.hxx
 +++ oce/inc/HLRBRep_BiPnt2D.hxx
 @@ -84,7 +84,7 @@ private:
- gp_Pnt2d myP1;
- gp_Pnt2d myP2;
- TopoDS_Shape myShape;
--Standard_Boolean myFlags;
-+Standard_Integer myFlags;
+   gp_Pnt2d myP1;
+   gp_Pnt2d myP2;
+   TopoDS_Shape myShape;
+-  Standard_Boolean myFlags;
++  Standard_Integer myFlags;
  
  
  };
@@ -180,11 +182,11 @@ Index: oce/inc/HLRBRep_BiPoint.hxx
 --- oce.orig/inc/HLRBRep_BiPoint.hxx
 +++ oce/inc/HLRBRep_BiPoint.hxx
 @@ -84,7 +84,7 @@ private:
- gp_Pnt myP1;
- gp_Pnt myP2;
- TopoDS_Shape myShape;
--Standard_Boolean myFlags;
-+Standard_Integer myFlags;
+   gp_Pnt myP1;
+   gp_Pnt myP2;
+   TopoDS_Shape myShape;
+-  Standard_Boolean myFlags;
++  Standard_Integer myFlags;
  
  
  };
@@ -196,11 +198,11 @@ Index: oce/inc/HLRBRep_EdgeData.hxx
  
  
  
--Standard_Boolean myFlags;
-+Standard_Integer myFlags;
- Standard_Integer myHideCount;
- Standard_Integer myVSta;
- Standard_Integer myVEnd;
+-  Standard_Boolean myFlags;
++  Standard_Integer myFlags;
+   Standard_Integer myHideCount;
+   Standard_Integer myVSta;
+   Standard_Integer myVEnd;
 Index: oce/inc/HLRBRep_FaceData.hxx
 ===================================================================
 --- oce.orig/inc/HLRBRep_FaceData.hxx
@@ -209,27 +211,27 @@ Index: oce/inc/HLRBRep_FaceData.hxx
  
  
  
--Standard_Boolean myFlags;
-+Standard_Integer myFlags;
- Handle_HLRAlgo_WiresBlock myWires;
- HLRBRep_Surface myGeometry;
- Standard_Real mySize;
+-  Standard_Boolean myFlags;
++  Standard_Integer myFlags;
+   Handle(HLRAlgo_WiresBlock) myWires;
+   HLRBRep_Surface myGeometry;
+   Standard_Real mySize;
 Index: oce/inc/HLRBRep_PolyAlgo.hxx
 ===================================================================
 --- oce.orig/inc/HLRBRep_PolyAlgo.hxx
 +++ oce/inc/HLRBRep_PolyAlgo.hxx
 @@ -232,11 +232,11 @@ private:
    
-   Standard_EXPORT     Standard_Boolean Interpolation(const Standard_Real U1,const Standard_Real U2,const Standard_Address Nod1RValues,const Standard_Address Nod2RValues,Standard_Real& X3,Standard_Real& Y3,Standard_Real& Z3,Standard_Real& XT3,Standard_Real& YT3,Standard_Real& ZT3,Standard_Real& coef3,Standard_Real& U3,Standard_Boolean& mP3P1) const;
+   Standard_EXPORT   Standard_Boolean Interpolation (const Standard_Real U1, const Standard_Real U2, const Standard_Address Nod1RValues, const Standard_Address Nod2RValues, Standard_Real& X3, Standard_Real& Y3, Standard_Real& Z3, Standard_Real& XT3, Standard_Real& YT3, Standard_Real& ZT3, Standard_Real& coef3, Standard_Real& U3, Standard_Boolean& mP3P1)  const;
    
--  Standard_EXPORT     void MoveOrInsertPoint(HLRAlgo_ListOfBPoint& List,Standard_Real& X1,Standard_Real& Y1,Standard_Real& Z1,Standard_Real& X2,Standard_Real& Y2,Standard_Real& Z2,Standard_Real& XTI1,Standard_Real& YTI1,Standard_Real& ZTI1,Standard_Real& XTI2,Standard_Real& YTI2,Standard_Real& ZTI2,const Standard_Integer e,Standard_Real& U1,Standard_Real& U2,Standard_Address& Nod11Indices,Standard_Address& Nod11RValues,Standard_Address& Nod12Indices,Standard_Address& Nod12RValues,const Standard_Integer i1p1,const Standard_Integer i1p2,const Standard_Integer i1,const Handle(HLRAlgo_PolyInternalData)& pid1,Standard_Address& TData1,Standard_Address& PISeg1,Standard_Address& PINod1,const Standard_Real X3,const Standard_Real Y3,const Standard_Real Z3,const Standard_Real XT3,const Standard_Real YT3,const Standard_Real ZT3,const Standard_Real coef3,const Standard_Real U3,const Standard_Boolean insP3,const Standard_Boolean mP3P1,const Standard_Boolean flag) const;
-+  Standard_EXPORT     void MoveOrInsertPoint(HLRAlgo_ListOfBPoint& List,Standard_Real& X1,Standard_Real& Y1,Standard_Real& Z1,Standard_Real& X2,Standard_Real& Y2,Standard_Real& Z2,Standard_Real& XTI1,Standard_Real& YTI1,Standard_Real& ZTI1,Standard_Real& XTI2,Standard_Real& YTI2,Standard_Real& ZTI2,const Standard_Integer e,Standard_Real& U1,Standard_Real& U2,Standard_Address& Nod11Indices,Standard_Address& Nod11RValues,Standard_Address& Nod12Indices,Standard_Address& Nod12RValues,const Standard_Integer i1p1,const Standard_Integer i1p2,const Standard_Integer i1,const Handle(HLRAlgo_PolyInternalData)& pid1,Standard_Address& TData1,Standard_Address& PISeg1,Standard_Address& PINod1,const Standard_Real X3,const Standard_Real Y3,const Standard_Real Z3,const Standard_Real XT3,const Standard_Real YT3,const Standard_Real ZT3,const Standard_Real coef3,const Standard_Real U3,const Standard_Boolean insP3,const Standard_Boolean mP3P1,const Standard_Integer flag) const;
+-  Standard_EXPORT   void MoveOrInsertPoint (HLRAlgo_ListOfBPoint& List, Standard_Real& X1, Standard_Real& Y1, Standard_Real& Z1, Standard_Real& X2, Standard_Real& Y2, Standard_Real& Z2, Standard_Real& XTI1, Standard_Real& YTI1, Standard_Real& ZTI1, Standard_Real& XTI2, Standard_Real& YTI2, Standard_Real& ZTI2, const Standard_Integer e, Standard_Real& U1, Standard_Real& U2, Standard_Address& Nod11Indices, Standard_Address& Nod11RValues, Standard_Address& Nod12Indices, Standard_Address& Nod12RValues, const Standard_Integer i1p1, const Standard_Integer i1p2, const Standard_Integer i1, const Handle(HLRAlgo_PolyInternalData)& pid1, Standard_Address& TData1, Standard_Address& PISeg1, Standard_Address& PINod1, const Standard_Real X3, const Standard_Real Y3, const Standard_Real Z3, const Standard_Real XT3, const Standard_Real YT3, const Standard_Real ZT3, const Standard_Real coef3, const Standard_Real U3, const Standard_Boolean insP3, const Standard_Boolean mP3P1, const Standard_Boolean flag)  const;
++  Standard_EXPORT   void MoveOrInsertPoint (HLRAlgo_ListOfBPoint& List, Standard_Real& X1, Standard_Real& Y1, Standard_Real& Z1, Standard_Real& X2, Standard_Real& Y2, Standard_Real& Z2, Standard_Real& XTI1, Standard_Real& YTI1, Standard_Real& ZTI1, Standard_Real& XTI2, Standard_Real& YTI2, Standard_Real& ZTI2, const Standard_Integer e, Standard_Real& U1, Standard_Real& U2, Standard_Address& Nod11Indices, Standard_Address& Nod11RValues, Standard_Address& Nod12Indices, Standard_Address& Nod12RValues, const Standard_Integer i1p1, const Standard_Integer i1p2, const Standard_Integer i1, const Handle(HLRAlgo_PolyInternalData)& pid1, Standard_Address& TData1, Standard_Address& PISeg1, Standard_Address& PINod1, const Standard_Real X3, const Standard_Real Y3, const Standard_Real Z3, const Standard_Real XT3, const Standard_Real YT3, const Standard_Real ZT3, const Standard_Real coef3, const Standard_Real U3, const Standard_Boolean insP3, const Standard_Boolean mP3P1, const Standard_Integer flag)  const;
    
--  Standard_EXPORT     void MoveOrInsertPoint(HLRAlgo_ListOfBPoint& List,Standard_Real& X1,Standard_Real& Y1,Standard_Real& Z1,Standard_Real& X2,Standard_Real& Y2,Standard_Real& Z2,Standard_Real& XTI1,Standard_Real& YTI1,Standard_Real& ZTI1,Standard_Real& XTI2,Standard_Real& YTI2,Standard_Real& ZTI2,const Standard_Integer e,Standard_Real& U1,Standard_Real& U2,Standard_Address& Nod11Indices,Standard_Address& Nod11RValues,Standard_Address& Nod12Indices,Standard_Address& Nod12RValues,const Standard_Integer i1p1,const Standard_Integer i1p2,const Standard_Integer i1,const Handle(HLRAlgo_PolyInternalData)& pid1,Standard_Address& TData1,Standard_Address& PISeg1,Standard_Address& PINod1,Standard_Address& Nod21Indices,Standard_Address& Nod21RValues,Standard_Address& Nod22Indices,Standard_Address& Nod22RValues,const Standard_Integer i2p1,const Standard_Integer i2p2,const Standard_Integer i2,const Handle(HLRAlgo_PolyInternalData)& pid2,Standard_Address& TData2,Standard_Address& PISeg2,Standard_Address& PINod2,const Standard_Real X3,const Standard_Real Y3,const Standard_Real Z3,const Standard_Real XT3,const Standard_Real YT3,const Standard_Real ZT3,const Standard_Real coef3,const Standard_Real U3,const Standard_Boolean insP3,const Standard_Boolean mP3P1,const Standard_Boolean flag) const;
-+  Standard_EXPORT     void MoveOrInsertPoint(HLRAlgo_ListOfBPoint& List,Standard_Real& X1,Standard_Real& Y1,Standard_Real& Z1,Standard_Real& X2,Standard_Real& Y2,Standard_Real& Z2,Standard_Real& XTI1,Standard_Real& YTI1,Standard_Real& ZTI1,Standard_Real& XTI2,Standard_Real& YTI2,Standard_Real& ZTI2,const Standard_Integer e,Standard_Real& U1,Standard_Real& U2,Standard_Address& Nod11Indices,Standard_Address& Nod11RValues,Standard_Address& Nod12Indices,Standard_Address& Nod12RValues,const Standard_Integer i1p1,const Standard_Integer i1p2,const Standard_Integer i1,const Handle(HLRAlgo_PolyInternalData)& pid1,Standard_Address& TData1,Standard_Address& PISeg1,Standard_Address& PINod1,Standard_Address& Nod21Indices,Standard_Address& Nod21RValues,Standard_Address& Nod22Indices,Standard_Address& Nod22RValues,const Standard_Integer i2p1,const Standard_Integer i2p2,const Standard_Integer i2,const Handle(HLRAlgo_PolyInternalData)& pid2,Standard_Address& TData2,Standard_Address& PISeg2,Standard_Address& PINod2,const Standard_Real X3,const Standard_Real Y3,const Standard_Real Z3,const Standard_Real XT3,const Standard_Real YT3,const Standard_Real ZT3,const Standard_Real coef3,const Standard_Real U3,const Standard_Boolean insP3,const Standard_Boolean mP3P1,const Standard_Integer flag) const;
+-  Standard_EXPORT   void MoveOrInsertPoint (HLRAlgo_ListOfBPoint& List, Standard_Real& X1, Standard_Real& Y1, Standard_Real& Z1, Standard_Real& X2, Standard_Real& Y2, Standard_Real& Z2, Standard_Real& XTI1, Standard_Real& YTI1, Standard_Real& ZTI1, Standard_Real& XTI2, Standard_Real& YTI2, Standard_Real& ZTI2, const Standard_Integer e, Standard_Real& U1, Standard_Real& U2, Standard_Address& Nod11Indices, Standard_Address& Nod11RValues, Standard_Address& Nod12Indices, Standard_Address& Nod12RValues, const Standard_Integer i1p1, const Standard_Integer i1p2, const Standard_Integer i1, const Handle(HLRAlgo_PolyInternalData)& pid1, Standard_Address& TData1, Standard_Address& PISeg1, Standard_Address& PINod1, Standard_Address& Nod21Indices, Standard_Address& Nod21RValues, Standard_Address& Nod22Indices, Standard_Address& Nod22RValues, const Standard_Integer i2p1, const Standard_Integer i2p2, const Standard_Integer i2, const Handle(HLRAlgo_PolyInternalData)& pid2, Standard_Address& TData2, Standard_Address& PISeg2, Standard_Address& PINod2, const Standard_Real X3, const Standard_Real Y3, const Standard_Real Z3, const Standard_Real XT3, const Standard_Real YT3, const Standard_Real ZT3, const Standard_Real coef3, const Standard_Real U3, const Standard_Boolean insP3, const Standard_Boolean mP3P1, const Standard_Boolean flag)  const;
++  Standard_EXPORT   void MoveOrInsertPoint (HLRAlgo_ListOfBPoint& List, Standard_Real& X1, Standard_Real& Y1, Standard_Real& Z1, Standard_Real& X2, Standard_Real& Y2, Standard_Real& Z2, Standard_Real& XTI1, Standard_Real& YTI1, Standard_Real& ZTI1, Standard_Real& XTI2, Standard_Real& YTI2, Standard_Real& ZTI2, const Standard_Integer e, Standard_Real& U1, Standard_Real& U2, Standard_Address& Nod11Indices, Standard_Address& Nod11RValues, Standard_Address& Nod12Indices, Standard_Address& Nod12RValues, const Standard_Integer i1p1, const Standard_Integer i1p2, const Standard_Integer i1, const Handle(HLRAlgo_PolyInternalData)& pid1, Standard_Address& TData1, Standard_Address& PISeg1, Standard_Address& PINod1, Standard_Address& Nod21Indices, Standard_Address& Nod21RValues, Standard_Address& Nod22Indices, Standard_Address& Nod22RValues, const Standard_Integer i2p1, const Standard_Integer i2p2, const Standard_Integer i2, const Handle(HLRAlgo_PolyInternalData)& pid2, Standard_Address& TData2, Standard_Address& PISeg2, Standard_Address& PINod2, const Standard_Real X3, const Standard_Real Y3, const Standard_Real Z3, const Standard_Real XT3, const Standard_Real YT3, const Standard_Real ZT3, const Standard_Real coef3, const Standard_Real U3, const Standard_Boolean insP3, const Standard_Boolean mP3P1, const Standard_Integer flag)  const;
    
--  Standard_EXPORT     void MoveOrInsertPoint(HLRAlgo_ListOfBPoint& List,Standard_Real& X1,Standard_Real& Y1,Standard_Real& Z1,Standard_Real& X2,Standard_Real& Y2,Standard_Real& Z2,Standard_Real& XTI1,Standard_Real& YTI1,Standard_Real& ZTI1,Standard_Real& XTI2,Standard_Real& YTI2,Standard_Real& ZTI2,const Standard_Integer e,Standard_Real& U1,Standard_Real& U2,Standard_Address& Nod11Indices,Standard_Address& Nod11RValues,Standard_Address& Nod12Indices,Standard_Address& Nod12RValues,const Standard_Integer i1p1,const Standard_Integer i1p2,const Standard_Integer i1,const Handle(HLRAlgo_PolyInternalData)& pid1,Standard_Address& TData1,Standard_Address& PISeg1,Standard_Address& PINod1,Standard_Address& Nod21Indices,Standard_Address& Nod21RValues,Standard_Address& Nod22Indices,Standard_Address& Nod22RValues,const Standard_Integer i2p1,const Standard_Integer i2p2,const Standard_Integer i2,const Handle(HLRAlgo_PolyInternalData)& pid2,Standard_Address& TData2,Standard_Address& PISeg2,Standard_Address& PINod2,const Standard_Real X3,const Standard_Real Y3,const Standard_Real Z3,const Standard_Real XT3,const Standard_Real YT3,const Standard_Real ZT3,const Standard_Real coef3,const Standard_Real U3,const Standard_Boolean insP3,const Standard_Boolean mP3P1,const Standard_Real X4,const Standard_Real Y4,const Standard_Real Z4,const Standard_Real XT4,const Standard_Real YT4,const Standard_Real ZT4,const Standard_Real coef4,const Standard_Real U4,const Standard_Boolean insP4,const Standard_Boolean mP4P1,const Standard_Boolean flag) const;
-+  Standard_EXPORT     void MoveOrInsertPoint(HLRAlgo_ListOfBPoint& List,Standard_Real& X1,Standard_Real& Y1,Standard_Real& Z1,Standard_Real& X2,Standard_Real& Y2,Standard_Real& Z2,Standard_Real& XTI1,Standard_Real& YTI1,Standard_Real& ZTI1,Standard_Real& XTI2,Standard_Real& YTI2,Standard_Real& ZTI2,const Standard_Integer e,Standard_Real& U1,Standard_Real& U2,Standard_Address& Nod11Indices,Standard_Address& Nod11RValues,Standard_Address& Nod12Indices,Standard_Address& Nod12RValues,const Standard_Integer i1p1,const Standard_Integer i1p2,const Standard_Integer i1,const Handle(HLRAlgo_PolyInternalData)& pid1,Standard_Address& TData1,Standard_Address& PISeg1,Standard_Address& PINod1,Standard_Address& Nod21Indices,Standard_Address& Nod21RValues,Standard_Address& Nod22Indices,Standard_Address& Nod22RValues,const Standard_Integer i2p1,const Standard_Integer i2p2,const Standard_Integer i2,const Handle(HLRAlgo_PolyInternalData)& pid2,Standard_Address& TData2,Standard_Address& PISeg2,Standard_Address& PINod2,const Standard_Real X3,const Standard_Real Y3,const Standard_Real Z3,const Standard_Real XT3,const Standard_Real YT3,const Standard_Real ZT3,const Standard_Real coef3,const Standard_Real U3,const Standard_Boolean insP3,const Standard_Boolean mP3P1,const Standard_Real X4,const Standard_Real Y4,const Standard_Real Z4,const Standard_Real XT4,const Standard_Real YT4,const Standard_Real ZT4,const Standard_Real coef4,const Standard_Real U4,const Standard_Boolean insP4,const Standard_Boolean mP4P1,const Standard_Integer flag) const;
+-  Standard_EXPORT   void MoveOrInsertPoint (HLRAlgo_ListOfBPoint& List, Standard_Real& X1, Standard_Real& Y1, Standard_Real& Z1, Standard_Real& X2, Standard_Real& Y2, Standard_Real& Z2, Standard_Real& XTI1, Standard_Real& YTI1, Standard_Real& ZTI1, Standard_Real& XTI2, Standard_Real& YTI2, Standard_Real& ZTI2, const Standard_Integer e, Standard_Real& U1, Standard_Real& U2, Standard_Address& Nod11Indices, Standard_Address& Nod11RValues, Standard_Address& Nod12Indices, Standard_Address& Nod12RValues, const Standard_Integer i1p1, const Standard_Integer i1p2, const Standard_Integer i1, const Handle(HLRAlgo_PolyInternalData)& pid1, Standard_Address& TData1, Standard_Address& PISeg1, Standard_Address& PINod1, Standard_Address& Nod21Indices, Standard_Address& Nod21RValues, Standard_Address& Nod22Indices, Standard_Address& Nod22RValues, const Standard_Integer i2p1, const Standard_Integer i2p2, const Standard_Integer i2, const Handle(HLRAlgo_PolyInternalData)& pid2, Standard_Address& TData2, Standard_Address& PISeg2, Standard_Address& PINod2, const Standard_Real X3, const Standard_Real Y3, const Standard_Real Z3, const Standard_Real XT3, const Standard_Real YT3, const Standard_Real ZT3, const Standard_Real coef3, const Standard_Real U3, const Standard_Boolean insP3, const Standard_Boolean mP3P1, const Standard_Real X4, const Standard_Real Y4, const Standard_Real Z4, const Standard_Real XT4, const Standard_Real YT4, const Standard_Real ZT4, const Standard_Real coef4, const Standard_Real U4, const Standard_Boolean insP4, const Standard_Boolean mP4P1, const Standard_Boolean flag)  const;
++  Standard_EXPORT   void MoveOrInsertPoint (HLRAlgo_ListOfBPoint& List, Standard_Real& X1, Standard_Real& Y1, Standard_Real& Z1, Standard_Real& X2, Standard_Real& Y2, Standard_Real& Z2, Standard_Real& XTI1, Standard_Real& YTI1, Standard_Real& ZTI1, Standard_Real& XTI2, Standard_Real& YTI2, Standard_Real& ZTI2, const Standard_Integer e, Standard_Real& U1, Standard_Real& U2, Standard_Address& Nod11Indices, Standard_Address& Nod11RValues, Standard_Address& Nod12Indices, Standard_Address& Nod12RValues, const Standard_Integer i1p1, const Standard_Integer i1p2, const Standard_Integer i1, const Handle(HLRAlgo_PolyInternalData)& pid1, Standard_Address& TData1, Standard_Address& PISeg1, Standard_Address& PINod1, Standard_Address& Nod21Indices, Standard_Address& Nod21RValues, Standard_Address& Nod22Indices, Standard_Address& Nod22RValues, const Standard_Integer i2p1, const Standard_Integer i2p2, const Standard_Integer i2, const Handle(HLRAlgo_PolyInternalData)& pid2, Standard_Address& TData2, Standard_Address& PISeg2, Standard_Address& PINod2, const Standard_Real X3, const Standard_Real Y3, const Standard_Real Z3, const Standard_Real XT3, const Standard_Real YT3, const Standard_Real ZT3, const Standard_Real coef3, const Standard_Real U3, const Standard_Boolean insP3, const Standard_Boolean mP3P1, const Standard_Real X4, const Standard_Real Y4, const Standard_Real Z4, const Standard_Real XT4, const Standard_Real YT4, const Standard_Real ZT4, const Standard_Real coef4, const Standard_Real U4, const Standard_Boolean insP4, const Standard_Boolean mP4P1, const Standard_Integer flag)  const;
    
    Standard_EXPORT     void InsertOnOutLine(TColStd_Array1OfTransient& PID) ;
    
@@ -238,66 +240,66 @@ Index: oce/inc/IFSelect_DispGlobal.hxx
 --- oce.orig/inc/IFSelect_DispGlobal.hxx
 +++ oce/inc/IFSelect_DispGlobal.hxx
 @@ -43,7 +43,7 @@ public:
-   //! Returns True : maximum equates 1 <br>
-   Standard_EXPORT   virtual  Standard_Boolean LimitedMax(const Standard_Integer nbent,Standard_Integer& max) const;
-   //! Returns True (count of packets is well known) and count is 1 <br>
--  Standard_EXPORT   virtual  Standard_Boolean PacketsCount(const Interface_Graph& G,Standard_Integer& count) const;
-+  Standard_EXPORT   virtual  Standard_Integer PacketsCount(const Interface_Graph& G,Standard_Integer& count) const;
-   //! Computes the list of produced Packets. It is made of only ONE <br>
- //!           Packet, which gets the RootResult from the Final Selection. <br>
- //!           Remark : the inherited exception raising is never activated. <br>
+   Standard_EXPORT virtual   Standard_Boolean LimitedMax (const Standard_Integer nbent, Standard_Integer& max)  const;
+
+   //! Returns True (count of packets is well known) and count is 1
+-  Standard_EXPORT virtual   Standard_Boolean PacketsCount (const Interface_Graph& G, Standard_Integer& count)  const;
++  Standard_EXPORT virtual   Standard_Integer PacketsCount (const Interface_Graph& G, Standard_Integer& count)  const;
+   
+   //! Computes the list of produced Packets. It is made of only ONE
+   //! Packet, which gets the RootResult from the Final Selection.
 Index: oce/inc/IFSelect_DispPerCount.hxx
 ===================================================================
 --- oce.orig/inc/IFSelect_DispPerCount.hxx
 +++ oce/inc/IFSelect_DispPerCount.hxx
 @@ -58,7 +58,7 @@ public:
-   Standard_EXPORT   virtual  Standard_Boolean LimitedMax(const Standard_Integer nbent,Standard_Integer& max) const;
-   //! Returns True (count is easy to know) and count is computed <br>
- //!           from length of input list (RootResult from Final Selection) <br>
--  Standard_EXPORT   virtual  Standard_Boolean PacketsCount(const Interface_Graph& G,Standard_Integer& count) const;
-+  Standard_EXPORT   virtual  Standard_Integer PacketsCount(const Interface_Graph& G,Standard_Integer& count) const;
-   //! Computes the list of produced Packets. It defines Packets in <br>
- //!           order to have at most <Count> Entities per Packet, Entities <br>
- //!           are given by RootResult from the Final Selection. <br>
+   
+   //! Returns True (count is easy to know) and count is computed
+   //! from length of input list (RootResult from Final Selection)
+-  Standard_EXPORT virtual   Standard_Boolean PacketsCount (const Interface_Graph& G, Standard_Integer& count)  const;
++  Standard_EXPORT virtual   Standard_Integer PacketsCount (const Interface_Graph& G, Standard_Integer& count)  const;
+   
+   //! Computes the list of produced Packets. It defines Packets in
+   //! order to have at most <Count> Entities per Packet, Entities
 Index: oce/inc/IFSelect_DispPerFiles.hxx
 ===================================================================
 --- oce.orig/inc/IFSelect_DispPerFiles.hxx
 +++ oce/inc/IFSelect_DispPerFiles.hxx
 @@ -61,7 +61,7 @@ public:
-   Standard_EXPORT   virtual  Standard_Boolean LimitedMax(const Standard_Integer nbent,Standard_Integer& max) const;
-   //! Returns True (count is easy to know) and count is the minimum <br>
- //!           value between  length of input list and CountValue <br>
--  Standard_EXPORT   virtual  Standard_Boolean PacketsCount(const Interface_Graph& G,Standard_Integer& count) const;
-+  Standard_EXPORT   virtual  Standard_Integer PacketsCount(const Interface_Graph& G,Standard_Integer& count) const;
-   //! Computes the list of produced Packets. It defines Packets in <br>
- //!           order to have <Count> Packets, except if the input count of <br>
- //!           Entities is lower. Entities are given by RootResult from the <br>
+   
+   //! Returns True (count is easy to know) and count is the minimum
+   //! value between  length of input list and CountValue
+-  Standard_EXPORT virtual   Standard_Boolean PacketsCount (const Interface_Graph& G, Standard_Integer& count)  const;
++  Standard_EXPORT virtual   Standard_Integer PacketsCount (const Interface_Graph& G, Standard_Integer& count)  const;
+   
+   //! Computes the list of produced Packets. It defines Packets in
+   //! order to have <Count> Packets, except if the input count of
 Index: oce/inc/IFSelect_DispPerOne.hxx
 ===================================================================
 --- oce.orig/inc/IFSelect_DispPerOne.hxx
 +++ oce/inc/IFSelect_DispPerOne.hxx
 @@ -45,7 +45,7 @@ public:
-   Standard_EXPORT   virtual  Standard_Boolean LimitedMax(const Standard_Integer nbent,Standard_Integer& max) const;
-   //! Returns True (count is easy to know) and count is the length <br>
- //!           of the input list (RootResult from FinalSelection) <br>
--  Standard_EXPORT   virtual  Standard_Boolean PacketsCount(const Interface_Graph& G,Standard_Integer& count) const;
-+  Standard_EXPORT   virtual  Standard_Integer PacketsCount(const Interface_Graph& G,Standard_Integer& count) const;
-   //! Returns the list of produced Packets. It defines one Packet <br>
- //!           per Entity given by RootResult from the Final Selection. <br>
-   Standard_EXPORT     void Packets(const Interface_Graph& G,IFGraph_SubPartsIterator& packs) const;
+   
+   //! Returns True (count is easy to know) and count is the length
+   //! of the input list (RootResult from FinalSelection)
+-  Standard_EXPORT virtual   Standard_Boolean PacketsCount (const Interface_Graph& G, Standard_Integer& count)  const;
++  Standard_EXPORT virtual   Standard_Integer PacketsCount (const Interface_Graph& G, Standard_Integer& count)  const;
+   
+   //! Returns the list of produced Packets. It defines one Packet
+   //! per Entity given by RootResult from the Final Selection.
 Index: oce/inc/IFSelect_Dispatch.hxx
 ===================================================================
 --- oce.orig/inc/IFSelect_Dispatch.hxx
 +++ oce/inc/IFSelect_Dispatch.hxx
 @@ -107,7 +107,7 @@ public:
- //!           of complete evaluation made by method Packets), it is <br>
- //!           preferable to answer "unknown" by returning False <br>
- //!           Default answer if False. Can be redefined. <br>
--  Standard_EXPORT   virtual  Standard_Boolean PacketsCount(const Interface_Graph& G,Standard_Integer& count) const;
-+  Standard_EXPORT   virtual  Standard_Integer PacketsCount(const Interface_Graph& G,Standard_Integer& count) const;
-   //! Returns the list of produced Packets into argument <pack>. <br>
- //!           Each Packet corresponds to a Part, the Entities listed are the <br>
- //!           Roots given by the Selection. Input is given as a Graph. <br>
+   //! of complete evaluation made by method Packets), it is
+   //! preferable to answer "unknown" by returning False
+   //! Default answer if False. Can be redefined.
+-  Standard_EXPORT virtual   Standard_Boolean PacketsCount (const Interface_Graph& G, Standard_Integer& count)  const;
++  Standard_EXPORT virtual   Standard_Integer PacketsCount (const Interface_Graph& G, Standard_Integer& count)  const;
+   
+   //! Returns the list of produced Packets into argument <pack>.
+   //! Each Packet corresponds to a Part, the Entities listed are the
 Index: oce/inc/OSD_DirectoryIterator.hxx
 ===================================================================
 --- oce.orig/inc/OSD_DirectoryIterator.hxx
@@ -305,12 +307,12 @@ Index: oce/inc/OSD_DirectoryIterator.hxx
 @@ -95,7 +95,7 @@ private:
  
  
- OSD_Directory TheIterator;
--Standard_Integer myFlag;
-+Standard_Boolean myFlag;
- TCollection_AsciiString myMask;
- TCollection_AsciiString myPlace;
- Standard_Address myDescr;
+   OSD_Directory TheIterator;
+-  Standard_Integer myFlag;
++  Standard_Boolean myFlag;
+   TCollection_AsciiString myMask;
+   TCollection_AsciiString myPlace;
+   Standard_Address myDescr;
 Index: oce/inc/OSD_FileIterator.hxx
 ===================================================================
 --- oce.orig/inc/OSD_FileIterator.hxx
@@ -318,51 +320,51 @@ Index: oce/inc/OSD_FileIterator.hxx
 @@ -95,7 +95,7 @@ private:
  
  
- OSD_File TheIterator;
--Standard_Integer myFlag;
-+Standard_Boolean myFlag;
- TCollection_AsciiString myMask;
- TCollection_AsciiString myPlace;
- Standard_Address myDescr;
+   OSD_File TheIterator;
+-  Standard_Integer myFlag;
++  Standard_Boolean myFlag;
+   TCollection_AsciiString myMask;
+   TCollection_AsciiString myPlace;
+   Standard_Address myDescr;
 Index: oce/inc/ShapeAnalysis_Surface.hxx
 ===================================================================
 --- oce.orig/inc/ShapeAnalysis_Surface.hxx
 +++ oce/inc/ShapeAnalysis_Surface.hxx
 @@ -340,7 +340,7 @@ private:
    
-   Standard_EXPORT     void ComputeBoxes() ;
+   Standard_EXPORT   void ComputeBoxes() ;
    
--  Standard_EXPORT     Standard_Boolean SurfaceNewton(const gp_Pnt2d& p2dPrev,const gp_Pnt& P3D,const Standard_Real preci,gp_Pnt2d& sol) ;
-+  Standard_EXPORT     Standard_Integer SurfaceNewton(const gp_Pnt2d& p2dPrev,const gp_Pnt& P3D,const Standard_Real preci,gp_Pnt2d& sol) ;
+-  Standard_EXPORT   Standard_Boolean SurfaceNewton (const gp_Pnt2d& p2dPrev, const gp_Pnt& P3D, const Standard_Real preci, gp_Pnt2d& sol) ;
++  Standard_EXPORT   Standard_Integer SurfaceNewton (const gp_Pnt2d& p2dPrev, const gp_Pnt& P3D, const Standard_Real preci, gp_Pnt2d& sol) ;
    
-   Standard_EXPORT     void SortSingularities() ;
+   Standard_EXPORT   void SortSingularities() ;
  
 Index: oce/inc/ShapeFix_Solid.hxx
 ===================================================================
 --- oce.orig/inc/ShapeFix_Solid.hxx
 +++ oce/inc/ShapeFix_Solid.hxx
 @@ -71,7 +71,7 @@ public:
-   //! Calls MakeSolid and orients the solid to be "not infinite" <br>
-   Standard_EXPORT     TopoDS_Solid SolidFromShell(const TopoDS_Shell& shell) ;
-   //! Returns the status of the last Fix. <br>
--  Standard_EXPORT     Standard_Boolean Status(const ShapeExtend_Status status) const;
-+  Standard_EXPORT     Standard_Integer Status(const ShapeExtend_Status status) const;
-   //! Returns resulting solid. <br>
-   Standard_EXPORT     TopoDS_Shape Solid() const;
-   //! Returns tool for fixing shells. <br>
+   Standard_EXPORT   TopoDS_Solid SolidFromShell (const TopoDS_Shell& shell) ;
+   
+   //! Returns the status of the last Fix.
+-  Standard_EXPORT   Standard_Boolean Status (const ShapeExtend_Status status)  const;
++  Standard_EXPORT   Standard_Integer Status (const ShapeExtend_Status status)  const;
+   
+   //! Returns resulting solid.
+   Standard_EXPORT   TopoDS_Shape Solid()  const;
 Index: oce/inc/TopOpeBRep_FacesFiller.hxx
 ===================================================================
 --- oce.orig/inc/TopOpeBRep_FacesFiller.hxx
 +++ oce/inc/TopOpeBRep_FacesFiller.hxx
 @@ -279,7 +279,7 @@ Standard_Boolean myLineIsonEdge;
- TopTools_ListOfShape myERL;
- TopTools_DataMapOfShapeListOfShape myDataforDegenEd;
- Standard_Boolean myLastVPison0;
--Standard_Boolean mykeptVPnbr;
-+Standard_Integer mykeptVPnbr;
- Standard_Integer myDSCIndex;
- TopOpeBRepDS_ListOfInterference myDSCIL;
- TopOpeBRep_PointClassifier myPointClassifier;
+   TopTools_ListOfShape myERL;
+   TopTools_DataMapOfShapeListOfShape myDataforDegenEd;
+   Standard_Boolean myLastVPison0;
+-  Standard_Boolean mykeptVPnbr;
++  Standard_Integer mykeptVPnbr;
+   Standard_Integer myDSCIndex;
+   TopOpeBRepDS_ListOfInterference myDSCIL;
+   TopOpeBRep_PointClassifier myPointClassifier;
 Index: oce/src/Adaptor3d/Adaptor3d_IsoCurve.cxx
 ===================================================================
 --- oce.orig/src/Adaptor3d/Adaptor3d_IsoCurve.cxx
@@ -1312,16 +1314,7 @@ Index: oce/src/DDataStd/DDataStd_BasicCommands.cxx
 ===================================================================
 --- oce.orig/src/DDataStd/DDataStd_BasicCommands.cxx
 +++ oce/src/DDataStd/DDataStd_BasicCommands.cxx
-@@ -438,7 +438,7 @@ static Standard_Integer DDataStd_SetIntA
-   Standard_Integer isDelta = Draw::Atoi(arg[3]);
-   Standard_Integer From = Draw::Atoi(arg[4]), To = Draw::Atoi( arg[5] ), j;
-   di << "Array of Standard_Integer with bounds from = " << From  << " to = " << To  << "\n";
--  Handle(TDataStd_IntegerArray) A = TDataStd_IntegerArray::Set(label, From, To, isDelta);
-+  Handle(TDataStd_IntegerArray) A = TDataStd_IntegerArray::Set(label, From, To, 0 != isDelta);
-   
-   j = 6;
-   for(Standard_Integer i = From; i<=To; i++) {
-@@ -556,7 +556,7 @@ static Standard_Integer DDataStd_SetIntA
+@@ -622,7 +622,7 @@ static Standard_Integer DDataStd_SetIntA
    Standard_Integer isDelta = Draw::Atoi(arg[3]);
    Standard_Integer From = Draw::Atoi(arg[4]), To = Draw::Atoi( arg[5] ), j;
    di << "Array of Standard_Integer with bounds from = " << From  << " to = " << To  << "\n";
@@ -1330,7 +1323,7 @@ Index: oce/src/DDataStd/DDataStd_BasicCommands.cxx
    
    j = 6;
    Standard_Integer k = 100;
-@@ -585,7 +585,7 @@ static Standard_Integer DDataStd_SetReal
+@@ -655,7 +655,7 @@ static Standard_Integer DDataStd_SetReal
   
    Standard_Integer From = Draw::Atoi(arg[4]), To = Draw::Atoi( arg[5] ), j;
    di << " Array of Standard_Real with bounds from = " << From  << " to = " << To  << "\n";
@@ -1357,15 +1350,15 @@ Index: oce/src/DDataStd/DDataStd_BasicCommands.cxx
    
    j = 6;
    for(Standard_Integer i = From; i<=To; i++) {
-@@ -1141,7 +1141,7 @@ static Standard_Integer DDataStd_SetByte
+@@ -1241,7 +1241,7 @@ static Standard_Integer DDataStd_SetByte
      Standard_Integer isDelta = Draw::Atoi(arg[3]);
      Standard_Integer From = Draw::Atoi(arg[4]), To = Draw::Atoi( arg[5] ), j;
-     di << "Array of Standard_Integer with bounds from = " << From  << " to = " << To  << "\n";
+     di << "Array of Standard_Byte with bounds from = " << From  << " to = " << To  << "\n";
 -    Handle(TDataStd_ByteArray) A = TDataStd_ByteArray::Set(label, From, To, isDelta);
 +    Handle(TDataStd_ByteArray) A = TDataStd_ByteArray::Set(label, From, To, 0 != isDelta);
      
-     j = 6;
-     for(Standard_Integer i = From; i<=To; ++i) {
+     if (nb > 6) {
+       j = 6;
 @@ -1534,7 +1534,7 @@ static Standard_Integer DDataStd_SetIntP
      Standard_Integer aNum = nb - 4;
      Handle(TDataStd_IntPackedMap) anAtt;
@@ -2592,7 +2585,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
 -	else if (Nod12Edg2 ==  (Standard_Boolean) e) U2 = Nod12PCu2;
 +	if      (Nod12Edg1 ==  e) U2 = Nod12PCu1;
 +	else if (Nod12Edg2 ==  e) U2 = Nod12PCu2;
- #ifdef DEB
+ #ifdef OCCT_DEBUG
  	else {
  	  cout << " HLRBRep_PolyAlgo::InitBiPointsWithConnexity : ";
 @@ -1330,8 +1330,8 @@ InitBiPointsWithConnexity (const Standar
@@ -2603,7 +2596,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
 -	    else if (Nod12Edg2 ==  (Standard_Boolean) e) U2 = Nod12PCu2;
 +	    if      (Nod12Edg1 ==  e) U2 = Nod12PCu1;
 +	    else if (Nod12Edg2 ==  e) U2 = Nod12PCu2;
- #ifdef DEB
+ #ifdef OCCT_DEBUG
  	    else {
  	      cout << " HLRBRep_PolyAlgo::InitBiPointsWithConnexity : ";
 @@ -1421,7 +1421,7 @@ InitBiPointsWithConnexity (const Standar
@@ -2632,7 +2625,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
 -	else if (Nod12Edg2 == (Standard_Boolean) e) U2 = Nod12PCu2;
 +	if      (Nod12Edg1 == e) U2 = Nod12PCu1;
 +	else if (Nod12Edg2 == e) U2 = Nod12PCu2;
- #ifdef DEB
+ #ifdef OCCT_DEBUG
  	else {
  	  cout << " HLRBRep_PolyAlgo::InitBiPointsWithConnexity : ";
 @@ -1521,8 +1521,8 @@ InitBiPointsWithConnexity (const Standar
@@ -2643,7 +2636,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
 -	    else if (Nod12Edg2 == (Standard_Boolean) e) U2 = Nod12PCu2;
 +	    if      (Nod12Edg1 == e) U2 = Nod12PCu1;
 +	    else if (Nod12Edg2 == e) U2 = Nod12PCu2;
- #ifdef DEB
+ #ifdef OCCT_DEBUG
  	    else {
  	      cout << " HLRBRep_PolyAlgo::InitBiPointsWithConnexity : ";
 @@ -1717,7 +1717,7 @@ Interpolation (HLRAlgo_ListOfBPoint& Lis
@@ -2681,7 +2674,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
 -      else if (Nod11Edg2 == (Standard_Boolean) e) Nod11PCu2 = U3;
 +      if      (Nod11Edg1 == e) Nod11PCu1 = U3;
 +      else if (Nod11Edg2 == e) Nod11PCu2 = U3;
- #ifdef DEB
+ #ifdef OCCT_DEBUG
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
 @@ -1935,8 +1935,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
@@ -2692,7 +2685,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
 -      else if (Nod12Edg2 == (Standard_Boolean) e) Nod12PCu2 = U3;
 +      if      (Nod12Edg1 == e) Nod12PCu1 = U3;
 +      else if (Nod12Edg2 == e) Nod12PCu2 = U3;
- #ifdef DEB
+ #ifdef OCCT_DEBUG
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
 @@ -1966,17 +1966,17 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
@@ -2733,7 +2726,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
 -      else if (Nod11Edg2 == (Standard_Boolean) e) Nod11PCu2 = U3;
 +      if      (Nod11Edg1 == e) Nod11PCu1 = U3;
 +      else if (Nod11Edg2 == e) Nod11PCu2 = U3;
- #ifdef DEB
+ #ifdef OCCT_DEBUG
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
 @@ -2074,8 +2074,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
@@ -2744,7 +2737,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
 -      else if (Nod21Edg2 == (Standard_Boolean) e) Nod21PCu2 = U3;
 +      if      (Nod21Edg1 == e) Nod21PCu1 = U3;
 +      else if (Nod21Edg2 == e) Nod21PCu2 = U3;
- #ifdef DEB
+ #ifdef OCCT_DEBUG
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
 @@ -2117,8 +2117,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
@@ -2755,7 +2748,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
 -      else if (Nod12Edg2 == (Standard_Boolean) e) Nod12PCu2 = U3;
 +      if      (Nod12Edg1 == e) Nod12PCu1 = U3;
 +      else if (Nod12Edg2 == e) Nod12PCu2 = U3;
- #ifdef DEB
+ #ifdef OCCT_DEBUG
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
 @@ -2131,8 +2131,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
@@ -2766,7 +2759,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
 -      else if (Nod22Edg2 == (Standard_Boolean) e) Nod22PCu2 = U3;
 +      if      (Nod22Edg1 == e) Nod22PCu1 = U3;
 +      else if (Nod22Edg2 == e) Nod22PCu2 = U3;
- #ifdef DEB
+ #ifdef OCCT_DEBUG
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
 @@ -2176,17 +2176,17 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
@@ -2807,7 +2800,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
 -      else if (Nod11Edg2 == (Standard_Boolean) e) Nod11PCu2 = U3;
 +      if      (Nod11Edg1 == e) Nod11PCu1 = U3;
 +      else if (Nod11Edg2 == e) Nod11PCu2 = U3;
- #ifdef DEB
+ #ifdef OCCT_DEBUG
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
 @@ -2295,8 +2295,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
@@ -2818,7 +2811,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
 -      else if (Nod21Edg2 == (Standard_Boolean) e) Nod21PCu2 = U3;
 +      if      (Nod21Edg1 == e) Nod21PCu1 = U3;
 +      else if (Nod21Edg2 == e) Nod21PCu2 = U3;
- #ifdef DEB
+ #ifdef OCCT_DEBUG
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
 @@ -2338,8 +2338,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
@@ -2829,7 +2822,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
 -      else if (Nod12Edg2 == (Standard_Boolean) e) Nod12PCu2 = U4;
 +      if      (Nod12Edg1 == e) Nod12PCu1 = U4;
 +      else if (Nod12Edg2 == e) Nod12PCu2 = U4;
- #ifdef DEB
+ #ifdef OCCT_DEBUG
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
 @@ -2352,8 +2352,8 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&
@@ -2840,7 +2833,7 @@ Index: oce/src/HLRBRep/HLRBRep_PolyAlgo.cxx
 -      else if (Nod22Edg2 == (Standard_Boolean) e) Nod22PCu2 = U4;
 +      if      (Nod22Edg1 == e) Nod22PCu1 = U4;
 +      else if (Nod22Edg2 == e) Nod22PCu2 = U4;
- #ifdef DEB
+ #ifdef OCCT_DEBUG
        else {
  	cout << " HLRBRep_PolyAlgo::MoveOrInsertPoint : ";
 @@ -2450,22 +2450,22 @@ MoveOrInsertPoint (HLRAlgo_ListOfBPoint&

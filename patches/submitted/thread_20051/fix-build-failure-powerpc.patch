@@ -30,50 +30,50 @@ Index: oce/inc/Plate_LinearScalarConstraint.hxx
 +++ oce/inc/Plate_LinearScalarConstraint.hxx
 @@ -49,9 +49,9 @@ public:
    
-   Standard_EXPORT   Plate_LinearScalarConstraint(const Plate_PinpointConstraint& PPC1,const gp_XYZ& coeff);
+   Standard_EXPORT Plate_LinearScalarConstraint(const Plate_PinpointConstraint& PPC1, const gp_XYZ& coeff);
    
--  Standard_EXPORT   Plate_LinearScalarConstraint(const Plate_Array1OfPinpointConstraint& PPC,const TColgp_Array1OfXYZ& coeff);
-+  Standard_EXPORT   Plate_LinearScalarConstraint(const Plate_Array1OfPinpointConstraint& ppc,const TColgp_Array1OfXYZ& coeff);
+-  Standard_EXPORT Plate_LinearScalarConstraint(const Plate_Array1OfPinpointConstraint& PPC, const TColgp_Array1OfXYZ& coeff);
++  Standard_EXPORT Plate_LinearScalarConstraint(const Plate_Array1OfPinpointConstraint& ppc, const TColgp_Array1OfXYZ& coeff);
    
--  Standard_EXPORT   Plate_LinearScalarConstraint(const Plate_Array1OfPinpointConstraint& PPC,const TColgp_Array2OfXYZ& coeff);
-+  Standard_EXPORT   Plate_LinearScalarConstraint(const Plate_Array1OfPinpointConstraint& ppc,const TColgp_Array2OfXYZ& coeff);
+-  Standard_EXPORT Plate_LinearScalarConstraint(const Plate_Array1OfPinpointConstraint& PPC, const TColgp_Array2OfXYZ& coeff);
++  Standard_EXPORT Plate_LinearScalarConstraint(const Plate_Array1OfPinpointConstraint& ppc, const TColgp_Array2OfXYZ& coeff);
    
-   Standard_EXPORT   Plate_LinearScalarConstraint(const Standard_Integer ColLen,const Standard_Integer RowLen);
+   Standard_EXPORT Plate_LinearScalarConstraint(const Standard_Integer ColLen, const Standard_Integer RowLen);
    
 @@ -60,7 +60,7 @@ public:
-        const TColgp_Array2OfXYZ& Coeff() const;
-   //!  Sets   the PinPointConstraint of   index Index to <br>
- //!          Value raise if Index is greater than the length of <br>
--//!          PPC or the Row length of coeff or lower  than 1 <br>
-+//!          ppc or the Row length of coeff or lower  than 1 <br>
-   Standard_EXPORT     void SetPPC(const Standard_Integer Index,const Plate_PinpointConstraint& Value) ;
-   //!  Sets the coeff  of index (Row,Col)  to Value <br>
- //!           raise if  Row (respectively Col)  is greater than the <br>
+   
+   //! Sets   the PinPointConstraint of   index Index to
+   //! Value raise if Index is greater than the length of
+-  //! PPC or the Row length of coeff or lower  than 1
++  //! ppc or the Row length of coeff or lower  than 1
+   Standard_EXPORT   void SetPPC (const Standard_Integer Index, const Plate_PinpointConstraint& Value) ;
+   
+   //! Sets the coeff  of index (Row,Col)  to Value
 Index: oce/inc/Plate_LinearXYZConstraint.hxx
 ===================================================================
 --- oce.orig/inc/Plate_LinearXYZConstraint.hxx
 +++ oce/inc/Plate_LinearXYZConstraint.hxx
 @@ -49,9 +49,9 @@ public:
    
-   Standard_EXPORT   Plate_LinearXYZConstraint();
+   Standard_EXPORT Plate_LinearXYZConstraint();
    
--  Standard_EXPORT   Plate_LinearXYZConstraint(const Plate_Array1OfPinpointConstraint& PPC,const TColStd_Array1OfReal& coeff);
-+  Standard_EXPORT   Plate_LinearXYZConstraint(const Plate_Array1OfPinpointConstraint& ppc,const TColStd_Array1OfReal& coeff);
+-  Standard_EXPORT Plate_LinearXYZConstraint(const Plate_Array1OfPinpointConstraint& PPC, const TColStd_Array1OfReal& coeff);
++  Standard_EXPORT Plate_LinearXYZConstraint(const Plate_Array1OfPinpointConstraint& ppc, const TColStd_Array1OfReal& coeff);
    
--  Standard_EXPORT   Plate_LinearXYZConstraint(const Plate_Array1OfPinpointConstraint& PPC,const TColStd_Array2OfReal& coeff);
-+  Standard_EXPORT   Plate_LinearXYZConstraint(const Plate_Array1OfPinpointConstraint& ppc,const TColStd_Array2OfReal& coeff);
+-  Standard_EXPORT Plate_LinearXYZConstraint(const Plate_Array1OfPinpointConstraint& PPC, const TColStd_Array2OfReal& coeff);
++  Standard_EXPORT Plate_LinearXYZConstraint(const Plate_Array1OfPinpointConstraint& ppc, const TColStd_Array2OfReal& coeff);
    
-   Standard_EXPORT   Plate_LinearXYZConstraint(const Standard_Integer ColLen,const Standard_Integer RowLen);
+   Standard_EXPORT Plate_LinearXYZConstraint(const Standard_Integer ColLen, const Standard_Integer RowLen);
    
 @@ -60,7 +60,7 @@ public:
-        const TColStd_Array2OfReal& Coeff() const;
-   //!  Sets   the PinPointConstraint of   index Index to <br>
- //!          Value raise if Index is greater than the length of <br>
--//!          PPC or the Row length of coeff or lower  than 1 <br>
-+//!          ppc or the Row length of coeff or lower  than 1 <br>
-   Standard_EXPORT     void SetPPC(const Standard_Integer Index,const Plate_PinpointConstraint& Value) ;
-   //!  Sets the coeff  of index (Row,Col)  to Value <br>
- //!           raise if  Row (respectively Col)  is greater than the <br>
+   
+   //! Sets   the PinPointConstraint of   index Index to
+   //! Value raise if Index is greater than the length of
+-  //! PPC or the Row length of coeff or lower  than 1
++  //! ppc or the Row length of coeff or lower  than 1
+   Standard_EXPORT   void SetPPC (const Standard_Integer Index, const Plate_PinpointConstraint& Value) ;
+   
+   //! Sets the coeff  of index (Row,Col)  to Value
 Index: oce/src/BRepFill/BRepFill_Evolved.cxx
 ===================================================================
 --- oce.orig/src/BRepFill/BRepFill_Evolved.cxx
@@ -103,14 +103,14 @@ Index: oce/src/BRepLib/BRepLib_FindSurface.cxx
    TopLoc_Location L;
    Standard_Integer i = 0,j;
 @@ -218,7 +218,7 @@ void BRepLib_FindSurface::Init(const Top
- 	for(;;) {
- 	  j++;
- 	  BRep_Tool::CurveOnSurface(TopoDS::Edge(ex.Current()),
--				    PPC,SS,L,ff,ll,j);
-+				    ppc,SS,L,ff,ll,j);
- 	  if (SS.IsNull()) {
- 	    break;
- 	  }
+         for(;;) {
+           j++;
+           BRep_Tool::CurveOnSurface(TopoDS::Edge(ex.Current()),
+-            PPC,SS,L,ff,ll,j);
++            ppc,SS,L,ff,ll,j);
+           if (SS.IsNull()) {
+             break;
+           }
 Index: oce/src/Bisector/Bisector_BisecPC.cxx
 ===================================================================
 --- oce.orig/src/Bisector/Bisector_BisecPC.cxx

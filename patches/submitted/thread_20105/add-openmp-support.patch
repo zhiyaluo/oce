@@ -51,8 +51,39 @@ Index: oce/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
 ===================================================================
 --- oce.orig/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
 +++ oce/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
+@@ -161,21 +161,26 @@ void BRepMesh_IncrementalMesh::update()
+ 
+   BRepMesh_FaceChecker aFaceChecker(myInParallel);
+ 
+-#ifdef HAVE_TBB
++#if defined(HAVE_TBB) || defined(_OPENMP)
+   if (myInParallel)
+   {
+     // check faces in parallel threads using TBB
++#ifdef HAVE_TBB
+     tbb::parallel_for_each(myFaces.begin(), myFaces.end(), aFaceChecker);
++#else
++    int i, n = myFaces.size();
++#pragma omp parallel for private(i)
++    for (i = 0; i < n; ++i)
++      aFaceChecker(myFaces[i]);
++#endif
+   }
+   else
+-  {
+ #endif
++  {
+     NCollection_Vector<TopoDS_Face>::Iterator aFaceIt(myFaces);
+     for (; aFaceIt.More(); aFaceIt.Next())
+       aFaceChecker(aFaceIt.Value());
+-#ifdef HAVE_TBB
+   }
+-#endif
+ 
+   return aFaceChecker.IsValid();
+ }
 @@ -238,19 +238,24 @@ void BRepMesh_IncrementalMesh::update()
-     update(*aFaceIt);
+     update(aFaceIt.Value());
  
    // Mesh faces
 -#ifdef HAVE_TBB
@@ -72,8 +103,8 @@ Index: oce/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
 -  {
  #endif
 +  {
-     for (aFaceIt = myFaces.begin(); aFaceIt != myFaces.end(); aFaceIt++)
-       myMesh->Process(*aFaceIt);
+     for (aFaceIt.Init(myFaces); aFaceIt.More(); aFaceIt.Next())
+       myMesh->Process(aFaceIt.Value());
 -#ifdef HAVE_TBB
    }
 -#endif

@@ -20,14 +20,14 @@ Index: oce/inc/BRepLib_FuseEdges.hxx
 --- oce.orig/inc/BRepLib_FuseEdges.hxx
 +++ oce/inc/BRepLib_FuseEdges.hxx
 @@ -96,7 +96,7 @@ public:
- //!          edges removed from it. <br>
-   Standard_EXPORT     TopoDS_Shape& Shape() ;
-   //! returns the number of vertices candidate to be removed <br>
--  Standard_EXPORT    const Standard_Integer NbVertices() ;
-+  Standard_EXPORT    Standard_Integer NbVertices() ;
-   //! Using  map of list of connex  edges, fuse each list to <br>
- //!           one edge and then update myShape <br>
-   Standard_EXPORT     void Perform() ;
+   Standard_EXPORT   TopoDS_Shape& Shape() ;
+  
+   //! returns the number of vertices candidate to be removed
+-  Standard_EXPORT  const  Standard_Integer NbVertices() ;
++  Standard_EXPORT  Standard_Integer NbVertices() ;
+   
+   //! Using  map of list of connex  edges, fuse each list to
+   //! one edge and then update myShape
 Index: oce/inc/FSD_BinaryFile.hxx
 ===================================================================
 --- oce.orig/inc/FSD_BinaryFile.hxx
@@ -36,11 +36,11 @@ Index: oce/inc/FSD_BinaryFile.hxx
    
    Standard_EXPORT     void ReadHeader() ;
    
--  Standard_EXPORT   static const Standard_CString MagicNumber() ;
-+  Standard_EXPORT   static Standard_CString MagicNumber() ;
+-  Standard_EXPORT static  const  Standard_CString MagicNumber() ;
++  Standard_EXPORT static  Standard_CString  MagicNumber() ;
  
  
- FSD_BStream myStream;
+  FSD_BStream myStream;
 Index: oce/inc/FSD_CmpFile.hxx
 ===================================================================
 --- oce.orig/inc/FSD_CmpFile.hxx
@@ -49,10 +49,10 @@ Index: oce/inc/FSD_CmpFile.hxx
  private:
  
    
--  Standard_EXPORT   static const Standard_CString MagicNumber() ;
-+  Standard_EXPORT   static Standard_CString MagicNumber() ;
+-  Standard_EXPORT static  const  Standard_CString MagicNumber() ;
++  Standard_EXPORT static  Standard_CString MagicNumber() ;
    
-   Standard_EXPORT     void RaiseError(const Handle(Standard_Type)& theFailure) ;
+   Standard_EXPORT   void RaiseError (const Handle(Standard_Type)& theFailure) ;
  
 Index: oce/inc/FSD_File.hxx
 ===================================================================
@@ -62,75 +62,75 @@ Index: oce/inc/FSD_File.hxx
  private:
  
    
--  Standard_EXPORT   static const Standard_CString MagicNumber() ;
-+  Standard_EXPORT   static Standard_CString MagicNumber() ;
+-  Standard_EXPORT static  const  Standard_CString MagicNumber() ;
++  Standard_EXPORT static Standard_CString MagicNumber() ;
  
  
- FSD_FStream myStream;
+  FSD_FStream myStream;
 Index: oce/inc/IGESData_ParamReader.hxx
 ===================================================================
 --- oce.orig/inc/IGESData_ParamReader.hxx
 +++ oce/inc/IGESData_ParamReader.hxx
 @@ -137,7 +137,7 @@ public:
- //!           be encountered, they correspond to "Integer", see also below <br>
-   Standard_EXPORT     Interface_ParamType ParamType(const Standard_Integer num) const;
-   //! returns litteral value of a parameter, as it was in file <br>
--  Standard_EXPORT    const Standard_CString ParamValue(const Standard_Integer num) const;
-+  Standard_EXPORT    Standard_CString ParamValue(const Standard_Integer num) const;
-   //! says if a parameter is defined (not void) <br>
- //!           See also DefinedElseSkip <br>
-   Standard_EXPORT     Standard_Boolean IsParamDefined(const Standard_Integer num) const;
+   Standard_EXPORT   Interface_ParamType ParamType (const Standard_Integer num)  const;
+   
+   //! returns litteral value of a parameter, as it was in file
+-  Standard_EXPORT  const  Standard_CString ParamValue (const Standard_Integer num)  const;
++  Standard_EXPORT  Standard_CString  ParamValue (const Standard_Integer num)  const;
+   
+   //! says if a parameter is defined (not void)
+   //! See also DefinedElseSkip
 Index: oce/inc/STEPConstruct_ExternRefs.hxx
 ===================================================================
 --- oce.orig/inc/STEPConstruct_ExternRefs.hxx
 +++ oce/inc/STEPConstruct_ExternRefs.hxx
 @@ -104,7 +104,7 @@ public:
-   Standard_EXPORT     Standard_Integer NbExternRefs() const;
-   //! Returns filename for numth extern reference <br>
- //!          Returns Null if FileName is not defined or bad <br>
--  Standard_EXPORT    const Standard_CString FileName(const Standard_Integer num) const;
-+  Standard_EXPORT    Standard_CString FileName(const Standard_Integer num) const;
-   //! Returns ProductDefinition to which numth extern reference <br>
- //!          is associated. <br>
- //!          Returns Null if cannot be detected or if extern reference <br>
+   
+   //! Returns filename for numth extern reference
+   //! Returns Null if FileName is not defined or bad
+-  Standard_EXPORT  const  Standard_CString FileName (const Standard_Integer num)  const;
++  Standard_EXPORT  Standard_CString FileName(const Standard_Integer num)  const;
+   
+   //! Returns ProductDefinition to which numth extern reference
+   //!          is associated.
 Index: oce/inc/TCollection_ExtendedString.hxx
 ===================================================================
 --- oce.orig/inc/TCollection_ExtendedString.hxx
 +++ oce/inc/TCollection_ExtendedString.hxx
 @@ -240,7 +240,7 @@ friend Standard_EXPORT Standard_OStream&
- //!    aString.Token("; :,",2) returns "test" <br>
-   Standard_EXPORT     TCollection_ExtendedString Token(const Standard_ExtString separators,const Standard_Integer whichone = 1) const;
-   //! Returns pointer to ExtString <br>
--  Standard_EXPORT    const Standard_ExtString ToExtString() const;
+   Standard_EXPORT   TCollection_ExtendedString Token (const Standard_ExtString separators, const Standard_Integer whichone = 1)  const;
+   
+   //! Returns pointer to ExtString
+-  Standard_EXPORT  const  Standard_ExtString ToExtString()  const;
 +  Standard_EXPORT    Standard_ExtString ToExtString() const;
-   //! Truncates <me> to <ahowmany> characters. <br>
- //! Example:  me = "Hello Dolly" -> Trunc(3) -> me = "Hel" <br>
- //!   Exceptions <br>
+   
+   //! Truncates <me> to <ahowmany> characters.
+   //! Example:  me = "Hello Dolly" -> Trunc(3) -> me = "Hel"
 Index: oce/inc/TCollection_HExtendedString.hxx
 ===================================================================
 --- oce.orig/inc/TCollection_HExtendedString.hxx
 +++ oce/inc/TCollection_HExtendedString.hxx
 @@ -147,7 +147,7 @@ public:
- //! It returns -1 if not found. <br>
-   Standard_EXPORT     Standard_Integer SearchFromEnd(const Handle(TCollection_HExtendedString)& what) const;
-   //! Returns pointer to ExtString <br>
--  Standard_EXPORT    const Standard_ExtString ToExtString() const;
-+  Standard_EXPORT    Standard_ExtString ToExtString() const;
-   //! Extracts <whichone> token from <me>. <br>
- //! By default, the <separators> is set to space and tabulation. <br>
- //! By default, the token extracted is the first one (whichone = 1). <br>
+   Standard_EXPORT   Standard_Integer SearchFromEnd (const Handle(TCollection_HExtendedString)& what)  const;
+   
+   //! Returns pointer to ExtString
+-  Standard_EXPORT  const  Standard_ExtString ToExtString()  const;
++  Standard_EXPORT  Standard_ExtString ToExtString()  const;
+   
+   //! Extracts <whichone> token from <me>.
+   //! By default, the <separators> is set to space and tabulation.
 Index: oce/inc/TNaming_Name.hxx
 ===================================================================
 --- oce.orig/inc/TNaming_Name.hxx
 +++ oce/inc/TNaming_Name.hxx
 @@ -93,7 +93,7 @@ public:
    
-   Standard_EXPORT    const TDF_Label& ContextLabel() const;
+   Standard_EXPORT  const  TDF_Label& ContextLabel()  const;
    
--       const TopAbs_Orientation Orientation() const;
-+       TopAbs_Orientation Orientation() const;
+-     const  TopAbs_Orientation Orientation()  const;
++     TopAbs_Orientation Orientation()  const;
    
-   Standard_EXPORT     Standard_Boolean Solve(const TDF_Label& aLab,const TDF_LabelMap& Valid) const;
+   Standard_EXPORT   Standard_Boolean Solve (const TDF_Label& aLab, const TDF_LabelMap& Valid)  const;
    
 Index: oce/src/AIS/AIS_Dimension.cxx
 ===================================================================

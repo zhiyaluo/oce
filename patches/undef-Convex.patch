@@ -9,9 +9,9 @@ Index: oce/inc/PTopoDS_TShape.hxx
 --- oce.orig/inc/PTopoDS_TShape.hxx
 +++ oce/inc/PTopoDS_TShape.hxx
 @@ -37,6 +37,13 @@
- #ifndef _Standard_Persistent_HeaderFile
+ #include <Handle_PTopoDS_HShape.hxx>
+ #include <Standard_Integer.hxx>
  #include <Standard_Persistent.hxx>
- #endif
 +
 +// The Convex method can conflict with Convex defined as an integer
 +// in X.h
@@ -27,9 +27,9 @@ Index: oce/inc/PTopoDS_TShape1.hxx
 --- oce.orig/inc/PTopoDS_TShape1.hxx
 +++ oce/inc/PTopoDS_TShape1.hxx
 @@ -37,6 +37,13 @@
- #ifndef _Standard_Persistent_HeaderFile
+ #include <PTopoDS_Shape1.hxx>
+ #include <Standard_Integer.hxx>
  #include <Standard_Persistent.hxx>
- #endif
 +
 +// The Convex method can conflict with Convex defined as an integer
 +// in X.h
@@ -45,9 +45,9 @@ Index: oce/inc/TopoDS_Shape.hxx
 --- oce.orig/inc/TopoDS_Shape.hxx
 +++ oce/inc/TopoDS_Shape.hxx
 @@ -34,6 +34,13 @@
- #ifndef _Standard_Integer_HeaderFile
+ #include <Standard_Boolean.hxx>
+ #include <TopAbs_ShapeEnum.hxx>
  #include <Standard_Integer.hxx>
- #endif
 +
 +// The Convex method can conflict with Convex defined as an integer
 +// in X.h

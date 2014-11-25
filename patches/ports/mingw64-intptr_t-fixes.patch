@@ -137,13 +137,13 @@ Index: oce/inc/OSD_EnvironmentIterator.hxx
 @@ -79,7 +79,11 @@ private:
  
  
- Standard_Address myEnv;
+   Standard_Address myEnv;
 +#ifdef WNT
-+Standard_CString myCount;
++  Standard_CString myCount;
 +#else
- Standard_Integer myCount;
+   Standard_Integer myCount;
 +#endif
- OSD_Error myError;
+   OSD_Error myError;
  
  
 Index: oce/src/OSD/OSD_EnvironmentIterator.cxx

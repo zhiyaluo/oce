@@ -15,38 +15,42 @@ Index: oce/inc/HLRBRep_Data.hxx
 ===================================================================
 --- oce.orig/inc/HLRBRep_Data.hxx
 +++ oce/inc/HLRBRep_Data.hxx
-@@ -172,24 +172,24 @@ public:
- //!          between the current edge and the current face at the <br>
- //!          <p1> and <p2> parameters. <br>
-   Standard_EXPORT     void EdgeState(const Standard_Real p1,const Standard_Real p2,TopAbs_State& stbef,TopAbs_State& staf) ;
--  //! Returns the  true if the  Edge <ED> belongs to the <br>
-+  //! Returns the  true if the  Edge <EData> belongs to the <br>
- //!          Hiding Face. <br>
--        Standard_Boolean EdgeOfTheHidingFace(const Standard_Integer E,const HLRBRep_EdgeData& ED) const;
-+        Standard_Boolean EdgeOfTheHidingFace(const Standard_Integer E,const HLRBRep_EdgeData& EData) const;
-   //! Returns the number of  levels of hiding face above <br>
--//!          the   first  point  of   the    edge <ED>.     The <br>
-+//!          the   first  point  of   the    edge <EData>.     The <br>
- //!          InterferenceList is  given to  compute far away of <br>
- //!          the Interferences and then come back. <br>
--  Standard_EXPORT     Standard_Integer HidingStartLevel(const Standard_Integer E,const HLRBRep_EdgeData& ED,const HLRAlgo_InterferenceList& IL) ;
--  //! Returns   the  state   of  the   Edge  <ED>  after <br>
-+  Standard_EXPORT     Standard_Integer HidingStartLevel(const Standard_Integer E,const HLRBRep_EdgeData& EData,const HLRAlgo_InterferenceList& IL) ;
-+  //! Returns   the  state   of  the   Edge  <EData>  after <br>
- //!          classification. <br>
--  Standard_EXPORT     TopAbs_State Compare(const Standard_Integer E,const HLRBRep_EdgeData& ED) ;
-+  Standard_EXPORT     TopAbs_State Compare(const Standard_Integer E,const HLRBRep_EdgeData& EData) ;
-   //! Simple classification of part of edge  [p1,  p2] <br>
- //!  returns  OUT  if  at  least  1 of  Nbp  points  of  edge  is  out <br>
- //!  othewise  returns  IN <br>
- //!  It  is  used  to  check  "suspision"  hided  part  of  edge. <br>
--  Standard_EXPORT     TopAbs_State SimplClassify(const Standard_Integer E,const HLRBRep_EdgeData& ED,const Standard_Integer Nbp,const Standard_Real p1,const Standard_Real p2) ;
-+  Standard_EXPORT     TopAbs_State SimplClassify(const Standard_Integer E,const HLRBRep_EdgeData& EData,const Standard_Integer Nbp,const Standard_Real p1,const Standard_Real p2) ;
-   //! Classification of an edge. <br>
--  Standard_EXPORT     TopAbs_State Classify(const Standard_Integer E,const HLRBRep_EdgeData& ED,const Standard_Boolean LevelFlag,Standard_Integer& Level,const Standard_Real param) ;
-+  Standard_EXPORT     TopAbs_State Classify(const Standard_Integer E,const HLRBRep_EdgeData& EData,const Standard_Boolean LevelFlag,Standard_Integer& Level,const Standard_Real param) ;
+@@ -142,28 +142,28 @@ public:
+   //! <p1> and <p2> parameters.
+   Standard_EXPORT   void EdgeState (const Standard_Real p1, const Standard_Real p2, TopAbs_State& stbef, TopAbs_State& staf) ;
    
-   Standard_EXPORT     void Destroy() ;
+-  //! Returns the  true if the  Edge <ED> belongs to the
++  //! Returns the  true if the  Edge <EData> belongs to the
+   //! Hiding Face.
+-      Standard_Boolean EdgeOfTheHidingFace (const Standard_Integer E, const HLRBRep_EdgeData& ED)  const;
++      Standard_Boolean EdgeOfTheHidingFace (const Standard_Integer E, const HLRBRep_EdgeData& EData)  const;
+   
+   //! Returns the number of  levels of hiding face above
+-  //! the   first  point  of   the    edge <ED>.     The
++  //! the   first  point  of   the    edge <EData>.     The
+   //! InterferenceList is  given to  compute far away of
+   //! the Interferences and then come back.
+-  Standard_EXPORT   Standard_Integer HidingStartLevel (const Standard_Integer E, const HLRBRep_EdgeData& ED, const HLRAlgo_InterferenceList& IL) ;
++  Standard_EXPORT   Standard_Integer HidingStartLevel (const Standard_Integer E, const HLRBRep_EdgeData& EData, const HLRAlgo_InterferenceList& IL) ;
+   
+-  //! Returns   the  state   of  the   Edge  <ED>  after
++  //! Returns   the  state   of  the   Edge  <EData>  after
+   //! classification.
+-  Standard_EXPORT   TopAbs_State Compare (const Standard_Integer E, const HLRBRep_EdgeData& ED) ;
++  Standard_EXPORT   TopAbs_State Compare (const Standard_Integer E, const HLRBRep_EdgeData& EData) ;
+   
+   //! Simple classification of part of edge  [p1,  p2]
+   //! returns  OUT  if  at  least  1 of  Nbp  points  of  edge  is  out
+   //! othewise  returns  IN
+   //! It  is  used  to  check  "suspision"  hided  part  of  edge.
+-  Standard_EXPORT   TopAbs_State SimplClassify (const Standard_Integer E, const HLRBRep_EdgeData& ED, const Standard_Integer Nbp, const Standard_Real p1, const Standard_Real p2) ;
++  Standard_EXPORT   TopAbs_State SimplClassify (const Standard_Integer E, const HLRBRep_EdgeData& EData, const Standard_Integer Nbp, const Standard_Real p1, const Standard_Real p2) ;
+   
+   //! Classification of an edge.
+-  Standard_EXPORT   TopAbs_State Classify (const Standard_Integer E, const HLRBRep_EdgeData& ED, const Standard_Boolean LevelFlag, Standard_Integer& Level, const Standard_Real param) ;
++  Standard_EXPORT   TopAbs_State Classify (const Standard_Integer E, const HLRBRep_EdgeData& EData, const Standard_Boolean LevelFlag, Standard_Integer& Level, const Standard_Real param) ;
+   
+   Standard_EXPORT   void Destroy() ;
  ~HLRBRep_Data()
 Index: oce/src/HLRBRep/HLRBRep_Data.cdl
 ===================================================================
@@ -105,7 +109,7 @@ Index: oce/src/HLRBRep/HLRBRep_Data.cxx
 ===================================================================
 --- oce.orig/src/HLRBRep/HLRBRep_Data.cxx
 +++ oce/src/HLRBRep/HLRBRep_Data.cxx
-@@ -1540,12 +1540,12 @@ void HLRBRep_Data::EdgeState (const Stan
+@@ -1544,12 +1544,12 @@ void HLRBRep_Data::EdgeState (const Stan
  
  Standard_Integer 
  HLRBRep_Data::HidingStartLevel (const Standard_Integer E,
@@ -120,7 +124,7 @@ Index: oce/src/HLRBRep/HLRBRep_Data.cxx
    Standard_Real sta = EC.Parameter3d(EC.FirstParameter());
    Standard_Real end = EC.Parameter3d(EC.LastParameter());
    Standard_Real tolpar = (end - sta) * 0.01;
-@@ -1567,7 +1567,7 @@ HLRBRep_Data::HidingStartLevel (const St
+@@ -1571,7 +1571,7 @@ HLRBRep_Data::HidingStartLevel (const St
    }
    param = 0.5 * (sta + end);
    Standard_Integer level = 0;
@@ -129,7 +133,7 @@ Index: oce/src/HLRBRep/HLRBRep_Data.cxx
    Loop = Standard_True;
    It.Initialize(IL);
  
-@@ -1608,11 +1608,11 @@ HLRBRep_Data::HidingStartLevel (const St
+@@ -1612,11 +1612,11 @@ HLRBRep_Data::HidingStartLevel (const St
  //=======================================================================
  
  TopAbs_State HLRBRep_Data::Compare (const Standard_Integer E,
@@ -143,16 +147,16 @@ Index: oce/src/HLRBRep/HLRBRep_Data.cxx
  }
  
  //=======================================================================
-@@ -1824,7 +1824,7 @@ void HLRBRep_Data::OrientOthEdge (const
+@@ -1830,7 +1830,7 @@ void HLRBRep_Data::OrientOthEdge (const
  
  TopAbs_State 
- HLRBRep_Data::Classify (const Standard_Integer /*E*/,
+ HLRBRep_Data::Classify (const Standard_Integer E,
 -			const HLRBRep_EdgeData& ED,
 +			const HLRBRep_EdgeData& EData,
  			const Standard_Boolean LevelFlag,
  			Standard_Integer& Level,
  			const Standard_Real param)
-@@ -1837,9 +1837,9 @@ HLRBRep_Data::Classify (const Standard_I
+@@ -1845,9 +1845,9 @@ HLRBRep_Data::Classify (const Standard_I
    Level = 0;
    TopAbs_State state = TopAbs_OUT;
  //  Standard_Boolean rej = Standard_False;
@@ -164,7 +168,7 @@ Index: oce/src/HLRBRep/HLRBRep_Data.cxx
    
    if (LevelFlag) {
      sta = param;
-@@ -2126,7 +2126,7 @@ HLRBRep_Data::Classify (const Standard_I
+@@ -2129,7 +2129,7 @@ HLRBRep_Data::Classify (const Standard_I
  //=======================================================================
  
  TopAbs_State HLRBRep_Data::SimplClassify (const Standard_Integer /*E*/,
@@ -173,7 +177,7 @@ Index: oce/src/HLRBRep/HLRBRep_Data.cxx
  					  const Standard_Integer Nbp,
  					  const Standard_Real p1,
  					  const Standard_Real p2)
-@@ -2138,9 +2138,9 @@ TopAbs_State HLRBRep_Data::SimplClassify
+@@ -2141,9 +2141,9 @@ TopAbs_State HLRBRep_Data::SimplClassify
    Standard_Integer i;
    TopAbs_State state = TopAbs_IN;
  //  Standard_Boolean rej = Standard_False;

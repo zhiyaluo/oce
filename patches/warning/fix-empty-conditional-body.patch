@@ -196,7 +196,7 @@ Index: oce/src/RWStl/RWStl.cxx
    // skip header
 -  while (getc(file) != '\n');
 +  while (getc(file) != '\n') {}
- #ifdef DEB
+ #ifdef OCCT_DEBUG
    cout << "start mesh\n";
  #endif
 Index: oce/src/Resource/Resource_Manager.cxx

@@ -237,7 +237,7 @@ Index: oce/src/OpenGl/OpenGl_Context.cxx
 +  else
 +    caps = new OpenGl_Caps();
 +
- #if defined(MAC_OS_X_VERSION_10_3) && !defined(MACOSX_USE_GLX)
+ #if defined(__APPLE__) && !defined(MACOSX_USE_GLX)
    // Vendors can not extend functionality on this system
    // and developers are limited to OpenGL support provided by Mac OS X SDK.
 @@ -777,7 +781,7 @@ static void APIENTRY debugCallbackWrap(u
@@ -249,19 +249,6 @@ Index: oce/src/OpenGl/OpenGl_Context.cxx
  {
    OpenGl_Context* aCtx = (OpenGl_Context* )theUserParam;
    aCtx->PushMessage (theSource, theType, theId, theSeverity, theMessage);
-Index: oce/src/OpenGl/OpenGl_Flipper.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_Flipper.cxx
-+++ oce/src/OpenGl/OpenGl_Flipper.cxx
-@@ -194,7 +194,7 @@ void OpenGl_Flipper::Render (const Handl
-     glMatrixMode (GL_MODELVIEW);
-   }
- 
--  glLoadMatrixf ((GLfloat*) aMatrixMV);
-+  glLoadMatrixf (aMatrixMV.GetData());
- 
-   if (aCurrMode != GL_MODELVIEW)
-   {
 Index: oce/src/OpenGl/OpenGl_ShaderManager.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_ShaderManager.cxx
@@ -364,30 +351,26 @@ Index: oce/inc/BOPDS_Curve.hxx
 ===================================================================
 --- oce.orig/inc/BOPDS_Curve.hxx
 +++ oce/inc/BOPDS_Curve.hxx
-@@ -34,6 +34,9 @@
- #ifndef _Handle_BOPDS_PaveBlock_HeaderFile
+@@ -34,6 +34,7 @@
+ #include <Bnd_Box.hxx>
  #include <Handle_BOPDS_PaveBlock.hxx>
- #endif
-+#ifndef _BOPDS_PaveBlock_HeaderFile
-+#include <BOPDS_PaveBlock.hxx>
-+#endif
- #ifndef _Standard_Boolean_HeaderFile
  #include <Standard_Boolean.hxx>
- #endif
++#include <BOPDS_PaveBlock.hxx>
+ class IntTools_Curve;
+ class Bnd_Box;
+ class BOPDS_PaveBlock;
 Index: oce/inc/IntPatch_PrmPrmIntersection.hxx
 ===================================================================
 --- oce.orig/inc/IntPatch_PrmPrmIntersection.hxx
 +++ oce/inc/IntPatch_PrmPrmIntersection.hxx
-@@ -37,6 +37,9 @@
- #ifndef _Handle_IntPatch_Line_HeaderFile
+@@ -37,6 +37,7 @@
+ #include <Standard_Integer.hxx>
  #include <Handle_IntPatch_Line.hxx>
- #endif
-+#ifndef _IntPatch_Polyhedron_HeaderFile
-+#include <IntPatch_Polyhedron.hxx>
-+#endif
- #ifndef _Handle_IntSurf_LineOn2S_HeaderFile
  #include <Handle_IntSurf_LineOn2S.hxx>
- #endif
++#include <Handle_IntPatch_Polyhedron.hxx>
+ class Standard_OutOfRange;
+ class StdFail_NotDone;
+ class Adaptor3d_HSurface;
 Index: oce/src/StdPrs/StdPrs_HLRShape.hxx
 ===================================================================
 --- oce.orig/src/StdPrs/StdPrs_HLRShape.hxx
@@ -493,18 +476,8 @@ Index: oce/src/OpenGl/OpenGl_Workspace_Raytrace.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_Workspace_Raytrace.cxx
 +++ oce/src/OpenGl/OpenGl_Workspace_Raytrace.cxx
-@@ -2180,15 +2180,15 @@ Standard_Boolean OpenGl_Workspace::Raytr
-   {
-     for (Standard_Integer i = 0; i < 4; ++i)
-     {
--      aOrientationMatrix [4 * j + i] = theOrientation (i, j);
--      aViewMappingMatrix [4 * j + i] = theViewMapping (i, j);
-+      aOrientationMatrix.ChangeValue(i, j) = theOrientation (i, j);
-+      aViewMappingMatrix.ChangeValue(i, j) = theViewMapping (i, j);
-     }
-   }
-   
-   NCollection_Mat4<GLdouble> aInvOrientationMatrix;
+@@ -2180,7 +2180,7 @@ Standard_Boolean OpenGl_Workspace::Raytr
+   OpenGl_Mat4 aInvOrientationMatrix;
    aOrientationMatrix.Inverted (aInvOrientationMatrix);
  
 -  if (!UpdateRaytraceLightSources (aInvOrientationMatrix))
@@ -526,18 +499,6 @@ Index: oce/test/gp_test/gp_test.cpp
      ASSERT_EQ(1.0,T.Value(1,1));
      ASSERT_EQ(1.0,T.Value(2,2));
      ASSERT_EQ(1.0,T.Value(3,3));
-Index: oce/src/OpenGl/OpenGl_GlFunctions.hxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_GlFunctions.hxx
-+++ oce/src/OpenGl/OpenGl_GlFunctions.hxx
-@@ -36,6 +36,7 @@
- 
- // exclude modern definitions and system-provided glext.h, should be defined before gl.h inclusion
- #define GL_GLEXT_LEGACY
-+#define GLX_GLXEXT_LEGACY
- 
- // include main OpenGL header provided with system
- #if defined(__APPLE__) && !defined(MACOSX_USE_GLX)
 Index: oce/inc/Select3D_SensitiveTriangulation.lxx
 ===================================================================
 --- oce.orig/inc/Select3D_SensitiveTriangulation.lxx

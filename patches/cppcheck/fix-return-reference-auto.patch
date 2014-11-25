@@ -285,7 +285,7 @@ Index: oce/src/TopOpeBRepTool/TopOpeBRepTool_box.cxx
  {
    Handle(TopOpeBRepTool_HBoxTool) hbt = FBOX_GetHBoxTool();
 -  const Bnd_Box& b = hbt->Box(S);
- #ifdef DEB
+ #ifdef OCCT_DEBUG
    if (TopOpeBRepTool_GettraceBOX()) {
      Standard_Integer i = hbt->Index(S);
 @@ -50,5 +49,5 @@ Standard_EXPORT const Bnd_Box& FBOX_Box(

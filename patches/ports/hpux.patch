@@ -221,7 +221,7 @@ Index: oce/src/OSD/OSD_signal.cxx
 ===================================================================
 --- oce.orig/src/OSD/OSD_signal.cxx
 +++ oce/src/OSD/OSD_signal.cxx
-@@ -407,35 +407,6 @@ static void SegvHandler(const int theSig
+@@ -407,37 +407,6 @@ static void SegvHandler(const int theSig
    exit(SIGSEGV);
  }
  
@@ -248,9 +248,11 @@ Index: oce/src/OSD/OSD_signal.cxx
 -//    scp->sc_pcoq_tail = scp->sc_pcoq_tail + 0x4 ; l'intruction suivant le segv.
 -    }
 -  }
+-#ifdef OCCT_DEBUG
 -  else {
 -    cout << "Wrong undefined address." << endl ;
 -  }
+-#endif
 -  exit(SIGSEGV);
 -}
 -

@@ -3,14 +3,14 @@ Index: oce/inc/V3d_View.hxx
 --- oce.orig/inc/V3d_View.hxx
 +++ oce/inc/V3d_View.hxx
 @@ -857,7 +857,7 @@ public:
- //!  view on level of OpenGl_GraphicDriver; Please take it into account if <br>
- //!  you use it for your purposes; <br>
- //!  Warning: Works only under Windows. <br>
--  Standard_EXPORT     Standard_Boolean Print(const Aspect_Handle hPrnDC = 0,const Standard_Boolean showDialog = Standard_True,const Standard_Boolean showBackground = Standard_True,const Standard_CString filename = NULL,const Aspect_PrintAlgo printAlgorithm = Aspect_PA_STRETCH) const;
-+  Standard_EXPORT     Standard_Boolean Print(const Aspect_Handle hPrnDC = OCE_NULL_Aspect_Handle,const Standard_Boolean showDialog = Standard_True,const Standard_Boolean showBackground = Standard_True,const Standard_CString filename = NULL,const Aspect_PrintAlgo printAlgorithm = Aspect_PA_STRETCH) const;
-   //! Dumps the full contents of the view <br>
- //!           to a pixmap of pixel size <theWidth> * <theHeight> and <br>
- //!           buffer type <theBufferType>. If <theToKeepAspect> is true <br>
+   //! view on level of OpenGl_GraphicDriver; Please take it into account if
+   //! you use it for your purposes;
+   //! Warning: Works only under Windows.
+-  Standard_EXPORT   Standard_Boolean Print (const Aspect_Handle hPrnDC = 0, const Standard_Boolean showDialog = Standard_True, const Standard_Boolean showBackground = Standard_True, const Standard_CString filename = NULL, const Aspect_PrintAlgo printAlgorithm = Aspect_PA_STRETCH)  const;
++  Standard_EXPORT   Standard_Boolean Print (const Aspect_Handle hPrnDC = OCE_NULL_Aspect_Handle, const Standard_Boolean showDialog = Standard_True, const Standard_Boolean showBackground = Standard_True, const Standard_CString filename = NULL, const Aspect_PrintAlgo printAlgorithm = Aspect_PA_STRETCH)  const;
+   
+   //! Dumps the full contents of the view
+   //! to a pixmap of pixel size <theWidth> * <theHeight> and
 Index: oce/src/Aspect/Aspect_Handle.hxx
 ===================================================================
 --- oce.orig/src/Aspect/Aspect_Handle.hxx

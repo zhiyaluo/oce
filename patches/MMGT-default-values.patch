@@ -49,15 +49,21 @@ Index: oce/src/Standard/Standard.cxx
  //=======================================================================
  //class    : Standard_MMgrFactory 
  //purpose  : Container for pointer to memory manager;
-@@ -69,9 +91,9 @@ Standard_MMgrFactory::Standard_MMgrFacto
+@@ -69,7 +91,7 @@ Standard_MMgrFactory::Standard_MMgrFacto
  
    char* aVar;
    aVar = getenv ("MMGT_OPT");
 -  Standard_Integer anAllocId   = (aVar ?  atoi (aVar): OCCT_MMGT_OPT_DEFAULT);
 +  Standard_Integer anAllocId   = (aVar != NULL ?  atoi (aVar): MMGT_OPT_DEFAULT);
+ 
+ #if defined(_WIN32) && !defined(_WIN64)
+   static const DWORD _SSE2_FEATURE_BIT(0x04000000);
+@@ -69,7 +91,7 @@ Standard_MMgrFactory::Standard_MMgrFacto
+ #endif
+ 
    aVar = getenv ("MMGT_CLEAR");
 -  Standard_Boolean toClear     = (aVar ? (atoi (aVar) != 0) : Standard_True);
-+  Standard_Boolean toClear     = (aVar != NULL ? (atoi (aVar) != 0) : (MMGT_CLEAR_DEFAULT != 0));
++  Standard_Boolean toClear     = (aVar != NULL ? (atoi (aVar) != 0) : Standard_True);
  
    // on Windows (actual for XP and 2000) activate low fragmentation heap
    // for CRT heap in order to get best performance.

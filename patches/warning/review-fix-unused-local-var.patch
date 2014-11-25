@@ -33,7 +33,7 @@ Index: oce/src/ChFi3d/ChFi3d_Builder_C2.cxx
    Standard_Boolean isfirst2 = (Sens2 == 1);
 -  Stat1 = Corner1->Spine()->Status(isfirst1);
 -  Stat2 = Corner2->Spine()->Status(isfirst2);
- /*#ifdef DEB
+ /*#ifdef OCCT_DEBUG
    Standard_Boolean evolcoin = ((Stat1 == ChFiDS_OnSame && Stat2 == ChFiDS_OnDiff) || 
  			       (Stat2 == ChFiDS_OnSame && Stat1 == ChFiDS_OnDiff));
 Index: oce/src/DsgPrs/DsgPrs.cxx
@@ -44,13 +44,13 @@ Index: oce/src/DsgPrs/DsgPrs.cxx
        FilletCirc.SetRadius( Center.Distance( FirstPoint ) ); //***
        gp_Vec vec1( dir1 );
        vec1 *= FilletCirc.Radius();
--#ifdef DEB
+-#ifdef OCCT_DEBUG
 -      gp_Pnt p1 =
 -#endif
 -                  Center.Translated( vec1 );
        gp_Vec vec2( dir2 );
        vec2 *= FilletCirc.Radius();
--#ifdef DEB
+-#ifdef OCCT_DEBUG
 -      gp_Pnt p2 =
 -#endif
 -                  Center.Translated( vec2 );

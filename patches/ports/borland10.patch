@@ -91,7 +91,7 @@ Index: oce/src/STEPConstruct/STEPConstruct_ValidationProps.cxx
 @@ -674,7 +674,7 @@ Standard_Boolean STEPConstruct_Validatio
    else if ( Name == "VOLUME_MEASURE" ) isArea = Standard_False; 
    else {
- #ifdef DEB
+ #ifdef OCCT_DEBUG
 -    cout << "Warning: Measure " << Model()->StringLabel ( M ) << " is neither area not volume" << endl;
 +    cout << "Warning: Measure " << (const void*) Model()->StringLabel ( M ) << " is neither area not volume" << endl;
  #endif
@@ -100,7 +100,7 @@ Index: oce/src/STEPConstruct/STEPConstruct_ValidationProps.cxx
 @@ -697,7 +697,7 @@ Standard_Boolean STEPConstruct_Validatio
    Handle(StepGeom_CartesianPoint) P = Handle(StepGeom_CartesianPoint)::DownCast ( item );
    if ( P.IsNull() || P->NbCoordinates() != 3 ) {
- #ifdef DEB
+ #ifdef OCCT_DEBUG
 -    cout << "Warning: Point " << Model()->StringLabel ( P ) << " is not valid for centroid" << endl;
 +    cout << "Warning: Point " << (const void*) Model()->StringLabel ( P ) << " is not valid for centroid" << endl;
  #endif
@@ -126,11 +126,11 @@ Index: oce/src/UnitsAPI/UnitsAPI.cxx
 --- oce.orig/src/UnitsAPI/UnitsAPI.cxx
 +++ oce/src/UnitsAPI/UnitsAPI.cxx
 @@ -346,7 +346,7 @@ Standard_Real UnitsAPI::AnyToLS(const St
-     aValue = LocalSystemUnits.ConvertSIValueToUserSystem(quantity,aValue);
    }
+ #ifdef OCCT_DEBUG
    else
 -    cout<<"Warning: BAD Quantity returns in UnitsAPI::AnyToLS(" << aData << "," << aUnit << "," << aDim << ")" << endl;
 +    cout<<"Warning: BAD Quantity returns in UnitsAPI::AnyToLS(" << aData << "," << aUnit << "," << (const void*)aDim << ")" << endl;
+ #endif
    return aValue;
  }
- 
