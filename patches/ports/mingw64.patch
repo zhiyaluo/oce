@@ -97,7 +97,7 @@ Index: oce/src/BRepMesh/BRepMesh_DiscretFactory.cxx
    #endif
 +#endif
    }
- };
+ }
  
 Index: oce/src/Draw/Draw.cxx
 ===================================================================
@@ -179,3 +179,74 @@ Index: oce/src/Plugin/Plugin.cxx
      OSD_SharedLibrary theSharedLibrary(thePluginLibrary.ToCString());
      if(!theSharedLibrary.DlOpen(OSD_RTLD_LAZY)) {
        TCollection_AsciiString error(theSharedLibrary.DlError());
+Index: oce/src/OSD/OSD_OpenFile.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_OpenFile.cxx
++++ oce/src/OSD/OSD_OpenFile.cxx
+@@ -23,7 +23,7 @@ FILE* OSD_OpenFile(const char* theName,
+                    const char* theMode)
+ {
+   FILE* aFile = 0;
+-#ifdef _WIN32
++#if defined(_WIN32) && !defined(__MINGW32__) && !defined(__MINGW64__)
+   // file name is treated as UTF-8 string and converted to UTF-16 one
+   const TCollection_ExtendedString aFileNameW (theName, Standard_True);
+   const TCollection_ExtendedString aFileModeW (theMode, Standard_True);
+@@ -43,7 +43,7 @@ FILE* OSD_OpenFile(const TCollection_Ext
+                    const char* theMode)
+ {
+   FILE* aFile = 0;
+-#ifdef _WIN32
++#if defined(_WIN32) && !defined(__MINGW32__) && !defined(__MINGW64__)
+   const TCollection_ExtendedString aFileModeW (theMode, Standard_True);
+   aFile = ::_wfopen ((const wchar_t* )theName.ToExtString(),
+                      (const wchar_t* )aFileModeW.ToExtString());
+@@ -63,7 +63,7 @@ void OSD_OpenFileBuf(std::filebuf& theBu
+                      const char* theName,
+                      const std::ios_base::openmode theMode)
+ {
+-#ifdef _WIN32
++#if defined(_WIN32) && !defined(__MINGW32__) && !defined(__MINGW64__)
+   // file name is treated as UTF-8 string and converted to UTF-16 one
+   const TCollection_ExtendedString aFileNameW (theName, Standard_True);
+   theBuff.open ((const wchar_t* )aFileNameW.ToExtString(), theMode);
+@@ -80,7 +80,7 @@ void OSD_OpenFileBuf(std::filebuf& theBu
+                      const TCollection_ExtendedString& theName,
+                      const std::ios_base::openmode theMode)
+ {
+-#ifdef _WIN32
++#if defined(_WIN32) && !defined(__MINGW32__) && !defined(__MINGW64__)
+   theBuff.open ((const wchar_t* )theName.ToExtString(), theMode);
+ #else
+   // conversion in UTF-8 for linux
+@@ -97,7 +97,7 @@ void OSD_OpenStream(std::ofstream& theSt
+                     const char* theName,
+                     const std::ios_base::openmode theMode)
+ {
+-#ifdef _WIN32
++#if defined(_WIN32) && !defined(__MINGW32__) && !defined(__MINGW64__)
+   // file name is treated as UTF-8 string and converted to UTF-16 one
+   const TCollection_ExtendedString aFileNameW (theName, Standard_True);
+   theStream.open ((const wchar_t* )aFileNameW.ToExtString(), theMode);
+@@ -114,7 +114,7 @@ void OSD_OpenStream(std::ofstream& theSt
+                     const TCollection_ExtendedString& theName,
+                     const std::ios_base::openmode theMode)
+ {
+-#ifdef _WIN32
++#if defined(_WIN32) && !defined(__MINGW32__) && !defined(__MINGW64__)
+   theStream.open ((const wchar_t* )theName.ToExtString(), theMode);
+ #else
+   // conversion in UTF-8 for linux
+Index: oce/src/OSD/OSD_WNT_1.hxx
+===================================================================
+--- oce.orig/src/OSD/OSD_WNT_1.hxx
++++ oce/src/OSD/OSD_WNT_1.hxx
+@@ -35,7 +35,7 @@
+ #  endif
+ # endif  /* OSDAPI */
+ 
+-#if defined(__CYGWIN32__) || defined(__MINGW32__)
++#if defined(__CYGWIN32__)
+ #define _TINT int
+ #endif
+ 

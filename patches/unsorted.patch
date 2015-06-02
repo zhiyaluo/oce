@@ -1,16 +1,3 @@
-Index: oce/src/BOPAlgo/BOPAlgo_Builder_3.cxx
-===================================================================
---- oce.orig/src/BOPAlgo/BOPAlgo_Builder_3.cxx
-+++ oce/src/BOPAlgo/BOPAlgo_Builder_3.cxx
-@@ -310,6 +310,8 @@ void BOPAlgo_Builder::FillIn3DParts
-     aSelector.Clear();
-     aSelector.SetBox(aBoxS);
-     //
-+    aBBTree.Select(aSelector);
-+    //
-     const BOPCol_ListOfInteger& aLIFP=aSelector.Indices();
-     //
-     // 2.5. Collect faces that are IN aSolid [ aLFIN ]
 Index: oce/src/BRepAlgo/BRepAlgo_Tool.cxx
 ===================================================================
 --- oce.orig/src/BRepAlgo/BRepAlgo_Tool.cxx
@@ -35,7 +22,7 @@ Index: oce/src/BRepAlgo/BRepAlgo_Tool.cxx
 -      if (NbSub == 0)
 +      if (!NbSub)
          {
- #ifdef DEB
+ #ifdef OCCT_DEBUG
          cout << "No subhape in shape!" << endl;
 Index: oce/src/Draw/Draw.cxx
 ===================================================================
@@ -220,7 +207,7 @@ Index: oce/src/OpenGl/OpenGl_Context.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_Context.cxx
 +++ oce/src/OpenGl/OpenGl_Context.cxx
-@@ -87,7 +87,6 @@ OpenGl_Context::OpenGl_Context (const Ha
+@@ -79,7 +79,6 @@ OpenGl_Context::OpenGl_Context (const Ha
    core43back (NULL),
    core44     (NULL),
    core44back (NULL),
@@ -228,7 +215,7 @@ Index: oce/src/OpenGl/OpenGl_Context.cxx
  #if defined(GL_ES_VERSION_2_0)
    hasHighp   (Standard_False),
    hasTexRGBA8(Standard_False),
-@@ -127,6 +126,11 @@ OpenGl_Context::OpenGl_Context (const Ha
+@@ -123,6 +122,11 @@ OpenGl_Context::OpenGl_Context (const Ha
  #endif
    myDrawBuffer (0)
  {
@@ -240,7 +227,7 @@ Index: oce/src/OpenGl/OpenGl_Context.cxx
  #if defined(__APPLE__) && !defined(MACOSX_USE_GLX)
    // Vendors can not extend functionality on this system
    // and developers are limited to OpenGL support provided by Mac OS X SDK.
-@@ -777,7 +781,7 @@ static void APIENTRY debugCallbackWrap(u
+@@ -798,7 +802,7 @@ static void APIENTRY debugCallbackWrap(u
                                         unsigned int theSeverity,
                                         int          /*theLength*/,
                                         const char*  theMessage,
@@ -249,11 +236,29 @@ Index: oce/src/OpenGl/OpenGl_Context.cxx
  {
    OpenGl_Context* aCtx = (OpenGl_Context* )theUserParam;
    aCtx->PushMessage (theSource, theType, theId, theSeverity, theMessage);
+@@ -2224,7 +2228,7 @@ void OpenGl_Context::ApplyModelWorldMatr
+   if (core11 != NULL)
+   {
+     core11->glMatrixMode (GL_MODELVIEW);
+-    core11->glLoadMatrixf (ModelWorldState.Current());
++    core11->glLoadMatrixf (ModelWorldState.Current().GetData());
+   }
+ #endif
+ 
+@@ -2244,7 +2248,7 @@ void OpenGl_Context::ApplyWorldViewMatri
+   if (core11 != NULL)
+   {
+     core11->glMatrixMode (GL_MODELVIEW);
+-    core11->glLoadMatrixf (WorldViewState.Current());
++    core11->glLoadMatrixf (WorldViewState.Current().GetData());
+   }
+ #endif
+ 
 Index: oce/src/OpenGl/OpenGl_ShaderManager.cxx
 ===================================================================
 --- oce.orig/src/OpenGl/OpenGl_ShaderManager.cxx
 +++ oce/src/OpenGl/OpenGl_ShaderManager.cxx
-@@ -822,7 +822,7 @@ static void PushAspectFace (const Handle
+@@ -847,7 +847,7 @@ static void PushAspectFace (const Handle
  {
    theProgram->SetUniform (theCtx,
                            theProgram->GetStateLocation (OpenGl_OCCT_TEXTURE_ENABLE),
@@ -326,7 +331,7 @@ Index: oce/src/TObj/TObj_Model.cxx
 ===================================================================
 --- oce.orig/src/TObj/TObj_Model.cxx
 +++ oce/src/TObj/TObj_Model.cxx
-@@ -232,7 +232,7 @@ Handle(TCollection_HAsciiString) TObj_Mo
+@@ -233,7 +233,7 @@ Handle(TCollection_HAsciiString) TObj_Mo
    TCollection_AsciiString aPath (aDoc->GetPath());
    return !aPath.IsEmpty()
         ? new TCollection_HAsciiString (aPath)
@@ -351,7 +356,7 @@ Index: oce/inc/BOPDS_Curve.hxx
 ===================================================================
 --- oce.orig/inc/BOPDS_Curve.hxx
 +++ oce/inc/BOPDS_Curve.hxx
-@@ -34,6 +34,7 @@
+@@ -17,6 +17,7 @@
  #include <Bnd_Box.hxx>
  #include <Handle_BOPDS_PaveBlock.hxx>
  #include <Standard_Boolean.hxx>
@@ -363,11 +368,11 @@ Index: oce/inc/IntPatch_PrmPrmIntersection.hxx
 ===================================================================
 --- oce.orig/inc/IntPatch_PrmPrmIntersection.hxx
 +++ oce/inc/IntPatch_PrmPrmIntersection.hxx
-@@ -37,6 +37,7 @@
+@@ -18,6 +18,7 @@
  #include <Standard_Integer.hxx>
  #include <Handle_IntPatch_Line.hxx>
  #include <Handle_IntSurf_LineOn2S.hxx>
-+#include <Handle_IntPatch_Polyhedron.hxx>
++#include <IntPatch_Polyhedron.hxx>
  class Standard_OutOfRange;
  class StdFail_NotDone;
  class Adaptor3d_HSurface;
@@ -447,7 +452,7 @@ Index: oce/src/IntPatch/IntPatch_InterferencePolyhedron.cxx
 ===================================================================
 --- oce.orig/src/IntPatch/IntPatch_InterferencePolyhedron.cxx
 +++ oce/src/IntPatch/IntPatch_InterferencePolyhedron.cxx
-@@ -899,7 +899,7 @@ Standard_Boolean IntPatch_InterferencePo
+@@ -901,7 +901,7 @@ Standard_Boolean IntPatch_InterferencePo
  	if (nob<0) break;
        }
        if (nob>=0) {
@@ -472,19 +477,6 @@ Index: oce/src/LDOM/LDOMBasicString.cxx
    myType    = anOther.Type();
    switch (myType) {
    case LDOM_AsciiFree:
-Index: oce/src/OpenGl/OpenGl_Workspace_Raytrace.cxx
-===================================================================
---- oce.orig/src/OpenGl/OpenGl_Workspace_Raytrace.cxx
-+++ oce/src/OpenGl/OpenGl_Workspace_Raytrace.cxx
-@@ -2180,7 +2180,7 @@ Standard_Boolean OpenGl_Workspace::Raytr
-   OpenGl_Mat4 aInvOrientationMatrix;
-   aOrientationMatrix.Inverted (aInvOrientationMatrix);
- 
--  if (!UpdateRaytraceLightSources (aInvOrientationMatrix))
-+  if (!UpdateRaytraceLightSources (aInvOrientationMatrix.GetData()))
-     return Standard_False;
- 
-   OpenGl_Vec3 aOrigins[4];
 Index: oce/test/gp_test/gp_test.cpp
 ===================================================================
 --- oce.orig/test/gp_test/gp_test.cpp
@@ -552,3 +544,77 @@ Index: oce/src/OSD/OSD.cxx
  # define SLEEP(NSEC)                 Sleep(1000*(NSEC))
  #else
  # define SLEEP(NSEC)                 sleep(NSEC)
+Index: oce/src/OpenGl/OpenGl_Workspace.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_Workspace.cxx
++++ oce/src/OpenGl/OpenGl_Workspace.cxx
+@@ -375,7 +375,7 @@ void OpenGl_Workspace::setTextureParams
+   OpenGl_Utils::Scale     (aTextureMat,  aScale.x(),  aScale.y(), 1.0f);
+   OpenGl_Utils::Translate (aTextureMat, -aTrans.x(), -aTrans.y(), 0.0f);
+   OpenGl_Utils::Rotate    (aTextureMat, -aParams->Rotation(), 0.0f, 0.0f, 1.0f);
+-  glLoadMatrixf (aTextureMat);
++  glLoadMatrixf (aTextureMat.GetData());
+ 
+   // setup generation of texture coordinates
+   switch (aParams->GenMode())
+Index: oce/src/OpenGl/OpenGl_ShaderProgram.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_ShaderProgram.cxx
++++ oce/src/OpenGl/OpenGl_ShaderProgram.cxx
+@@ -26,7 +26,7 @@
+ #include <OpenGl_ShaderManager.hxx>
+ #include <OpenGl_ArbTexBindless.hxx>
+ 
+-#ifdef __BORLANDC__
++#if defined(__BORLANDC__) || defined(__MINGW32__)
+ #include <malloc.h>
+ #endif
+ 
+@@ -1075,7 +1075,7 @@ Standard_Boolean OpenGl_ShaderProgram::S
+     return Standard_False;
+   }
+ 
+-  theCtx->core20->glUniformMatrix4fv (theLocation, 1, GL_FALSE, theTranspose ? theValue.Transposed() : theValue);
++  theCtx->core20->glUniformMatrix4fv (theLocation, 1, GL_FALSE, theTranspose ? theValue.Transposed().GetData() : theValue.GetData());
+   return Standard_True;
+ }
+ 
+Index: oce/src/OpenGl/OpenGl_Text.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_Text.cxx
++++ oce/src/OpenGl/OpenGl_Text.cxx
+@@ -474,7 +474,7 @@ void OpenGl_Text::setupMatrix (const Han
+                                             std::floor (myWinY + theDVec.y()),
+                                             myWinZ + theDVec.z(),
+                                             OpenGl_Mat4d::Map (THE_IDENTITY_MATRIX),
+-                                            OpenGl_Mat4d::Map (myProjMatrix),
++                                            OpenGl_Mat4d::Map (myProjMatrix.GetData()),
+                                             myViewport,
+                                             anObjX,
+                                             anObjY,
+Index: oce/src/OpenGl/OpenGl_ShaderObject.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_ShaderObject.cxx
++++ oce/src/OpenGl/OpenGl_ShaderObject.cxx
+@@ -20,7 +20,7 @@
+ #include <Standard_Assert.hxx>
+ #include <TCollection_AsciiString.hxx>
+ 
+-#ifdef __BORLANDC__
++#if defined(__BORLANDC__) || defined(__MINGW32__)
+ #include <malloc.h>
+ #endif
+ 
+Index: oce/src/Standard/Standard_Version.hxx
+===================================================================
+--- oce.orig/src/Standard/Standard_Version.hxx
++++ oce/src/Standard/Standard_Version.hxx
+@@ -13,6 +13,8 @@
+ // Alternatively, this file may be used under the terms of Open CASCADE
+ // commercial license or contractual agreement.
+ 
++#include "oce-config.h"
++
+ /*======================================================================
+ // 
+ // Purpose:   Defines macros identifying current version of Open CASCADE

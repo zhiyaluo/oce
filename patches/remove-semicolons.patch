@@ -1,0 +1,431 @@
+commit 638999b49172205ffa49685ea2936d49be5df7d6
+Author: Mario Lang <mlang@delysid.org>
+Date:   Fri Jan 30 12:27:11 2015 +0100
+
+    Remove extraneous semicolons after end of namespaces.
+
+Index: oce/src/AIS/AIS_AngleDimension.cxx
+===================================================================
+--- oce.orig/src/AIS/AIS_AngleDimension.cxx
++++ oce/src/AIS/AIS_AngleDimension.cxx
+@@ -60,7 +60,7 @@ namespace
+   static const Standard_Real              THE_EMPTY_LABEL_WIDTH = 0.0;
+   static const Standard_ExtCharacter      THE_DEGREE_SYMBOL (0x00B0);
+   static const Standard_Real              THE_3D_TEXT_MARGIN = 0.1;
+-};
++}
+ 
+ //=======================================================================
+ //function : Constructor
+Index: oce/src/AIS/AIS_DiameterDimension.cxx
+===================================================================
+--- oce.orig/src/AIS/AIS_DiameterDimension.cxx
++++ oce/src/AIS/AIS_DiameterDimension.cxx
+@@ -31,7 +31,7 @@ IMPLEMENT_STANDARD_RTTIEXT (AIS_Diameter
+ namespace
+ {
+   static const Standard_ExtCharacter THE_DIAMETER_SYMBOL (0x00D8);
+-};
++}
+ 
+ //=======================================================================
+ //function : Constructor
+Index: oce/src/AIS/AIS_Dimension.cxx
+===================================================================
+--- oce.orig/src/AIS/AIS_Dimension.cxx
++++ oce/src/AIS/AIS_Dimension.cxx
+@@ -91,7 +91,7 @@ namespace
+   // default selection priorities
+   static const Standard_Integer THE_NEUTRAL_SEL_PRIORITY = 5;
+   static const Standard_Integer THE_LOCAL_SEL_PRIORITY   = 6;
+-};
++}
+ 
+ //=======================================================================
+ //function : Constructor
+Index: oce/src/AIS/AIS_DimensionOwner.cxx
+===================================================================
+--- oce.orig/src/AIS/AIS_DimensionOwner.cxx
++++ oce/src/AIS/AIS_DimensionOwner.cxx
+@@ -38,7 +38,7 @@ namespace
+         return AIS_Dimension::ComputeMode_All;
+     }
+   }
+-};
++}
+ 
+ //=======================================================================
+ //function : Constructor
+Index: oce/src/AIS/AIS_InteractiveContext.cxx
+===================================================================
+--- oce.orig/src/AIS/AIS_InteractiveContext.cxx
++++ oce/src/AIS/AIS_InteractiveContext.cxx
+@@ -109,7 +109,7 @@ namespace
+     return TCollection_AsciiString ("AIS_CurContext_")
+          + TCollection_AsciiString (Standard_Atomic_Increment (&THE_AIS_INDEX_CUR));
+   }
+-};
++}
+ 
+ //=======================================================================
+ //function : AIS_InteractiveContext
+Index: oce/src/AIS/AIS_RadiusDimension.cxx
+===================================================================
+--- oce.orig/src/AIS/AIS_RadiusDimension.cxx
++++ oce/src/AIS/AIS_RadiusDimension.cxx
+@@ -27,7 +27,7 @@ IMPLEMENT_STANDARD_RTTIEXT (AIS_RadiusDi
+ namespace
+ {
+   static const Standard_ExtCharacter THE_RADIUS_SYMBOL ('R');
+-};
++}
+ 
+ //=======================================================================
+ //function : Constructor
+Index: oce/src/BRepMesh/BRepMesh_DiscretFactory.cxx
+===================================================================
+--- oce.orig/src/BRepMesh/BRepMesh_DiscretFactory.cxx
++++ oce/src/BRepMesh/BRepMesh_DiscretFactory.cxx
+@@ -45,7 +45,7 @@ namespace
+     theLibName += ".so";
+   #endif
+   }
+-};
++}
+ 
+ //=======================================================================
+ //function : BRepMesh_DiscretFactory
+Index: oce/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
+===================================================================
+--- oce.orig/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
++++ oce/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
+@@ -63,7 +63,7 @@ namespace
+   //! Default flag to control parallelization for BRepMesh_IncrementalMesh
+   //! tool returned for Mesh Factory
+   static Standard_Boolean IS_IN_PARALLEL = Standard_False;
+-};
++}
+ 
+ IMPLEMENT_STANDARD_HANDLE (BRepMesh_IncrementalMesh, BRepMesh_DiscretRoot)
+ IMPLEMENT_STANDARD_RTTIEXT(BRepMesh_IncrementalMesh, BRepMesh_DiscretRoot)
+Index: oce/src/Font/Font_BRepFont.cxx
+===================================================================
+--- oce.orig/src/Font/Font_BRepFont.cxx
++++ oce/src/Font/Font_BRepFont.cxx
+@@ -59,7 +59,7 @@ namespace
+     return theSize / Standard_Real(THE_FONT_SIZE) * 72.0 / Standard_Real(THE_RESOLUTION_DPI);
+   }
+ 
+-};
++}
+ 
+ // =======================================================================
+ // function : Constructor
+Index: oce/src/Font/Font_FontMgr.cxx
+===================================================================
+--- oce.orig/src/Font/Font_FontMgr.cxx
++++ oce/src/Font/Font_FontMgr.cxx
+@@ -84,7 +84,7 @@ static const Font_FontMgr_FontAliasMapNo
+       NULL
+     };
+ 
+-  };
++  }
+ 
+ #else
+ 
+@@ -155,7 +155,7 @@ static const Font_FontMgr_FontAliasMapNo
+       }
+     }
+ 
+-  };
++  }
+ 
+ #endif
+ 
+Index: oce/src/Graphic3d/Graphic3d_Camera.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d_Camera.cxx
++++ oce/src/Graphic3d/Graphic3d_Camera.cxx
+@@ -41,7 +41,7 @@ namespace
+ 
+   // minimum camera distance
+   static const Standard_Real MIN_DISTANCE = Pow (0.1, ShortRealDigits() - 2);
+-};
++}
+ 
+ // =======================================================================
+ // function : Graphic3d_Camera
+Index: oce/src/Graphic3d/Graphic3d_ClipPlane.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d_ClipPlane.cxx
++++ oce/src/Graphic3d/Graphic3d_ClipPlane.cxx
+@@ -24,7 +24,7 @@ IMPLEMENT_STANDARD_RTTIEXT(Graphic3d_Cli
+ namespace
+ {
+   static volatile Standard_Integer THE_CLIP_PLANE_COUNTER = 0;
+-};
++}
+ 
+ // =======================================================================
+ // function : Graphic3d_ClipPlane
+Index: oce/src/Graphic3d/Graphic3d_MarkerImage.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d_MarkerImage.cxx
++++ oce/src/Graphic3d/Graphic3d_MarkerImage.cxx
+@@ -22,7 +22,7 @@
+ namespace
+ {
+   static volatile Standard_Integer THE_MARKER_IMAGE_COUNTER = 0;
+-};
++}
+ 
+ IMPLEMENT_STANDARD_HANDLE (Graphic3d_MarkerImage, Standard_Transient)
+ IMPLEMENT_STANDARD_RTTIEXT(Graphic3d_MarkerImage, Standard_Transient)
+Index: oce/src/Graphic3d/Graphic3d_ShaderObject.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d_ShaderObject.cxx
++++ oce/src/Graphic3d/Graphic3d_ShaderObject.cxx
+@@ -22,7 +22,7 @@
+ namespace
+ {
+   static volatile Standard_Integer THE_SHADER_OBJECT_COUNTER = 0;
+-};
++}
+ 
+ IMPLEMENT_STANDARD_HANDLE (Graphic3d_ShaderObject, Standard_Transient)
+ IMPLEMENT_STANDARD_RTTIEXT(Graphic3d_ShaderObject, Standard_Transient)
+Index: oce/src/Graphic3d/Graphic3d_ShaderProgram.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d_ShaderProgram.cxx
++++ oce/src/Graphic3d/Graphic3d_ShaderProgram.cxx
+@@ -31,7 +31,7 @@
+ namespace
+ {
+   static volatile Standard_Integer THE_PROGRAM_OBJECT_COUNTER = 0;
+-};
++}
+ 
+ IMPLEMENT_STANDARD_HANDLE (Graphic3d_ShaderProgram, Standard_Transient)
+ IMPLEMENT_STANDARD_RTTIEXT(Graphic3d_ShaderProgram, Standard_Transient)
+Index: oce/src/Graphic3d/Graphic3d_TextureRoot.cxx
+===================================================================
+--- oce.orig/src/Graphic3d/Graphic3d_TextureRoot.cxx
++++ oce/src/Graphic3d/Graphic3d_TextureRoot.cxx
+@@ -33,7 +33,7 @@
+ namespace
+ {
+   static volatile Standard_Integer THE_TEXTURE_COUNTER = 0;
+-};
++}
+ 
+ // =======================================================================
+ // function : TexturesFolder
+Index: oce/src/Image/Image_Diff.cxx
+===================================================================
+--- oce.orig/src/Image/Image_Diff.cxx
++++ oce/src/Image/Image_Diff.cxx
+@@ -126,7 +126,7 @@ namespace
+         || theFormat == Image_PixMap::ImgRGBA
+         || theFormat == Image_PixMap::ImgBGRA;
+   }
+-};
++}
+ 
+ // =======================================================================
+ // function : Image_Diff
+Index: oce/src/Intf/Intf_InterferencePolygon2d.cxx
+===================================================================
+--- oce.orig/src/Intf/Intf_InterferencePolygon2d.cxx
++++ oce/src/Intf/Intf_InterferencePolygon2d.cxx
+@@ -31,7 +31,7 @@
+ namespace
+ {
+   static const Standard_Real PRCANG = Precision::Angular();
+-};
++}
+ 
+ //=======================================================================
+ //function : Intf_InterferencePolygon2d
+Index: oce/src/NCollection/NCollection_BaseAllocator.cxx
+===================================================================
+--- oce.orig/src/NCollection/NCollection_BaseAllocator.cxx
++++ oce/src/NCollection/NCollection_BaseAllocator.cxx
+@@ -173,7 +173,7 @@ Standard_EXPORT void StandardCallBack_Re
+ namespace {
+   // dummy function for break point
+   inline void place_for_break_point () {}
+-};
++}
+ 
+ //=======================================================================
+ //function : StandardCallBack
+Index: oce/src/OSD/OSD_MAllocHook.cxx
+===================================================================
+--- oce.orig/src/OSD/OSD_MAllocHook.cxx
++++ oce/src/OSD/OSD_MAllocHook.cxx
+@@ -48,7 +48,7 @@ namespace {
+       // otherwise compiler does not leave a place for break point
+       debug_counter++;
+   }
+-};
++}
+ 
+ //=======================================================================
+ //function : GetCallback
+Index: oce/src/OpenGl/OpenGl_AspectFace.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_AspectFace.cxx
++++ oce/src/OpenGl/OpenGl_AspectFace.cxx
+@@ -44,7 +44,7 @@ namespace
+   };
+ 
+   static const TCollection_AsciiString THE_EMPTY_KEY;
+-};
++}
+ 
+ // =======================================================================
+ // function : convertMaterial
+Index: oce/src/OpenGl/OpenGl_AspectLine.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_AspectLine.cxx
++++ oce/src/OpenGl/OpenGl_AspectLine.cxx
+@@ -25,7 +25,7 @@ namespace
+ {
+   static const TEL_COLOUR myDefaultColor = {{ 1.0F, 1.0F, 1.0F, 1.0F }};
+   static const TCollection_AsciiString THE_EMPTY_KEY;
+-};
++}
+ 
+ // =======================================================================
+ // function : OpenGl_AspectLine
+Index: oce/src/OpenGl/OpenGl_AspectText.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_AspectText.cxx
++++ oce/src/OpenGl/OpenGl_AspectText.cxx
+@@ -25,7 +25,7 @@ namespace
+ {
+   static const TEL_COLOUR TheDefaultColor = {{ 1.0F, 1.0F, 1.0F, 1.0F }};
+   static const TCollection_AsciiString THE_EMPTY_KEY;
+-};
++}
+ 
+ // =======================================================================
+ // function : OpenGl_AspectText
+Index: oce/src/OpenGl/OpenGl_Text.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_Text.cxx
++++ oce/src/OpenGl/OpenGl_Text.cxx
+@@ -135,7 +135,7 @@ namespace
+   }
+ #endif
+ 
+-};
++}
+ 
+ // =======================================================================
+ // function : OpenGl_Text
+Index: oce/src/OpenGl/OpenGl_TextFormatter.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_TextFormatter.cxx
++++ oce/src/OpenGl/OpenGl_TextFormatter.cxx
+@@ -83,7 +83,7 @@ namespace
+     return theVec;
+   }
+ 
+-};
++}
+ 
+ IMPLEMENT_STANDARD_HANDLE (OpenGl_TextFormatter, Standard_Transient)
+ IMPLEMENT_STANDARD_RTTIEXT(OpenGl_TextFormatter, Standard_Transient)
+Index: oce/src/OpenGl/OpenGl_View_2.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_View_2.cxx
++++ oce/src/OpenGl/OpenGl_View_2.cxx
+@@ -46,7 +46,7 @@ namespace
+   static const GLfloat THE_DEFAULT_SPOT_EXPONENT = 0.0f;
+   static const GLfloat THE_DEFAULT_SPOT_CUTOFF   = 180.0f;
+ 
+-};
++}
+ 
+ extern void InitLayerProp (const int theListId); //szvgl: defined in OpenGl_GraphicDriver_Layer.cxx
+ 
+Index: oce/src/OpenGl/OpenGl_Workspace.cxx
+===================================================================
+--- oce.orig/src/OpenGl/OpenGl_Workspace.cxx
++++ oce/src/OpenGl/OpenGl_Workspace.cxx
+@@ -63,7 +63,7 @@ namespace
+      { 0.0F, 0.0F, 0.0F, 1.0F }}
+   };
+ 
+-};
++}
+ 
+ // =======================================================================
+ // function : Init
+Index: oce/src/Prs3d/Prs3d_WFShape.cxx
+===================================================================
+--- oce.orig/src/Prs3d/Prs3d_WFShape.cxx
++++ oce/src/Prs3d/Prs3d_WFShape.cxx
+@@ -60,7 +60,7 @@ namespace
+         && aWU  == aWV;
+   }
+ 
+-};
++}
+ 
+ // =========================================================================
+ // function: AddPolygon
+Index: oce/src/STEPControl/STEPControl_ActorRead.cxx
+===================================================================
+--- oce.orig/src/STEPControl/STEPControl_ActorRead.cxx
++++ oce/src/STEPControl/STEPControl_ActorRead.cxx
+@@ -195,7 +195,7 @@ namespace {
+   // The better way is to pass this information via binder or via TopoDS_Shape itself, however,
+   // this is very specific info to do so...
+   Standard_Boolean NM_DETECTED = Standard_False;
+-};
++}
+ 
+ // ============================================================================
+ // Method  : STEPControl_ActorRead::STEPControl_ActorRead  ()    
+Index: oce/src/SelectMgr/SelectMgr_ViewerSelector.cxx
+===================================================================
+--- oce.orig/src/SelectMgr/SelectMgr_ViewerSelector.cxx
++++ oce/src/SelectMgr/SelectMgr_ViewerSelector.cxx
+@@ -74,7 +74,7 @@ namespace
+       DepthMax = Min (DepthMax, theOther.DepthMax);
+     }
+   };
+-};
++}
+ 
+ //==================================================
+ // Function: Initialize
+Index: oce/src/StdPrs/StdPrs_ShadedShape.cxx
+===================================================================
+--- oce.orig/src/StdPrs/StdPrs_ShadedShape.cxx
++++ oce/src/StdPrs/StdPrs_ShadedShape.cxx
+@@ -433,7 +433,7 @@ namespace
+     aPrsGrp->SetGroupPrimitivesAspect (aBoundaryAspect);
+     aPrsGrp->AddPrimitiveArray (aSegments);
+   }
+-};
++}
+ 
+ // =======================================================================
+ // function : Add
+Index: oce/src/Xw/Xw_Window.cxx
+===================================================================
+--- oce.orig/src/Xw/Xw_Window.cxx
++++ oce/src/Xw/Xw_Window.cxx
+@@ -36,7 +36,7 @@ namespace
+     None
+   };
+ 
+-};
++}
+ 
+ IMPLEMENT_STANDARD_HANDLE (Xw_Window, Aspect_Window)
+ IMPLEMENT_STANDARD_RTTIEXT(Xw_Window, Aspect_Window)

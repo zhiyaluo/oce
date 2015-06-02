@@ -2,14 +2,15 @@ Index: oce/.travis.build.sh
 ===================================================================
 --- /dev/null
 +++ oce/.travis.build.sh
-@@ -0,0 +1,49 @@
+@@ -0,0 +1,50 @@
 +#! /bin/sh
 +set -e
 +
 +
 +#  Default values
-+: ${OCE_USE_PCH=OFF}
-+: ${OCE_COPY_HEADERS_BUILD=OFF}
++: "${OCE_USE_PCH=OFF}"
++: "${OCE_COPY_HEADERS_BUILD=OFF}"
++: "${OCE_MULTITHREAD_LIBRARY=NONE}"
 +
 +echo "Timestamp" && date
 +cmake -DOCE_ENABLE_DEB_FLAG:BOOL=OFF \
@@ -20,11 +21,11 @@ Index: oce/.travis.build.sh
 +      -DOCE_VISUALISATION:BOOL=ON \
 +      -DOCE_OCAF:BOOL=ON \
 +      -DOCE_DATAEXCHANGE:BOOL=ON \
-+      -DOCE_USE_PCH:BOOL=${OCE_USE_PCH} \
-+      -DOCE_COPY_HEADERS_BUILD:BOOL=${OCE_COPY_HEADERS_BUILD} \
++      -DOCE_USE_PCH:BOOL="${OCE_USE_PCH}" \
++      -DOCE_COPY_HEADERS_BUILD:BOOL="${OCE_COPY_HEADERS_BUILD}" \
 +      -DOCE_WITH_GL2PS:BOOL=ON \
 +      -DOCE_WITH_FREEIMAGE:BOOL=ON \
-+      -DOCE_MULTITHREAD_LIBRARY:STRING=NONE \
++      -DOCE_MULTITHREAD_LIBRARY:STRING="${OCE_MULTITHREAD_LIBRARY}" \
 +      ..
 +echo ""
 +echo "Timestamp" && date
@@ -102,7 +103,7 @@ Index: oce/.travis.yml
 ===================================================================
 --- /dev/null
 +++ oce/.travis.yml
-@@ -0,0 +1,62 @@
+@@ -0,0 +1,66 @@
 +language: cpp
 +compiler:
 +  - gcc
@@ -123,6 +124,10 @@ Index: oce/.travis.yml
 +    env: OCE_USE_PCH=ON  OCE_COPY_HEADERS_BUILD=ON
 +  - compiler: gcc
 +    env: OCE_USE_PCH=OFF OCE_COPY_HEADERS_BUILD=ON
++  - compiler: gcc
++    env: OCE_USE_PCH=OFF OCE_COPY_HEADERS_BUILD=ON OCE_MULTITHREAD_LIBRARY=OPENMP
++  - compiler: gcc
++    env: OCE_USE_PCH=OFF OCE_COPY_HEADERS_BUILD=ON OCE_MULTITHREAD_LIBRARY=TBB
 +  exclude:
 +  - env: RUN_TESTS=false OCE_USE_PCH=ON OCE_COPY_HEADERS_BUILD=OFF
 +  allow_failures:
@@ -132,7 +137,7 @@ Index: oce/.travis.yml
 +      env: OCE_USE_PCH=ON  OCE_COPY_HEADERS_BUILD=OFF
 +
 +before_install:
-+  - sudo apt-get install tcl8.5-dev tk8.5-dev libgl2ps-dev libfreeimage-dev
++  - sudo apt-get install tcl8.5-dev tk8.5-dev libgl2ps-dev libfreeimage-dev libtbb-dev
 +#  Needed to run OCCT tests in parallel
 +  - sudo apt-get install tclthread
 +#  Is this needed to run OCCT tests?

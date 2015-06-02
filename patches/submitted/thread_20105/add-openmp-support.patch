@@ -51,7 +51,7 @@ Index: oce/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
 ===================================================================
 --- oce.orig/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
 +++ oce/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
-@@ -161,21 +161,26 @@ void BRepMesh_IncrementalMesh::update()
+@@ -160,21 +160,26 @@ Standard_Boolean BRepMesh_IncrementalMes
  
    BRepMesh_FaceChecker aFaceChecker(myInParallel);
  
@@ -63,10 +63,10 @@ Index: oce/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
 +#ifdef HAVE_TBB
      tbb::parallel_for_each(myFaces.begin(), myFaces.end(), aFaceChecker);
 +#else
-+    int i, n = myFaces.size();
++    int i, n = myFaces.Size();
 +#pragma omp parallel for private(i)
 +    for (i = 0; i < n; ++i)
-+      aFaceChecker(myFaces[i]);
++      aFaceChecker(myFaces(i));
 +#endif
    }
    else
@@ -82,7 +82,7 @@ Index: oce/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
  
    return aFaceChecker.IsValid();
  }
-@@ -238,19 +238,24 @@ void BRepMesh_IncrementalMesh::update()
+@@ -246,19 +251,24 @@ void BRepMesh_IncrementalMesh::update()
      update(aFaceIt.Value());
  
    // Mesh faces
@@ -93,10 +93,10 @@ Index: oce/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
 +#ifdef HAVE_TBB
      tbb::parallel_for_each(myFaces.begin(), myFaces.end(), *myMesh);
 +#else
-+    int i, n = myFaces.size();
++    int i, n = myFaces.Size();
 +#pragma omp parallel for private(i)
 +    for (i = 0; i < n; ++i)
-+      myMesh->Process(myFaces[i]);
++      myMesh->Process(myFaces(i));
 +#endif
    }
    else
@@ -110,8 +110,8 @@ Index: oce/src/BRepMesh/BRepMesh_IncrementalMesh.cxx
 -#endif
  
    commit();
- }
-@@ -567,12 +572,7 @@ Standard_Integer BRepMesh_IncrementalMes
+   clear();
+@@ -571,12 +581,7 @@ Standard_Integer BRepMesh_IncrementalMes
  //=======================================================================
  Standard_Boolean BRepMesh_IncrementalMesh::IsParallelDefault()
  {

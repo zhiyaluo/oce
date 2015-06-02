@@ -1,0 +1,95 @@
+commit f0f4a0e2749d39a76a7ce046928296d4d4c89092
+Author: Denis Barbier <bouzim@gmail.com>
+Date:   Thu Dec 4 09:41:04 2014 +0100
+
+    Replace last occurrences of DEB by OCCT_DEBUG
+    
+    Reported by blobfish, thanks.
+
+Index: oce/samples/ocafsamples/TDataStd_Sample.cxx
+===================================================================
+--- oce.orig/samples/ocafsamples/TDataStd_Sample.cxx
++++ oce/samples/ocafsamples/TDataStd_Sample.cxx
+@@ -54,7 +54,7 @@
+ // This sample contains templates for typical actions with standard OCAF attributes
+ // ====================================================================================
+ 
+-#ifdef DEB
++#ifdef OCCT_DEBUG
+ 
+ static void Sample()
+ {
+Index: oce/samples/ocafsamples/TDocStd_Sample.cxx
+===================================================================
+--- oce.orig/samples/ocafsamples/TDocStd_Sample.cxx
++++ oce/samples/ocafsamples/TDocStd_Sample.cxx
+@@ -26,7 +26,7 @@
+ // level (store / retrieve)
+ // ====================================================================================
+ 
+-#ifdef DEB
++#ifdef OCCT_DEBUG
+ static void Sample()
+ {
+ 
+Index: oce/samples/ocafsamples/TNaming_Sample.cxx
+===================================================================
+--- oce.orig/samples/ocafsamples/TNaming_Sample.cxx
++++ oce/samples/ocafsamples/TNaming_Sample.cxx
+@@ -50,7 +50,7 @@
+ // This sample contains template for typical actions with OCAF Topologigal Naming services
+ // =======================================================================================
+ 
+-#ifdef DEB
++#ifdef OCCT_DEBUG
+ 
+ #define Box1POS          1
+ #define Box2POS          2
+Index: oce/samples/ocafsamples/TPrsStd_Sample.cxx
+===================================================================
+--- oce.orig/samples/ocafsamples/TPrsStd_Sample.cxx
++++ oce/samples/ocafsamples/TPrsStd_Sample.cxx
+@@ -32,7 +32,7 @@
+ // This sample contains template for typical actions with OCAF visualization attributes
+ // ====================================================================================
+ 
+-#ifdef DEB
++#ifdef OCCT_DEBUG
+ static void Sample()
+ {
+   // Starting with data framework 
+Index: oce/samples/qt/AndroidQt/OCCT.pri
+===================================================================
+--- oce.orig/samples/qt/AndroidQt/OCCT.pri
++++ oce/samples/qt/AndroidQt/OCCT.pri
+@@ -8,7 +8,7 @@ QMAKE_CFLAGS   += -fexceptions -Wno-igno
+ QMAKE_CXXFLAGS += -fexceptions -Wno-ignored-qualifiers
+ 
+ CONFIG(debug,debug|release) {
+-  DEFINES += DEB
++  DEFINES += OCCT_DEBUG
+ }
+ 
+ occt_lib_subpath = libs/armeabi-v7a
+Index: oce/src/BRepOffset/BRepOffset_Offset.cxx
+===================================================================
+--- oce.orig/src/BRepOffset/BRepOffset_Offset.cxx
++++ oce/src/BRepOffset/BRepOffset_Offset.cxx
+@@ -1500,7 +1500,7 @@ void BRepOffset_Offset::Init(const TopoD
+   TopoDS_Wire W;
+   myBuilder.MakeWire(W);
+   
+-#if defined(DEB) && defined(DRAW)
++#if defined(OCCT_DEBUG) && defined(DRAW)
+   // POP pour NT
+   //  char name[100];
+   if (Affich) {
+@@ -1521,7 +1521,7 @@ void BRepOffset_Offset::Init(const TopoD
+     C = new Geom_TrimmedCurve(C, f, l);
+     C->Transform(Loc.Transformation());
+ 
+-#ifdef DEB
++#ifdef OCCT_DEBUG
+ #ifdef DRAW
+     if ( Affich) {
+       sprintf(name,"CURVE_%d_%d",NbOFFSET,CO);
