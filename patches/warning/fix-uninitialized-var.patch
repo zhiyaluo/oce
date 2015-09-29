@@ -15,20 +15,20 @@ Index: oce/src/AIS/AIS_TexturedShape.cxx
 --- oce.orig/src/AIS/AIS_TexturedShape.cxx
 +++ oce/src/AIS/AIS_TexturedShape.cxx
 @@ -283,10 +283,10 @@ void AIS_TexturedShape::Compute (const H
-     }
-     case AIS_Shaded:
      {
--      Standard_Real prevangle;
--      Standard_Real newangle;
--      Standard_Real prevcoeff;
--      Standard_Real newcoeff;
-+      Standard_Real prevangle = 0.0;
-+      Standard_Real newangle = 0.0;
-+      Standard_Real prevcoeff = 0.0;
-+      Standard_Real newcoeff = 0.0;
+       if (myDrawer->IsAutoTriangulation())
+       {
+-        Standard_Real aPrevAngle;
+-        Standard_Real aNewAngle;
+-        Standard_Real aPrevCoeff;
+-        Standard_Real aNewCoeff;
++        Standard_Real aPrevAngle = 0.0;
++        Standard_Real aNewAngle = 0.0;
++        Standard_Real aPrevCoeff = 0.0;
++        Standard_Real aNewCoeff = 0.0;
  
-       Standard_Boolean isOwnDeviationAngle = OwnDeviationAngle(newangle,prevangle);
-       Standard_Boolean isOwnDeviationCoefficient = OwnDeviationCoefficient(newcoeff,prevcoeff);
+         Standard_Boolean isOwnDeviationAngle       = OwnDeviationAngle (aNewAngle, aPrevAngle);
+         Standard_Boolean isOwnDeviationCoefficient = OwnDeviationCoefficient (aNewCoeff,aPrevCoeff);
 Index: oce/src/AdvApp2Var/AdvApp2Var_Iso.cxx
 ===================================================================
 --- oce.orig/src/AdvApp2Var/AdvApp2Var_Iso.cxx

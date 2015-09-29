@@ -348,15 +348,6 @@ Index: oce/src/AIS/AIS_InteractiveContext.cxx
 ===================================================================
 --- oce.orig/src/AIS/AIS_InteractiveContext.cxx
 +++ oce/src/AIS/AIS_InteractiveContext.cxx
-@@ -546,7 +546,7 @@ void AIS_InteractiveContext::Load(const
- 
-   if(!HasOpenedContext()) {
-     if(SelMode==-1 && !AllowDecomposition){
--      Standard_Integer DispMode,HiMod,SelModeDef;
-+      Standard_Integer DispMode = 0,HiMod,SelModeDef = 0;
-       
-       GetDefModes(anIObj,DispMode,HiMod,SelModeDef);
-       Handle(AIS_GlobalStatus) STATUS= 
 @@ -740,7 +740,7 @@ Standard_Boolean AIS_InteractiveContext:
    
    
@@ -366,24 +357,6 @@ Index: oce/src/AIS/AIS_InteractiveContext.cxx
      GetDefModes(anIObj,DM,HM,SM);
      
      SM = LS->SelectionModes().IsEmpty() ? SM : LS->SelectionModes().First();
-@@ -1564,7 +1564,7 @@ void AIS_InteractiveContext::SetDisplayM
-           STATUS->AddDisplayMode(aMode);
- 
-         myMainPM->Display(anIObj,aMode);
--        Standard_Integer DM,HM,SM;
-+        Standard_Integer DM,HM = 0,SM;
-         GetDefModes(anIObj,DM,HM,SM);
-         if(STATUS->IsHilighted()){
-           myMainPM->Highlight(anIObj,HM);
-@@ -1609,7 +1609,7 @@ UnsetDisplayMode(const Handle(AIS_Intera
-           myMainPM->Unhighlight(anIObj,OldMode);
-         myMainPM->SetVisibility (anIObj, OldMode, Standard_False);
-         myMainPM->Display(anIObj,myDisplayMode);
--        Standard_Integer DM,HM,SM;
-+        Standard_Integer DM,HM = 0,SM;
-         GetDefModes(anIObj,DM,HM,SM);
-         if(STATUS->IsHilighted()){
-           myMainPM->Highlight(anIObj,HM);
 Index: oce/src/ChFi3d/ChFi3d_Builder_0.cxx
 ===================================================================
 --- oce.orig/src/ChFi3d/ChFi3d_Builder_0.cxx
@@ -414,14 +387,14 @@ Index: oce/src/Draw/Draw_Viewer.cxx
 --- oce.orig/src/Draw/Draw_Viewer.cxx
 +++ oce/src/Draw/Draw_Viewer.cxx
 @@ -519,7 +519,7 @@ void Draw_Viewer::SetZoom (const Standar
-   if (myViews[id]) {
-     Standard_Real zz = z / myViews[id]->Zoom;
-     myViews[id]->Zoom = z;
+   {
+     Standard_Real zz = z / aView->GetZoom();
+     aView->SetZoom(z);
 -    Standard_Integer X,Y,W,H;
 +    Standard_Integer X,Y,W = 0,H = 0;
      GetPosSize(id,X,Y,W,H);
-     Standard_Real w = W;
-     myViews[id]->dX = (Standard_Integer )(   w / 2 - zz * (w/2 - myViews[id]->dX));
+ 
+     const Standard_Real w = 0.5 * static_cast<Standard_Real>(W);
 @@ -1805,7 +1805,7 @@ void Draw_Display::DrawTo (const gp_Pnt2
    case DRAW : {
  

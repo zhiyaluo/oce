@@ -1545,28 +1545,6 @@ Index: oce/src/Draw/Draw_Interpretor.cxx
  }
  
  //=======================================================================
-Index: oce/src/Draw/Draw_Viewer.cxx
-===================================================================
---- oce.orig/src/Draw/Draw_Viewer.cxx
-+++ oce/src/Draw/Draw_Viewer.cxx
-@@ -965,7 +965,7 @@ void Draw_Viewer::PostScriptView (const
-     if (n == 0) return;
-     CurrentMode = POSTSCRIPT;
-     Draw_Display DF = MakeDisplay(id);
--    Standard_Boolean view2d = myViews[id]->Flag2d;
-+    Standard_Boolean view2d = (0 != myViews[id]->Flag2d);
-     for (Standard_Integer i = 1; i <= n; i++)
-       if (myDrawables(i)->Is3D()) {
- 	if (!view2d) myDrawables(i)->DrawOn(DF);
-@@ -1157,7 +1157,7 @@ void Draw_Viewer::DrawOnView(const Stand
-     xmin = ymin = DRAWINFINITE;
-     xmax = ymax = -DRAWINFINITE;
- 
--    Standard_Boolean view2d = myViews[id]->Flag2d;
-+    Standard_Boolean view2d = (0 != myViews[id]->Flag2d);
-     myViews[id]->ResetFrame();
-     if ((D->Is3D() && !view2d) ||
- 	(!D->Is3D() && view2d)) {
 Index: oce/src/Extrema/Extrema_Curve2dTool.lxx
 ===================================================================
 --- oce.orig/src/Extrema/Extrema_Curve2dTool.lxx
@@ -3198,11 +3176,12 @@ Index: oce/src/MDataStd/MDataStd_BooleanListRetrievalDriver.cxx
 --- oce.orig/src/MDataStd/MDataStd_BooleanListRetrievalDriver.cxx
 +++ oce/src/MDataStd/MDataStd_BooleanListRetrievalDriver.cxx
 @@ -70,6 +70,6 @@ void MDataStd_BooleanListRetrievalDriver
-   Standard_Integer i, lower = S->Lower(), upper = S->Upper();
-   for (i = lower; i <= upper; i++)
-   {
--    T->Append(S->Value(i));
-+    T->Append(0 != S->Value(i));
+     Standard_Integer i, lower = S->Lower(), upper = S->Upper();
+      if(upper > 0)
+       for (i = lower; i <= upper; i++) {
+-        T->Append(S->Value(i));
++        T->Append(0 != S->Value(i));
+      }
    }
  }
 Index: oce/src/MeshTest/MeshTest.cxx
@@ -3748,14 +3727,14 @@ Index: oce/src/ShapeAnalysis/ShapeAnalysis_Surface.cxx
                                                        const Standard_Real preci,
                                                        gp_Pnt2d &sol)
 @@ -878,7 +878,7 @@ gp_Pnt2d ShapeAnalysis_Surface::NextValu
- //    if ( ! mySurf->Continuity() == GeomAbs_C0 ) //: S4030: fix on BUC40132 8355 & PRO7978 1987: SI because of bad data
-     {
+       }
+ 
        gp_Pnt2d sol;
 -      Standard_Boolean res = SurfaceNewton(p2dPrev,P3D,preci,sol);
 +      Standard_Integer res = SurfaceNewton(p2dPrev,P3D,preci,sol);
-       if ( res ) {
- 	Standard_Real gap = P3D.Distance ( Value(sol) );
- 	if ( res ==2 || //:q6 abv 19 Mar 99: protect against strange attractors
+       if ( res )
+       {
+         Standard_Real gap = P3D.Distance ( Value(sol) );
 Index: oce/src/ShapeCustom/ShapeCustom_DirectModification.cxx
 ===================================================================
 --- oce.orig/src/ShapeCustom/ShapeCustom_DirectModification.cxx
@@ -3989,14 +3968,14 @@ Index: oce/src/ShapeProcess/ShapeProcess_OperLibrary.cxx
 --- oce.orig/src/ShapeProcess/ShapeProcess_OperLibrary.cxx
 +++ oce/src/ShapeProcess/ShapeProcess_OperLibrary.cxx
 @@ -135,7 +135,7 @@ static Standard_Boolean sameparam (const
-   Handle(ShapeProcess_ShapeContext) ctx = Handle(ShapeProcess_ShapeContext)::DownCast ( context );
-   if ( ctx.IsNull() ) return Standard_False;
-   ShapeFix::SameParameter ( ctx->Result(), 
--			    ctx->IntegerVal ( "Force", Standard_False ),
-+			    ctx->BooleanVal ( "Force", Standard_False ),
- 			    ctx->RealVal ( "Tolerance3d", Precision::Confusion() /* -1 */) ); 
-   // WARNING: no update of context yet!
-   return Standard_True;
+   if ( ! ctx->Messages().IsNull() ) msg = new ShapeExtend_MsgRegistrator;
+ 
+   ShapeFix::SameParameter ( ctx->Result(),
+-                            ctx->IntegerVal ( "Force", Standard_False ),
++                            ctx->BooleanVal ( "Force", Standard_False ),
+                             ctx->RealVal ( "Tolerance3d", Precision::Confusion() /* -1 */),
+                             NULL, msg );
+ 
 @@ -208,9 +208,9 @@ static Standard_Boolean bsplinerestricti
    Handle(ShapeProcess_ShapeContext) ctx = Handle(ShapeProcess_ShapeContext)::DownCast ( context );
    if ( ctx.IsNull() ) return Standard_False;
@@ -4520,15 +4499,6 @@ Index: oce/src/ViewerTest/ViewerTest_ObjectCommands.cxx
  
      Handle(AIS_InteractiveObject) theShapeA;
      Handle(AIS_InteractiveObject) theShapeB;
-@@ -2587,7 +2587,7 @@ static int VDrawText (Draw_Interpretor&
-   const Standard_Real angle = Draw::Atof(argv[10]);
- 
-   // Text zooming
--  const Standard_Boolean zoom = Draw::Atoi(argv[11]);
-+  const Standard_Boolean zoom = (0 != Draw::Atoi(argv[11]));
- 
-   // Text height
-   const Standard_Real height = Draw::Atof(argv[12]);
 @@ -4026,7 +4026,7 @@ static Standard_Integer VSetSelectionMod
    }
  
