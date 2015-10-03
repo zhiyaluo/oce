@@ -206,7 +206,9 @@ libTKTopAlgo_la_SOURCES = \
 @top_srcdir@/src/BRepExtrema/BRepExtrema_ExtFF.cxx \
 @top_srcdir@/src/BRepExtrema/BRepExtrema_ExtPC.cxx \
 @top_srcdir@/src/BRepExtrema/BRepExtrema_ExtPF.cxx \
+@top_srcdir@/src/BRepExtrema/BRepExtrema_OverlapTool.cxx \
 @top_srcdir@/src/BRepExtrema/BRepExtrema_Poly.cxx \
+@top_srcdir@/src/BRepExtrema/BRepExtrema_SelfIntersection.cxx \
 @top_srcdir@/src/BRepExtrema/BRepExtrema_ShapeProximity.cxx \
 @top_srcdir@/src/BRepExtrema/BRepExtrema_TriangleSet.cxx \
 @top_srcdir@/src/BRepGProp/BRepGProp.cxx \

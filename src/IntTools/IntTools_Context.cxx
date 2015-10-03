@@ -39,7 +39,7 @@
 #include <Extrema_LocateExtPC.hxx>
 
 #include <Geom2d_Curve.hxx>
-#include <NCollection_IncAllocator.hxx>
+
 #include <IntTools_SurfaceRangeLocalizeData.hxx>
 
 
@@ -49,7 +49,7 @@
 //=======================================================================
 IntTools_Context::IntTools_Context()
 :
-  myAllocator(new NCollection_IncAllocator()),
+  myAllocator(NCollection_BaseAllocator::CommonBaseAllocator()),
   myFClass2dMap(100, myAllocator),
   myProjPSMap(100, myAllocator),
   myProjPCMap(100, myAllocator),
@@ -58,7 +58,8 @@ IntTools_Context::IntTools_Context()
   myHatcherMap(100, myAllocator),
   myProjSDataMap(100, myAllocator),
   myBndBoxDataMap(100, myAllocator),
-  myCreateFlag(0)
+  myCreateFlag(0),
+  myPOnSTolerance(1.e-12)
 {
 }
 //=======================================================================
@@ -77,7 +78,8 @@ IntTools_Context::IntTools_Context
   myHatcherMap(100, myAllocator),
   myProjSDataMap(100, myAllocator),
   myBndBoxDataMap(100, myAllocator),
-  myCreateFlag(1)
+  myCreateFlag(1),
+  myPOnSTolerance(1.e-12)
 {
 }
 //=======================================================================
@@ -101,15 +103,7 @@ IntTools_Context::~IntTools_Context()
   }
   myFClass2dMap.Clear();
   //
-  GeomAPI_ProjectPointOnSurf* pProjPS;
-  aIt.Initialize(myProjPSMap);
-  for (; aIt.More(); aIt.Next()) {
-    anAdr=aIt.Value();
-    pProjPS=(GeomAPI_ProjectPointOnSurf*)anAdr;
-    (*pProjPS).~GeomAPI_ProjectPointOnSurf();
-    myAllocator->Free(anAdr); 
-  }
-  myProjPSMap.Clear();
+  clearCachedPOnSProjectors();
   //
   GeomAPI_ProjectPointOnCurve* pProjPC;
   aIt.Initialize(myProjPCMap);
@@ -264,7 +258,7 @@ GeomAPI_ProjectPointOnSurf& IntTools_Context::ProjPS(const TopoDS_Face& aF)
   GeomAPI_ProjectPointOnSurf* pProjPS;
  
   if (!myProjPSMap.IsBound(aF)) {
-    Standard_Real Umin, Usup, Vmin, Vsup, anEpsT=1.e-12 ;
+    Standard_Real Umin, Usup, Vmin, Vsup;
     BRepAdaptor_Surface aBAS;
     //
     const Handle(Geom_Surface)& aS=BRep_Tool::Surface(aF);
@@ -277,7 +271,7 @@ GeomAPI_ProjectPointOnSurf& IntTools_Context::ProjPS(const TopoDS_Face& aF)
     //
     pProjPS=(GeomAPI_ProjectPointOnSurf*)myAllocator->Allocate(sizeof(GeomAPI_ProjectPointOnSurf));
     new (pProjPS) GeomAPI_ProjectPointOnSurf();
-    pProjPS->Init(aS ,Umin, Usup, Vmin, Vsup, anEpsT/*, Extrema_ExtAlgo_Tree*/);
+    pProjPS->Init(aS ,Umin, Usup, Vmin, Vsup, myPOnSTolerance/*, Extrema_ExtAlgo_Tree*/);
     Extrema_ExtPS& anExtAlgo = const_cast<Extrema_ExtPS&>(pProjPS->Extrema());
     anExtAlgo.SetFlag(Extrema_ExtFlag_MIN);
     //
@@ -402,10 +396,11 @@ Geom2dHatch_Hatcher& IntTools_Context::Hatcher(const TopoDS_Face& aF)
     aEpsT=Precision::PConfusion();
     //
     Geom2dHatch_Intersector aIntr(aTolArcIntr, aTolTangfIntr);
-    pHatcher=new Geom2dHatch_Hatcher(aIntr,
-                                     aTolHatch2D, aTolHatch3D,
-                                     Standard_True, Standard_False);
-    
+    pHatcher=(Geom2dHatch_Hatcher*)
+      myAllocator->Allocate(sizeof(Geom2dHatch_Hatcher));
+    new (pHatcher) Geom2dHatch_Hatcher(aIntr,
+                                       aTolHatch2D, aTolHatch3D,
+                                       Standard_True, Standard_False);
     //
     aFF=aF;
     aFF.Orientation(TopAbs_FORWARD);
@@ -451,7 +446,9 @@ IntTools_SurfaceRangeLocalizeData& IntTools_Context::SurfaceData
   IntTools_SurfaceRangeLocalizeData* pSData;
   //
   if (!myProjSDataMap.IsBound(aF)) {
-    pSData=new IntTools_SurfaceRangeLocalizeData
+    pSData=(IntTools_SurfaceRangeLocalizeData*)
+      myAllocator->Allocate(sizeof(IntTools_SurfaceRangeLocalizeData));
+    new (pSData) IntTools_SurfaceRangeLocalizeData
       (3, 
        3, 
        10. * Precision::PConfusion(), 
@@ -940,3 +937,29 @@ Standard_Boolean IntTools_Context::ProjectPointOnEdge
   return Standard_False;
 }
 
+//=======================================================================
+//function : SetPOnSProjectionTolerance
+//purpose  : 
+//=======================================================================
+void IntTools_Context::SetPOnSProjectionTolerance(const Standard_Real theValue)
+{
+  myPOnSTolerance = theValue;
+  clearCachedPOnSProjectors();
+}
+
+//=======================================================================
+//function : clearCachedPOnSProjectors
+//purpose  : 
+//=======================================================================
+void IntTools_Context::clearCachedPOnSProjectors()
+{
+  GeomAPI_ProjectPointOnSurf* pProjPS;
+  BOPCol_DataMapIteratorOfDataMapOfShapeAddress aIt(myProjPSMap);
+  for (; aIt.More(); aIt.Next()) {
+    Standard_Address anAdr=aIt.Value();
+    pProjPS=(GeomAPI_ProjectPointOnSurf*)anAdr;
+    (*pProjPS).~GeomAPI_ProjectPointOnSurf();
+    myAllocator->Free(anAdr); 
+  }
+  myProjPSMap.Clear();
+}

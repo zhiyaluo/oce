@@ -105,8 +105,6 @@ libTKV3d_la_SOURCES = \
 @top_srcdir@/drv/SelectMgr/SelectMgr_DataMapOfObjectSelectors_0.cxx \
 @top_srcdir@/drv/SelectMgr/SelectMgr_IndexedDataMapNodeOfIndexedDataMapOfOwnerCriterion_0.cxx \
 @top_srcdir@/drv/SelectMgr/SelectMgr_IndexedDataMapOfOwnerCriterion_0.cxx \
-@top_srcdir@/drv/SelectMgr/SelectMgr_IndexedMapNodeOfIndexedMapOfOwner_0.cxx \
-@top_srcdir@/drv/SelectMgr/SelectMgr_IndexedMapOfOwner_0.cxx \
 @top_srcdir@/drv/SelectMgr/SelectMgr_ListIteratorOfListOfFilter_0.cxx \
 @top_srcdir@/drv/SelectMgr/SelectMgr_ListNodeOfListOfFilter_0.cxx \
 @top_srcdir@/drv/SelectMgr/SelectMgr_ListOfFilter_0.cxx \

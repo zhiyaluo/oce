@@ -278,7 +278,7 @@ proc testgrid {args} {
     set tests_list {}
 
     # iterate by all script paths
-    foreach dir [_split_path $env(CSF_TestScriptsPath)] {
+    foreach dir [lsort -unique [_split_path $env(CSF_TestScriptsPath)]] {
 	# protection against empty paths
 	set dir [string trim $dir]
 	if { $dir == "" } { continue }
@@ -591,6 +591,9 @@ help testdiff {
           1 - output only differences 
           2 - output also list of logs and directories present in one of dirs only
           3 - (default) output also progress messages 
+		  
+  -highlight_percent value: highlight considerable (>value in %) deviations
+                            of CPU and memory (default value is 5%)
 }
 proc testdiff {dir1 dir2 args} {
     if { "$dir1" == "$dir2" } {
@@ -606,6 +609,7 @@ proc testdiff {dir1 dir2 args} {
     set basename ""
     set status "same"
     set verbose 3
+	set highlight_percent 5
     for {set narg 0} {$narg < [llength $args]} {incr narg} {
 	set arg [lindex $args $narg]
 
@@ -642,7 +646,18 @@ proc testdiff {dir1 dir2 args} {
 	    }
 	    continue
 	}
-
+	
+	# highlight_percent
+    if { $arg == "-highlight_percent" } {
+	    incr narg
+	    if { $narg < [llength $args] && ! [regexp {^-} [lindex $args $narg]] } { 
+		set highlight_percent [expr [lindex $args $narg]]
+	    } else {
+		error "Error: Option -highlight_percent must be followed by integer value"
+	    }
+	    continue
+	}
+		
 	if { [regexp {^-} $arg] } {
 	    error "Error: unsupported option \"$arg\""
 	}
@@ -657,7 +672,7 @@ proc testdiff {dir1 dir2 args} {
     # save result to log file
     if { "$logfile" != "" } {
         _log_save $logfile [join $log "\n"]
-        _log_html_diff "[file rootname $logfile].html" $log $dir1 $dir2
+        _log_html_diff "[file rootname $logfile].html" $log $dir1 $dir2 ${highlight_percent}
         puts "Log is saved to $logfile (and .html)"
     }
 
@@ -1657,31 +1672,13 @@ proc _tests_platform_def {} {
     global env tcl_platform
 
     if [info exists env(os_type)] { return }
-
     set env(os_type) $tcl_platform(platform)
-
-    # use detailed mapping for various versions of Lunix
-    # (note that mapping is rather non-uniform, for historical reasons)
-    if { $tcl_platform(os) == "Linux" && ! [catch {exec cat /etc/issue} issue] } {
-	if { [regexp {Mandriva[ \tA-Za-z]+([0-9]+)} $issue res num] } {
-	    set env(os_type) Mandriva$num
-	} elseif { [regexp {Red Hat[ \tA-Za-z]+([0-9]+)} $issue res num] } {
-	    set env(os_type) RedHat$num
-	} elseif { [regexp {Debian[ \tA-Za-z/]+([0-9]+)[.]([0-9]+)} $issue res num subnum] } {
-	    set env(os_type) Debian$num$subnum
-	} elseif { [regexp {CentOS[ \tA-Za-z]+([0-9]+)[.]([0-9]+)} $issue res num subnum] } {
-	    set env(os_type) CentOS$num$subnum
-	} elseif { [regexp {Scientific[ \tA-Za-z]+([0-9]+)[.]([0-9]+)} $issue res num subnum] } {
-	    set env(os_type) SL$num$subnum
-	} elseif { [regexp {Fedora Core[ \tA-Za-z]+([0-9]+)} $issue res num] } {
-	    set env(os_type) FedoraCore$num
-	}
-	if { [exec uname -m] == "x86_64" } {
-	    set env(os_type) "$env(os_type)-64"
-	}
-    } elseif { $tcl_platform(os) == "Darwin" } {
-        set env(os_type) MacOS
+	if { $tcl_platform(os) == "Linux" } {
+        set env(os_type) Linux
     }
+	if { $tcl_platform(os) == "Darwin" } {
+        set env(os_type) MacOS
+    } 
 }
 _tests_platform_def
 
@@ -1896,7 +1893,7 @@ proc _test_diff {dir1 dir2 basename status verbose _logvar {_statvar ""}} {
 }
 
 # Auxiliary procedure to save log of results comparison to file
-proc _log_html_diff {file log dir1 dir2} {
+proc _log_html_diff {file log dir1 dir2 highlight_percent} {
     # create missing directories as needed
     catch {file mkdir [file dirname $file]}
 
@@ -1916,9 +1913,9 @@ proc _log_html_diff {file log dir1 dir2} {
     puts $fd "<pre>"
     set logpath [file split [file normalize $file]]
     foreach line $log {
-        # put a line; highlight considerable (>5%) deviations of CPU and memory
+        # put a line; highlight considerable (> ${highlight_percent}%) deviations of CPU and memory
         if { [regexp "\[\\\[](\[0-9.e+-]+)%\[\]]" $line res value] && 
-             [expr abs($value)] > 5 } {
+             [expr abs($value)] > ${highlight_percent} } {
             puts $fd "<table><tr><td bgcolor=\"[expr $value > 0 ? \"red\" : \"lightgreen\"]\">$line</td></tr></table>"
         } else {
             puts $fd $line

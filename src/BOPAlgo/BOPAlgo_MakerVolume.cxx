@@ -14,8 +14,6 @@
 
 #include <BOPAlgo_MakerVolume.ixx>
 
-#include <NCollection_IncAllocator.hxx>
-
 #include <Bnd_Box.hxx>
 
 #include <TopoDS_Solid.hxx>
@@ -81,7 +79,8 @@ void BOPAlgo_MakerVolume::Perform()
     }
   }
   //
-  Handle(NCollection_BaseAllocator) aAllocator = new NCollection_IncAllocator;
+  Handle(NCollection_BaseAllocator) aAllocator = 
+    NCollection_BaseAllocator::CommonBaseAllocator();
   BOPAlgo_PaveFiller* pPF = new BOPAlgo_PaveFiller(aAllocator);
   //
   if (!myIntersect) {
@@ -244,7 +243,7 @@ void BOPAlgo_MakerVolume::MakeBox(BOPCol_MapOfShape& theBoxFaces)
   //
   Standard_Real aXmin, aYmin, aZmin, aXmax, aYmax, aZmax, anExt;
   //
-  anExt = myBBox.SquareExtent() * 0.5;
+  anExt = sqrt(myBBox.SquareExtent()) * 0.5;
   myBBox.Enlarge(anExt);
   myBBox.Get(aXmin, aYmin, aZmin, aXmax, aYmax, aZmax);
   //

@@ -22,6 +22,7 @@
 #include <PrsMgr_PresentationManager3d.hxx>
 #include <Quantity_NameOfColor.hxx>
 #include <Graphic3d_ZLayerId.hxx>
+#include <SelectMgr_IndexedMapOfOwner.hxx>
 class SelectMgr_EntityOwner;
 class Prs3d_Presentation;
 class Standard_NotImplemented;
@@ -172,6 +173,10 @@ public:
   
   //! Returns common entity owner if the object is an assembly
   Standard_EXPORT  const  Handle(SelectMgr_EntityOwner)& GetAssemblyOwner()  const;
+  
+  //! Returns a bounding box of sensitive entities with the owners given
+  //! if they are a part of activated selection
+  Standard_EXPORT   Bnd_Box BndBoxOfSelected (Handle(SelectMgr_IndexedMapOfOwner)& theOwners) ;
 
 
 friend class SelectMgr_SelectionManager;

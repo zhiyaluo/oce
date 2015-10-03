@@ -41,6 +41,8 @@ public:
   
   Standard_EXPORT static   void OptionCommands (Draw_Interpretor& aDI) ;
   
+  Standard_EXPORT static   void HistoryCommands (Draw_Interpretor& aDI) ;
+  
   Standard_EXPORT static   void Factory (Draw_Interpretor& aDI) ;
 
 

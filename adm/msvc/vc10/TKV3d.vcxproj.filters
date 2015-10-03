@@ -2,40 +2,40 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Source files">
-      <UniqueIdentifier>{7C3FA123-06E6-0983-0596-B63331DAED69}</UniqueIdentifier>
+      <UniqueIdentifier>{78DBCF5A-01D4-0B39-0CFB-37E89D88A85A}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source files\V3d">
-      <UniqueIdentifier>{18933166-1707-15B2-0265-3BE5DF70B98C}</UniqueIdentifier>
+      <UniqueIdentifier>{E4BFF65F-1082-0412-18A2-7411B336010D}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source files\Graphic3d">
-      <UniqueIdentifier>{A5A7FE2B-081B-18D0-00A7-E4AE1D62FDA8}</UniqueIdentifier>
+      <UniqueIdentifier>{7F2DD3F9-0C16-05D1-1786-74DB5DEDCE7E}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source files\Visual3d">
-      <UniqueIdentifier>{FB61EE7D-1172-08A1-0FC1-2BB51C7F61AA}</UniqueIdentifier>
+      <UniqueIdentifier>{8FF0BBD0-0D2A-11F3-0B6E-472B28628F59}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source files\Select3D">
-      <UniqueIdentifier>{E5082917-0AFD-113A-15F8-DB2251AA1497}</UniqueIdentifier>
+      <UniqueIdentifier>{B142B969-0B35-09F8-125B-A9605BF535CA}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source files\Prs3d">
-      <UniqueIdentifier>{2DEC501F-02FF-0888-07B1-83EDC66F6374}</UniqueIdentifier>
+      <UniqueIdentifier>{9E77D52C-093F-04E2-0F01-F415EACAE0B5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source files\StdPrs">
-      <UniqueIdentifier>{EA66D8C0-17E6-0538-12E2-30BE2B15046E}</UniqueIdentifier>
+      <UniqueIdentifier>{66AAC4A5-0096-035B-059C-9F5FB0433022}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source files\SelectMgr">
-      <UniqueIdentifier>{D5FFF639-0C88-1307-16A4-7E8DDC93A65E}</UniqueIdentifier>
+      <UniqueIdentifier>{0D3158D2-0634-0356-144E-D98D6DD41B23}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source files\PrsMgr">
-      <UniqueIdentifier>{8F92C08E-017F-02C8-023F-9F1026DD47BA}</UniqueIdentifier>
+      <UniqueIdentifier>{41B68B63-137A-0474-1319-2CB6E69BF016}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source files\AIS">
-      <UniqueIdentifier>{90121D69-0086-0CA4-0E32-32454A633AEC}</UniqueIdentifier>
+      <UniqueIdentifier>{AF4C41FB-0B15-13A5-15CC-FEE8AE5E1BEC}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source files\DsgPrs">
-      <UniqueIdentifier>{B172B84E-1818-06A1-086F-F315C81B334C}</UniqueIdentifier>
+      <UniqueIdentifier>{7B27C206-0801-1717-1749-E1DEE7F14890}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source files\StdSelect">
-      <UniqueIdentifier>{C4DABD4F-0B52-0547-0334-0744631AC229}</UniqueIdentifier>
+      <UniqueIdentifier>{D2FE03C2-1182-086A-18C0-F29BEBDA72B6}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -550,12 +550,6 @@
       <Filter>Source files\SelectMgr</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\drv\SelectMgr\SelectMgr_IndexedDataMapOfOwnerCriterion_0.cxx">
-      <Filter>Source files\SelectMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\drv\SelectMgr\SelectMgr_IndexedMapNodeOfIndexedMapOfOwner_0.cxx">
-      <Filter>Source files\SelectMgr</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\drv\SelectMgr\SelectMgr_IndexedMapOfOwner_0.cxx">
       <Filter>Source files\SelectMgr</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\drv\SelectMgr\SelectMgr_ListIteratorOfListOfFilter_0.cxx">

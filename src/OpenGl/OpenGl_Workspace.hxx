@@ -51,6 +51,7 @@
 #include <OpenGl_RenderFilter.hxx>
 #include <OpenGl_Vec.hxx>
 #include <OpenGl_LineAttributes.hxx>
+#include <OpenGl_CappingAlgo.hxx>
 
 #include <Handle_OpenGl_View.hxx>
 #include <Handle_OpenGl_Texture.hxx>
@@ -209,10 +210,10 @@ public:
 
   const TEL_COLOUR* HighlightColor;
 
-  const OpenGl_AspectLine*   SetAspectLine   (const OpenGl_AspectLine*   theAspect);
-  const OpenGl_AspectFace*   SetAspectFace   (const OpenGl_AspectFace*   theAspect);
-  const OpenGl_AspectMarker* SetAspectMarker (const OpenGl_AspectMarker* theAspect);
-  const OpenGl_AspectText*   SetAspectText   (const OpenGl_AspectText*   theAspect);
+  Standard_EXPORT const OpenGl_AspectLine*   SetAspectLine   (const OpenGl_AspectLine*   theAspect);
+  Standard_EXPORT const OpenGl_AspectFace*   SetAspectFace   (const OpenGl_AspectFace*   theAspect);
+  Standard_EXPORT const OpenGl_AspectMarker* SetAspectMarker (const OpenGl_AspectMarker* theAspect);
+  Standard_EXPORT const OpenGl_AspectText*   SetAspectText   (const OpenGl_AspectText*   theAspect);
 
   void SetTextParam (const OpenGl_TextParam* theParam) { TextParam_set = theParam; }
 
@@ -265,6 +266,24 @@ public:
   //! @return true if clipping algorithm enabled
   inline Standard_Boolean IsCullingEnabled() const { return myIsCullingEnabled; }
 
+  //! Returns capping algorithm rendering filter.
+  const Handle(OpenGl_CappingAlgoFilter)& DefaultCappingAlgoFilter() const
+  {
+    return myDefaultCappingAlgoFilter;
+  }
+
+  //! Returns face aspect for none culling mode.
+  const OpenGl_AspectFace& NoneCulling() const
+  {
+    return myNoneCulling;
+  }
+
+  //! Returns face aspect for front face culling mode.
+  const OpenGl_AspectFace& FrontCulling() const
+  {
+    return myFrontCulling;
+  }
+
 protected:
 
   //! Copy content of Back buffer to the Front buffer
@@ -286,7 +305,7 @@ protected:
   void bindDefaultFbo (OpenGl_FrameBuffer* theCustomFbo = NULL);
 
   //! Blend together views pair into stereo image.
-  void drawStereoPair();
+  void drawStereoPair (const Graphic3d_CView& theCView);
 
   //! Blit snapshot containing main scene (myMainSceneFbos or BackBuffer)
   //! into presentation buffer (myMainSceneFbos -> offscreen FBO or myMainSceneFbos -> BackBuffer or BackBuffer -> FrontBuffer),
@@ -336,6 +355,10 @@ protected: //! @name protected fields
   Standard_Boolean       myIsCullingEnabled;     //!< frustum culling flag
 
   unsigned int           myFrameCounter;         //!< redraw counter, for debugging
+
+  Handle(OpenGl_CappingAlgoFilter) myDefaultCappingAlgoFilter;
+  OpenGl_AspectFace                myNoneCulling;
+  OpenGl_AspectFace                myFrontCulling;
 
 protected: //! @name fields related to status
 

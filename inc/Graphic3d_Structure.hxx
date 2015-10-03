@@ -11,7 +11,6 @@
 #include <Handle_Graphic3d_Structure.hxx>
 
 #include <Graphic3d_CStructure.hxx>
-#include <TColStd_SequenceOfAddress.hxx>
 #include <Graphic3d_IndexedMapOfAddress.hxx>
 #include <Quantity_Color.hxx>
 #include <Aspect_TypeOfHighlightMethod.hxx>
@@ -544,10 +543,8 @@ private:
   Standard_EXPORT   void UpdateStructure (const Handle(Graphic3d_AspectLine3d)& CTXL, const Handle(Graphic3d_AspectText3d)& CTXT, const Handle(Graphic3d_AspectMarker3d)& CTXM, const Handle(Graphic3d_AspectFillArea3d)& CTXF) ;
 
   Handle(Graphic3d_CStructure) myCStructure;
-  TColStd_SequenceOfAddress myAncestors;
-  TColStd_SequenceOfAddress myDescendants;
-  Graphic3d_IndexedMapOfAddress myAncestorMap;
-  Graphic3d_IndexedMapOfAddress myDescendantMap;
+  Graphic3d_IndexedMapOfAddress myAncestors;
+  Graphic3d_IndexedMapOfAddress myDescendants;
   Quantity_Color myHighlightColor;
   Aspect_TypeOfHighlightMethod myHighlightMethod;
   Standard_Address myOwner;

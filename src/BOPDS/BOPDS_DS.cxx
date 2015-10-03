@@ -16,7 +16,6 @@
 //
 #include <Standard_Assert.hxx>
 //
-#include <NCollection_IncAllocator.hxx>
 #include <NCollection_BaseAllocator.hxx>
 
 #include <gp_Pnt.hxx>
@@ -354,7 +353,7 @@ void BOPDS_DS::Init()
   BOPCol_ListIteratorOfListOfInteger aIt1, aIt2, aIt3;
   BOPCol_ListIteratorOfListOfShape aIt;
   BOPDS_IndexRange aR;
-  Handle(NCollection_IncAllocator) aAllocator;
+  Handle(NCollection_BaseAllocator) aAllocator;
   //
   // 1 Append Source Shapes
   aNb=myArguments.Extent();
@@ -382,7 +381,8 @@ void BOPDS_DS::Init()
   //
   myLines.SetIncrement(2*aNbS);
   //-----------------------------------------------------scope_1 f
-  aAllocator=new NCollection_IncAllocator();
+  aAllocator=
+    NCollection_BaseAllocator::CommonBaseAllocator();
   //
   BOPCol_DataMapOfShapeInteger& aMSI=myMapShapeIndex;
   //
@@ -647,7 +647,6 @@ void BOPDS_DS::Init()
   }//for (j=0; j<myNbSourceShapes; ++j) {
   //
   aMI.Clear();
-  aAllocator.Nullify();
   //-----------------------------------------------------scope_1 t
   // 3 myPaveBlocksPool
   // 4. myFaceInfoPool
@@ -1363,7 +1362,7 @@ void BOPDS_DS::FaceInfoIn(const Standard_Integer theF,
     if (aSx.ShapeType()==TopAbs_VERTEX){
       nV=Index(aSx);
       if (HasShapeSD(nV, nVSD)) {
- nV=nVSD;
+        nV=nVSD;
       }
       theMI.Add(nV);
     }
@@ -1446,20 +1445,19 @@ void BOPDS_DS::AloneVertices(const Standard_Integer theI,
 {
   if (HasFaceInfo(theI)) {
     //
-    Standard_Integer i, nV1, nV2, nV;
-    BOPDS_MapIteratorOfMapOfPaveBlock aItMPB;
+    Standard_Integer i, j, nV1, nV2, nV, aNbPB;
     BOPCol_MapIteratorOfMapOfInteger aItMI;
     //
     BOPCol_MapOfInteger aMI(100, myAllocator);
     //
     const BOPDS_FaceInfo& aFI=FaceInfo(theI);
     //
-    for (i=0; i<2; ++i) {
+    for (i = 0; i < 2; ++i) {
       const BOPDS_IndexedMapOfPaveBlock& aMPB=
         (!i) ? aFI.PaveBlocksIn() : aFI.PaveBlocksSc();
-      aItMPB.Initialize(aMPB);
-      for (; aItMPB.More(); aItMPB.Next()) {
-        const Handle(BOPDS_PaveBlock)& aPB=aItMPB.Value();
+      aNbPB = aMPB.Extent();
+      for (j = 1; j <= aNbPB; ++j) {
+        const Handle(BOPDS_PaveBlock)& aPB = aMPB(j);
         aPB->Indices(nV1, nV2);
         aMI.Add(nV1);
         aMI.Add(nV2);

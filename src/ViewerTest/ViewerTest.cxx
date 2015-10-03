@@ -768,16 +768,24 @@ static int VSelPrecision(Draw_Interpretor& di, Standard_Integer argc, const char
     anArg.LowerCase();
     if (anArg == "-unset")
     {
-      aContext->SetPixelTolerance (-1.0);
+      aContext->SetPixelTolerance (-1);
     }
     else
     {
-      aContext->SetPixelTolerance (anArg.RealValue());
+      aContext->SetPixelTolerance (anArg.IntegerValue());
     }
   }
 
   return 0;
 }
+
+//! Auxiliary enumeration
+enum ViewerTest_StereoPair
+{
+  ViewerTest_SP_Single,
+  ViewerTest_SP_SideBySide,
+  ViewerTest_SP_OverUnder
+};
 
 //==============================================================================
 //function : VDump
@@ -797,42 +805,108 @@ static Standard_Integer VDump (Draw_Interpretor& theDI,
   Standard_CString      aFilePath   = theArgVec[anArgIter++];
   Graphic3d_BufferType  aBufferType = Graphic3d_BT_RGB;
   V3d_StereoDumpOptions aStereoOpts = V3d_SDO_MONO;
+  ViewerTest_StereoPair aStereoPair = ViewerTest_SP_Single;
   Standard_Integer      aWidth      = 0;
   Standard_Integer      aHeight     = 0;
   for (; anArgIter < theArgNb; ++anArgIter)
   {
     TCollection_AsciiString anArg (theArgVec[anArgIter]);
     anArg.LowerCase();
-    if (anArg == "rgba")
+    if (anArg == "-buffer")
+    {
+      if (++anArgIter >= theArgNb)
+      {
+        std::cout << "Error: wrong syntax at '" << anArg << "'\n";
+        return 1;
+      }
+
+      TCollection_AsciiString aBufArg (theArgVec[anArgIter]);
+      aBufArg.LowerCase();
+      if (aBufArg == "rgba")
+      {
+        aBufferType = Graphic3d_BT_RGBA;
+      }
+      else if (aBufArg == "rgb")
+      {
+        aBufferType = Graphic3d_BT_RGB;
+      }
+      else if (aBufArg == "depth")
+      {
+        aBufferType = Graphic3d_BT_Depth;
+      }
+      else
+      {
+        std::cout << "Error: unknown buffer '" << aBufArg << "'\n";
+        return 1;
+      }
+    }
+    else if (anArg == "-stereo")
+    {
+      if (++anArgIter >= theArgNb)
+      {
+        std::cout << "Error: wrong syntax at '" << anArg << "'\n";
+        return 1;
+      }
+
+      TCollection_AsciiString aStereoArg (theArgVec[anArgIter]);
+      aStereoArg.LowerCase();
+      if (aStereoArg == "l"
+       || aStereoArg == "left")
+      {
+        aStereoOpts = V3d_SDO_LEFT_EYE;
+      }
+      else if (aStereoArg == "r"
+            || aStereoArg == "right")
+      {
+        aStereoOpts = V3d_SDO_RIGHT_EYE;
+      }
+      else if (aStereoArg == "mono")
+      {
+        aStereoOpts = V3d_SDO_MONO;
+      }
+      else if (aStereoArg == "blended"
+            || aStereoArg == "blend"
+            || aStereoArg == "stereo")
+      {
+        aStereoOpts = V3d_SDO_BLENDED;
+      }
+      else if (aStereoArg == "sbs"
+            || aStereoArg == "sidebyside")
+      {
+        aStereoPair = ViewerTest_SP_SideBySide;
+      }
+      else if (aStereoArg == "ou"
+            || aStereoArg == "overunder")
+      {
+        aStereoPair = ViewerTest_SP_OverUnder;
+      }
+      else
+      {
+        std::cout << "Error: unknown stereo format '" << aStereoArg << "'\n";
+        return 1;
+      }
+    }
+    else if (anArg == "-rgba"
+          || anArg ==  "rgba")
     {
       aBufferType = Graphic3d_BT_RGBA;
     }
-    else if (anArg == "rgb")
+    else if (anArg == "-rgb"
+          || anArg ==  "rgb")
     {
       aBufferType = Graphic3d_BT_RGB;
     }
-    else if (anArg == "depth")
+    else if (anArg == "-depth"
+          || anArg ==  "depth")
     {
       aBufferType = Graphic3d_BT_Depth;
     }
-    else if (anArg == "l"
-          || anArg == "left")
+
+    else if (anArg == "-width"
+          || anArg ==  "width"
+          || anArg ==  "sizex")
     {
-      aStereoOpts = V3d_SDO_LEFT_EYE;
-    }
-    else if (anArg == "r"
-          || anArg == "right")
-    {
-      aStereoOpts = V3d_SDO_RIGHT_EYE;
-    }
-    else if (anArg == "mono")
-    {
-      aStereoOpts = V3d_SDO_MONO;
-    }
-    else if (anArg == "w"
-          || anArg == "width")
-    {
-      if (aWidth  != 0)
+      if (aWidth != 0)
       {
         std::cout << "Error: wrong syntax at " << theArgVec[anArgIter] << "\n";
         return 1;
@@ -844,36 +918,20 @@ static Standard_Integer VDump (Draw_Interpretor& theDI,
       }
       aWidth = Draw::Atoi (theArgVec[anArgIter]);
     }
-    else if (anArg == "h"
-          || anArg == "height")
+    else if (anArg == "-height"
+          || anArg ==  "height"
+          || anArg ==  "-sizey")
     {
       if (aHeight != 0)
       {
         std::cout << "Error: wrong syntax at " << theArgVec[anArgIter] << "\n";
         return 1;
       }
-      if (++anArgIter >= theArgNb)
+      else if (++anArgIter >= theArgNb)
       {
         std::cout << "Error: integer value is expected right after 'height'\n";
         return 1;
       }
-      aHeight = Draw::Atoi (theArgVec[anArgIter]);
-    }
-    else if (anArg.IsIntegerValue())
-    {
-      // compatibility with old syntax
-      if (aWidth  != 0
-       || aHeight != 0)
-      {
-        std::cout << "Error: wrong syntax at " << theArgVec[anArgIter] << "\n";
-        return 1;
-      }
-      else if (++anArgIter >= theArgNb)
-      {
-        std::cout << "Error: height value is expected right after width\n";
-        return 1;
-      }
-      aWidth  = Draw::Atoi (theArgVec[anArgIter - 1]);
       aHeight = Draw::Atoi (theArgVec[anArgIter]);
     }
     else
@@ -898,40 +956,88 @@ static Standard_Integer VDump (Draw_Interpretor& theDI,
 
   if (aWidth <= 0 || aHeight <= 0)
   {
-    if (aStereoOpts != V3d_SDO_MONO)
-    {
-      aView->Window()->Size (aWidth, aHeight);
-    }
-    else
-    {
-      if (!aView->Dump (aFilePath, aBufferType))
-      {
-        theDI << "Fail: view dump failed!\n";
-      }
-      return 0;
-    }
+    aView->Window()->Size (aWidth, aHeight);
   }
 
   Image_AlienPixMap aPixMap;
-  if (!aView->ToPixMap (aPixMap, aWidth, aHeight, aBufferType, Standard_True, aStereoOpts))
+
+  bool isBigEndian = Image_PixMap::IsBigEndianHost();
+  Image_PixMap::ImgFormat aFormat = Image_PixMap::ImgUNKNOWN;
+  switch (aBufferType)
   {
-    theDI << "Fail: view dump failed!\n";
-    return 0;
+    case Graphic3d_BT_RGB:   aFormat = isBigEndian ? Image_PixMap::ImgRGB  : Image_PixMap::ImgBGR;  break;
+    case Graphic3d_BT_RGBA:  aFormat = isBigEndian ? Image_PixMap::ImgRGBA : Image_PixMap::ImgBGRA; break;
+    case Graphic3d_BT_Depth: aFormat = Image_PixMap::ImgGrayF; break;
   }
 
-  if (aPixMap.SizeX() != Standard_Size(aWidth)
-   || aPixMap.SizeY() != Standard_Size(aHeight))
+  switch (aStereoPair)
   {
-    theDI << "Fail: dumped dimensions "    << (Standard_Integer )aPixMap.SizeX() << "x" << (Standard_Integer )aPixMap.SizeY()
-          << " are lesser than requested " << aWidth << "x" << aHeight << "\n";
+    case ViewerTest_SP_Single:
+    {
+      if (!aView->ToPixMap (aPixMap, aWidth, aHeight, aBufferType, Standard_True, aStereoOpts))
+      {
+        theDI << "Fail: view dump failed!\n";
+        return 0;
+      }
+      else if (aPixMap.SizeX() != Standard_Size(aWidth)
+            || aPixMap.SizeY() != Standard_Size(aHeight))
+      {
+        theDI << "Fail: dumped dimensions "    << (Standard_Integer )aPixMap.SizeX() << "x" << (Standard_Integer )aPixMap.SizeY()
+              << " are lesser than requested " << aWidth << "x" << aHeight << "\n";
+      }
+      break;
+    }
+    case ViewerTest_SP_SideBySide:
+    {
+      if (!aPixMap.InitZero (aFormat, aWidth * 2, aHeight))
+      {
+        theDI << "Fail: not enough memory for image allocation!\n";
+        return 0;
+      }
+
+      Image_PixMap aPixMapL, aPixMapR;
+      aPixMapL.InitWrapper (aPixMap.Format(), aPixMap.ChangeData(),
+                            aWidth, aHeight, aPixMap.SizeRowBytes());
+      aPixMapR.InitWrapper (aPixMap.Format(), aPixMap.ChangeData() + aPixMap.SizePixelBytes() * aWidth,
+                            aWidth, aHeight, aPixMap.SizeRowBytes());
+      if (!aView->ToPixMap (aPixMapL, aWidth, aHeight, aBufferType, Standard_True, V3d_SDO_LEFT_EYE)
+       || !aView->ToPixMap (aPixMapR, aWidth, aHeight, aBufferType, Standard_True, V3d_SDO_RIGHT_EYE)
+       )
+      {
+        theDI << "Fail: view dump failed!\n";
+        return 0;
+      }
+      break;
+    }
+    case ViewerTest_SP_OverUnder:
+    {
+      if (!aPixMap.InitZero (aFormat, aWidth, aHeight * 2))
+      {
+        theDI << "Fail: not enough memory for image allocation!\n";
+        return 0;
+      }
+
+      Image_PixMap aPixMapL, aPixMapR;
+      aPixMapL.InitWrapper (aFormat, aPixMap.ChangeData(),
+                            aWidth, aHeight, aPixMap.SizeRowBytes());
+      aPixMapR.InitWrapper (aFormat, aPixMap.ChangeData() + aPixMap.SizeRowBytes() * aHeight,
+                            aWidth, aHeight, aPixMap.SizeRowBytes());
+      if (!aView->ToPixMap (aPixMapL, aWidth, aHeight, aBufferType, Standard_True, V3d_SDO_LEFT_EYE)
+       || !aView->ToPixMap (aPixMapR, aWidth, aHeight, aBufferType, Standard_True, V3d_SDO_RIGHT_EYE))
+      {
+        theDI << "Fail: view dump failed!\n";
+        return 0;
+      }
+      break;
+    }
   }
+
   if (!aPixMap.Save (aFilePath))
   {
     theDI << "Fail: image can not be saved!\n";
   }
   return 0;
 }
-
 
 //==============================================================================
 //function : Displays,Erase...
@@ -1392,6 +1498,10 @@ struct ViewerTest_AspectsChangeSet
   Standard_Integer         ToSetFreeBoundaryColor;
   Quantity_Color           FreeBoundaryColor;
 
+  Standard_Integer         ToSetSensitivity;
+  Standard_Integer         SelectionMode;
+  Standard_Integer         Sensitivity;
+
   //! Empty constructor
   ViewerTest_AspectsChangeSet()
   : ToSetVisibility   (0),
@@ -1408,7 +1518,10 @@ struct ViewerTest_AspectsChangeSet
     ToSetFreeBoundaryWidth (0),
     FreeBoundaryWidth      (1.0),
     ToSetFreeBoundaryColor (0),
-    FreeBoundaryColor      (DEFAULT_FREEBOUNDARY_COLOR) {}
+    FreeBoundaryColor          (DEFAULT_FREEBOUNDARY_COLOR),
+    ToSetSensitivity (0),
+    SelectionMode (-1),
+    Sensitivity (-1) {}
 
   //! @return true if no changes have been requested
   Standard_Boolean IsEmpty() const
@@ -1420,7 +1533,8 @@ struct ViewerTest_AspectsChangeSet
         && ToSetMaterial          == 0
         && ToSetShowFreeBoundary  == 0
         && ToSetFreeBoundaryColor == 0
-        && ToSetFreeBoundaryWidth == 0;
+        && ToSetFreeBoundaryWidth == 0
+        && ToSetSensitivity       == 0;
   }
 
   //! @return true if properties are valid
@@ -1460,6 +1574,11 @@ struct ViewerTest_AspectsChangeSet
      || FreeBoundaryWidth >  10.0)
     {
       std::cout << "Error: the free boundary width should be within [1; 10] range (specified " << FreeBoundaryWidth << ")\n";
+      isOk = Standard_False;
+    }
+    if (Sensitivity <= 0 && ToSetSensitivity)
+    {
+      std::cout << "Error: sensitivity parameter value should be positive (specified " << Sensitivity << ")\n";
       isOk = Standard_False;
     }
     return isOk;
@@ -1950,6 +2069,29 @@ static Standard_Integer VAspects (Draw_Interpretor& /*theDI*/,
       aChangeSet->ToSetFreeBoundaryWidth = -1;
       aChangeSet->FreeBoundaryWidth = 1.0;
     }
+    else if (anArg == "-setsensitivity")
+    {
+      if (isDefaults)
+      {
+        std::cout << "Error: wrong syntax. -setSensitivity can not be used together with -defaults call!\n";
+        return 1;
+      }
+
+      if (aNames.IsEmpty())
+      {
+        std::cout << "Error: object and selection mode should specified explicitly when -setSensitivity is used!\n";
+        return 1;
+      }
+
+      if (anArgIter + 2 >= theArgNb)
+      {
+        std::cout << "Error: wrong syntax at " << anArg << "\n";
+        return 1;
+      }
+      aChangeSet->ToSetSensitivity = 1;
+      aChangeSet->SelectionMode = Draw::Atoi (theArgVec[++anArgIter]);
+      aChangeSet->Sensitivity = Draw::Atoi (theArgVec[++anArgIter]);
+    }
     else
     {
       std::cout << "Error: wrong syntax at " << anArg << "\n";
@@ -2102,6 +2244,10 @@ static Standard_Integer VAspects (Draw_Interpretor& /*theDI*/,
       {
         aCtx->UnsetWidth (aPrs, Standard_False);
       }
+      else if (aChangeSet->ToSetSensitivity != 0)
+      {
+        aCtx->SetSelectionSensitivity (aPrs, aChangeSet->SelectionMode, aChangeSet->Sensitivity);
+      }
       if (!aDrawer.IsNull())
       {
         if (aChangeSet->ToSetShowFreeBoundary == 1)
@@ -2158,6 +2304,10 @@ static Standard_Integer VAspects (Draw_Interpretor& /*theDI*/,
            || aChangeSet->ToSetLineWidth == -1)
           {
             aColoredPrs->UnsetCustomAspects (aSubShape, Standard_True);
+          }
+          if (aChangeSet->ToSetSensitivity != 0)
+          {
+            aCtx->SetSelectionSensitivity (aPrs, aChangeSet->SelectionMode, aChangeSet->Sensitivity);
           }
         }
       }
@@ -4278,11 +4428,12 @@ static Standard_Integer VState (Draw_Interpretor& theDI,
       const Handle(SelectBasics_SensitiveEntity)& anEntity = aSelector->DetectedEntity();
       Handle(SelectMgr_EntityOwner) anOwner    = Handle(SelectMgr_EntityOwner)::DownCast (anEntity->OwnerId());
       Handle(AIS_InteractiveObject) anObj      = Handle(AIS_InteractiveObject)::DownCast (anOwner->Selectable());
-      SelectMgr_SelectingVolumeManager aMgr = anObj->HasTransformation() ? aSelector->GetManager().Transform (anObj->InversedTransformation())
-                                                                         : aSelector->GetManager();
+      SelectMgr_SelectingVolumeManager aMgr =
+        anObj->HasTransformation() ? aSelector->GetManager().ScaleAndTransform (1, anObj->InversedTransformation())
+                                   : aSelector->GetManager();
       SelectBasics_PickResult aResult;
       anEntity->Matches (aMgr, aResult);
-      NCollection_Vec3<Standard_Real> aDetectedPnt = aMgr.DetectedPoint (aResult.Depth());
+      gp_Pnt aDetectedPnt = aMgr.DetectedPoint (aResult.Depth());
 
       TCollection_AsciiString aName = GetMapOfAIS().Find1 (anObj);
       aName.LeftJustify (20, ' ');
@@ -4291,7 +4442,7 @@ static Standard_Integer VState (Draw_Interpretor& theDI,
                " Depth: %+.3f Distance: %+.3f Point: %+.3f %+.3f %+.3f",
                aResult.Depth(),
                aResult.DistToGeomCenter(),
-               aDetectedPnt.x(), aDetectedPnt.y(), aDetectedPnt.z());
+               aDetectedPnt.X(), aDetectedPnt.Y(), aDetectedPnt.Z());
       theDI << "  " << aName
             << anInfoStr
             << " (" << anEntity->DynamicType()->Name() << ")"
@@ -5087,9 +5238,11 @@ void ViewerTest::Commands(Draw_Interpretor& theCommands)
       __FILE__, visos, group);
 
   theCommands.Add("vdisplay",
-              "vdisplay [-noupdate|-update] [-local] [-mutable] [-overlay|-underlay]"
-      "\n\t\t:          [-trsfPers flags] [-trsfPersPos X Y [Z]] [-3d|-2d|-2dTopDown]"
+              "vdisplay [-noupdate|-update] [-local] [-mutable] [-neutral]"
+      "\n\t\t:          [-trsfPers {pan|zoom|rotate|trihedron|full|none}=none] [-trsfPersPos X Y [Z]] [-3d|-2d|-2dTopDown]"
       "\n\t\t:          [-dispMode mode] [-highMode mode]"
+      "\n\t\t:          [-layer index] [-top|-topmost|-overlay|-underlay]"
+      "\n\t\t:          [-redisplay]"
       "\n\t\t:          name1 [name2] ... [name n]"
       "\n\t\t: Displays named objects."
       "\n\t\t: Option -local enables displaying of objects in local"
@@ -5097,12 +5250,19 @@ void ViewerTest::Commands(Draw_Interpretor& theCommands)
       "\n\t\t: if there is not any."
       "\n\t\t:  -noupdate    suppresses viewer redraw call."
       "\n\t\t:  -mutable     enables optimizations for mutable objects."
-      "\n\t\t:  -overlay     draws objects in overlay."
-      "\n\t\t:  -underlay    draws objects in underlay."
+      "\n\t\t:  -neutral     draws objects in main viewer."
+      "\n\t\t:  -layer       sets z-layer for objects. It can use -overlay|-underlay|-top|-topmost instead of -layer index for the default z-layers."
+      "\n\t\t:  -top         draws objects on top of main presentations but below topmost."
+      "\n\t\t:  -topmost     draws in overlay for 3D presentations with independent Depth."
+      "\n\t\t:  -overlay     draws objects in overlay for 2D presentations (On-Screen-Display)."
+      "\n\t\t:  -underlay    draws objects in underlay for 2D presentations (On-Screen-Display)."
       "\n\t\t:  -selectable|-noselect controls selection of objects."
-      "\n\t\t:  -trsfPers    sets a transform persistence flags."
+      "\n\t\t:  -trsfPers    sets a transform persistence flags. Flag 'full' is pan, zoom and rotate."
       "\n\t\t:  -trsfPersPos sets an anchor point for transform persistence."
-      "\n\t\t:  -2d|-2dTopDown displays object in screen coordinates.",
+      "\n\t\t:  -2d|-2dTopDown displays object in screen coordinates."
+      "\n\t\t:  -dispmode sets display mode for objects."
+      "\n\t\t:  -highmode sets hilight mode for objects."
+      "\n\t\t:  -redisplay recomputes presentation of objects.",
       __FILE__, VDisplay2, group);
 
   theCommands.Add ("vupdate",
@@ -5188,16 +5348,16 @@ void ViewerTest::Commands(Draw_Interpretor& theCommands)
 		  "Lists all objects displayed in 3D viewer",
 		  __FILE__,VDir,group);
 
+#ifdef HAVE_FREEIMAGE
+  #define DUMP_FORMATS "{png|bmp|jpg|gif}"
+#else
+  #define DUMP_FORMATS "{ppm}"
+#endif
   theCommands.Add("vdump",
-    #ifdef HAVE_FREEIMAGE
-              "vdump <filename>.{png|bmp|jpg|gif} [rgb|rgba|depth=rgb] [mono|left|right=mono]"
-      "\n\t\t:                                    [width Width=0 height Height=0]"
-      "\n\t\t: Dumps content of the active view into PNG, BMP, JPEG or GIF file",
-    #else
-              "vdump <filename>.{ppm} [rgb|rgba|depth=rgb] [mono|left|right=mono]"
-      "\n\t\t:                        [width Width=0 height Height=0]"
-      "\n\t\t: Dumps content of the active view into PPM image file",
-    #endif
+              "vdump <filename>." DUMP_FORMATS " [-width Width -height Height]"
+      "\n\t\t:       [-buffer rgb|rgba|depth=rgb]"
+      "\n\t\t:       [-stereo mono|left|right|blend|sideBySide|overUnder=mono]"
+      "\n\t\t: Dumps content of the active view into image file",
 		  __FILE__,VDump,group);
 
   theCommands.Add("vsub",      "vsub 0/1 (off/on) [obj]        : Subintensity(on/off) of selected objects",
@@ -5214,6 +5374,7 @@ void ViewerTest::Commands(Draw_Interpretor& theCommands)
       "\n\t\t:          [-setFreeBoundaryWidth Width] [-unsetFreeBoundaryWidth]"
       "\n\t\t:          [-setFreeBoundaryColor {ColorName | R G B}] [-unsetFreeBoundaryColor]"
       "\n\t\t:          [-subshapes subname1 [subname2 [...]]]"
+      "\n\t\t:          [-setSensitivity {selection_mode} {value}]"
       "\n\t\t: Manage presentation properties of all, selected or named objects."
       "\n\t\t: When -subshapes is specified than following properties will be"
       "\n\t\t: assigned to specified sub-shapes."
@@ -5274,11 +5435,22 @@ void ViewerTest::Commands(Draw_Interpretor& theCommands)
 		  __FILE__,VSetInteriorStyle,group);
 
   theCommands.Add("vsensdis",
-		  "vardisp           : display active entities",
-		  __FILE__,VDispSensi,group);
+      "vsensdis : Display active entities (sensitive entities of one of the standard types corresponding to active selection modes)."
+      "\n\t\t: Standard entity types are those defined in Select3D package:"
+      "\n\t\t: - sensitive box"
+      "\n\t\t: - sensitive face"
+      "\n\t\t: - sensitive curve"
+      "\n\t\t: - sensitive segment"
+      "\n\t\t: - sensitive circle"
+      "\n\t\t: - sensitive point"
+      "\n\t\t: - sensitive triangulation"
+      "\n\t\t: - sensitive triangle"
+      "\n\t\t: Custom(application - defined) sensitive entity types are not processed by this command.",
+      __FILE__,VDispSensi,group);
+
   theCommands.Add("vsensera",
-		  "vardisp           : erase  active entities",
-		  __FILE__,VClearSensi,group);
+      "vsensera : erase active entities",
+      __FILE__,VClearSensi,group);
 
   theCommands.Add("vselprecision",
 		  "vselprecision [-unset] [tolerance_value]"
@@ -5287,20 +5459,23 @@ void ViewerTest::Commands(Draw_Interpretor& theCommands)
 		  __FILE__,VSelPrecision,group);
 
   theCommands.Add("vperf",
-		  "vperf: vperf  ShapeName 1/0(Transfo/Location) 1/0(Primitives sensibles ON/OFF)",
-		  __FILE__,VPerf,group);
+      "vperf: vperf  ShapeName 1/0(Transfo/Location) 1/0(Primitives sensibles ON/OFF)"
+      "\n\t\t: Tests the animation of an object along a predefined trajectory.",
+      __FILE__,VPerf,group);
 
   theCommands.Add("vanimation",
 		  "vanimation CrankArmFile CylinderHeadFile PropellerFile EngineBlockFile",
 		  __FILE__,VAnimation,group);
 
   theCommands.Add("vsetshading",
-		  "vsetshading  : vsetshading name Quality(default=0.0008) ",
-		  __FILE__,VShading,group);
+      "vsetshading  : vsetshading name Quality(default=0.0008) "
+      "\n\t\t: Sets deflection coefficient that defines the quality of the shape’s representation in the shading mode.",
+      __FILE__,VShading,group);
 
   theCommands.Add("vunsetshading",
-		  "vunsetshading :vunsetshading name ",
-		  __FILE__,VShading,group);
+      "vunsetshading :vunsetshading name "
+      "\n\t\t: Sets default deflection coefficient (0.0008) that defines the quality of the shape’s representation in the shading mode.",
+      __FILE__,VShading,group);
 
   theCommands.Add ("vtexture",
                    "\n'vtexture NameOfShape [TextureFile | IdOfTexture]\n"
@@ -5347,12 +5522,22 @@ void ViewerTest::Commands(Draw_Interpretor& theCommands)
 		  VTexture,group);
 
   theCommands.Add("vsetam",
-		  "vsetActivatedModes: vsetam mode(1->7)  ",
-		  __FILE__,VActivatedMode,group);
+      "vsetam [shapename] mode"
+      "\n\t\t: Activates selection mode for all selected or named shapes."
+      "\n\t\t: Mod can be:"
+      "\n\t\t:   0 - for shape itself" 
+      "\n\t\t:   1 - vertices"
+      "\n\t\t:   2 - edges"
+      "\n\t\t:   3 - wires"
+      "\n\t\t:   4 - faces"
+      "\n\t\t:   5 - shells"
+      "\n\t\t:   6 - solids"
+      "\n\t\t:   7 - compounds"
+      __FILE__,VActivatedMode,group);
 
   theCommands.Add("vunsetam",
-		  "vunsetActivatedModes:   vunsetam  ",
-		  __FILE__,VActivatedMode,group);
+      "vunsetam : Deactivates all selection modes for all shapes.",
+      __FILE__,VActivatedMode,group);
 
   theCommands.Add("vstate",
       "vstate [-entities] [-hasSelected] [name1] ... [nameN]"
@@ -5369,7 +5554,9 @@ void ViewerTest::Commands(Draw_Interpretor& theCommands)
 		  "vtypes : list of known types and signatures in AIS - To be Used in vpickobject command for selection with filters",
 		  VIOTypes,group);
 
-  theCommands.Add("vr", "vr : reading of the shape",
+  theCommands.Add("vr",
+      "vr filename"
+      "\n\t\t: Reads shape from BREP-format file and displays it in the viewer. ",
 		  __FILE__,vr, group);
 
   theCommands.Add("vpickselected", "vpickselected [name]: extract selected shape.",

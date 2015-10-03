@@ -68,6 +68,9 @@ namespace
     return TCollection_AsciiString ("AIS_CurContext_")
          + TCollection_AsciiString (Standard_Atomic_Increment (&THE_AIS_INDEX_CUR));
   }
+
+  typedef NCollection_DataMap<Handle(SelectMgr_SelectableObject), Handle(SelectMgr_IndexedMapOfOwner)> AIS_MapOfObjectOwners;
+  typedef NCollection_DataMap<Handle(SelectMgr_SelectableObject), Handle(SelectMgr_IndexedMapOfOwner)>::Iterator AIS_MapIteratorOfMapOfObjectOwners;
 }
 
 //=======================================================================
@@ -698,11 +701,16 @@ void AIS_InteractiveContext::EraseSelected (const Standard_Boolean theToUpdateVi
 
   Standard_Boolean      isFound  = Standard_False;
   Handle(AIS_Selection) aSelIter = AIS_Selection::Selection(myCurrentName.ToCString());
-  for (aSelIter->Init(); aSelIter->More(); aSelIter->Next())
+
+  aSelIter->Init();
+  while (aSelIter->More())
   {
     Handle(AIS_InteractiveObject) anObj = Handle(AIS_InteractiveObject)::DownCast (aSelIter->Value());
+
     Erase (anObj, Standard_False);
     isFound = Standard_True;
+
+    aSelIter->Init();
   }
 
   if (isFound && theToUpdateViewer)
@@ -2330,9 +2338,16 @@ void AIS_InteractiveContext::EraseGlobal (const Handle(AIS_InteractiveObject)& t
 
   for (TColStd_ListIteratorOfListOfInteger aDispModeIter (aStatus->DisplayedModes()); aDispModeIter.More(); aDispModeIter.Next())
   {
-    if (myMainPM->IsHighlighted (theIObj, aDispModeIter.Value()))
+    if (aStatus->IsHilighted())
     {
-      myMainPM->Unhighlight (theIObj, aDispModeIter.Value());
+      if (IsCurrent (theIObj))
+      {
+        AddOrRemoveCurrentObject (theIObj, Standard_False);
+      }
+      else if (myMainPM->IsHighlighted (theIObj, aDispModeIter.Value()))
+      {
+        myMainPM->Unhighlight (theIObj, aDispModeIter.Value());
+      }
     }
 
     myMainPM->SetVisibility (theIObj, aDispModeIter.Value(), Standard_False);
@@ -2596,7 +2611,7 @@ void AIS_InteractiveContext::UnsetSelectionMode (const Handle(AIS_InteractiveObj
 //           sensitive entities activated. For more information, see
 //           SelectMgr_ViewerSelector.hxx
 //=======================================================================
-void AIS_InteractiveContext::SetPixelTolerance (const Standard_Real thePrecision)
+void AIS_InteractiveContext::SetPixelTolerance (const Standard_Integer thePrecision)
 {
   if (HasOpenedContext())
   {
@@ -2612,11 +2627,28 @@ void AIS_InteractiveContext::SetPixelTolerance (const Standard_Real thePrecision
 //function : PixelTolerance
 //purpose  :
 //=======================================================================
-Standard_Real AIS_InteractiveContext::PixelTolerance() const
+Standard_Integer AIS_InteractiveContext::PixelTolerance() const
 {
   return HasOpenedContext()
        ? myLocalContexts (myCurLocalIndex)->PixelTolerance()
        : myMainSel->PixelTolerance();
+}
+
+//=======================================================================
+//function : SetSelectionSensitivity
+//purpose  : Allows to manage sensitivity of a particular selection of interactive object theObject
+//=======================================================================
+void AIS_InteractiveContext::SetSelectionSensitivity (const Handle(AIS_InteractiveObject)& theObject,
+                                                      const Standard_Integer theMode,
+                                                      const Standard_Integer theNewSensitivity)
+{
+  if (HasOpenedContext())
+  {
+    myLocalContexts (myCurLocalIndex)->SetSelectionSensitivity (theObject, theMode, theNewSensitivity);
+    return;
+  }
+
+  mgrSelector->SetSelectionSensitivity (theObject, theMode, theNewSensitivity);
 }
 
 //=======================================================================
@@ -2677,7 +2709,7 @@ void AIS_InteractiveContext::InitAttributes()
   aLineAspect->SetTypeOfLine (Aspect_TOL_DASH);
 
   // tolerance to 2 pixels...
-  SetPixelTolerance (2.0);
+  SetPixelTolerance (2);
 
   // Customizing the drawer for trihedrons and planes...
   Handle(Prs3d_DatumAspect) aTrihAspect = myDefaultDrawer->DatumAspect();
@@ -2823,4 +2855,66 @@ void AIS_InteractiveContext::Disconnect (const Handle(AIS_InteractiveObject)& th
   }
   else
     return;
+}
+
+//=======================================================================
+//function : FitSelected
+//purpose  : Fits the view corresponding to the bounds of selected objects
+//=======================================================================
+void AIS_InteractiveContext::FitSelected (const Handle(V3d_View)& theView,
+                                          const Standard_Real theMargin,
+                                          const Standard_Boolean theToUpdate)
+{
+  Standard_CString aSelName = HasOpenedContext() ?
+      myLocalContexts (myCurLocalIndex)->SelectionName().ToCString()
+    : myCurrentName.ToCString();
+
+  Bnd_Box aBndSelected;
+
+  const Handle(AIS_Selection)& aSelection = AIS_Selection::Selection (aSelName);
+  AIS_MapOfObjectOwners anObjectOwnerMap;
+  for (aSelection->Init(); aSelection->More(); aSelection->Next())
+  {
+    const Handle(AIS_InteractiveObject)& anObj =
+      Handle(AIS_InteractiveObject)::DownCast (aSelection->Value());
+    if (!anObj.IsNull())
+    {
+      if (anObj->IsInfinite())
+        continue;
+
+      Bnd_Box aTmpBnd;
+      anObj->BoundingBox (aTmpBnd);
+      aBndSelected.Add (aTmpBnd);
+    }
+    else
+    {
+      const Handle(SelectMgr_EntityOwner)& anOwner =
+        Handle(SelectMgr_EntityOwner)::DownCast (aSelection->Value());
+      if (anOwner.IsNull())
+        continue;
+
+      Handle(SelectMgr_IndexedMapOfOwner) anOwnerMap;
+      if (!anObjectOwnerMap.Find (anOwner->Selectable(), anOwnerMap))
+      {
+        anOwnerMap = new SelectMgr_IndexedMapOfOwner();
+        anObjectOwnerMap.Bind (anOwner->Selectable(), anOwnerMap);
+      }
+
+      anOwnerMap->Add (anOwner);
+    }
+  }
+
+  for (AIS_MapIteratorOfMapOfObjectOwners anIter (anObjectOwnerMap); anIter.More(); anIter.Next())
+  {
+    const Handle(SelectMgr_SelectableObject) anObject = anIter.Key();
+    Bnd_Box aTmpBox = anObject->BndBoxOfSelected (anIter.ChangeValue());
+    aBndSelected.Add (aTmpBox);
+  }
+
+  anObjectOwnerMap.Clear();
+
+  if (aBndSelected.IsVoid())
+    return;
+
+  theView->FitAll (aBndSelected, theMargin, theToUpdate);
 }

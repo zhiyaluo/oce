@@ -88,12 +88,12 @@ class Quantity_Color;
 class Graphic3d_TextureEnv;
 class V3d_Light;
 class Aspect_ColorScale;
+class Bnd_Box;
 class Aspect_GradientBackground;
 class gp_Dir;
 class Graphic3d_Vector;
 class TColStd_Array2OfReal;
 class gp_Ax3;
-class Bnd_Box;
 
 
 //! Defines the application object VIEW for the
@@ -539,6 +539,15 @@ public:
   //! @param theMargin [in] the margin coefficient for view borders.
   //! @param theToUpdate [in] flag to perform view update.
   Standard_EXPORT   void FitAll (const Quantity_Coefficient theMargin = 0.01, const Standard_Boolean theToUpdate = Standard_True) ;
+  
+  //! Adjust view parameters to fit the displayed scene, respecting height / width ratio
+  //! according to the custom bounding box given.
+  //! Throws program error exception if margin coefficient is < 0 or >= 1.
+  //! Updates the view.
+  //! @param theBox [in] the custom bounding box to fit.
+  //! @param theMargin [in] the margin coefficient for view borders.
+  //! @param theToUpdate [in] flag to perform view update.
+  Standard_EXPORT   void FitAll (const Bnd_Box& theBox, const Quantity_Coefficient theMargin = 0.01, const Standard_Boolean theToUpdate = Standard_True) ;
   
   //! Adjusts the viewing volume so as not to clip the displayed objects by front and back
   //! and back clipping planes. Also sets depth value automatically depending on the

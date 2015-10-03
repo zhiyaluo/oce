@@ -35,7 +35,6 @@
 #include <Handle_SelectMgr_EntityOwner.hxx>
 #include <Handle_Standard_Transient.hxx>
 #include <Quantity_NameOfColor.hxx>
-#include <Standard_Real.hxx>
 #include <Handle_AIS_LocalStatus.hxx>
 #include <Handle_SelectMgr_SelectableObject.hxx>
 class AIS_InteractiveContext;
@@ -311,10 +310,15 @@ public:
   
   //! Define the current selection sensitivity for
   //! this local context according to the view size.
-  Standard_EXPORT   void SetPixelTolerance (const Standard_Real aPrecision = 2) ;
+  Standard_EXPORT   void SetPixelTolerance (const Standard_Integer aPrecision = 2) ;
   
   //! Returns the pixel tolerance.
-  Standard_EXPORT   Standard_Real PixelTolerance()  const;
+  Standard_EXPORT   Standard_Integer PixelTolerance()  const;
+  
+  //! Allows to manage sensitivity of a particular selection of interactive object theObject and
+  //! changes previous sensitivity value of all sensitive entities in selection with theMode to
+  //! the given theNewSensitivity.
+  Standard_EXPORT   void SetSelectionSensitivity (const Handle(AIS_InteractiveObject)& theObject, const Standard_Integer theMode, const Standard_Integer theNewSensitivity) ;
   
   //! Resets the transient list of presentations previously displayed in immediate mode
   //! and begins accumulation of new list by following AddToImmediateList()/Color()/Highlight() calls.
@@ -420,7 +424,7 @@ private:
   TColStd_ListOfInteger myListOfStandardMode;
   Handle(SelectMgr_Filter) myStdFilters[9];
   Standard_Boolean myAutoHilight;
-  SelectMgr_IndexedMapOfOwner myMapOfOwner;
+  Handle(SelectMgr_IndexedMapOfOwner) myMapOfOwner;
   Standard_Integer mylastindex;
   Standard_Integer mylastgood;
   Standard_Integer myCurrentOwner;

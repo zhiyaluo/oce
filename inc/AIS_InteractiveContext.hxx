@@ -28,8 +28,8 @@
 #include <MMgt_TShared.hxx>
 #include <AIS_DisplayStatus.hxx>
 #include <AIS_KindOfInteractive.hxx>
-#include <Standard_Real.hxx>
 #include <Aspect_TypeOfFacingModel.hxx>
+#include <Standard_Real.hxx>
 #include <Graphic3d_NameOfMaterial.hxx>
 #include <Standard_ShortReal.hxx>
 #include <AIS_DisplayMode.hxx>
@@ -39,6 +39,7 @@
 #include <AIS_StatusOfDetection.hxx>
 #include <AIS_StatusOfPick.hxx>
 #include <Handle_SelectMgr_EntityOwner.hxx>
+#include <SelectMgr_IndexedMapOfOwner.hxx>
 #include <Handle_Standard_Transient.hxx>
 #include <AIS_ClearMode.hxx>
 #include <Handle_SelectMgr_Filter.hxx>
@@ -60,7 +61,6 @@ class Prs3d_BasicAspect;
 class TColgp_Array1OfPnt2d;
 class TopoDS_Shape;
 class SelectMgr_EntityOwner;
-class SelectMgr_IndexedMapOfOwner;
 class Standard_Transient;
 class SelectMgr_Filter;
 class SelectMgr_ListOfFilter;
@@ -367,10 +367,15 @@ public:
   //! SelectMgr_ViewerSelector documentation
   //! Warning: When a local context is open the sensitivity is apply on it
   //! instead on the main context.
-  Standard_EXPORT   void SetPixelTolerance (const Standard_Real aPrecision = 2.0) ;
+  Standard_EXPORT   void SetPixelTolerance (const Standard_Integer aPrecision = 2) ;
   
   //! Returns the pixel tolerance.
-  Standard_EXPORT   Standard_Real PixelTolerance()  const;
+  Standard_EXPORT   Standard_Integer PixelTolerance()  const;
+  
+  //! Allows to manage sensitivity of a particular selection of interactive object theObject and
+  //! changes previous sensitivity value of all sensitive entities in selection with theMode to
+  //! the given theNewSensitivity.
+  Standard_EXPORT   void SetSelectionSensitivity (const Handle(AIS_InteractiveObject)& theObject, const Standard_Integer theMode, const Standard_Integer theNewSensitivity) ;
   
   //! Puts the location aLocation on the initial graphic
   //! representation and the selection for the entity aniobj.
@@ -1148,7 +1153,7 @@ public:
   //! created for the interactive object <theIObj> in
   //! the selection mode theMode (in all active modes
   //! if the Mode == -1)
-  Standard_EXPORT   void EntityOwners (SelectMgr_IndexedMapOfOwner& theOwners, const Handle(AIS_InteractiveObject)& theIObj, const Standard_Integer theMode = -1)  const;
+  Standard_EXPORT   void EntityOwners (Handle(SelectMgr_IndexedMapOfOwner)& theOwners, const Handle(AIS_InteractiveObject)& theIObj, const Standard_Integer theMode = -1)  const;
   
   //! Returns the location of the selected Interactive Object.
   Standard_EXPORT   Handle(AIS_InteractiveObject) Interactive()  const;
@@ -1555,6 +1560,11 @@ public:
   Standard_EXPORT   void DisplayActiveSensitive (const Handle(V3d_View)& aView) ;
   
   Standard_EXPORT   void ClearActiveSensitive (const Handle(V3d_View)& aView) ;
+  
+  //! Fits the view correspondingly to the bounds of selected objects.
+  //! Infinite objects are ignored if infinite state of AIS_InteractiveObject
+  //! is set to true.
+  Standard_EXPORT   void FitSelected (const Handle(V3d_View)& theView, const Standard_Real theMargin = 0.01, const Standard_Boolean theToUpdate = Standard_True) ;
   
   Standard_EXPORT   void DisplayActiveSensitive (const Handle(AIS_InteractiveObject)& anObject, const Handle(V3d_View)& aView) ;
   

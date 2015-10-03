@@ -74,6 +74,7 @@ mySM(aCtx->SelectionManager()),
 myMainVS(aCtx->MainSelector()),
 myFilters(new SelectMgr_OrFilter()),
 myAutoHilight(Standard_True),
+myMapOfOwner (new SelectMgr_IndexedMapOfOwner()),
 mylastindex(0),
 mylastgood(0),
 myCurDetected(0),
@@ -606,7 +607,7 @@ void AIS_LocalContext::Terminate (const Standard_Boolean theToUpdate)
 {
   ClearDetected();
   Clear();
-  myMapOfOwner.Clear();
+  myMapOfOwner->Clear();
   
   mylastindex=0;
   // clear the selector...
@@ -1050,16 +1051,16 @@ HasFilters(const TopAbs_ShapeEnum aType) const
 
 void AIS_LocalContext::ClearDetected()
 {
-  for(Standard_Integer I=1;I<=myMapOfOwner.Extent();I++)
+  for(Standard_Integer I=1;I<=myMapOfOwner->Extent();I++)
   {
-    if(!myMapOfOwner(I).IsNull())
+    if(!myMapOfOwner->FindKey (I).IsNull())
     {
-      if(myMapOfOwner(I)->IsHilighted(myMainPM))
-        myMapOfOwner(I)->Unhilight(myMainPM);
+      if(myMapOfOwner->FindKey (I)->IsHilighted(myMainPM))
+        myMapOfOwner->FindKey (I)->Unhilight(myMainPM);
       else
       {
         const Handle(SelectMgr_SelectableObject)& SO = 
-          myMapOfOwner.FindKey(I)->Selectable();
+          myMapOfOwner->FindKey (I)->Selectable();
         if(myActiveObjects.IsBound(SO))
         {
           const Handle(AIS_LocalStatus)& Att = myActiveObjects(SO);
@@ -1068,7 +1069,7 @@ void AIS_LocalContext::ClearDetected()
              Att->DisplayMode()==-1 && 
              Att->SelectionModes().IsEmpty())
           {
-            myMapOfOwner(I)->Clear(myMainPM);
+            myMapOfOwner->FindKey (I)->Clear(myMainPM);
           }
         }
       }
@@ -1139,12 +1140,23 @@ Standard_Boolean AIS_LocalContext::IsImmediateModeOn() const
   return myMainPM->IsImmediateModeOn();
 }
 
-void AIS_LocalContext::SetPixelTolerance(const Standard_Real aPrecision) {
+void AIS_LocalContext::SetPixelTolerance(const Standard_Integer aPrecision) {
 
   myMainVS->SetPixelTolerance(aPrecision);
 }
 
-Standard_Real AIS_LocalContext::PixelTolerance() const {
+Standard_Integer AIS_LocalContext::PixelTolerance() const {
 
   return myMainVS->PixelTolerance();
+}
+
+//=======================================================================
+//function : SetSelectionSensitivity
+//purpose  : Allows to manage sensitivity of a particular selection of interactive object theObject
+//=======================================================================
+void AIS_LocalContext::SetSelectionSensitivity (const Handle(AIS_InteractiveObject)& theObject,
+                                                const Standard_Integer theMode,
+                                                const Standard_Integer theNewSensitivity)
+{
+  mySM->SetSelectionSensitivity (theObject, theMode, theNewSensitivity);
 }

@@ -17,8 +17,6 @@
 
 #include <BOPAlgo_PaveFiller.ixx>
 
-#include <NCollection_IncAllocator.hxx>
-
 #include <Geom_RectangularTrimmedSurface.hxx>
 #include <Geom_Plane.hxx>
 #include <Geom_Surface.hxx>
@@ -62,6 +60,16 @@
 
 #include <BOPTools_AlgoTools.hxx>
 #include <BOPTools_AlgoTools2D.hxx>
+
+#include <BRep_Builder.hxx>
+#include <BRepBndLib.hxx>
+#include <TopExp.hxx>
+#include <TopExp_Explorer.hxx>
+#include <Geom2d_Curve.hxx>
+#include <Geom_Curve.hxx>
+#include <Geom_Surface.hxx>
+#include <Geom_Plane.hxx>
+#include <Geom_RectangularTrimmedSurface.hxx>
 
 static
   Standard_Boolean IsBasedOnPlane(const TopoDS_Face& aF);
@@ -296,13 +304,28 @@ class BOPAlgo_BPC {
     myE=aE;
   }
   //
+  const TopoDS_Edge& GetEdge() const {
+    return myE;
+  }
+  const TopoDS_Face& GetFace() const {
+    return myF;
+  }
+  const Handle_Geom2d_Curve& GetCurve2d() const {
+    return myCurve;
+  }
+  Standard_Boolean IsToUpdate() const {
+    return myToUpdate;
+  }
+  //
   void Perform() {
-    BOPTools_AlgoTools2D::BuildPCurveForEdgeOnPlane (myE, myF);
+    BOPTools_AlgoTools2D::BuildPCurveForEdgeOnPlane (myE, myF, myCurve, myToUpdate);
   };
   //
  protected:
   TopoDS_Edge myE;
   TopoDS_Face myF;
+  Handle_Geom2d_Curve myCurve;
+  Standard_Boolean myToUpdate;
 };
 //=======================================================================
 typedef BOPCol_NCVector
@@ -472,8 +495,8 @@ void BOPAlgo_PaveFiller::MakePCurves()
 {
   Standard_Boolean bHasPC;
   Standard_Integer i, nF1, nF2, aNbC, k, nE, aNbFF, aNbFI, nEx;
+  Standard_Integer j, aNbPBIn, aNbPBOn;
   BOPDS_ListIteratorOfListOfPaveBlock aItLPB;
-  BOPDS_MapIteratorOfMapOfPaveBlock aItMPB;
   TopoDS_Face aF1F, aF2F;
   BOPAlgo_VectorOfMPC aVMPC;
   //
@@ -491,9 +514,9 @@ void BOPAlgo_PaveFiller::MakePCurves()
     aF1F.Orientation(TopAbs_FORWARD);
     // In
     const BOPDS_IndexedMapOfPaveBlock& aMPBIn=aFI.PaveBlocksIn();
-    aItMPB.Initialize(aMPBIn);
-    for(; aItMPB.More(); aItMPB.Next()) {
-      const Handle(BOPDS_PaveBlock)& aPB=aItMPB.Value();
+    aNbPBIn = aMPBIn.Extent();
+    for (j = 1; j <= aNbPBIn; ++j) {
+      const Handle(BOPDS_PaveBlock)& aPB = aMPBIn(j);
       nE=aPB->Edge();
       const TopoDS_Edge& aE=(*(TopoDS_Edge *)(&myDS->Shape(nE)));
       //
@@ -505,9 +528,9 @@ void BOPAlgo_PaveFiller::MakePCurves()
     //
     // On
     const BOPDS_IndexedMapOfPaveBlock& aMPBOn=aFI.PaveBlocksOn();
-    aItMPB.Initialize(aMPBOn);
-    for(; aItMPB.More(); aItMPB.Next()) {
-      const Handle(BOPDS_PaveBlock)& aPB=aItMPB.Value();
+    aNbPBOn = aMPBOn.Extent();
+    for (j = 1; j <= aNbPBOn; ++j) {
+      const Handle(BOPDS_PaveBlock)& aPB = aMPBOn(j);
       nE=aPB->Edge();
       const TopoDS_Edge& aE=(*(TopoDS_Edge *)(&myDS->Shape(nE)));
       bHasPC=BOPTools_AlgoTools2D::HasCurveOnSurface (aE, aF1F);
@@ -715,10 +738,9 @@ void BOPAlgo_PaveFiller::Prepare()
     TopAbs_FACE
   };
   Standard_Boolean bJustAdd, bIsBasedOnPlane;
-  Standard_Integer i, aNb, n1, nF;
+  Standard_Integer i, aNb, n1, nF, aNbF;
   TopExp_Explorer aExp;
-  BOPCol_MapOfShape aMF;
-  BOPCol_MapIteratorOfMapOfShape aItMF;
+  BOPCol_IndexedMapOfShape aMF;
   //
   myErrorStatus=0;
   //
@@ -736,15 +758,16 @@ void BOPAlgo_PaveFiller::Prepare()
     }
   }
   //
-  if (aMF.IsEmpty()) {
+  aNbF = aMF.Extent();
+  if (!aNbF) {
     return;
   }
   //
+  // Build pcurves of edges on planes; first collect pairs edge-face.
   BOPAlgo_VectorOfBPC aVBPC;
   //
-  aItMF.Initialize(aMF);
-  for (; aItMF.More(); aItMF.Next()) {
-    const TopoDS_Face& aF=*((TopoDS_Face *)&aItMF.Key());
+  for (i = 1; i <= aNbF; ++i) {
+    const TopoDS_Face& aF = *(TopoDS_Face*)&aMF(i);
     aExp.Init(aF, aType[1]);
     for (; aExp.More(); aExp.Next()) {
       const TopoDS_Edge& aE=*((TopoDS_Edge *)&aExp.Current());
@@ -757,6 +780,17 @@ void BOPAlgo_PaveFiller::Prepare()
   //======================================================
   BOPAlgo_BPCCnt::Perform(myRunParallel, aVBPC);
   //======================================================
+
+  // pcurves are built, and now update edges
+  BRep_Builder aBB;
+  TopoDS_Edge E;
+  for (i = 0; i < aVBPC.Extent(); i++) {
+    const BOPAlgo_BPC& aBPC=aVBPC(i);
+    if (aBPC.IsToUpdate()) {
+      Standard_Real aTolE = BRep_Tool::Tolerance(aBPC.GetEdge());
+      aBB.UpdateEdge(aBPC.GetEdge(), aBPC.GetCurve2d(), aBPC.GetFace(), aTolE);
+    }
+  }
 }
 //=======================================================================
 //function : IsBasedOnPlane

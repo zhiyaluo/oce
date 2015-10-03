@@ -13,19 +13,10 @@
 // commercial license or contractual agreement.
 
 //=======================================================================
-// function : SetSensitivityFactor
-// purpose  : Allows to manage the sensitivity of the entity
-//=======================================================================
-inline void SelectBasics_SensitiveEntity::SetSensitivityFactor (const Standard_Real theSensFactor)
-{
-  mySFactor = theSensFactor;
-}
-
-//=======================================================================
 // function : SensitivityFactor
 // purpose  : Gets sensitivity factor for the entity
 //=======================================================================
-inline Standard_Real SelectBasics_SensitiveEntity::SensitivityFactor() const
+inline Standard_Integer SelectBasics_SensitiveEntity::SensitivityFactor() const
 {
   return mySFactor;
 }

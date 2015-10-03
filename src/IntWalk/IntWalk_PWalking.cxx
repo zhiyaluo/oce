@@ -32,6 +32,8 @@
 #include <Standard_Failure.hxx>
 #include <gp_Pnt2d.hxx>
 
+#include <Extrema_GenLocateExtPS.hxx>
+
 //==================================================================================
 // function : IntWalk_PWalking::IntWalk_PWalking
 // purpose  :
@@ -47,9 +49,10 @@ void ComputePasInit(Standard_Real *pasuv,
                     Standard_Real _Vm1,Standard_Real _VM1,
                     Standard_Real _Um2,Standard_Real _UM2,
                     Standard_Real _Vm2,Standard_Real _VM2,
-                    const Handle(Adaptor3d_HSurface)& ,
-                    const Handle(Adaptor3d_HSurface)& ,
-                    const Standard_Real Increment) 
+                    const Handle(Adaptor3d_HSurface)& Caro1,
+                    const Handle(Adaptor3d_HSurface)& Caro2,
+                    const Standard_Real Increment,
+                    const Standard_Real tolconf)
 { 
   Standard_Real du1=Abs(UM1-Um1);
   Standard_Real dv1=Abs(VM1-Vm1);
@@ -73,6 +76,20 @@ void ComputePasInit(Standard_Real *pasuv,
   pasuv[1]=Increment*dv1;
   pasuv[2]=Increment*du2;
   pasuv[3]=Increment*dv2;
+
+  Standard_Real ResoU1tol = Adaptor3d_HSurfaceTool::UResolution(Caro1, tolconf);
+  Standard_Real ResoV1tol = Adaptor3d_HSurfaceTool::VResolution(Caro1, tolconf);
+  Standard_Real ResoU2tol = Adaptor3d_HSurfaceTool::UResolution(Caro2, tolconf);
+  Standard_Real ResoV2tol = Adaptor3d_HSurfaceTool::VResolution(Caro2, tolconf);
+
+  if (pasuv[0] < 2*ResoU1tol)
+    pasuv[0] = 2*ResoU1tol;
+  if (pasuv[1] < 2*ResoV1tol)
+    pasuv[1] = 2*ResoV1tol;
+  if (pasuv[2] < 2*ResoU2tol)
+    pasuv[2] = 2*ResoU2tol;
+  if (pasuv[3] < 2*ResoV2tol)
+    pasuv[3] = 2*ResoV2tol;
 }
 
 //=======================================================================
@@ -391,7 +408,7 @@ done(Standard_True),
 close(Standard_False),
 fleche(Deflection),
 tolconf(Epsilon),
-sensCheminement(1),       
+sensCheminement(1),
 myIntersectionOn2S(Caro1,Caro2,TolTangency),
 STATIC_BLOCAGE_SUR_PAS_TROP_GRAND(0),
 STATIC_PRECEDENT_INFLEXION(0)
@@ -575,6 +592,94 @@ void IntWalk_PWalking::Perform(const TColStd_Array1OfReal& ParDep)
 {
   Perform(ParDep,Um1,Vm1,Um2,Vm2,UM1,VM1,UM2,VM2);
 }
+
+//=======================================================================
+//function : SQDistPointSurface
+//purpose  : Returns square distance between thePnt and theSurf.
+//            (theU0, theV0) is initial point for extrema
+//=======================================================================
+static Standard_Real SQDistPointSurface(const gp_Pnt &thePnt,
+                                        const Adaptor3d_Surface& theSurf,
+                                        const Standard_Real theU0,
+                                        const Standard_Real theV0)
+{
+  const Extrema_GenLocateExtPS aExtPS(thePnt, theSurf, theU0, theV0,
+                      Precision::PConfusion(), Precision::PConfusion());
+  if(!aExtPS.IsDone())
+    return RealLast();
+  
+  return aExtPS.SquareDistance();
+}
+
+//==================================================================================
+// function : IsTangentExtCheck
+// purpose  : Additional check if the surfaces are tangent.
+//            Checks if any point in one surface lie in another surface
+//            (with given tolerance)
+//==================================================================================
+static Standard_Boolean IsTangentExtCheck(const Handle(Adaptor3d_HSurface)& theSurf1,
+                                          const Handle(Adaptor3d_HSurface)& theSurf2,
+                                          const Standard_Real theU10,
+                                          const Standard_Real theV10,
+                                          const Standard_Real theU20,
+                                          const Standard_Real theV20,
+                                          const Standard_Real theArrStep[])
+{
+  {
+    gp_Pnt aPt;
+    gp_Vec aDu1, aDv1, aDu2, aDv2;
+    theSurf1->D1(theU10, theV10, aPt, aDu1, aDv1);
+    theSurf2->D1(theU20, theV20, aPt, aDu2, aDv2);
+
+    const gp_Vec  aN1(aDu1.Crossed(aDv1)),
+                  aN2(aDu2.Crossed(aDv2));
+    const Standard_Real aDP = aN1.Dot(aN2),
+                        aSQ1 = aN1.SquareMagnitude(),
+                        aSQ2 = aN2.SquareMagnitude();
+
+    if((aSQ1 < RealSmall()) || (aSQ2 < RealSmall()))
+      return Standard_True; //Tangent
+
+    if(aDP*aDP < 0.9998*aSQ1*aSQ2)
+    {//cos(ang N1<->N2) < 0.9999
+      return Standard_False; //Not tangent
+    }
+  }
+
+  const Standard_Real aSQToler = 4.0e-14;
+  const Standard_Integer aNbItems = 4;
+  const Standard_Real aParUS1[aNbItems] = { theU10 + theArrStep[0],
+                                            theU10 - theArrStep[0],
+                                            theU10, theU10};
+  const Standard_Real aParVS1[aNbItems] = { theV10, theV10,
+                                            theV10 + theArrStep[1],
+                                            theV10 - theArrStep[1]};
+  const Standard_Real aParUS2[aNbItems] = { theU20 + theArrStep[2],
+                                            theU20 - theArrStep[2],
+                                            theU20, theU20};
+  const Standard_Real aParVS2[aNbItems] = { theV20, theV20,
+                                            theV20 + theArrStep[3],
+                                            theV20 - theArrStep[3]};
+
+  for(Standard_Integer i = 0; i < aNbItems; i++)
+  {
+    gp_Pnt aP(theSurf1->Value(aParUS1[i], aParVS1[i]));
+    const Standard_Real aSqDist = SQDistPointSurface(aP, theSurf2->Surface(), theU20, theV20);
+    if(aSqDist > aSQToler)
+      return Standard_False;
+  }
+
+  for(Standard_Integer i = 0; i < aNbItems; i++)
+  {
+    gp_Pnt aP(theSurf2->Value(aParUS2[i], aParVS2[i]));
+    const Standard_Real aSqDist = SQDistPointSurface(aP, theSurf1->Surface(), theU10, theV10);
+    if(aSqDist > aSQToler)
+      return Standard_False;
+  }
+
+  return Standard_True;
+}
+
 //==================================================================================
 // function : Perform
 // purpose  : 
@@ -614,7 +719,7 @@ void IntWalk_PWalking::Perform(const TColStd_Array1OfReal& ParDep,
   const Standard_Real VLast2  = Adaptor3d_HSurfaceTool::LastVParameter (Caro2);
   //
   ComputePasInit(pasuv,u1min,u1max,v1min,v1max,u2min,u2max,v2min,v2max,
-    Um1,UM1,Vm1,VM1,Um2,UM2,Vm2,VM2,Caro1,Caro2,pasMax+pasMax);
+                 Um1,UM1,Vm1,VM1,Um2,UM2,Vm2,VM2,Caro1,Caro2,pasMax+pasMax,tolconf);
   //
   if(pasuv[0]<100.0*ResoU1) {
     pasuv[0]=100.0*ResoU1; 
@@ -701,6 +806,10 @@ void IntWalk_PWalking::Perform(const TColStd_Array1OfReal& ParDep,
   Standard_Boolean bTestFirstPoint = Standard_True;
 
   previousPoint.Parameters(Param(1),Param(2),Param(3),Param(4));
+
+  if(IsTangentExtCheck(Caro1, Caro2, Param(1), Param(2), Param(3), Param(4), pasuv))
+    return;
+
   AddAPoint(line,previousPoint);
   //
   IntWalk_StatusDeflection Status = IntWalk_OK;
@@ -2278,7 +2387,6 @@ PutToBoundary(const Handle(Adaptor3d_HSurface)& theASurf1,
   IsParallel(line, Standard_True, aTol, isU1parallel, isV1parallel);
   IsParallel(line, Standard_False, aTol, isU2parallel, isV2parallel);
 
-  const Standard_Integer aNbPnts = line->NbPoints();
   Standard_Real u1, v1, u2, v2;
   line->Value(1).Parameters(u1, v1, u2, v2);
   Standard_Real aDelta = 0.0;
@@ -2366,6 +2474,7 @@ PutToBoundary(const Handle(Adaptor3d_HSurface)& theASurf1,
       v1, u2, v2, Standard_True);
   }
 
+  const Standard_Integer aNbPnts = line->NbPoints();
   isNeedAdding = Standard_False;
   line->Value(aNbPnts).Parameters(u1, v1, u2, v2);
 

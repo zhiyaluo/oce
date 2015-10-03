@@ -11,14 +11,14 @@
 #include <Handle_SelectBasics_SensitiveEntity.hxx>
 
 #include <Handle_SelectBasics_EntityOwner.hxx>
-#include <Standard_Real.hxx>
+#include <Standard_Integer.hxx>
 #include <MMgt_TShared.hxx>
 #include <Standard_Boolean.hxx>
 #include <SelectBasics_SelectingVolumeManager.hxx>
 #include <SelectBasics_PickResult.hxx>
-#include <Standard_Integer.hxx>
 #include <Select3D_BndBox3d.hxx>
 class SelectBasics_EntityOwner;
+class gp_Trsf;
 
 
 //! root class; the inheriting classes will be able to give
@@ -35,6 +35,9 @@ public:
   //! Returns pointer to owner of the entity
   Standard_EXPORT  const  Handle(SelectBasics_EntityOwner)& OwnerId()  const;
   
+  //! Allows to manage the sensitivity of the entity
+  Standard_EXPORT   void SetSensitivityFactor (const Standard_Integer theSensFactor) ;
+  
   //! Checks whether the sensitive entity is overlapped by
   //! current selecting volume
   Standard_EXPORT virtual   Standard_Boolean Matches (SelectBasics_SelectingVolumeManager& theMgr, SelectBasics_PickResult& thePickResult)  = 0;
@@ -42,7 +45,7 @@ public:
   //! allows a better sensitivity for
   //! a specific entity in selection algorithms
   //! useful for small sized entities.
-      Standard_Real SensitivityFactor()  const;
+      Standard_Integer SensitivityFactor()  const;
   
   //! Returns the number of sub-entities or elements in
   //! sensitive entity. Is used to determine if entity is
@@ -59,6 +62,14 @@ public:
   
   //! Clears up all the resources and memory allocated
   Standard_EXPORT virtual   void Clear()  = 0;
+  
+  //! Returns true if the shape corresponding to the entity
+  //! has init location.
+  Standard_EXPORT virtual   Standard_Boolean HasInitLocation()  const = 0;
+  
+  //! Returns inversed location transformation matrix if the shape corresponding
+  //! to this entity has init location set. Otherwise, returns identity matrix.
+  Standard_EXPORT virtual   gp_Trsf InvInitLocation()  const = 0;
 
 
 
@@ -68,10 +79,7 @@ public:
 protected:
 
   
-  Standard_EXPORT SelectBasics_SensitiveEntity(const Handle(SelectBasics_EntityOwner)& theOwnerId, const Standard_Real theSensFactor = 2.0);
-  
-  //! Allows to manage the sensitivity of the entity
-      void SetSensitivityFactor (const Standard_Real theSensFactor) ;
+  Standard_EXPORT SelectBasics_SensitiveEntity(const Handle(SelectBasics_EntityOwner)& theOwnerId, const Standard_Integer theSensFactor = 2);
 
   Handle(SelectBasics_EntityOwner) myOwnerId;
 
@@ -79,7 +87,7 @@ protected:
 private: 
 
 
-  Standard_Real mySFactor;
+  Standard_Integer mySFactor;
 
 
 };

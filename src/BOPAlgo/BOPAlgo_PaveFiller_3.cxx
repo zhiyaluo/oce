@@ -18,7 +18,7 @@
 #include <BOPAlgo_PaveFiller.ixx>
 
 #include <Precision.hxx>
-#include <NCollection_IncAllocator.hxx>
+
 #include <NCollection_UBTreeFiller.hxx>
 
 #include <Bnd_Box.hxx>
@@ -288,11 +288,12 @@ void BOPAlgo_PaveFiller::PerformEE()
   Standard_Real aTS11, aTS12, aTS21, aTS22, aT11, aT12, aT21, aT22;
   TopAbs_ShapeEnum aType;
   BOPDS_ListIteratorOfListOfPaveBlock aIt1, aIt2;
-  Handle(NCollection_IncAllocator) aAllocator;
+  Handle(NCollection_BaseAllocator) aAllocator;
   BOPDS_MapOfPaveBlock aMPBToUpdate;
   BOPAlgo_VectorOfEdgeEdge aVEdgeEdge;
   BOPDS_MapIteratorOfMapOfPaveBlock aItPB; 
   //
+  aAllocator=NCollection_BaseAllocator::CommonBaseAllocator();
   //-----------------------------------------------------scope f
   BOPDS_IndexedDataMapOfPaveBlockListOfPaveBlock aMPBLPB(100, aAllocator);
   BOPDS_IndexedDataMapOfShapeCoupleOfPaveBlocks aMVCPB(100, aAllocator);
@@ -737,8 +738,7 @@ void BOPAlgo_PaveFiller::TreatNewVertices
   BOPCol_IndexedMapOfShape aMVProcessed;
   BOPCol_MapOfInteger aMFence;
   BOPCol_ListIteratorOfListOfInteger aIt;
-  BOPCol_DataMapOfShapeListOfShape aDMVLV;
-  BOPCol_DataMapIteratorOfDataMapOfShapeListOfShape aItDMVLV;
+  BOPCol_IndexedDataMapOfShapeListOfShape aDMVLV;
   //
   BOPCol_BoxBndTreeSelector aSelector;
   BOPCol_BoxBndTree aBBTree;
@@ -778,7 +778,6 @@ void BOPAlgo_PaveFiller::TreatNewVertices
     //
     Standard_Integer aIP, aNbIP1, aIP1;
     BOPCol_ListOfShape aLVSD;
-    BOPCol_MapIteratorOfMapOfInteger aItMI;
     BOPCol_ListOfInteger aLIP, aLIP1, aLIPC;
     BOPCol_ListIteratorOfListOfInteger aItLIP;
     //
@@ -823,14 +822,14 @@ void BOPAlgo_PaveFiller::TreatNewVertices
       aLVSD.Append(aVP);
     }
     aVF=aLVSD.First();
-    aDMVLV.Bind(aVF, aLVSD);
+    aDMVLV.Add(aVF, aLVSD);
   }// for (i=1; i<=aNbV; ++i) {
 
   // Make new vertices
-  aItDMVLV.Initialize(aDMVLV);
-  for(; aItDMVLV.More(); aItDMVLV.Next()) {
-    const TopoDS_Shape& aV=aItDMVLV.Key();
-    const BOPCol_ListOfShape& aLVSD=aItDMVLV.Value();
+  aNbV = aDMVLV.Extent();
+  for (i = 1; i <= aNbV; ++i) {
+    const TopoDS_Shape& aV = aDMVLV.FindKey(i);
+    const BOPCol_ListOfShape& aLVSD = aDMVLV(i);
     if (aLVSD.IsEmpty()) {
       myImages.Add(aV, aLVSD);
     }

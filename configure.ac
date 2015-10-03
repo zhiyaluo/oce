@@ -1,5 +1,5 @@
 dnl Process this file with autoconf to produce a configure script.
-AC_INIT([OpenCASCADE], [6.9.0])
+AC_INIT([OpenCASCADE], [6.9.1])
 AC_CONFIG_AUX_DIR(make)
 AM_INIT_AUTOMAKE([foreign])
 AC_CANONICAL_HOST

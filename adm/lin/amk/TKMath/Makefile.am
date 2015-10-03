@@ -374,7 +374,6 @@ libTKMath_la_SOURCES = \
 @top_srcdir@/src/math/math_Kronrod.cxx \
 @top_srcdir@/src/math/math_KronrodSingleIntegration.cxx \
 @top_srcdir@/src/math/math_Matrix.cxx \
-@top_srcdir@/src/math/math_Memory.cxx \
 @top_srcdir@/src/math/math_MultipleVarFunction.cxx \
 @top_srcdir@/src/math/math_MultipleVarFunctionWithGradient.cxx \
 @top_srcdir@/src/math/math_MultipleVarFunctionWithHessian.cxx \

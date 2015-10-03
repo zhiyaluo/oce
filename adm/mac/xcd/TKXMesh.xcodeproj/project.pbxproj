@@ -6,71 +6,71 @@
 	objectVersion = 46;
 	objects = {
 
-		19360F8811C2062F03E20E09 = {isa = PBXBuildFile; fileRef = 142115DB14C918FE100E0376 ;};
+		17C2177C04A40CF4159014F0 = {isa = PBXBuildFile; fileRef = 115C0B0C09E80F0E0F0D0238 ;};
 
-		09A609C103CB02A20B4B12A8 = {isa = PBXBuildFile; fileRef = 0ED210B306F014E10669079F ; };
-		0B6F184E0ED504A513540AA3 = {isa = PBXBuildFile; fileRef = 051010C204A714E007A110EF ; };
-		177209550DC60C550E8D14E7 = {isa = PBXBuildFile; fileRef = 18B514441405148414620BA5 ; };
-		1898046A1781191F17F81913 = {isa = PBXBuildFile; fileRef = 06BE0DA5078304C401480111 ; };
-		0FBD127302B914D204191530 = {isa = PBXBuildFile; fileRef = 15F916D304C515CC16D90CBA ; };
+		13550EFF068A15610BE301DD = {isa = PBXBuildFile; fileRef = 09B9160F0325102B04AF164C ; };
+		15EB0E18033C0F7316430663 = {isa = PBXBuildFile; fileRef = 103806D806E70EF6179B0B15 ; };
+		12DA13A2017816C0104401C5 = {isa = PBXBuildFile; fileRef = 0B2712F315A9023F1646067E ; };
+		1226188A0C451788065200A5 = {isa = PBXBuildFile; fileRef = 0DDE03D40E450A331276014A ; };
+		16350C3F16EF0F2F0F590E66 = {isa = PBXBuildFile; fileRef = 0A2B0F590828169303B01579 ; };
 
-		16830CDD087215210AA007F6 = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libTKXMesh.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		0C42154C0E8B047D02530F57 = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libTKXMesh.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
 
-		142115DB14C918FE100E0376 = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XBRepMesh.cxx; path = ../../../src/XBRepMesh/XBRepMesh.cxx; sourceTree = "<group>"; };
+		115C0B0C09E80F0E0F0D0238 = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = XBRepMesh.cxx; path = ../../../src/XBRepMesh/XBRepMesh.cxx; sourceTree = "<group>"; };
 
-		0ED210B306F014E10669079F = {isa = PBXFileReference; lastKnownFileType = file; name = libTKBRep.dylib; path = libTKBRep.dylib; sourceTree = "<group>"; };
-		051010C204A714E007A110EF = {isa = PBXFileReference; lastKnownFileType = file; name = libTKMath.dylib; path = libTKMath.dylib; sourceTree = "<group>"; };
-		18B514441405148414620BA5 = {isa = PBXFileReference; lastKnownFileType = file; name = libTKernel.dylib; path = libTKernel.dylib; sourceTree = "<group>"; };
-		06BE0DA5078304C401480111 = {isa = PBXFileReference; lastKnownFileType = file; name = libTKG2d.dylib; path = libTKG2d.dylib; sourceTree = "<group>"; };
-		15F916D304C515CC16D90CBA = {isa = PBXFileReference; lastKnownFileType = file; name = libTKMesh.dylib; path = libTKMesh.dylib; sourceTree = "<group>"; };
+		09B9160F0325102B04AF164C = {isa = PBXFileReference; lastKnownFileType = file; name = libTKBRep.dylib; path = libTKBRep.dylib; sourceTree = "<group>"; };
+		103806D806E70EF6179B0B15 = {isa = PBXFileReference; lastKnownFileType = file; name = libTKMath.dylib; path = libTKMath.dylib; sourceTree = "<group>"; };
+		0B2712F315A9023F1646067E = {isa = PBXFileReference; lastKnownFileType = file; name = libTKernel.dylib; path = libTKernel.dylib; sourceTree = "<group>"; };
+		0DDE03D40E450A331276014A = {isa = PBXFileReference; lastKnownFileType = file; name = libTKG2d.dylib; path = libTKG2d.dylib; sourceTree = "<group>"; };
+		0A2B0F590828169303B01579 = {isa = PBXFileReference; lastKnownFileType = file; name = libTKMesh.dylib; path = libTKMesh.dylib; sourceTree = "<group>"; };
 
-		10CD14B606730A7116391072 = {
+		0ED1025D0027062512B1158C = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				09A609C103CB02A20B4B12A8 ,
-				0B6F184E0ED504A513540AA3 ,
-				177209550DC60C550E8D14E7 ,
-				1898046A1781191F17F81913 ,
-				0FBD127302B914D204191530 ,
+				13550EFF068A15610BE301DD ,
+				15EB0E18033C0F7316430663 ,
+				12DA13A2017816C0104401C5 ,
+				1226188A0C451788065200A5 ,
+				16350C3F16EF0F2F0F590E66 ,
 
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 
-		0152019D045F12A5000700F1 = {
+		129E0113063306EA10A114EE = {
 			isa = PBXGroup;
 			children = (
-				142115DB14C918FE100E0376 ,
+				115C0B0C09E80F0E0F0D0238 ,
 			);
 			name = XBRepMesh;
 			sourceTree = "<group>";
 		};
 
-		181305D8044108EE02B91535 = {
+		10A3007E0AEE15150E9900B8 = {
 			isa = PBXGroup;
 			children = (
-				0ED210B306F014E10669079F ,
-				051010C204A714E007A110EF ,
-				18B514441405148414620BA5 ,
-				06BE0DA5078304C401480111 ,
-				15F916D304C515CC16D90CBA ,
+				09B9160F0325102B04AF164C ,
+				103806D806E70EF6179B0B15 ,
+				0B2712F315A9023F1646067E ,
+				0DDE03D40E450A331276014A ,
+				0A2B0F590828169303B01579 ,
 
-				13BE0F4E005A16280606196B ,
-				16830CDD087215210AA007F6 ,
+				12030000091F095503270DFB ,
+				0C42154C0E8B047D02530F57 ,
 			);
 			sourceTree = "<group>";
 		};
-		13BE0F4E005A16280606196B = {
+		12030000091F095503270DFB = {
 			isa = PBXGroup;
 			children = (
-				0152019D045F12A5000700F1 ,
+				129E0113063306EA10A114EE ,
 			);
 			name = "Source files";
 			sourceTree = "<group>";
 		};
 
-		08AE02710C3409D911CD0B68 = {
+		07520C3106AF042604E1174C = {
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -78,13 +78,13 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 
-		085E0328139F144C0F6804A7 = {
+		14C10F101075098F15FD02EB = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 02DE1266179211CB0A2300F5 ;
+			buildConfigurationList = 08EC196D14E40DE4161A1515 ;
 			buildPhases = (
-				0DDF139A0E2802E214D70260 ,
-				10CD14B606730A7116391072 ,
-				08AE02710C3409D911CD0B68 ,
+				0714169E06260AFF03350BE2 ,
+				0ED1025D0027062512B1158C ,
+				07520C3106AF042604E1174C ,
 			);
 			buildRules = (
 			);
@@ -92,42 +92,42 @@
 			);
 			name = TKXMesh;
 			productName = TKXMesh;
-			productReference = 16830CDD087215210AA007F6 ;
+			productReference = 0C42154C0E8B047D02530F57 ;
 			productType = "com.apple.product-type.library.dynamic";
 		};
 
-		13F903700375182618C70273 = {
+		05FE137A063F0C580D9A031C = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0430;
 			};
-			buildConfigurationList = 0D10176C0F4417C7168B0AF7 ;
+			buildConfigurationList = 062A13A205DE151D011E1225 ;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = 181305D8044108EE02B91535;
-			productRefGroup = 181305D8044108EE02B91535;
+			mainGroup = 10A3007E0AEE15150E9900B8;
+			productRefGroup = 10A3007E0AEE15150E9900B8;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				085E0328139F144C0F6804A7 ,
+				14C10F101075098F15FD02EB ,
 			);
 		};
 
-		0DDF139A0E2802E214D70260 = {
+		0714169E06260AFF03350BE2 = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				19360F8811C2062F03E20E09 ,
+				17C2177C04A40CF4159014F0 ,
 
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 
-		13F712C3063A141717E612F3 = {
+		01AC159A021D119E10AA0710 = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -152,7 +152,7 @@
 			};
 			name = Debug;
 		};
-		189E08C315B308A312430086 = {
+		1327176E151D1737053312DC = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -170,7 +170,7 @@
 			};
 			name = Release;
 		};
-		16EC11E902E013B211D50564 = {
+		0C7802A10AFD107E09B2078C = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EXECUTABLE_EXTENSION = dylib;
@@ -200,7 +200,7 @@
 			};
 			name = Debug;
 		};
-		0EBE0E6B15A4104814FD14E8 = {
+		0892194114D90E3D06981064 = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				EXECUTABLE_EXTENSION = dylib;
@@ -231,25 +231,25 @@
 			name = Release;
 		};
 
-		0D10176C0F4417C7168B0AF7 = {
+		062A13A205DE151D011E1225 = {
 			isa = XCConfigurationList;
 		buildConfigurations = (
-				13F712C3063A141717E612F3 ,
-				189E08C315B308A312430086 ,
+				01AC159A021D119E10AA0710 ,
+				1327176E151D1737053312DC ,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		02DE1266179211CB0A2300F5 = {
+		08EC196D14E40DE4161A1515 = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				16EC11E902E013B211D50564 ,
-				0EBE0E6B15A4104814FD14E8 ,
+				0C7802A10AFD107E09B2078C ,
+				0892194114D90E3D06981064 ,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 
 	};
-	rootObject = 13F903700375182618C70273 ;
+	rootObject = 05FE137A063F0C580D9A031C ;
 }

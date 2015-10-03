@@ -77,6 +77,7 @@ libTKTopTest_la_SOURCES = \
 @top_srcdir@/src/BOPTest/BOPTest_BOPCommands.cxx \
 @top_srcdir@/src/BOPTest/BOPTest_CheckCommands.cxx \
 @top_srcdir@/src/BOPTest/BOPTest_DrawableShape.cxx \
+@top_srcdir@/src/BOPTest/BOPTest_HistoryCommands.cxx \
 @top_srcdir@/src/BOPTest/BOPTest_LowCommands.cxx \
 @top_srcdir@/src/BOPTest/BOPTest_ObjCommands.cxx \
 @top_srcdir@/src/BOPTest/BOPTest_Objects.cxx \

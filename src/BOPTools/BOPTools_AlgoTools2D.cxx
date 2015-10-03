@@ -15,6 +15,7 @@
 #include <BOPTools_AlgoTools2D.ixx>
 
 #include <Standard_NotImplemented.hxx>
+#include <Standard_ConstructionError.hxx>
 #include <Precision.hxx>
 #include <gp.hxx>
 
@@ -504,6 +505,21 @@ void BOPTools_AlgoTools2D::BuildPCurveForEdgeOnPlane
     aBB.UpdateEdge(aE, aC2D, aF, aTolE);
   }
 }
+
+//=======================================================================
+//function : BuildPCurveForEdgeOnPlane
+//purpose  : 
+//=======================================================================
+void BOPTools_AlgoTools2D::BuildPCurveForEdgeOnPlane 
+  (const TopoDS_Edge& aE,
+   const TopoDS_Face& aF,
+   Handle(Geom2d_Curve)& aC2D,
+   Standard_Boolean& bToUpdate)
+{
+  Standard_Real aT1, aT2;
+  aC2D=BRep_Tool_CurveOnSurface(aE, aF, aT1, aT2, bToUpdate);
+}
+
 //=======================================================================
 // function: BuildPCurveForEdgesOnPlane
 // purpose: 
@@ -652,6 +668,12 @@ void BOPTools_AlgoTools2D::MakePCurveOnFace
       aTolR = aProj3.GetTolerance();
     }
   }
+  //
+  if(aC2D.IsNull())
+  {
+    Standard_ConstructionError::Raise("BOPTools_AlgoTools2D::MakePCurveOnFace : PCurve is Null");
+  }
+  //
   TolReached2d=aTolR;
   BOPTools_AlgoTools2D::AdjustPCurveOnFace (aBAS, aT1, aT2, 
                                             aC2D, aC2DA);

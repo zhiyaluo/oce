@@ -36,6 +36,7 @@
 #include <Precision.hxx>
 
 #include <PCollection_HAsciiString.hxx>
+#include <TShort_Array1OfShortReal.hxx>
 
 #include <cstdio>
 #include <cmath>
@@ -3727,6 +3728,42 @@ static Standard_Integer OCC26172 (Draw_Interpretor& theDI, Standard_Integer theA
   return 0;
 }
 
+//=======================================================================
+//function : OCC26284
+//purpose  :
+//=======================================================================
+static Standard_Integer OCC26284 (Draw_Interpretor& theDI, Standard_Integer theArgNb, const char** theArgVec)
+{
+  if (theArgNb != 1)
+  {
+    std::cerr << "Error: wrong number of arguments! See usage:\n";
+    theDI.PrintHelp (theArgVec[0]);
+    return 1;
+  }
+
+  Handle(AIS_InteractiveContext) anAISContext = ViewerTest::GetAISContext();
+  if (anAISContext.IsNull())
+  {
+    std::cerr << "Error: no active view. Please call vinit.\n";
+    return 1;
+  }
+
+  BRepPrimAPI_MakeSphere aSphereBuilder (gp_Pnt (0.0, 0.0, 0.0), 1.0);
+  Handle(AIS_Shape) aSphere = new AIS_Shape (aSphereBuilder.Shape());
+  anAISContext->Display (aSphere);
+  for (Standard_Integer aChildIdx = 0; aChildIdx < 5; ++aChildIdx)
+  {
+    BRepPrimAPI_MakeSphere aBuilder (gp_Pnt (1.0 + aChildIdx, 1.0 + aChildIdx, 1.0 + aChildIdx), 1.0);
+    Handle(AIS_Shape) aChild = new AIS_Shape (aBuilder.Shape());
+    aSphere->AddChild (aChild);
+    anAISContext->Display (aChild);
+  }
+
+  anAISContext->RecomputeSelectionOnly (aSphere);
+
+  return 0;
+}
+
 #include <IntTools_Context.hxx>
 #include <GeomAPI_ProjectPointOnSurf.hxx>
 
@@ -3866,6 +3903,409 @@ static Standard_Integer OCC24923(
   return 0;
 }
 
+#include <TColGeom_Array1OfBSplineCurve.hxx>
+#include <TColStd_Array1OfReal.hxx>
+#include <TColGeom_HArray1OfBSplineCurve.hxx>
+#include <GeomConvert.hxx>
+
+//=======================================================================
+//function : OCC26446
+//purpose  : 
+//=======================================================================
+Standard_Integer OCC26446 (Draw_Interpretor& di, 
+                           Standard_Integer n, 
+                           const char** a)
+{
+  if (n != 4) {
+    di << "Usage: OCC26446 r c1 c2" << "\n";
+    return 1;
+  }
+
+  Handle(Geom_BSplineCurve) aCurve1 =
+    Handle(Geom_BSplineCurve)::DownCast(DrawTrSurf::GetCurve(a[2]));
+  Handle(Geom_BSplineCurve) aCurve2 = 
+    Handle(Geom_BSplineCurve)::DownCast(DrawTrSurf::GetCurve(a[3]));
+
+  if (aCurve1.IsNull()) {
+    di << a[2] << " is not a BSpline curve" << "\n";
+	return 1;
+  }
+
+  if (aCurve2.IsNull()) {
+    di << a[3] << " is not a BSpline curve" << "\n";
+	return 1;
+  }
+
+  TColGeom_Array1OfBSplineCurve          aCurves     (0, 1);
+  TColStd_Array1OfReal                   aTolerances (0, 0);
+  Standard_Real                          aTolConf    = 1.e-3;
+  Standard_Real                          aTolClosure = Precision::Confusion();
+  Handle(TColGeom_HArray1OfBSplineCurve) aConcatCurves;
+  Handle(TColStd_HArray1OfInteger)       anIndices;
+
+  aCurves.SetValue(0, aCurve1);
+  aCurves.SetValue(1, aCurve2);
+  aTolerances.SetValue(0, aTolConf);
+
+  GeomConvert::ConcatC1(aCurves,
+                        aTolerances,
+                        anIndices,
+                        aConcatCurves,
+                        Standard_False,
+                        aTolClosure);
+
+  Handle(Geom_BSplineCurve) aResult =
+    aConcatCurves->Value(aConcatCurves->Lower());
+
+  DrawTrSurf::Set(a[1], aResult);
+  return 0;
+}
+
+static Standard_Integer OCC26448 (Draw_Interpretor& theDI, Standard_Integer, const char **)
+{
+  TColStd_SequenceOfReal aSeq1, aSeq2;
+  aSeq1.Append(11.);
+  aSeq1.Prepend (aSeq2);
+  theDI << "TCollection: 11 -> " << aSeq1.First() << "\n";
+
+  NCollection_Sequence<Standard_Real> nSeq1, nSeq2;
+  nSeq1.Append(11.);
+  nSeq1.Prepend (nSeq2);
+  theDI << "NCollection: 11 -> " << nSeq1.First() << "\n";
+
+  theDI << "OK";
+  return 0;
+}
+
+//=======================================================================
+//function : OCC26485
+//purpose  :
+//=======================================================================
+#include <Poly.hxx>
+static Standard_Integer OCC26485 (Draw_Interpretor& theDI, Standard_Integer theArgNb, const char** theArgVec)
+{
+  if (theArgNb != 2)
+  {
+    std::cerr << "Error: wrong number of arguments! See usage:\n";
+    theDI.PrintHelp (theArgVec[0]);
+    return 1;
+  }
+
+  TopoDS_Shape aShape = DBRep::Get(theArgVec[1]);
+  if (aShape.IsNull())
+  {
+    theDI << "Failed. Null shape\n";
+    return 1;
+  }
+
+  Standard_Boolean isFailed = Standard_False;
+  TopExp_Explorer aExplorer(aShape, TopAbs_FACE);
+  for (; aExplorer.More(); aExplorer.Next())
+  {
+    const TopoDS_Face& aFace = TopoDS::Face( aExplorer.Current() );
+    TopLoc_Location L = TopLoc_Location();
+    const Handle(Poly_Triangulation)& aT = BRep_Tool::Triangulation( aFace , L );
+
+    if(aT.IsNull())
+      continue;
+
+    Poly::ComputeNormals(aT);
+    const TColgp_Array1OfPnt&       aVertices = aT->Nodes();
+    const TShort_Array1OfShortReal& aNormals  = aT->Normals();
+
+    // Number of nodes in the triangulation
+    int aVertexNb = aT->Nodes().Length();
+    if (aVertexNb*3 != aNormals.Length())
+    {
+      theDI << "Failed. Different number of normals vs. vertices\n";
+      return 1;
+    }
+
+    // Get each vertex index, checking common vertexes between shapes
+    for( int i=0; i < aVertexNb; i++ )
+    {
+      gp_Pnt aPoint = aVertices.Value( i+1 );
+      gp_Vec aNormal = gp_Vec(
+        aNormals.Value( i*3 + 1 ),
+        aNormals.Value( i*3 + 2 ),
+        aNormals.Value( i*3 + 3 ) );
+
+      if (aNormal.X() == 0 && aNormal.Y() == 0 && aNormal.Z() == 1)
+      {
+        char buf[256];
+        sprintf(buf, "fail_%d", i+1);
+        theDI << "Failed. Point " << buf << ": "
+              << aPoint.X() << " "
+              << aPoint.Y() << " "
+              << aPoint.Z() << "\n";
+
+        DrawTrSurf::Set (buf, aPoint);
+      }
+    }
+  }
+
+  theDI << (isFailed ? "Test failed" : "Test completed") << "\n";
+  return 0;
+}
+
+//=======================================================================
+//function : OCC26553
+//purpose  :
+//=======================================================================
+#include <BRepBuilderAPI_MakeWire.hxx>
+
+static Standard_Integer OCC26553 (Draw_Interpretor& theDI, Standard_Integer theArgc, const char** theArgv)
+{
+  if (theArgc < 2)
+  {
+    theDI << "Error: path to file with shell is missing\n";
+    return 1;
+  }
+
+  BRep_Builder aBuilder;
+  TopoDS_Shape aShell;
+  BRepTools::Read(aShell, theArgv[1], aBuilder);
+
+  if (aShell.IsNull())
+  {
+    theDI << "Error: shell not loaded\n";
+    return 1;
+  }
+
+  TopoDS_Edge aPipeEdge = BRepBuilderAPI_MakeEdge (gp_Pnt (0, 0, 0), gp_Pnt (0, 0, 10));
+  TopoDS_Wire aPipeWire = BRepBuilderAPI_MakeWire(aPipeEdge).Wire();
+
+  BRepOffsetAPI_MakePipe aPipeBuilder(aPipeWire, aShell);
+  if (!aPipeBuilder.IsDone())
+  {
+    theDI << "Error: failed to create pipe\n";
+    return 1;
+  }
+
+  for (TopExp_Explorer aShapeExplorer(aShell, TopAbs_EDGE); aShapeExplorer.More(); aShapeExplorer.Next ()) {
+    const TopoDS_Shape& aGeneratedShape = aPipeBuilder.Generated(aPipeEdge, aShapeExplorer.Current());
+    if (aGeneratedShape.IsNull())
+    {
+      theDI << "Error: null shape\n";
+      return 1;
+    }
+  }
+
+  theDI << "History returned successfully\n";
+  return 0;
+}
+
+//=======================================================================
+//function : OCC26195
+//purpose  :
+//=======================================================================
+#include <AIS_Line.hxx>
+#include <Aspect_Window.hxx>
+#include <BRepBuilderAPI_MakePolygon.hxx>
+#include <Geom_CartesianPoint.hxx>
+#include <SelectMgr_SelectingVolumeManager.hxx>
+#include <Visual3d_View.hxx>
+static Standard_Integer OCC26195 (Draw_Interpretor& theDI, Standard_Integer theArgNb, const char** theArgVec)
+{
+  if (theArgNb < 3)
+  {
+    std::cerr << "Error: wrong number of arguments! See usage:\n";
+    theDI.PrintHelp (theArgVec[0]);
+    return 1;
+  }
+
+  if (ViewerTest::GetAISContext().IsNull())
+  {
+    std::cerr << "Error: No opened context!\n";
+    return 1;
+  }
+
+  gp_Pnt2d aPxPnt1, aPxPnt2;
+  aPxPnt1.SetX (Draw::Atof (theArgVec[1]));
+  aPxPnt1.SetY (Draw::Atof (theArgVec[2]));
+  if (theArgNb > 4)
+  {
+    aPxPnt2.SetX (Draw::Atof (theArgVec[3]));
+    aPxPnt2.SetY (Draw::Atof (theArgVec[4]));
+  }
+  Standard_Boolean toPrint = Standard_False;
+  if (theArgNb % 2 == 0)
+  {
+    toPrint = Draw::Atoi (theArgVec[theArgNb - 1]);
+  }
+
+  SelectMgr_SelectingVolumeManager* aMgr = new SelectMgr_SelectingVolumeManager();
+  aMgr->SetActiveSelectionType (theArgNb > 4 ?
+    SelectMgr_SelectingVolumeManager::Box : SelectMgr_SelectingVolumeManager::Point);
+  aMgr->SetCamera (ViewerTest::CurrentView()->Camera());
+  aMgr->SetPixelTolerance (ViewerTest::GetAISContext()->PixelTolerance());
+  Standard_Integer aWidth, aHeight;
+  ViewerTest::CurrentView()->View()->Window()->Size (aWidth, aHeight);
+  aMgr->SetWindowSize (aWidth, aHeight);
+  if (theArgNb > 4)
+  {
+    aMgr->BuildSelectingVolume (aPxPnt1, aPxPnt2);
+  }
+  else
+  {
+    aMgr->BuildSelectingVolume (aPxPnt1);
+  }
+  const gp_Pnt* aVerts = aMgr->GetVertices();
+  gp_Pnt aNearPnt = aMgr->GetNearPnt();
+  gp_Pnt aFarPnt  = aMgr->GetFarPnt();
+  BRepBuilderAPI_MakePolygon aWireBldrs[4];
+
+  aWireBldrs[0].Add (gp_Pnt (aVerts[0].X(), aVerts[0].Y(), aVerts[0].Z()));
+  aWireBldrs[0].Add (gp_Pnt (aVerts[4].X(), aVerts[4].Y(), aVerts[4].Z()));
+  aWireBldrs[0].Add (gp_Pnt (aVerts[6].X(), aVerts[6].Y(), aVerts[6].Z()));
+  aWireBldrs[0].Add (gp_Pnt (aVerts[2].X(), aVerts[2].Y(), aVerts[2].Z()));
+  aWireBldrs[0].Add (gp_Pnt (aVerts[0].X(), aVerts[0].Y(), aVerts[0].Z()));
+
+  aWireBldrs[1].Add (gp_Pnt (aVerts[4].X(), aVerts[4].Y(), aVerts[4].Z()));
+  aWireBldrs[1].Add (gp_Pnt (aVerts[5].X(), aVerts[5].Y(), aVerts[5].Z()));
+  aWireBldrs[1].Add (gp_Pnt (aVerts[7].X(), aVerts[7].Y(), aVerts[7].Z()));
+  aWireBldrs[1].Add (gp_Pnt (aVerts[6].X(), aVerts[6].Y(), aVerts[6].Z()));
+  aWireBldrs[1].Add (gp_Pnt (aVerts[4].X(), aVerts[4].Y(), aVerts[4].Z()));
+
+  aWireBldrs[2].Add (gp_Pnt (aVerts[1].X(), aVerts[1].Y(), aVerts[1].Z()));
+  aWireBldrs[2].Add (gp_Pnt (aVerts[5].X(), aVerts[5].Y(), aVerts[5].Z()));
+  aWireBldrs[2].Add (gp_Pnt (aVerts[7].X(), aVerts[7].Y(), aVerts[7].Z()));
+  aWireBldrs[2].Add (gp_Pnt (aVerts[3].X(), aVerts[3].Y(), aVerts[3].Z()));
+  aWireBldrs[2].Add (gp_Pnt (aVerts[1].X(), aVerts[1].Y(), aVerts[1].Z()));
+
+  aWireBldrs[3].Add (gp_Pnt (aVerts[0].X(), aVerts[0].Y(), aVerts[0].Z()));
+  aWireBldrs[3].Add (gp_Pnt (aVerts[1].X(), aVerts[1].Y(), aVerts[1].Z()));
+  aWireBldrs[3].Add (gp_Pnt (aVerts[3].X(), aVerts[3].Y(), aVerts[3].Z()));
+  aWireBldrs[3].Add (gp_Pnt (aVerts[2].X(), aVerts[2].Y(), aVerts[2].Z()));
+  aWireBldrs[3].Add (gp_Pnt (aVerts[0].X(), aVerts[0].Y(), aVerts[0].Z()));
+
+  TopoDS_Compound aComp;
+  BRep_Builder    aCompBuilder;
+  aCompBuilder.MakeCompound (aComp);
+  for (Standard_Integer aWireIdx = 0; aWireIdx < 4; ++aWireIdx)
+  {
+    aCompBuilder.Add (aComp, aWireBldrs[aWireIdx].Shape());
+  }
+  DBRep::Set ("c", aComp);
+
+  Handle(AIS_InteractiveObject) aCmp = new AIS_Shape (aComp);
+  aCmp->SetColor (Quantity_NOC_GREEN);
+  ViewerTest::Display ("c", aCmp, Standard_True, Standard_True);
+
+  Handle(Geom_CartesianPoint) aPnt1 = new Geom_CartesianPoint (aNearPnt);
+  Handle(Geom_CartesianPoint) aPnt2 = new Geom_CartesianPoint (aFarPnt);
+
+  Handle(AIS_Line) aLine = new AIS_Line (aPnt1, aPnt2);
+  ViewerTest::Display ("l", aLine, Standard_True, Standard_True);
+
+  if (toPrint)
+  {
+    theDI << "Near: " << aNearPnt.X() << " " << aNearPnt.Y() << " " << aNearPnt.Z() << "\n";
+    theDI << "Far: " << aFarPnt.X() << " " << aFarPnt.Y() << " " << aFarPnt.Z() << "\n";
+  }
+
+  return 0;
+}
+
+//=======================================================================
+//function : OCC26462
+//purpose  :
+//=======================================================================
+static Standard_Integer OCC26462 (Draw_Interpretor& theDI, Standard_Integer /*theArgNb*/, const char** /*theArgVec*/)
+{
+  if (ViewerTest::GetAISContext().IsNull())
+  {
+    std::cerr << "Error: No opened context!\n";
+    return 1;
+  }
+
+  BRepPrimAPI_MakeBox aBuilder1 (gp_Pnt (10.0, 10.0, 0.0), 10.0, 10.0, 10.0);
+  BRepPrimAPI_MakeBox aBuilder2 (10.0, 10.0, 10.0);
+  Handle(AIS_InteractiveObject) aBox1 = new AIS_Shape (aBuilder1.Shape());
+  Handle(AIS_InteractiveObject) aBox2 = new AIS_Shape (aBuilder2.Shape());
+
+  const Handle(AIS_InteractiveContext) aCtx = ViewerTest::GetAISContext();
+  aCtx->OpenLocalContext();
+  aCtx->Display (aBox1, 0, 2);
+  aCtx->Display (aBox2, 0, 2);
+  ViewerTest::CurrentView()->FitAll();
+  aCtx->SetWidth (aBox1, 3);
+  aCtx->SetWidth (aBox2, 3);
+
+  aCtx->MoveTo (305, 322, ViewerTest::CurrentView());
+  aCtx->ShiftSelect();
+  aCtx->MoveTo (103, 322, ViewerTest::CurrentView());
+  aCtx->ShiftSelect();
+  if (aCtx->NbSelected() != 0)
+  {
+    theDI << "ERROR: no boxes must be selected!\n";
+    return 1;
+  }
+
+  aCtx->SetSelectionSensitivity (aBox1, 2, 5);
+
+  aCtx->MoveTo (305, 322, ViewerTest::CurrentView());
+  aCtx->ShiftSelect();
+  if (aCtx->NbSelected() != 1)
+  {
+    theDI << "ERROR: b1 was not selected\n";
+    return 1;
+  }
+  aCtx->MoveTo (103, 322, ViewerTest::CurrentView());
+  aCtx->ShiftSelect();
+  if (aCtx->NbSelected() != 1)
+  {
+    theDI << "ERROR: b2 is selected after b1's tolerance increased\n";
+    return 1;
+  }
+
+  return 0;
+}
+
+
+#include <BRepBuilderAPI_GTransform.hxx>
+static Standard_Integer OCC26313(Draw_Interpretor& di,Standard_Integer n,const char** a)
+{
+  if (n <= 1) return 1;
+  
+  gp_Trsf T;
+  gp_GTrsf GT(T);
+  
+  gp_Mat rot( 1.0, 0.0, 0.0,
+              0.0, 2.0, 0.0,
+              0.0, 0.0, 3.0);
+  
+  GT.SetVectorialPart(rot);
+  BRepBuilderAPI_GTransform gtrf(GT);
+
+  TopoDS_Shape aSrcShape = DBRep::Get(a[2]);
+  if (aSrcShape.IsNull()) {
+    di << a[2] << " is not a valid shape" << "\n";
+    return 1;
+  }
+
+  
+  gtrf.Perform(aSrcShape);
+  if (gtrf.IsDone())
+  {
+    try
+    {
+      DBRep::Set(a[1], gtrf.ModifiedShape(aSrcShape));
+    }
+    catch(Standard_Failure)
+    {
+      di << "Error: Exception is thrown\n";
+    }
+  }
+  else
+  {
+    di << "Error: Result is not done\n";
+    return 1;
+  }
+  
+  return 0;
+}
+
 void QABugs::Commands_19(Draw_Interpretor& theCommands) {
   const char *group = "QABugs";
 
@@ -3938,5 +4378,24 @@ void QABugs::Commands_19(Draw_Interpretor& theCommands) {
   theCommands.Add ("xprojponf", "xprojponf p f", __FILE__, xprojponf, group);
   theCommands.Add ("OCC24923", "OCC24923", __FILE__, OCC24923, group);
   theCommands.Add ("OCC26139", "OCC26139 [-boxsize value] [-boxgrid value] [-compgrid value]", __FILE__, OCC26139, group);
+  theCommands.Add ("OCC26284", "OCC26284", __FILE__, OCC26284, group);
+  theCommands.Add ("OCC26446", "OCC26446 r c1 c2", __FILE__, OCC26446, group);
+  theCommands.Add ("OCC26448", "OCC26448: check method Prepend() of sequence", __FILE__, OCC26448, group);
+  theCommands.Add ("OCC26485", "OCC26485 shape", __FILE__, OCC26485, group);
+  theCommands.Add ("OCC26553", "OCC26553 file_path", __FILE__, OCC26553, group);
+  theCommands.Add ("OCC26195",
+                   "OCC26195: x1_pix y1_pix [x2_pix y2_pix] [toPrintPixelCoord 0|1]"
+                   "\n\t\t: Draws rectangular selecting frustum defined by point selection in pixel coordinates"
+                   "\n\t\t: [x1_pix, y1_pix] or rectangular selection in pixel coordinates [x1_pix, y1_pix,"
+                   "\n\t\t: x2_pix, y2_pix]."
+                   "\n\t\t: [toPrintPixelCoord 0|1] - prints 3d projection of pixel coordinate or center of"
+                   "\n\t\t: selecting rectangle onto near and far view frustum planes",
+                   __FILE__, OCC26195, group);
+  theCommands.Add ("OCC26462",
+                   "OCC26462: Checks the ability to manage sensitivity of a particular selection mode in local context",
+                   __FILE__, OCC26462, group);
+
+  theCommands.Add ("OCC26313", "OCC26313 result shape", __FILE__, OCC26313, group);
+
   return;
 }

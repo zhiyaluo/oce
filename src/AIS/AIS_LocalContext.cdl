@@ -437,15 +437,23 @@ is
                 HiCol     : out NameOfColor from Quantity)
     returns Boolean from Standard;
 
-    SetPixelTolerance(me:mutable;
-                        aPrecision: Real from Standard = 2);
+    SetPixelTolerance (me:mutable;
+                       aPrecision: Integer from Standard = 2);
     ---Level: Public
     ---Purpose: Define the current selection sensitivity for
     --          this local context according to the view size.
 
-    PixelTolerance(me) returns Real from Standard;
+    PixelTolerance(me) returns Integer from Standard;
     ---Level: Public 
     ---Purpose: Returns the pixel tolerance.
+
+    SetSelectionSensitivity (me                : mutable;
+                             theObject         : InteractiveObject from AIS;
+                             theMode           : Integer from Standard;
+                             theNewSensitivity : Integer from Standard);
+    ---Purpose: Allows to manage sensitivity of a particular selection of interactive object theObject and
+    --          changes previous sensitivity value of all sensitive entities in selection with theMode to
+    --          the given theNewSensitivity.   
 
                         ---Category: IMMEDIATE MODE
 

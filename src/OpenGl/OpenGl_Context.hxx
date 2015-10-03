@@ -298,6 +298,9 @@ public:
         || (myGlVerMajor == theVerMajor && myGlVerMinor >= theVerMinor);
   }
 
+  //! Access entire map of loaded OpenGL functions.
+  const OpenGl_GlFunctions* Functions() const { return myFuncs.operator->(); }
+
   //! Clean up errors stack for this GL context (glGetError() in loop).
   Standard_EXPORT void ResetErrors();
 
@@ -312,6 +315,9 @@ public:
 
   //! Swap front/back buffers for this GL context (should be activated before!).
   Standard_EXPORT void SwapBuffers();
+
+  //! Setup swap interval (VSync).
+  Standard_EXPORT Standard_Boolean SetSwapInterval (const Standard_Integer theInterval);
 
   //! Return true if active mode is GL_RENDER (cached state)
   Standard_Boolean IsRender() const
@@ -435,16 +441,16 @@ public:
   Standard_EXPORT Standard_Boolean SetGlNormalizeEnabled (Standard_Boolean isEnabled);
 
   //! Applies matrix stored in ModelWorldState to OpenGl.
-  void ApplyModelWorldMatrix();
+  Standard_EXPORT void ApplyModelWorldMatrix();
 
   //! Applies matrix stored in WorldViewState to OpenGl.
-  void ApplyWorldViewMatrix();
+  Standard_EXPORT void ApplyWorldViewMatrix();
 
   //! Applies combination of matrices stored in ModelWorldState and WorldViewState to OpenGl.
-  void ApplyModelViewMatrix();
+  Standard_EXPORT void ApplyModelViewMatrix();
 
   //! Applies matrix stored in ProjectionState to OpenGl.
-  void ApplyProjectionMatrix();
+  Standard_EXPORT void ApplyProjectionMatrix();
 
 public:
 

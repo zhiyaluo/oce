@@ -200,6 +200,14 @@ static OpenGl_Caps ViewerTest_myDefaultCaps;
 
 static void OSWindowSetup();
 
+static struct
+{
+  Quantity_Color FlatColor;
+  Quantity_Color GradientColor1;
+  Quantity_Color GradientColor2;
+  Aspect_GradientFillMethod FillMethod;
+} ViewerTest_DefaultBackground = { Quantity_NOC_BLACK, Quantity_NOC_BLACK, Quantity_NOC_BLACK, Aspect_GFM_NONE };
+
 //==============================================================================
 //  EVENT GLOBAL VARIABLES
 //==============================================================================
@@ -641,10 +649,10 @@ TCollection_AsciiString ViewerTest::ViewerInit (const Standard_Integer thePxLeft
     toCreateViewer = Standard_True;
     TCollection_ExtendedString NameOfWindow("Viewer3D");
     a3DViewer = new V3d_Viewer(aGraphicDriver, NameOfWindow.ToExtString());
-
-    NameOfWindow = TCollection_ExtendedString("Collector");
-
-    a3DViewer->SetDefaultBackgroundColor(Quantity_NOC_BLACK);
+    a3DViewer->SetDefaultBackgroundColor (ViewerTest_DefaultBackground.FlatColor);
+    a3DViewer->SetDefaultBgGradientColors (ViewerTest_DefaultBackground.GradientColor1,
+                                           ViewerTest_DefaultBackground.GradientColor2,
+                                           ViewerTest_DefaultBackground.FillMethod);
   }
 
   // AIS context setup
@@ -1351,11 +1359,15 @@ void VT_ProcessKeyPress (const char* buf_ret)
   }
   else if (!strcasecmp (buf_ret, "F"))
   {
-    // FitAll
-    if (aNisView.IsNull())
-      aView->FitAll();
+    if (ViewerTest::GetAISContext()->NbSelected() > 0)
+    {
+      ViewerTest::GetAISContext()->FitSelected (aView);
+    }
     else
-      aNisView->FitAll3d();
+    {
+      // FitAll
+      aView->FitAll();
+    }
   }
   else if (!strcasecmp (buf_ret, "H"))
   {
@@ -1513,6 +1525,24 @@ void VT_ProcessKeyPress (const char* buf_ret)
   else if (!strcasecmp (buf_ret, "."))
   {
     ViewerTest::GetAISContext()->HilightPreviousDetected(ViewerTest::CurrentView());
+  }
+  else if (!strcasecmp (buf_ret, "/"))
+  {
+    Handle(Graphic3d_Camera) aCamera = aView->Camera();
+    if (aCamera->IsStereo())
+    {
+      aCamera->SetIOD (aCamera->GetIODType(), aCamera->IOD() - 0.01);
+      aView->Redraw();
+    }
+  }
+  else if (!strcasecmp (buf_ret, "*"))
+  {
+    Handle(Graphic3d_Camera) aCamera = aView->Camera();
+    if (aCamera->IsStereo())
+    {
+      aCamera->SetIOD (aCamera->GetIODType(), aCamera->IOD() + 0.01);
+      aView->Redraw();
+    }
   }
   else if (*buf_ret == THE_KEY_DELETE)
   {
@@ -1985,8 +2015,12 @@ static LRESULT WINAPI ViewerWindowProc( HWND hwnd,
                                        LPARAM lParam )
 {
   static int Up = 1;
+  const Handle(V3d_View)& aView = ViewerTest::CurrentView();
+  if (aView.IsNull())
+  {
+    return DefWindowProc( hwnd, Msg, wParam, lParam );
+  }
 
-  if ( !ViewerTest::CurrentView().IsNull() ) {
     PAINTSTRUCT    ps;
 
     switch( Msg ) {
@@ -1998,6 +2032,20 @@ static LRESULT WINAPI ViewerWindowProc( HWND hwnd,
 
     case WM_SIZE:
       VT_ProcessConfigure();
+      break;
+    case WM_MOVE:
+    case WM_MOVING:
+    case WM_SIZING:
+      switch (aView->RenderingParams().StereoMode)
+      {
+        case Graphic3d_StereoMode_RowInterlaced:
+        case Graphic3d_StereoMode_ColumnInterlaced:
+        case Graphic3d_StereoMode_ChessBoard:
+          VT_ProcessConfigure(); // track window moves to reverse stereo pair
+          break;
+        default:
+          break;
+      }
       break;
 
     case WM_KEYDOWN:
@@ -2019,6 +2067,15 @@ static LRESULT WINAPI ViewerWindowProc( HWND hwnd,
         else if (wParam == VK_OEM_PERIOD)
         {
           c[0] = '.';
+        }
+        else if (wParam == VK_DIVIDE)
+        {
+          c[0] = '/';
+        }
+        // dot
+        else if (wParam == VK_MULTIPLY)
+        {
+          c[0] = '*';
         }
         VT_ProcessKeyPress (c);
       }
@@ -2060,6 +2117,29 @@ static LRESULT WINAPI ViewerWindowProc( HWND hwnd,
         }
       }
       break;
+
+    case WM_MOUSEWHEEL:
+    {
+      int aDelta = GET_WHEEL_DELTA_WPARAM (wParam);
+      if (wParam & MK_CONTROL)
+      {
+        if (aView->Camera()->IsStereo())
+        {
+          Standard_Real aFocus = aView->Camera()->ZFocus() + (aDelta > 0 ? 0.05 : -0.05);
+          if (aFocus > 0.2
+           && aFocus < 2.0)
+          {
+            aView->Camera()->SetZFocus (aView->Camera()->ZFocusType(), aFocus);
+            aView->Redraw();
+          }
+        }
+      }
+      else
+      {
+        aView->Zoom (0, 0, aDelta / 40, aDelta / 40);
+      }
+      break;
+    }
 
     case WM_MOUSEMOVE:
       {
@@ -2122,9 +2202,6 @@ static LRESULT WINAPI ViewerWindowProc( HWND hwnd,
       return( DefWindowProc( hwnd, Msg, wParam, lParam ));
     }
     return 0L;
-  }
-
-  return DefWindowProc( hwnd, Msg, wParam, lParam );
 }
 
 
@@ -2467,7 +2544,6 @@ static void OSWindowSetup()
 
 }
 
-
 //==============================================================================
 //function : VFit
 
@@ -2475,13 +2551,27 @@ static void OSWindowSetup()
 //Draw arg : No args
 //==============================================================================
 
-static int VFit(Draw_Interpretor& , Standard_Integer , const char** )
+static int VFit (Draw_Interpretor& /*theDi*/, Standard_Integer theArgc, const char** theArgv)
 {
+  if (theArgc > 2)
+  {
+    std::cout << "Wrong number of arguments! Use: vfit [-selected]" << std::endl;
+  }
+
   const Handle(V3d_View) aView = ViewerTest::CurrentView();
-  Handle(NIS_View) V = Handle(NIS_View)::DownCast(aView);
-  if (V.IsNull() == Standard_False) {
-    V->FitAll3d();
-  } else if (aView.IsNull() == Standard_False) {
+
+  if (theArgc == 2)
+  {
+    TCollection_AsciiString anArg (theArgv[1]);
+    anArg.LowerCase();
+    if (anArg == "-selected")
+    {
+      ViewerTest::GetAISContext()->FitSelected (aView);
+      return 0;
+    }
+  }
+  if (!aView.IsNull())
+  {
     aView->FitAll();
   }
   return 0;
@@ -2829,6 +2919,57 @@ static int VSetColorBg(Draw_Interpretor& di, Standard_Integer argc, const char**
     Handle(V3d_View) V3dView = ViewerTest::CurrentView();
     V3dView->SetBackgroundColor( aColor );
     V3dView->Update();
+  }
+
+  return 0;
+}
+
+//==============================================================================
+//function : VSetDefaultBg
+//purpose  : Set default viewer background fill color
+//==============================================================================
+static int VSetDefaultBg (Draw_Interpretor& theDI, Standard_Integer theArgNb, const char** theArgVec)
+{
+  if (theArgNb != 4
+   && theArgNb != 8)
+  {
+    std::cout << "Error: wrong syntax! See usage:\n";
+    theDI.PrintHelp (theArgVec[0]);
+    return 1;
+  }
+
+  ViewerTest_DefaultBackground.FillMethod =
+    theArgNb == 4 ? Aspect_GFM_NONE
+                  : (Aspect_GradientFillMethod) Draw::Atoi (theArgVec[7]);
+
+  if (theArgNb == 4)
+  {
+    Standard_Real R = Draw::Atof (theArgVec[1]) / 255.;
+    Standard_Real G = Draw::Atof (theArgVec[2]) / 255.;
+    Standard_Real B = Draw::Atof (theArgVec[3]) / 255.;
+    ViewerTest_DefaultBackground.FlatColor.SetValues (R, G, B, Quantity_TOC_RGB);
+  }
+  else
+  {
+    Standard_Real R1 = Draw::Atof (theArgVec[1]) / 255.;
+    Standard_Real G1 = Draw::Atof (theArgVec[2]) / 255.;
+    Standard_Real B1 = Draw::Atof (theArgVec[3]) / 255.;
+    ViewerTest_DefaultBackground.GradientColor1.SetValues (R1, G1, B1, Quantity_TOC_RGB);
+
+    Standard_Real R2 = Draw::Atof (theArgVec[4]) / 255.;
+    Standard_Real G2 = Draw::Atof (theArgVec[5]) / 255.;
+    Standard_Real B2 = Draw::Atof (theArgVec[6]) / 255.;
+    ViewerTest_DefaultBackground.GradientColor2.SetValues (R2, G2, B2, Quantity_TOC_RGB);
+  }
+
+  for (NCollection_DoubleMap<TCollection_AsciiString, Handle(AIS_InteractiveContext)>::Iterator
+       anIter (ViewerTest_myContexts); anIter.More(); anIter.Next())
+  {
+    const Handle(V3d_Viewer)& aViewer = anIter.Value()->CurrentViewer();
+    aViewer->SetDefaultBackgroundColor (ViewerTest_DefaultBackground.FlatColor);
+    aViewer->SetDefaultBgGradientColors (ViewerTest_DefaultBackground.GradientColor1,
+                                         ViewerTest_DefaultBackground.GradientColor2,
+                                         ViewerTest_DefaultBackground.FillMethod);
   }
 
   return 0;
@@ -5402,7 +5543,9 @@ static int VCaps (Draw_Interpretor& theDI,
     theDI << "Sprites: " << (aCaps->pntSpritesDisable ? "0" : "1") << "\n";
     theDI << "SoftMode:" << (aCaps->contextNoAccel    ? "1" : "0") << "\n";
     theDI << "FFP:     " << (aCaps->ffpEnable         ? "1" : "0") << "\n";
+    theDI << "VSync:   " <<  aCaps->swapInterval                   << "\n";
     theDI << "Compatible:" << (aCaps->contextCompatible ? "1" : "0") << "\n";
+    theDI << "Stereo:  " << (aCaps->contextStereo ? "1" : "0") << "\n";
     return 0;
   }
 
@@ -5415,6 +5558,17 @@ static int VCaps (Draw_Interpretor& theDI,
     if (anUpdateTool.parseRedrawMode (anArg))
     {
       continue;
+    }
+    else if (anArgCase == "-vsync"
+          || anArgCase == "-swapinterval")
+    {
+      Standard_Boolean toEnable = Standard_True;
+      if (++anArgIter < theArgNb
+      && !parseOnOff (theArgVec[anArgIter], toEnable))
+      {
+        --anArgIter;
+      }
+      aCaps->swapInterval = toEnable;
     }
     else if (anArgCase == "-ffp")
     {
@@ -5499,6 +5653,17 @@ static int VCaps (Draw_Interpretor& theDI,
       {
         aCaps->ffpEnable = Standard_False;
       }
+    }
+    else if (anArgCase == "-stereo"
+          || anArgCase == "-quadbuffer")
+    {
+      Standard_Boolean toEnable = Standard_True;
+      if (++anArgIter < theArgNb
+      && !parseOnOff (theArgVec[anArgIter], toEnable))
+      {
+        --anArgIter;
+      }
+      aCaps->contextStereo = toEnable;
     }
     else
     {
@@ -7290,6 +7455,94 @@ static int VCamera (Draw_Interpretor& theDI,
   return 0;
 }
 
+//! Parse stereo output mode
+inline Standard_Boolean parseStereoMode (Standard_CString      theArg,
+                                         Graphic3d_StereoMode& theMode)
+{
+  TCollection_AsciiString aFlag (theArg);
+  aFlag.LowerCase();
+  if (aFlag == "quadbuffer")
+  {
+    theMode = Graphic3d_StereoMode_QuadBuffer;
+  }
+  else if (aFlag == "anaglyph")
+  {
+    theMode = Graphic3d_StereoMode_Anaglyph;
+  }
+  else if (aFlag == "row"
+        || aFlag == "rowinterlaced")
+  {
+    theMode = Graphic3d_StereoMode_RowInterlaced;
+  }
+  else if (aFlag == "col"
+        || aFlag == "colinterlaced"
+        || aFlag == "columninterlaced")
+  {
+    theMode = Graphic3d_StereoMode_ColumnInterlaced;
+  }
+  else if (aFlag == "chess"
+        || aFlag == "chessboard")
+  {
+    theMode = Graphic3d_StereoMode_ChessBoard;
+  }
+  else if (aFlag == "sbs"
+        || aFlag == "sidebyside")
+  {
+    theMode = Graphic3d_StereoMode_SideBySide;
+  }
+  else if (aFlag == "ou"
+        || aFlag == "overunder")
+  {
+    theMode = Graphic3d_StereoMode_OverUnder;
+  }
+  else if (aFlag == "pageflip"
+        || aFlag == "softpageflip")
+  {
+    theMode = Graphic3d_StereoMode_SoftPageFlip;
+  }
+  else
+  {
+    return Standard_False;
+  }
+  return Standard_True;
+}
+
+//! Parse anaglyph filter
+inline Standard_Boolean parseAnaglyphFilter (Standard_CString                     theArg,
+                                             Graphic3d_RenderingParams::Anaglyph& theFilter)
+{
+  TCollection_AsciiString aFlag (theArg);
+  aFlag.LowerCase();
+  if (aFlag == "redcyansimple")
+  {
+    theFilter = Graphic3d_RenderingParams::Anaglyph_RedCyan_Simple;
+  }
+  else if (aFlag == "redcyan"
+        || aFlag == "redcyanoptimized")
+  {
+    theFilter = Graphic3d_RenderingParams::Anaglyph_RedCyan_Optimized;
+  }
+  else if (aFlag == "yellowbluesimple")
+  {
+    theFilter = Graphic3d_RenderingParams::Anaglyph_YellowBlue_Simple;
+  }
+  else if (aFlag == "yellowblue"
+        || aFlag == "yellowblueoptimized")
+  {
+    theFilter = Graphic3d_RenderingParams::Anaglyph_YellowBlue_Optimized;
+  }
+  else if (aFlag == "greenmagenta"
+        || aFlag == "greenmagentasimple")
+  {
+    theFilter = Graphic3d_RenderingParams::Anaglyph_GreenMagenta_Simple;
+  }
+  else
+  {
+    return Standard_False;
+  }
+  return Standard_True;
+}
+
 //==============================================================================
 //function : VStereo
 //purpose  :
@@ -7299,12 +7552,12 @@ static int VStereo (Draw_Interpretor& theDI,
                     Standard_Integer  theArgNb,
                     const char**      theArgVec)
 {
+  Handle(V3d_View) aView = ViewerTest::CurrentView();
   if (theArgNb < 2)
   {
-    Handle(V3d_View) aView = ViewerTest::CurrentView();
     if (aView.IsNull())
     {
-      std::cerr << "No active view. Please call vinit.\n";
+      std::cout << "Error: no active viewer!\n";
       return 0;
     }
 
@@ -7313,7 +7566,130 @@ static int VStereo (Draw_Interpretor& theDI,
     return 0;
   }
 
-  ViewerTest_myDefaultCaps.contextStereo = Draw::Atoi (theArgVec[1]) != 0;
+  Handle(Graphic3d_Camera) aCamera;
+  Graphic3d_RenderingParams*   aParams   = NULL;
+  Graphic3d_StereoMode         aMode     = Graphic3d_StereoMode_QuadBuffer;
+  if (!aView.IsNull())
+  {
+    aParams   = &aView->ChangeRenderingParams();
+    aMode     = aParams->StereoMode;
+    aCamera   = aView->Camera();
+  }
+
+  ViewerTest_AutoUpdater anUpdateTool (ViewerTest::GetAISContext(), aView);
+  for (Standard_Integer anArgIter = 1; anArgIter < theArgNb; ++anArgIter)
+  {
+    Standard_CString        anArg = theArgVec[anArgIter];
+    TCollection_AsciiString aFlag (anArg);
+    aFlag.LowerCase();
+    if (anUpdateTool.parseRedrawMode (aFlag))
+    {
+      continue;
+    }
+    else if (aFlag == "0"
+          || aFlag == "off")
+    {
+      if (++anArgIter < theArgNb)
+      {
+        std::cout << "Error: wrong number of arguments!\n";
+        return 1;
+      }
+
+      if (!aCamera.IsNull()
+       &&  aCamera->ProjectionType() == Graphic3d_Camera::Projection_Stereo)
+      {
+        aCamera->SetProjectionType (Graphic3d_Camera::Projection_Perspective);
+      }
+      ViewerTest_myDefaultCaps.contextStereo = Standard_False;
+      return 0;
+    }
+    else if (aFlag == "1"
+          || aFlag == "on")
+    {
+      if (++anArgIter < theArgNb)
+      {
+        std::cout << "Error: wrong number of arguments!\n";
+        return 1;
+      }
+
+      if (!aCamera.IsNull())
+      {
+        aCamera->SetProjectionType (Graphic3d_Camera::Projection_Stereo);
+      }
+      ViewerTest_myDefaultCaps.contextStereo = Standard_True;
+      return 0;
+    }
+    else if (aFlag == "-reverse"
+          || aFlag == "-reversed"
+          || aFlag == "-swap")
+    {
+      Standard_Boolean toEnable = Standard_True;
+      if (++anArgIter < theArgNb
+      && !parseOnOff (theArgVec[anArgIter], toEnable))
+      {
+        --anArgIter;
+      }
+      aParams->ToReverseStereo = toEnable;
+    }
+    else if (aFlag == "-noreverse"
+          || aFlag == "-noswap")
+    {
+      Standard_Boolean toDisable = Standard_True;
+      if (++anArgIter < theArgNb
+      && !parseOnOff (theArgVec[anArgIter], toDisable))
+      {
+        --anArgIter;
+      }
+      aParams->ToReverseStereo = !toDisable;
+    }
+    else if (aFlag == "-mode"
+          || aFlag == "-stereomode")
+    {
+      if (++anArgIter >= theArgNb
+      || !parseStereoMode (theArgVec[anArgIter], aMode))
+      {
+        std::cout << "Error: syntax error at '" << anArg << "'\n";
+        return 1;
+      }
+
+      if (aMode == Graphic3d_StereoMode_QuadBuffer)
+      {
+        ViewerTest_myDefaultCaps.contextStereo = Standard_True;
+      }
+    }
+    else if (aFlag == "-anaglyph"
+          || aFlag == "-anaglyphfilter")
+    {
+      Graphic3d_RenderingParams::Anaglyph aFilter = Graphic3d_RenderingParams::Anaglyph_RedCyan_Simple;
+      if (++anArgIter >= theArgNb
+      || !parseAnaglyphFilter (theArgVec[anArgIter], aFilter))
+      {
+        std::cout << "Error: syntax error at '" << anArg << "'\n";
+        return 1;
+      }
+
+      aMode = Graphic3d_StereoMode_Anaglyph;
+      aParams->AnaglyphFilter = aFilter;
+    }
+    else if (parseStereoMode (anArg, aMode)) // short syntax
+    {
+      if (aMode == Graphic3d_StereoMode_QuadBuffer)
+      {
+        ViewerTest_myDefaultCaps.contextStereo = Standard_True;
+      }
+    }
+    else
+    {
+      std::cout << "Error: syntax error at '" << anArg << "'\n";
+      return 1;
+    }
+  }
+
+  if (!aView.IsNull())
+  {
+    aParams->StereoMode = aMode;
+    aCamera->SetProjectionType (Graphic3d_Camera::Projection_Stereo);
+  }
   return 0;
 }
 
@@ -7393,9 +7769,9 @@ static int VDefaults (Draw_Interpretor& theDi,
       // currently HLRDeviationAngle is used instead of DeviationAngle in most places
       aDefParams->SetHLRAngle (M_PI * Draw::Atof (theArgVec[anArgIter]) / 180.0);
     }
-    if (anArg == "-AUTOTR"
-     || anArg == "-AUTOTRIANG"
-     || anArg == "-AUTOTRIANGULATION")
+    else if (anArg == "-AUTOTR"
+          || anArg == "-AUTOTRIANG"
+          || anArg == "-AUTOTRIANGULATION")
     {
       if (++anArgIter >= theArgsNb)
       {
@@ -8424,7 +8800,8 @@ void ViewerTest::ViewerCommands(Draw_Interpretor& theCommands)
     "vpick           : vpick X Y Z [shape subshape] ( all variables as string )",
     VPick,group);
   theCommands.Add("vfit"    ,
-    "vfit or <F>         : vfit",
+    "vfit or <F> [-selected]"
+    "\n\t\t: [-selected] fits the scene according to bounding box of currently selected objects",
     __FILE__,VFit,group);
   theCommands.Add ("vfitarea",
     "vfitarea x1 y1 x2 y2"
@@ -8440,7 +8817,8 @@ void ViewerTest::ViewerCommands(Draw_Interpretor& theCommands)
     "vrepaint        : vrepaint, force redraw",
     __FILE__,VRepaint,group);
   theCommands.Add("vclear",
-    "vclear          : vclear",
+    "vclear          : vclear"
+    "\n\t\t: remove all the object from the viewer",
     __FILE__,VClear,group);
   theCommands.Add("vsetbg",
     "vsetbg          : vsetbg imagefile [filltype] : Load image as background",
@@ -8457,6 +8835,11 @@ void ViewerTest::ViewerCommands(Draw_Interpretor& theCommands)
   theCommands.Add("vsetcolorbg",
     "vsetcolorbg     : vsetcolorbg r g b : Set background color",
     __FILE__,VSetColorBg,group);
+  theCommands.Add("vsetdefaultbg",
+    "vsetdefaultbg r g b\n"
+    "\n\t\t: vsetdefaultbg r1 g1 b1 r2 g2 b2 fillmode"
+    "\n\t\t: Set default viewer background fill color (flat/gradient).",
+    __FILE__,VSetDefaultBg,group);
   theCommands.Add("vscale",
     "vscale          : vscale X Y Z",
     __FILE__,VScale,group);
@@ -8607,11 +8990,27 @@ void ViewerTest::ViewerCommands(Draw_Interpretor& theCommands)
     "vvbo [{0|1}] : turn VBO usage On/Off; affects only newly displayed objects",
     __FILE__, VVbo, group);
   theCommands.Add ("vstereo",
-    "\nvstereo [{0|1}] : turn stereo usage On/Off; affects only newly displayed objects",
+            "vstereo [0|1] [-mode Mode] [-reverse {0|1}]"
+    "\n\t\t:         [-anaglyph Filter]"
+    "\n\t\t: Control stereo output mode. Available modes for -mode:"
+    "\n\t\t:  quadBuffer        - OpenGL QuadBuffer stereo,"
+    "\n\t\t:                     requires driver support."
+    "\n\t\t:                     Should be called BEFORE vinit!"
+    "\n\t\t:  anaglyph         - Anaglyph glasses"
+    "\n\t\t:  rowInterlaced    - row-interlaced display"
+    "\n\t\t:  columnInterlaced - column-interlaced display"
+    "\n\t\t:  chessBoard       - chess-board output"
+    "\n\t\t:  sideBySide       - horizontal pair"
+    "\n\t\t:  overUnder        - vertical   pair"
+    "\n\t\t: Available Anaglyph filters for -anaglyph:"
+    "\n\t\t:  redCyan, redCyanSimple, yellowBlue, yellowBlueSimple,"
+    "\n\t\t:  greenMagentaSimple",
     __FILE__, VStereo, group);
   theCommands.Add ("vcaps",
             "vcaps [-vbo {0|1}] [-sprites {0|1}] [-ffp {0|1}]"
-    "\n\t\t:       [-compatibleContext {0|1}]"
+    "\n\t\t:       [-compatibleProfile {0|1}]"
+    "\n\t\t:       [-vsync {0|1}]"
+    "\n\t\t:       [-quadBuffer {0|1}] [-stereo {0|1}]"
     "\n\t\t:       [-softMode {0|1}] [-noupdate|-update]"
     "\n\t\t: Modify particular graphic driver options:"
     "\n\t\t:  FFP      - use fixed-function pipeline instead of"
@@ -8620,9 +9019,11 @@ void ViewerTest::ViewerCommands(Draw_Interpretor& theCommands)
     "\n\t\t:  VBO      - use Vertex Buffer Object (copy vertex"
     "\n\t\t:             arrays to GPU memory)"
     "\n\t\t:  sprite   - use textured sprites instead of bitmaps"
+    "\n\t\t:  vsync    - switch VSync on or off"
     "\n\t\t: Context creation options:"
     "\n\t\t:  softMode          - software OpenGL implementation"
     "\n\t\t:  compatibleProfile - backward-compatible profile"
+    "\n\t\t:  quadbuffer        - QuadBuffer"
     "\n\t\t: Unlike vrenderparams, these parameters control alternative"
     "\n\t\t: rendering paths producing the same visual result when"
     "\n\t\t: possible."
@@ -8645,7 +9046,9 @@ void ViewerTest::ViewerCommands(Draw_Interpretor& theCommands)
     "- 1) single click selection\n"
     "- 2) selection with rectangle having corners at pixel positions (x1,y1) and (x2,y2)\n"
     "- 3) selection with polygon having corners in pixel positions (x1,y1), (x2,y2),...,(xn,yn)\n"
-    "- 4) -allowoverlap determines will partially included objects be selected in rectangular selection"
+    "- 4) -allowoverlap manages overlap and inclusion detection in rectangular selection.\n"
+    "     If the flag is set to 1, both sensitives that were included completely and overlapped partially by defined rectangle will be detected,\n"
+    "     otherwise algorithm will chose only fully included sensitives. Default behavior is to detect only full inclusion. "
     " (partial inclusion - overlap - is not allowed by default)\n"
     "- 5) any of these selections with shift button pressed",
     __FILE__, VSelect, group);
@@ -8679,7 +9082,8 @@ void ViewerTest::ViewerCommands(Draw_Interpretor& theCommands)
     "- gets or sets ZClipping mode, width and depth",
     __FILE__,VZClipping,group);
   theCommands.Add ("vnbselected",
-    "vnbselected", __FILE__, VNbSelected, group);
+    "vnbselected"
+    "\n\t\t: Returns number of selected objects", __FILE__, VNbSelected, group);
   theCommands.Add ("vcamera",
               "vcamera [-ortho] [-projtype]"
       "\n\t\t:         [-persp]"
@@ -8715,7 +9119,8 @@ void ViewerTest::ViewerCommands(Draw_Interpretor& theCommands)
     "   vzrange [znear] [zfar] - applies provided values to view",
     __FILE__,VZRange, group);
   theCommands.Add("vantialiasing",
-    "vantialiasing 1|0",
+    "vantialiasing 1|0"
+    "\n\t\t: Switches altialiasing on or off",
     __FILE__,VAntialiasing,group);
   theCommands.Add ("vpurgedisplay",
     "vpurgedisplay"
