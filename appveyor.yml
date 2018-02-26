@@ -3,6 +3,9 @@ version: oce-0.19.{build}
 environment:
   oce_version: 0.19
   matrix:
+    - generator: "MSYS Makefiles"
+      BINDIR: C:\msys64\mingw32
+      ARCH: "Win32"
     - generator: "MinGW Makefiles"
       ARCH: "i686"
       Compiler: MinGW-gcc-5.3.0
@@ -45,6 +48,7 @@ before_build:
 
 # scripts that run after cloning repository
 install:
+  - cinst freetype
   - cmd: CALL FetchBundle.bat
 
 build_script:

@@ -15,7 +15,7 @@ cmake -DBUILD_WITH_DEBUG:BOOL=OFF ^
 mingw32-make -j5
 mingw32-make install
 dir
-dir C:\oce-0.18.3
-set PATH=%PATH%;C:\oce-0.18.3\bin
+dir C:\oce-0.19
+set PATH=%PATH%;C:\oce-0.19\bin
 mingw32-make test
 cd ..
