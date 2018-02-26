@@ -48,7 +48,7 @@ before_build:
 
 # scripts that run after cloning repository
 install:
-  - cinst freetype
+  - cinst gtk-runtime
   - cmd: CALL FetchBundle.bat
 
 build_script:
