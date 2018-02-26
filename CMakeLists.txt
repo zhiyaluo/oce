@@ -1177,8 +1177,3 @@ if(BUILD_USE_TESTING)
   enable_testing()
   subdirs(test)
 endif(BUILD_USE_TESTING)
-
-# Final bundle step for dependencies
-if(USE_BUNDLE)
-  include(oce-win-bundle/depends.cmake)
-endif()
