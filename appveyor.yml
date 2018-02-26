@@ -49,7 +49,7 @@ before_build:
 # scripts that run after cloning repository
 install:
   - cmd: C:\msys64\usr\bin\bash --login -c "pacman -S --noconfirm mingw-w64-x86_64-cmake"
-  - cmd: C:\msys64\usr\bin\bash --login -c "pacman -S --noconfirm freetype"
+  - cmd: C:\msys64\usr\bin\bash --login -c "pacman -S --noconfirm mingw-w64-x86_64-freetype"
   - cmd: CALL FetchBundle.bat
 
 build_script:
