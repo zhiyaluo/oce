@@ -1,9 +1,5 @@
 language: cpp
 
-compiler:
-  - gcc
-  - clang
-
 cache:
  apt: true
 
@@ -67,8 +63,6 @@ matrix:
           - libxi-dev
   - os: linux
     compiler: gcc
-  - os: linux
-    compiler: gcc
     env: BUILD_USE_PCH=OFF
   - os: linux
     compiler: gcc
@@ -103,12 +97,15 @@ matrix:
   - os: osx
     osx_image: xcode8.3
     compiler: clang
+    env: BUILD_USE_PCH=OFF
   - os: osx
-    osx_image: xcode9.2
+    osx_image: xcode9.4
     compiler: clang
+    env: BUILD_USE_PCH=OFF
   - os: osx
-    osx_image: xcode9.3beta
+    osx_image: xcode10.1
     compiler: clang
+    env: BUILD_USE_PCH=OFF
   exclude:
   - env: RUN_TESTS=false BUILD_USE_PCH=ON 
   allow_failures:
