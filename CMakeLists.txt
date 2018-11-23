@@ -50,7 +50,7 @@ endmacro()
 
 if (APPLE)
 #XCODE_VERSION_MAJOR
-  add_definition("-stdlib=libc++")
+  add_definitions("-stdlib=libc++")
 endif()
 
 # include variable description
