@@ -93,6 +93,9 @@ matrix:
     env: BUILD_USE_PCH=OFF
   - os: osx
     compiler: clang
+    env: BUILD_USE_PCH=ON
+  - os: osx
+    compiler: clang
     env: BUILD_USE_PCH=OFF
   - os: osx
     osx_image: xcode8.3
