@@ -23,6 +23,8 @@
 
 #include <V3d_TypeOfOrientation.hxx>
 #include <Standard_Real.hxx>
+#include <Graphic3d_Group.hxx>
+#include <Graphic3d_Vector.hxx>
 
 class V3d_View;
 
